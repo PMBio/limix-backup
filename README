@@ -1,0 +1,30 @@
+GPMix C++ library with interfaces
+to R and python.
+
+Descirbe me here:
+
+Authors:
+
+Christoph & Oli 
+
+
+
+Directory structure:
+
+External/
+- 3rd party libraries we use, Eigen etc.
+
+src/
+- cpp sources files
+
+inclde/
+- header files
+
+python/
+- python related interface files and demos
+
+R/
+- R related interface files and demos
+
+cmake/
+- cmake helper scripts for building the full library from scratch
