@@ -14,17 +14,30 @@ Directory structure:
 External/
 - 3rd party libraries we use, Eigen etc.
 
-src/
-- cpp sources files
-
-inclde/
-- header files
-
-python/
-- python related interface files and demos
-
-R/
-- R related interface files and demos
-
 cmake/
 - cmake helper scripts for building the full library from scratch
+
+src/
+- source code
+ /testing/
+ - debuggin and demo c++ main files
+ /python/
+ - python related interface files and demos
+ R/
+ - R related interface files and demos
+
+ /gpmix/ 
+ - actual library
+
+   /LMM
+   - fast testing code
+   /covar
+   - covariance functions
+   /optimize
+   - optimization code for learning kernel parameters
+   /linalg
+   - linear algebra related helpers and code
+   /gp
+   - gp base classes 
+   /likelihood
+   - likelihood models 
