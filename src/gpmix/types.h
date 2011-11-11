@@ -31,7 +31,31 @@ using namespace std;
 typedef Matrix<float_t, Dynamic, Dynamic> MatrixXd;
 typedef Matrix<float_t, Dynamic, 1> VectorXd;
 typedef Matrix<string, Dynamic, 1> VectorXs;
+typedef Array<float_t, Dynamic, Dynamic> ArrayXd;
 
+
+class CGPMixException
+{
+  public:
+
+	CGPMixException()
+	      : What("Unlabeled Exception")
+	    {
+	    }
+
+	CGPMixException(string str)
+      : What(str)
+    {
+    }
+
+    string what()
+    {
+      return What;
+    }
+
+  private:
+    string What;
+};
 
 
 

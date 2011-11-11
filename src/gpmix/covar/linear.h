@@ -12,17 +12,16 @@
 
 namespace gpmix {
 
-class CLinearCFISO: public ACovarianceFunction  {
+class CCovLinearISO: public ACovarianceFunction  {
 public:
-	CLinearCFISO();
-	~CLinearCFISO();
+	CCovLinearISO(const uint_t dimensions) : ACovarianceFunction(dimensions) {}
+	CCovLinearISO(const uint_t dimensions_i0,const uint_t dimensions_i1) : ACovarianceFunction(dimensions_i0,dimensions_i1) {}
+	~CCovLinearISO();
 
-	MatrixXd K(CovarParams params,CovarInput x1,CovarInput x2);
-	//virtual VectorXd Kdiag(CovarParams params,CovarInput x1);
-
-	MatrixXd Kgrad_theta(CovarParams params, CovarInput x1,int i);
-	MatrixXd Kgrad_x(CovarParams params,CovarInput x1,CovarInput x2,int d);
-	MatrixXd Kgrad_xdiag(CovarParams params,CovarInput x1,int d);
+	MatrixXd K(const CovarParams params, const CovarInput x1, const CovarInput x2) const;
+	MatrixXd Kgrad_theta(const CovarParams params, const CovarInput x1, const uint_t i) const;
+	MatrixXd Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const uint_t d) const;
+	MatrixXd Kgrad_xdiag(const CovarParams params, const CovarInput x1, const uint_t d) const;
 };
 
 } /* namespace gpmix */

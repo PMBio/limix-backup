@@ -8,9 +8,9 @@
 
 #include <gpmix/matrix/matrix_helper.h>
 #include "matrix_helper.h"
+#include <stdlib.h>
 
-
-
+namespace gpmix{
 
 bool isnull(const MatrixXd& m)
 {
@@ -20,7 +20,7 @@ bool isnull(const MatrixXd& m)
 
 #define PI 3.14159265358979323846
 
-double randn(double mu, double sigma) {
+float_t randn(float_t mu, float_t sigma) {
 	static bool deviateAvailable=false;	//	flag
 	static float storedDeviate;			//	deviate from previous calculation
 	double dist, angle;
@@ -123,25 +123,21 @@ void matrix2array(const MatrixXd m,float64_t** matrix, int32_t* rows, int32_t*co
 */
 
 
-
-MatrixXd randn(const uint_t n,const uint_t m)
+MatrixXd randn(const uint_t n, const uint_t m)
 /* create a randn matrix, i.e. matrix of Gaussian distributed random numbers*/
 {
 	MatrixXd rv(n,m);
 	for (uint_t i=0; i<n; i++)
 		for (uint_t j=0; j<m; j++) {
-			double r = randn(0.0,0.0);
+			double r = randn(0.0,1.0);
 			rv(i,j) = r;
 		}
 	return rv;
 }
 
 
-MatrixXd rand(const uint_t n,const uint_t m)
-/* create a rand matrix (uniform 0..1)*/
+MatrixXd Mrandrand(const uint_t n,const uint_t m)
 {
-	MatrixXd test(2,3);
-
 	MatrixXd rv(n,m);
 	for (uint_t i=0;i<n;i++)
 		for(uint_t j=0;j<m;j++)
@@ -149,4 +145,7 @@ MatrixXd rand(const uint_t n,const uint_t m)
 			rv(i,j) = ((double)rand())/RAND_MAX;
 		}
 	return rv;
+}
+
+
 }
