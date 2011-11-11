@@ -1,0 +1,5 @@
+I listed some todos and things I noticed on the way.
+
+1) we need to discuss what optimizer to use.
+   If it supports constraints we could use these instead of exponentiating hyperparmaeters. not sure.
+2) I added some stuff on covarainces and set some basic structure up and running.
