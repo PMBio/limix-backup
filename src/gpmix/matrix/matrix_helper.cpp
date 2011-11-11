@@ -17,8 +17,9 @@ bool isnull(const MatrixXd& m)
 	return (m.cols()==0) & (m.rows()==0);
 }
 
-
+#ifndef PI
 #define PI 3.14159265358979323846
+#endif
 
 float_t randn(float_t mu, float_t sigma) {
 	static bool deviateAvailable=false;	//	flag
@@ -33,7 +34,7 @@ float_t randn(float_t mu, float_t sigma) {
 		//	choose a pair of uniformly distributed deviates, one for the
 		//	distance and one for the angle, and perform transformations
 		dist=sqrt( -2.0 * log(double(rand()) / double(RAND_MAX)) );
-		angle=2.0 * PI * (double(rand()) / double(RAND_MAX));
+		angle= 2.0 * PI * (double(rand()) / double(RAND_MAX));
 
 		//	calculate and store first deviate and set flag
 		storedDeviate=dist*cos(angle);
