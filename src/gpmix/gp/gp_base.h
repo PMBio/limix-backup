@@ -8,14 +8,58 @@
 #ifndef GP_BASE_H_
 #define GP_BASE_H_
 
-#include <gpmix/matrix/matrix_helper.h>
 #include <gpmix/covar/covariance.h>
-#include <gpmix/gp_types.h>
-
 #include <string>
+#include <map>
+#include <gpmix/types.h>
 using namespace std;
 
 namespace gpmix {
+
+class CGPHyperParams {
+
+protected:
+
+	VectorXd param_array;
+	map<string,VectorXd> param_map;
+
+public:
+
+	CGPHyperParams()
+	{
+		//empty constructur
+	}
+	//from a list of params
+
+	VectorXd getParamArray()
+	{
+		return param_array;
+	}
+
+	void setParamArray(VectorXd param)
+	{
+		//TODO: check that length is ok
+		this->param_array = param;
+	}
+
+	void set(string name,VectorXd value)
+	{
+		return;
+	}
+
+	VectorXd get(const string& name)
+	{
+		return param_map[name];
+	}
+
+	VectorXs getNames()
+	{
+		return VectorXs(1,1);
+	}
+
+};
+
+
 
 class CGPbase {
 protected:

@@ -10,28 +10,11 @@
 
 #include <math.h>
 #include <cmath>
-#include <string>
-using namespace std;
+#include <gpmix/types.h>
 
-#include <Eigen/Dense>
-using namespace Eigen;
 
 //create random matrix:
 double randn(double mu=0.0, double sigma=1.0);
-
-
-//TODO: think whether we really need these?
-//some definitions for the python interface
-#define float64_t double
-#define float32_t float
-#define int32_t int
-
-//standard Matrix type to use in this project
-typedef Matrix<double, Dynamic, Dynamic> MatrixXd;
-typedef Matrix<double, Dynamic, 1> VectorXd;
-typedef Matrix<string, Dynamic, 1> VectorXs;
-
-
 //helper functions for eigen matrices
 bool isnull(const MatrixXd& m);
 double sum(MatrixXd& m);
@@ -39,8 +22,8 @@ MatrixXd log(MatrixXd& m);
 
 
 
-MatrixXd randn(const unsigned int n, const unsigned int m);
-MatrixXd rand(const unsigned int n,const unsigned int m);
+MatrixXd randn(const uint_t n, const uint_t m);
+MatrixXd rand(const uint_t n,const uint_t m);
 
 
 #endif /* MATRIX_HELPER_H_ */

@@ -29,17 +29,17 @@ namespace gpmix {
 		return this->K0.diagonal();
 	}
 
-	MatrixXd CFixedCF::Kgrad_theta(const CovarParams params, const CovarInput x1,const unsigned int i)
+	MatrixXd CFixedCF::Kgrad_theta(const CovarParams params, const CovarInput x1,const uint_t i)
 	{
 		return MatrixXd();
 	}
 
-	MatrixXd CFixedCF::Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const unsigned int d)
+	MatrixXd CFixedCF::Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const uint_t d)
 	{
 		return MatrixXd();
 	}
 
-	MatrixXd CFixedCF::Kgrad_xdiag(const CovarParams params, const CovarInput x1, const unsigned int d)
+	MatrixXd CFixedCF::Kgrad_xdiag(const CovarParams params, const CovarInput x1, const uint_t d)
 	{
 		return MatrixXd();
 	}

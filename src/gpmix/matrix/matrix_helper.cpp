@@ -75,8 +75,8 @@ MatrixXd log(MatrixXd& m)
 }
 
 
-
-MatrixXd array2matrix(const float64_t* matrix,int32_t rows,int32_t cols)
+/*
+MatrixXd array2matrix(const float64* matrix,int32 rows,int32 cols)
 {
 	//create a matrix from a double array
 	MatrixXd m = MatrixXd(rows,cols);
@@ -120,15 +120,16 @@ void matrix2array(const MatrixXd m,float64_t** matrix, int32_t* rows, int32_t*co
 			(*matrix)[j*m.rows()+i] = m(i,j);
 		}
 }
+*/
 
 
 
-MatrixXd randn(const unsigned int n,const unsigned int m)
+MatrixXd randn(const uint_t n,const uint_t m)
 /* create a randn matrix, i.e. matrix of Gaussian distributed random numbers*/
 {
 	MatrixXd rv(n,m);
-	for (unsigned int i=0; i<n; i++)
-		for (unsigned int j=0; j<m; j++) {
+	for (uint_t i=0; i<n; i++)
+		for (uint_t j=0; j<m; j++) {
 			double r = randn(0.0,0.0);
 			rv(i,j) = r;
 		}
@@ -136,14 +137,14 @@ MatrixXd randn(const unsigned int n,const unsigned int m)
 }
 
 
-MatrixXd rand(const unsigned int n,const unsigned int m)
+MatrixXd rand(const uint_t n,const uint_t m)
 /* create a rand matrix (uniform 0..1)*/
 {
 	MatrixXd test(2,3);
 
 	MatrixXd rv(n,m);
-	for (unsigned int i=0;i<n;i++)
-		for(unsigned int j=0;j<m;j++)
+	for (uint_t i=0;i<n;i++)
+		for(uint_t j=0;j<m;j++)
 		{
 			rv(i,j) = ((double)rand())/RAND_MAX;
 		}

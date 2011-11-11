@@ -8,7 +8,6 @@
 #ifndef LINEAR_H_
 #define LINEAR_H_
 
-#include <gpmix/matrix/matrix_helper.h>
 #include <gpmix/covar/covariance.h>
 
 namespace gpmix {
