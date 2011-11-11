@@ -52,6 +52,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/External}&quot;"/>
 								</option>
+								<option id="gnu.c.compiler.option.warnings.toerrors.1615271554" superClass="gnu.c.compiler.option.warnings.toerrors" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.360468921" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 						</toolChain>

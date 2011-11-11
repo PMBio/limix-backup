@@ -22,8 +22,8 @@ CLinearCFISO::~CLinearCFISO() {
 MatrixXd CLinearCFISO::K(CovarParams params,CovarInput x1,CovarInput x2)
 {
 	//kernel matrix is constant hyperparmeter and dot product
-	CovarInput x1_ = getX(x1);
-	CovarInput x2_ = getX(x2);
+	CovarInput x1_ = this->getX(x1);
+	CovarInput x2_ = this->getX(x2);
 
 	//TODO: discuss whether to exponentiate parameters or not.
 	double A = params(0);

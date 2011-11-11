@@ -30,11 +30,11 @@ public:
 
 //TODO: add interface that is suitable for optimizer
 // virtual double LML(double* params);
-// virtual void LML(double* params, *double gradients);
+// virtual void LML(double* params, double* gradients);
 
 
-//	virtual double LML(CGPHyperParams& hyperparams);
-//	virtual CGPHyperParams LMLgrad(CGPHyperParams& hyperparams);
+	virtual double LML(CGPHyperParams& hyperparams);
+	virtual CGPHyperParams LMLgrad(CGPHyperParams& hyperparams);
 
 };
 

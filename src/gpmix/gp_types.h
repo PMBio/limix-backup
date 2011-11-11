@@ -9,6 +9,7 @@
 #define GP_TYPES_H_
 
 #include <string>
+#include <map>
 using namespace std;
 #include <gpmix/matrix/matrix_helper.h>
 
@@ -24,10 +25,14 @@ protected:
 	//MatrixXd x;
 
 	VectorXd param_array;
+	map<string,VectorXd> param_map;
 
 public:
 
-	CGPHyperParams();
+	CGPHyperParams()
+	{
+		//empty constructur
+	}
 	//from a list of params
 
 	VectorXd getParamArray()
@@ -46,9 +51,9 @@ public:
 		return;
 	}
 
-	VectorXd get(string name)
+	VectorXd get(const string& name)
 	{
-		return VectorXd(1,1);
+		return param_map[name];
 	}
 
 	VectorXs getNames()

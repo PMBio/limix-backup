@@ -16,8 +16,14 @@ class CFixedCF : public ACovarianceFunction {
 protected:
 	MatrixXd K0;
 public:
-	CFixedCF(MatrixXd K0);
-	virtual ~CFixedCF();
+	CFixedCF(const MatrixXd K0);
+	~CFixedCF();
+	MatrixXd K(const CovarParams params, const CovarInput x1, const CovarInput x2);
+	VectorXd Kdiag(const CovarParams params, const CovarInput x1);
+
+	MatrixXd Kgrad_theta(const CovarParams params, const CovarInput x1,const unsigned int i);
+	MatrixXd Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const unsigned int d);
+	MatrixXd Kgrad_xdiag(const CovarParams params, const CovarInput x1, const unsigned int d);
 };
 
 } /* namespace gpmix */

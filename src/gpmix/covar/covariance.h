@@ -23,28 +23,28 @@ typedef MatrixXd CovarParams;
 
 class ACovarianceFunction {
 protected:
-	int hyperparams;
-	int dimensions;
+	unsigned int hyperparams;
+	unsigned int dimensions;
 	//indices for slicing out dimensions from X
-	int dimensions_i0;
-	int dimensions_i1;
+	unsigned int dimensions_i0;
+	unsigned int dimensions_i1;
 
-	//project a fullset of inputs onto the targets of this class:
+	//project a full set of inputs onto the targets of this class:
 	CovarInput getX(CovarInput x);
-	//is a particular dimension d wihtin the targets of this class?
-	bool dimension_is_target(int d);
+	//is a particular dimension d within the targets of this class?
+	bool dimension_is_target(const unsigned int d);
 
 public:
-	ACovarianceFunction(int dimensions=-1,int dimensions_i0=-1,int dimensions_i1=-1);
+	ACovarianceFunction(const unsigned int dimensions=0, const unsigned int dimensions_i0=0, const unsigned int dimensions_i1=0);
 	virtual ~ACovarianceFunction();
 
 	//TODO: add hyperparameters and think about a good construct for that
-	virtual MatrixXd K(CovarParams params,CovarInput x1,CovarInput x2) const =0;
-	virtual VectorXd Kdiag(CovarParams params,CovarInput x1);
+	virtual MatrixXd K(const CovarParams params, const CovarInput x1, const CovarInput x2) const =0;
+	virtual VectorXd Kdiag(const CovarParams params, const CovarInput x1);
 
-	virtual MatrixXd Kgrad_theta(CovarParams params, CovarInput x1,int i) const =0;
-	virtual MatrixXd Kgrad_x(CovarParams params,CovarInput x1,CovarInput x2,int d) const=0;
-	virtual MatrixXd Kgrad_xdiag(CovarParams params,CovarInput x1,int d) const=0;
+	virtual MatrixXd Kgrad_theta(const CovarParams params, const CovarInput x1, const unsigned int i) const =0;
+	virtual MatrixXd Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const unsigned int d) const=0;
+	virtual MatrixXd Kgrad_xdiag(const CovarParams params, const CovarInput x1, const unsigned int d) const=0;
 };
 
 } /* namespace gpmix */

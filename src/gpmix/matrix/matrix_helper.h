@@ -39,8 +39,8 @@ MatrixXd log(MatrixXd& m);
 
 
 
-MatrixXd randn(int n, int m);
-MatrixXd rand(int n,int m);
+MatrixXd randn(const unsigned int n, const unsigned int m);
+MatrixXd rand(const unsigned int n,const unsigned int m);
 
 
 #endif /* MATRIX_HELPER_H_ */
