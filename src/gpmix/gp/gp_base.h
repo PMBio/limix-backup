@@ -9,6 +9,7 @@
 #define GP_BASE_H_
 
 #include <gpmix/covar/covariance.h>
+#include <gpmix/likelihood/likelihood.h>
 #include <string>
 #include <map>
 #include <gpmix/types.h>
@@ -64,12 +65,13 @@ public:
 class CGPbase {
 protected:
 	ACovarianceFunction& covar;
+	ALikelihood& lik;
 
 //	virtual double _LML_covar(CGPHyperParams& parmas);
 //	virtual VectorXd _LMLgrad_covar(CGPHyperParams& params);
 
 public:
-	CGPbase(ACovarianceFunction& covar);
+	CGPbase(ACovarianceFunction& covar, ALikelihood& lik);
 	virtual ~CGPbase();
 
 //TODO: add interface that is suitable for optimizer
@@ -77,7 +79,7 @@ public:
 // virtual void LML(double* params, double* gradients);
 
 
-	virtual double LML(CGPHyperParams& hyperparams);
+	virtual float_t LML(CGPHyperParams& hyperparams);
 	virtual CGPHyperParams LMLgrad(CGPHyperParams& hyperparams);
 
 };
