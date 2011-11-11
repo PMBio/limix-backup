@@ -43,6 +43,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/External}&quot;"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.warnings.toerrors.1914109372" name="Warnings as errors (-Werror)" superClass="gnu.cpp.compiler.option.warnings.toerrors" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.warnings.pedantic.error.404522867" name="Pedantic warnings as errors (-pedantic-errors)" superClass="gnu.cpp.compiler.option.warnings.pedantic.error" value="false" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1154953977" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.2053923706" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug">
@@ -52,7 +54,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/External}&quot;"/>
 								</option>
-								<option id="gnu.c.compiler.option.warnings.toerrors.1615271554" superClass="gnu.c.compiler.option.warnings.toerrors" value="true" valueType="boolean"/>
+								<option id="gnu.c.compiler.option.warnings.toerrors.1615271554" name="Warnings as errors (-Werror)" superClass="gnu.c.compiler.option.warnings.toerrors" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.360468921" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 						</toolChain>
