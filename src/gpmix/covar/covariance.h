@@ -21,7 +21,6 @@ typedef MatrixXd CovarInput;
 typedef MatrixXd CovarParams;
 
 
-
 class ACovarianceFunction {
 protected:
 	int hyperparams;
@@ -46,9 +45,6 @@ public:
 	virtual MatrixXd Kgrad_theta(CovarParams params, CovarInput x1,int i) const =0;
 	virtual MatrixXd Kgrad_x(CovarParams params,CovarInput x1,CovarInput x2,int d) const=0;
 	virtual MatrixXd Kgrad_xdiag(CovarParams params,CovarInput x1,int d) const=0;
-
-
-
 };
 
 } /* namespace gpmix */

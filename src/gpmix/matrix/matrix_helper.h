@@ -10,6 +10,8 @@
 
 #include <math.h>
 #include <cmath>
+#include <string>
+using namespace std;
 
 #include <Eigen/Dense>
 using namespace Eigen;
@@ -27,6 +29,7 @@ double randn(double mu=0.0, double sigma=1.0);
 //standard Matrix type to use in this project
 typedef Matrix<double, Dynamic, Dynamic> MatrixXd;
 typedef Matrix<double, Dynamic, 1> VectorXd;
+typedef Matrix<string, Dynamic, 1> VectorXs;
 
 
 //helper functions for eigen matrices

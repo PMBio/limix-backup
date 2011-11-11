@@ -139,6 +139,8 @@ MatrixXd randn(int n, int m)
 MatrixXd rand(int n,int m)
 /* create a rand matrix (uniform 0..1)*/
 {
+	MatrixXd test(2,3);
+
 	MatrixXd rv(n,m);
 	for (int i=0;i<n;i++)
 		for(int j=0;j<m;j++)

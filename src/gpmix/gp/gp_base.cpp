@@ -9,9 +9,8 @@
 
 namespace gpmix {
 
-CGPbase::CGPbase() {
+CGPbase::CGPbase(ACovarianceFunction& covar) : covar(covar) {
 	// TODO Auto-generated constructor stub
-
 }
 
 CGPbase::~CGPbase() {
@@ -19,3 +18,5 @@ CGPbase::~CGPbase() {
 }
 
 } /* namespace gpmix */
+
+
