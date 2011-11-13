@@ -32,13 +32,24 @@ namespace gpmix {
 		//TODO get Y
 		MatrixXd Y;
 		MatrixXd KinvY = chol.solve(Y);
-      KinvY = Y*KinvY;
-		
-      int_t nX = X.rows();
-		int_t nY = Y.rows();
+      
+      VectorXd D = chol.vectorD();
 
-		float_t lml_quad = 0.0;
-		float_t lml_det = 0.0;
+      uint_t nX = X.rows();
+		uint_t nY = Y.rows();
+      uint_t dY = Y.cols();
+
+      float_t lml_det = 0.0;
+      for (uint_t i = 0; i<dY; ++i)
+         {
+         lml_det+=std::log(D(i));
+         }
+      
+      float_t lml_quad = 0.0;
+      for (uint_t colY=0; colY<nY;++colY)
+         {
+         lml_quad += Y.col(colY).transpose() * KinvY.col(colY);
+         }
 
 		float_t lml_const = 0.5 * nY * nX * std::log((2.0 * PI));
 
