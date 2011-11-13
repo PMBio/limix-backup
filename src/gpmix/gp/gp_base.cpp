@@ -27,13 +27,14 @@ namespace gpmix {
 		CovarInput X;	//TODO: These are dummies
 		MatrixXd K = this->covar.K(hyperparams.get("covar"), X, X);
 		this->lik.applyToK(hyperparams.get("lik"), K);
-		LDLT<MatrixXd> chol(K);
-
+		Eigen::LDLT<MatrixXd> chol(K);
+      
 		//TODO get Y
 		MatrixXd Y;
 		MatrixXd KinvY = chol.solve(Y);
-
-		int_t nX = X.rows();
+      KinvY = Y*KinvY;
+		
+      int_t nX = X.rows();
 		int_t nY = Y.rows();
 
 		float_t lml_quad = 0.0;

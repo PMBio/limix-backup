@@ -9,7 +9,7 @@
 #define TYPES_H_
 
 #include <Eigen/Dense>
-using namespace Eigen;
+//using namespace Eigen;
 #include <string>
 using namespace std;
 #include <inttypes.h>
@@ -28,10 +28,10 @@ using namespace std;
 
 
 //standard Matrix type to use in this project
-//typedef Matrix<float_t, Dynamic, Dynamic> MatrixXd;
-//typedef Matrix<float_t, Dynamic, 1> VectorXd;
-typedef Matrix<string, Dynamic, 1> VectorXs;
-typedef Array<float_t, Dynamic, Dynamic> ArrayXd;
+typedef Eigen::Matrix<float_t, Eigen::Dynamic, Eigen::Dynamic> MatrixXd;
+typedef Eigen::Matrix<float_t, Eigen::Dynamic, 1> VectorXd;
+typedef Eigen::Matrix<string, Eigen::Dynamic, 1> VectorXs;
+typedef Eigen::Array<float_t, Eigen::Dynamic, Eigen::Dynamic> ArrayXd;
 
 
 class CGPMixException
