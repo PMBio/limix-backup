@@ -47,7 +47,7 @@ MatrixXd CCovLinearISO::Kgrad_x(const CovarParams params, const CovarInput x1, c
 	//create empty matrix
 	MatrixXd RV = MatrixXd::Zero(x1.rows(),x2.rows());
 	//check that the requested dimension is actually a target of this covariance
-	if (not this->dimension_is_target(d))
+	if (! this->dimension_is_target(d))
 		return RV;
 	//otherwise update computation:
 	RV.rowwise() = A*x2.col(d);
@@ -58,7 +58,7 @@ MatrixXd CCovLinearISO::Kgrad_xdiag(const CovarParams params, const CovarInput x
 {
 	float_t A = exp((float_t)(2.0*params(0)));
 	VectorXd RV = VectorXd::Zero(x1.rows());
-	if (not this->dimension_is_target(d))
+	if (! this->dimension_is_target(d))
 		return MatrixXd::Zero(x1.rows(),x1.rows());
 	RV = 2.0*A*x1.col(d);
 	return RV;

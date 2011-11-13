@@ -28,8 +28,8 @@ using namespace std;
 
 
 //standard Matrix type to use in this project
-typedef Matrix<float_t, Dynamic, Dynamic> MatrixXd;
-typedef Matrix<float_t, Dynamic, 1> VectorXd;
+//typedef Matrix<float_t, Dynamic, Dynamic> MatrixXd;
+//typedef Matrix<float_t, Dynamic, 1> VectorXd;
 typedef Matrix<string, Dynamic, 1> VectorXs;
 typedef Array<float_t, Dynamic, Dynamic> ArrayXd;
 

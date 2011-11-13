@@ -18,6 +18,6 @@ int main() {
 	uint_t n=10;
 	uint_t m=5;
 	MatrixXd X;
-	X = randn( n, m);
+	X = gpmix::randn( n, m);
 	return 0;
 }
