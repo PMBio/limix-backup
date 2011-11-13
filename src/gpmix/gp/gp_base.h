@@ -20,8 +20,8 @@ namespace gpmix {
 class CGPHyperParams {
 
 protected:
-
-	VectorXd param_array;
+   
+   VectorXd param_array;
 	map<string,VectorXd> param_map;
 
 public:
@@ -32,43 +32,54 @@ public:
 	}
 	//from a list of params
 
-	VectorXd getParamArray()
+	inline VectorXd getParamArray()
 	{
 		return param_array;
 	}
 
-	void setParamArray(VectorXd param)
+	inline void setParamArray(VectorXd param)
 	{
 		//TODO: check that length is ok
 		this->param_array = param;
 	}
 
-	void set(string name,VectorXd value)
+	inline void set(string& name,VectorXd& value)
 	{
-		return;
+		param_map[name]=value;
 	}
 
-	VectorXd get(const string& name)
-	{
+	inline VectorXd get(const string& name)
+	{  
 		return param_map[name];
 	}
 
-	VectorXs getNames()
+	inline VectorXs getNames()
 	{
+		VectorXs ret = VectorXs(param_map.size());
+      map<string,VectorXd>::iterator it=param_map.begin();
+		for (uint_t i=0; i<param_map.size();++i)
+		{
+			ret(i)=(*it).first;
+			++it;
+		}
 		return VectorXs(1,1);
 	}
-
 };
 
 
 
 class CGPbase {
 protected:
-	ACovarianceFunction& covar;
-	ALikelihood& lik;
 
-//	virtual double _LML_covar(CGPHyperParams& parmas);
-//	virtual VectorXd _LMLgrad_covar(CGPHyperParams& params);
+   MatrixXd X;    //training inputs
+   MatrixXd Y;    //training targets
+   VectorXd meanY; //mean of training targets
+
+   ACovarianceFunction& covar;//Covariance function
+	ALikelihood& lik;          //likelihood model
+
+	//virtual float_t _LML_covar(CGPHyperParams& parmas);      //the log-likelihood without the prior
+	//virtual VectorXd _LMLgrad_covar(CGPHyperParams& params); //the gradient of the log-likelihood without the prior
 
 public:
 	CGPbase(ACovarianceFunction& covar, ALikelihood& lik);
@@ -79,9 +90,12 @@ public:
 // virtual void LML(double* params, double* gradients);
 
 
-	virtual float_t LML(CGPHyperParams& hyperparams);
-	virtual CGPHyperParams LMLgrad(CGPHyperParams& hyperparams);
-
+	virtual float_t LML(CGPHyperParams& hyperparams);        //the log-likelihood (+ log-prior)
+	virtual CGPHyperParams LMLgrad(CGPHyperParams& hyperparams);   //the gradient of the log-likelihood (+ log-prior)
+   
+	inline uint_t get_samplesize(){return this->Y.rows();} //get the number of training data samples
+   inline uint_t get_input_dimension(){return this->X.cols();} //get the number of training data samples
+   inline uint_t get_target_dimension(){return this->Y.cols();} //get the dimension of the target data
 };
 
 } /* namespace gpmix */
