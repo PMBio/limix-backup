@@ -6,7 +6,7 @@
  */
 
 
-#include "dist.h";
+#include "dist.h"
 
 MatrixXd sq_dist(const MatrixXd x1, const MatrixXd x2)
 {

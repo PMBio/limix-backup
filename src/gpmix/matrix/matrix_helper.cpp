@@ -23,7 +23,7 @@ bool isnull(const MatrixXd& m)
 
 float_t randn(float_t mu, float_t sigma) {
 	static bool deviateAvailable=false;	//	flag
-	static float storedDeviate;			//	deviate from previous calculation
+	static float_t storedDeviate;			//	deviate from previous calculation
 	double dist, angle;
 
 	//	If no deviate has been stored, the standard Box-Muller transformation is
