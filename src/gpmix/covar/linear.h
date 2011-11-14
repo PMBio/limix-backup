@@ -14,8 +14,15 @@ namespace gpmix {
 
 class CCovLinearISO: public ACovarianceFunction  {
 public:
-	CCovLinearISO(const uint_t dimensions) : ACovarianceFunction(dimensions) {}
-	CCovLinearISO(const uint_t dimensions_i0,const uint_t dimensions_i1) : ACovarianceFunction(dimensions_i0,dimensions_i1) {}
+	CCovLinearISO(const uint_t dimensions) : ACovarianceFunction(dimensions)
+	{
+		//set number of hyperparams
+		hyperparams = 1;
+	}
+	CCovLinearISO(const uint_t dimensions_i0,const uint_t dimensions_i1) : ACovarianceFunction(dimensions_i0,dimensions_i1) {
+		//set number of hyperparams
+		hyperparams = 1;
+	}
 	~CCovLinearISO();
 
 	MatrixXd K(const CovarParams params, const CovarInput x1, const CovarInput x2) const;

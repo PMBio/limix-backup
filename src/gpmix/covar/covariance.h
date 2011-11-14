@@ -32,11 +32,19 @@ protected:
 	bool dimension_is_target(const uint_t d) const;
 
 public:
+	//constructors
 	ACovarianceFunction(const uint_t dimensions);
 	ACovarianceFunction(const uint_t dimensions_i0,const uint_t dimensions_i1);
+	//destructors
 	virtual ~ACovarianceFunction();
+	//getters and setters
+
+	uint_t hyperparameters()
+	{return this->hyperparams;};
+
 
 	//TODO: add hyperparameters and think about a good construct for that
+	virtual MatrixXd K(const CovarParams params, const CovarInput x1) const;
 	virtual MatrixXd K(const CovarParams params, const CovarInput x1, const CovarInput x2) const =0;
 	virtual VectorXd Kdiag(const CovarParams params, const CovarInput x1) const;
 
@@ -45,5 +53,13 @@ public:
 	virtual MatrixXd Kgrad_xdiag(const CovarParams params, const CovarInput x1, const uint_t d) const=0;
 };
 
+
+
+//gradcheck tools for covaraince functions:
+
+bool check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const CovarParams params, const CovarInput x,float_t relchange=1E-5,float_t threshold=1E-2);
+bool check_covariance_Kgrad_x(const ACovarianceFunction& covar,const CovarParams params, const CovarInput x,float_t relchange=1E-5,float_t threshold=1E-2);
 } /* namespace gpmix */
+
+
 #endif /* ACOVARIANCE_H_ */
