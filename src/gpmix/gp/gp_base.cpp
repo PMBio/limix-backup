@@ -42,7 +42,7 @@ namespace gpmix {
       float_t lml_det = 0.0;
       for (uint_t i = 0; i<dY; ++i)
          {
-         lml_det+=std::log(D(i));
+         lml_det+=(float_t)std::log((double)D(i));
          }
       
       float_t lml_quad = 0.0;
