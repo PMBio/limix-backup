@@ -23,7 +23,7 @@ public:
 	virtual void applyToK(const LikParams& params, MatrixXd& K) const = 0;
 };
 
-class CLikNormalIso :ALikelihood {
+class CLikNormalIso : public ALikelihood {
 public:
 	CLikNormalIso();
 	~CLikNormalIso();

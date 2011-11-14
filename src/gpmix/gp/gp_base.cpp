@@ -21,11 +21,20 @@ namespace gpmix {
 		// TODO Auto-generated destructor stub
 	}
 
+	void CGPbase::set_data(MatrixXd X, MatrixXd Y)
+	{
+		this->X = X;
+		this->Y = Y;
+		this->meanY = Y.colwise().mean();
+	}
+
 	float_t CGPbase::LML(CGPHyperParams& hyperparams){
 
 		//TODO: get X
-		CovarInput X;	//TODO: These are dummies
-		MatrixXd K = this->covar.K(hyperparams.get("covar"), X, X);
+		//CovarInput X;	//TODO: These are dummies
+		cout <<"X: "<< this->X << endl;
+		cout<<"covar: "<< hyperparams.get("covar") << endl;
+		MatrixXd K = this->covar.K(hyperparams.get("covar"), this->X, this->X);
 		this->lik.applyToK(hyperparams.get("lik"), K);
 		Eigen::LDLT<MatrixXd> chol(K);
       
