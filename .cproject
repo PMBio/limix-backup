@@ -60,7 +60,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="testing/GPmix.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -122,12 +122,16 @@
 		<resource resourceType="PROJECT" workspacePath="/GPmix"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611;cdt.managedbuild.config.macosx.exe.release.1315739611.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1760785387;cdt.managedbuild.tool.gnu.cpp.compiler.input.628924898">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991;cdt.managedbuild.tool.gnu.cpp.compiler.input.1154953977">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.553290394;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991.544453052;cdt.managedbuild.tool.gnu.cpp.compiler.input.225547049">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611;cdt.managedbuild.config.macosx.exe.release.1315739611.;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.693694189;cdt.managedbuild.tool.gnu.c.compiler.input.706557328">
