@@ -49,7 +49,7 @@ public:
 	}
 
 	inline MatrixXd get(const string& name)
-	{  
+	{
 		return param_map[name];
 	}
 
@@ -64,9 +64,25 @@ public:
 		}
 		return VectorXs(1,1);
 	}
+
+	inline void clear()
+	{
+		this->param_map.clear();
+	};
 };
 
-
+class CGPCache {
+protected:
+	CGPHyperParams cachedparams;
+	bool is_cached(CGPHyperParams params);
+public:
+	CGPCache();
+	~CGPCache();
+	MatrixXd Kinv(CGPHyperParams params, MatrixXd X, bool check_passed = false, bool is_checked = false);
+	MatrixXd KinvY(CGPHyperParams params, MatrixXd X, MatrixXd Y, bool check_passed = false, bool is_checked = false);
+	Eigen::LDLT<gpmix::MatrixXd> CholK(CGPHyperParams params, MatrixXd X, bool check_passed = false, bool is_checked = false);
+	void clear();
+};
 
 class CGPbase {
 protected:
@@ -74,9 +90,13 @@ protected:
 	MatrixXd X;    //training inputs
 	MatrixXd Y;    //training targets
 	VectorXd meanY; //mean of training targets
+	Eigen::LDLT<gpmix::MatrixXd> chol;
+	MatrixXd KinvY;
 
 	ACovarianceFunction& covar;//Covariance function
 	ALikelihood& lik;          //likelihood model
+
+	void getCovariances(CGPHyperParams& hyperparams);
 
 	//virtual float_t _LML_covar(CGPHyperParams& parmas);      //the log-likelihood without the prior
 	//virtual VectorXd _LMLgrad_covar(CGPHyperParams& params); //the gradient of the log-likelihood without the prior
