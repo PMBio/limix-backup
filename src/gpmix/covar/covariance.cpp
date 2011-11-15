@@ -80,11 +80,10 @@ bool check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const CovarPa
 
 bool check_covariance_Kgrad_x(const ACovarianceFunction& covar,const CovarParams params, const CovarInput x,float_t relchange,float_t threshold)
 {
-return true;
-} /* namespace gpmix */
+	return true;
+}
 
-
-
+}
 /*
  * def grad_check_Kx(K,logtheta,x0,dimensions=None):
     """perform grad check with respect to input x"""

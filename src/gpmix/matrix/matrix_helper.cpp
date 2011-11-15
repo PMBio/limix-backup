@@ -41,7 +41,7 @@ float_t randn(float_t mu, float_t sigma) {
 		deviateAvailable=true;
 
 		//	calcaulate return second deviate
-		return dist * sin(angle) * sigma + mu;
+		return (float_t)(dist * sin(angle) * sigma + mu);
 	}
 
 	//	If a deviate is available from a previous call to this function, it is
@@ -53,27 +53,8 @@ float_t randn(float_t mu, float_t sigma) {
 }
 
 
-double sum(MatrixXd& m)
-{
-	double rv=0;
-	for (int i=0;i<m.rows();i++)
-		for (int j=0;j<m.cols();j++)
-		{
-			rv+=m(i,j);
-		}
-	return rv;
-
-}
 
 
-MatrixXd log(MatrixXd& m)
-{
-	MatrixXd rv = MatrixXd(m.rows(),m.cols());
-	for (int i=0;i<m.rows();i++)
-		for (int j=0;j<m.cols();j++)
-			rv(i,j) = log((double)m(i,j));
-	return rv;
-}
 
 
 /*

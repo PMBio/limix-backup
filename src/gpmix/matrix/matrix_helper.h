@@ -14,19 +14,6 @@
 
 namespace gpmix{
 
-
-//inline casts of exp and log
-inline float_t exp (float_t x)
-{
-		return (float_t)std::exp((long double) x );
-}
-
-inline float_t log (float_t x)
-{
-		return (float_t)std::log((long double) x );
-}
-
-
 //create random matrix:
 float_t randn(float_t mu=0.0, float_t sigma=1.0);
 //helper functions for eigen matrices

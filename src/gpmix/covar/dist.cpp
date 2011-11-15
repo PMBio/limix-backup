@@ -7,6 +7,7 @@
 
 
 #include "dist.h"
+namespace gpmix{
 
 MatrixXd sq_dist(const MatrixXd x1, const MatrixXd x2)
 {
@@ -25,3 +26,4 @@ MatrixXd sq_dist(const MatrixXd x1, const MatrixXd x2)
 	return RV;
 }
 
+}

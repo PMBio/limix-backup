@@ -14,7 +14,8 @@
 namespace gpmix {
 
 	CGPbase::CGPbase(ACovarianceFunction& covar, ALikelihood& lik) : covar(covar), lik(lik) {
-		// TODO Auto-generated constructor stub
+		this->covar = covar;
+		this->lik = lik;
 	}
 
 	CGPbase::~CGPbase() {
@@ -28,44 +29,78 @@ namespace gpmix {
 		this->meanY = Y.colwise().mean();
 	}
 
-	float_t CGPbase::LML(CGPHyperParams& hyperparams){
-
-		//TODO: get X
-		//CovarInput X;	//TODO: These are dummies
-		cout <<"X: "<< this->X << endl;
-		cout<<"covar: "<< hyperparams.get("covar") << endl;
-		MatrixXd K = this->covar.K(hyperparams.get("covar"), this->X, this->X);
-		this->lik.applyToK(hyperparams.get("lik"), K);
-		Eigen::LDLT<MatrixXd> chol(K);
-      
-		//TODO get Y
-		MatrixXd Y;
-		MatrixXd KinvY = chol.solve(Y);
-      
-      VectorXd D = chol.vectorD();
-
-      uint_t nX = X.rows();
-		uint_t nY = Y.rows();
-      uint_t dY = Y.cols();
-
-      float_t lml_det = 0.0;
-      for (uint_t i = 0; i<dY; ++i)
-         {
-         lml_det+=(float_t)std::log((double)D(i));
-         }
-      
-      float_t lml_quad = 0.0;
-      for (uint_t colY=0; colY<nY;++colY)
-         {
-         lml_quad += Y.col(colY).transpose() * KinvY.col(colY);
-         }
-
-		float_t lml_const = 0.5 * nY * nX * std::log((2.0 * PI));
-
-		//= K.ldlt();
-		return lml_quad + lml_det + lml_const;
+	bool CGPCache::is_cached(CGPHyperParams params)
+	{
+		return false;
 	}
+
+	CGPCache::CGPCache()
+	{
+	}
+
+	CGPCache::~CGPCache()
+	{
+	}
+
+	MatrixXd CGPCache::Kinv(CGPHyperParams params, MatrixXd X, bool check_passed = false, bool is_checked = false)
+	{
+		return MatrixXd(1,1);
+	}
+
+	MatrixXd CGPCache::KinvY(CGPHyperParams params, MatrixXd X, MatrixXd Y, bool check_passed = false, bool is_checked = false)
+	{
+		return MatrixXd(1,1);
+	}
+
+	Eigen::LDLT<gpmix::MatrixXd> CGPCache::CholK(CGPHyperParams params, MatrixXd X, bool check_passed = false, bool is_checked = false)
+	{
+		return 0;
+	}
+
+	void CGPCache::clear()
+	{
+		this->cachedparams.clear();
+	}
+
+	void CGPbase::getCovariance(CGPHyperParams& hyperparams)
+	{
+		if ((!this->is_cached(Hyperparams)) || (this->active_set_indices_changed) )
+		{
+			MatrixXd K = this->covar.K(hyperparams.get("covar"), this->X);
+			this->cache_cov->lik.applyToK(hyperparams.get("lik"), K);
+			this->cache_cov->chol = Eigen::LDLT<gpmix::MatrixXd>(K);
+			this->cache_cov->KinvY = this->chol.solve(this->Y);
+		}
+
+	}
+
+	float_t CGPbase::LML(CGPHyperParams& hyperparams)
+	{
+		//update the covariance parameters
+		this->getCovariances(hyperparams);
+
+		float_t lml_det = 0.0;
+		for (uint_t i = 0; i<(uint_t)chol.vectorD().rows(); ++i)
+		{
+			lml_det+=gpmix::log((float_t)this->chol.vectorD()(i));//WARNING: float_t cast
+		}
+      
+		float_t lml_quad = 0.0;
+		//loop over independent columns of Y:
+		for (uint_t colY=0; colY<(uint_t)this->Y.cols();++colY)
+		{
+			lml_quad += this->Y.col(colY).transpose() * KinvY.col(colY);
+		}
+
+		float_t lml_const = this->Y.cols() * this->Y.rows() * gpmix::log((2.0 * PI));
+
+		return 0.5 * (lml_quad + this->Y.cols() * lml_det + lml_const);
+	}
+
 	CGPHyperParams CGPbase::LMLgrad(CGPHyperParams& hyperparams){
+		//update the covariance parameters
+		this->getCovariances(hyperparams);
+
 		CGPHyperParams grad;
 		return grad;
 	}
