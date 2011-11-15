@@ -18,13 +18,6 @@ CCovSqexpARD::~CCovSqexpARD() {
 	// TODO Auto-generated destructor stub
 }
 
-float_t ramp(float_t x)
-{
-  if (x > 0)
-    return x;
-  else
-    return 0;
-}
 
 MatrixXd CCovSqexpARD::K(const CovarParams params, const CovarInput x1, const CovarInput x2) const
 {

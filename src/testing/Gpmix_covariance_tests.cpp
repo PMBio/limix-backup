@@ -26,18 +26,12 @@ int main() {
 
 
 	try {
-		//1. create input for linear covaraince
-		MatrixXd X = randn((uint_t)10,(uint_t)3);
-		//2. create covaraince parmaeteres
+		CCovLinearARD covar(3);
+		bool grad_covar = ACovarianceFunction::check_covariance_Kgrad_theta(covar);
+		bool grad_x = ACovarianceFunction::check_covariance_Kgrad_x(covar);
 
-		CCovLinearISO covar(3);
-		//get random hyperparamters
-		CovarParams params = randn(covar.hyperparameters(),1);
-
-		MatrixXd K =  covar.K(params,X,X);
-		std::cout<< K;
-
-		check_covariance_Kgrad_theta(covar,params,X);
+		std::cout << grad_covar;
+		std::cout << grad_x;
 
 	}
 	catch(CGPMixException& e) {
