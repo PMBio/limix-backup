@@ -6,6 +6,7 @@
  */
 
 #include "covariance.h"
+#include "gpmix/matrix/matrix_helper.h"
 
 namespace gpmix {
 
@@ -13,12 +14,14 @@ ACovarianceFunction::ACovarianceFunction(const uint_t dimensions)
 {
 	this->dimensions_i1 = dimensions;
 	this->dimensions_i0 = 0;
+	this->dimensions = dimensions;
 }
 
 ACovarianceFunction::ACovarianceFunction(const uint_t dimensions_i0,const uint_t dimensions_i1)
 {
 	this->dimensions_i0 = dimensions_i0;
 	this->dimensions_i1 = dimensions_i1;
+	this->dimensions = dimensions_i1-dimensions_i0;
 }
 
 MatrixXd ACovarianceFunction::K(const CovarParams params, const CovarInput x1) const
@@ -41,25 +44,69 @@ bool ACovarianceFunction::dimension_is_target(const uint_t d) const
 	return ((d>=this->dimensions_i0) & (d<this->dimensions_i1));
 }
 
-VectorXd ACovarianceFunction::Kdiag(CovarParams params,CovarInput x1) const
-/*
+    uint_t ACovarianceFunction::getDimensions() const
+    {
+        return dimensions;
+    }
+
+    uint_t ACovarianceFunction::getDimensionsI0() const
+    {
+        return dimensions_i0;
+    }
+
+    uint_t ACovarianceFunction::getDimensionsI1() const
+    {
+        return dimensions_i1;
+    }
+
+    uint_t ACovarianceFunction::getHyperparams() const
+    {
+        return hyperparams;
+    }
+
+    VectorXd ACovarianceFunction::Kdiag(CovarParams params, CovarInput x1) const
+    /*
  * Default implementation of diagional covariance operator
  */
-{
-	MatrixXd K = this->K(params,x1,x1);
-	return K.diagonal();
-}
+    {
+        MatrixXd K = this->K(params, x1, x1);
+        return K.diagonal();
+    }
+
+  //gradcheck functions for covaraince classes
+    bool ACovarianceFunction::check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const uint_t n_rows, double relchange, double threshold)
+    {
+        //1. sample params
+        CovarParams params = randn(covar.getHyperparams(), 1);
+        //2. sample inputs
+        CovarInput x = randn(n_rows, covar.getDimensions());
+        return ACovarianceFunction::check_covariance_Kgrad_theta(covar, params, x, relchange, threshold);
+    }
+
+    MatrixXd ACovarianceFunction::Kgrad_x(const CovarParams params, const CovarInput x1, const uint_t d) const
+    {
+    	return Kgrad_x(params,x1,x1,d);
+    }
+
+    bool ACovarianceFunction::check_covariance_Kgrad_x(const ACovarianceFunction & covar, const uint_t n_rows, double relchange, double threshold)
+    {
+    	//1. sample params
+    	CovarParams params = randn(covar.getHyperparams(),1);
+
+    	//2. sample inputs
+    	CovarInput x = randn(n_rows,covar.getDimensions());
+    	return ACovarianceFunction::check_covariance_Kgrad_x(covar,params,x,relchange,threshold);
+    }
 
 
-//gradcheck functions for covaraince classes
 
-bool check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const CovarParams params, const CovarInput x,float_t relchange,float_t threshold)
-{
-	float_t RV=0;
-	//copy of parameter vector
-	CovarParams L = params;
-	//dimensions
-	for(int_t i=0;i<L.rows();i++)
+   bool ACovarianceFunction::check_covariance_Kgrad_theta(const ACovarianceFunction & covar, const CovarParams params, const CovarInput x, double relchange, double threshold)
+    {
+        float_t RV=0;
+        //copy of parameter vector
+        CovarParams L = params;
+        //dimensions
+        for(int_t i=0;i<L.rows();i++)
 	{
 		float_t change = relchange*L(i);
 		        change = max(change,1E-5);
@@ -73,19 +120,43 @@ bool check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const CovarPa
 		MatrixXd diff_analytical = covar.Kgrad_theta(params,x,i);
 		RV += (diff_numerical-diff_analytical).squaredNorm();
 	}
+        return (RV < threshold);
+    }
 
-	return (RV<threshold);
-}
+  bool ACovarianceFunction::check_covariance_Kgrad_x(const ACovarianceFunction & covar, const CovarParams params, const CovarInput x, double relchange, double threshold)
+    {
+        float_t RV=0;
+        //copy inputs for which we calculate gradients
+        CovarInput xL = x;
+        for (int ic=0;ic<x.cols();ic++)
+	{
+		//analytical gradient is per columns all in one go:
+		MatrixXd Kgrad_x = covar.Kgrad_x(params,xL,xL,ic);
+		for (int ir=0;ir<x.rows();ir++)
+		{
+			float_t change = relchange*x(ir,ic);
+			change = max(change,1E-5);
+			xL(ir,ic) += change;
+			MatrixXd Lplus = covar.K(params,xL);
+			xL(ir,ic) = x(ir,ic) - change;
+			MatrixXd Lminus = covar.K(params,xL);
+			xL(ir,ic) = x(ir,ic);
+			//numerical gradient
+			MatrixXd diff_numerical = (Lplus-Lminus)/(2.*change);
+			//build analytical gradient matrix
+			MatrixXd diff_analytical = MatrixXd::Zero(x.rows(),x.rows());
+			for (int n=0;n<x.rows();n++)
+			{
+				diff_analytical.row(n) = Kgrad_x.row(n);
+				diff_analytical.col(n) += Kgrad_x.row(n);
+			}
+			RV+= (diff_numerical-diff_analytical).squaredNorm();
+		} //end for ir
+	}
+        return (RV < threshold);
+    } /* namespace gpmix */
 
-
-bool check_covariance_Kgrad_x(const ACovarianceFunction& covar,const CovarParams params, const CovarInput x,float_t relchange,float_t threshold)
-{
-return true;
-} /* namespace gpmix */
-
-
-
-/*
+    /*
  * def grad_check_Kx(K,logtheta,x0,dimensions=None):
     """perform grad check with respect to input x"""
     L=0;
@@ -137,4 +208,6 @@ return true;
         import pdb;pdb.set_trace()
     pass
  */
+}
+
 

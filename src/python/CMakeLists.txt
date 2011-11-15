@@ -83,7 +83,7 @@ set(CMAKE_SWIG_FLAGS "")
 set_source_files_properties(gpmix.i PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-includeall")
 set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
-swig_add_module(peer python peer.i)
+swig_add_module(peer python gpmix.i)
 swig_link_libraries(peer ${SWIGLINKLIBS} gpmixlib)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")	 
