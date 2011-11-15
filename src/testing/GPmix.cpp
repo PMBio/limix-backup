@@ -15,6 +15,7 @@
 #include "gpmix/gp/gp_base.h"
 
 using namespace std;
+
 #ifndef PI
 #define PI 3.14159265358979323846
 #endif
@@ -31,18 +32,18 @@ int main() {
 
 	uint_t ntrain =15;
 
-	MatrixXd x = VectorXd::LinSpaced(ntrain,xmin,xmax);
+	gpmix::MatrixXd x = gpmix::VectorXd::LinSpaced(ntrain,xmin,xmax);
 	uint_t dimX = x.cols();
-	MatrixXd X = VectorXd::LinSpaced(nX,0,100.0);
+	gpmix::MatrixXd X = gpmix::VectorXd::LinSpaced(nX,0,100.0);
 
 	//float_t C = 2.0;
 	float_t sigma = 0.01;
 	//float_t b = 0.0;
-	MatrixXd y(ntrain,1);
+	gpmix::MatrixXd y(ntrain,1);
 
 	for (uint_t i=0;i<ntrain;++i)
 	{
-		y(i) = sin((float_t)x(i));
+		y(i) = sin((float_t)x(i));//WARNING: cast as float_t
 	}
 
 
@@ -51,10 +52,8 @@ int main() {
 	y += sigma * gpmix::randn(ntrain,dimY);
 	float_t meanY = y.mean();
 
-	for (uint_t i=0;i<ntrain;++i)
-	{
-		y(i) -= meanY;
-	}
+	y.array()-=meanY;
+
 
 	//likelihood model
 	gpmix::CLikNormalIso lik;
@@ -64,7 +63,7 @@ int main() {
 	likparams << 1.0;
 
 	//linear kernel + params
-	gpmix::CCovLinearISO covLin(ntrain);
+	gpmix::CCovLinearISO covLin(1);
 	gpmix::CovarParams covparams(1,1);
 	covparams << 1.0;
 

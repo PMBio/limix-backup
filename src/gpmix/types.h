@@ -14,7 +14,7 @@
 using namespace std;
 #include <inttypes.h>
 
-
+namespace gpmix{
 
 //TODO: think whether we really need these?
 //some definitions for the python interface
@@ -25,6 +25,17 @@ using namespace std;
 #define float_t float64_t
 #define int_t int64_t
 #define uint_t uint64_t
+
+//inline casts of exp and log
+inline float_t exp (float_t x)
+{
+		return (float_t)std::exp((long double) x );
+}
+
+inline float_t log (float_t x)
+{
+		return (float_t)std::log((long double) x );
+}
 
 
 //standard Matrix type to use in this project
@@ -57,7 +68,7 @@ class CGPMixException
     string What;
 };
 
-
+}
 
 
 #endif /* TYPES_H_ */
