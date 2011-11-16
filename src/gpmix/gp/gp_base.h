@@ -31,7 +31,7 @@ public:
 		//empty constructur
 	}
 	//from a list of params
-
+	
 	inline VectorXd getParamArray()
 	{
 		return param_array;
@@ -71,32 +71,25 @@ public:
 	};
 };
 
-class CGPCache {
-protected:
-	CGPHyperParams cachedparams;
-	bool is_cached(CGPHyperParams params);
-public:
-	CGPCache();
-	~CGPCache();
-	MatrixXd Kinv(CGPHyperParams params, MatrixXd X, bool check_passed = false, bool is_checked = false);
-	MatrixXd KinvY(CGPHyperParams params, MatrixXd X, MatrixXd Y, bool check_passed = false, bool is_checked = false);
-	Eigen::LDLT<gpmix::MatrixXd> CholK(CGPHyperParams params, MatrixXd X, bool check_passed = false, bool is_checked = false);
-	void clear();
-};
-
 class CGPbase {
 protected:
 
 	MatrixXd X;    //training inputs
 	MatrixXd Y;    //training targets
 	VectorXd meanY; //mean of training targets
-	Eigen::LDLT<gpmix::MatrixXd> chol;
+	
+	//cached GP-parameters:
+	MatrixXd Kinv;
 	MatrixXd KinvY;
+	Eigen::LDLT<gpmix::MatrixXd> cholK;
 
 	ACovarianceFunction& covar;//Covariance function
 	ALikelihood& lik;          //likelihood model
-
-	void getCovariances(CGPHyperParams& hyperparams);
+	
+	MatrixXd getKinv(CGPHyperParams params, MatrixXd X, bool check_passed = false, bool is_checked = false);
+	MatrixXd getKinvY(CGPHyperParams params, MatrixXd X, MatrixXd Y, bool check_passed = false, bool is_checked = false);
+	Eigen::LDLT<gpmix::MatrixXd> getCholK(CGPHyperParams params, MatrixXd X, bool check_passed = false, bool is_checked = false);
+	//virtual void getCovariances(CGPHyperParams& hyperparams);
 
 	//virtual float_t _LML_covar(CGPHyperParams& parmas);      //the log-likelihood without the prior
 	//virtual VectorXd _LMLgrad_covar(CGPHyperParams& params); //the gradient of the log-likelihood without the prior
