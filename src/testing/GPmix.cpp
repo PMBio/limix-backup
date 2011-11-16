@@ -72,17 +72,21 @@ int main() {
 	gpparams.set("lik", likparams);//set((string)"lik",(MatrixXd)likparams);
 	gpparams.set("covar", covparams);
 
-
 	//MatrixXd likrecover = gpparams.get("lik");
 
 	//create GP_base
 	gpmix::CGPbase gp(covLin, lik);
 
 	//set data of GP
-	gp.set_data(x,y);
+	gp.set_data(x,y,gpparams);
+	//gp.set_params(gpparams);
 
-	//TODO evaluate negative log-likelihood
-	float_t nLL = gp.LML(gpparams);
+	//evaluate negative log-likelihood
+	float_t nLL = gp.LML();
+
+	//evaluate gradient
+	gpmix::CGPHyperParams grad = gp.LMLgrad();
+
 
 	//TODO: optimize parameters
 
@@ -95,5 +99,12 @@ int main() {
 	cout << y << endl;
 	cout << "done."<<dimX<<endl;
 	cout << "nLL: "<<nLL <<endl;
+	gpmix::VectorXs names = grad.getNames();
+	for (uint_t i = 0; i< (uint_t)names.rows(); ++i)
+	{
+		string curname =names(i);
+		gpmix::MatrixXd curgrad = grad.get(curname);
+		cout<< curname <<":" << curgrad << "\n";
+	}
 	return 0;
 }
