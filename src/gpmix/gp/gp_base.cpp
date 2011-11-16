@@ -29,60 +29,31 @@ namespace gpmix {
 		this->meanY = Y.colwise().mean();
 	}
 
-	bool CGPCache::is_cached(CGPHyperParams params)
-	{
-		return false;
-	}
 
-	CGPCache::CGPCache()
-	{
-	}
-
-	CGPCache::~CGPCache()
-	{
-	}
-
-	MatrixXd CGPCache::Kinv(CGPHyperParams params, MatrixXd X, bool check_passed = false, bool is_checked = false)
+	MatrixXd CGPbase::getKinv(CGPHyperParams params, MatrixXd X, bool check_passed, bool is_checked)
 	{
 		return MatrixXd(1,1);
 	}
 
-	MatrixXd CGPCache::KinvY(CGPHyperParams params, MatrixXd X, MatrixXd Y, bool check_passed = false, bool is_checked = false)
+	MatrixXd CGPbase::getKinvY(CGPHyperParams params, MatrixXd X, MatrixXd Y, bool check_passed, bool is_checked)
 	{
 		return MatrixXd(1,1);
 	}
 
-	Eigen::LDLT<gpmix::MatrixXd> CGPCache::CholK(CGPHyperParams params, MatrixXd X, bool check_passed = false, bool is_checked = false)
+	Eigen::LDLT<gpmix::MatrixXd> CGPbase::getCholK(CGPHyperParams params, MatrixXd X, bool check_passed, bool is_checked)
 	{
 		return 0;
-	}
-
-	void CGPCache::clear()
-	{
-		this->cachedparams.clear();
-	}
-
-	void CGPbase::getCovariance(CGPHyperParams& hyperparams)
-	{
-		if ((!this->is_cached(Hyperparams)) || (this->active_set_indices_changed) )
-		{
-			MatrixXd K = this->covar.K(hyperparams.get("covar"), this->X);
-			this->cache_cov->lik.applyToK(hyperparams.get("lik"), K);
-			this->cache_cov->chol = Eigen::LDLT<gpmix::MatrixXd>(K);
-			this->cache_cov->KinvY = this->chol.solve(this->Y);
-		}
-
 	}
 
 	float_t CGPbase::LML(CGPHyperParams& hyperparams)
 	{
 		//update the covariance parameters
-		this->getCovariances(hyperparams);
+		Eigen::LDLT<gpmix::MatrixXd>chol = CGPbase::getCholK(hyperparams, X);
 
 		float_t lml_det = 0.0;
 		for (uint_t i = 0; i<(uint_t)chol.vectorD().rows(); ++i)
 		{
-			lml_det+=gpmix::log((float_t)this->chol.vectorD()(i));//WARNING: float_t cast
+			lml_det+=gpmix::log((float_t)chol.vectorD()(i));//WARNING: float_t cast
 		}
       
 		float_t lml_quad = 0.0;
@@ -99,7 +70,7 @@ namespace gpmix {
 
 	CGPHyperParams CGPbase::LMLgrad(CGPHyperParams& hyperparams){
 		//update the covariance parameters
-		this->getCovariances(hyperparams);
+		//this->getCovariances(hyperparams);
 
 		CGPHyperParams grad;
 		return grad;
