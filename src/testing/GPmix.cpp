@@ -24,8 +24,6 @@ int main() {
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 
 	uint_t nX=11;
-	//uint_t dimX = 1;
-	//uint_t dimY = 1;
 
 	float_t xmin=1.0;
 	float_t xmax = 2.5*PI;
@@ -90,7 +88,7 @@ int main() {
 
 	//TODO: optimize parameters
 
-	//TODO: predict
+
 
 	cout << "x:" << endl;
 	cout << x << endl;
@@ -106,5 +104,14 @@ int main() {
 		gpmix::MatrixXd curgrad = grad.get(curname);
 		cout<< curname <<":" << curgrad << "\n";
 	}
+	//TODO: predict
+	gpmix::MatrixXd meanStar = gp.predictMean(X);
+	cout << "mean:\n" << meanStar <<endl;
+
+	gpmix::MatrixXd varStar = gp.predictVar(X);
+	cout << "var:\n" << varStar <<endl;
+
+
+
 	return 0;
 }
