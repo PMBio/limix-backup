@@ -91,7 +91,7 @@ namespace gpmix {
 	{
 		if (this->K.cols()==0)
 		{
-			this->K=this->covar.K(this->params.get("covar"),this->X);
+			this->K=this->covar.K(this->params.get("covar"),this->X); //This line breaks for se kernel
 			this->lik.applyToK(this->params.get("lik"),this->K);
 		}
 		return this->K;
