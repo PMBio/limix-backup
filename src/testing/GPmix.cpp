@@ -12,6 +12,7 @@
 #include "gpmix/matrix/matrix_helper.h"
 #include "gpmix/likelihood/likelihood.h"
 #include "gpmix/covar/linear.h"
+#include "gpmix/covar/se.h"
 #include "gpmix/gp/gp_base.h"
 
 using namespace std;
@@ -23,7 +24,7 @@ using namespace std;
 int main() {
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 
-	uint_t nX=11;
+	uint_t nX=100;
 
 	float_t xmin=1.0;
 	float_t xmax = 2.5*PI;
@@ -32,7 +33,7 @@ int main() {
 
 	gpmix::MatrixXd x = gpmix::VectorXd::LinSpaced(ntrain,xmin,xmax);
 	uint_t dimX = x.cols();
-	gpmix::MatrixXd X = gpmix::VectorXd::LinSpaced(nX,0,100.0);
+	gpmix::MatrixXd X = gpmix::VectorXd::LinSpaced(nX,0,10.0);
 
 	//float_t C = 2.0;
 	float_t sigma = 0.01;
@@ -60,11 +61,18 @@ int main() {
 	gpmix::LikParams likparams(1,1);
 	likparams << 1.0;
 
+	//gpmix::ACovarianceFunction cov;
+#if 0
 	//linear kernel + params
-	gpmix::CCovLinearISO covLin(1);
+	gpmix::CCovLinearISO cov(1);
 	gpmix::CovarParams covparams(1,1);
 	covparams << 1.0;
-
+#else
+	//squared exponential kernel + params
+	gpmix::CCovSqexpARD cov(1);
+	gpmix::CovarParams covparams(2,1);
+	covparams << 1.0 , 1.0;
+#endif
 	//TODO: build parameters object
 	gpmix::CGPHyperParams gpparams;
 	gpparams.set("lik", likparams);//set((string)"lik",(MatrixXd)likparams);
@@ -73,7 +81,7 @@ int main() {
 	//MatrixXd likrecover = gpparams.get("lik");
 
 	//create GP_base
-	gpmix::CGPbase gp(covLin, lik);
+	gpmix::CGPbase gp(cov, lik);
 
 	//set data of GP
 	gp.set_data(x,y,gpparams);

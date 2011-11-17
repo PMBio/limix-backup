@@ -27,10 +27,10 @@ MatrixXd CCovSqexpARD::K(const CovarParams params, const CovarInput x1, const Co
 	//amplitude
 	float_t A = exp((float_t)(2.0*params(0)));
 	//lengthscales
-	VectorXd L = params.unaryExpr(ptr_fun(exp));
+	MatrixXd L = params.block(1,0,params.rows()-1,1).unaryExpr(ptr_fun(exp));
 	//rescale with length
-	MatrixXd x1l = L.asDiagonal().inverse() * x1;
-	MatrixXd x2l = L.asDiagonal().inverse() * x1;
+	MatrixXd x1l = x1 * L.asDiagonal().inverse();
+	MatrixXd x2l = x2 * L.asDiagonal().inverse();
 	//squared exponential distance
 	MatrixXd RV = -0.5*sq_dist(x1l,x2l);
 	RV = A*RV.unaryExpr(ptr_fun(exp));
