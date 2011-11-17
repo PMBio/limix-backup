@@ -159,9 +159,9 @@ namespace gpmix {
 		MatrixXd grad_lik(params_lik.rows(),params_lik.cols());
 
 		MatrixXd W = this->getDKinv_KinvYYKinv();
-		for(uint_t row = 0 ; row<(uint_t)params_lik.rows(); ++row)//WARNING: conversion
+		for(uint_t row = 0 ; row<(uint_t)params_lik.rows(); ++row)	//WARNING: conversion
 		{
-			for(uint_t col = 0 ; col<(uint_t)params_lik.cols(); ++col)//WARNING: conversion
+			for(uint_t col = 0 ; col<(uint_t)params_lik.cols(); ++col)	//WARNING: conversion
 			{
 				MatrixXd Kd = this->lik.K_grad_theta(params_lik, this->X, row*params_lik.cols() + col);
 				grad_lik(row,col) = 0.5*(Kd.array() * W.array()).sum();
@@ -180,8 +180,11 @@ namespace gpmix {
 	{
 		MatrixXd KstarDiag = this->covar.Kdiag(this->params.get("covar"), Xstar);
 		KstarDiag+=this->lik.Kdiag(this->params.get("lik"), Xstar);
-		MatrixXd v = this->getCholK().solve(this->covar.K(this->params.get("covar"), Xstar, this->X));
-		MatrixXd S2 = KstarDiag - (v.array()*v.array()).matrix().rowwise().sum();
+		MatrixXd Kcross = this->covar.K(this->params.get("covar"), this->X, Xstar);
+		MatrixXd v = this->getCholK().solve(Kcross);
+		MatrixXd vv = (v.array()*v.array()).matrix().colwise().sum();
+		MatrixXd S2 = KstarDiag - vv.transpose();
+
 		return S2;
 	}
 
