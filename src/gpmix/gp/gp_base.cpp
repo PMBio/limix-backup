@@ -73,7 +73,7 @@ namespace gpmix {
 		if (this->DKinv_KinvYYKinv.cols()==0)
 		{
 			MatrixXd KiY = this->getKinvY();
-			this->DKinv_KinvYYKinv = this->get_target_dimension()*this->getKinv() - KiY * KiY.transpose();
+			this->DKinv_KinvYYKinv = ((float_t)this->get_target_dimension())*this->getKinv() - KiY * KiY.transpose();//WARNING:conversion uint64_t to double
 		}
 		return this->DKinv_KinvYYKinv;
 	}
@@ -132,7 +132,7 @@ namespace gpmix {
 		CGPHyperParams grad = CGPHyperParams();
 		grad.set( "covar", this->LMLgrad_covar() );
 		grad.set( "lik", this->LMLgrad_lik() );
-		cout<<"The gradient seems to go out of scope"<<endl;
+		
 		return grad;
 	}
 
@@ -181,7 +181,8 @@ namespace gpmix {
 		MatrixXd KstarDiag = this->covar.Kdiag(this->params.get("covar"), Xstar);
 		KstarDiag+=this->lik.Kdiag(this->params.get("lik"), Xstar);
 		MatrixXd v = this->getCholK().solve(this->covar.K(this->params.get("covar"), Xstar, this->X));
-		MatrixXd S2 = KstarDiag = v.array()*v.array();
+		MatrixXd S2 = KstarDiag - (v.array()*v.array()).matrix().rowwise().sum();
+		return S2;
 	}
 
 } /* namespace gpmix */
