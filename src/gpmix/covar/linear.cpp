@@ -19,51 +19,54 @@ CCovLinearISO::~CCovLinearISO() {
 	// TODO Auto-generated destructor stub
 }
 
-MatrixXd CCovLinearISO::K(const CovarParams params, const CovarInput x1, const CovarInput x2) const
+MatrixXd CCovLinearISO::Kcross(const CovarInput& Xstar) const
 {
-	//kernel matrix is constant hyperparmeter and dot product
-	CovarInput x1_ = this->getX(x1);
-	CovarInput x2_ = this->getX(x2);
+	if (Xstar.rows()!=this->X.rows())
+	{
+		ostringstream os;
+		os << this->getName() <<": Xstar has wrong number of dimensions. Xstar.cols() = "<< Xstar.cols() <<". X.cols() = "<< this->X.cols() << ".";
+		throw gpmix::CGPMixException(os.str());
+	}
 
+	//kernel matrix is constant hyperparmeter and dot product
 	float_t A = exp((float_t)(2.0*params(0)));
-	return A* x1*x2.transpose();
+	return A* Xstar*this->X.transpose();
 }
 
 
-MatrixXd CCovLinearISO::Kgrad_theta(const CovarParams params, const CovarInput x1, const uint_t i) const
+MatrixXd CCovLinearISO::K_grad_param( const uint_t i ) const
 {
 	if (i==0)
 	{
-		MatrixXd K = this->K(params,x1,x1);
-		//device by hyperparameter and we are done
+		MatrixXd K = this->K();
+		//devide by hyperparameter and we are done
 		K*=2.0;
 		return K;
 	}
 	else
-		throw CGPMixException("unknown hyperparameter derivative requested in CLinearCFISO");
+	{
+		ostringstream os;
+		os << this->getName() <<": wrong index of hyperparameter. i = "<< i <<". this->params.cols() = "<< this->getNumberParams() << ".";
+		throw gpmix::CGPMixException(os.str());
+	}
 }
 
 
-MatrixXd CCovLinearISO::Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const uint_t d) const
+MatrixXd CCovLinearISO::Kcross_grad_x(const CovarInput& Xstar, const uint_t d) const
 {
-	float_t A = exp((float_t)(2.0*params(0)));
+	float_t A = exp((float_t)(2.0*this->params(0)));
 	//create empty matrix
-	MatrixXd RV = MatrixXd::Zero(x1.rows(),x2.rows());
-	//check that the requested dimension is actually a target of this covariance
-	if (! this->dimension_is_target(d))
-		return RV;
+	MatrixXd RV = MatrixXd::Zero(Xstar.rows(),this->X.rows());
 	//otherwise update computation:
-	RV.rowwise() = A*x2.col(d);
+	RV.colwise() = A*Xstar.col(d);
 	return RV;
 }
 
-MatrixXd CCovLinearISO::Kgrad_xdiag(const CovarParams params, const CovarInput x1, const uint_t d) const
+MatrixXd CCovLinearISO::Kdiag_grad_x( const uint_t d ) const
 {
-	float_t A = exp((float_t)(2.0*params(0)));
-	VectorXd RV = VectorXd::Zero(x1.rows());
-	if (! this->dimension_is_target(d))
-		return MatrixXd::Zero(x1.rows(),x1.rows());
-	RV = 2.0*A*x1.col(d);
+	float_t A = exp((float_t)(2.0*this->params(0)));
+	VectorXd RV = VectorXd::Zero(this->X.rows());
+	RV = 2.0*A*this->X.col(d);
 	return RV;
 }
 
@@ -74,48 +77,42 @@ CCovLinearARD::~CCovLinearARD() {
 	// covaraince destructor
 }
 
-MatrixXd CCovLinearARD::K(const CovarParams params, const CovarInput x1, const CovarInput x2) const
+MatrixXd CCovLinearARD::Kcross(const CovarInput& Xstar) const
 {
 	//kernel matrix is constant hyperparmeter and dot product
-	CovarInput x1_ = this->getX(x1);
-	CovarInput x2_ = this->getX(x2);
 
 	//get all amplitude parameters, one per dimension
 	VectorXd L = 2*params;
 	L = L.unaryExpr(ptr_fun(exp));
-	MatrixXd RV = x1*L.asDiagonal()*x2.transpose();
+	MatrixXd RV = Xstar*L.asDiagonal()*this->X.transpose();
 	return RV;
 }
 
-
-MatrixXd CCovLinearARD::Kgrad_theta(const CovarParams params, const CovarInput x1, const uint_t i) const
+MatrixXd CCovLinearARD::K_grad_param(const uint_t i) const
 {
 	//is the requested gradient within range?
-	if (i>=dimensions)
+	if (i >= (uint_t)this->X.cols()) //WARNING: uint_t conversion
 		throw CGPMixException("unknown hyperparameter derivative requested in CLinearCFISO");
 	//ok: calculcate:
 	//1. get row i from x1:
-	MatrixXd x1i = x1.col(i);
+	MatrixXd x1i = X.col(i);
 	//2. get amplitude
-	float_t A = exp((float_t)(2*params(i,0)));
+	float_t A = exp((float_t)(2*params(i)));
 	//outer product of the corresponding dimension.
 	return A*2.0*(x1i*x1i.transpose());
-
-
 }
 
-MatrixXd CCovLinearARD::Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const uint_t d) const
+MatrixXd CCovLinearARD::Kcross_grad_X(const CovarInput& Xstar, const uint_t d) const
 {
-	MatrixXd RV = MatrixXd::Zero(x1.rows(),x2.rows());
+	MatrixXd RV = MatrixXd::Zero(Xstar.rows(),X.rows());
 	return RV;
 }
 
-MatrixXd CCovLinearARD::Kgrad_xdiag(const CovarParams params, const CovarInput x1, const uint_t d) const
+MatrixXd CCovLinearARD::Kdiag_grad_x(const uint_t d) const
 {
-	MatrixXd RV = MatrixXd::Zero(x1.rows(),1);
+	VectorXd RV = VectorXd::Zero(X.rows());
 	return RV;
 }
-
 
 
 } /* namespace gpmix */
