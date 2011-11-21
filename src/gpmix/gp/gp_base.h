@@ -17,6 +17,9 @@ using namespace std;
 
 namespace gpmix {
 
+
+
+/*
 class CGPHyperParams {
 
 protected:
@@ -116,13 +119,12 @@ public:
 		this->param_map.clear();
 	};
 };
+*/
 
 class CGPbase {
 protected:
 
-	MatrixXd X;    //training inputs
 	MatrixXd Y;    //training targets
-	//VectorXd meanY; //mean of training targets
 	
 	//cached GP-parameters:
 	MatrixXd K;
@@ -131,7 +133,6 @@ protected:
 	MatrixXd DKinv_KinvYYKinv;
 
 	Eigen::LDLT<gpmix::MatrixXd> cholK;
-	CGPHyperParams params;
 
 	ACovarianceFunction& covar;//Covariance function
 	ALikelihood& lik;          //likelihood model
@@ -154,18 +155,19 @@ public:
 //TODO: add interface that is suitable for optimizer
 // virtual double LML(double* params);
 // virtual void LML(double* params, double* gradients);
-	virtual void set_data(MatrixXd& X, MatrixXd& Y, CGPHyperParams& hyperparams);
+	virtual void set_data(MatrixXd& Y);
 
 	//virtual void set_params(CGPHyperParams& hyperparams);
 
 	virtual float_t LML();        //the log-likelihood (+ log-prior)
-	virtual CGPHyperParams LMLgrad();   //the gradient of the log-likelihood (+ log-prior)
+	virtual CovarParams LMLgrad_cov();   //the gradient of the log-likelihood (+ log-prior)
+	virtual LikParams LMLgrad_lik();   //the gradient of the log-likelihood (+ log-prior)
 
 	inline uint_t get_samplesize(){return this->Y.rows();} //get the number of training data samples
-	inline uint_t get_input_dimension(){return this->X.cols();} //get the number of training data samples
 	inline uint_t get_target_dimension(){return this->Y.cols();} //get the dimension of the target data
-	virtual MatrixXd predictMean(MatrixXd& Xstar);
-	virtual MatrixXd predictVar(MatrixXd& Xstar);
+
+	//virtual MatrixXd predictMean(MatrixXd& Xstar);
+	//virtual MatrixXd predictVar(MatrixXd& Xstar);
 };
 
 } /* namespace gpmix */

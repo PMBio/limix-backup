@@ -69,7 +69,7 @@ public:
 	inline void makeSync() { insync = true;}
 
 	//set the parameters to a new value.
-	void setParams(CovarParams& params);
+	virtual void setParams(CovarParams& params);
 
 	//set X to a new value
 	inline void setX(CovarInput& X);

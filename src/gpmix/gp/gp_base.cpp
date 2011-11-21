@@ -31,20 +31,16 @@ namespace gpmix {
 		this->KinvY=MatrixXd();
 		this->cholK=Eigen::LDLT<gpmix::MatrixXd>();
 		this->DKinv_KinvYYKinv = MatrixXd();
+		this->covar.makeSync();
+		this->lik.makeSync();
 	}
-
-	void CGPbase::set_data(MatrixXd& X, MatrixXd& Y, CGPHyperParams& hyperparams)
-	{
-		this->clearCache();
-		this->X = X;
-		this->Y = Y;
-		this->params = hyperparams;
-		//this->meanY = Y.colwise().mean();
-	}
-
 
 	MatrixXd CGPbase::getKinv()
 	{
+		if(!this->covar.isInSync() || !this->lik.isInSync())
+		{
+			this->clearCache();
+		}
 		if (this->Kinv.cols()==0)
 		{
 			Eigen::LDLT<gpmix::MatrixXd> chol = this->getCholK();
@@ -56,6 +52,10 @@ namespace gpmix {
 
 	MatrixXd CGPbase::getKinvY()
 	{
+		if(!this->covar.isInSync() || !this->lik.isInSync())
+		{
+			this->clearCache();
+		}
 		if (this->KinvY.cols()==0 && this->Kinv.cols()!=0)
 		{
 			this->KinvY = this->Kinv * this->Y;
@@ -70,6 +70,10 @@ namespace gpmix {
 
 	MatrixXd CGPbase::getDKinv_KinvYYKinv()
 	{
+		if(!this->covar.isInSync() || !this->lik.isInSync())
+		{
+			this->clearCache();
+		}
 		if (this->DKinv_KinvYYKinv.cols()==0)
 		{
 			MatrixXd KiY = this->getKinvY();
@@ -80,6 +84,10 @@ namespace gpmix {
 
 	Eigen::LDLT<gpmix::MatrixXd> CGPbase::getCholK()
 	{
+		if(!this->covar.isInSync() || !this->lik.isInSync())
+		{
+			this->clearCache();
+		}
 		if (this->cholK.cols()==0)
 		{
 			this->cholK = Eigen::LDLT<gpmix::MatrixXd>(  this->getK() );
@@ -89,10 +97,14 @@ namespace gpmix {
 
 	MatrixXd CGPbase::getK()
 	{
+		if(!this->covar.isInSync() || !this->lik.isInSync())
+		{
+			this->clearCache();
+		}
 		if (this->K.cols()==0)
 		{
-			this->K=this->covar.K(this->params.get("covar"),this->X); //This line breaks for se kernel
-			this->lik.applyToK(this->params.get("lik"),this->K);
+			this->K=this->covar.K(); //This line breaks for se kernel
+			this->lik.applyToK(this->covar.,this->K);
 		}
 		return this->K;
 	}
