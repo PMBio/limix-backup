@@ -1,5 +1,5 @@
 
-#include "../lmm.h"
+#include "gpmix/utils/beta.h"
 
 // Beta distribution
 // See: http://en.wikipedia.org/wiki/Beta_distribution
