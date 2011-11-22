@@ -4,7 +4,7 @@
  *  Created on: Nov 11, 2011
  *      Author: stegle
  */
-
+#if 0
 #include "fixed.h"
 #include "gpmix/types.h"
 #include "assert.h"
@@ -66,3 +66,4 @@ namespace gpmix {
 
 
 } /* namespace gpmix */
+#endif

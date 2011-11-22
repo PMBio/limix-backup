@@ -16,12 +16,16 @@ namespace gpmix {
 	CGPbase::CGPbase(ACovarianceFunction& covar, ALikelihood& lik) : covar(covar), lik(lik) {
 		this->covar = covar;
 		this->lik = lik;
-		this->params=CGPHyperParams();
 		this->clearCache();
 	}
 
 	CGPbase::~CGPbase() {
 		// TODO Auto-generated destructor stub
+	}
+
+	void CGPbase::set_data(MatrixXd& Y)
+	{
+		this->Y = Y;
 	}
 
 	void CGPbase::clearCache()
@@ -104,7 +108,7 @@ namespace gpmix {
 		if (this->K.cols()==0)
 		{
 			this->K=this->covar.K(); //This line breaks for se kernel
-			this->lik.applyToK(this->covar.,this->K);
+			this->lik.applyToK(this->covar.getX(),this->K);
 		}
 		return this->K;
 	}
@@ -139,50 +143,35 @@ namespace gpmix {
 		return 0.5 * (lml_quad + this->Y.cols() * lml_det + lml_const);
 	}
 
-	CGPHyperParams CGPbase::LMLgrad(){
 
-		CGPHyperParams grad = CGPHyperParams();
-		grad.set( "covar", this->LMLgrad_covar() );
-		grad.set( "lik", this->LMLgrad_lik() );
-		
-		return grad;
-	}
 
-	MatrixXd CGPbase::LMLgrad_covar()
+	CovarParams CGPbase::LMLgrad_covar()
 	{
-		MatrixXd params_covar = this->params.get("covar");
-		MatrixXd grad_covar = MatrixXd::Zero(params_covar.rows(),params_covar.cols());
+		CovarParams grad_covar(covar.getNumberParams());
 
 		MatrixXd W = this->getDKinv_KinvYYKinv();
-		for(uint_t row = 0 ; row<(uint_t)params_covar.rows(); ++row)//WARNING: conversion
+		for(uint_t row = 0 ; row<(uint_t)grad_covar.rows(); ++row)//WARNING: conversion
 		{
-			for(uint_t col = 0 ; col<(uint_t)params_covar.cols(); ++col)//WARNING: conversion
-			{
-				MatrixXd Kd = this->covar.Kgrad_theta(params_covar, this->X, row*params_covar.cols() + col);
-				grad_covar(row,col) = 0.5*(Kd.array() * W.array()).sum();
-			}
+			MatrixXd Kd = this->covar.K_grad_param(row);
+			grad_covar(row) = 0.5*(Kd.array() * W.array()).sum();
 		}
 		return grad_covar;
 	}
 
-	MatrixXd CGPbase::LMLgrad_lik()
+	LikParams CGPbase::LMLgrad_lik()
 	{
-		MatrixXd params_lik = this->params.get("lik");
-		MatrixXd grad_lik(params_lik.rows(),params_lik.cols());
+		LikParams grad_lik(lik.getNumberParams());
 
 		MatrixXd W = this->getDKinv_KinvYYKinv();
-		for(uint_t row = 0 ; row<(uint_t)params_lik.rows(); ++row)	//WARNING: conversion
+		for(uint_t row = 0 ; row<lik.getNumberParams(); ++row)	//WARNING: conversion
 		{
-			for(uint_t col = 0 ; col<(uint_t)params_lik.cols(); ++col)	//WARNING: conversion
-			{
-				MatrixXd Kd = this->lik.K_grad_theta(params_lik, this->X, row*params_lik.cols() + col);
-				grad_lik(row,col) = 0.5*(Kd.array() * W.array()).sum();
-			}
+			MatrixXd Kd = this->lik.K_grad_params(this->covar.getX(), row);
+			grad_lik(row) = 0.5*(Kd.array() * W.array()).sum();
 		}
 		return grad_lik;
 	}
 
-	MatrixXd CGPbase::predictMean(MatrixXd& Xstar)
+/*	MatrixXd CGPbase::predictMean(MatrixXd& Xstar)
 	{
 		MatrixXd KstarCross = this->covar.K(this->params.get("covar"), Xstar, this->X);
 		return KstarCross * this->getKinvY();
@@ -199,5 +188,5 @@ namespace gpmix {
 
 		return S2;
 	}
-
+*/
 } /* namespace gpmix */

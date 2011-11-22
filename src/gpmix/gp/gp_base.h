@@ -145,8 +145,6 @@ protected:
 
 	virtual void clearCache();
 
-	virtual MatrixXd LMLgrad_covar();
-	virtual MatrixXd LMLgrad_lik();
 
 public:
 	CGPbase(ACovarianceFunction& covar, ALikelihood& lik);
@@ -160,8 +158,8 @@ public:
 	//virtual void set_params(CGPHyperParams& hyperparams);
 
 	virtual float_t LML();        //the log-likelihood (+ log-prior)
-	virtual CovarParams LMLgrad_cov();   //the gradient of the log-likelihood (+ log-prior)
-	virtual LikParams LMLgrad_lik();   //the gradient of the log-likelihood (+ log-prior)
+	virtual CovarParams LMLgrad_covar();
+	virtual LikParams LMLgrad_lik();
 
 	inline uint_t get_samplesize(){return this->Y.rows();} //get the number of training data samples
 	inline uint_t get_target_dimension(){return this->Y.cols();} //get the dimension of the target data

@@ -48,8 +48,8 @@ public:
 
 	//compute K(Xstar,X)
 	virtual MatrixXd Kcross( const CovarInput& Xstar ) const = 0;
-	virtual VectorXd Kdiag() const;
-	virtual MatrixXd K_grad_X(const uint_t d) const;
+	virtual VectorXd Kdiag() const = 0;
+	virtual MatrixXd K_grad_X(const uint_t d) const = 0;
 	virtual MatrixXd K_grad_param(const uint_t i) const = 0;
 
 	//gradient of K(Xstar,X)
@@ -80,7 +80,6 @@ public:
 	inline uint_t getDimX() const {return (uint_t)this->X.cols();}
 #endif
 
-	//getters and setters
 	inline uint_t getNumberParams() const;
 
 

@@ -4,7 +4,7 @@
  *  Created on: Nov 11, 2011
  *      Author: stegle
  */
-
+#if 0
 #include "se.h"
 #include <math.h>
 #include <cmath>
@@ -84,3 +84,4 @@ MatrixXd CCovSqexpARD::Kgrad_xdiag(const CovarParams params, const CovarInput x1
 
 
 } /* namespace gpmix */
+#endif
