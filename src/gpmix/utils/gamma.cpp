@@ -11,7 +11,16 @@
  ******************************************************************
  */
 
-#include "../lmm.h"
+#include "gpmix/utils/fisherf.h"
+#include "gpmix/utils/gamma.h"
+#include "gpmix/utils/beta.h"
+
+
+#include <stdlib.h>
+#include <math.h>
+#include <iostream>
+#include <stdio.h>
+#include <cmath>
 
 // This is gammainc(x,a,'upper') in Matlab
 /// <summary>q-gamma function</summary>
@@ -184,11 +193,8 @@ double Gamma::Psi(double k)
    else
    {
          double ksq = k * k;
-         double k3 = ksq * k;
          double k4 = ksq * ksq;
-         double k5 = k4 * k;
          double k6 = ksq * k4;
-         double k7 = k6 * k;
 
          dig = log(k) - 1.0 / (2.0 * k) - 1.0 / (12.0 * ksq) + 1.0 / (120.0 * k4) - 1.0 / (252.0 * k6);
    }

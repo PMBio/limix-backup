@@ -6,7 +6,7 @@
  */
 
 
-#include <gpmix/matrix/matrix_helper.h>
+#include <gpmix/utils/matrix_helper.h>
 #include "matrix_helper.h"
 #include <stdlib.h>
 

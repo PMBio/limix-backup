@@ -12,7 +12,14 @@
  */
 
 /// <summary>Brent's method for minimizing a 1d function</summary>
-#include "../lmm.h"
+#include "gpmix/utils/brentc.h"
+
+#include <stdlib.h>
+#include <math.h>
+#include <iostream>
+#include <stdio.h>
+#include <cmath>
+
 
 // Machine eps
 double BrentC::MACHEPS = (double)2.2204460492503131e-016;
@@ -139,7 +146,7 @@ double BrentC::minimize(BrentFunctor &f, double a, double b, double eps, double 
 
       if (!quiet)
       {
-         printf("Iteration %i, min_x = %f, f(min_x) = %f, ", numiter, x, fx);
+         printf("Iteration %i, min_x = %f, f(min_x) = %f, ", (int)numiter, x, fx);
       }
    }
    funcx = f(x);

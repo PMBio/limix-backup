@@ -1,6 +1,5 @@
 #PYTHON build system using SWIG
 
-
 find_package(SWIG REQUIRED)
 
 #default: enable python bindings
@@ -83,8 +82,8 @@ set(CMAKE_SWIG_FLAGS "")
 set_source_files_properties(gpmix.i PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-includeall")
 set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
-swig_add_module(peer python gpmix.i)
-swig_link_libraries(peer ${SWIGLINKLIBS} gpmixlib)
+swig_add_module(gpmix python gpmix.i)
+swig_link_libraries(gpmix ${SWIGLINKLIBS} gpmixlib)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")	 
   # Mac OS X specific code

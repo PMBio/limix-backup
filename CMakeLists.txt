@@ -3,7 +3,7 @@ project(GPMix)
 
 #build options
 #PYTHON off by default
-option(BUILD_PYTHON_PACKAGE "Enable Python bindings" OFF)
+option(BUILD_PYTHON_PACKAGE "Enable Python bindings" ON)
 #R optional
 option(BUILD_R_PACKAGE "Enable R bindings" OFF)
 
@@ -74,15 +74,17 @@ include(${SWIG_USE_FILE})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_SWIG_FLAGS "")
 
-set(CMAKE_MODULE_PATH "${PEER_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-include_directories(./include)
+set(CMAKE_MODULE_PATH "${GPMix_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 add_definitions(-g -Wextra -D_BSD_SOURCE)
-
 #fPic while compiling on
 #this seems to be needed on some linux systems
 #set(CMAKE_CXX_FLAGS "-fPIC -O3 -march=core2")
 set(CMAKE_CXX_FLAGS "-fPIC")
+
+#includes
+include_directories(./External)
+include_directories(./src)
 
 #add Cmake modules
 add_subdirectory(./src)
