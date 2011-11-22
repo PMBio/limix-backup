@@ -8,7 +8,7 @@
 #include "linear.h"
 #include <math.h>
 #include <cmath>
-#include <gpmix/matrix/matrix_helper.h>
+#include <gpmix/utils/matrix_helper.h>
 
 namespace gpmix {
 

@@ -1,6 +1,4 @@
 #add external headers (mainly Eigen)
-include_directories(../External)
-include_directories(./)
 
 
 if(DEBUG_GPMIX)
@@ -14,10 +12,20 @@ else(DEBUG_GPMIX)
 endif(DEBUG_GPMIX)
 
 SET(SOURCES gpmix/covar/covariance.cpp
+	    gpmix/covar/covariance.cpp
+	    gpmix/covar/fixed.cpp	
+	    gpmix/covar/fixed.cpp	
 	    gpmix/covar/se.cpp
 	    gpmix/covar/linear.cpp
 	    gpmix/covar/dist.cpp
-	    gpmix/matrix/matrix_helper.cpp
+	    gpmix/utils/matrix_helper.cpp
+	    gpmix/utils/beta.cpp
+	    gpmix/utils/brentc.cpp
+	    gpmix/utils/gamma.cpp
+	    gpmix/utils/mathfunctions.cpp
+	    gpmix/utils/fisherf.cpp
+	    gpmix/LMM/c_lmm.cpp
+	    gpmix/likelihood/likelihood.cpp
 	    gpmix/gp/gp_base.cpp
 )
 

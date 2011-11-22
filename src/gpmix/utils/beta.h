@@ -1,6 +1,8 @@
 #if !defined(Beta_h)
 #define Beta_h
 
+#include "gpmix/utils/mathfunctions.h"
+
 class Beta{
 public:
    static double BetaCF(double x, double a, double b);

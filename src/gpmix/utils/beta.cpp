@@ -1,5 +1,9 @@
 
 #include "gpmix/utils/beta.h"
+#include "gpmix/utils/gamma.h"
+
+
+
 
 // Beta distribution
 // See: http://en.wikipedia.org/wiki/Beta_distribution

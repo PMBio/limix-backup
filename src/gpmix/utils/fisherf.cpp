@@ -1,4 +1,12 @@
-#include "../lmm.h"
+
+#include "gpmix/utils/fisherf.h"
+#include "gpmix/utils/beta.h"
+
+#include <stdlib.h>
+#include <math.h>
+#include <iostream>
+#include <stdio.h>
+#include <cmath>
 
 // F distribution
 // See: http://en.wikipedia.org/wiki/F-distribution

@@ -11,9 +11,16 @@
  ******************************************************************
  */
 
-#include "../lmm.h"
 
-//const double _PI = 2.0*acos(0.0);          // now defined in FastLmmC.h
+#include "gpmix/utils/mathfunctions.h"
+
+#include <stdlib.h>
+#include <math.h>
+#include <iostream>
+#include <stdio.h>
+#include <cmath>
+
+const double _PI = 2.0*acos(0.0);          // now defined in FastLmmC.h
 const double _halflog2pi=(double)0.5*log((double)2.0*_PI);
 const double coeffsForLogGamma[] = { 12.0, -360.0, 1260.0, -1680.0, 1188.0 };
 
