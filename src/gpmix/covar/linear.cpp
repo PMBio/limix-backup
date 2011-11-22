@@ -51,8 +51,18 @@ MatrixXd CCovLinearISO::K_grad_param( const uint_t i ) const
 	}
 }
 
+MatrixXd CCovLinearISO::K_grad_X(const uint_t d) const
+{
+	float_t A = exp((float_t)(2.0*this->params(0)));
+	//create empty matrix
+	MatrixXd RV = MatrixXd::Zero(this->X.rows(),this->X.rows());
+	//otherwise update computation:
+	RV.colwise() = A*this->X.col(d);
+	return RV;
+}
 
-MatrixXd CCovLinearISO::Kcross_grad_x(const CovarInput& Xstar, const uint_t d) const
+
+MatrixXd CCovLinearISO::Kcross_grad_X(const CovarInput& Xstar, const uint_t d) const
 {
 	float_t A = exp((float_t)(2.0*this->params(0)));
 	//create empty matrix
@@ -62,11 +72,17 @@ MatrixXd CCovLinearISO::Kcross_grad_x(const CovarInput& Xstar, const uint_t d) c
 	return RV;
 }
 
-MatrixXd CCovLinearISO::Kdiag_grad_x( const uint_t d ) const
+MatrixXd CCovLinearISO::Kdiag_grad_X( const uint_t d ) const
 {
 	float_t A = exp((float_t)(2.0*this->params(0)));
 	VectorXd RV = VectorXd::Zero(this->X.rows());
 	RV = 2.0*A*this->X.col(d);
+	return RV;
+}
+
+VectorXd CCovLinearISO::Kdiag() const
+{
+	VectorXd RV = VectorXd::Zero(X.rows());
 	return RV;
 }
 
@@ -75,6 +91,12 @@ MatrixXd CCovLinearISO::Kdiag_grad_x( const uint_t d ) const
 
 CCovLinearARD::~CCovLinearARD() {
 	// covaraince destructor
+}
+
+VectorXd CCovLinearARD::Kdiag() const
+{
+	VectorXd RV = VectorXd::Zero(X.rows());
+	return RV;
 }
 
 MatrixXd CCovLinearARD::Kcross(const CovarInput& Xstar) const
@@ -108,7 +130,7 @@ MatrixXd CCovLinearARD::Kcross_grad_X(const CovarInput& Xstar, const uint_t d) c
 	return RV;
 }
 
-MatrixXd CCovLinearARD::Kdiag_grad_x(const uint_t d) const
+MatrixXd CCovLinearARD::Kdiag_grad_X(const uint_t d) const
 {
 	VectorXd RV = VectorXd::Zero(X.rows());
 	return RV;

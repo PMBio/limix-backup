@@ -51,8 +51,8 @@ public:
 	MatrixXd K_grad_param(const uint_t i) const;
 
 	//gradient of K(Xstar,X)
-	virtual MatrixXd Kcross_grad_x(const CovarInput& Xstar, const uint_t d) const;
-	virtual MatrixXd Kdiag_grad_x(const uint_t d) const;
+	MatrixXd Kcross_grad_X(const CovarInput& Xstar, const uint_t d) const;
+	MatrixXd Kdiag_grad_X(const uint_t d) const;
 
 	//class information
 	inline string getName() const{ return "CovLinearARD";}

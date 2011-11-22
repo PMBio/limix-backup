@@ -12,7 +12,7 @@
 #include "gpmix/matrix/matrix_helper.h"
 #include "gpmix/likelihood/likelihood.h"
 #include "gpmix/covar/linear.h"
-#include "gpmix/covar/se.h"
+//#include "gpmix/covar/se.h"
 #include "gpmix/gp/gp_base.h"
 
 using namespace std;
@@ -55,43 +55,46 @@ int main() {
 
 
 	//likelihood model
-	gpmix::CLikNormalIso lik;
+	gpmix::CLikNormalIso lik = gpmix::CLikNormalIso();
 
 	//parameters of likelihood model
-	gpmix::LikParams likparams(1,1);
+	gpmix::LikParams likparams(1);
 	likparams << 1.0;
 
 	//gpmix::ACovarianceFunction cov;
-#if 0
+#if 1
 	//linear kernel + params
-	gpmix::CCovLinearISO cov(1);
-	gpmix::CovarParams covparams(1,1);
+	gpmix::CCovLinearISO cov = gpmix::CCovLinearISO();
+	gpmix::CovarParams covparams(1);
 	covparams << 1.0;
 #else
+	//sqex noch nicht umgestellt
 	//squared exponential kernel + params
 	gpmix::CCovSqexpARD cov(1);
 	gpmix::CovarParams covparams(2,1);
 	covparams << 1.0 , 1.0;
 #endif
 	//TODO: build parameters object
-	gpmix::CGPHyperParams gpparams;
-	gpparams.set("lik", likparams);//set((string)"lik",(MatrixXd)likparams);
-	gpparams.set("covar", covparams);
+	//gpmix::CGPHyperParams gpparams;
+	//gpparams.set("lik", likparams);//set((string)"lik",(MatrixXd)likparams);
+	//gpparams.set("covar", covparams);
 
 	//MatrixXd likrecover = gpparams.get("lik");
 
 	//create GP_base
-	gpmix::CGPbase gp(cov, lik);
+	//gpmix::ACovarianceFunction& mcov  = cov;
+
+	gpmix::CGPbase gp(cov,lik);
 
 	//set data of GP
-	gp.set_data(x,y,gpparams);
+	gp.set_data(y);
 	//gp.set_params(gpparams);
 
 	//evaluate negative log-likelihood
 	float_t nLL = gp.LML();
 
 	//evaluate gradient
-	gpmix::CGPHyperParams grad = gp.LMLgrad();
+	//gpmix::CGPHyperParams grad = gp.LMLgrad();
 
 
 	//TODO: optimize parameters
@@ -105,7 +108,7 @@ int main() {
 	cout << y << endl;
 	cout << "done."<<dimX<<endl;
 	cout << "nLL: "<<nLL <<endl;
-	gpmix::VectorXs names = grad.getNames();
+	/*gpmix::VectorXs names = grad.getNames();
 	for (uint_t i = 0; i< (uint_t)names.rows(); ++i)
 	{
 		string curname =names(i);
@@ -119,7 +122,7 @@ int main() {
 	gpmix::MatrixXd varStar = gp.predictVar(X);
 	cout << "var:\n" << varStar <<endl;
 
-
+*/
 
 	return 0;
 }

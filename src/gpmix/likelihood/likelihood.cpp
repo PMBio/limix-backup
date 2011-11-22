@@ -20,9 +20,9 @@ ALikelihood::~ALikelihood() {
 	// TODO Auto-generated destructor stub
 }
 
-void ALikelihood::setParams(CovarParams& params)
+void ALikelihood::setParams(LikParams& params)
 {
-	if(this->numberParams!=params.rows())
+	if(this->numberParams!=(uint_t)params.rows())//WARNING: uint_t conversion
 	{
 		ostringstream os;
 		os << "LikParams has wrong dimensions. params.rows() = "<< params.rows() << ", numberParams = "<< numberParams;
@@ -48,7 +48,7 @@ void CLikNormalIso::applyToK(const MatrixXd& X, MatrixXd& K) const
 		throw gpmix::CGPMixException(os.str());
 	}
 
-	float_t sigma_2 = gpmix::exp( (float_t)(2.0*params(0,0)));//WARNING: float_t conversion
+	float_t sigma_2 = gpmix::exp( (float_t)(2.0*this->getParams()(0)));//WARNING: float_t conversion
 	for (uint_t i = 0; i < (uint_t)K.rows(); ++i) //WARNING (uint_t) conversion
 	{
 		K(i,i) += sigma_2;
@@ -57,7 +57,7 @@ void CLikNormalIso::applyToK(const MatrixXd& X, MatrixXd& K) const
 
 MatrixXd CLikNormalIso::K(const MatrixXd& X) const
 {
-	float_t sigma_2 = gpmix::exp( (float_t)(2.0*params(0)));//WARNING: float_t conversion
+	float_t sigma_2 = gpmix::exp( (float_t)(2.0*this->getParams()(0)));//WARNING: float_t conversion
 	MatrixXd K = MatrixXd::Zero(X.rows(),X.rows());
 	for (uint_t i = 0; i < (uint_t)K.rows(); ++i)//WARNING: (uint_t) conversion
 	{
@@ -68,7 +68,7 @@ MatrixXd CLikNormalIso::K(const MatrixXd& X) const
 
 VectorXd CLikNormalIso::Kdiag(const MatrixXd& X) const
 {
-	float_t sigma_2 = gpmix::exp( (float_t)(2.0*params(0)));//WARNING: float_t conversion
+	float_t sigma_2 = gpmix::exp( (float_t)(2.0*this->getParams()(0)));//WARNING: float_t conversion
 	VectorXd Kdiag(X.rows());
 	for (uint_t i = 0; i < (uint_t)Kdiag.rows(); ++i)//WARNING: (uint_t) conversion
 	{
@@ -79,7 +79,7 @@ VectorXd CLikNormalIso::Kdiag(const MatrixXd& X) const
 
 MatrixXd CLikNormalIso::K_grad_params(const MatrixXd& X, const uint_t row) const
 {
-	float_t twoSigma_2 = 2.0*gpmix::exp( (float_t)(2.0*params(0)));//WARNING: float_t conversion
+	float_t twoSigma_2 = 2.0*gpmix::exp( (float_t)(2.0*this->getParams()(0)));//WARNING: float_t conversion
 
 	MatrixXd dK = MatrixXd::Zero(X.rows(),X.rows());
 	for (uint_t i = 0; i < (uint_t)dK.rows(); ++i)//WARNING: (uint_t) conversion

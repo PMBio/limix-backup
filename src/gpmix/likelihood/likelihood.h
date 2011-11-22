@@ -43,6 +43,7 @@ public:
 	//indicate that the cache has been cleared and is synced again
 	inline void makeSync() { insync = true;}
 
+	inline uint_t getNumberParams() const {return this->numberParams;};
 };
 
 class CLikNormalIso : public ALikelihood {
@@ -54,20 +55,8 @@ public:
 	MatrixXd K(const MatrixXd& X) const;
 	VectorXd Kdiag(const MatrixXd& X) const;
 	//class information
-	string getName() const;
+	string getName() const {return "LikNormalIso";};
 };
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
