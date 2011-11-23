@@ -39,10 +39,14 @@ inline float_t log (float_t x)
 
 
 //standard Matrix type to use in this project
-typedef Eigen::Matrix<float_t, Eigen::Dynamic, Eigen::Dynamic> MatrixXd;
-typedef Eigen::Matrix<float_t, Eigen::Dynamic, 1> VectorXd;
-typedef Eigen::Matrix<string, Eigen::Dynamic, 1> VectorXs;
-typedef Eigen::Array<float_t, Eigen::Dynamic, Eigen::Dynamic> ArrayXd;
+typedef Eigen::Matrix<float_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXd;
+typedef Eigen::Matrix<float_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXd;
+typedef Eigen::Matrix<string, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXs;
+typedef Eigen::Array<float_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> ArrayXd;
+
+//SCIPY matrices for python interface: these are row major
+typedef Eigen::Matrix<float_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXdscipy;
+typedef Eigen::Matrix<float32_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXfscipy;
 
 
 class CGPMixException
