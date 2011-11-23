@@ -18,7 +18,7 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 */
 
-%apply float { Real };
+%apply float { float_t };
 
 %typecheck(SWIG_TYPECHECK_INTEGER)
 	   int, short, long,
@@ -36,23 +36,24 @@
 
 
 %typecheck(SWIG_TYPECHECK_FLOAT) 
-           Real,
-           const Real,
-           Real & {
+           float_t,
+           const float_t,
+           float_t & {
 
   $1 = (PyFloat_Check($input) || PyInt_Check($input) || PyLong_Check($input)) ? 1 : 0;
 
 }
 
 %typecheck(SWIG_TYPECHECK_FLOAT_ARRAY) 
-         MatrixXR, 
-         MatrixXR *,
-         const MatrixXR,
-         MatrixXR &,
-         const MatrixXR & {
+         MatrixXd, 
+         MatrixXd *,
+         const MatrixXd,
+         MatrixXd &,
+         const MatrixXd & {
   $1 = (array_type($input) == PyArray_FLOAT) || (array_type($input) == PyArray_DOUBLE);
 }
 
+/*
 %typecheck(SWIG_TYPECHECK_FLOAT_ARRAY) 
          MatrixXC,
          MatrixXC *,
@@ -61,10 +62,12 @@
          const MatrixXC & {
   $1 = (array_type($input) == PyArray_CFLOAT) || (array_type($input) == PyArray_CDOUBLE);
 }
+*/
+
 
 %typemap(in,
          fragment="NumPy_Fragments") 
-         const MatrixXR & (MatrixXR temp) {
+         const MatrixXd & (MatrixXd temp) {
 
     // create array from input
     int newObject;
@@ -122,12 +125,12 @@
 
     case PyArray_LONG:
     case PyArray_DOUBLE:
-      (*$1) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<Real>();
+      (*$1) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<float_t>();
       break;
 
     case PyArray_INT:
     case PyArray_FLOAT:
-      (*$1) = Eigen::Map<MatrixXfscipy>((float*)array_data( in_array ), in_rows, in_cols).cast<Real>();
+      (*$1) = Eigen::Map<MatrixXfscipy>((float32_t*)array_data( in_array ), in_rows, in_cols).cast<float_t>();
       break;
       
     default:
@@ -138,6 +141,7 @@
 }
 
 
+/*
 %typemap(in,
          fragment="NumPy_Fragments") 
          const MatrixXC & (MatrixXC temp) {
@@ -217,21 +221,22 @@
     }
 }
 
+*/
 
 
 %typemap(in, numinputs = 0) 
-         MatrixXR* (MatrixXR temp) {
+         MatrixXd* (MatrixXd temp) {
 
   $1 = &temp;
 
 }
 
 %typemap(argout) 
-         MatrixXR* {
+         MatrixXd* {
 
   // prepare resulting array
-  int dims[] = {$1->rows(), $1->cols()};
-  PyObject * out_array = PyArray_SimpleNew(2, dims, PyArray_FLOAT);
+  npy_intp dims[] = {$1->rows(), $1->cols()};
+  PyObject * out_array = PyArray_SimpleNew(2, dims, PyArray_DOUBLE);
 
   if (out_array == NULL){
     PyErr_SetString(PyExc_ValueError,
@@ -240,75 +245,16 @@
     return NULL;
   }
   
-  Real* out_data = (Real*)array_data(out_array);
-  Eigen::Map<MatrixXRscipy>(out_data, dims[0], dims[1]) = (*$1);
+  float_t* out_data = (float_t*)array_data(out_array);
+  Eigen::Map<MatrixXdscipy>(out_data, dims[0], dims[1]) = (*$1);
 
   $result = SWIG_Python_AppendOutput($result, out_array);
 }
 
-%typemap(in, numinputs = 0) 
-         MatrixXI* (MatrixXI temp) {
 
-  $1 = &temp;
-
-}
 
 %typemap(argout) 
-         MatrixXI* {
-
-  // prepare resulting array
-  int dims[] = {$1->rows(), $1->cols()};
-  PyObject * out_array = PyArray_SimpleNew(2, dims, PyArray_INT);
-
-  if (out_array == NULL){
-    PyErr_SetString(PyExc_ValueError,
-                    "Unable to create the output array.");
-    
-    return NULL;
-  }
-  
-  Integer* out_data = (Integer*)array_data(out_array);
-  Eigen::Map<MatrixXIscipy>(out_data, dims[0], dims[1]) = (*$1);
-
-  $result = SWIG_Python_AppendOutput($result, out_array);
-}
-
-%typemap(in, numinputs = 0) 
-         MatrixXC* (MatrixXC temp) {
-
-  $1 = &temp;
-
-}
-
-%typemap(argout) 
-         MatrixXC* {
-
-  // prepare resulting array
-  int dims[] = {$1->rows(), $1->cols()};
-  PyObject * out_array = PyArray_SimpleNew(2, dims, PyArray_CFLOAT);
-
-  if (out_array == NULL){
-    PyErr_SetString(PyExc_ValueError,
-                    "Unable to create the output array.");
-    
-    return NULL;
-  }
-  
-  Complex* out_data = (Complex*)array_data(out_array);
-  Eigen::Map<MatrixXCscipy>(out_data, dims[0], dims[1]) = (*$1);
-
-  $result = SWIG_Python_AppendOutput($result, out_array);
-}
-
-%typemap(in, numinputs = 0) 
-         Real* (Real temp) {
-
-  $1 = &temp;
-
-}
-
-%typemap(argout) 
-         Real* {
+         float_t* {
 
   $result = SWIG_Python_AppendOutput($result, Py_BuildValue("f", $1));
 }

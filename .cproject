@@ -59,16 +59,6 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<folderInfo id="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1738207011" name="/" resourcePath="src/gpmix/LMM/t">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.exe.debug.1868721591" name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.exe.debug" unusedChildren="">
-							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.623242656" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.1901029774"/>
-							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.423689922" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.1666394570"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.930306860" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.1607678863"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.macosx.base.87371417" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base.67602408"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1771133837" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.817194417" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.2053923706"/>
-						</toolChain>
-					</folderInfo>
 					<sourceEntries>
 						<entry excluding="gpmix/LMM/t|testing/GPmix.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
@@ -181,7 +171,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="testing/Gpmix_covariance_tests.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="gpmix/LMM/t|testing/Gpmix_covariance_tests.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

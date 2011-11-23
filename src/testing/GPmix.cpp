@@ -9,7 +9,7 @@
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
 #include "gpmix/types.h"
-#include "gpmix/matrix/matrix_helper.h"
+#include "gpmix/utils/matrix_helper.h"
 #include "gpmix/likelihood/likelihood.h"
 #include "gpmix/covar/linear.h"
 //#include "gpmix/covar/se.h"
