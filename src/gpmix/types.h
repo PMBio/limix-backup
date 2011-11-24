@@ -12,42 +12,47 @@
 //using namespace Eigen;
 #include <string>
 using namespace std;
-#include <inttypes.h>
+//#include <inttypes.h>
 
 namespace gpmix{
 
-//TODO: think whether we really need these?
-//some definitions for the python interface
-#define float64_t double
-#define float32_t float
+
+//note: for swig it is important that everyhing is typed def and not merely "defined"
+typedef double float64_t;
+typedef float float32_t;
+typedef long int int64_t;
+typedef unsigned long int uint64_t;
 
 //default types for usage in GPmix:
-#define float_t float64_t
-#define int_t int64_t
-#define uint_t uint64_t
+typedef float64_t mfloat_t;
+typedef int64_t mint_t;
+typedef uint64_t muint_t;
+
 
 //inline casts of exp and log
-inline float_t exp (float_t x)
+inline mfloat_t exp (mfloat_t x)
 {
-		return (float_t)std::exp((long double) x );
+		return (mfloat_t)std::exp((long double) x );
 }
 
-inline float_t log (float_t x)
+inline mfloat_t log (mfloat_t x)
 {
-		return (float_t)std::log((long double) x );
+		return (mfloat_t)std::log((long double) x );
 }
 
-
+//we exclude these int he wrapping section of SWIG
+//this is somewhat ugly but makes a lot easier to wrap the Eigen arays with swig
+#if (!defined(SWIG) || defined(SWIG_FILE_WITH_INIT))
 //standard Matrix type to use in this project
-typedef Eigen::Matrix<float_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXd;
-typedef Eigen::Matrix<float_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXd;
+typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXd;
+typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXd;
 typedef Eigen::Matrix<string, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXs;
-typedef Eigen::Array<float_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> ArrayXd;
+typedef Eigen::Array<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> ArrayXd;
 
 //SCIPY matrices for python interface: these are row major
-typedef Eigen::Matrix<float_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXdscipy;
+typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXdscipy;
 typedef Eigen::Matrix<float32_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXfscipy;
-
+#endif
 
 class CGPMixException
 {

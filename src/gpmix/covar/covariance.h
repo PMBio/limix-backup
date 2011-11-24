@@ -30,18 +30,13 @@ protected:
 	//the hyperparameters of K
 	CovarParams params;
 
-	uint_t numberParams;
+	muint_t numberParams;
 public:
 	//constructors
-#ifndef SWIG
-	ACovarianceFunction(const uint_t numberParams);
-#endif
+	ACovarianceFunction(const muint_t numberParams=0);
 	//destructors
 	virtual ~ACovarianceFunction();
 	//getters and setters
-
-#ifndef SWIG
-	//remove these members due to swig wrapping confusion of overladed function
 
 	//computeK(X,X)
 	virtual MatrixXd K() const;
@@ -49,12 +44,12 @@ public:
 	//compute K(Xstar,X)
 	virtual MatrixXd Kcross( const CovarInput& Xstar ) const = 0;
 	virtual VectorXd Kdiag() const = 0;
-	virtual MatrixXd K_grad_X(const uint_t d) const = 0;
-	virtual MatrixXd K_grad_param(const uint_t i) const = 0;
+	virtual MatrixXd K_grad_X(const muint_t d) const = 0;
+	virtual MatrixXd K_grad_param(const muint_t i) const = 0;
 
 	//gradient of K(Xstar,X)
-	virtual MatrixXd Kcross_grad_X(const CovarInput& Xstar, const uint_t d) const = 0;
-	virtual MatrixXd Kdiag_grad_X(const uint_t d) const = 0;
+	virtual MatrixXd Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const = 0;
+	virtual MatrixXd Kdiag_grad_X(const muint_t d) const = 0;
 
 	//class information
 	virtual string getName() const = 0;
@@ -74,26 +69,34 @@ public:
 	//set X to a new value
 	inline void setX(CovarInput& X);
 
+	void setX2(const MatrixXd& X)
+	{
+		this->X = X;
+	}
+
+
+
 	//get the X
 	inline CovarInput getX() const;
 
-	inline uint_t getDimX() const {return (uint_t)this->X.cols();}
-#endif
-
-	inline uint_t getNumberParams() const;
-
-
+	inline muint_t getDimX() const {return (muint_t)this->X.cols();}
+	inline muint_t getNumberParams() const;
 
     /* Static methods
     //grad checking functions
-    static bool check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const CovarParams params, const CovarInput x,float_t relchange=1E-5,float_t threshold=1E-2);
-    static bool check_covariance_Kgrad_x(const ACovarianceFunction& covar,const CovarParams params, const CovarInput x,float_t relchange=1E-5,float_t threshold=1E-2);
+    static bool check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const CovarParams params, const CovarInput x,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
+    static bool check_covariance_Kgrad_x(const ACovarianceFunction& covar,const CovarParams params, const CovarInput x,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
     //same, however auto generating random parameters:
-    static bool check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const uint_t n_rows = 100,float_t relchange=1E-5,float_t threshold=1E-2);
-    static bool check_covariance_Kgrad_x(const ACovarianceFunction& covar,const uint_t n_rows = 100,float_t relchange=1E-5,float_t threshold=1E-2);
+    static bool check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const muint_t n_rows = 100,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
+    static bool check_covariance_Kgrad_x(const ACovarianceFunction& covar,const muint_t n_rows = 100,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
     */
 };
 
+
+	inline void test5(const MatrixXd& test)
+	{
+		std::cout << test;
+	}
 
 	//set X to a new value
 	inline void ACovarianceFunction::setX(CovarInput& X)
@@ -107,10 +110,11 @@ public:
 		return this->X;
 	}
 
-	inline uint_t ACovarianceFunction::getNumberParams() const
+	inline muint_t ACovarianceFunction::getNumberParams() const
 	{
 		return this->numberParams;
 	}
+
 
 //gradcheck tools for covaraince functions:
 

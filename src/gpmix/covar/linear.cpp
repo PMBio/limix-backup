@@ -29,12 +29,12 @@ MatrixXd CCovLinearISO::Kcross(const CovarInput& Xstar) const
 	}
 
 	//kernel matrix is constant hyperparmeter and dot product
-	float_t A = exp((float_t)(2.0*params(0)));
+	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
 	return A* Xstar*this->X.transpose();
 }
 
 
-MatrixXd CCovLinearISO::K_grad_param( const uint_t i ) const
+MatrixXd CCovLinearISO::K_grad_param( const muint_t i ) const
 {
 	if (i==0)
 	{
@@ -51,9 +51,9 @@ MatrixXd CCovLinearISO::K_grad_param( const uint_t i ) const
 	}
 }
 
-MatrixXd CCovLinearISO::K_grad_X(const uint_t d) const
+MatrixXd CCovLinearISO::K_grad_X(const muint_t d) const
 {
-	float_t A = exp((float_t)(2.0*this->params(0)));
+	mfloat_t A = exp((mfloat_t)(2.0*this->params(0)));
 	//create empty matrix
 	MatrixXd RV = MatrixXd::Zero(this->X.rows(),this->X.rows());
 	//otherwise update computation:
@@ -62,9 +62,9 @@ MatrixXd CCovLinearISO::K_grad_X(const uint_t d) const
 }
 
 
-MatrixXd CCovLinearISO::Kcross_grad_X(const CovarInput& Xstar, const uint_t d) const
+MatrixXd CCovLinearISO::Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const
 {
-	float_t A = exp((float_t)(2.0*this->params(0)));
+	mfloat_t A = exp((mfloat_t)(2.0*this->params(0)));
 	//create empty matrix
 	MatrixXd RV = MatrixXd::Zero(Xstar.rows(),this->X.rows());
 	//otherwise update computation:
@@ -72,9 +72,9 @@ MatrixXd CCovLinearISO::Kcross_grad_X(const CovarInput& Xstar, const uint_t d) c
 	return RV;
 }
 
-MatrixXd CCovLinearISO::Kdiag_grad_X( const uint_t d ) const
+MatrixXd CCovLinearISO::Kdiag_grad_X( const muint_t d ) const
 {
-	float_t A = exp((float_t)(2.0*this->params(0)));
+	mfloat_t A = exp((mfloat_t)(2.0*this->params(0)));
 	VectorXd RV = VectorXd::Zero(this->X.rows());
 	RV = 2.0*A*this->X.col(d);
 	return RV;
@@ -110,27 +110,27 @@ MatrixXd CCovLinearARD::Kcross(const CovarInput& Xstar) const
 	return RV;
 }
 
-MatrixXd CCovLinearARD::K_grad_param(const uint_t i) const
+MatrixXd CCovLinearARD::K_grad_param(const muint_t i) const
 {
 	//is the requested gradient within range?
-	if (i >= (uint_t)this->X.cols()) //WARNING: uint_t conversion
+	if (i >= (muint_t)this->X.cols()) //WARNING: muint_t conversion
 		throw CGPMixException("unknown hyperparameter derivative requested in CLinearCFISO");
 	//ok: calculcate:
 	//1. get row i from x1:
 	MatrixXd x1i = X.col(i);
 	//2. get amplitude
-	float_t A = exp((float_t)(2*params(i)));
+	mfloat_t A = exp((mfloat_t)(2*params(i)));
 	//outer product of the corresponding dimension.
 	return A*2.0*(x1i*x1i.transpose());
 }
 
-MatrixXd CCovLinearARD::Kcross_grad_X(const CovarInput& Xstar, const uint_t d) const
+MatrixXd CCovLinearARD::Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const
 {
 	MatrixXd RV = MatrixXd::Zero(Xstar.rows(),X.rows());
 	return RV;
 }
 
-MatrixXd CCovLinearARD::Kdiag_grad_X(const uint_t d) const
+MatrixXd CCovLinearARD::Kdiag_grad_X(const muint_t d) const
 {
 	VectorXd RV = VectorXd::Zero(X.rows());
 	return RV;

@@ -11,7 +11,7 @@
 
 namespace gpmix {
 
-ALikelihood::ALikelihood(uint_t numberParams)
+ALikelihood::ALikelihood(muint_t numberParams)
 {
 	this->numberParams=numberParams;
 }
@@ -22,7 +22,7 @@ ALikelihood::~ALikelihood() {
 
 void ALikelihood::setParams(LikParams& params)
 {
-	if(this->numberParams!=(uint_t)params.rows())//WARNING: uint_t conversion
+	if(this->numberParams!=(muint_t)params.rows())//WARNING: muint_t conversion
 	{
 		ostringstream os;
 		os << "LikParams has wrong dimensions. params.rows() = "<< params.rows() << ", numberParams = "<< numberParams;
@@ -48,8 +48,8 @@ void CLikNormalIso::applyToK(const MatrixXd& X, MatrixXd& K) const
 		throw gpmix::CGPMixException(os.str());
 	}
 
-	float_t sigma_2 = gpmix::exp( (float_t)(2.0*this->getParams()(0)));//WARNING: float_t conversion
-	for (uint_t i = 0; i < (uint_t)K.rows(); ++i) //WARNING (uint_t) conversion
+	mfloat_t sigma_2 = gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
+	for (muint_t i = 0; i < (muint_t)K.rows(); ++i) //WARNING (muint_t) conversion
 	{
 		K(i,i) += sigma_2;
 	}
@@ -57,9 +57,9 @@ void CLikNormalIso::applyToK(const MatrixXd& X, MatrixXd& K) const
 
 MatrixXd CLikNormalIso::K(const MatrixXd& X) const
 {
-	float_t sigma_2 = gpmix::exp( (float_t)(2.0*this->getParams()(0)));//WARNING: float_t conversion
+	mfloat_t sigma_2 = gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
 	MatrixXd K = MatrixXd::Zero(X.rows(),X.rows());
-	for (uint_t i = 0; i < (uint_t)K.rows(); ++i)//WARNING: (uint_t) conversion
+	for (muint_t i = 0; i < (muint_t)K.rows(); ++i)//WARNING: (muint_t) conversion
 	{
 		K(i,i) = sigma_2;
 	}
@@ -68,21 +68,21 @@ MatrixXd CLikNormalIso::K(const MatrixXd& X) const
 
 VectorXd CLikNormalIso::Kdiag(const MatrixXd& X) const
 {
-	float_t sigma_2 = gpmix::exp( (float_t)(2.0*this->getParams()(0)));//WARNING: float_t conversion
+	mfloat_t sigma_2 = gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
 	VectorXd Kdiag(X.rows());
-	for (uint_t i = 0; i < (uint_t)Kdiag.rows(); ++i)//WARNING: (uint_t) conversion
+	for (muint_t i = 0; i < (muint_t)Kdiag.rows(); ++i)//WARNING: (muint_t) conversion
 	{
 		Kdiag(i) = sigma_2;
 	}
 	return Kdiag;
 }
 
-MatrixXd CLikNormalIso::K_grad_params(const MatrixXd& X, const uint_t row) const
+MatrixXd CLikNormalIso::K_grad_params(const MatrixXd& X, const muint_t row) const
 {
-	float_t twoSigma_2 = 2.0*gpmix::exp( (float_t)(2.0*this->getParams()(0)));//WARNING: float_t conversion
+	mfloat_t twoSigma_2 = 2.0*gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
 
 	MatrixXd dK = MatrixXd::Zero(X.rows(),X.rows());
-	for (uint_t i = 0; i < (uint_t)dK.rows(); ++i)//WARNING: (uint_t) conversion
+	for (muint_t i = 0; i < (muint_t)dK.rows(); ++i)//WARNING: (muint_t) conversion
 	{
 		dK(i,i) = twoSigma_2;
 	}

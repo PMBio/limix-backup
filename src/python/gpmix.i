@@ -4,15 +4,18 @@
 #define SWIG_FILE_WITH_INIT
 #define SWIG
 #include "gpmix/types.h"
+#include "gpmix/covar/covariance.h"
+#include "gpmix/covar/linear.h"
 #include "gpmix/LMM/lmm.h"
+//typedef unsigned int uint64_t;
   using namespace gpmix;
 %}
-
+//typedef unsigned int uint_t;
+//typedef unsigned int uint64_t;
 
 /* Get the numpy typemaps */
 %include "numpy.i"
-%include "typemaps.i"
-
+%include "eigen.i"
 
 
 %init %{
@@ -21,7 +24,9 @@
 
 
 
-
+/* numpy wrappers for default wrapping
+   Note: we are not using these. The real wrappers are in eigen.i
+*/
 %apply (short*  IN_ARRAY1, int DIM1) {(short*  series, int size)};
 %apply (int*    IN_ARRAY1, int DIM1) {(int*    series, int size)};
 %apply (long*   IN_ARRAY1, int DIM1) {(long*   series, int size)};
@@ -41,8 +46,13 @@
 %rename(PEER) cSPARSEFA;
 */
 
+
+
 /* Include the header file to be wrapped */
+%include "gpmix/types.h"
 %include "gpmix/LMM/lmm.h"
+%include "gpmix/covar/covariance.h"
+%include "gpmix/covar/linear.h"
 
 
  

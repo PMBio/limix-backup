@@ -15,14 +15,14 @@
 namespace gpmix{
 
 //create random matrix:
-float_t randn(float_t mu=0.0, float_t sigma=1.0);
+mfloat_t randn(mfloat_t mu=0.0, mfloat_t sigma=1.0);
 //helper functions for eigen matrices
 bool isnull(const MatrixXd& m);
 double sum(MatrixXd& m);
 
 
-MatrixXd randn(const uint_t n, const uint_t m);
-MatrixXd Mrand(const uint_t n,const uint_t m);
+MatrixXd randn(const muint_t n, const muint_t m);
+MatrixXd Mrand(const muint_t n,const muint_t m);
 
 
 }

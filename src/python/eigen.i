@@ -1,24 +1,7 @@
 /* -*- C -*-  (not really, but good for syntax highlighting) */
 
-/*
-** Copyright (C) 2008, 2009 Ricard Marxer <email@ricardmarxer.com>
-**                                                                  
-** This program is free software; you can redistribute it and/or modify
-** it under the terms of the GNU General Public License as published by
-** the Free Software Foundation; either version 3 of the License, or   
-** (at your option) any later version.                                 
-**                                                                     
-** This program is distributed in the hope that it will be useful,     
-** but WITHOUT ANY WARRANTY; without even the implied warranty of      
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       
-** GNU General Public License for more details.                        
-**                                                                     
-** You should have received a copy of the GNU General Public License   
-** along with this program; if not, write to the Free Software         
-** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
-*/
 
-%apply float { float_t };
+%apply float { mfloat_t };
 
 %typecheck(SWIG_TYPECHECK_INTEGER)
 	   int, short, long,
@@ -36,9 +19,9 @@
 
 
 %typecheck(SWIG_TYPECHECK_FLOAT) 
-           float_t,
-           const float_t,
-           float_t & {
+           mfloat_t,
+           const mfloat_t,
+           mfloat_t & {
 
   $1 = (PyFloat_Check($input) || PyInt_Check($input) || PyLong_Check($input)) ? 1 : 0;
 
@@ -125,12 +108,12 @@
 
     case PyArray_LONG:
     case PyArray_DOUBLE:
-      (*$1) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<float_t>();
+      (*$1) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
       break;
 
     case PyArray_INT:
     case PyArray_FLOAT:
-      (*$1) = Eigen::Map<MatrixXfscipy>((float32_t*)array_data( in_array ), in_rows, in_cols).cast<float_t>();
+      (*$1) = Eigen::Map<MatrixXfscipy>((float32_t*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
       break;
       
     default:
@@ -245,7 +228,7 @@
     return NULL;
   }
   
-  float_t* out_data = (float_t*)array_data(out_array);
+  mfloat_t* out_data = (mfloat_t*)array_data(out_array);
   Eigen::Map<MatrixXdscipy>(out_data, dims[0], dims[1]) = (*$1);
 
   $result = SWIG_Python_AppendOutput($result, out_array);
@@ -254,7 +237,7 @@
 
 
 %typemap(argout) 
-         float_t* {
+         mfloat_t* {
 
   $result = SWIG_Python_AppendOutput($result, Py_BuildValue("f", $1));
 }

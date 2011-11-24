@@ -25,7 +25,7 @@ MatrixXd CCovSqexpARD::K(const CovarParams params, const CovarInput x1, const Co
 	CovarInput x2_ = this->getX(x2);
 	//exponentiate hyperparams
 	//amplitude
-	float_t A = exp((float_t)(2.0*params(0)));
+	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
 	//lengthscales
 	MatrixXd L = params.block(1,0,params.rows()-1,1).unaryExpr(ptr_fun(exp));
 	//rescale with length
@@ -40,12 +40,12 @@ MatrixXd CCovSqexpARD::K(const CovarParams params, const CovarInput x1, const Co
 
 VectorXd CCovSqexpARD::Kdiag(const CovarParams params, const CovarInput x1) const
 {
-	float_t A = exp((float_t)(2.0*params(0)));
+	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
 	return A*VectorXd::Ones(x1.rows());
 }
 
 
-MatrixXd CCovSqexpARD::Kgrad_theta(const CovarParams params, const CovarInput x1, const uint_t i) const
+MatrixXd CCovSqexpARD::Kgrad_theta(const CovarParams params, const CovarInput x1, const muint_t i) const
 {
 	CovarInput x1_ = this->getX(x1);
 	MatrixXd RV = K(params,x1,x1);
@@ -58,7 +58,7 @@ MatrixXd CCovSqexpARD::Kgrad_theta(const CovarParams params, const CovarInput x1
 		//1. get row i from x1:
 		MatrixXd x1i = x1.row(i);
 		//reweight with lengthscale
-		x1i.array()/= exp((float_t)params(i));
+		x1i.array()/= exp((mfloat_t)params(i));
 		//2. calculate all squqared distance
 		MatrixXd sq = sq_dist(x1i,x1i);
 		//3. elementwise product
@@ -67,12 +67,12 @@ MatrixXd CCovSqexpARD::Kgrad_theta(const CovarParams params, const CovarInput x1
 	return RV;
 }
 
-MatrixXd CCovSqexpARD::Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const uint_t d) const
+MatrixXd CCovSqexpARD::Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const muint_t d) const
 {
 	return MatrixXd::Zero(x1.rows(),x2.rows());
 }
 
-MatrixXd CCovSqexpARD::Kgrad_xdiag(const CovarParams params, const CovarInput x1, const uint_t d) const
+MatrixXd CCovSqexpARD::Kgrad_xdiag(const CovarParams params, const CovarInput x1, const muint_t d) const
 {
 	return VectorXd(x1.rows());
 }
