@@ -67,16 +67,10 @@ public:
 	virtual void setParams(CovarParams& params);
 
 	//set X to a new value
-	inline void setX(CovarInput& X);
-
-	void setX2(const MatrixXd& X)
-	{
-		this->X = X;
-	}
-
-
+	inline void setX(const CovarInput& X);
 
 	//get the X
+	inline void getX(CovarInput* Xout) const;
 	inline CovarInput getX() const;
 
 	inline muint_t getDimX() const {return (muint_t)this->X.cols();}
@@ -99,11 +93,19 @@ public:
 	}
 
 	//set X to a new value
-	inline void ACovarianceFunction::setX(CovarInput& X)
+	inline void ACovarianceFunction::setX(const CovarInput& X)
 	{
 		this->X = X;
 		this->insync = false;
 	}
+
+
+	inline void ACovarianceFunction::getX(CovarInput* Xout) const
+	{
+		(*Xout).resize(this->X.rows(),this->X.cols());
+		(*Xout) = this->X;
+	}
+
 
 	inline CovarInput ACovarianceFunction::getX() const
 	{
