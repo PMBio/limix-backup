@@ -10,7 +10,7 @@
 
 namespace gpmix {
 
-ACovarianceFunction::ACovarianceFunction(uint_t numberParams)
+ACovarianceFunction::ACovarianceFunction(muint_t numberParams)
 {
 	this->numberParams =numberParams;
 	this->insync = false;
@@ -39,7 +39,7 @@ VectorXd ACovarianceFunction::Kdiag() const
 //set the parameters to a new value.
 inline void ACovarianceFunction::setParams(CovarParams& params)
 {
-	if ((uint_t)params.cols()!=this->getNumberParams())//WARNING: uint_t conversion
+	if ((muint_t)params.cols()!=this->getNumberParams())//WARNING: muint_t conversion
 	{
 		ostringstream os;
 		os << "Wrong number of params for covariance funtion "<< this->getName() <<". numberParams = "<< this->getNumberParams() << ", params.cols() = "<< params.cols();
@@ -51,7 +51,7 @@ inline void ACovarianceFunction::setParams(CovarParams& params)
 
 /*
 //gradcheck functions for covaraince classes
-bool ACovarianceFunction::check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const uint_t n_rows, double relchange, double threshold)
+bool ACovarianceFunction::check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const muint_t n_rows, double relchange, double threshold)
 {
 	//1. sample params
 	CovarParams params = randn(covar.getHyperparams(), 1);
@@ -61,7 +61,7 @@ bool ACovarianceFunction::check_covariance_Kgrad_theta(const ACovarianceFunction
 }
 
 
-bool ACovarianceFunction::check_covariance_Kgrad_x(const ACovarianceFunction & covar, const uint_t n_rows, double relchange, double threshold)
+bool ACovarianceFunction::check_covariance_Kgrad_x(const ACovarianceFunction & covar, const muint_t n_rows, double relchange, double threshold)
 {
 	//1. sample params
 	CovarParams params = randn(covar.getHyperparams(),1);
@@ -75,13 +75,13 @@ bool ACovarianceFunction::check_covariance_Kgrad_x(const ACovarianceFunction & c
 
 bool ACovarianceFunction::check_covariance_Kgrad_theta(const ACovarianceFunction & covar, const CovarParams params, const CovarInput x, double relchange, double threshold)
 {
-	float_t RV=0;
+	mfloat_t RV=0;
 	//copy of parameter vector
 	CovarParams L = params;
 	//dimensions
-	for(int_t i=0;i<L.rows();i++)
+	for(mint_t i=0;i<L.rows();i++)
 {
-	float_t change = relchange*L(i);
+	mfloat_t change = relchange*L(i);
 			change = max(change,1E-5);
 	L(i) = params(i) + change;
 	MatrixXd Lplus = covar.K(L,x);
@@ -98,7 +98,7 @@ bool ACovarianceFunction::check_covariance_Kgrad_theta(const ACovarianceFunction
 
 bool ACovarianceFunction::check_covariance_Kgrad_x(const ACovarianceFunction & covar, const CovarParams params, const CovarInput x, double relchange, double threshold)
 {
-	float_t RV=0;
+	mfloat_t RV=0;
 	//copy inputs for which we calculate gradients
 	CovarInput xL = x;
 	for (int ic=0;ic<x.cols();ic++)
@@ -107,7 +107,7 @@ bool ACovarianceFunction::check_covariance_Kgrad_x(const ACovarianceFunction & c
 	MatrixXd Kgrad_x = covar.Kgrad_x(params,xL,xL,ic);
 	for (int ir=0;ir<x.rows();ir++)
 	{
-		float_t change = relchange*x(ir,ic);
+		mfloat_t change = relchange*x(ir,ic);
 		change = max(change,1E-5);
 		xL(ir,ic) += change;
 		MatrixXd Lplus = covar.K(params,xL);

@@ -7,17 +7,27 @@
 //============================================================================
 
 #include <iostream>
-#include "gpmix/gp/gp_base.h"
+#define SWIG_FILE_WITH_INIT
+#define SWIG
 #include "gpmix/types.h"
-#include "gpmix/utils/matrix_helper.h"
+#include "gpmix/covar/covariance.h"
 #include "gpmix/covar/linear.h"
+#include "gpmix/LMM/lmm.h"
+  using namespace gpmix;
+
 using namespace std;
 using namespace gpmix;
 
 int main() {
 
+	//CCovLinearISO cov();
+
+	//gpmix::CCovLinearISO* cov = new gpmix::CCovLinearISO();
+	std::cout << "hi";
+
+
 	/*
-	MatrixXd X = randn((uint_t) 10,(uint_t)3);
+	MatrixXd X = randn((muint_t) 10,(muint_t)3);
 	CCovLinearISO covar(3);
 
 	VectorXd hyperparams = VectorXd (1);

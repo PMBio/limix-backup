@@ -29,17 +29,17 @@ namespace gpmix {
 		{
 			throw CGPMixException("Unaligned input dimensons in FixedCF");
 		}
-		float_t A = (float_t)std::exp((long double) (2.0*params(0)));
+		mfloat_t A = (mfloat_t)std::exp((long double) (2.0*params(0)));
 		return A*this->K0;
 	}
 
 	VectorXd CFixedCF::Kdiag(const CovarParams params,const CovarInput x1) const
 	{
-		float_t A = (float_t)std::exp((long double) (2.0*params(0)));
+		mfloat_t A = (mfloat_t)std::exp((long double) (2.0*params(0)));
 		return A*this->K0.diagonal();
 	}
 
-	MatrixXd CFixedCF::Kgrad_theta(const CovarParams params, const CovarInput x1,const uint_t i) const
+	MatrixXd CFixedCF::Kgrad_theta(const CovarParams params, const CovarInput x1,const muint_t i) const
 	{
 		if(i==0)
 		{
@@ -51,14 +51,14 @@ namespace gpmix {
 			throw CGPMixException("unknown hyperparameter derivative requested in CLinearCFISO");
 	}
 
-	MatrixXd CFixedCF::Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const uint_t d) const
+	MatrixXd CFixedCF::Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const muint_t d) const
 	{
 		//create empty matrix
 		MatrixXd RV = MatrixXd::Zero(x1.rows(),x2.rows());
 		return RV;
 	}
 
-	MatrixXd CFixedCF::Kgrad_xdiag(const CovarParams params, const CovarInput x1, const uint_t d) const
+	MatrixXd CFixedCF::Kgrad_xdiag(const CovarParams params, const CovarInput x1, const muint_t d) const
 	{
 		VectorXd RV = VectorXd::Zero(x1.rows());
 		return RV;

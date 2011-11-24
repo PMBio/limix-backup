@@ -15,10 +15,10 @@ namespace gpmix {
 
 class CCovSqexpARD: public gpmix::ACovarianceFunction {
 public:
-	CCovSqexpARD(const uint_t dimensions): ACovarianceFunction(dimensions + 1)
+	CCovSqexpARD(const muint_t dimensions): ACovarianceFunction(dimensions + 1)
 	{
 	}
-	//CCovSqexpARD(const uint_t dimensions_i0,const uint_t dimensions_i1) : ACovarianceFunction(dimensions_i0,dimensions_i1)
+	//CCovSqexpARD(const muint_t dimensions_i0,const muint_t dimensions_i1) : ACovarianceFunction(dimensions_i0,dimensions_i1)
 	//{
 	//	hyperparams = 1+(dimensions_i1-dimensions_i0);
 	//}
@@ -26,9 +26,9 @@ public:
 		{ return "CovSqexpARD";}
 	MatrixXd K(const CovarParams params, const CovarInput x1, const CovarInput x2) const;
 	VectorXd Kdiag(const CovarParams params, const CovarInput x1) const;
-	MatrixXd Kgrad_theta(const CovarParams params, const CovarInput x1, const uint_t i) const;
-	MatrixXd Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const uint_t d) const;
-	MatrixXd Kgrad_xdiag(const CovarParams params, const CovarInput x1, const uint_t d) const;
+	MatrixXd Kgrad_theta(const CovarParams params, const CovarInput x1, const muint_t i) const;
+	MatrixXd Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const muint_t d) const;
+	MatrixXd Kgrad_xdiag(const CovarParams params, const CovarInput x1, const muint_t d) const;
 
 	virtual ~CCovSqexpARD();
 };

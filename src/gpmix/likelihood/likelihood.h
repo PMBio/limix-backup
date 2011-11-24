@@ -20,12 +20,12 @@ class ALikelihood {
 	//indicator if the class is synced with the cache
 	bool insync;
 	LikParams params;
-	uint_t numberParams;
+	muint_t numberParams;
 public:
-	ALikelihood(const uint_t numberParams);
+	ALikelihood(const muint_t numberParams);
 	virtual ~ALikelihood();
 	virtual void applyToK(const MatrixXd& X, MatrixXd& K) const = 0;
-	virtual MatrixXd K_grad_params(const MatrixXd& X, const uint_t row) const = 0;
+	virtual MatrixXd K_grad_params(const MatrixXd& X, const muint_t row) const = 0;
 	virtual MatrixXd K(const MatrixXd& X) const = 0;
 	virtual VectorXd Kdiag(const MatrixXd& X) const = 0;
 	//class information
@@ -43,7 +43,7 @@ public:
 	//indicate that the cache has been cleared and is synced again
 	inline void makeSync() { insync = true;}
 
-	inline uint_t getNumberParams() const {return this->numberParams;};
+	inline muint_t getNumberParams() const {return this->numberParams;};
 };
 
 class CLikNormalIso : public ALikelihood {
@@ -51,7 +51,7 @@ public:
 	CLikNormalIso();
 	~CLikNormalIso();
 	void applyToK(const MatrixXd& X, MatrixXd& K) const;
-	MatrixXd K_grad_params(const MatrixXd& X, const uint_t row) const;
+	MatrixXd K_grad_params(const MatrixXd& X, const muint_t row) const;
 	MatrixXd K(const MatrixXd& X) const;
 	VectorXd Kdiag(const MatrixXd& X) const;
 	//class information

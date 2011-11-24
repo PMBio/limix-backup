@@ -24,32 +24,32 @@ using namespace std;
 int main() {
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 
-	uint_t nX=100;
+	muint_t nX=100;
 
-	float_t xmin=1.0;
-	float_t xmax = 2.5*PI;
+	mfloat_t xmin=1.0;
+	mfloat_t xmax = 2.5*PI;
 
-	uint_t ntrain =15;
+	muint_t ntrain =15;
 
 	gpmix::MatrixXd x = gpmix::VectorXd::LinSpaced(ntrain,xmin,xmax);
-	uint_t dimX = x.cols();
+	muint_t dimX = x.cols();
 	gpmix::MatrixXd X = gpmix::VectorXd::LinSpaced(nX,0,10.0);
 
-	//float_t C = 2.0;
-	float_t sigma = 0.01;
-	//float_t b = 0.0;
+	//mfloat_t C = 2.0;
+	mfloat_t sigma = 0.01;
+	//mfloat_t b = 0.0;
 	gpmix::MatrixXd y(ntrain,1);
 
-	for (uint_t i=0;i<ntrain;++i)
+	for (muint_t i=0;i<ntrain;++i)
 	{
-		y(i) = sin((float_t)x(i));//WARNING: cast as float_t
+		y(i) = sin((mfloat_t)x(i));//WARNING: cast as mfloat_t
 	}
 
 
 	//y+=x.sin();
-	uint_t dimY = y.cols();
+	muint_t dimY = y.cols();
 	y += sigma * gpmix::randn(ntrain,dimY);
-	float_t meanY = y.mean();
+	mfloat_t meanY = y.mean();
 
 	y.array()-=meanY;
 
@@ -91,7 +91,7 @@ int main() {
 	//gp.set_params(gpparams);
 
 	//evaluate negative log-likelihood
-	float_t nLL = gp.LML();
+	mfloat_t nLL = gp.LML();
 
 	//evaluate gradient
 	//gpmix::CGPHyperParams grad = gp.LMLgrad();
@@ -109,7 +109,7 @@ int main() {
 	cout << "done."<<dimX<<endl;
 	cout << "nLL: "<<nLL <<endl;
 	/*gpmix::VectorXs names = grad.getNames();
-	for (uint_t i = 0; i< (uint_t)names.rows(); ++i)
+	for (muint_t i = 0; i< (muint_t)names.rows(); ++i)
 	{
 		string curname =names(i);
 		gpmix::MatrixXd curgrad = grad.get(curname);

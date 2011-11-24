@@ -81,7 +81,7 @@ namespace gpmix {
 		if (this->DKinv_KinvYYKinv.cols()==0)
 		{
 			MatrixXd KiY = this->getKinvY();
-			this->DKinv_KinvYYKinv = ((float_t)this->get_target_dimension())*this->getKinv() - KiY * KiY.transpose();//WARNING:conversion uint64_t to double
+			this->DKinv_KinvYYKinv = ((mfloat_t)this->get_target_dimension())*this->getKinv() - KiY * KiY.transpose();//WARNING:conversion uint64_t to double
 		}
 		return this->DKinv_KinvYYKinv;
 	}
@@ -119,26 +119,26 @@ namespace gpmix {
 //		this->params = hyperparams;
 //	}
 
-	float_t CGPbase::LML()
+	mfloat_t CGPbase::LML()
 	{
 		//update the covariance parameters
 		Eigen::LDLT<gpmix::MatrixXd>chol = CGPbase::getCholK();
 
-		float_t lml_det = 0.0;
-		for (uint_t i = 0; i<(uint_t)chol.vectorD().rows(); ++i)
+		mfloat_t lml_det = 0.0;
+		for (muint_t i = 0; i<(muint_t)chol.vectorD().rows(); ++i)
 		{
-			lml_det+=gpmix::log((float_t)chol.vectorD()(i));//WARNING: float_t cast
+			lml_det+=gpmix::log((mfloat_t)chol.vectorD()(i));//WARNING: mfloat_t cast
 		}
       
-		float_t lml_quad = 0.0;
+		mfloat_t lml_quad = 0.0;
 		MatrixXd KinvY = this->getKinvY();
 		//loop over independent columns of Y:
-		for (uint_t colY=0; colY<(uint_t)this->Y.cols();++colY)
+		for (muint_t colY=0; colY<(muint_t)this->Y.cols();++colY)
 		{
 			lml_quad += this->Y.col(colY).transpose() * KinvY.col(colY);
 		}
 
-		float_t lml_const = this->Y.cols() * this->Y.rows() * gpmix::log((2.0 * PI));
+		mfloat_t lml_const = this->Y.cols() * this->Y.rows() * gpmix::log((2.0 * PI));
 
 		return 0.5 * (lml_quad + this->Y.cols() * lml_det + lml_const);
 	}
@@ -150,7 +150,7 @@ namespace gpmix {
 		CovarParams grad_covar(covar.getNumberParams());
 
 		MatrixXd W = this->getDKinv_KinvYYKinv();
-		for(uint_t row = 0 ; row<(uint_t)grad_covar.rows(); ++row)//WARNING: conversion
+		for(muint_t row = 0 ; row<(muint_t)grad_covar.rows(); ++row)//WARNING: conversion
 		{
 			MatrixXd Kd = this->covar.K_grad_param(row);
 			grad_covar(row) = 0.5*(Kd.array() * W.array()).sum();
@@ -163,7 +163,7 @@ namespace gpmix {
 		LikParams grad_lik(lik.getNumberParams());
 
 		MatrixXd W = this->getDKinv_KinvYYKinv();
-		for(uint_t row = 0 ; row<lik.getNumberParams(); ++row)	//WARNING: conversion
+		for(muint_t row = 0 ; row<lik.getNumberParams(); ++row)	//WARNING: conversion
 		{
 			MatrixXd Kd = this->lik.K_grad_params(this->covar.getX(), row);
 			grad_lik(row) = 0.5*(Kd.array() * W.array()).sum();

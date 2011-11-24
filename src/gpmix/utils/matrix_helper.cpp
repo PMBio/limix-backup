@@ -21,9 +21,9 @@ bool isnull(const MatrixXd& m)
 #define PI 3.14159265358979323846
 #endif
 
-float_t randn(float_t mu, float_t sigma) {
+mfloat_t randn(mfloat_t mu, mfloat_t sigma) {
 	static bool deviateAvailable=false;	//	flag
-	static float_t storedDeviate;			//	deviate from previous calculation
+	static mfloat_t storedDeviate;			//	deviate from previous calculation
 	double dist, angle;
 
 	//	If no deviate has been stored, the standard Box-Muller transformation is
@@ -41,7 +41,7 @@ float_t randn(float_t mu, float_t sigma) {
 		deviateAvailable=true;
 
 		//	calcaulate return second deviate
-		return (float_t)(dist * sin(angle) * sigma + mu);
+		return (mfloat_t)(dist * sin(angle) * sigma + mu);
 	}
 
 	//	If a deviate is available from a previous call to this function, it is
@@ -105,12 +105,12 @@ void matrix2array(const MatrixXd m,float64_t** matrix, int32_t* rows, int32_t*co
 */
 
 
-MatrixXd randn(const uint_t n, const uint_t m)
+MatrixXd randn(const muint_t n, const muint_t m)
 /* create a randn matrix, i.e. matrix of Gaussian distributed random numbers*/
 {
 	MatrixXd rv(n,m);
-	for (uint_t i=0; i<n; i++)
-		for (uint_t j=0; j<m; j++) {
+	for (muint_t i=0; i<n; i++)
+		for (muint_t j=0; j<m; j++) {
 			double r = randn(0.0,1.0);
 			rv(i,j) = r;
 		}
@@ -118,11 +118,11 @@ MatrixXd randn(const uint_t n, const uint_t m)
 }
 
 
-MatrixXd Mrandrand(const uint_t n,const uint_t m)
+MatrixXd Mrandrand(const muint_t n,const muint_t m)
 {
 	MatrixXd rv(n,m);
-	for (uint_t i=0;i<n;i++)
-		for(uint_t j=0;j<m;j++)
+	for (muint_t i=0;i<n;i++)
+		for(muint_t j=0;j<m;j++)
 		{
 			rv(i,j) = ((double)rand())/RAND_MAX;
 		}

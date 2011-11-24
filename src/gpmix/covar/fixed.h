@@ -22,9 +22,9 @@ public:
 	VectorXd Kdiag(const CovarParams params, const CovarInput x1) const;
 
 
-	MatrixXd Kgrad_theta(const CovarParams params, const CovarInput x1, const uint_t i) const;
-	MatrixXd Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const uint_t d) const;
-	MatrixXd Kgrad_xdiag(const CovarParams params, const CovarInput x1, const uint_t d) const;
+	MatrixXd Kgrad_theta(const CovarParams params, const CovarInput x1, const muint_t i) const;
+	MatrixXd Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const muint_t d) const;
+	MatrixXd Kgrad_xdiag(const CovarParams params, const CovarInput x1, const muint_t d) const;
 };
 
 } /* namespace gpmix */

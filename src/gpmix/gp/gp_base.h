@@ -39,12 +39,12 @@ public:
 	{
 		if (this->param_array.cols()==0)
 		{
-			uint_t nparams = this->getNparams();
+			muint_t nparams = this->getNparams();
 
 			this->param_array = VectorXd(nparams);
-			uint_t ncurrent=0;
+			muint_t ncurrent=0;
 			map<string,MatrixXd>::iterator it=param_map.begin();
-			for (uint_t i=0; i<param_map.size();++i)
+			for (muint_t i=0; i<param_map.size();++i)
 			{
 				ncurrent+=(*it).second.array().rows();
 				this->param_array.block(ncurrent,0,(*it).second.array().rows(),1)=(*it).second.array();
@@ -55,11 +55,11 @@ public:
 		return param_array;
 	}
 
-	uint_t getNparams()
+	muint_t getNparams()
 	{
-		uint_t nparams=0;
+		muint_t nparams=0;
 		map<string,MatrixXd>::iterator it=param_map.begin();
-		for (uint_t i=0; i<param_map.size();++i)
+		for (muint_t i=0; i<param_map.size();++i)
 		{
 			nparams+=(*it).second.array().rows();
 			++it;
@@ -69,9 +69,9 @@ public:
 
 	void setParamArray(VectorXd& param)
 	{
-		uint_t nparams = this->getNparams();
+		muint_t nparams = this->getNparams();
 
-		if ((uint_t)param.rows()!= nparams)//WARNING: uint_t conversion
+		if ((muint_t)param.rows()!= nparams)//WARNING: muint_t conversion
 		{
 			ostringstream os;
 			os << "Parameter dimensions don't match. param.rows() = "<< param.rows() << ", number parameters = "<< nparams;
@@ -81,9 +81,9 @@ public:
 		this->param_array = param;
 
 		this->param_array = VectorXd(nparams);
-		uint_t ncurrent=0;
+		muint_t ncurrent=0;
 		map<string,MatrixXd>::iterator it=param_map.begin();
-		for (uint_t i=0; i<param_map.size();++i)
+		for (muint_t i=0; i<param_map.size();++i)
 		{
 			ncurrent+=(*it).second.array().rows();
 			(*it).second.array() = this->param_array.block(ncurrent,0,(*it).second.array().rows(),1);
@@ -106,7 +106,7 @@ public:
 	{
 		VectorXs ret = VectorXs(param_map.size());
 		map<string,MatrixXd>::iterator it=param_map.begin();
-		for (uint_t i=0; i<param_map.size();++i)
+		for (muint_t i=0; i<param_map.size();++i)
 		{
 			ret(i)=(*it).first;
 			++it;
@@ -157,12 +157,12 @@ public:
 
 	//virtual void set_params(CGPHyperParams& hyperparams);
 
-	virtual float_t LML();        //the log-likelihood (+ log-prior)
+	virtual mfloat_t LML();        //the log-likelihood (+ log-prior)
 	virtual CovarParams LMLgrad_covar();
 	virtual LikParams LMLgrad_lik();
 
-	inline uint_t get_samplesize(){return this->Y.rows();} //get the number of training data samples
-	inline uint_t get_target_dimension(){return this->Y.cols();} //get the dimension of the target data
+	inline muint_t get_samplesize(){return this->Y.rows();} //get the number of training data samples
+	inline muint_t get_target_dimension(){return this->Y.cols();} //get the dimension of the target data
 
 	//virtual MatrixXd predictMean(MatrixXd& Xstar);
 	//virtual MatrixXd predictVar(MatrixXd& Xstar);
