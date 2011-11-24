@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(GPMix)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 #build options
 #PYTHON off by default
@@ -16,6 +17,10 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 SET(CMAKE_OSX_ARCHITECTURES "i386;x86_64")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif (BUILD_UNIVERSAL)
+
+#optimization for architecture:
+include (OptimizeForArchitecture)
+include (AddCompilerFlag)
 
 ## Documentation for final package
 # manual installation paths
@@ -77,10 +82,14 @@ set(CMAKE_SWIG_FLAGS "")
 set(CMAKE_MODULE_PATH "${GPMix_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 add_definitions(-g -Wextra -D_BSD_SOURCE)
+#optimize automatically for architecture:
+OptimizeForArchitecture()
 #fPic while compiling on
 #this seems to be needed on some linux systems
 #set(CMAKE_CXX_FLAGS "-fPIC -O3 -march=core2")
-set(CMAKE_CXX_FLAGS "-fPIC")
+#set(CMAKE_CXX_FLAGS "-fPIC")
+#AddCompilerFlag("-fPIC")
+AddCompilerFlag("-O3")
 
 #includes
 include_directories(./External)

@@ -40,15 +40,16 @@ typedef Eigen::Matrix<double, Eigen::Dynamic,1> PVector;
 inline double nLLeval(MatrixXd & F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
 inline double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals=100,double ldeltamin=-10,double ldeltamax=10);
 
-void train_associations_SingleSNP(MatrixXd& PV, MatrixXd& LL, MatrixXd& ldelta, const MatrixXd& X,const MatrixXd& Y,const MatrixXd& U, const MatrixXd& S, const MatrixXd& C, int numintervals, double ldeltamin, double ldeltamax);
-//CLMM class which handles LMM computations
-
 
 
 #endif
 //SWIG friendly interfaces:
 void train_associations(MatrixXd* pvals,const MatrixXd& X,const MatrixXd& Y,const MatrixXd& K,const MatrixXd& C,int numintervalsAlt=0,double ldeltaminAlt=-1,double ldeltamaxAlt=+1,int numintervals0=100,double ldeltamin0=-5,double ldeltamax0=+5);
 void train_interactions(MatrixXd* pvals,const MatrixXd& X,const MatrixXd& Y,const MatrixXd& K,const MatrixXd& C,const MatrixXd& I,int numintervalsAlt,double ldeltaminAlt,double ldeltamaxAlt,int numintervals0,double ldeltamin0,double ldeltamax0,bool refit_delta0_snp, bool use_ftest);
+
+void train_associations_SingleSNP(MatrixXd* PV, MatrixXd* LL, MatrixXd* ldelta, const MatrixXd& X,const MatrixXd& Y,const MatrixXd& U, const MatrixXd& S, const MatrixXd& C, int numintervals, double ldeltamin, double ldeltamax);
+//CLMM class which handles LMM computations
+
 
 void test(const MatrixXd& test);
 void test2(const MatrixXd& test, MatrixXd* out);
