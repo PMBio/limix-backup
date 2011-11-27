@@ -20,17 +20,13 @@ public:
 
 	~CCovLinearISO();
 
-	//compute K(Xstar,X)
-	MatrixXd Kcross( const CovarInput& Xstar ) const;
-	VectorXd Kdiag() const;
-	MatrixXd K_grad_X(const muint_t d) const;
-	MatrixXd K_grad_param(const muint_t i) const;
+	//overloaded pure virtual functions:
+	void Kcross(MatrixXd* out, const CovarInput& Xstar ) const;
+	void Kgrad_param(MatrixXd* out,const muint_t i) const;
+	void Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const;
+	void Kdiag_grad_X(MatrixXd* out,const muint_t d) const;
 
-	//gradient of K(Xstar,X)
-	virtual MatrixXd Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const;
-	virtual MatrixXd Kdiag_grad_X(const muint_t d) const;
-
-	//class information
+		//class information
 	inline string getName() const {return "CCovLinearISO";};
 
 };

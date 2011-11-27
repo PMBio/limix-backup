@@ -152,7 +152,7 @@ namespace gpmix {
 		MatrixXd W = this->getDKinv_KinvYYKinv();
 		for(muint_t row = 0 ; row<(muint_t)grad_covar.rows(); ++row)//WARNING: conversion
 		{
-			MatrixXd Kd = this->covar.K_grad_param(row);
+			MatrixXd Kd = this->covar.Kgrad_param(row);
 			grad_covar(row) = 0.5*(Kd.array() * W.array()).sum();
 		}
 		return grad_covar;

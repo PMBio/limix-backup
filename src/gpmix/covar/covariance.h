@@ -36,86 +36,131 @@ public:
 	ACovarianceFunction(const muint_t numberParams=0);
 	//destructors
 	virtual ~ACovarianceFunction();
+
 	//getters and setters
-
-	//computeK(X,X)
-	virtual MatrixXd K() const;
-
-	//compute K(Xstar,X)
-	virtual MatrixXd Kcross( const CovarInput& Xstar ) const = 0;
-	virtual VectorXd Kdiag() const = 0;
-	virtual MatrixXd K_grad_X(const muint_t d) const = 0;
-	virtual MatrixXd K_grad_param(const muint_t i) const = 0;
-
-	//gradient of K(Xstar,X)
-	virtual MatrixXd Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const = 0;
-	virtual MatrixXd Kdiag_grad_X(const muint_t d) const = 0;
-
-	//class information
 	virtual string getName() const = 0;
 
 	//get the Vector of hyperparameters
+	inline void getParams(CovarParams* out){std::cout << params; (*out) = params;};
 	inline CovarParams getParams() const {return params;}
-
 	//check if object is  insync with cache
 	inline bool isInSync() const {return insync;}
-
 	//indicate that the cache has been cleared and is synced again
 	inline void makeSync() { insync = true;}
-
 	//set the parameters to a new value.
-	virtual void setParams(CovarParams& params);
-
+	virtual void setParams(const CovarParams& params);
 	//set X to a new value
 	inline void setX(const CovarInput& X);
-
 	//get the X
 	inline void getX(CovarInput* Xout) const;
 	inline CovarInput getX() const;
-
-	inline muint_t getDimX() const {return (muint_t)this->X.cols();}
+	inline muint_t getDimX() const {return (muint_t)(this->X.cols());
+	}
 	inline muint_t getNumberParams() const;
 
-    /* Static methods
+	//virtual functions that have trivial implementations
+	virtual void K(MatrixXd* out) const;
+	virtual void Kdiag(VectorXd* out) const;
+	virtual void Kgrad_X(MatrixXd* out,const muint_t d) const;
+
+	//pure functions that need to be implemented
+	virtual void Kcross(MatrixXd* out, const CovarInput& Xstar ) const = 0;
+	virtual void Kgrad_param(MatrixXd* out,const muint_t i) const =0;
+	virtual void Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const = 0;
+	virtual void Kdiag_grad_X(MatrixXd* out,const muint_t d) const = 0;
+
+
+	//Inline convenience functions:
+	inline virtual MatrixXd K() const;
+	inline virtual VectorXd Kdiag() const;
+	inline virtual MatrixXd Kcross( const CovarInput& Xstar ) const;
+	inline virtual MatrixXd Kgrad_param(const muint_t i) const;
+	inline virtual MatrixXd Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const;
+	inline virtual MatrixXd Kgrad_X(const muint_t d) const;
+	inline virtual MatrixXd Kdiag_grad_X(const muint_t d) const;
+
+
+	/* Static methods*/
     //grad checking functions
-    static bool check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const CovarParams params, const CovarInput x,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
-    static bool check_covariance_Kgrad_x(const ACovarianceFunction& covar,const CovarParams params, const CovarInput x,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
-    //same, however auto generating random parameters:
-    static bool check_covariance_Kgrad_theta(const ACovarianceFunction& covar,const muint_t n_rows = 100,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
-    static bool check_covariance_Kgrad_x(const ACovarianceFunction& covar,const muint_t n_rows = 100,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
-    */
+    static bool check_covariance_Kgrad_theta(ACovarianceFunction& covar,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
+    static bool check_covariance_Kgrad_x(ACovarianceFunction& covar,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
 };
 
 
-	inline void test5(const MatrixXd& test)
-	{
-		std::cout << test;
-	}
 
-	//set X to a new value
-	inline void ACovarianceFunction::setX(const CovarInput& X)
-	{
-		this->X = X;
-		this->insync = false;
-	}
+/*Inline functions*/
+inline MatrixXd ACovarianceFunction::K() const
+{
+	MatrixXd RV;
+	K(&RV);
+	return RV;
+}
 
-
-	inline void ACovarianceFunction::getX(CovarInput* Xout) const
-	{
-		(*Xout).resize(this->X.rows(),this->X.cols());
-		(*Xout) = this->X;
-	}
+inline VectorXd ACovarianceFunction::Kdiag() const
+{
+	VectorXd RV;
+	Kdiag(&RV);
+	return RV;
+}
 
 
-	inline CovarInput ACovarianceFunction::getX() const
-	{
-		return this->X;
-	}
+inline MatrixXd ACovarianceFunction::Kcross(const CovarInput & Xstar) const
+{
+	MatrixXd RV;
+	Kcross(&RV,Xstar);
+	return RV;
+}
 
-	inline muint_t ACovarianceFunction::getNumberParams() const
-	{
-		return this->numberParams;
-	}
+inline MatrixXd ACovarianceFunction::Kgrad_param(const muint_t i) const
+{
+	MatrixXd RV;
+	Kgrad_param(&RV,i);
+	return RV;
+}
+
+inline MatrixXd ACovarianceFunction::Kcross_grad_X(const CovarInput & Xstar, const muint_t d) const
+{
+	MatrixXd RV;
+	Kcross_grad_X(&RV,Xstar,d);
+	return RV;
+}
+
+inline MatrixXd ACovarianceFunction::Kgrad_X(const muint_t d) const
+{
+	MatrixXd RV;
+	Kgrad_X(&RV,d);
+	return RV;
+}
+
+inline MatrixXd ACovarianceFunction::Kdiag_grad_X(const muint_t d) const
+{
+	MatrixXd RV;
+	Kdiag_grad_X(&RV,d);
+	return RV;
+}
+
+
+inline void ACovarianceFunction::setX(const CovarInput & X)
+{
+	this->X = X;
+	this->insync = false;
+}
+
+inline void ACovarianceFunction::getX(CovarInput *Xout) const
+{
+	(*Xout).resize(this->X.rows(), this->X.cols());
+	(*Xout) = this->X;
+}
+
+inline CovarInput ACovarianceFunction::getX() const
+{
+	return this->X;
+}
+
+inline muint_t ACovarianceFunction::getNumberParams() const
+{
+	return this->numberParams;
+}
 
 
 //gradcheck tools for covaraince functions:

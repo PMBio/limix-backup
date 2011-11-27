@@ -1,61 +1,99 @@
-#ifndef LMM_H
-#define LMM_H
+/*
+ * ALmm.h
+ *
+ *  Created on: Nov 27, 2011
+ *      Author: stegle
+ */
 
+#ifndef ALMM_H_
+#define ALMM_H_
 
-
-#include <stdlib.h>
-#include <math.h>
-#include <iostream>
-#include <stdio.h>
-#include <cmath>
-
-
-#include "Eigen/Eigen"
 #include "gpmix/types.h"
-#include "gpmix/utils/mathfunctions.h"
-#include "gpmix/utils/gamma.h"
-#include "gpmix/utils/beta.h"
-#include "gpmix/utils/fisherf.h"
-#include "gpmix/utils/brentc.h"
 
 
 namespace gpmix {
 
-#ifndef SWIG
-//global variable
-const double _PI = (double)2.0*std::acos((double)0.0);
-const double _log2pi=std::log((double)2.0*_PI);
+//Abstract base class for LMM models*/
+class ALmm {
+protected:
+	//Data and sample information
+	MatrixXd snps;
+	MatrixXd pheno;
+	//number of samples, snps and pheno
+	muint_t num_samples,num_pheno,num_snps;
+	//common settings
+	muint_t num_intervalsAlt,num_intervals0;
+	mfloat_t ldeltamin0,ldeltamax0;
+	mfloat_t ldeltamin,ldeltamax;
+	//results:
+	MatrixXd pv;
+
+public:
+	ALmm();
+	virtual ~ALmm();
+
+	//setter fors data:
+	void setData(MatrixXd& snps,MatrixXd& pheno);
+    mfloat_t getLdeltamin() const;
+    mfloat_t getLdeltamin0() const;
+    muint_t getNumIntervalsAlt() const;
+    muint_t getNumSamples() const;
+    void setLdeltamin(mfloat_t ldeltamin);
+    void setLdeltamin0(mfloat_t ldeltamin0);
+    void setNumIntervalsAlt(muint_t num_intervalsAlt);
+    void setNumSamples(muint_t num_samples);
+
+    //getters:
+    void getPheno(MatrixXd* out) const;
+    void getPv(MatrixXd* out) const;
+    void getSnps(MatrixXd * out) const;
+
+    //covenience versions:
+    MatrixXd getPheno() const;
+    MatrixXd getPv() const;
+    MatrixXd getSnps() const;
+
+    //virtual function
+    virtual void process() =0;
+
+};
+
+
+//Standard mixed liner model
+class CLmm : public ALmm
+{
+protected:
+	MatrixXd K;
+public:
+	CLmm();
+	virtual ~CLmm();
+
+	//function to add testing kernel
+
+	//processing;
+	virtual void process();
+
+	void getK(MatrixXd* out) const;
+    MatrixXd getK() const;
+    void setK(MatrixXd K);
+};
+
+//Standard mixed liner model
+class CKroneckerLMM : public CLmm
+{
+protected:
+	MatrixXd Kcol;
+public:
+	CKroneckerLMM();
+	virtual ~CKroneckerLMM();
+
+
+	//processing;
+	virtual void process();
+
+};
 
 
 
-//standard Matrix types that maybe useful here:
-//we use columnmajor here because it is more efficient for the LMM code (Note that rowMajor is the order in python)
-typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor> MatrixXd;
-typedef Eigen::Matrix<double, Eigen::Dynamic,1> PVector;
-
-
-
-
-// Proper C/C++ versions
-inline double nLLeval(MatrixXd & F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
-inline double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals=100,double ldeltamin=-10,double ldeltamax=10);
-
-
-
-#endif
-//SWIG friendly interfaces:
-void train_associations(MatrixXd* pvals,const MatrixXd& X,const MatrixXd& Y,const MatrixXd& K,const MatrixXd& C,int numintervalsAlt=0,double ldeltaminAlt=-1,double ldeltamaxAlt=+1,int numintervals0=100,double ldeltamin0=-5,double ldeltamax0=+5);
-void train_interactions(MatrixXd* pvals,const MatrixXd& X,const MatrixXd& Y,const MatrixXd& K,const MatrixXd& C,const MatrixXd& I,int numintervalsAlt,double ldeltaminAlt,double ldeltamaxAlt,int numintervals0,double ldeltamin0,double ldeltamax0,bool refit_delta0_snp, bool use_ftest);
-
-void train_associations_SingleSNP(MatrixXd* PV, MatrixXd* LL, MatrixXd* ldelta, const MatrixXd& X,const MatrixXd& Y,const MatrixXd& U, const MatrixXd& S, const MatrixXd& C, int numintervals, double ldeltamin, double ldeltamax);
-//CLMM class which handles LMM computations
-
-
-void test(const MatrixXd& test);
-void test2(const MatrixXd& test, MatrixXd* out);
-void test3(MatrixXd* pvals,const MatrixXd& X,const MatrixXd& Y);
-
-
-} // end namespace
-
-#endif //LMM_H
+} /* namespace gpmix */
+#endif /* ALMM_H_ */
