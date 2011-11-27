@@ -19,29 +19,30 @@ CCovLinearISO::~CCovLinearISO() {
 	// TODO Auto-generated destructor stub
 }
 
-MatrixXd CCovLinearISO::Kcross(const CovarInput& Xstar) const
+void CCovLinearISO::Kcross(MatrixXd* out,const CovarInput& Xstar) const
 {
-	if (Xstar.rows()!=this->X.rows())
+	//create result matrix:
+	out->resize(this->X.rows(),Xstar.rows());
+	//TODO: Christoph: this was .rows()==rows() which does not make sense?
+	//We dfine Xstar [N X D] where N are samples...
+	if (Xstar.cols()!=this->X.cols())
 	{
 		ostringstream os;
 		os << this->getName() <<": Xstar has wrong number of dimensions. Xstar.cols() = "<< Xstar.cols() <<". X.cols() = "<< this->X.cols() << ".";
 		throw gpmix::CGPMixException(os.str());
 	}
-
 	//kernel matrix is constant hyperparmeter and dot product
 	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
-	return A* Xstar*this->X.transpose();
+	(*out) = A* this->X*Xstar.transpose();
 }
 
 
-MatrixXd CCovLinearISO::K_grad_param( const muint_t i ) const
+void CCovLinearISO::Kgrad_param(MatrixXd* out, const muint_t i ) const
 {
 	if (i==0)
 	{
-		MatrixXd K = this->K();
-		//devide by hyperparameter and we are done
-		K*=2.0;
-		return K;
+		out->resize(this->X.rows(),this->X.rows());
+		(*out) = 2.0*this->K();
 	}
 	else
 	{
@@ -51,39 +52,20 @@ MatrixXd CCovLinearISO::K_grad_param( const muint_t i ) const
 	}
 }
 
-MatrixXd CCovLinearISO::K_grad_X(const muint_t d) const
+void CCovLinearISO::Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const
 {
 	mfloat_t A = exp((mfloat_t)(2.0*this->params(0)));
 	//create empty matrix
-	MatrixXd RV = MatrixXd::Zero(this->X.rows(),this->X.rows());
+	(*out) = MatrixXd::Zero(Xstar.rows(),this->X.rows());
 	//otherwise update computation:
-	RV.colwise() = A*this->X.col(d);
-	return RV;
+	(*out).colwise() = A*Xstar.col(d);
 }
 
-
-MatrixXd CCovLinearISO::Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const
+void CCovLinearISO::Kdiag_grad_X(MatrixXd* out, const muint_t d ) const
 {
 	mfloat_t A = exp((mfloat_t)(2.0*this->params(0)));
-	//create empty matrix
-	MatrixXd RV = MatrixXd::Zero(Xstar.rows(),this->X.rows());
-	//otherwise update computation:
-	RV.colwise() = A*Xstar.col(d);
-	return RV;
-}
-
-MatrixXd CCovLinearISO::Kdiag_grad_X( const muint_t d ) const
-{
-	mfloat_t A = exp((mfloat_t)(2.0*this->params(0)));
-	VectorXd RV = VectorXd::Zero(this->X.rows());
-	RV = 2.0*A*this->X.col(d);
-	return RV;
-}
-
-VectorXd CCovLinearISO::Kdiag() const
-{
-	VectorXd RV = VectorXd::Zero(X.rows());
-	return RV;
+	(*out) = VectorXd::Zero(this->X.rows());
+	(*out) = 2.0*A*this->X.col(d);
 }
 
 

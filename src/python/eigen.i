@@ -36,18 +36,9 @@
   $1 = (array_type($input) == PyArray_FLOAT) || (array_type($input) == PyArray_DOUBLE);
 }
 
-/*
-%typecheck(SWIG_TYPECHECK_FLOAT_ARRAY) 
-         MatrixXC,
-         MatrixXC *,
-         const MatrixXC,
-         MatrixXC &,
-         const MatrixXC & {
-  $1 = (array_type($input) == PyArray_CFLOAT) || (array_type($input) == PyArray_CDOUBLE);
-}
-*/
 
 
+//MatrixXd
 %typemap(in,
          fragment="NumPy_Fragments") 
          const MatrixXd & (MatrixXd temp) {
@@ -65,8 +56,6 @@
 
     case PyArray_INT:
     case PyArray_FLOAT:
-      in_array = obj_to_array_contiguous_allow_conversion($input, PyArray_FLOAT, &newObject);
-      break;
 
     default:
       PyErr_SetString(PyExc_ValueError,
@@ -110,12 +99,9 @@
     case PyArray_DOUBLE:
       (*$1) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
       break;
-
     case PyArray_INT:
     case PyArray_FLOAT:
-      (*$1) = Eigen::Map<MatrixXfscipy>((float32_t*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
-      break;
-      
+
     default:
       PyErr_SetString(PyExc_ValueError,
                       "array must be of type int, float, long or double");
@@ -124,87 +110,6 @@
 }
 
 
-/*
-%typemap(in,
-         fragment="NumPy_Fragments") 
-         const MatrixXC & (MatrixXC temp) {
-
-    // create array from input
-    int newObject;
-    PyArrayObject * in_array;
-
-    switch ( array_type($input) ) {
-
-    case PyArray_LONG:
-    case PyArray_DOUBLE:
-    case PyArray_CDOUBLE:
-      in_array = obj_to_array_contiguous_allow_conversion($input, PyArray_CDOUBLE, &newObject);
-      break;
-
-    case PyArray_INT:
-    case PyArray_FLOAT:
-    case PyArray_CFLOAT:
-      in_array = obj_to_array_contiguous_allow_conversion($input, PyArray_CFLOAT, &newObject);
-      break;
-    
-    default:
-      PyErr_SetString(PyExc_ValueError,
-                      "array must be of type complex int, complex float, complex long or complex double");
-      return NULL;
-      
-    }
-
-    if( in_array == NULL ){
-      PyErr_SetString(PyExc_ValueError,
-                      "array could not be created");
-      
-      return NULL;
-    }
-    
-    // require one or two dimensions
-    int dims[] = {1, 2};
-    require_dimensions_n(in_array, dims, 2);
-
-    // get the dimensions
-    int in_rows;
-    int in_cols;
-    if(array_numdims(in_array) == 2){
-
-      in_rows = array_size(in_array, 0);
-      in_cols = array_size(in_array, 1);
-
-    }else{
-
-      in_rows = 1;
-      in_cols = array_size(in_array, 0);
-
-    }
-
-    $1 = &temp;
-
-    // prepare the input array
-    switch( array_type($input) ) {
-
-    case PyArray_LONG:
-    case PyArray_DOUBLE:
-    case PyArray_CDOUBLE:
-      (*$1) = Eigen::Map<MatrixXcdscipy>((std::complex<double> *) array_data( in_array ), in_rows, in_cols).cast<Complex>();
-      break;
-
-    case PyArray_INT:
-    case PyArray_FLOAT:
-    case PyArray_CFLOAT:
-      (*$1) = Eigen::Map<MatrixXcfscipy>((std::complex<float> *) array_data( in_array ), in_rows, in_cols).cast<Complex>();
-      break;
-      
-    default:
-      PyErr_SetString(PyExc_ValueError,
-                      "array must be of type complex int, complex float, complex long or complex double");
-      return NULL;
-    }
-}
-
-*/
 
 
 %typemap(in, numinputs = 0) 
@@ -233,6 +138,115 @@
 
   $result = SWIG_Python_AppendOutput($result, out_array);
 }
+//end MatrixXd
+
+
+
+/*VectorXd*/
+
+%typemap(in,
+         fragment="NumPy_Fragments") 
+         const VectorXd & (VectorXd temp) {
+
+    // create array from input
+    int newObject;
+    PyArrayObject * in_array;
+    
+    switch ( array_type($input) ) {
+
+    case PyArray_LONG:
+    case PyArray_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion($input, PyArray_DOUBLE, &newObject);
+      break;
+
+    case PyArray_INT:
+    case PyArray_FLOAT:
+
+    default:
+      PyErr_SetString(PyExc_ValueError,
+                      "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+                      "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {1, 2};
+    require_dimensions_n(in_array, dims, 2);
+
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+
+    }else{
+
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+
+    }
+
+    $1 = &temp;
+
+    // prepare the input array
+    switch( array_type($input) ) {
+
+    case PyArray_LONG:
+    case PyArray_DOUBLE:
+      (*$1) = Eigen::Map<VectorXdscipy>((double*)array_data( in_array ), in_rows).cast<mfloat_t>();
+      break;
+    case PyArray_INT:
+    case PyArray_FLOAT:
+
+    default:
+      PyErr_SetString(PyExc_ValueError,
+                      "array must be of type int, float, long or double");
+      return NULL;
+    }
+}
+
+
+
+
+%typemap(in, numinputs = 0) 
+         VectorXd* (VectorXd temp) {
+
+  $1 = &temp;
+
+}
+
+%typemap(argout) 
+         VectorXd* {
+
+  // prepare resulting array
+  npy_intp dims[] = {$1->rows(), $1->cols()};
+  PyObject * out_array = PyArray_SimpleNew(2, dims, PyArray_DOUBLE);
+
+  if (out_array == NULL){
+    PyErr_SetString(PyExc_ValueError,
+                    "Unable to create the output array.");
+    
+    return NULL;
+  }
+  
+  mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+  Eigen::Map<VectorXdscipy>(out_data, dims[0]) = (*$1);
+
+  $result = SWIG_Python_AppendOutput($result, out_array);
+}
+
+
+//end VectorXd
+
 
 
 

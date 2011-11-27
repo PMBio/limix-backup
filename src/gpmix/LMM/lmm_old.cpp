@@ -1,5 +1,5 @@
 
-#include "lmm.h"
+#include "lmm_old.h"
 #include <assert.h>
 
 namespace gpmix {
@@ -14,82 +14,7 @@ const double L2pi=1.8378770664093453;
 /* Python interface functions*/
 
 
-double nLLeval(double ldelta,double* dUY,double* dUX,double* dS,int n,int d)
-{
-	//1. map matrix to the one we want
-	Map<MatrixXd > UX(dUX,n,d);
-	Map<MatrixXd > UY(dUY,n,1);
-	Map<MatrixXd > S (dS,n,1);
-	MatrixXd F_tests;
-	return nLLeval(F_tests,ldelta,UY,UX,S);
-}
 
-
-/*
-double optdelta(double* dUY,double* dUX,double* dS,int n,int d,int numintervals,double ldeltamin,double ldeltamax)
-{
-  //1. map matrix to the one we want
-  Map<MatrixXd > UX(dUX,n,d);
-  Map<MatrixXd > UY(dUY,n,1);
-  Map<MatrixXd > S (dS,n,1);
-  //std::cout << numintervals << "," << ldeltamin << "," << ldeltamax;
-  return optdelta(UY,UX,S,numintervals,ldeltamin,ldeltamax); //1. map matrix to the one we want
-}
-
-void train_associations(double* dLOD,double* dX,double* dY,double* dK,double* dC,int nn,int ns,int np,int nc,int numintervalsAlt,double ldeltaminAlt,double ldeltamaxAlt,int numintervals0,double ldeltamin0,double ldeltamax0)
-{
-
-	//1. map matrix objects
-	Map<MatrixXd > X(dX,nn,ns);
-	Map<MatrixXd > Y(dY,nn,np);
-	Map<MatrixXd > C(dC,nn,nc);
-	Map<MatrixXd > K(dK,nn,nn);
-
-	//reserve fresh matrix for LOD
-	MatrixXd  LOD(np,ns);
-	train_associations(LOD,X,Y,K,C,numintervalsAlt,ldeltaminAlt,ldeltamaxAlt,numintervals0,ldeltamin0,ldeltamax0);
-	//copy memory for output
-	memcpy(dLOD,LOD.data(), sizeof(double)*np*ns);
-}
-
-void train_interactions(double* dPvals,double* dX,double* dY,double* dK,double* dC,double* dI,int nn,int ns,int np,int nc,int ni,int numintervalsAlt,double ldeltaminAlt,double ldeltamaxAlt,int numintervals0,double ldeltamin0,double ldeltamax0,bool refit_delta0_snp, bool use_ftest)
-{
-	//1. map matrix objects
-		Map<MatrixXd > X(dX,nn,ns);
-		Map<MatrixXd > Y(dY,nn,np);
-		Map<MatrixXd > C(dC,nn,nc);
-		Map<MatrixXd > K(dK,nn,nn);
-		Map<MatrixXd > I(dI,nn,ni);
-
-		//reserve fresh matrix for LOD
-		MatrixXd  pvals(np,ns);
-		train_interactions(pvals,X,Y,K,C,I,numintervalsAlt,ldeltaminAlt,ldeltamaxAlt,numintervals0,ldeltamin0,ldeltamax0,refit_delta0_snp, use_ftest);
-		//copy memory for output
-		memcpy(dPvals,pvals.data(), sizeof(double)*np*ns);
-}
-
-void train_associations_SingleSNP( double* PV, double* LL, double* ldelta, double* X, double* Y, double* U, double* S, double* C, int nn,int ns,int np,int nc, int numintervals, double ldeltamin, double ldeltamax)
-{
-	assert(ns==1);
-
-	//1. map matrix objects
-		Map<MatrixXd > mX(X,nn,ns);
-		Map<MatrixXd > mY(Y,nn,np);
-		Map<MatrixXd > mC(C,nn,nc);
-		Map<MatrixXd > mU(U,nn,nn);
-		Map<MatrixXd > mS(S,nn,1);
-
-		//reserve fresh matrix for LOD
-		MatrixXd  mPV(np,ns);
-		MatrixXd mLL(np,ns);
-		MatrixXd mldelta(np,ns);
-		train_associations_SingleSNP(mPV, mLL, mldelta, mX, mY, mU, mS, mC, numintervals, ldeltamin, ldeltamax);
-		//copy memory for output
-		memcpy(PV,mPV.data(), sizeof(double)*np*ns);
-		memcpy(LL,mLL.data(), sizeof(double)*np*ns);
-		memcpy(ldelta,mldelta.data(), sizeof(double)*np*ns);
-}
- */
 
 /* internal functions */
 inline double nLLeval(MatrixXd& F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S)
@@ -591,24 +516,6 @@ void train_associations_SingleSNP(MatrixXd* PV, MatrixXd* LL, MatrixXd* ldelta, 
 	}
 
 }
-
-
-void test(const MatrixXd& test)
-{
-	std::cout << test;
-}
-
-void test2(const MatrixXd& test, MatrixXd* out)
-{
-	(*out) = 2*test;
-	std::cout << test;
-}
-
-void test3(MatrixXd* pvals,const MatrixXd& X,const MatrixXd& Y)
-{
-	std::cout<<X;
-}
-
 
 
 
