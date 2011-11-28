@@ -15,7 +15,7 @@
 #include "gpmix/utils/fisherf.h"
 #include "gpmix/utils/brentc.h"
 
-namespace gpmix {
+namespace lmm_old {
 
 #ifndef SWIG
 //global variable

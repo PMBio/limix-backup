@@ -100,7 +100,7 @@ add_subdirectory(./src)
 
 #### build external interface (optional) #####
 if (BUILD_PYTHON_PACKAGE)
-add_subdirectory(./src/python)
+add_subdirectory(./src/python_interface)
 endif (BUILD_PYTHON_PACKAGE)
 if (BUILD_R_PACKAGE)
 add_subdirectory(./R)

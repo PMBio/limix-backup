@@ -228,8 +228,25 @@
          VectorXd* {
 
   // prepare resulting array
+  /*
   npy_intp dims[] = {$1->rows(), $1->cols()};
   PyObject * out_array = PyArray_SimpleNew(2, dims, PyArray_DOUBLE);
+
+  if (out_array == NULL){
+    PyErr_SetString(PyExc_ValueError,
+                    "Unable to create the output array.");
+    
+    return NULL;
+  }
+  
+  mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+  Eigen::Map<VectorXdscipy>(out_data, dims[0]) = (*$1);
+
+  $result = SWIG_Python_AppendOutput($result, out_array);
+  */
+  //Vector types in eigen have rows only:
+  npy_intp dims[] = {$1->rows()};
+  PyObject * out_array = PyArray_SimpleNew(1, dims, PyArray_DOUBLE);
 
   if (out_array == NULL){
     PyErr_SetString(PyExc_ValueError,

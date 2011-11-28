@@ -38,13 +38,15 @@ CLikNormalIso::~CLikNormalIso()
 {
 }
 
-void CLikNormalIso::applyToK(const MatrixXd& X, MatrixXd& K) const
-{
 
-	if ((K.rows() != K.cols()) || (K.cols()!=X.rows()))
+//CLikNormalIso
+
+void CLikNormalIso::applyToK(MatrixXd& K) const
+{
+	if ((K.rows() != K.cols()))
 	{
 		ostringstream os;
-		os << "K is not quadratic. K.rows() = "<< K.rows() << ", K.cols() = "<< K.cols()<<"X.rows() = " << X.rows();
+		os << "K is not quadratic. K.rows() = "<< K.rows() << ", K.cols() = "<< K.cols();
 		throw gpmix::CGPMixException(os.str());
 	}
 
@@ -55,38 +57,35 @@ void CLikNormalIso::applyToK(const MatrixXd& X, MatrixXd& K) const
 	}
 }
 
-MatrixXd CLikNormalIso::K(const MatrixXd& X) const
+void CLikNormalIso::K(MatrixXd* out) const
 {
 	mfloat_t sigma_2 = gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
-	MatrixXd K = MatrixXd::Zero(X.rows(),X.rows());
-	for (muint_t i = 0; i < (muint_t)K.rows(); ++i)//WARNING: (muint_t) conversion
+	(*out) = MatrixXd::Zero(X.rows(),X.rows());
+	for (muint_t i = 0; i < (muint_t)X.rows(); ++i)//WARNING: (muint_t) conversion
 	{
-		K(i,i) = sigma_2;
+		(*out)(i,i) = sigma_2;
 	}
-	return K;
 }
 
-VectorXd CLikNormalIso::Kdiag(const MatrixXd& X) const
+void CLikNormalIso::Kdiag(VectorXd* out) const
 {
 	mfloat_t sigma_2 = gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
-	VectorXd Kdiag(X.rows());
-	for (muint_t i = 0; i < (muint_t)Kdiag.rows(); ++i)//WARNING: (muint_t) conversion
+	(*out).resize(X.rows());
+	for (muint_t i = 0; i < (muint_t)X.rows(); ++i)//WARNING: (muint_t) conversion
 	{
-		Kdiag(i) = sigma_2;
+		(*out)(i) = sigma_2;
 	}
-	return Kdiag;
 }
 
-MatrixXd CLikNormalIso::K_grad_params(const MatrixXd& X, const muint_t row) const
+void CLikNormalIso::Kgrad_params(MatrixXd* out, const muint_t row) const
 {
-	mfloat_t twoSigma_2 = 2.0*gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
+	mfloat_t sigma_2 = 2.0*gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
 
 	MatrixXd dK = MatrixXd::Zero(X.rows(),X.rows());
 	for (muint_t i = 0; i < (muint_t)dK.rows(); ++i)//WARNING: (muint_t) conversion
 	{
-		dK(i,i) = twoSigma_2;
+		(*out)(i,i) = sigma_2;
 	}
-	return dK;
 }
 
 } // end:: namespace gpmix

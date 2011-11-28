@@ -16,14 +16,12 @@ namespace gpmix {
 /***** CCovLinearISO *******/
 
 CCovLinearISO::~CCovLinearISO() {
-	// TODO Auto-generated destructor stub
 }
 
 void CCovLinearISO::Kcross(MatrixXd* out,const CovarInput& Xstar) const
 {
 	//create result matrix:
 	out->resize(this->X.rows(),Xstar.rows());
-	//TODO: Christoph: this was .rows()==rows() which does not make sense?
 	//We dfine Xstar [N X D] where N are samples...
 	if (Xstar.cols()!=this->X.cols())
 	{
@@ -33,9 +31,8 @@ void CCovLinearISO::Kcross(MatrixXd* out,const CovarInput& Xstar) const
 	}
 	//kernel matrix is constant hyperparmeter and dot product
 	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
-	(*out) = A* this->X*Xstar.transpose();
+	(*out) = A* Xstar*this->X.transpose();
 }
-
 
 void CCovLinearISO::Kgrad_param(MatrixXd* out, const muint_t i ) const
 {
@@ -58,10 +55,10 @@ void CCovLinearISO::Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const m
 	//create empty matrix
 	(*out) = MatrixXd::Zero(Xstar.rows(),this->X.rows());
 	//otherwise update computation:
-	(*out).colwise() = A*Xstar.col(d);
+	(*out).rowwise() = A*Xstar.col(d);
 }
 
-void CCovLinearISO::Kdiag_grad_X(MatrixXd* out, const muint_t d ) const
+void CCovLinearISO::Kdiag_grad_X(VectorXd* out, const muint_t d ) const
 {
 	mfloat_t A = exp((mfloat_t)(2.0*this->params(0)));
 	(*out) = VectorXd::Zero(this->X.rows());
@@ -71,28 +68,21 @@ void CCovLinearISO::Kdiag_grad_X(MatrixXd* out, const muint_t d ) const
 
 /***** CCovLinearARD *******/
 
-CCovLinearARD::~CCovLinearARD() {
-	// covaraince destructor
+CCovLinearARD::~CCovLinearARD()
+{
 }
 
-VectorXd CCovLinearARD::Kdiag() const
-{
-	VectorXd RV = VectorXd::Zero(X.rows());
-	return RV;
-}
 
-MatrixXd CCovLinearARD::Kcross(const CovarInput& Xstar) const
+//overloaded pure virtual functions:
+void CCovLinearARD::Kcross(MatrixXd* out, const CovarInput& Xstar ) const
 {
-	//kernel matrix is constant hyperparmeter and dot product
-
 	//get all amplitude parameters, one per dimension
 	VectorXd L = 2*params;
 	L = L.unaryExpr(ptr_fun(exp));
-	MatrixXd RV = Xstar*L.asDiagonal()*this->X.transpose();
-	return RV;
+	(*out) = Xstar*L.asDiagonal()*this->X.transpose();
 }
 
-MatrixXd CCovLinearARD::K_grad_param(const muint_t i) const
+void CCovLinearARD::Kgrad_param(MatrixXd* out,const muint_t i) const
 {
 	//is the requested gradient within range?
 	if (i >= (muint_t)this->X.cols()) //WARNING: muint_t conversion
@@ -103,20 +93,18 @@ MatrixXd CCovLinearARD::K_grad_param(const muint_t i) const
 	//2. get amplitude
 	mfloat_t A = exp((mfloat_t)(2*params(i)));
 	//outer product of the corresponding dimension.
-	return A*2.0*(x1i*x1i.transpose());
+	(*out) =  A*2.0*(x1i*x1i.transpose());
 }
 
-MatrixXd CCovLinearARD::Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const
+void CCovLinearARD::Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const
 {
-	MatrixXd RV = MatrixXd::Zero(Xstar.rows(),X.rows());
-	return RV;
 }
 
-MatrixXd CCovLinearARD::Kdiag_grad_X(const muint_t d) const
+void CCovLinearARD::Kdiag_grad_X(VectorXd* out,const muint_t d) const
 {
-	VectorXd RV = VectorXd::Zero(X.rows());
-	return RV;
 }
+
+
 
 
 } /* namespace gpmix */
