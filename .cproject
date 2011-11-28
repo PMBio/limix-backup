@@ -59,8 +59,11 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.418434300" name="kernel_test.cpp" rcbsApplicability="disable" resourcePath="src/testing/kernel_test.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991.1645708120">
+						<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991.1645708120" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991"/>
+					</fileInfo>
 					<sourceEntries>
-						<entry excluding="gpmix/LMM/t|testing/GPmix.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="testing/kernel_test.cpp|gpmix/LMM/t|testing/GPmix.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

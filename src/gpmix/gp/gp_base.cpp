@@ -108,7 +108,7 @@ namespace gpmix {
 		if (this->K.cols()==0)
 		{
 			this->K=this->covar.K(); //This line breaks for se kernel
-			this->lik.applyToK(this->covar.getX(),this->K);
+			this->lik.applyToK(this->K);
 		}
 		return this->K;
 	}
@@ -165,7 +165,7 @@ namespace gpmix {
 		MatrixXd W = this->getDKinv_KinvYYKinv();
 		for(muint_t row = 0 ; row<lik.getNumberParams(); ++row)	//WARNING: conversion
 		{
-			MatrixXd Kd = this->lik.K_grad_params(this->covar.getX(), row);
+			MatrixXd Kd = this->lik.Kgrad_params(row);
 			grad_lik(row) = 0.5*(Kd.array() * W.array()).sum();
 		}
 		return grad_lik;

@@ -7,8 +7,6 @@
 //============================================================================
 
 #include <iostream>
-#define SWIG_FILE_WITH_INIT
-#define SWIG
 #include "gpmix/types.h"
 #include "gpmix/covar/covariance.h"
 #include "gpmix/covar/linear.h"
@@ -17,11 +15,6 @@
 
 using namespace std;
 using namespace gpmix;
-
-void test(MatrixXd& m)
-{
-	m(1,1) = 3;
-}
 
 int main() {
 
@@ -38,6 +31,8 @@ int main() {
 	cov.setX(X);
 
 	bool check_grad = ACovarianceFunction::check_covariance_Kgrad_theta(cov);
+	check_grad = check_grad && ACovarianceFunction::check_covariance_Kgrad_x(cov);
+
 
 	std::cout << check_grad;
 	//Eigen::Map<MatrixXdscipy>(out_data,10,1) T;

@@ -2,7 +2,7 @@
 #include "lmm_old.h"
 #include <assert.h>
 
-namespace gpmix {
+namespace lmm_old {
 
 using namespace Eigen;
 
@@ -183,14 +183,6 @@ double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numi
 
 MatrixXd optdeltaAllY( const MatrixXd& UY, const MatrixXd& UX, const MatrixXd& S, const MatrixXd& ldeltagrid)
 {
-	/*
-	std::cout << "grid stuff" << endl;
-	std::cout << UY.rows() << "," << UY.cols() << endl;
-	std::cout << UX.rows() << "," << UX.cols() << endl;
-	std::cout << S.rows() << "," << S.cols() << endl;
-	std::cout << ldeltagrid.rows() << "," << ldeltagrid.cols() << endl;
-*/
-
 	size_t n_p = UY.cols();
 	size_t numintervals = ldeltagrid.rows();
 
