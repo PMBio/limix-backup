@@ -22,7 +22,7 @@
 //abstract base class for Brent functors:
 class BrentFunctor{
 public:
-   //the operator (function evaluation) takes a double as argumant and returns a double
+   //the operator (function evaluation) takes a double as argument and returns a double
    virtual double operator()(const double x)=0;
 };
 

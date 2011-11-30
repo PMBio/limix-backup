@@ -150,9 +150,9 @@ void train_associations_SingleSNP(MatrixXd* PV, MatrixXd* LL, MatrixXd* ldelta,
 		const MatrixXd& X, const MatrixXd& Y, const MatrixXd& U,
 		const MatrixXd& S, const MatrixXd& C, int numintervals,
 		double ldeltamin, double ldeltamax);
-double optdelta(const MatrixXd& UY,const MatrixXd& UX,const VectorXd& S,int numintervals,double ldeltamin,double ldeltamax);
+double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals,double ldeltamin,double ldeltamax);
 void optdeltaAllY(MatrixXd* out, const MatrixXd& UY, const MatrixXd& UX, const MatrixXd& S, const MatrixXd& ldeltagrid);
-double nLLeval(MatrixXd* F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const VectorXd& S);
+double nLLeval(MatrixXd* F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
 void nLLevalAllY(MatrixXd* out, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
 
 } /* namespace gpmix */
