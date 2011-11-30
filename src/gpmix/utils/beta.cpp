@@ -145,7 +145,7 @@ double Beta::BetaCF(double x, double a, double b)
    double ab = a + b;
 
    double d = 1 - ab * x / ap1;
-   if (std::abs(d) < TINY) d = TINY;
+   if (std::fabs(d) < TINY) d = TINY;
    double c = 1;
    d = 1.0 / d;
    double cf = d;
@@ -154,23 +154,23 @@ double Beta::BetaCF(double x, double a, double b)
    {
          double aj = m * (b - m) * x / ((am1 + m2) * (a + m2));
          d = 1.0 + aj * d;
-         if (std::abs(d) < TINY) d = TINY;
+         if (std::fabs(d) < TINY) d = TINY;
          c = 1 + aj / c;
-         if (std::abs(c) < TINY) c = TINY;
+         if (std::fabs(c) < TINY) c = TINY;
          d = 1 / d;
          double delta = c * d;
          cf *= delta;
 
          aj = -(a + m) * (ab + m) * x/((ap1 + m2) * (a + m2));
          d = 1.0 + aj * d;
-         if (std::abs(d) < TINY) d = TINY;
+         if (std::fabs(d) < TINY) d = TINY;
          c = 1 + aj / c;
-         if (std::abs(c) < TINY) c = TINY;
+         if (std::fabs(c) < TINY) c = TINY;
          d = 1 / d;
          delta = c * d;
          cf *= delta;
 
-         if (std::abs(delta - 1) < EPS)
+         if (std::fabs(delta - 1) < EPS)
             break;
 
          m2 += 2;
@@ -196,7 +196,7 @@ double Beta::Eval(double y, double lo, double hi, double s)
    for (int i = 0; i < MAXITER; ++i)
    {
          double diff = b - a;
-         if (std::abs(fc) < std::abs(fb))
+         if (std::fabs(fc) < std::fabs(fb))
          {
             a = b;
             b = c;
@@ -206,15 +206,15 @@ double Beta::Eval(double y, double lo, double hi, double s)
             fc = fa;
          }
 
-         double tolact = 2.0 * EPS * std::abs(b) + tol / 2.0;
+         double tolact = 2.0 * EPS * std::fabs(b) + tol / 2.0;
          double nextstep = (c - b) / 2;
 
-         if (std::abs(nextstep) <= tolact || fb == 0.0)
+         if (std::fabs(nextstep) <= tolact || fb == 0.0)
          {
             return b;
          }
 
-         if (std::abs(diff) >= tolact && std::abs(fa) > std::abs(fb))
+         if (std::fabs(diff) >= tolact && std::fabs(fa) > std::fabs(fb))
          {
             double p, q;
             double cb = c-b;
@@ -238,12 +238,12 @@ double Beta::Eval(double y, double lo, double hi, double s)
             else
                p = -p;
 
-            if (p < (0.75*cb*q-std::abs(tolact*q)/2) && p < std::abs(diff*q/2))
+            if (p < (0.75*cb*q-std::fabs(tolact*q)/2) && p < std::fabs(diff*q/2))
                nextstep = p/q;
 
          }
 
-         if (std::abs(nextstep) < tolact)
+         if (std::fabs(nextstep) < tolact)
          {
             if (nextstep > 0)
                nextstep = tolact;
@@ -329,12 +329,12 @@ double Beta::MLE(double *dataIn, double *bhat, int data_size)
             // If we bump against the value of ahi or bhi, we increase it and
             // try again. It's possible for the change in a or bhat to get very small but
             // not have converged.
-            if (std::abs(ahat - ahi) <= toler)
+            if (std::fabs(ahat - ahi) <= toler)
             {
                ahi *= 2;
                fTryAgain = true;
             }
-            if (std::abs(*bhat - bhi) <= toler)
+            if (std::fabs(*bhat - bhi) <= toler)
             {
                bhi *= 2;
                fTryAgain = true;

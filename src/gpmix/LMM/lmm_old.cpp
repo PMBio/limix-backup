@@ -233,7 +233,7 @@ void train_associations(MatrixXd* pvals,const MatrixXd& X,const MatrixXd& Y,cons
 	MatrixXd UY = U.transpose()*Y;
 	MatrixXd Ucovariates = U.transpose()*C;
 
-	//result matries: think about what to store in the end
+	//result matrices: think about what to store in the end
 	MatrixXd ldelta0(np,1);
 	MatrixXd ldelta(np,ns);
 	MatrixXd nLL0(np,1);
@@ -265,7 +265,7 @@ void train_associations(MatrixXd* pvals,const MatrixXd& X,const MatrixXd& Y,cons
 			MatrixXd f_tests;
 			nLL(ip,is) = nLLeval(f_tests,ldelta(ip,is),UY_,UX_,S);
 			//4. calc lod score
-			(*pvals)(ip,is) = Gamma::gammaQ(nLL0(ip,is)-nLL(ip,is),(double)0.5*1.0);
+			(*pvals)(ip,is) = Gamma::gammaQ(nLL0(ip)-nLL(ip,is),(double)0.5);
 		} //end for SNP
 	}//end for phenotypes
 }

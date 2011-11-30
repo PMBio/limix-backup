@@ -62,7 +62,7 @@ double Gamma::gammaIncLower(double x, double a)
          sum += frac;
 
          // Stopping criterion: sum won't change
-         if (abs(frac) < abs(sum * EPS))
+         if (fabs(frac) < fabs(sum * EPS))
             break;
    }
 
@@ -86,14 +86,14 @@ double Gamma::gammaIncUpper(double x, double a)
    for (int i = 1; i <= MAXITER; ++i)
    {
          d = bj + aj * d;
-         if (abs(d) < TINY) d = TINY;
+         if (fabs(d) < TINY) d = TINY;
          c = bj + aj / c;
-         if (abs(c) < TINY) c = TINY;
+         if (fabs(c) < TINY) c = TINY;
          d = 1 / d;
          double delta = c * d;
          f *= delta;
 
-         if (abs(delta - 1) < EPS)
+         if (fabs(delta - 1) < EPS)
             break;
 
          bj += 2;
@@ -168,7 +168,7 @@ double Gamma::inv(double p, double k, double theta)
          guess = (guesslo + guesshi) * (double)0.5;
          pguess = Gamma::cdf(guess, k, theta);
 
-         if (abs(p - pguess) < (double)1e-16)
+         if (fabs(p - pguess) < (double)1e-16)
             break;
                 
          if (pguess > p)
