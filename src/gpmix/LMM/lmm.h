@@ -115,6 +115,11 @@ protected:
 	MatrixXd U_C;
 	VectorXd S_R;
 	VectorXd S_C;
+	MatrixXd WkronDiag0;
+	MatrixXd WkronBlock0;
+	MatrixXd WkronDiag;
+	MatrixXd WkronBlock;
+
 public:
 	CKroneckerLMM();
 	virtual ~CKroneckerLMM();
@@ -131,7 +136,9 @@ public:
 
 	void getK_R(MatrixXd* out) const;
 	void getK_C(MatrixXd* out) const;
-
+	void setKronStructure(MatrixXd& WkronDiag0, MatrixXd& WkronBlock0, MatrixXd& WkronDiag, MatrixXd& WkronBlock);
+	static mfloat_t nLLeval(MatrixXd* F_tests, mfloat_t ldelta, const MatrixXd& WkronDiag, const MatrixXd& WkronBlock, const MatrixXd& UX, const MatrixXd& UYU, const VectorXd& S_C, const VectorXd& S_R);
+	static mfloat_t optdelta(const MatrixXd& UX, const MatrixXd& UYU, const VectorXd& S_C, const VectorXd& S_R, const muint_t numintervals, const mfloat_t ldeltamin, const mfloat_t ldeltamax, const MatrixXd& WkronDiag, const MatrixXd& WkronBlock);
 #ifndef SWIG
 	MatrixXd getK_R() const;
 	MatrixXd getK_C() const;

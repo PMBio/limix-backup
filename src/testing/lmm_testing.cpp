@@ -22,10 +22,11 @@ int main() {
 
 	int n = 100;
 	int p = 10;
-	int s = 200;
+	int s = 2000;
+	int ncov = 1;
 	MatrixXd snps = (MatrixXd)randn((muint_t)n,(muint_t)s);
 	MatrixXd pheno = (MatrixXd)randn((muint_t)n,(muint_t)p);
-	MatrixXd covs = MatrixXd::Ones(n,1);
+	MatrixXd covs = MatrixXd::Ones(n,ncov);
 
 	MatrixXd K = 1.0/snps.cols() * (snps*snps.transpose());
 
@@ -38,12 +39,12 @@ int main() {
 	double ldeltamaxAlt =1.0;
 	MatrixXd pvals = MatrixXd(p, s);
 
-	if (0){
+	if (0){ //LMM testing using old code
 		lmm_old::train_associations(&pvals, snps, pheno,	K, covs, num_intervalsAlt,ldeltaminAlt, ldeltamaxAlt, num_intervals0, ldeltamin0, ldeltamax0);
 		cout << "pv_old:\n"<<scientific<<pvals<<endl;
 	}
 
-	if (0){
+	if (0){ //LMM testing using new code
 		CLmm lmm;
 
 		lmm.setK(K);
@@ -56,11 +57,30 @@ int main() {
 		cout <<"pv_new:\n"<< scientific <<pv<<endl;
 	}
 
-	if(1)
+	if(1) //kronecker product LMM
 	{
+		//TODO: calculate dofs for arbitrary WkronDiag and WkronBlock, currently we expect all ones...
+		MatrixXd WkronDiag0, WkronBlock0, WkronDiag, WkronBlock;
+		if (0)
+		{//one weight per SNP over all phenotypes
+			WkronDiag0=MatrixXd::Ones(1,ncov);
+			WkronBlock0=MatrixXd::Ones(p,ncov);
+			WkronDiag=MatrixXd::Ones(1,ncov+1);
+			WkronBlock=MatrixXd::Ones(p,ncov+1);
+		}
+		else
+		{//phenotype many weights per SNP
+			WkronDiag0=MatrixXd::Ones(p,ncov);
+			WkronBlock0=MatrixXd::Ones(1,ncov);
+			WkronDiag=MatrixXd::Ones(p,ncov+1);
+			WkronBlock=MatrixXd::Ones(1,ncov+1);
+		}
+
+
 		MatrixXd Kp = 1.0/p * (snps.block(0,0,p,s)*snps.block(0,0,p,s).transpose());
 		//cout <<Kp;
 		CKroneckerLMM kron;
+		kron.setKronStructure(WkronDiag0, WkronBlock0, WkronDiag, WkronBlock);
 		kron.setK_R(K);
 		kron.setK_C(Kp);
 		kron.setPheno(pheno);
