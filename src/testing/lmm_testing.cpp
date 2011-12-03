@@ -44,8 +44,8 @@ int main() {
 		cout << "pv_old:\n"<<scientific<<pvals<<endl;
 	}
 
-	if (0){ //LMM testing using new code
-		CLmm lmm;
+	if (1){ //LMM testing using new code
+		CLMM lmm;
 
 		lmm.setK(K);
 		lmm.setSNPs(snps);
@@ -57,7 +57,7 @@ int main() {
 		cout <<"pv_new:\n"<< scientific <<pv<<endl;
 	}
 
-	if(1) //kronecker product LMM
+	if(0) //kronecker product LMM
 	{
 		//TODO: calculate dofs for arbitrary WkronDiag and WkronBlock, currently we expect all ones...
 		MatrixXd WkronDiag0, WkronBlock0, WkronDiag, WkronBlock;

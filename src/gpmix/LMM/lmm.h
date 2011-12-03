@@ -14,7 +14,7 @@
 namespace gpmix {
 
 //Abstract base class for LMM models*/
-class ALmm {
+class ALMM {
 protected:
 	//Data and sample information
 	MatrixXd snps;
@@ -39,8 +39,8 @@ protected:
 
 
 public:
-	ALmm();
-	virtual ~ALmm();
+	ALMM();
+	virtual ~ALMM();
 
 	//setter fors data:
 	mfloat_t getLdeltamin0() const;
@@ -77,15 +77,15 @@ public:
 
 
 //Standard mixed liner model
-class CLmm : public ALmm
+class CLMM : public ALMM
 {
 protected:
 	MatrixXd K;
 	MatrixXd U;
 	VectorXd S;
 public:
-	CLmm();
-	virtual ~CLmm();
+	CLMM();
+	virtual ~CLMM();
 
 	//function to add testing kernel
 
@@ -101,11 +101,50 @@ public:
 #ifndef SWIG
 	MatrixXd getK() const;
 #endif
+};
+
+/*Simple Kronecker model.
+ * Kroneckers are merely used to efficiently rotate the phenotypes and genotypes
+ */
+
+class CSimpleKroneckerLMM: public ALMM
+{
+protected:
+	MatrixXd C;
+	MatrixXd R;
+	MatrixXd U_R;
+	MatrixXd U_C;
+	VectorXd S_R;
+	VectorXd S_C;
+public:
+	CSimpleKroneckerLMM();
+	virtual ~CSimpleKroneckerLMM();
+	//processing;
+	virtual void process();
+	virtual void updateDecomposition();
+
+	void setK_C(const MatrixXd& C);
+	void setK_C(const MatrixXd& C,const MatrixXd& U_C, const VectorXd& S_C);
+
+	void setK_R(const MatrixXd& R);
+	void setK_R(const MatrixXd& R,const MatrixXd& U_R, const VectorXd& S_R);
+
+	void getK_R(MatrixXd* out) const;
+	void getK_C(MatrixXd* out) const;
+#ifndef SWIG
+	MatrixXd getK_R() const;
+	MatrixXd getK_C() const;
+#endif
+
 
 };
 
-//Standard mixed liner model
-class CKroneckerLMM : public ALmm
+/*
+Efficient mixed liner model
+However, there are limitations as to which hypothesis can be tested
+TODO: add documentation here
+*/
+class CKroneckerLMM : public ALMM
 {
 	//TODO: check what is a symmetric matrix type!
 protected:
@@ -136,15 +175,13 @@ public:
 
 	void getK_R(MatrixXd* out) const;
 	void getK_C(MatrixXd* out) const;
-	void setKronStructure(MatrixXd& WkronDiag0, MatrixXd& WkronBlock0, MatrixXd& WkronDiag, MatrixXd& WkronBlock);
+	void setKronStructure(const MatrixXd& WkronDiag0, const MatrixXd& WkronBlock0, const MatrixXd& WkronDiag, const MatrixXd& WkronBlock);
 	static mfloat_t nLLeval(MatrixXd* F_tests, mfloat_t ldelta, const MatrixXd& WkronDiag, const MatrixXd& WkronBlock, const MatrixXd& UX, const MatrixXd& UYU, const VectorXd& S_C, const VectorXd& S_R);
 	static mfloat_t optdelta(const MatrixXd& UX, const MatrixXd& UYU, const VectorXd& S_C, const VectorXd& S_R, const muint_t numintervals, const mfloat_t ldeltamin, const mfloat_t ldeltamax, const MatrixXd& WkronDiag, const MatrixXd& WkronBlock);
 #ifndef SWIG
 	MatrixXd getK_R() const;
 	MatrixXd getK_C() const;
 #endif
-
-
 };
 
 
