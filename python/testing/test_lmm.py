@@ -1,13 +1,18 @@
 import sys
-sys.path.append('./../build/src/python_interface')
-sys.path.append('./../pygp')
-sys.path.append('./../../')
+
+import os
+os.chdir('/kyb/agbs/stegle/work/projects/GPmix/python/testing')
+
+sys.path.append('./../../pygp')
+sys.path.append('./..')
+sys.path.append('./../../..')
 
 
 import h5py
 import scipy as SP
 import gpmix
 import panama.core.lmm.lmm as lmm
+import pdb
 
 
 if __name__ == '__main__':
@@ -31,18 +36,18 @@ if __name__ == '__main__':
     X/-X.std()
 
     ip = 7
-    y_ = Y[:,ip]
-    Iok = ~SP.isnan(y_)
+    y_ = Y[:,ip:ip+2]
+    Iok = (~SP.isnan(y_)).all(axis=1)
     y_ = y_[Iok]
     X_ = X[Iok,::10]
 
-    y_ = y_[:,SP.newaxis]
-    
+    pdb.set_trace() 
     #population covariance
     K = 1./X_.shape[1]*SP.dot(X_,X_.T)
     C_ = SP.ones([X_.shape[0],1])
     [lod,pv0] = lmm.train_associations(X_,y_,K,C_)
-
+  
+    pdb.set_trace()
     #gpmix
     lm = gpmix.CLmm()
     lm.setK(K)
