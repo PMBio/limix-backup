@@ -45,7 +45,11 @@ int main() {
 	}
 
 	if (1){ //LMM testing using new code
+<<<<<<< HEAD
 		CLmm lmm;
+=======
+		CLMM lmm;
+>>>>>>> 94a0160d3df4b87ee2791a1214c912a727fe033d
 
 		lmm.setK(K);
 		lmm.setSNPs(snps);

@@ -16,7 +16,7 @@ namespace gpmix {
     const double L2pi = 1.8378770664093453;
 
 /*ALMM*/
-ALmm::ALmm()
+ALMM::ALMM()
 {
 	//Default settings:
 	num_intervals0 = 100;
@@ -29,128 +29,128 @@ ALmm::ALmm()
 	Ucovs_cached = false;
 }
 
-ALmm::~ALmm()
+ALMM::~ALMM()
 {
 }
 
-mfloat_t ALmm::getLdeltamin0() const
+mfloat_t ALMM::getLdeltamin0() const
 {
 	return ldeltamin0;
 }
 
-muint_t ALmm::getNumIntervalsAlt() const
+muint_t ALMM::getNumIntervalsAlt() const
 {
 	return num_intervalsAlt;
 }
 
-muint_t ALmm::getNumSamples() const
+muint_t ALMM::getNumSamples() const
 {
 	return num_samples;
 }
 
-void ALmm::setLdeltamin0(mfloat_t ldeltamin0)
+void ALMM::setLdeltamin0(mfloat_t ldeltamin0)
 {
 	this->ldeltamin0 = ldeltamin0;
 }
 
-void ALmm::setNumIntervalsAlt(muint_t num_intervalsAlt)
+void ALMM::setNumIntervalsAlt(muint_t num_intervalsAlt)
 {
 	this->num_intervalsAlt = num_intervalsAlt;
 }
 
-MatrixXd ALmm::getPheno() const
+MatrixXd ALMM::getPheno() const
 {
 	return pheno;
 }
 
-MatrixXd ALmm::getPv() const
+MatrixXd ALMM::getPv() const
 {
 	return pv;
 }
 
-void ALmm::getPheno(MatrixXd *out) const
+void ALMM::getPheno(MatrixXd *out) const
 {
 	(*out) = pheno;
 }
 
-void ALmm::getPv(MatrixXd *out) const
+void ALMM::getPv(MatrixXd *out) const
 {
 	(*out) = pv;
 }
 
-void ALmm::getSnps(MatrixXd *out) const
+void ALMM::getSnps(MatrixXd *out) const
 {
 	(*out) = snps;
 }
 
-void ALmm::getCovs(MatrixXd *out) const
+void ALMM::getCovs(MatrixXd *out) const
 {
 	(*out) = covs;
 }
 
-MatrixXd ALmm::getCovs() const
+MatrixXd ALMM::getCovs() const
 {
 	return covs;
 }
 
-void ALmm::setCovs(const MatrixXd & covs)
+void ALMM::setCovs(const MatrixXd & covs)
 {
 	this->covs = covs;
 }
 
-void ALmm::setPheno(const MatrixXd & pheno)
+void ALMM::setPheno(const MatrixXd & pheno)
 {
 	this->pheno = pheno;
 }
 
-void ALmm::setSNPs(const MatrixXd & snps)
+void ALMM::setSNPs(const MatrixXd & snps)
 {
 	this->snps = snps;
 }
 
-mfloat_t ALmm::getLdeltaminAlt() const
+mfloat_t ALMM::getLdeltaminAlt() const
 {
 	return ldeltaminAlt;
 }
 
-void ALmm::setLdeltaminAlt(mfloat_t ldeltaminAlt)
+void ALMM::setLdeltaminAlt(mfloat_t ldeltaminAlt)
 {
 	this->ldeltaminAlt = ldeltaminAlt;
 }
 
-MatrixXd ALmm::getSnps() const
+MatrixXd ALMM::getSnps() const
 {
 	return snps;
 }
 
 /*CLMM*/
-CLmm::CLmm()
-:ALmm()
+CLMM::CLMM()
+:ALMM()
 {
 }
 
-CLmm::~CLmm()
+CLMM::~CLMM()
 {
 	// TODO Auto-generated destructor stub
 }
 
-void CLmm::getK(MatrixXd *out) const
+void CLMM::getK(MatrixXd *out) const
 {
 	(*out) = K;
 }
 
-MatrixXd CLmm::getK() const
+MatrixXd CLMM::getK() const
 {
 	return K;
 }
 
-void CLmm::setK(const MatrixXd & K)
+void CLMM::setK(const MatrixXd & K)
 {
 	this->K = K;
 	this->UK_cached = false;
 }
 
-void CLmm::setK(const MatrixXd & K, const MatrixXd & U, const VectorXd & S)
+void CLMM::setK(const MatrixXd & K, const MatrixXd & U, const VectorXd & S)
 {
 	this->K = K;
 	this->U = U;
@@ -159,7 +159,7 @@ void CLmm::setK(const MatrixXd & K, const MatrixXd & U, const VectorXd & S)
 }
 
 /*CLMM*/
-void CLmm::updateDecomposition()
+void CLMM::updateDecomposition()
 {
 	//check that dimensions match
 	this->num_samples = snps.rows();
@@ -192,7 +192,7 @@ void CLmm::updateDecomposition()
 	}
 }
 
-void CLmm::process()
+void CLMM::process()
 {
 	//get decomposition
 	updateDecomposition();
@@ -419,7 +419,7 @@ void CKroneckerLMM::process()
 	} //end for phenotypes
 }
 
-void CKroneckerLMM::setKronStructure(MatrixXd& WkronDiag0, MatrixXd& WkronBlock0, MatrixXd& WkronDiag, MatrixXd& WkronBlock)
+void CKroneckerLMM::setKronStructure(const MatrixXd& WkronDiag0,const MatrixXd& WkronBlock0,const MatrixXd& WkronDiag,const MatrixXd& WkronBlock)
 {
 	this->WkronDiag0=WkronDiag0;
 	this->WkronBlock0=WkronBlock0;
@@ -687,6 +687,99 @@ std::cout << S<< "\n\n";
 
 
 
+
+CSimpleKroneckerLMM::CSimpleKroneckerLMM()
+{
+}
+
+
+
+CSimpleKroneckerLMM::~CSimpleKroneckerLMM()
+{
+}
+
+
+
+void CSimpleKroneckerLMM::process()
+{
+}
+
+
+
+void CSimpleKroneckerLMM::updateDecomposition()
+{
+}
+
+
+
+void CSimpleKroneckerLMM::setK_C(const MatrixXd & C)
+{
+	  this->C = C;
+	  Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(C);
+	  this->U_C = eigensolver.eigenvectors();
+	  this->S_C = eigensolver.eigenvalues();
+}
+
+
+
+void CSimpleKroneckerLMM::setK_C(const MatrixXd & C, const MatrixXd & U_C, const VectorXd & S_C)
+{
+	this->C=C;
+	this->U_C = U_C;
+	this->S_C = S_C;
+}
+
+
+
+void CSimpleKroneckerLMM::setK_R(const MatrixXd & R)
+{
+	  this->R = R;
+	  Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(R);
+	  this->U_R = eigensolver.eigenvectors();
+	  this->S_R = eigensolver.eigenvalues();
+}
+
+
+
+void CSimpleKroneckerLMM::setK_R(const MatrixXd & R, const MatrixXd & U_R, const VectorXd & S_R)
+{
+	this->R = R;
+	this->U_R = U_R;
+	this->S_R = S_R;
+}
+
+
+
+void CSimpleKroneckerLMM::getK_R(MatrixXd *out) const
+{
+	(*out) = R;
+}
+
+
+
+void CSimpleKroneckerLMM::getK_C(MatrixXd *out) const
+{
+	(*out) = C;
+}
+
+
+
+MatrixXd CSimpleKroneckerLMM::getK_R() const
+{
+	return R;
+}
+
+
+
+MatrixXd CSimpleKroneckerLMM::getK_C() const
+{
+	return C;
+}
+
+
+
+
 /* namespace gpmix */
 }
+
 
