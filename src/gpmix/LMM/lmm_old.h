@@ -20,7 +20,7 @@ namespace lmm_old {
 #ifndef SWIG
 //global variable
 const double _PI = (double) 2.0 * std::acos((double) 0.0);
-const double _log2pi = std::log((double) 2.0 * _PI);
+//const double _log2pi = std::log((double) 2.0 * _PI);
 
 //standard Matrix types that maybe useful here:
 //we use columnmajor here because it is more efficient for the LMM code (Note that rowMajor is the order in python)

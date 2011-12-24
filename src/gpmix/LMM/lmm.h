@@ -116,6 +116,15 @@ protected:
 	MatrixXd U_C;
 	VectorXd S_R;
 	VectorXd S_C;
+	VectorXd S;
+	//kronecker structure: Wkron - p x D where D is the number of weights to be fitted
+	MatrixXd Wkron;
+	//kronecker structure: same but for the background model:
+	MatrixXd Wkron0;
+
+	void kron_snps(MatrixXd* out,const MatrixXd& x,const MatrixXd& kron);
+
+	void kron_rot(MatrixXd* out,const MatrixXd&  x);
 public:
 	CSimpleKroneckerLMM();
 	virtual ~CSimpleKroneckerLMM();
@@ -131,11 +140,16 @@ public:
 
 	void getK_R(MatrixXd* out) const;
 	void getK_C(MatrixXd* out) const;
-#ifndef SWIG
-	MatrixXd getK_R() const;
-	MatrixXd getK_C() const;
-#endif
+	void setWkron(const MatrixXd& Wkron);
+    void setWkron0(const MatrixXd& Wkron0);
 
+
+#ifndef SWIG
+    MatrixXd getK_R() const;
+    MatrixXd getK_C() const;
+    MatrixXd getWkron() const;
+    MatrixXd getWkron0() const;
+#endif
 
 };
 

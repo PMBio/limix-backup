@@ -13,7 +13,7 @@
 #include "gpmix/utils/matrix_helper.h"
 #include "gpmix/LMM/lmm.h"
 #include "gpmix/LMM/lmm_old.h"
-  using namespace gpmix;
+using namespace gpmix;
 
 using namespace std;
 using namespace gpmix;
@@ -44,12 +44,30 @@ int main() {
 		cout << "pv_old:\n"<<scientific<<pvals<<endl;
 	}
 
-	if (1){ //LMM testing using new code
-<<<<<<< HEAD
-		CLmm lmm;
-=======
+
+
+	if (1){ //Simple Kronecker LMM
+		MatrixXd Kp = 1.0/p * (snps.block(0,0,p,s)*snps.block(0,0,p,s).transpose());
+
+		MatrixXd Wkron0 = MatrixXd::Ones(p,1);
+		MatrixXd Wkron  = MatrixXd::Zero(p,1);
+		//select one phenotype for testing only:
+		Wkron(0,0) = 1;
+
+		CSimpleKroneckerLMM lmm;
+		lmm.setK_R(K);
+		lmm.setK_C(Kp);
+		lmm.setPheno(pheno);
+		lmm.setSNPs(snps);
+		lmm.setCovs(covs);
+		lmm.setWkron(Wkron);
+		lmm.setWkron0(Wkron0);
+		lmm.process();
+	}
+
+	if (0){ //LMM testing using new code
 		CLMM lmm;
->>>>>>> 94a0160d3df4b87ee2791a1214c912a727fe033d
+
 
 		lmm.setK(K);
 		lmm.setSNPs(snps);
