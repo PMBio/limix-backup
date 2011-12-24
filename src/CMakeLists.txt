@@ -26,6 +26,7 @@ SET(SOURCES gpmix/covar/covariance.cpp
 	    gpmix/utils/fisherf.cpp
 	    gpmix/LMM/lmm_old.cpp
 	    gpmix/LMM/lmm.cpp	
+	    gpmix/lasso/lasso.cpp
 	    gpmix/likelihood/likelihood.cpp
 	    gpmix/gp/gp_base.cpp
 )

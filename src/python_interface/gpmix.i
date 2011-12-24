@@ -9,6 +9,7 @@
 #include "gpmix/covar/se.h"
 #include "gpmix/likelihood/likelihood.h"
 #include "gpmix/LMM/lmm.h"
+#include "gpmix/lasso/lasso.h"
 //typedef unsigned int uint64_t;
   using namespace gpmix;
 %}
@@ -53,6 +54,7 @@
 /* Include the header file to be wrapped */
 %include "gpmix/types.h"
 %include "gpmix/LMM/lmm.h"
+%include "gpmix/lasso/lasso.h"
 %include "gpmix/covar/covariance.h"
 %include "gpmix/covar/linear.h"
 %include "gpmix/covar/se.h"
