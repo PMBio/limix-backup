@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb,amsfonts,amsmath}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subfig}
+\usepackage{color}
+\usepackage[affil-it]{authblk}
+\usepackage{multirow}
+\usepackage{fullpage}
+\usepackage{booktabs}
+\usepackage{pdfsync}
+
+%\usepackage[nofiglist, notablist, nomarkers]{endfloat}
+\input{utils.tex}
+%\title{Probabilistic learning of confounding factors in genetical
+%genomics studies}
+\title{Derivations and mathematical details of GPmix}
+\author[1]{Christoph Lippert, Oliver Stegle}
+
+\affil[1]{Department Empirical Inference,
+Max Planck Institutes T\"ubingen, Germany}
+\date{}
+
+\captionsetup[subfloat]{listofformat=parens}
+\newcommand{\OLI}[1]{{\color{blue}\fbox{OLI} #1}}
+\makeatletter
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+%\nipsfinalcopy % Uncomment for camera-ready version
+%\newcommand{\B}[1]{\bm{#1}} Christoph:removed this to make things consistent
+\newcommand{\B}[1]{{\bf{#1}}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\norma}[1]{\mathcal{N}\left(#1\right)}
+\newcommand{\eref}[1]{(\ref{#1})}
+\renewcommand{\R}{\mathbb{R}}
+\newcommand\norm[1]{\left\Vert {#1} \right\Vert}
+\newcommand\rank{\mathrm{rank}}
+\newcommand\tr{\mathrm{Tr}}
+
+
+\begin{document}
+\maketitle
+
+
+\section{Some definitions}
+\begin{itemize}
+\item $\B{A}=\B{U}\B{S}\B{U}^{\T}$ is the eigenvalue decomposition of
+  the symmetric $D$-by-$D$ matrix $\B{A}$, where $\B{U}$ is an
+  $D$-by-$D$ orthonormal matrix, holding the $D$ eigenvectors of
+  $\B{A}$ and $\B{S}$ is an $D$-by-$D$ diagonal matrix, holding the
+  corresponding eigenvalues of $\B{A}$ as diagonal entries. 
+\item $\B{A}\odot\B{B}$ is the pointwise or Hadamard product of $\B{A}$ and $\B{B}$.
+\item $\B{A}\otimes\B{B}$ is the Kronecker product of $\B{A}$ and $\B{B}$.
+\item $\B{Y}\in\mathbb{R}^{N\times G}$ is the matrix holding all samples, having $N$ rows and $G$ columns.
+\end{itemize}
+
+
+\section{Kronecker testing strategies and models}
+
+\section{Efficient computation of tensor GP models}
+
+
+\newpage
+\end{document}
