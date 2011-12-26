@@ -7,6 +7,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 option(BUILD_PYTHON_PACKAGE "Enable Python bindings" ON)
 #R optional
 option(BUILD_R_PACKAGE "Enable R bindings" OFF)
+#profiling using google perftools (currently only python .so)
+option(GOOGLE_PERF "Enable google perftools support" OFF)
 
 #build stuff
 option(BUILD_UNIVERSAL "Build both 32 and 64 bit versions" OFF)

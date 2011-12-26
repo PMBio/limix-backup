@@ -77,13 +77,17 @@ include_directories(${GPMIX_SRC_DIR}/External)
 include_directories(${GPMIX_SRC_DIR}/src)
 
 set(CMAKE_SWIG_FLAGS "")
-#SET(SWIGLINKLIBS ${PYTHON_LIBRARIES})
+
+#add google profiling code if enable:
+if (GOOGLE_PERF)
+SET(SWIGLINKLIBS profiler)
+endif (GOOGLE_PERF)
 
 set_source_files_properties(gpmix.i PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-includeall")
 set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
 swig_add_module(gpmix python gpmix.i)
-swig_link_libraries(gpmix ${SWIGLINKLIBS} gpmixlib)
+swig_link_libraries(gpmix gpmixlib ${SWIGLINKLIBS})
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")	 
   # Mac OS X specific code

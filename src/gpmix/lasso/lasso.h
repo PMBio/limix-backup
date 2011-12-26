@@ -13,7 +13,7 @@
 namespace gpmix {
 
 
-void ridge_regression(MatrixXd* out, const MatrixXd& X, const MatrixXd& y,mfloat_t mu);
+void ridge_regression(MatrixXd* out, const MatrixXd& Xfull, const MatrixXd& y,mfloat_t mu);
 void lasso_irr(MatrixXd* w_out,const MatrixXd& X,const MatrixXd& y, mfloat_t mu, mfloat_t optTol=1E-6,mfloat_t threshold=1E-6, muint_t maxIter = 10000);
 
 
