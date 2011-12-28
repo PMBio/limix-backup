@@ -4,66 +4,94 @@
  *  Created on: Nov 11, 2011
  *      Author: stegle
  */
-#if 0
 #include "fixed.h"
 #include "gpmix/types.h"
 #include "assert.h"
 
 namespace gpmix {
 
-	CFixedCF::CFixedCF(const MatrixXd K0) : ACovarianceFunction(0)
+
+
+gpmix::CFixedCF::CFixedCF(const MatrixXd & K0) : ACovarianceFunction(1)
+{
+	this->K0 = K0;
+}
+
+
+gpmix::CFixedCF::~CFixedCF()
+{
+}
+
+
+void gpmix::CFixedCF::Kcross(MatrixXd *out, const CovarInput & Xstar) const
+{
+	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
+	(*out) = A * this->K0cross;
+}
+
+void CFixedCF::K(MatrixXd *out) const
+{
+	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
+	(*out) = A * this->K0;
+}
+
+
+void gpmix::CFixedCF::Kgrad_param(MatrixXd *out, const muint_t i) const
+{
+	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
+
+	if (i==0)
 	{
-		this->K0 = K0;
-		//check that matrix is squared
-		if (K0.rows()!=K0.cols())
-				throw CGPMixException("Fixed CF requires squared covariance matrix");
+		(*out) = 2.0 * A * this->K0;
 	}
+}
 
-	CFixedCF::~CFixedCF() {
-		// TODO Auto-generated destructor stub
-	}
+void gpmix::CFixedCF::Kcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const
+{
+	(*out) = MatrixXd::Zero(X.rows(),Xstar.rows());
+}
 
-	MatrixXd CFixedCF::K(const CovarParams params, const CovarInput x1, const CovarInput x2) const
-	{
-		if (this->K0.rows()!=x1.rows())
-		{
-			throw CGPMixException("Unaligned input dimensons in FixedCF");
-		}
-		mfloat_t A = (mfloat_t)std::exp((long double) (2.0*params(0)));
-		return A*this->K0;
-	}
+void gpmix::CFixedCF::Kdiag_grad_X(VectorXd *out, const muint_t d) const
+{
+	(*out) = VectorXd::Zero(X.rows());
+}
 
-	VectorXd CFixedCF::Kdiag(const CovarParams params,const CovarInput x1) const
-	{
-		mfloat_t A = (mfloat_t)std::exp((long double) (2.0*params(0)));
-		return A*this->K0.diagonal();
-	}
-
-	MatrixXd CFixedCF::Kgrad_theta(const CovarParams params, const CovarInput x1,const muint_t i) const
-	{
-		if(i==0)
-		{
-			MatrixXd K = this->K(params,x1,x1);
-			K*=2.0;
-			return K;
-		}
-		else
-			throw CGPMixException("unknown hyperparameter derivative requested in CLinearCFISO");
-	}
-
-	MatrixXd CFixedCF::Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const muint_t d) const
-	{
-		//create empty matrix
-		MatrixXd RV = MatrixXd::Zero(x1.rows(),x2.rows());
-		return RV;
-	}
-
-	MatrixXd CFixedCF::Kgrad_xdiag(const CovarParams params, const CovarInput x1, const muint_t d) const
-	{
-		VectorXd RV = VectorXd::Zero(x1.rows());
-		return RV;
-	}
+MatrixXd CFixedCF::getK0() const
+{
+	return K0;
+}
 
 
-} /* namespace gpmix */
-#endif
+MatrixXd CFixedCF::getK0cross() const
+{
+	return K0cross;
+}
+
+void CFixedCF::setK0(const MatrixXd& K0)
+{
+	this->K0 = K0;
+}
+
+void CFixedCF::setK0cross(const MatrixXd& Kcross)
+{
+	this->K0cross = Kcross;
+}
+
+
+
+void gpmix::CFixedCF::getK0(MatrixXd *out) const
+{
+	(*out) = K0;
+}
+
+
+
+void gpmix::CFixedCF::getK0cross(MatrixXd *out) const
+{
+	(*out) = K0cross;
+}
+
+
+
+/* namespace gpmix */
+}

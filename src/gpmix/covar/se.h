@@ -24,10 +24,10 @@ public:
 	virtual void Kcross(MatrixXd* out, const CovarInput& Xstar ) const;
 	virtual void Kgrad_param(MatrixXd* out,const muint_t i) const;
 	virtual void Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const;
-	virtual void Kdiag_grad_X(MatrixXd* out,const muint_t d) const;
+	virtual void Kdiag_grad_X(VectorXd* out,const muint_t d) const;
 
 	//class information
-	inline string getName() const{ return "CovLinearARD";}
+	inline string getName() const{ return "CovSEARD";}
 
 	//redefine setX
 	inline virtual void setX(const CovarInput& X);

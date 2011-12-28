@@ -98,10 +98,18 @@ void CCovLinearARD::Kgrad_param(MatrixXd* out,const muint_t i) const
 
 void CCovLinearARD::Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const
 {
+	VectorXd L = 2*params;
+	L = L.unaryExpr(ptr_fun(exp));
+	(*out) = MatrixXd::Zero(Xstar.rows(),this->X.rows());
+	(*out).rowwise() = L(d)*Xstar.col(d);
 }
 
 void CCovLinearARD::Kdiag_grad_X(VectorXd* out,const muint_t d) const
 {
+	VectorXd L = 2*params;
+	L = L.unaryExpr(ptr_fun(exp));
+	(*out) = VectorXd::Zero(X.rows());
+	(*out) = 2.0*L(d)*X.col(d);
 }
 
 
