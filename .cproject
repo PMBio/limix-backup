@@ -233,8 +233,11 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1338266448.852343363" name="Gpmix_covariance_tests.cpp" rcbsApplicability="disable" resourcePath="src/testing/Gpmix_covariance_tests.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.617063569.2013306701">
+						<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.617063569.2013306701" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.617063569"/>
+					</fileInfo>
 					<sourceEntries>
-						<entry excluding="testing/GPmix.cpp|testing/lmm_testing.cpp|testing/Gpmix_covariance_tests.cpp|testing/kernel_test.cpp|gpmix/LMM/t" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="testing/GPmix.cpp|testing/lmm_testing.cpp|testing/kernel_test.cpp|gpmix/LMM/t" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

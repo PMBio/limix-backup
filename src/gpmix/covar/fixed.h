@@ -15,16 +15,36 @@ namespace gpmix {
 class CFixedCF : public ACovarianceFunction {
 protected:
 	MatrixXd K0;
+	MatrixXd K0cross;
 public:
-	CFixedCF(const MatrixXd K0);
+	CFixedCF(const MatrixXd& K0);
+ 	CFixedCF() : ACovarianceFunction(1)
+	{};
 	~CFixedCF();
-	MatrixXd K(const CovarParams params, const CovarInput x1, const CovarInput x2) const;
-	VectorXd Kdiag(const CovarParams params, const CovarInput x1) const;
 
 
-	MatrixXd Kgrad_theta(const CovarParams params, const CovarInput x1, const muint_t i) const;
-	MatrixXd Kgrad_x(const CovarParams params, const CovarInput x1, const CovarInput x2, const muint_t d) const;
-	MatrixXd Kgrad_xdiag(const CovarParams params, const CovarInput x1, const muint_t d) const;
+	//overloaded pure virtual functions:
+	virtual void Kcross(MatrixXd* out, const CovarInput& Xstar ) const;
+	virtual void Kgrad_param(MatrixXd* out,const muint_t i) const;
+	virtual void Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const;
+	virtual void Kdiag_grad_X(VectorXd* out,const muint_t d) const;
+	//other overloads
+	virtual void K(MatrixXd* out) const;
+	//setter and getters
+	void setK0(const MatrixXd& K0);
+	void setK0cross(const MatrixXd& Kcross);
+	void getK0(MatrixXd* out) const;
+	void getK0cross(MatrixXd* out) const;
+
+	//class information
+	inline string getName() const{ return "FixedCF";}
+
+
+#ifndef SWIG
+	MatrixXd getK0() const;
+	MatrixXd getK0cross() const;
+#endif
+
 };
 
 } /* namespace gpmix */

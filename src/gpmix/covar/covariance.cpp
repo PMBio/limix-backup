@@ -1,5 +1,5 @@
 /*
- * ACovariance.cpp
+ear  * ACovariance.cpp
  *
  *  Created on: Nov 10, 2011
  *      Author: stegle
@@ -27,7 +27,7 @@ ACovarianceFunction::~ACovarianceFunction()
 //set the parameters to a new value.
 inline void ACovarianceFunction::setParams(const CovarParams& params)
 {
-	if ((muint_t)(params.cols()) != this->getNumberParams()){
+	if ((muint_t)(params.rows()) != this->getNumberParams()){
 		ostringstream os;
 		os << "Wrong number of params for covariance funtion " << this->getName() << ". numberParams = " << this->getNumberParams() << ", params.cols() = " << params.cols();
 		throw gpmix::CGPMixException(os.str());
@@ -84,7 +84,7 @@ bool ACovarianceFunction::check_covariance_Kgrad_theta(ACovarianceFunction& cova
 	return (RV < threshold);
 }
 
-bool ACovarianceFunction::check_covariance_Kgrad_x(ACovarianceFunction& covar,mfloat_t relchange,mfloat_t threshold)
+bool ACovarianceFunction::check_covariance_Kgrad_x(ACovarianceFunction& covar,mfloat_t relchange,mfloat_t threshold,bool check_diag)
 {
 	mfloat_t RV=0;
 	//copy inputs for which we calculate gradients
@@ -94,6 +94,7 @@ bool ACovarianceFunction::check_covariance_Kgrad_x(ACovarianceFunction& covar,mf
 	{
 		//analytical gradient is per columns all in one go:
 		MatrixXd Kgrad_x = covar.Kgrad_X(ic);
+		MatrixXd Kgrad_x_diag = covar.Kdiag_grad_X(ic);
 		for (int ir=0;ir<X.rows();ir++)
 		{
 			mfloat_t change = relchange*X0(ir,ic);
@@ -105,16 +106,20 @@ bool ACovarianceFunction::check_covariance_Kgrad_x(ACovarianceFunction& covar,mf
 			covar.setX(X);
 			MatrixXd Lminus = covar.K();
 			X(ir,ic) = X0(ir,ic);
+			covar.setX(X);
 			//numerical gradient
 			MatrixXd diff_numerical = (Lplus-Lminus)/(2.*change);
 			//build analytical gradient matrix
 			MatrixXd diff_analytical = MatrixXd::Zero(X.rows(),X.rows());
-			for (int n=0;n<X.rows();n++)
-			{
-				diff_analytical.row(n) = Kgrad_x.row(n);
-				diff_analytical.col(n) += Kgrad_x.row(n);
-			}
+			diff_analytical.row(ir) = Kgrad_x.row(ir);
+			diff_analytical.col(ir) += Kgrad_x.row(ir);
 			RV+= (diff_numerical-diff_analytical).squaredNorm();
+			//difference
+			if (check_diag)
+			{
+				double delta =(diff_numerical(ir,ir)-Kgrad_x_diag(ir));
+				RV+= delta*delta;
+			}
 		} //end for ir
 	}
 	return (RV < threshold);

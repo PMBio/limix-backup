@@ -55,7 +55,7 @@ inline void CCovLinearARD::setX(const CovarInput & X)
 {
 	this->X = X;
 	this->insync = false;
-	this->numberParams = 1+X.cols();
+	this->numberParams = X.cols();
 }
 
 
