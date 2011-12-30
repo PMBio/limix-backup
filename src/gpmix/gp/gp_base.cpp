@@ -45,7 +45,7 @@ MatrixXd CGPbase::getKinv()
 {
 	if (!isInSync())
 		this->clearCache();
-	if (this->Kinv.cols()==0)
+	if (cache.Kinv.cols()==0)
 	{
 		Eigen::LDLT<gpmix::MatrixXd> chol = this->getCholK();
 		this->Kinv = MatrixXd::Identity(this->get_samplesize(),this->get_samplesize());
