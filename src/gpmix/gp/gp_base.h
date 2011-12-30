@@ -23,7 +23,7 @@ namespace gpmix {
 class CGPHyperParams {
 
 protected:
-   
+
 	MatrixXd param_array;
 	map<string,MatrixXd> param_map;
 
@@ -34,7 +34,7 @@ public:
 		//empty constructur
 	}
 	//from a list of params
-	
+
 	VectorXd getParamArray()
 	{
 		if (this->param_array.cols()==0)
@@ -119,47 +119,65 @@ public:
 		this->param_map.clear();
 	};
 };
-*/
+ */
+
+class CGPCache
+{
+public:
+
+	MatrixXd K;
+	Eigen::LDLT<gpmix::MatrixXd> cholK;
+	MatrixXd Kinv;
+	MatrixXd KinvY;
+	MatrixXd DKinv_KinvYYKinv;
+	CGPCache()
+	{ clear();}
+
+	void clear()
+	{
+		this->K=MatrixXd();
+		this->Kinv=MatrixXd();
+		this->KinvY=MatrixXd();
+		this->cholK=Eigen::LDLT<gpmix::MatrixXd>();
+		this->DKinv_KinvYYKinv = MatrixXd();
+	}
+};
 
 class CGPbase {
 protected:
 
 	MatrixXd Y;    //training targets
-	
 	//cached GP-parameters:
-	MatrixXd K;
-	MatrixXd Kinv;
-	MatrixXd KinvY;
-	MatrixXd DKinv_KinvYYKinv;
+	CGPCache cache;
 
-	Eigen::LDLT<gpmix::MatrixXd> cholK;
 
 	ACovarianceFunction& covar;//Covariance function
 	ALikelihood& lik;          //likelihood model
-	
+
+	virtual void clearCache();
+	virtual bool isInSync() const;
+
 	virtual MatrixXd getK();
 	virtual MatrixXd getKinv();
 	virtual MatrixXd getKinvY();
 	virtual Eigen::LDLT<gpmix::MatrixXd> getCholK();
 	virtual MatrixXd getDKinv_KinvYYKinv();
 
-	virtual void clearCache();
-
-
 public:
 	CGPbase(ACovarianceFunction& covar, ALikelihood& lik);
 	virtual ~CGPbase();
 
-//TODO: add interface that is suitable for optimizer
-// virtual double LML(double* params);
-// virtual void LML(double* params, double* gradients);
+	//TODO: add interface that is suitable for optimizer
+	// virtual double LML(double* params);
+	// virtual void LML(double* params, double* gradients);
 	virtual void set_data(MatrixXd& Y);
 
 	//virtual void set_params(CGPHyperParams& hyperparams);
-
-	virtual mfloat_t LML();        //the log-likelihood (+ log-prior)
+	virtual mfloat_t LML();
 	virtual CovarParams LMLgrad_covar();
 	virtual LikParams LMLgrad_lik();
+	MatrixXd getY() const;
+	void setY(MatrixXd Y);
 
 	inline muint_t get_samplesize(){return this->Y.rows();} //get the number of training data samples
 	inline muint_t get_target_dimension(){return this->Y.cols();} //get the dimension of the target data

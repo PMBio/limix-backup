@@ -18,8 +18,8 @@ namespace gpmix {
 CCovLinearISO::~CCovLinearISO() {
 }
 
-void CCovLinearISO::Kcross(MatrixXd* out,const CovarInput& Xstar) const
-{
+void CCovLinearISO::aKcross(MatrixXd* out,const CovarInput& Xstar) const throw(CGPMixException)
+																												{
 	//create result matrix:
 	out->resize(this->X.rows(),Xstar.rows());
 	//We dfine Xstar [N X D] where N are samples...
@@ -32,10 +32,10 @@ void CCovLinearISO::Kcross(MatrixXd* out,const CovarInput& Xstar) const
 	//kernel matrix is constant hyperparmeter and dot product
 	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
 	(*out) = A* Xstar*this->X.transpose();
-}
+																												}
 
-void CCovLinearISO::Kgrad_param(MatrixXd* out, const muint_t i ) const
-{
+void CCovLinearISO::aKgrad_param(MatrixXd* out, const muint_t i ) const throw(CGPMixException)
+		{
 	if (i==0)
 	{
 		out->resize(this->X.rows(),this->X.rows());
@@ -47,19 +47,32 @@ void CCovLinearISO::Kgrad_param(MatrixXd* out, const muint_t i ) const
 		os << this->getName() <<": wrong index of hyperparameter. i = "<< i <<". this->params.cols() = "<< this->getNumberParams() << ".";
 		throw gpmix::CGPMixException(os.str());
 	}
-}
+																												}
 
-void CCovLinearISO::Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const
-{
+void CCovLinearISO::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException)
+																												{
+	if (d>this->numberDimensions)
+	{
+		ostringstream os;
+		os << this->getName() <<": wrong dimension index";
+		throw gpmix::CGPMixException(os.str());
+	}
+
 	mfloat_t A = exp((mfloat_t)(2.0*this->params(0)));
 	//create empty matrix
 	(*out) = MatrixXd::Zero(Xstar.rows(),this->X.rows());
 	//otherwise update computation:
 	(*out).rowwise() = A*Xstar.col(d);
-}
+																												}
 
-void CCovLinearISO::Kdiag_grad_X(VectorXd* out, const muint_t d ) const
+void CCovLinearISO::aKdiag_grad_X(VectorXd* out, const muint_t d ) const throw (CGPMixException)
 {
+	if (d>this->numberDimensions)
+	{
+		ostringstream os;
+		os << this->getName() <<": wrong dimension index";
+		throw gpmix::CGPMixException(os.str());
+	}
 	mfloat_t A = exp((mfloat_t)(2.0*this->params(0)));
 	(*out) = VectorXd::Zero(this->X.rows());
 	(*out) = 2.0*A*this->X.col(d);
@@ -72,9 +85,15 @@ CCovLinearARD::~CCovLinearARD()
 {
 }
 
+void CCovLinearARD::setNumberDimensions(muint_t numberDimensions)
+{
+	this->numberDimensions = numberDimensions;
+	this->numberParams = numberDimensions;
+}
+
 
 //overloaded pure virtual functions:
-void CCovLinearARD::Kcross(MatrixXd* out, const CovarInput& Xstar ) const
+void CCovLinearARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw (CGPMixException)
 {
 	//get all amplitude parameters, one per dimension
 	VectorXd L = 2*params;
@@ -82,7 +101,7 @@ void CCovLinearARD::Kcross(MatrixXd* out, const CovarInput& Xstar ) const
 	(*out) = Xstar*L.asDiagonal()*this->X.transpose();
 }
 
-void CCovLinearARD::Kgrad_param(MatrixXd* out,const muint_t i) const
+void CCovLinearARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGPMixException)
 {
 	//is the requested gradient within range?
 	if (i >= (muint_t)this->X.cols()) //WARNING: muint_t conversion
@@ -96,15 +115,19 @@ void CCovLinearARD::Kgrad_param(MatrixXd* out,const muint_t i) const
 	(*out) =  A*2.0*(x1i*x1i.transpose());
 }
 
-void CCovLinearARD::Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const
+void CCovLinearARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw (CGPMixException)
 {
+	if (d>=numberDimensions)
+	{
+		throw CGPMixException("derivative for gradient outside specification requested.");
+	}
 	VectorXd L = 2*params;
 	L = L.unaryExpr(ptr_fun(exp));
 	(*out) = MatrixXd::Zero(Xstar.rows(),this->X.rows());
 	(*out).rowwise() = L(d)*Xstar.col(d);
 }
 
-void CCovLinearARD::Kdiag_grad_X(VectorXd* out,const muint_t d) const
+void CCovLinearARD::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw (CGPMixException)
 {
 	VectorXd L = 2*params;
 	L = L.unaryExpr(ptr_fun(exp));

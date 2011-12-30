@@ -14,33 +14,27 @@ namespace gpmix {
 
 class CCovSqexpARD: public gpmix::ACovarianceFunction {
 public:
-	CCovSqexpARD(): ACovarianceFunction(1)
+	CCovSqexpARD(muint_t numberDimensions=1): ACovarianceFunction(1)
 	{
+		this->setNumberDimensions(numberDimensions);
 	}
 
 	~CCovSqexpARD();
 
+	virtual void setNumberDimensions(muint_t numberDimensions);
+
+
 	//overloaded pure virtual functions:
-	virtual void Kcross(MatrixXd* out, const CovarInput& Xstar ) const;
-	virtual void Kgrad_param(MatrixXd* out,const muint_t i) const;
-	virtual void Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const;
-	virtual void Kdiag_grad_X(VectorXd* out,const muint_t d) const;
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 
 	//class information
 	inline string getName() const{ return "CovSEARD";}
-
-	//redefine setX
-	inline virtual void setX(const CovarInput& X);
-
 }; //end class CCovSqexpARD
 
 
-inline void CCovSqexpARD::setX(const CovarInput & X)
-{
-	this->X = X;
-	this->insync = false;
-	this->numberParams = 1+X.cols();
-}
 
 } /* namespace gpmix */
 #endif /* CCOVSQEXPARD_H_ */

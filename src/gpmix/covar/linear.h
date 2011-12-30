@@ -14,17 +14,18 @@ namespace gpmix {
 
 class CCovLinearISO: public ACovarianceFunction  {
 public:
-	CCovLinearISO() : ACovarianceFunction(1)
+	CCovLinearISO(muint_t numberDimensions=1) : ACovarianceFunction(1)
 	{
+		this->setNumberDimensions(numberDimensions);
 	}
 
 	~CCovLinearISO();
 
 	//overloaded pure virtual functions:
-	void Kcross(MatrixXd* out, const CovarInput& Xstar ) const;
-	void Kgrad_param(MatrixXd* out,const muint_t i) const;
-	void Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const;
-	void Kdiag_grad_X(VectorXd* out,const muint_t d) const;
+	void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+	void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
+	void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 
 	//class information
 	inline string getName() const {return "CCovLinearISO";};
@@ -33,30 +34,26 @@ public:
 
 class CCovLinearARD: public ACovarianceFunction  {
 public:
-	CCovLinearARD() : ACovarianceFunction(1)
+	CCovLinearARD(muint_t numberDimensions=1) : ACovarianceFunction(1)
 	{
+		this->setNumberDimensions(numberDimensions);
 	}
 
 	~CCovLinearARD();
+	//overloaded virtuals
+	virtual void setNumberDimensions(muint_t numberDimensions);
+
 	//overloaded pure virtual functions:
-	void Kcross(MatrixXd* out, const CovarInput& Xstar ) const;
-	void Kgrad_param(MatrixXd* out,const muint_t i) const;
-	void Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const;
-	void Kdiag_grad_X(VectorXd* out,const muint_t d) const;
+	void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+	void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
+	void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 
 	//class information
 	inline string getName() const{ return "CovLinearARD";}
-
-	//redefine setX
-	inline virtual void setX(const CovarInput& X);
 };
 
-inline void CCovLinearARD::setX(const CovarInput & X)
-{
-	this->X = X;
-	this->insync = false;
-	this->numberParams = X.cols();
-}
+
 
 
 

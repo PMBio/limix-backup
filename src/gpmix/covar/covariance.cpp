@@ -20,39 +20,71 @@ ACovarianceFunction::ACovarianceFunction(muint_t numberParams)
 
 ACovarianceFunction::~ACovarianceFunction()
 {
+
 }
 
 
 
 //set the parameters to a new value.
-inline void ACovarianceFunction::setParams(const CovarParams& params)
+void ACovarianceFunction::setParams(const CovarParams& params)
 {
-	if ((muint_t)(params.rows()) != this->getNumberParams()){
-		ostringstream os;
-		os << "Wrong number of params for covariance funtion " << this->getName() << ". numberParams = " << this->getNumberParams() << ", params.cols() = " << params.cols();
-		throw gpmix::CGPMixException(os.str());
-	}
+	checkParamDimensions(params);
 	this->params = params;
 	this->insync = false;
 }
 
+void ACovarianceFunction::agetParams(CovarParams* out)
+{(*out) = params;};
 
-void ACovarianceFunction::K(MatrixXd* out) const
+bool ACovarianceFunction::isInSync() const
+{return insync;}
+
+void ACovarianceFunction::makeSync()
+{ insync = true;}
+
+void ACovarianceFunction::setNumberDimensions(muint_t numberDimensions)
 {
-	Kcross(out,X);
+	this->numberDimensions=numberDimensions;
+	this->numberParams = 1;
 }
 
-void ACovarianceFunction::Kdiag(VectorXd *out) const
+muint_t ACovarianceFunction::getNumberParams() const
+{return numberParams;}
+
+muint_t ACovarianceFunction::getNumberDimensions() const
+{return numberDimensions;}
+
+
+
+void ACovarianceFunction::setX(const CovarInput & X) throw (CGPMixException)
+{
+	checkXDimensions(X);
+	this->X = X;
+	this->insync = false;
+}
+
+void ACovarianceFunction::agetX(CovarInput *Xout) const throw(CGPMixException)
+{
+	(*Xout) = this->X;
+}
+
+
+
+void ACovarianceFunction::aK(MatrixXd* out) const
+{
+	aKcross(out,X);
+}
+
+void ACovarianceFunction::aKdiag(VectorXd *out) const
 {
 	MatrixXd Kfull = K();
-	//out->resize(Kfull.rows());
 	(*out) = Kfull.diagonal();
 	return;
 }
 
-void ACovarianceFunction::Kgrad_X(MatrixXd *out, const muint_t d) const
+void ACovarianceFunction::aKgrad_X(MatrixXd *out, const muint_t d) const throw(CGPMixException)
 {
-	Kcross_grad_X(out,X,d);
+	aKcross_grad_X(out,X,d);
 }
 
 bool ACovarianceFunction::check_covariance_Kgrad_theta(ACovarianceFunction& covar,mfloat_t relchange,mfloat_t threshold)

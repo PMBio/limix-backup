@@ -23,20 +23,20 @@ gpmix::CFixedCF::~CFixedCF()
 }
 
 
-void gpmix::CFixedCF::Kcross(MatrixXd *out, const CovarInput & Xstar) const
+void gpmix::CFixedCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CGPMixException)
 {
 	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
 	(*out) = A * this->K0cross;
 }
 
-void CFixedCF::K(MatrixXd *out) const
+void CFixedCF::aK(MatrixXd *out) const
 {
 	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
 	(*out) = A * this->K0;
 }
 
 
-void gpmix::CFixedCF::Kgrad_param(MatrixXd *out, const muint_t i) const
+void gpmix::CFixedCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMixException)
 {
 	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
 
@@ -46,12 +46,12 @@ void gpmix::CFixedCF::Kgrad_param(MatrixXd *out, const muint_t i) const
 	}
 }
 
-void gpmix::CFixedCF::Kcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const
+void gpmix::CFixedCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const throw(CGPMixException)
 {
 	(*out) = MatrixXd::Zero(X.rows(),Xstar.rows());
 }
 
-void gpmix::CFixedCF::Kdiag_grad_X(VectorXd *out, const muint_t d) const
+void gpmix::CFixedCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMixException)
 {
 	(*out) = VectorXd::Zero(X.rows());
 }

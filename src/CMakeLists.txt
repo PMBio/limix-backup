@@ -16,6 +16,7 @@ SET(SOURCES gpmix/covar/covariance.cpp
 	    gpmix/covar/fixed.cpp	
 	    gpmix/covar/fixed.cpp	
 	    gpmix/covar/se.cpp
+	    gpmix/covar/combinators.cpp
 	    gpmix/covar/linear.cpp
 	    gpmix/covar/dist.cpp
 	    gpmix/utils/matrix_helper.cpp

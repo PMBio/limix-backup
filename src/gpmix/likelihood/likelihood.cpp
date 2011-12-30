@@ -20,15 +20,22 @@ ALikelihood::~ALikelihood() {
 	// TODO Auto-generated destructor stub
 }
 
-void ALikelihood::setParams(LikParams& params)
+void ALikelihood::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
 {
-	if(this->numberParams!=(muint_t)params.rows())//WARNING: muint_t conversion
-	{
-		ostringstream os;
-		os << "LikParams has wrong dimensions. params.rows() = "<< params.rows() << ", numberParams = "<< numberParams;
-		throw gpmix::CGPMixException(os.str());
-	}
+	(*out) = MatrixXd::Zero(Xstar.rows(),X.rows());
 }
+void ALikelihood::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException)
+{
+	(*out) = MatrixXd::Zero(Xstar.rows(),X.rows());
+}
+void ALikelihood::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException)
+{
+	(*out) = VectorXd::Zero(X.rows());
+}
+
+
+
+/*CLikNormalIso*/
 
 CLikNormalIso::CLikNormalIso() : ALikelihood(1)
 {
@@ -38,54 +45,33 @@ CLikNormalIso::~CLikNormalIso()
 {
 }
 
-
-//CLikNormalIso
-
-void CLikNormalIso::applyToK(MatrixXd& K) const
+void CLikNormalIso::setX(const CovarInput& X) throw (CGPMixException)
 {
-	if ((K.rows() != K.cols()))
-	{
-		ostringstream os;
-		os << "K is not quadratic. K.rows() = "<< K.rows() << ", K.cols() = "<< K.cols();
-		throw gpmix::CGPMixException(os.str());
-	}
-
-	mfloat_t sigma_2 = gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
-	for (muint_t i = 0; i < (muint_t)K.rows(); ++i) //WARNING (muint_t) conversion
-	{
-		K(i,i) += sigma_2;
-	}
+	this->numRows = X.rows();
 }
 
-void CLikNormalIso::K(MatrixXd* out) const
+
+
+void CLikNormalIso::aK(MatrixXd* out) const throw (CGPMixException)
 {
 	mfloat_t sigma_2 = gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
-	(*out) = MatrixXd::Zero(X.rows(),X.rows());
-	for (muint_t i = 0; i < (muint_t)X.rows(); ++i)//WARNING: (muint_t) conversion
-	{
-		(*out)(i,i) = sigma_2;
-	}
+	(*out) = MatrixXd::Zero(numRows,numRows);
+	(*out).diagonal().setConstant(sigma_2);
 }
 
-void CLikNormalIso::Kdiag(VectorXd* out) const
+void CLikNormalIso::aKdiag(VectorXd* out) const throw (CGPMixException)
 {
 	mfloat_t sigma_2 = gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
-	(*out).resize(X.rows());
-	for (muint_t i = 0; i < (muint_t)X.rows(); ++i)//WARNING: (muint_t) conversion
-	{
-		(*out)(i) = sigma_2;
-	}
+	(*out).resize(numRows);
+	(*out).setConstant(sigma_2);
 }
 
-void CLikNormalIso::Kgrad_params(MatrixXd* out, const muint_t row) const
+void CLikNormalIso::aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException)
 {
 	mfloat_t sigma_2 = 2.0*gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
 
-	MatrixXd dK = MatrixXd::Zero(X.rows(),X.rows());
-	for (muint_t i = 0; i < (muint_t)dK.rows(); ++i)//WARNING: (muint_t) conversion
-	{
-		(*out)(i,i) = sigma_2;
-	}
+	(*out) = MatrixXd::Zero(numRows,numRows);
+	(*out).diagonal().setConstant(sigma_2);
 }
 
 } // end:: namespace gpmix
