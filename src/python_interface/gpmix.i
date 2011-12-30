@@ -11,7 +11,9 @@
 #include "gpmix/covar/linear.h"
 #include "gpmix/covar/se.h"
 #include "gpmix/covar/fixed.h"	
-//typedef unsigned int uint64_t;
+#include "gpmix/covar/combinators.h"	
+
+	//typedef unsigned int uint64_t;
   using namespace gpmix;
 %}
 //typedef unsigned int uint_t;
@@ -20,6 +22,8 @@
 /* Get the numpy typemaps */
 %include "numpy.i"
 %include "eigen.i"
+%include "std_vector.i"
+%include "std_string.i"
 
 
 %init %{
@@ -51,7 +55,6 @@
 */
 
 
-
 /* Include the header file to be wrapped */
 %include "gpmix/types.h"
 %include "gpmix/LMM/lmm.h"
@@ -61,6 +64,8 @@
 %include "gpmix/covar/linear.h"
 %include "gpmix/covar/se.h"
 %include "gpmix/covar/fixed.h"
+%include "gpmix/covar/combinators.h"	
+
 
 
  

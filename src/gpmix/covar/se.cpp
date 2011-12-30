@@ -18,7 +18,14 @@ CCovSqexpARD::~CCovSqexpARD() {
 }
 
 
-void CCovSqexpARD::Kcross(MatrixXd* out, const CovarInput& Xstar ) const
+void CCovSqexpARD::setNumberDimensions(muint_t numberDimensions)
+{
+	this->numberDimensions = numberDimensions;
+	this->numberParams = numberDimensions+1;
+}
+
+
+void CCovSqexpARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw (CGPMixException)
 {
 	//amplitude
 	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
@@ -34,7 +41,7 @@ void CCovSqexpARD::Kcross(MatrixXd* out, const CovarInput& Xstar ) const
 	(*out) = A*RV.unaryExpr(ptr_fun(exp));
 } // end :: K
 
-void CCovSqexpARD::Kgrad_param(MatrixXd* out,const muint_t i) const
+void CCovSqexpARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGPMixException)
 {
 	//code copied from K
 	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
@@ -60,11 +67,15 @@ void CCovSqexpARD::Kgrad_param(MatrixXd* out,const muint_t i) const
 		//3. elementwise product
 		(*out).array()*=sq.array();
 	}
+	else
+	{
+		throw CGPMixException("Parameter outside range");
+	}
 }
 
-void CCovSqexpARD::Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const
+void CCovSqexpARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw (CGPMixException)
 {
-	this->Kcross(out,Xstar);
+	this->aKcross(out,Xstar);
 	//lengthscales: now we need to squre explicitly
 	MatrixXd L2 = 2.0*params.block(1,0,params.rows()-1,1);
 	L2 = L2.unaryExpr(ptr_fun(exp));
@@ -76,7 +87,7 @@ void CCovSqexpARD::Kcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const mu
 	(*out).array() *= dist.array();
 }
 
-void CCovSqexpARD::Kdiag_grad_X(VectorXd* out,const muint_t d) const
+void CCovSqexpARD::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw (CGPMixException)
 {
 	(*out) = VectorXd::Zero(X.rows());
 }
