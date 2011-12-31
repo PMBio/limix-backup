@@ -12,6 +12,16 @@
 
 namespace gpmix {
 
+
+//rename argout operators for swig interface
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//rename functions and select the visible component for SWIG
+%ignore CFixedCF::agetK0;
+%ignore CFixedCF::agetK0cross;
+%rename(getK0) CFixedCF::agetK0;
+%rename(getK0cross) CFixedCF::agetK0cross;
+#endif
+
 class CFixedCF : public ACovarianceFunction {
 protected:
 	MatrixXd K0;
@@ -33,18 +43,14 @@ public:
 	//setter and getters
 	void setK0(const MatrixXd& K0);
 	void setK0cross(const MatrixXd& Kcross);
-	void getK0(MatrixXd* out) const;
-	void getK0cross(MatrixXd* out) const;
+	void agetK0(MatrixXd* out) const;
+	void agetK0cross(MatrixXd* out) const;
 
 	//class information
 	inline string getName() const{ return "FixedCF";}
 
-
-#ifndef SWIG
 	MatrixXd getK0() const;
 	MatrixXd getK0cross() const;
-#endif
-
 };
 
 } /* namespace gpmix */

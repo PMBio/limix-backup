@@ -79,14 +79,14 @@ void CFixedCF::setK0cross(const MatrixXd& Kcross)
 
 
 
-void gpmix::CFixedCF::getK0(MatrixXd *out) const
+void gpmix::CFixedCF::agetK0(MatrixXd *out) const
 {
 	(*out) = K0;
 }
 
 
 
-void gpmix::CFixedCF::getK0cross(MatrixXd *out) const
+void gpmix::CFixedCF::agetK0cross(MatrixXd *out) const
 {
 	(*out) = K0cross;
 }
