@@ -15,6 +15,96 @@
 namespace gpmix {
 
 
+/* CGPHyperParmas */
+
+void CGPHyperParams::agetParamArray(VectorXd* out)
+{
+	//1. get size
+	(*out).resize(this->getNumberParams());
+	//2. loop through entries
+	muint_t ncurrent=0;
+	for(CGPHyperParamsMap::const_iterator iter = param_map.begin(); iter!=param_map.end();iter++)
+	{
+		//1. get param object which can be a matrix or array:
+		MatrixXd value = (*iter).second;
+		muint_t nc = value.rows()*value.cols();
+		//2. flatten to vector shape
+		value.resize(nc,1);
+		//3. add to vector
+		(*out).segment(ncurrent,nc) = value;
+		//4. increase pointer
+		ncurrent += nc;
+	}
+}
+
+void CGPHyperParams::setParamArray(const VectorXd& param) throw (CGPMixException)
+{
+	//1. check that param has correct shape
+	if ((muint_t)param.rows()!=getNumberParams())
+	{
+		ostringstream os;
+		os << "Wrong number of params HyperParams structure (HyperParams structure:"<<getNumberParams()<<", paramArray:"<<param.rows()<<")!";
+		throw gpmix::CGPMixException(os.str());
+	}
+
+	//2. loop through elements and slot in params
+	muint_t ncurrent=0;
+	for(CGPHyperParamsMap::const_iterator iter = param_map.begin(); iter!=param_map.end();iter++)
+	{
+		string name = (*iter).first;
+		muint_t nc = (*iter).second.rows()*(*iter).second.cols();
+		//get  elements:
+		MatrixXd value = param.segment(ncurrent,nc);
+		//reshape
+		value.resize((*iter).second.rows(),(*iter).second.cols());
+		//set
+		set(name,value);
+		//move on
+		ncurrent += nc;
+	}
+}
+
+muint_t CGPHyperParams::getNumberParams()
+{
+	// return effective number of params. Note that parameter entries can either be of matrix of column nature
+	// thus sizes is rows*cols
+	muint_t nparams=0;
+	for(CGPHyperParamsMap::const_iterator iter = param_map.begin(); iter!=param_map.end();iter++)
+	{
+		MatrixXd value = (*iter).second;
+		nparams+=value.rows()*value.cols();
+	}
+	return nparams;
+}
+
+void CGPHyperParams::set(const string& name, const MatrixXd& value)
+{
+	param_map[name]=value;
+}
+
+void CGPHyperParams::aget(MatrixXd* out, const string& name)
+{
+	(*out) = param_map[name];
+}
+
+void CGPHyperParams::clear()
+{
+	this->param_map.clear();
+}
+
+void CGPHyperParams::agetNames(VectorXs* out)
+{
+	(*out).resize(param_map.size());
+	map<string,MatrixXd>::iterator it=param_map.begin();
+	for (muint_t i=0; i<param_map.size();++i)
+	{
+		(*out)(i)=(*it).first;
+		++it;
+	}
+}
+
+
+/* CGPbase */
 
 CGPbase::CGPbase(ACovarianceFunction& covar, ALikelihood& lik) : covar(covar), lik(lik) {
 	this->covar = covar;
@@ -29,6 +119,13 @@ CGPbase::~CGPbase() {
 void CGPbase::set_data(MatrixXd& Y)
 {
 	this->Y = Y;
+}
+
+void CGPbase::set_params(const CGPHyperParams& hyperparams)
+{
+	this->params = hyperparams;
+	//update individual components
+	//TODO:
 }
 
 
@@ -51,7 +148,7 @@ MatrixXd* CGPbase::getKinv()
 	if (isnull(cache.Kinv))
 	{
 		Eigen::LLT<gpmix::MatrixXd>* chol = this->getCholK();
-		cache.Kinv = MatrixXd::Identity(this->get_samplesize(),this->get_samplesize());
+		cache.Kinv = MatrixXd::Identity(this->getNumberSamples(),this->getNumberSamples());
 		(*chol).solveInPlace(cache.Kinv);
 		//for now
 	}
@@ -80,7 +177,7 @@ MatrixXd* CGPbase::getDKinv_KinvYYKinv()
 	{
 		MatrixXd* KiY  = getKinvY();
 		MatrixXd* Kinv = getKinv();
-		cache.DKinv_KinvYYKinv = ((mfloat_t)(this->get_target_dimension())) * (*Kinv) - (*KiY) * (*KiY).transpose();
+		cache.DKinv_KinvYYKinv = ((mfloat_t)(this->getNumberDimension())) * (*Kinv) - (*KiY) * (*KiY).transpose();
 	}
 	return &cache.DKinv_KinvYYKinv;
 }
@@ -110,7 +207,33 @@ MatrixXd* CGPbase::getK()
 }
 
 
-mfloat_t CGPbase::LML()
+
+
+
+void CGPbase::agetY(MatrixXd* out) const
+{
+	(*out) = Y;
+}
+
+void CGPbase::setY(const MatrixXd& Y)
+{
+	this->Y = Y;
+}
+
+void CGPbase::agetX(CovarInput* out) const
+{
+	this->covar.agetX(out);
+}
+void CGPbase::setX(const CovarInput& X) throw (CGPMixException)
+{
+	//use covariance to set everything
+	this->covar.setX(X);
+	this->lik.setX(X);
+}
+
+
+/* Marginal likelihood */
+mfloat_t CGPbase::LML() throw (CGPMixException)
 {
 	//update the covariance parameters
 	Eigen::LLT<gpmix::MatrixXd>* chol = getCholK();
@@ -126,7 +249,9 @@ mfloat_t CGPbase::LML()
 	return lml_quad + lml_det + lml_const;
 }
 
-void CGPbase::aLMLgrad_covar(VectorXd* out)
+/*Gradients:*/
+
+void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
 {
 	//vector with results
 	VectorXd grad_covar(covar.getNumberParams());
@@ -141,17 +266,8 @@ void CGPbase::aLMLgrad_covar(VectorXd* out)
 	(*out) = grad_covar;
 }
 
-void CGPbase::agetY(MatrixXd* out) const
-{
-	(*out) = Y;
-}
 
-void CGPbase::setY(const MatrixXd& Y)
-{
-	this->Y = Y;
-}
-
-void CGPbase::aLMLgrad_lik(VectorXd* out)
+void CGPbase::aLMLgrad_lik(VectorXd* out) throw (CGPMixException)
 {
 	LikParams grad_lik(lik.getNumberParams());
 	MatrixXd* W = this->getDKinv_KinvYYKinv();
@@ -164,22 +280,31 @@ void CGPbase::aLMLgrad_lik(VectorXd* out)
 	(*out) = grad_lik;
 }
 
-/*	MatrixXd CGPbase::predictMean(MatrixXd& Xstar)
-	{
-		MatrixXd KstarCross = this->covar.K(this->params.get("covar"), Xstar, this->X);
-		return KstarCross * this->getKinvY();
-	}
+void CGPbase::aLMLgrad(VectorXd* out) throw (CGPMixException)
+{
 
-	MatrixXd CGPbase::predictVar(MatrixXd& Xstar)
-	{
-		MatrixXd KstarDiag = this->covar.Kdiag(this->params.get("covar"), Xstar);
-		KstarDiag+=this->lik.Kdiag(this->params.get("lik"), Xstar);
-		MatrixXd Kcross = this->covar.K(this->params.get("covar"), this->X, Xstar);
-		MatrixXd v = this->getCholK().solve(Kcross);
-		MatrixXd vv = (v.array()*v.array()).matrix().colwise().sum();
-		MatrixXd S2 = KstarDiag - vv.transpose();
+}
 
-		return S2;
-	}
- */
+
+void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException)
+{
+	/*
+	MatrixXd KstarCross = covar.
+	return KstarCross * this->getKinvY();
+	*/
+}
+
+void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) throw (CGPMixException)
+{
+	/*
+	MatrixXd KstarDiag = this->covar.Kdiag(this->params.get("covar"), Xstar);
+	KstarDiag+=this->lik.Kdiag(this->params.get("lik"), Xstar);
+	MatrixXd Kcross = this->covar.K(this->params.get("covar"), this->X, Xstar);
+	MatrixXd v = this->getCholK().solve(Kcross);
+	MatrixXd vv = (v.array()*v.array()).matrix().colwise().sum();
+	MatrixXd S2 = KstarDiag - vv.transpose();
+	return S2;
+	*/
+}
+
 } /* namespace gpmix */

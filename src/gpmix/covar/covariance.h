@@ -22,6 +22,19 @@ typedef VectorXd CovarParams;
 
 //rename argout operators for swig interface
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//ignore C++ versions
+%ignore ACovarianceFunction::K;
+%ignore ACovarianceFunction::Kdiag;
+%ignore ACovarianceFunction::Kdiag_grad_X;
+%ignore ACovarianceFunction::Kgrad_X;
+%ignore ACovarianceFunction::Kcross;
+%ignore ACovarianceFunction::Kgrad_param;
+%ignore ACovarianceFunction::Kcross_grad_X;
+
+%ignore ACovarianceFunction::getParams;
+%ignore ACovarianceFunction::getX;
+
+//rename argout versions for python; this overwrites the C++ convenience functions
 %rename(K) ACovarianceFunction::aK;
 %rename(Kdiag) ACovarianceFunction::aKdiag;
 %rename(Kdiag_grad_X) ACovarianceFunction::aKdiag_grad_X;
@@ -31,7 +44,7 @@ typedef VectorXd CovarParams;
 %rename(Kcross_grad_X) ACovarianceFunction::aKcross_grad_X;
 
 %rename(getParams) ACovarianceFunction::agetParams;
-%rename(agetX) ACovarianceFunction::agetX;
+%rename(getX) ACovarianceFunction::agetX;
 #endif
 
 class ACovarianceFunction {
@@ -45,13 +58,10 @@ protected:
 	muint_t numberParams;
 	muint_t numberDimensions;
 	//helper functions:
-#ifndef SWIG
 	inline void checkWithinDimensions(muint_t d) const throw (CGPMixException);
 	inline void checkWithinParams(muint_t i) const throw (CGPMixException);
 	inline void checkXDimensions(const CovarInput& X) const throw (CGPMixException);
 	inline void checkParamDimensions(const CovarParams& params) const throw (CGPMixException);
-#endif
-
 public:
 	//constructors
 	ACovarianceFunction(const muint_t numberParams=0);
@@ -92,19 +102,17 @@ public:
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) = 0;
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) = 0;
 
-
-#ifndef SWIG
 	//Inline convenience functions:
+	inline MatrixXd K() const;
 	inline CovarParams getParams() const {return params;}
 	inline CovarInput getX() const {return this->X;}
-	inline MatrixXd K() const;
 	inline VectorXd Kdiag() const;
 	inline MatrixXd Kcross( const CovarInput& Xstar ) const throw(CGPMixException);
 	inline MatrixXd Kgrad_param(const muint_t i) const throw(CGPMixException);
 	inline MatrixXd Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	inline MatrixXd Kgrad_X(const muint_t d) const throw(CGPMixException);
 	inline VectorXd Kdiag_grad_X(const muint_t d) const throw(CGPMixException);
-#endif
+
 	/* Static methods*/
 	//grad checking functions
 	static bool check_covariance_Kgrad_theta(ACovarianceFunction& covar,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
@@ -116,8 +124,57 @@ public:
 /*Inline functions*/
 
 
+inline  MatrixXd ACovarianceFunction::K() const
+{
+	MatrixXd RV;
+	aK(&RV);
+	return RV;
+}
 
-#ifndef SWIG
+inline  VectorXd ACovarianceFunction::Kdiag() const
+{
+	VectorXd RV;
+	aKdiag(&RV);
+	return RV;
+}
+
+inline  MatrixXd ACovarianceFunction::Kcross( const CovarInput& Xstar ) const throw(CGPMixException)
+{
+	MatrixXd RV;
+	aKcross(&RV,Xstar);
+	return RV;
+}
+
+inline MatrixXd ACovarianceFunction::Kgrad_param(const muint_t i) const throw(CGPMixException)
+{
+	MatrixXd RV;
+	aKgrad_param(&RV,i);
+	return RV;
+}
+
+inline MatrixXd ACovarianceFunction::Kcross_grad_X(const CovarInput & Xstar, const muint_t d) const throw(CGPMixException)
+{
+	MatrixXd RV;
+	aKcross_grad_X(&RV,Xstar,d);
+	return RV;
+}
+
+inline MatrixXd ACovarianceFunction::Kgrad_X(const muint_t d) const throw(CGPMixException)
+{
+	MatrixXd RV;
+	aKgrad_X(&RV,d);
+	return RV;
+}
+
+inline VectorXd ACovarianceFunction::Kdiag_grad_X(const muint_t d) const throw(CGPMixException)
+{
+	VectorXd RV;
+	aKdiag_grad_X(&RV,d);
+	return RV;
+}
+
+
+
 
 inline void ACovarianceFunction::checkWithinDimensions(muint_t d) const throw (CGPMixException)
 {
@@ -156,59 +213,6 @@ inline void ACovarianceFunction::checkParamDimensions(const CovarParams& params)
 		throw gpmix::CGPMixException(os.str());
 	}
 }
-
-
-inline  MatrixXd ACovarianceFunction::K() const
-{
-	MatrixXd RV;
-	aK(&RV);
-	return RV;
-}
-
-
-inline  VectorXd ACovarianceFunction::Kdiag() const
-{
-	VectorXd RV;
-	aKdiag(&RV);
-	return RV;
-}
-inline  MatrixXd ACovarianceFunction::Kcross( const CovarInput& Xstar ) const throw(CGPMixException)
-						{
-	MatrixXd RV;
-	aKcross(&RV,Xstar);
-	return RV;
-						}
-
-
-
-inline MatrixXd ACovarianceFunction::Kgrad_param(const muint_t i) const throw(CGPMixException)
-						{
-	MatrixXd RV;
-	aKgrad_param(&RV,i);
-	return RV;
-						}
-
-inline MatrixXd ACovarianceFunction::Kcross_grad_X(const CovarInput & Xstar, const muint_t d) const throw(CGPMixException)
-						{
-	MatrixXd RV;
-	aKcross_grad_X(&RV,Xstar,d);
-	return RV;
-						}
-
-inline MatrixXd ACovarianceFunction::Kgrad_X(const muint_t d) const throw(CGPMixException)
-						{
-	MatrixXd RV;
-	aKgrad_X(&RV,d);
-	return RV;
-						}
-
-inline VectorXd ACovarianceFunction::Kdiag_grad_X(const muint_t d) const throw(CGPMixException)
-						{
-	VectorXd RV;
-	aKdiag_grad_X(&RV,d);
-	return RV;
-						}
-#endif
 
 
 

@@ -1,7 +1,5 @@
 1) choice of optimizer and integration of code
-2) linear ard covariance function
-3) grad checks for X
-4) combinator covariance funciton (sum and product)
-5) swig
-6) testing framework
-   
+2) Product CF
+3) Hyperparameter handling (half done)
+4) unit tests
+6) VectorXs in python?

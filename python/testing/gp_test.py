@@ -34,10 +34,12 @@ gp_ = GP.GP(covar_,likelihood=ll_,x=X,y=y)
 covar.setParams(hyperparams['covar'])
 ll.setParams(hyperparams['lik'])
 gp=gpmix.CGPbase(covar,ll)
-covar.setX(X)
-ll.setX(X)
+#covar.setX(X)
+#ll.setX(X)
 gp.setY(y)
+gp.setX(X)
 
 lml = gp.LML()
 lml_ = gp_.LML(hyperparams)
-#
+
+print "lml: %.2f -- %.2f" % (lml,lml_)
