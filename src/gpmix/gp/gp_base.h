@@ -126,7 +126,7 @@ class CGPCache
 public:
 
 	MatrixXd K;
-	Eigen::LDLT<gpmix::MatrixXd> cholK;
+	Eigen::LLT<gpmix::MatrixXd> cholK;
 	MatrixXd Kinv;
 	MatrixXd KinvY;
 	MatrixXd DKinv_KinvYYKinv;
@@ -138,7 +138,7 @@ public:
 		this->K=MatrixXd();
 		this->Kinv=MatrixXd();
 		this->KinvY=MatrixXd();
-		this->cholK=Eigen::LDLT<gpmix::MatrixXd>();
+		this->cholK=Eigen::LLT<gpmix::MatrixXd>();
 		this->DKinv_KinvYYKinv = MatrixXd();
 	}
 };
@@ -157,11 +157,11 @@ protected:
 	virtual void clearCache();
 	virtual bool isInSync() const;
 
-	virtual MatrixXd getK();
-	virtual MatrixXd getKinv();
-	virtual MatrixXd getKinvY();
-	virtual Eigen::LDLT<gpmix::MatrixXd> getCholK();
-	virtual MatrixXd getDKinv_KinvYYKinv();
+	virtual MatrixXd* getK();
+	virtual MatrixXd* getKinv();
+	virtual MatrixXd* getKinvY();
+	virtual Eigen::LLT<gpmix::MatrixXd>* getCholK();
+	virtual MatrixXd* getDKinv_KinvYYKinv();
 
 public:
 	CGPbase(ACovarianceFunction& covar, ALikelihood& lik);
@@ -174,17 +174,49 @@ public:
 
 	//virtual void set_params(CGPHyperParams& hyperparams);
 	virtual mfloat_t LML();
-	virtual CovarParams LMLgrad_covar();
-	virtual LikParams LMLgrad_lik();
-	MatrixXd getY() const;
-	void setY(MatrixXd Y);
+	virtual void aLMLgrad_covar(VectorXd* out);
+	virtual void aLMLgrad_lik(VectorXd* out);
+
+	void agetY(MatrixXd* out) const;
+	void setY(const MatrixXd& Y);
 
 	inline muint_t get_samplesize(){return this->Y.rows();} //get the number of training data samples
 	inline muint_t get_target_dimension(){return this->Y.cols();} //get the dimension of the target data
 
 	//virtual MatrixXd predictMean(MatrixXd& Xstar);
 	//virtual MatrixXd predictVar(MatrixXd& Xstar);
+
+#ifndef SWIG
+	inline VectorXd LMLgrad_covar();
+	inline VectorXd LMLgrad_lik();
+	inline MatrixXd getY() const;
+#endif
 };
+
+
+#ifndef SWIG
+
+inline MatrixXd CGPbase::getY() const
+{
+	MatrixXd rv;
+	this->agetY(&rv);
+	return rv;
+}
+
+inline VectorXd CGPbase::LMLgrad_covar()
+{
+	VectorXd rv;
+	aLMLgrad_covar(&rv);
+	return rv;
+}
+inline VectorXd CGPbase::LMLgrad_lik()
+{
+	VectorXd rv;
+	aLMLgrad_lik(&rv);
+	return rv;
+}
+
+#endif
 
 } /* namespace gpmix */
 #endif /* GP_BASE_H_ */
