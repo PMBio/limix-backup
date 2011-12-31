@@ -8,11 +8,12 @@
 #ifndef LIKELIHOOD_H_
 #define LIKELIHOOD_H_
 
-#include <gpmix/types.h>
 #include <gpmix/covar/covariance.h>
 
 
+
 namespace gpmix {
+
 
 typedef VectorXd LikParams;
 
@@ -31,7 +32,6 @@ public:
 };
 
 
-
 class CLikNormalIso : public ALikelihood {
 protected:
 	muint_t numRows;
@@ -46,11 +46,8 @@ public:
 	//overwrite setX. We merely ignore the number of columns here:
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
 
-
 	string getName() const {return "LikNormalIso";};
 };
-
-
 
 
 

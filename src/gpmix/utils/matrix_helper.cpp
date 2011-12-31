@@ -16,6 +16,23 @@ bool isnull(const MatrixXd& m)
 {
 	return (m.cols()==0) & (m.rows()==0);
 }
+bool isnull(const Eigen::LLT<gpmix::MatrixXd>& m)
+{
+	return (m.cols()==0) & (m.rows()==0);
+}
+
+mfloat_t logdet(Eigen::LLT<MatrixXd>& chol)
+{
+	//1. logdet
+	VectorXd L = ((MatrixXd)(chol.matrixL())).diagonal();
+	mfloat_t log_det = 0.0;
+	for(muint_t i = 0;i < (muint_t)(L.rows());++i){
+		log_det += gpmix::log((mfloat_t)(L(i))); //WARNING: mfloat_t cast
+	}
+	return 2*log_det;
+}
+
+
 
 #ifndef PI
 #define PI 3.14159265358979323846
@@ -55,54 +72,6 @@ mfloat_t randn(mfloat_t mu, mfloat_t sigma) {
 
 
 
-
-
-/*
-MatrixXd array2matrix(const float64* matrix,int32 rows,int32 cols)
-{
-	//create a matrix from a double array
-	MatrixXd m = MatrixXd(rows,cols);
-	for(int i=0;i<rows;i++)
-		for(int j=0;j<cols;j++)
-		{
-			//m(i,j) = matrix[i*cols+j];
-			m(i,j) = matrix[j*rows+i];
-		}
-	return m;
-}
-
-void matrix2array(const MatrixXd m,float32_t** matrix, int32_t* rows, int32_t*cols)
-{
-	int size = m.rows()*m.cols();
-	//allocate memory
-	(*matrix) = new float32_t[size];
-	//set dimensions
-	(*rows) = m.rows();
-	(*cols) = m.cols();
-	for (int i=0;i<m.rows();i++)
-		for(int j=0;j<m.cols();j++)
-		{
-			//(*matrix)[i*m.cols()+j] = m(i,j);
-			(*matrix)[j*m.rows()+i] = m(i,j);
-		}
-}
-
-void matrix2array(const MatrixXd m,float64_t** matrix, int32_t* rows, int32_t*cols)
-{
-	int size = m.rows()*m.cols();
-	//allocate memory
-	(*matrix) = new float64_t[size];
-	//set dimensions
-	(*rows) = m.rows();
-	(*cols) = m.cols();
-	for (int i=0;i<m.rows();i++)
-		for(int j=0;j<m.cols();j++)
-		{
-			//(*matrix)[i*m.cols()+j] = m(i,j);
-			(*matrix)[j*m.rows()+i] = m(i,j);
-		}
-}
-*/
 
 
 MatrixXd randn(const muint_t n, const muint_t m)

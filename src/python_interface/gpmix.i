@@ -4,7 +4,6 @@
 #define SWIG_FILE_WITH_INIT
 #define SWIG
 #include "gpmix/types.h"
-#include "gpmix/likelihood/likelihood.h"
 #include "gpmix/LMM/lmm.h"
 #include "gpmix/lasso/lasso.h"
 #include "gpmix/covar/covariance.h"
@@ -12,6 +11,9 @@
 #include "gpmix/covar/se.h"
 #include "gpmix/covar/fixed.h"	
 #include "gpmix/covar/combinators.h"	
+#include "gpmix/likelihood/likelihood.h"
+#include "gpmix/gp/gp_base.h"
+
 
 	//typedef unsigned int uint64_t;
   using namespace gpmix;
@@ -59,12 +61,13 @@
 %include "gpmix/types.h"
 %include "gpmix/LMM/lmm.h"
 %include "gpmix/lasso/lasso.h"
-%include "gpmix/likelihood/likelihood.h"
 %include "gpmix/covar/covariance.h"
 %include "gpmix/covar/linear.h"
 %include "gpmix/covar/se.h"
 %include "gpmix/covar/fixed.h"
 %include "gpmix/covar/combinators.h"	
+%include "gpmix/likelihood/likelihood.h"
+%include "gpmix/gp/gp_base.h"
 
 
 

@@ -22,6 +22,9 @@ typedef vector<ACovarianceFunction*> ACovarVec;
 #endif
 
 
+
+
+
 class AMultiCF : public ACovarianceFunction
 {
 protected:
@@ -33,6 +36,9 @@ public:
 	AMultiCF(const muint_t numCovariances=0);
 	//destructors
 	virtual ~AMultiCF();
+
+	virtual bool isInSync() const;
+	virtual void makeSync();
 
 	//access to covariance arrays
 	void addCovariance(ACovarianceFunction* covar) throw (CGPMixException);

@@ -143,7 +143,7 @@ bool AMultiCF::isInSync() const
 			ACovarianceFunction* cp = iter[0];
 			if (cp!=NULL)
 			{
-				if !(cp->isInSync())
+				if (!cp->isInSync())
 						return false;
 			}
 		}
