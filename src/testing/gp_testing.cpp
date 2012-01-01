@@ -64,6 +64,16 @@ int main() {
 		std::cout << grad_lik << "\n";
 
 
+		CGPHyperParams params;
+		params.set("covar",covar_params);
+		params.set("lik",lik_params);
+
+		gp.setParams(params);
+
+
+
+
+
 	}
 	catch(CGPMixException& e) {
 		cout << e.what() << endl;

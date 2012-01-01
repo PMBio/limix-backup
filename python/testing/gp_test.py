@@ -19,27 +19,30 @@ n_dimensions=3
 X = SP.randn(10,n_dimensions)
 y = SP.randn(10,1)
 
-covar  = gpmix.CCovSqexpARD(n_dimensions)
+covar_params = SP.random.randn(n_dimensions+1)
+lik_params = SP.random.randn(1)
+
+#pygp:
 covar_ = se.SqexpCFARD(n_dimensions)
-
-ll  = gpmix.CLikNormalIso()
 ll_ = lik.GaussLikISO()
-
-params = SP.random.randn(n_dimensions+1)
-hyperparams = {'covar':params,'lik':SP.log([1])}     
-
+hyperparams_ = {'covar':covar_params,'lik':lik_params}
 gp_ = GP.GP(covar_,likelihood=ll_,x=X,y=y)
+lml_ = gp_.LML(hyperparams_)
+dlml_ = gp_.LMLgrad(hyperparams_)
 
-#GP
-covar.setParams(hyperparams['covar'])
-ll.setParams(hyperparams['lik'])
+#gpmix
+covar  = gpmix.CCovSqexpARD(n_dimensions)
+ll  = gpmix.CLikNormalIso()
+#create hyperparm     
+hyperparams = gpmix.CGPHyperParams()
+hyperparams['covar'] = covar_params
+hyperparams['lik'] = lik_params
+#cretae GP
 gp=gpmix.CGPbase(covar,ll)
-#covar.setX(X)
-#ll.setX(X)
+#set data
 gp.setY(y)
 gp.setX(X)
-
-lml = gp.LML()
-lml_ = gp_.LML(hyperparams)
+lml = gp.LML(hyperparams)
+dlml = gp.LMLgrad(hyperparams)
 
 print "lml: %.2f -- %.2f" % (lml,lml_)
