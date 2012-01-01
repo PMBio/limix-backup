@@ -13,6 +13,8 @@
 #include "gpmix/covar/combinators.h"	
 #include "gpmix/likelihood/likelihood.h"
 #include "gpmix/gp/gp_base.h"
+#include "gpmix/gp/gp_opt.h"
+
 
 
 	//typedef unsigned int uint64_t;
@@ -69,6 +71,7 @@
 %include "gpmix/covar/combinators.h"	
 %include "gpmix/likelihood/likelihood.h"
 %include "gpmix/gp/gp_base.h"
+%include "gpmix/gp/gp_opt.h"
 
 
 

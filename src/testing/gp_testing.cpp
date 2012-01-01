@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
+#include "gpmix/gp/gpopt.h"
 #include "gpmix/types.h"
 #include "gpmix/likelihood/likelihood.h"
 #include "gpmix/gp/gp_base.h"
@@ -33,8 +34,12 @@ int main() {
 
 	try {
 		//random input X
-		MatrixXd X = randn((muint_t)10,(muint_t)3);
-		MatrixXd y = randn((muint_t)10,(muint_t)1);
+		muint_t dim=1;
+
+		MatrixXd X = randn((muint_t)100,(muint_t)dim);
+		//y ~ w*X
+		MatrixXd w = randn((muint_t)dim,(muint_t)1);
+		MatrixXd y = X*w + 0.1*randn((muint_t)100,(muint_t)1);
 
 		//Ard covariance
 		CCovLinearARD covar(X.cols());
@@ -45,30 +50,27 @@ int main() {
 		//GP object
 		CGPbase gp(covar,lik);
 		gp.setY(y);
+		gp.setX(X);
 		//hyperparams
 		CovarInput covar_params = randn(covar.getNumberParams(),(muint_t)1);
 		CovarInput lik_params = randn(lik.getNumberParams(),(muint_t)1);
-		covar.setX(X);
-		lik.setX(X);
-		covar.setParams(covar_params);
-		lik.setParams(lik_params);
-		//
-		mfloat_t lml = gp.LML();
-		VectorXd grad_covar;
-		gp.aLMLgrad_covar(&grad_covar);
-		VectorXd grad_lik;
-		gp.aLMLgrad_lik(&grad_lik);
-
-		std::cout << lml << "\n";
-		std::cout << grad_covar << "\n";
-		std::cout << grad_lik << "\n";
-
-
 		CGPHyperParams params;
 		params.set("covar",covar_params);
 		params.set("lik",lik_params);
 
-		gp.setParams(params);
+		//get lml and grad
+		mfloat_t lml = gp.LML(params);
+		CGPHyperParams grad = gp.LMLgrad();
+
+		std::cout << lml << "\n";
+		std::cout << grad["covar"] << "\n";
+		std::cout << grad["lik"] << "\n";
+
+		//optimize:
+		CGPopt opt(gp);
+		opt.opt();
+
+
 
 
 

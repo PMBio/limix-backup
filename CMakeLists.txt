@@ -98,8 +98,9 @@ include_directories(./External)
 include_directories(./src)
 
 #add Cmake modules
-#add NLP:
+#nlopt
 add_subdirectory(./External/nlopt)
+#gpmix source
 add_subdirectory(./src)
 
 #### build external interface (optional) #####

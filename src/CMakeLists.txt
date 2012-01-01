@@ -30,6 +30,7 @@ SET(SOURCES gpmix/covar/covariance.cpp
 	    gpmix/lasso/lasso.cpp
 	    gpmix/likelihood/likelihood.cpp
 	    gpmix/gp/gp_base.cpp
+	    gpmix/gp/gp_opt.cpp
 )
 
 ADD_LIBRARY(gpmixlib STATIC ${SOURCES})
