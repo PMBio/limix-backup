@@ -44,7 +44,7 @@ void CGPopt::opt()
 	double* x0d = x.data();
 	double minf; /* the minimum objective value, upon return */
 	if (nlopt_optimize(opt, x0d, &minf) < 0) {
-	    printf("nlopt failed!\n");
+	    std::cout << "nlopt failed!\n";
 	}
 	else {
 		//1. reevaluate at optimum
