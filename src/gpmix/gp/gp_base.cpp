@@ -17,13 +17,13 @@ namespace gpmix {
 
 /* CGPHyperParmas */
 
-void CGPHyperParams::agetParamArray(VectorXd* out)
+void CGPHyperParams::agetParamArray(VectorXd* out) const
 {
 	//1. get size
 	(*out).resize(this->getNumberParams());
 	//2. loop through entries
 	muint_t ncurrent=0;
-	for(CGPHyperParamsMap::const_iterator iter = param_map.begin(); iter!=param_map.end();iter++)
+	for(CGPHyperParamsMap::const_iterator iter = this->begin(); iter!=this->end();iter++)
 	{
 		//1. get param object which can be a matrix or array:
 		MatrixXd value = (*iter).second;
@@ -38,7 +38,7 @@ void CGPHyperParams::agetParamArray(VectorXd* out)
 }
 
 void CGPHyperParams::setParamArray(const VectorXd& param) throw (CGPMixException)
-{
+		{
 	//1. check that param has correct shape
 	if ((muint_t)param.rows()!=getNumberParams())
 	{
@@ -49,7 +49,7 @@ void CGPHyperParams::setParamArray(const VectorXd& param) throw (CGPMixException
 
 	//2. loop through elements and slot in params
 	muint_t ncurrent=0;
-	for(CGPHyperParamsMap::const_iterator iter = param_map.begin(); iter!=param_map.end();iter++)
+	for(CGPHyperParamsMap::const_iterator iter = this->begin(); iter!=this->end();iter++)
 	{
 		string name = (*iter).first;
 		muint_t nc = (*iter).second.rows()*(*iter).second.cols();
@@ -62,14 +62,14 @@ void CGPHyperParams::setParamArray(const VectorXd& param) throw (CGPMixException
 		//move on
 		ncurrent += nc;
 	}
-}
+		}
 
-muint_t CGPHyperParams::getNumberParams()
+muint_t CGPHyperParams::getNumberParams() const
 {
 	// return effective number of params. Note that parameter entries can either be of matrix of column nature
 	// thus sizes is rows*cols
 	muint_t nparams=0;
-	for(CGPHyperParamsMap::const_iterator iter = param_map.begin(); iter!=param_map.end();iter++)
+	for(CGPHyperParamsMap::const_iterator iter = this->begin(); iter!=this->end();iter++)
 	{
 		MatrixXd value = (*iter).second;
 		nparams+=value.rows()*value.cols();
@@ -79,28 +79,32 @@ muint_t CGPHyperParams::getNumberParams()
 
 void CGPHyperParams::set(const string& name, const MatrixXd& value)
 {
-	param_map[name]=value;
+	(*this)[name] = value;
 }
 
 void CGPHyperParams::aget(MatrixXd* out, const string& name)
 {
-	(*out) = param_map[name];
+	(*out) = (*this)[name];
 }
 
-void CGPHyperParams::clear()
-{
-	this->param_map.clear();
-}
 
-void CGPHyperParams::agetNames(VectorXs* out)
+vector<string> CGPHyperParams::getNames() const
 {
-	(*out).resize(param_map.size());
-	map<string,MatrixXd>::iterator it=param_map.begin();
-	for (muint_t i=0; i<param_map.size();++i)
+	vector<string> rv(this->size());
+	for(CGPHyperParamsMap::const_iterator iter = this->begin(); iter!=this->end();iter++)
 	{
-		(*out)(i)=(*it).first;
-		++it;
+		rv.push_back((*iter).first);
 	}
+	return rv;
+}
+
+bool CGPHyperParams::exists(string name) const
+{
+	CGPHyperParamsMap::const_iterator iter = this->find(name);
+	if (iter==this->end())
+		return false;
+	else
+		return true;
 }
 
 
@@ -121,11 +125,37 @@ void CGPbase::set_data(MatrixXd& Y)
 	this->Y = Y;
 }
 
-void CGPbase::set_params(const CGPHyperParams& hyperparams)
+void CGPbase::updateParams() throw(CGPMixException)
 {
+	this->covar.setParams(this->params["covar"]);
+	this->lik.setParams(this->params["lik"]);
+}
+
+void CGPbase::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException)
+{
+	//1. check that covar and lik is defined
+	if (!(hyperparams.exists("covar")))
+		throw CGPMixException("CGPbase: parameter structures require keyword covar");
+	if (!(hyperparams.exists("lik")))
+		throw CGPMixException("CGPbase: parameter structures require keyword lik");
+	std::cout << "assign";
 	this->params = hyperparams;
-	//update individual components
-	//TODO:
+	updateParams();
+}
+
+
+CGPHyperParams CGPbase::getParams() const
+{
+	return this->params;
+}
+
+void CGPbase::setParamArray(const VectorXd& hyperparams) throw (CGPMixException)
+				{
+	this->params.setParamArray(hyperparams);
+				}
+void CGPbase::agetParamArray(VectorXd* out) const
+{
+	this->params.agetParamArray(out);
 }
 
 
@@ -225,16 +255,30 @@ void CGPbase::agetX(CovarInput* out) const
 	this->covar.agetX(out);
 }
 void CGPbase::setX(const CovarInput& X) throw (CGPMixException)
-{
+						{
 	//use covariance to set everything
 	this->covar.setX(X);
 	this->lik.setX(X);
-}
+						}
 
 
 /* Marginal likelihood */
+
+//wrappers:
+mfloat_t CGPbase::LML(const CGPHyperParams& params) throw (CGPMixException)
+				{
+	setParams(params);
+	return LML();
+				}
+
+mfloat_t CGPbase::LML(const VectorXd& params) throw (CGPMixException)
+				{
+	setParamArray(params);
+	return LML();
+				}
+
 mfloat_t CGPbase::LML() throw (CGPMixException)
-{
+				{
 	//update the covariance parameters
 	Eigen::LLT<gpmix::MatrixXd>* chol = getCholK();
 	//1. logdet
@@ -247,12 +291,56 @@ mfloat_t CGPbase::LML() throw (CGPMixException)
 	//constants
 	mfloat_t lml_const = 0.5*Y.cols() * Y.rows() * gpmix::log((2.0 * PI));
 	return lml_quad + lml_det + lml_const;
-}
+				}
 
-/*Gradients:*/
+
+/* Gradient interface functions:*/
+void CGPbase::aLMLgrad(VectorXd* out,const CGPHyperParams& params) throw (CGPMixException)
+		{
+	setParams(params);
+	aLMLgrad(out);
+		}
+
+void CGPbase::aLMLgrad(VectorXd* out,const VectorXd& paramArray) throw (CGPMixException)
+		{
+	setParamArray(paramArray);
+	aLMLgrad(out);
+		}
+
+void CGPbase::aLMLgrad(VectorXd* out) throw (CGPMixException)
+		{
+	CGPHyperParams rv = LMLgrad();
+	rv.agetParamArray(out);
+		}
+
+CGPHyperParams CGPbase::LMLgrad(const CGPHyperParams& params) throw (CGPMixException)
+		{
+	setParams(params);
+	return LMLgrad();
+		}
+CGPHyperParams CGPbase::LMLgrad(const VectorXd& paramArray) throw (CGPMixException)
+		{
+	setParamArray(paramArray);
+	return LMLgrad();
+		}
+
+/* Main routine: gradient calculation*/
+CGPHyperParams CGPbase::LMLgrad() throw (CGPMixException)
+		{
+	CGPHyperParams rv;
+	//1. covariance gradient
+	VectorXd grad_covar;
+	VectorXd grad_lik;
+	aLMLgrad_covar(&grad_covar);
+	aLMLgrad_lik(&grad_lik);
+	rv.set("covar",grad_covar);
+	rv.set("lik",grad_lik);
+	return rv;
+		}
+
 
 void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
-{
+				{
 	//vector with results
 	VectorXd grad_covar(covar.getNumberParams());
 	//W:
@@ -264,11 +352,11 @@ void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
 		grad_covar(param) = 0.5 * (Kd.array() * (*W).array()).sum();
 	}
 	(*out) = grad_covar;
-}
+				}
 
 
 void CGPbase::aLMLgrad_lik(VectorXd* out) throw (CGPMixException)
-{
+				{
 	LikParams grad_lik(lik.getNumberParams());
 	MatrixXd* W = this->getDKinv_KinvYYKinv();
 	MatrixXd Kd;
@@ -278,24 +366,19 @@ void CGPbase::aLMLgrad_lik(VectorXd* out) throw (CGPMixException)
 		grad_lik(row) = 0.5*(Kd.array() * (*W).array()).sum();
 	}
 	(*out) = grad_lik;
-}
-
-void CGPbase::aLMLgrad(VectorXd* out) throw (CGPMixException)
-{
-
-}
+				}
 
 
 void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException)
-{
+				{
 	/*
 	MatrixXd KstarCross = covar.
 	return KstarCross * this->getKinvY();
-	*/
-}
+	 */
+				}
 
 void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) throw (CGPMixException)
-{
+				{
 	/*
 	MatrixXd KstarDiag = this->covar.Kdiag(this->params.get("covar"), Xstar);
 	KstarDiag+=this->lik.Kdiag(this->params.get("lik"), Xstar);
@@ -304,7 +387,7 @@ void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) throw (CGPMixExce
 	MatrixXd vv = (v.array()*v.array()).matrix().colwise().sum();
 	MatrixXd S2 = KstarDiag - vv.transpose();
 	return S2;
-	*/
-}
+	 */
+				}
 
 } /* namespace gpmix */

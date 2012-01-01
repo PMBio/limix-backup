@@ -16,8 +16,8 @@ namespace gpmix {
 //rename argout operators for swig interface
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //rename functions and select the visible component for SWIG
-%ignore CFixedCF::agetK0;
-%ignore CFixedCF::agetK0cross;
+%ignore CFixedCF::getK0;
+%ignore CFixedCF::getK0cross;
 %rename(getK0) CFixedCF::agetK0;
 %rename(getK0cross) CFixedCF::agetK0cross;
 #endif

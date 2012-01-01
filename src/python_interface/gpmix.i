@@ -25,6 +25,7 @@
 %include "numpy.i"
 %include "eigen.i"
 %include "std_vector.i"
+%include "std_map.i"
 %include "std_string.i"
 
 

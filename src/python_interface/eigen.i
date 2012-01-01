@@ -84,14 +84,12 @@
       in_cols = array_size(in_array, 1);
 
     }else{
-
-      in_rows = 1;
-      in_cols = array_size(in_array, 0);
-
+	  //if vector: create a column vector explicitly:
+	  in_rows = array_size(in_array, 0);
+	  in_cols = 1;
     }
 
     $1 = &temp;
-
     // prepare the input array
     switch( array_type($input) ) {
 

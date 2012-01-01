@@ -98,6 +98,8 @@ include_directories(./External)
 include_directories(./src)
 
 #add Cmake modules
+#add NLP:
+add_subdirectory(./External/nlopt)
 add_subdirectory(./src)
 
 #### build external interface (optional) #####
