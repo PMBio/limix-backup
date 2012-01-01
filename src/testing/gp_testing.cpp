@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
-#include "gpmix/gp/gpopt.h"
+#include "gpmix/gp/gp_opt.h"
 #include "gpmix/types.h"
 #include "gpmix/likelihood/likelihood.h"
 #include "gpmix/gp/gp_base.h"

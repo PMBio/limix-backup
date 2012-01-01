@@ -29,6 +29,8 @@ CGPHyperParams CGPopt::getFilter() const
 
 void CGPopt::opt()
 {
+	//0. set evaluation counter to 0:
+	numEvaluations = 0;
 	//1. get starging point
 	VectorXd x = gp.getParamArray();
 	muint_t numParams = x.rows();
@@ -51,8 +53,9 @@ void CGPopt::opt()
 		VectorXd df;
 		double lml_opt = objective(x,&df);
 		//2. diagonoses:
-		std::cout << "optimum found for: f(x=["<<x<<"]) = "<< lml_opt << "\n";
+		std::cout << "Optimum found for: f(x=["<<x<<"]) = "<< lml_opt << "\n";
 	    std::cout << "df(x)=[" << df << "]\n";
+	    std::cout << "Function evaluations: " << numEvaluations << "\n";
 	    std::cout << "----------" << "\n";
 	}
 }
@@ -72,6 +75,7 @@ CGPopt::~CGPopt() {
 
 double CGPopt::objective(const VectorXd& paramArray)
 {
+	this->numEvaluations++;
 	double lml;
 	//set Params
 	gp.setParamArray(paramArray);
@@ -82,6 +86,7 @@ double CGPopt::objective(const VectorXd& paramArray)
 
 double CGPopt::objective(const VectorXd& paramArray,VectorXd* gradParamArray)
 {
+	this->numEvaluations++;
 	double lml;
 	//set Params
 	gp.setParamArray(paramArray);
