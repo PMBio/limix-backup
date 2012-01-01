@@ -8,7 +8,7 @@ import pygp.covar.linear as lin
 import pygp.likelihood as lik
 import pygp.gp.gp_base as GP
 import pygp.covar.se as se
-import pygp.covar.gradcheck as GC
+#import pygp.covar.gradcheck as GC
 import pygp.covar.combinators as comb
 import pygp.optimize.optimize_base as opt
 import scipy as SP
@@ -18,7 +18,7 @@ import time
 
 
 n_dimensions=3
-n_samples = 200
+n_samples = 500
 X = SP.randn(n_samples,n_dimensions)
 y = SP.dot(X,SP.randn(n_dimensions,1))
 y += 0.1*SP.randn(y.shape[0],y.shape[1])

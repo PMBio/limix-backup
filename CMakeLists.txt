@@ -90,7 +90,7 @@ OptimizeForArchitecture()
 #this seems to be needed on some linux systems
 #set(CMAKE_CXX_FLAGS "-fPIC -O3 -march=core2")
 #set(CMAKE_CXX_FLAGS "-fPIC")
-#AddCompilerFlag("-fPIC")
+AddCompilerFlag("-fPIC")
 AddCompilerFlag("-O3")
 
 #includes
