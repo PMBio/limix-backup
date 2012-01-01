@@ -6,6 +6,7 @@
  */
 
 #include "gp_opt.h"
+#include <iostream>
 
 namespace gpmix {
 
