@@ -6,7 +6,7 @@
  */
 
 #include "lasso.h"
-
+#include <iostream>
 
 namespace gpmix {
 
