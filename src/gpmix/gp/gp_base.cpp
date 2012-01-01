@@ -129,6 +129,8 @@ void CGPbase::updateParams() throw(CGPMixException)
 {
 	this->covar.setParams(this->params["covar"]);
 	this->lik.setParams(this->params["lik"]);
+	//std::cout << "covar" << params["covar"] << "\n";
+	//std::cout << "lik" << params["lik"] << "\n";
 }
 
 void CGPbase::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException)
@@ -138,7 +140,6 @@ void CGPbase::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException
 		throw CGPMixException("CGPbase: parameter structures require keyword covar");
 	if (!(hyperparams.exists("lik")))
 		throw CGPMixException("CGPbase: parameter structures require keyword lik");
-	std::cout << "assign";
 	this->params = hyperparams;
 	updateParams();
 }
@@ -150,9 +151,10 @@ CGPHyperParams CGPbase::getParams() const
 }
 
 void CGPbase::setParamArray(const VectorXd& hyperparams) throw (CGPMixException)
-				{
+{
 	this->params.setParamArray(hyperparams);
-				}
+	updateParams();
+}
 void CGPbase::agetParamArray(VectorXd* out) const
 {
 	this->params.agetParamArray(out);

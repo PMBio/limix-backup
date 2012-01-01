@@ -87,7 +87,7 @@ set_source_files_properties(gpmix.i PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-includeall")
 set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
 swig_add_module(gpmix python gpmix.i)
-swig_link_libraries(gpmix gpmixlib ${SWIGLINKLIBS})
+swig_link_libraries(gpmix gpmixlib nlopt ${SWIGLINKLIBS})
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")	 
   # Mac OS X specific code
