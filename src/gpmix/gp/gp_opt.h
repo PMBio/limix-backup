@@ -19,6 +19,7 @@ protected:
 	CGPHyperParams params;
 	CGPHyperParams filter;
 	double tolerance;
+	muint_t numEvaluations;
 
 	//objective without and with gradients
 	double objective(const VectorXd& paramArray);
