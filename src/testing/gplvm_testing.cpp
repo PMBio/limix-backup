@@ -10,7 +10,6 @@
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
-#include "gpmix/gp/gp_lvm.h"
 #include "gpmix/gp/gp_opt.h"
 #include "gpmix/types.h"
 #include "gpmix/likelihood/likelihood.h"
@@ -51,7 +50,7 @@ int main() {
 		CLikNormalIso lik;
 
 		//GP object
-		CGPlvm gp(covar,lik);
+		CGPbase gp(covar,lik);
 		gp.setY(y);
 		gp.setX(X);
 

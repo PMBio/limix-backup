@@ -192,8 +192,14 @@ MatrixXd* CGPbase::getKinv()
 	{
 		MatrixXdChol* chol = this->getCholK();
 		cache.Kinv = MatrixXd::Identity(this->getNumberSamples(),this->getNumberSamples());
+#if 0
 		(*chol).solveInPlace(cache.Kinv);
-		//for now
+#else
+		//alterative
+		MatrixXd L = chol->matrixL();
+		L.triangularView<Eigen::Lower>().solveInPlace(cache.Kinv);
+		cache.Kinv.transpose()*=cache.Kinv.triangularView<Eigen::Lower>();
+#endif
 	}
 	return (&this->cache.Kinv);
 }

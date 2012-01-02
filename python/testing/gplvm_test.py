@@ -18,9 +18,9 @@ import time
 SP.random.seed(1)
 
 #1. simulate data from a linear PCA model
-N = 10
-K = 10
-D = 1000
+N = 100
+K = 5 
+D = 100
 
 SP.random.seed(1)
 S = SP.random.randn(N,K)
@@ -36,7 +36,7 @@ X0 = Spca
 
 #starting params
 covar_params = SP.random.randn(1,1)
-lik_params = SP.random.randn(1,1)
+lik_params = SP.log(SP.array([0.1]))
 
 #pygp: OLD
 covariance = linear.LinearCFISO(n_dimensions=K)

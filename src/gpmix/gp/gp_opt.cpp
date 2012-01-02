@@ -49,10 +49,12 @@ void CGPopt::opt()
 		VectorXd df;
 		double lml_opt = objective(x,&df);
 		//2. diagonoses:
+		/*
 		std::cout << "Optimum found for: f(x=["<<x<<"]) = "<< lml_opt << "\n";
 	    std::cout << "df(x)=[" << df << "]\n";
 	    std::cout << "Function evaluations: " << numEvaluations << "\n";
 	    std::cout << "----------" << "\n";
+	    */
 	    //store optimized values:
 	    optParams = gp.getParams();
 	    optParams.setParamArray(x);
