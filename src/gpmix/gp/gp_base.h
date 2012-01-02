@@ -103,28 +103,33 @@ inline VectorXd CGPHyperParams::getParamArray()
 	return rv;
 }
 
+class CGPbase; // forward declaration
 
-
-class CGPCache
+//cache class for a covariance function.
+//offers cached access to a number of covaraince accessors and derived quantities:
+class CGPCholCache
 {
-public:
-
+protected:
 	MatrixXd K;
 	MatrixXdChol cholK;
 	MatrixXd Kinv;
 	MatrixXd KinvY;
 	MatrixXd DKinv_KinvYYKinv;
-	CGPCache()
-	{ clear();}
+	CGPbase& gp;
+public:
+	CGPCholCache(CGPbase& gp) : gp(gp)
+	{};
+	virtual ~CGPCholCache()
+	{};
 
-	void clear()
-	{
-		this->K=MatrixXd();
-		this->Kinv=MatrixXd();
-		this->KinvY=MatrixXd();
-		this->cholK=MatrixXdChol();
-		this->DKinv_KinvYYKinv = MatrixXd();
-	}
+	virtual void clearCache();
+	virtual bool isInSync() const;
+
+	MatrixXd* getK();
+	MatrixXd* getKinv();
+	MatrixXd* getKinvY();
+	MatrixXdChol* getCholK();
+	MatrixXd* getDKinv_KinvYYKinv();
 };
 
 
@@ -144,26 +149,22 @@ public:
 
 
 class CGPbase {
+	friend class CGPCholCache;
 protected:
 
 	MatrixXd Y;    //training targets
 	//cached GP-parameters:
-	CGPCache cache;
+	CGPCholCache cache;
 	CGPHyperParams params;
 
 	ACovarianceFunction& covar;//Covariance function
 	ALikelihood& lik;          //likelihood model
 	VectorXi gplvmDimensions;  //gplvm dimensions
 
-	virtual void clearCache();
-	virtual bool isInSync() const;
 
-	virtual MatrixXd* getK();
-	virtual MatrixXd* getKinv();
-	virtual MatrixXd* getKinvY();
-	virtual MatrixXdChol* getCholK();
-	virtual MatrixXd* getDKinv_KinvYYKinv();
 	virtual void updateParams() throw (CGPMixException);
+	void updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions,const MatrixXd& X) throw (CGPMixException);
+
 
 public:
 	CGPbase(ACovarianceFunction& covar, ALikelihood& lik);
