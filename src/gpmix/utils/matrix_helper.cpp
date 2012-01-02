@@ -21,6 +21,11 @@ bool isnull(const Eigen::LLT<gpmix::MatrixXd>& m)
 	return (m.cols()==0) & (m.rows()==0);
 }
 
+bool isnull(const Eigen::LDLT<gpmix::MatrixXd>& m)
+{
+	return (m.cols()==0) & (m.rows()==0);
+}
+
 mfloat_t logdet(Eigen::LLT<MatrixXd>& chol)
 {
 	//1. logdet
@@ -30,6 +35,20 @@ mfloat_t logdet(Eigen::LLT<MatrixXd>& chol)
 		log_det += gpmix::log((mfloat_t)(L(i))); //WARNING: mfloat_t cast
 	}
 	return 2*log_det;
+}
+
+mfloat_t logdet(Eigen::LDLT<gpmix::MatrixXd>& chol)
+{
+	//1. logdet
+	VectorXd L = chol.vectorD();
+	mfloat_t log_det = 0.0;
+	//iterate: here log(sqrt)
+	for(muint_t i = 0;i < (muint_t)(L.rows());++i)
+	{
+		log_det += gpmix::log(L(i));
+	}
+	//note: factor of 2 missing because D = sqrt(L.diag) in LLT decomposition
+	return log_det;
 }
 
 

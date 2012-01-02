@@ -179,7 +179,7 @@ MatrixXd* CGPbase::getKinv()
 		this->clearCache();
 	if (isnull(cache.Kinv))
 	{
-		Eigen::LLT<gpmix::MatrixXd>* chol = this->getCholK();
+		MatrixXdChol* chol = this->getCholK();
 		cache.Kinv = MatrixXd::Identity(this->getNumberSamples(),this->getNumberSamples());
 		(*chol).solveInPlace(cache.Kinv);
 		//for now
@@ -195,7 +195,7 @@ MatrixXd* CGPbase::getKinvY()
 
 	if (isnull(cache.KinvY))
 	{
-		Eigen::LLT<gpmix::MatrixXd>* chol = this->getCholK();
+		MatrixXdChol* chol = this->getCholK();
 		cache.KinvY = (*chol).solve(this->Y);
 	}
 	return &cache.KinvY;
@@ -214,14 +214,14 @@ MatrixXd* CGPbase::getDKinv_KinvYYKinv()
 	return &cache.DKinv_KinvYYKinv;
 }
 
-Eigen::LLT<gpmix::MatrixXd>* CGPbase::getCholK()
+MatrixXdChol* CGPbase::getCholK()
 {
 	if (!isInSync())
 		this->clearCache();
 
 	if (isnull(cache.cholK))
 	{
-		cache.cholK = Eigen::LLT<gpmix::MatrixXd>((*this->getK()));
+		cache.cholK = MatrixXdChol((*this->getK()));
 	}
 	return &cache.cholK;
 }
@@ -282,9 +282,10 @@ mfloat_t CGPbase::LML(const VectorXd& params) throw (CGPMixException)
 mfloat_t CGPbase::LML() throw (CGPMixException)
 				{
 	//update the covariance parameters
-	Eigen::LLT<gpmix::MatrixXd>* chol = getCholK();
-	//1. logdet
+	MatrixXdChol* chol = getCholK();
+	//logdet:
 	mfloat_t lml_det  = 0.5*Y.cols()*logdet((*chol));
+
 	//2. quadratic term
 	mfloat_t lml_quad = 0.0;
 	MatrixXd* KinvY = this->getKinvY();

@@ -19,8 +19,12 @@ mfloat_t randn(mfloat_t mu=0.0, mfloat_t sigma=1.0);
 //helper functions for eigen matrices
 bool isnull(const MatrixXd& m);
 bool isnull(const Eigen::LLT<gpmix::MatrixXd>& m);
+bool isnull(const Eigen::LDLT<gpmix::MatrixXd>& m);
+
 //calculate log determinant form cholesky factor
 mfloat_t logdet(Eigen::LLT<gpmix::MatrixXd>& chol);
+mfloat_t logdet(Eigen::LDLT<gpmix::MatrixXd>& chol);
+
 
 double sum(MatrixXd& m);
 

@@ -15,10 +15,10 @@ import scipy as SP
 import pdb
 import time
 
+SP.random.seed(1)
 
-
-n_dimensions=3
-n_samples = 500
+n_dimensions=5
+n_samples = 100
 X = SP.randn(n_samples,n_dimensions)
 y = SP.dot(X,SP.randn(n_dimensions,1))
 y += 0.1*SP.randn(y.shape[0],y.shape[1])
@@ -38,6 +38,11 @@ dlml_ = gp_.LMLgrad(hyperparams_)
 opt_params_ = opt.opt_hyper(gp_,hyperparams_)[0]
 lmlo_ = gp_.LML(opt_params_)
 t1 = time.time()
+xx = SP.linspace(-1,1,100)
+for x in xx:
+    hyperparams_['covar'][0] = x
+    tmp = gp_.LML(hyperparams_)
+t2 = time.time()
 
 
 
@@ -61,10 +66,20 @@ gpopt = gpmix.CGPopt(gp)
 gpopt.opt()
 opt_params = gp.getParamArray()
 lmlo = gp.LML()
-t2 = time.time()
-
+t3 = time.time()
+for x in xx:
+    covar_params[0] = x
+    hyperparams['covar'] = covar_params
+    tmp = gp.LML(hyperparams)
+t4 = time.time()
 
 print "lml: %.2f -- %.2f" % (lml,lml_)
 print "lmlO: %.2f -- %.2f" % (lmlo,lmlo_)
+
+print "optimization timing:"
 print (t1-t0)
+print (t3-t2)
+print "LML eval timing"
 print (t2-t1)
+print (t4-t3)
+
