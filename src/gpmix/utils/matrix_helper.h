@@ -18,6 +18,7 @@ namespace gpmix{
 mfloat_t randn(mfloat_t mu=0.0, mfloat_t sigma=1.0);
 //helper functions for eigen matrices
 bool isnull(const MatrixXd& m);
+bool isnull(const VectorXi& m);
 bool isnull(const Eigen::LLT<gpmix::MatrixXd>& m);
 bool isnull(const Eigen::LDLT<gpmix::MatrixXd>& m);
 

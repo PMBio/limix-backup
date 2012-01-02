@@ -129,8 +129,6 @@ void CGPbase::updateParams() throw(CGPMixException)
 {
 	this->covar.setParams(this->params["covar"]);
 	this->lik.setParams(this->params["lik"]);
-	//std::cout << "covar" << params["covar"] << "\n";
-	//std::cout << "lik" << params["lik"] << "\n";
 }
 
 void CGPbase::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException)
@@ -257,35 +255,34 @@ void CGPbase::agetX(CovarInput* out) const
 	this->covar.agetX(out);
 }
 void CGPbase::setX(const CovarInput& X) throw (CGPMixException)
-						{
+{
 	//use covariance to set everything
 	this->covar.setX(X);
 	this->lik.setX(X);
-						}
+}
 
 
 /* Marginal likelihood */
 
 //wrappers:
 mfloat_t CGPbase::LML(const CGPHyperParams& params) throw (CGPMixException)
-				{
+{
 	setParams(params);
 	return LML();
-				}
+}
 
 mfloat_t CGPbase::LML(const VectorXd& params) throw (CGPMixException)
-				{
+{
 	setParamArray(params);
 	return LML();
-				}
+}
 
 mfloat_t CGPbase::LML() throw (CGPMixException)
-				{
+{
 	//update the covariance parameters
 	MatrixXdChol* chol = getCholK();
 	//logdet:
 	mfloat_t lml_det  = 0.5*Y.cols()*logdet((*chol));
-
 	//2. quadratic term
 	mfloat_t lml_quad = 0.0;
 	MatrixXd* KinvY = this->getKinvY();
@@ -294,7 +291,7 @@ mfloat_t CGPbase::LML() throw (CGPMixException)
 	//constants
 	mfloat_t lml_const = 0.5*Y.cols() * Y.rows() * gpmix::log((2.0 * PI));
 	return lml_quad + lml_det + lml_const;
-				}
+};
 
 
 /* Gradient interface functions:*/

@@ -112,6 +112,40 @@ void AMultiCF::setX(const CovarInput& X) throw (CGPMixException)
 	}
 }
 
+void AMultiCF::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
+{
+	if(((col+(muint_t)X.cols())>=getNumberDimensions()) || ((muint_t)X.rows()!=this->getXRows()))
+	{
+		ostringstream os;
+		os << "setXcol out of range. Current X:"<<this->getNumberDimensions() <<")";
+		throw CGPMixException(os.str());
+	}
+	if (X.cols()>1)
+	{
+		ostringstream os;
+		os << "setXcol (Combinator CF) only suports setting individual columns" << "\n";
+		throw CGPMixException(os.str());
+	}
+	muint_t c0=0;
+	muint_t cols;
+	//loop through covariances and assign
+	for(ACovarVec::iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
+	{
+		ACovarianceFunction* cp = iter[0];
+		if (cp!=NULL)
+		{
+			cols = cp->getNumberDimensions();
+			if ((c0+cols)>=col)
+			{
+				cp->setXcol(X,col-c0);
+				break;
+			}
+			c0+=cols;
+		}
+	}
+}
+
+
 void AMultiCF::agetX(CovarInput* Xout) const throw (CGPMixException)
 {
 	//1. determine size of Xout

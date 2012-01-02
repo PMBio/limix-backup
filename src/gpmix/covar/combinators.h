@@ -52,6 +52,8 @@ public:
 	//setX and getX
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
 	virtual void agetX(CovarInput* Xout) const throw (CGPMixException);
+	virtual void setXcol(const CovarInput& X,muint_t col) throw (CGPMixException);
+
 	//set and get Params
 	virtual void setParams(const CovarParams& params);
 	virtual void agetParams(CovarParams* out);

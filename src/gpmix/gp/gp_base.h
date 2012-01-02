@@ -183,7 +183,7 @@ public:
 	void setY(const MatrixXd& Y);
 
 	void agetX(CovarInput* out) const;
-	void setX(const CovarInput& Y) throw (CGPMixException);
+	void setX(const CovarInput& X) throw (CGPMixException);
 
 	inline muint_t getNumberSamples(){return this->Y.rows();} //get the number of training data samples
 	inline muint_t getNumberDimension(){return this->Y.cols();} //get the dimension of the target data

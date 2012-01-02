@@ -82,6 +82,7 @@ public:
 	virtual void makeSync();
 	//set X to a new value
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
+	virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException);
 	//get the X
 	virtual void agetX(CovarInput* Xout) const throw (CGPMixException);
 	inline muint_t getDimX() const {return (muint_t)(this->X.cols());
