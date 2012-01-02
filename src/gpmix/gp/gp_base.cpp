@@ -108,9 +108,103 @@ bool CGPHyperParams::exists(string name) const
 }
 
 
+/* CGPCholCache */
+
+void CGPCholCache::clearCache()
+{
+	gp.covar.makeSync();
+	gp.lik.makeSync();
+
+	//set null:
+	this->K=MatrixXd();
+	this->Kinv=MatrixXd();
+	this->KinvY=MatrixXd();
+	this->cholK=MatrixXdChol();
+	this->DKinv_KinvYYKinv = MatrixXd();
+}
+
+
+bool CGPCholCache::isInSync() const
+{
+	return (gp.covar.isInSync() && gp.lik.isInSync());
+}
+
+MatrixXd* CGPCholCache::getKinv()
+{
+	if (!isInSync())
+		clearCache();
+	if (isnull(Kinv))
+	{
+		MatrixXdChol* chol = this->getCholK();
+		Kinv = MatrixXd::Identity(K.rows(),K.rows());
+#if 0
+		(*chol).solveInPlace(cache.Kinv);
+#else
+		//alterative
+		MatrixXd L = chol->matrixL();
+		L.triangularView<Eigen::Lower>().solveInPlace(Kinv);
+		Kinv.transpose()*=Kinv.triangularView<Eigen::Lower>();
+#endif
+	}
+	return (&Kinv);
+}
+
+MatrixXd* CGPCholCache::getKinvY()
+{
+	//Invalidate Cache?
+	if (!isInSync())
+		this->clearCache();
+
+	if (isnull(KinvY))
+	{
+		MatrixXdChol* chol = this->getCholK();
+		KinvY = (*chol).solve(gp.Y);
+	}
+	return &KinvY;
+}
+
+MatrixXd* CGPCholCache::getDKinv_KinvYYKinv()
+{
+	if (!isInSync())
+		this->clearCache();
+	if (isnull(DKinv_KinvYYKinv))
+	{
+		MatrixXd* KiY  = getKinvY();
+		MatrixXd* Kinv = getKinv();
+		DKinv_KinvYYKinv = ((mfloat_t)(gp.getNumberDimension())) * (*Kinv) - (*KiY) * (*KiY).transpose();
+	}
+	return &DKinv_KinvYYKinv;
+}
+
+MatrixXdChol* CGPCholCache::getCholK()
+{
+	if (!isInSync())
+		this->clearCache();
+
+	if (isnull(cholK))
+	{
+		cholK = MatrixXdChol((*this->getK()));
+	}
+	return &cholK;
+}
+
+MatrixXd* CGPCholCache::getK()
+{
+	if (!isInSync())
+		this->clearCache();
+	if (isnull(K))
+	{
+		gp.covar.aK(&K);
+		K += gp.lik.K();
+	}
+	return &K;
+}
+
+
+
 /* CGPbase */
 
-CGPbase::CGPbase(ACovarianceFunction& covar, ALikelihood& lik) : covar(covar), lik(lik) {
+CGPbase::CGPbase(ACovarianceFunction& covar, ALikelihood& lik) : cache(*this),covar(covar), lik(lik) {
 	this->covar = covar;
 	this->lik = lik;
 	//this->clearCache();
@@ -125,6 +219,20 @@ void CGPbase::set_data(MatrixXd& Y)
 	this->Y = Y;
 }
 
+void CGPbase::updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions,const MatrixXd& X) throw (CGPMixException)
+{
+	if (X.cols()!=gplvmDimensions.rows())
+	{
+		ostringstream os;
+		os << "CGPLvm X param update dimension missmatch. X("<<X.rows()<<","<<X.cols()<<") <-> gplvm_dimensions:"<<gplvmDimensions.rows()<<"!";
+		throw CGPMixException(os.str());
+	}
+	//update
+	for (muint_t ic=0;ic<(muint_t)X.cols();ic++)
+		covar.setXcol(X.col(ic),gplvmDimensions(ic));
+}
+
+
 void CGPbase::updateParams() throw(CGPMixException)
 {
 	if (this->params.exists("covar"))
@@ -132,21 +240,7 @@ void CGPbase::updateParams() throw(CGPMixException)
 	if (this->params.exists("lik"))
 		this->lik.setParams(this->params["lik"]);
 	if (params.exists("X"))
-		{
-			//check dimensions match
-			MatrixXd& X = params["X"];
-			if (X.cols()!=gplvmDimensions.rows())
-			{
-				ostringstream os;
-				os << "CGPLvm X param update dimension missmatch. X("<<X.rows()<<","<<X.cols()<<") <-> gplvm_dimensions:"<<gplvmDimensions.rows()<<"!";
-				throw CGPMixException(os.str());
-			}
-			//update
-			for (muint_t ic=0;ic<(muint_t)X.cols();ic++)
-			{
-				this->covar.setXcol(X.col(ic),gplvmDimensions(ic));
-			}
-		}
+		this->updateX(covar,gplvmDimensions,params["X"]);
 }
 
 void CGPbase::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException)
@@ -172,88 +266,8 @@ void CGPbase::agetParamArray(VectorXd* out) const
 }
 
 
-void CGPbase::clearCache()
-{
-	this->cache.clear();
-	this->covar.makeSync();
-	this->lik.makeSync();
-}
 
-bool CGPbase::isInSync() const
-{
-	return covar.isInSync() && lik.isInSync();
-}
 
-MatrixXd* CGPbase::getKinv()
-{
-	if (!isInSync())
-		this->clearCache();
-	if (isnull(cache.Kinv))
-	{
-		MatrixXdChol* chol = this->getCholK();
-		cache.Kinv = MatrixXd::Identity(this->getNumberSamples(),this->getNumberSamples());
-#if 0
-		(*chol).solveInPlace(cache.Kinv);
-#else
-		//alterative
-		MatrixXd L = chol->matrixL();
-		L.triangularView<Eigen::Lower>().solveInPlace(cache.Kinv);
-		cache.Kinv.transpose()*=cache.Kinv.triangularView<Eigen::Lower>();
-#endif
-	}
-	return (&this->cache.Kinv);
-}
-
-MatrixXd* CGPbase::getKinvY()
-{
-	//Invalidate Cache?
-	if (!isInSync())
-		this->clearCache();
-
-	if (isnull(cache.KinvY))
-	{
-		MatrixXdChol* chol = this->getCholK();
-		cache.KinvY = (*chol).solve(this->Y);
-	}
-	return &cache.KinvY;
-}
-
-MatrixXd* CGPbase::getDKinv_KinvYYKinv()
-{
-	if (!isInSync())
-		this->clearCache();
-	if (isnull(cache.DKinv_KinvYYKinv))
-	{
-		MatrixXd* KiY  = getKinvY();
-		MatrixXd* Kinv = getKinv();
-		cache.DKinv_KinvYYKinv = ((mfloat_t)(this->getNumberDimension())) * (*Kinv) - (*KiY) * (*KiY).transpose();
-	}
-	return &cache.DKinv_KinvYYKinv;
-}
-
-MatrixXdChol* CGPbase::getCholK()
-{
-	if (!isInSync())
-		this->clearCache();
-
-	if (isnull(cache.cholK))
-	{
-		cache.cholK = MatrixXdChol((*this->getK()));
-	}
-	return &cache.cholK;
-}
-
-MatrixXd* CGPbase::getK()
-{
-	if (!isInSync())
-		this->clearCache();
-	if (isnull(cache.K))
-	{
-		covar.aK(&cache.K);
-		cache.K += lik.K();
-	}
-	return &cache.K;
-}
 
 
 
@@ -301,12 +315,12 @@ mfloat_t CGPbase::LML(const VectorXd& params) throw (CGPMixException)
 mfloat_t CGPbase::LML() throw (CGPMixException)
 {
 	//update the covariance parameters
-	MatrixXdChol* chol = getCholK();
+	MatrixXdChol* chol = cache.getCholK();
 	//logdet:
 	mfloat_t lml_det  = 0.5*Y.cols()*logdet((*chol));
 	//2. quadratic term
 	mfloat_t lml_quad = 0.0;
-	MatrixXd* KinvY = this->getKinvY();
+	MatrixXd* KinvY = cache.getKinvY();
 	//quadratic form
 	lml_quad = 0.5*((*KinvY).array() * Y.array()).sum();
 	//constants
@@ -377,7 +391,7 @@ void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
 	//vector with results
 	VectorXd grad_covar(covar.getNumberParams());
 	//W:
-	MatrixXd* W = this->getDKinv_KinvYYKinv();
+	MatrixXd* W = cache.getDKinv_KinvYYKinv();
 	//Kd cachine result
 	MatrixXd Kd;
 	for(muint_t param = 0;param < (muint_t)(grad_covar.rows());param++){
@@ -391,7 +405,7 @@ void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
 void CGPbase::aLMLgrad_lik(VectorXd* out) throw (CGPMixException)
 				{
 	LikParams grad_lik(lik.getNumberParams());
-	MatrixXd* W = this->getDKinv_KinvYYKinv();
+	MatrixXd* W = cache.getDKinv_KinvYYKinv();
 	MatrixXd Kd;
 	for(muint_t row = 0 ; row<lik.getNumberParams(); ++row)	//WARNING: conversion
 	{
@@ -407,7 +421,7 @@ void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
 	(*out).resize(this->getNumberSamples(),this->gplvmDimensions.rows());
 
 	//1. get W:
-	MatrixXd* W = this->getDKinv_KinvYYKinv();
+	MatrixXd* W = cache.getDKinv_KinvYYKinv();
 	//loop through GLVM dimensions and calculate gradient
 
 	MatrixXd WKgrad_X;
