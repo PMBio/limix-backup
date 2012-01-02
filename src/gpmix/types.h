@@ -35,6 +35,12 @@ inline mfloat_t exp (mfloat_t x)
 		return (mfloat_t)std::exp((long double) x );
 }
 
+inline mfloat_t sqrt (mfloat_t x)
+{
+		return (mfloat_t)std::sqrt((long double) x );
+}
+
+
 inline mfloat_t log (mfloat_t x)
 {
 		return (mfloat_t)std::log((long double) x );

@@ -18,6 +18,12 @@ using namespace std;
 
 namespace gpmix {
 
+//type of cholesky decomposition to use:
+//LDL
+//typedef Eigen::LDLT<gpmix::MatrixXd> MatrixXdChol;
+//LL
+typedef Eigen::LDLT<gpmix::MatrixXd> MatrixXdChol;
+
 
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
@@ -103,7 +109,7 @@ class CGPCache
 public:
 
 	MatrixXd K;
-	Eigen::LLT<gpmix::MatrixXd> cholK;
+	MatrixXdChol cholK;
 	MatrixXd Kinv;
 	MatrixXd KinvY;
 	MatrixXd DKinv_KinvYYKinv;
@@ -115,7 +121,7 @@ public:
 		this->K=MatrixXd();
 		this->Kinv=MatrixXd();
 		this->KinvY=MatrixXd();
-		this->cholK=Eigen::LLT<gpmix::MatrixXd>();
+		this->cholK=MatrixXdChol();
 		this->DKinv_KinvYYKinv = MatrixXd();
 	}
 };
@@ -135,6 +141,7 @@ public:
 %rename(LMLgrad_lik) CGPbase::aLMLgrad_lik;
 #endif
 
+
 class CGPbase {
 protected:
 
@@ -152,7 +159,7 @@ protected:
 	virtual MatrixXd* getK();
 	virtual MatrixXd* getKinv();
 	virtual MatrixXd* getKinvY();
-	virtual Eigen::LLT<gpmix::MatrixXd>* getCholK();
+	virtual MatrixXdChol* getCholK();
 	virtual MatrixXd* getDKinv_KinvYYKinv();
 	virtual void updateParams() throw (CGPMixException);
 
