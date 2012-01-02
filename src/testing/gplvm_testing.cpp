@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -35,16 +35,18 @@ int main() {
 
 	try {
 		//random input X
-		muint_t dim=3;
+		muint_t K=2;
+		muint_t D=10;
+		muint_t N=50;
+		mfloat_t eps = 0.1;
 
-		MatrixXd X = randn((muint_t)100,(muint_t)dim);
+		MatrixXd X = randn((muint_t)N,(muint_t)K);
 		//y ~ w*X
-		MatrixXd w = randn((muint_t)dim,(muint_t)1);
-		MatrixXd y = X*w + 0.1*randn((muint_t)100,(muint_t)1);
+		MatrixXd w = randn((muint_t)K,(muint_t)D);
+		MatrixXd y = X*w + eps*randn((muint_t)N,(muint_t)D);
 
 		//Ard covariance
-		CCovLinearARD covar(X.cols());
-
+		CCovLinearISO covar(X.cols());
 		//standard Gaussian lik
 		CLikNormalIso lik;
 
@@ -52,6 +54,7 @@ int main() {
 		CGPlvm gp(covar,lik);
 		gp.setY(y);
 		gp.setX(X);
+
 		//hyperparams
 		CovarInput covar_params = randn(covar.getNumberParams(),(muint_t)1);
 		CovarInput lik_params = randn(lik.getNumberParams(),(muint_t)1);

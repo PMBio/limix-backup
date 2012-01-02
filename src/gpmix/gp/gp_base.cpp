@@ -127,17 +127,30 @@ void CGPbase::set_data(MatrixXd& Y)
 
 void CGPbase::updateParams() throw(CGPMixException)
 {
-	this->covar.setParams(this->params["covar"]);
-	this->lik.setParams(this->params["lik"]);
+	if (this->params.exists("covar"))
+		this->covar.setParams(this->params["covar"]);
+	if (this->params.exists("lik"))
+		this->lik.setParams(this->params["lik"]);
+	if (params.exists("X"))
+		{
+			//check dimensions match
+			MatrixXd& X = params["X"];
+			if (X.cols()!=gplvmDimensions.rows())
+			{
+				ostringstream os;
+				os << "CGPLvm X param update dimension missmatch. X("<<X.rows()<<","<<X.cols()<<") <-> gplvm_dimensions:"<<gplvmDimensions.rows()<<"!";
+				throw CGPMixException(os.str());
+			}
+			//update
+			for (muint_t ic=0;ic<(muint_t)X.cols();ic++)
+			{
+				this->covar.setXcol(X.col(ic),gplvmDimensions(ic));
+			}
+		}
 }
 
 void CGPbase::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException)
 {
-	//1. check that covar and lik is defined
-	if (!(hyperparams.exists("covar")))
-		throw CGPMixException("CGPbase: parameter structures require keyword covar");
-	if (!(hyperparams.exists("lik")))
-		throw CGPMixException("CGPbase: parameter structures require keyword lik");
 	this->params = hyperparams;
 	updateParams();
 }
@@ -259,6 +272,8 @@ void CGPbase::setX(const CovarInput& X) throw (CGPMixException)
 	//use covariance to set everything
 	this->covar.setX(X);
 	this->lik.setX(X);
+	if (isnull(gplvmDimensions))
+			this->gplvmDimensions = VectorXi::LinSpaced(X.cols(),0,X.cols()-1);
 }
 
 
@@ -326,17 +341,29 @@ CGPHyperParams CGPbase::LMLgrad(const VectorXd& paramArray) throw (CGPMixExcepti
 
 /* Main routine: gradient calculation*/
 CGPHyperParams CGPbase::LMLgrad() throw (CGPMixException)
-		{
+{
 	CGPHyperParams rv;
-	//1. covariance gradient
-	VectorXd grad_covar;
-	VectorXd grad_lik;
-	aLMLgrad_covar(&grad_covar);
-	aLMLgrad_lik(&grad_lik);
-	rv.set("covar",grad_covar);
-	rv.set("lik",grad_lik);
-	return rv;
+	//calculate gradients for parameter components in params:
+	if (params.exists("covar"))
+	{
+		VectorXd grad_covar;
+		aLMLgrad_covar(&grad_covar);
+		rv.set("covar",grad_covar);
+	}
+	if (params.exists("lik"))
+	{
+		VectorXd grad_lik;
+		aLMLgrad_lik(&grad_lik);
+		rv.set("lik",grad_lik);
+	}
+	if (params.exists("X"))
+		{
+			MatrixXd grad_X;
+			aLMLgrad_X(&grad_X);
+			rv.set("X",grad_X);
 		}
+	return rv;
+}
 
 
 void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
@@ -367,6 +394,31 @@ void CGPbase::aLMLgrad_lik(VectorXd* out) throw (CGPMixException)
 	}
 	(*out) = grad_lik;
 				}
+
+void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
+{
+	//0. set output dimensions
+	(*out).resize(this->getNumberSamples(),this->gplvmDimensions.rows());
+
+	//1. get W:
+	MatrixXd* W = this->getDKinv_KinvYYKinv();
+	//loop through GLVM dimensions and calculate gradient
+
+	MatrixXd WKgrad_X;
+	VectorXd Kdiag_grad_X;
+	for (muint_t ic=0;ic<(muint_t)this->gplvmDimensions.rows();ic++)
+	{
+		muint_t col = gplvmDimensions(ic);
+		//get gradient
+		covar.aKgrad_X(&WKgrad_X,col);
+		covar.aKdiag_grad_X(&Kdiag_grad_X,col);
+		WKgrad_X.diagonal() = Kdiag_grad_X;
+		//precalc elementwise product of W and K
+		WKgrad_X.array()*=(*W).array();
+		MatrixXd t = (2*WKgrad_X.rowwise().sum() - WKgrad_X.diagonal());
+		(*out).col(ic) = 0.5* (2*WKgrad_X.rowwise().sum() - WKgrad_X.diagonal());
+	}
+}
 
 
 void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException)
