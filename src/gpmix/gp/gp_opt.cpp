@@ -12,15 +12,10 @@ namespace gpmix {
 
 CGPopt::CGPopt(CGPbase& gp) : gp (gp)
 {
-	tolerance = 1E-4;
+	tolerance = DEFAULT_TOL;
 	// TODO Auto-generated constructor stub
-
 }
 
-CGPHyperParams CGPopt::getParams() const
-{
-	return params;
-}
 
 CGPHyperParams CGPopt::getFilter() const
 {
@@ -29,14 +24,15 @@ CGPHyperParams CGPopt::getFilter() const
 
 void CGPopt::opt()
 {
+
 	//0. set evaluation counter to 0:
 	numEvaluations = 0;
 	//1. get starging point
 	VectorXd x = gp.getParamArray();
 	muint_t numParams = x.rows();
 	//2. create optimization instance:
-	nlopt_opt opt = nlopt_create(NLOPT_LD_LBFGS, numParams);
-	nlopt_set_min_objective(opt, CGPopt::gptop_nlopt_objective, this);
+	nlopt_opt opt = nlopt_create(solver, numParams);
+	nlopt_set_min_objective(opt, CGPopt::gpopt_nlopt_objective, this);
 	//3. set tolerance
 	nlopt_set_xtol_rel(opt, tolerance);
 	//4. set constraints
@@ -57,6 +53,13 @@ void CGPopt::opt()
 	    std::cout << "df(x)=[" << df << "]\n";
 	    std::cout << "Function evaluations: " << numEvaluations << "\n";
 	    std::cout << "----------" << "\n";
+	    //store optimized values:
+	    optParams = gp.getParams();
+	    optParams.setParamArray(x);
+	    // dump gradients:
+	    std::cout << "covar grad:" << gp.LMLgrad()["covar"] << "\n";
+	    std::cout << "lml:" << gp.LML() << "\n";
+
 	}
 }
 
@@ -82,7 +85,10 @@ bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
 		gp.setParamArray(x);
 		mfloat_t Lplus = gp.LML();
 		x(i) = x0(i) - change;
+		gp.setParamArray(x);
 		mfloat_t Lminus = gp.LML();
+		//restore
+		x(i) = x0(i);
 		//numerical gradient
 		mfloat_t diff_numerical  = (Lplus-Lminus)/(2.*change);
 		grad_numerical(i) = diff_numerical;
@@ -95,16 +101,11 @@ void CGPopt::setFilter(CGPHyperParams filter)
 {
 	this->filter = filter;}
 
-void CGPopt::setParams(CGPHyperParams params)
-{
-	this->params = params;
-}
-
 CGPopt::~CGPopt() {
 	// TODO Auto-generated destructor stub
 }
 
-double CGPopt::objective(const VectorXd& paramArray)
+mfloat_t CGPopt::objective(const VectorXd& paramArray)
 {
 	this->numEvaluations++;
 	double lml;
@@ -115,7 +116,7 @@ double CGPopt::objective(const VectorXd& paramArray)
 }
 
 
-double CGPopt::objective(const VectorXd& paramArray,VectorXd* gradParamArray)
+mfloat_t CGPopt::objective(const VectorXd& paramArray,VectorXd* gradParamArray)
 {
 	this->numEvaluations++;
 	double lml;
@@ -126,18 +127,18 @@ double CGPopt::objective(const VectorXd& paramArray,VectorXd* gradParamArray)
 	return lml;
 }
 
-double CGPopt::getTolerance() const
+mfloat_t CGPopt::getTolerance() const
     {
         return tolerance;
     }
 
-    void CGPopt::getTolerance(double tol)
+void CGPopt::setTolerance(mfloat_t tol)
     {
         this->tolerance = tol;
-    }
+   }
 
-    double CGPopt::gptop_nlopt_objective(unsigned  n, const double *x, double *grad, void *my_func_data)
-    {
+double CGPopt::gpopt_nlopt_objective(unsigned  n, const double *x, double *grad, void *my_func_data)
+{
     	double lml;
         //1. cast additional data as Gptop
         CGPopt *gpopt = (CGPopt*)(my_func_data);
@@ -152,10 +153,6 @@ double CGPopt::getTolerance() const
         	//copy:
         	Eigen::Map<VectorXd > vG(grad,n);
         	vG = vgrad;
-        	/*
-        	std::cout << "f("<< vX << ")="<< lml << "\n";
-        	std::cout << "df = "<<vgrad << "\n\n";
-        	*/
         }
         else
         	lml = gpopt->objective(vX);

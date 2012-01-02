@@ -11,36 +11,38 @@
 #include "gp_base.h";
 #include "nlopt/api/nlopt.h"
 
+
 namespace gpmix {
+#define solver NLOPT_LD_LBFGS
+#define DEFAULT_TOL 1E-6
 
 class CGPopt {
 protected:
+
 	CGPbase& gp;
-	CGPHyperParams params;
+	CGPHyperParams optParams;
 	CGPHyperParams filter;
-	double tolerance;
+	mfloat_t tolerance;
 	muint_t numEvaluations;
 
 	//objective without and with gradients
-	double objective(const VectorXd& paramArray);
-	double objective(const VectorXd& paramArray,VectorXd* gradParamArray);
+	mfloat_t objective(const VectorXd& paramArray);
+	mfloat_t objective(const VectorXd& paramArray,VectorXd* gradParamArray);
 	//optimization interface for nlopt:
-	static double gptop_nlopt_objective(unsigned n, const double *x, double *grad, void *my_func_data);
+	static double gpopt_nlopt_objective(unsigned n, const double *x, double *grad, void *my_func_data);
 public:
 	CGPopt(CGPbase& gp);
 	virtual ~CGPopt();
 	virtual bool gradCheck(mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
 	virtual void opt();
 
-	//getter and setter
-	CGPHyperParams getParams() const;
-	void setParams(CGPHyperParams params);
 	CGPHyperParams getFilter() const;
 	void setFilter(CGPHyperParams filter);
 	double getTolerance() const;
-	void getTolerance(double tol = 1E-4);
+	void setTolerance(double tol = 1E-4);
 
-
+	CGPHyperParams getOptParams()
+	{ return optParams; }
 
 };
 

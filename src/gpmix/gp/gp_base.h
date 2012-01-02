@@ -22,7 +22,8 @@ namespace gpmix {
 //LDL
 //typedef Eigen::LDLT<gpmix::MatrixXd> MatrixXdChol;
 //LL
-typedef Eigen::LDLT<gpmix::MatrixXd> MatrixXdChol;
+//typedef Eigen::LDLT<gpmix::MatrixXd> MatrixXdChol;
+typedef Eigen::LLT<gpmix::MatrixXd> MatrixXdChol;
 
 
 
@@ -152,6 +153,7 @@ protected:
 
 	ACovarianceFunction& covar;//Covariance function
 	ALikelihood& lik;          //likelihood model
+	VectorXi gplvmDimensions;  //gplvm dimensions
 
 	virtual void clearCache();
 	virtual bool isInSync() const;
@@ -213,6 +215,7 @@ public:
 	//gradient components:
 	virtual void aLMLgrad_covar(VectorXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_lik(VectorXd* out) throw (CGPMixException);
+	virtual void aLMLgrad_X(MatrixXd* out) throw (CGPMixException);
 	//interface for optimization:
 
 	//predictions:
@@ -222,6 +225,7 @@ public:
 	//convenience function
 	inline VectorXd LMLgrad_covar() throw (CGPMixException);
 	inline VectorXd LMLgrad_lik() throw (CGPMixException);
+	inline MatrixXd LMLgrad_X() throw (CGPMixException);
 	inline MatrixXd getY() const;
 	inline MatrixXd getX() const;
 	inline VectorXd getParamArray() const;
@@ -256,6 +260,14 @@ inline VectorXd CGPbase::LMLgrad_lik() throw (CGPMixException)
 	aLMLgrad_lik(&rv);
 	return rv;
 }
+
+inline MatrixXd CGPbase::LMLgrad_X() throw (CGPMixException)
+{
+	MatrixXd rv;
+	aLMLgrad_X(&rv);
+	return rv;
+}
+
 
 inline VectorXd CGPbase::getParamArray() const
 {
