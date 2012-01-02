@@ -20,7 +20,7 @@ bool isnull(const MatrixXd& m)
 
 bool isnull(const VectorXi& m)
 {
-	return (m.cols()==0) & (m.rows()==0);
+	return (m.rows()==0);
 }
 
 bool isnull(const Eigen::LLT<gpmix::MatrixXd>& m)

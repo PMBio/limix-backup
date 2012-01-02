@@ -26,7 +26,7 @@ void CGPlvm::setX(const CovarInput& X) throw (CGPMixException)
 	CGPbase::setX(X);
 	//determine default GPLVM dimensions if appropriate:
 	if (isnull(gplvmDimensions))
-		this->gplvmDimensions = VectorXi::LinSpaced(X.rows(),0,X.rows());
+		this->gplvmDimensions = VectorXi::LinSpaced(X.cols(),0,X.cols());
 }
 
 
@@ -39,15 +39,18 @@ void CGPlvm::updateParams() throw (CGPMixException)
 	{
 		//check dimensions match
 		MatrixXd& X = params["X"];
-		if (X.cols()!=gplvmDimensions.cols())
+		if (X.cols()!=gplvmDimensions.rows())
 		{
 			ostringstream os;
-			os << "CGPLvm X param update dimension missmatch. X("<<X.rows()<<","<<X.cols()<<") <-> gplvm_dimensions:"<<gplvmDimensions.cols()<<"!";
+			os << "CGPLvm X param update dimension missmatch. X("<<X.rows()<<","<<X.cols()<<") <-> gplvm_dimensions:"<<gplvmDimensions.rows()<<"!";
 			throw CGPMixException(os.str());
 		}
 		//update
 		for (muint_t ic=0;ic<(muint_t)X.cols();ic++)
+		{
+			std::cout << gplvmDimensions(ic) <<"\n";
 			this->covar.setXcol(X.col(ic),gplvmDimensions(ic));
+		}
 	}
 }
 
@@ -55,17 +58,20 @@ CGPHyperParams CGPlvm::LMLgrad() throw (CGPMixException)
 {
 	//gradient for lik and covar:
 	CGPHyperParams rv = CGPbase::LMLgrad();
-	VectorXd grad_X;
-	aLMLgrad_X(&grad_X);
-	rv.set("X",grad_X);
+	if (params.exists("X"))
+	{
+		MatrixXd grad_X;
+		aLMLgrad_X(&grad_X);
+		rv.set("X",grad_X);
+	}
 	return rv;
 }
 
 
-void CGPlvm::aLMLgrad_X(VectorXd* out) throw (CGPMixException)
+void CGPlvm::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
 {
 	//0. set output dimensions
-	(*out).resize(this->getNumberSamples(),this->gplvmDimensions.cols());
+	(*out).resize(this->getNumberSamples(),this->gplvmDimensions.rows());
 
 	//1. get W:
 	MatrixXd* W = this->getDKinv_KinvYYKinv();
@@ -73,7 +79,7 @@ void CGPlvm::aLMLgrad_X(VectorXd* out) throw (CGPMixException)
 
 	MatrixXd WKgrad_X;
 	VectorXd Kdiag_grad_X;
-	for (muint_t ic=0;ic<(muint_t)this->gplvmDimensions.cols();ic++)
+	for (muint_t ic=0;ic<(muint_t)this->gplvmDimensions.rows();ic++)
 	{
 		muint_t col = gplvmDimensions(ic);
 		//get gradient
@@ -82,7 +88,8 @@ void CGPlvm::aLMLgrad_X(VectorXd* out) throw (CGPMixException)
 		WKgrad_X.diagonal() = Kdiag_grad_X;
 		//precalc elementwise product of W and K
 		WKgrad_X.array()*=(*W).array();
-		(*out).col(ic) = 0.5* (2*WKgrad_X.colwise().sum() - WKgrad_X.diagonal());
+		MatrixXd t = (2*WKgrad_X.rowwise().sum() - WKgrad_X.diagonal());
+		(*out).col(ic) = 0.5* (2*WKgrad_X.rowwise().sum() - WKgrad_X.diagonal());
 	}
 }
 
