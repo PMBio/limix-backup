@@ -66,7 +66,7 @@ void ACovarianceFunction::setX(const CovarInput & X) throw (CGPMixException)
 void ACovarianceFunction::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
 {
 	//1. check dimensions etc.
-	if(((col+X.cols())>=(muint_t)this->X.cols()) || (X.rows()!=this->X.rows()))
+	if(((col+X.cols())>(muint_t)this->X.cols()) || (X.rows()!=this->X.rows()))
 	{
 		ostringstream os;
 		os << "setXcol out of range. Current X:"<<this->getNumberDimensions() <<")";

@@ -60,6 +60,37 @@ void CGPopt::opt()
 	}
 }
 
+
+bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
+{
+	bool rv;
+	//current x0:
+	VectorXd x0 = gp.getParamArray();
+	VectorXd x  = x0;
+
+	//1. analytical solution
+	VectorXd grad_anal;
+	gp.aLMLgrad(&grad_anal);
+	//2. numerical solution;
+	VectorXd grad_numerical(grad_anal.rows());
+	//loop
+	for (muint_t i=0;i<(muint_t)x0.rows();i++)
+	{
+		mfloat_t change = relchange*x0(i);
+		change = max(change,1E-5);
+		x(i) = x0(i) + change;
+		gp.setParamArray(x);
+		mfloat_t Lplus = gp.LML();
+		x(i) = x0(i) - change;
+		mfloat_t Lminus = gp.LML();
+		//numerical gradient
+		mfloat_t diff_numerical  = (Lplus-Lminus)/(2.*change);
+		grad_numerical(i) = diff_numerical;
+	}
+	rv = ((grad_numerical-grad_anal).squaredNorm()<threshold);
+	return rv;
+}
+
 void CGPopt::setFilter(CGPHyperParams filter)
 {
 	this->filter = filter;}

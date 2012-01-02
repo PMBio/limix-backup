@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
+#include "gpmix/gp/gp_lvm.h"
 #include "gpmix/gp/gp_opt.h"
 #include "gpmix/types.h"
 #include "gpmix/likelihood/likelihood.h"
@@ -34,7 +35,7 @@ int main() {
 
 	try {
 		//random input X
-		muint_t dim=1;
+		muint_t dim=3;
 
 		MatrixXd X = randn((muint_t)100,(muint_t)dim);
 		//y ~ w*X
@@ -48,15 +49,16 @@ int main() {
 		CLikNormalIso lik;
 
 		//GP object
-		CGPbase gp(covar,lik);
+		CGPlvm gp(covar,lik);
 		gp.setY(y);
 		gp.setX(X);
 		//hyperparams
 		CovarInput covar_params = randn(covar.getNumberParams(),(muint_t)1);
 		CovarInput lik_params = randn(lik.getNumberParams(),(muint_t)1);
 		CGPHyperParams params;
-		params.set("covar",covar_params);
-		params.set("lik",lik_params);
+		params["covar"] = covar_params;
+		params["lik"] = lik_params;
+		params["X"] = X;
 
 		//get lml and grad
 		mfloat_t lml = gp.LML(params);
@@ -66,10 +68,12 @@ int main() {
 		std::cout << grad["covar"] << "\n";
 		std::cout << grad["lik"] << "\n";
 
-		//optimize:
 		CGPopt opt(gp);
+		std::cout << "gradcheck: "<< opt.gradCheck();
+#if 0
+		//optimize:
 		opt.opt();
-
+#endif
 
 
 

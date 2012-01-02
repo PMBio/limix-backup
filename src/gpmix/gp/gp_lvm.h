@@ -25,13 +25,13 @@ public:
 	void setX(const CovarInput& X) throw (CGPMixException);
 	//additional gradients due to GPLVM components:
 	CGPHyperParams LMLgrad() throw (CGPMixException);
-	virtual void aLMLgrad_X(VectorXd* out) throw (CGPMixException);
-	inline VectorXd LMLgrad_X() throw (CGPMixException);
+	virtual void aLMLgrad_X(MatrixXd* out) throw (CGPMixException);
+	inline MatrixXd LMLgrad_X() throw (CGPMixException);
 };
 
-inline VectorXd CGPlvm::LMLgrad_X() throw (CGPMixException)
+inline MatrixXd CGPlvm::LMLgrad_X() throw (CGPMixException)
 		{
-		VectorXd rv;
+		MatrixXd rv;
 		aLMLgrad_X(&rv);
 		return rv;
 		}
