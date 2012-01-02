@@ -16,6 +16,13 @@ bool isnull(const MatrixXd& m)
 {
 	return (m.cols()==0) & (m.rows()==0);
 }
+
+
+bool isnull(const VectorXi& m)
+{
+	return (m.cols()==0) & (m.rows()==0);
+}
+
 bool isnull(const Eigen::LLT<gpmix::MatrixXd>& m)
 {
 	return (m.cols()==0) & (m.rows()==0);
