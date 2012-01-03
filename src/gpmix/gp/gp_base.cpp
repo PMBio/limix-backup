@@ -8,9 +8,6 @@
 #include "gp_base.h"
 #include "gpmix/utils/matrix_helper.h"
 
-#ifndef PI
-#define PI 3.14159265358979323846
-#endif
 
 namespace gpmix {
 
@@ -200,6 +197,17 @@ MatrixXd* CGPCholCache::getK()
 	return &K;
 }
 
+MatrixXd* CGPCholCache::getK0()
+{
+	if (!isInSync())
+		this->clearCache();
+	if (isnull(K))
+	{
+		gp.covar.aK(&K);
+	}
+	return &K;
+}
+
 
 
 /* CGPbase */
@@ -281,6 +289,8 @@ void CGPbase::agetY(MatrixXd* out) const
 void CGPbase::setY(const MatrixXd& Y)
 {
 	this->Y = Y;
+	//update lik
+	this->lik.setX(MatrixXd::Zero(Y.rows(),0));
 }
 
 void CGPbase::agetX(CovarInput* out) const
@@ -291,7 +301,6 @@ void CGPbase::setX(const CovarInput& X) throw (CGPMixException)
 {
 	//use covariance to set everything
 	this->covar.setX(X);
-	this->lik.setX(X);
 	if (isnull(gplvmDimensions))
 			this->gplvmDimensions = VectorXi::LinSpaced(X.cols(),0,X.cols()-1);
 }
@@ -377,11 +386,11 @@ CGPHyperParams CGPbase::LMLgrad() throw (CGPMixException)
 		rv.set("lik",grad_lik);
 	}
 	if (params.exists("X"))
-		{
-			MatrixXd grad_X;
-			aLMLgrad_X(&grad_X);
-			rv.set("X",grad_X);
-		}
+	{
+		MatrixXd grad_X;
+		aLMLgrad_X(&grad_X);
+		rv.set("X",grad_X);
+	}
 	return rv;
 }
 

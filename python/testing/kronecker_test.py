@@ -23,7 +23,8 @@ if __name__ == '__main__':
     #1. simulate data from a linear PCA model
     #note, these data are truely independent across rows, so the whole gplvm with kronecker is a bit pointless....
     N = 50
-    K = 5
+    Kr = 5
+    Kc = 3
     D = 20
 
     SP.random.seed(1)
@@ -33,11 +34,12 @@ if __name__ == '__main__':
     Y = SP.dot(W,S.T).T
     Y += 0.1*SP.random.randn(N,D)
 
-    X0= SP.random.randn(N,K)
+    X0r= SP.random.randn(N,Kr)
+    X0c= SP.random.randn(D,Kc)
 
     Kc = SP.eye(D)
-    covariance_c = fixed.FixedCF(Kc)
-    covariance_r = linear.LinearCFISO(n_dimensions=K)
+    covariance_c = linear.LinearCFISO(n_dimensions=Kc)
+    covariance_r = linear.LinearCFISO(n_dimensions=Kr)
     
     likelihood = lik.GaussLikISO()
 
@@ -45,11 +47,28 @@ if __name__ == '__main__':
     hyperparams['lik'] = SP.log([0.42])
     hyperparams['covar_r'] = SP.log([1.0])
     hyperparams['covar_c'] = SP.log([1.0])
-    hyperparams['x_r'] = X0
+    #hyperparams['x_r'] = X0
+    #hyperparams['x_r'] = X0
 
     kgp = kronecker_gplvm.KroneckerGPLVM(covar_func_r=covariance_r,covar_func_c=covariance_c,likelihood=likelihood)
     kgp.setData(x_r=X0,y=Y)
     gradcheck=True
     [hyperparams_o,opt_lml_o] = opt.opt_hyper(kgp,hyperparams,gradcheck=gradcheck)
     
+
+
+    #gpmix
+    covariance_r = gpmix.CCovLinearISO(Kr)
+    covariance_c = gpmix.CCovLinearISO(Kc)
+    lik   = gpmix.CLikNormalIso();
+    gp=gpmix.CGPkronecker(covar_r,covar_c,lik)
+    gp.setY(Y);
+    gp.setX_r(Xr);
+    gp.setX_c(Xc);
+    
+    params = gpmix.CGPHyperParams();
+    params['covar_r'] = SP.log([0.5])
+    params['covar_c'] = SP.log([0.5])
+    params['lik'] = SP.log([0.1])
+    gp.setParams(params)
     
