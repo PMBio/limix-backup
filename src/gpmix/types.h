@@ -16,6 +16,10 @@ using namespace std;
 
 namespace gpmix{
 
+#ifndef PI
+#define PI 3.14159265358979323846
+#endif
+
 
 //note: for swig it is important that everyhing is typed def and not merely "defined"
 typedef double float64_t;

@@ -13,6 +13,7 @@
 #include "gpmix/covar/combinators.h"	
 #include "gpmix/likelihood/likelihood.h"
 #include "gpmix/gp/gp_base.h"
+#include "gpmix/gp/gp_kronecker.h"
 #include "gpmix/gp/gp_opt.h"
 
 
@@ -71,6 +72,7 @@
 %include "gpmix/covar/combinators.h"	
 %include "gpmix/likelihood/likelihood.h"
 %include "gpmix/gp/gp_base.h"
+%include "gpmix/gp/gp_kronecker.h"
 %include "gpmix/gp/gp_opt.h"
 
 
