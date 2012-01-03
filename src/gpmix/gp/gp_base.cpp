@@ -109,8 +109,8 @@ bool CGPHyperParams::exists(string name) const
 
 void CGPCholCache::clearCache()
 {
-	gp.covar.makeSync();
-	gp.lik.makeSync();
+	gp->covar.makeSync();
+	gp->lik.makeSync();
 
 	//set null:
 	this->K=MatrixXd();
@@ -123,7 +123,7 @@ void CGPCholCache::clearCache()
 
 bool CGPCholCache::isInSync() const
 {
-	return (gp.covar.isInSync() && gp.lik.isInSync());
+	return (gp->covar.isInSync() && gp->lik.isInSync());
 }
 
 MatrixXd* CGPCholCache::getKinv()
@@ -155,7 +155,7 @@ MatrixXd* CGPCholCache::getKinvY()
 	if (isnull(KinvY))
 	{
 		MatrixXdChol* chol = this->getCholK();
-		KinvY = (*chol).solve(gp.Y);
+		KinvY = (*chol).solve(gp->Y);
 	}
 	return &KinvY;
 }
@@ -168,7 +168,7 @@ MatrixXd* CGPCholCache::getDKinv_KinvYYKinv()
 	{
 		MatrixXd* KiY  = getKinvY();
 		MatrixXd* Kinv = getKinv();
-		DKinv_KinvYYKinv = ((mfloat_t)(gp.getNumberDimension())) * (*Kinv) - (*KiY) * (*KiY).transpose();
+		DKinv_KinvYYKinv = ((mfloat_t)(gp->getNumberDimension())) * (*Kinv) - (*KiY) * (*KiY).transpose();
 	}
 	return &DKinv_KinvYYKinv;
 }
@@ -191,8 +191,8 @@ MatrixXd* CGPCholCache::getK()
 		this->clearCache();
 	if (isnull(K))
 	{
-		gp.covar.aK(&K);
-		K += gp.lik.K();
+		gp->covar.aK(&K);
+		K += gp->lik.K();
 	}
 	return &K;
 }
@@ -203,7 +203,7 @@ MatrixXd* CGPCholCache::getK0()
 		this->clearCache();
 	if (isnull(K))
 	{
-		gp.covar.aK(&K);
+		gp->covar.aK(&K);
 	}
 	return &K;
 }
@@ -212,7 +212,7 @@ MatrixXd* CGPCholCache::getK0()
 
 /* CGPbase */
 
-CGPbase::CGPbase(ACovarianceFunction& covar, ALikelihood& lik) : cache(*this),covar(covar), lik(lik) {
+CGPbase::CGPbase(ACovarianceFunction& covar, ALikelihood& lik) : cache(this),covar(covar), lik(lik) {
 	this->covar = covar;
 	this->lik = lik;
 	//this->clearCache();

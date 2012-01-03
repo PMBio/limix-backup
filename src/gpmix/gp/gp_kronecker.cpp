@@ -39,7 +39,7 @@ VectorXd* CGPSVDCache::getSK()
 
 void CGPSVDCache::clearCache()
 {
-	covar.makeSync();
+	covar->makeSync();
 
 	K = MatrixXd();
 	UK =  MatrixXd();
@@ -47,7 +47,7 @@ void CGPSVDCache::clearCache()
 }
 bool CGPSVDCache::isInSync() const
 {
-	return covar.isInSync();
+	return covar->isInSync();
 }
 
 
@@ -61,7 +61,7 @@ void CGPKroneckerCache::clearCache()
 
 bool CGPKroneckerCache::isInSync() const
 {
-	return cache_r.covar.isInSync() && cache_c.covar.isInSync();
+	return cache_r.covar->isInSync() && cache_c.covar->isInSync();
 }
 
 
@@ -71,7 +71,7 @@ MatrixXd* CGPKroneckerCache::getYrot()
 			this->clearCache();
 	if (isnull(Yrot))
 	{
-		akronravel(&Yrot,(*cache_r.getUK()),(*cache_c.getUK()).transpose(),gp.Y);
+		akronravel(&Yrot,(*cache_r.getUK()),(*cache_c.getUK()).transpose(),gp->Y);
 	}
 	return &Yrot;
 
@@ -100,20 +100,20 @@ MatrixXd* CGPKroneckerCache::getYSi()
 
 MatrixXd* CGPKroneckerCache::getKnoise()
 {
-	if (!gp.lik.isInSync())
+	if (!gp->lik.isInSync())
 	{
-		gp.lik.makeSync();
-		gp.lik.aK(&Knoise);
+		gp->lik.makeSync();
+		gp->lik.aK(&Knoise);
 	}
 	return &Knoise;
 }
 
-CGPKroneckerCache::CGPKroneckerCache(CGPbase& gp,ACovarianceFunction& covar_r,ACovarianceFunction& covar_c ) : gp(gp), cache_r(gp,covar_r), cache_c(gp,covar_c)
+CGPKroneckerCache::CGPKroneckerCache(CGPbase* gp,ACovarianceFunction* covar_r,ACovarianceFunction* covar_c ) : gp(gp), cache_r(gp,covar_r), cache_c(gp,covar_c)
 {
 }
 
 
-CGPkronecker::CGPkronecker(ACovarianceFunction& covar_r, ACovarianceFunction& covar_c, ALikelihood& lik) : CGPbase(covar_r,lik), covar_r(covar_r), covar_c(covar_c), cache((*this),covar_r,covar_c)
+CGPkronecker::CGPkronecker(ACovarianceFunction& covar_r, ACovarianceFunction& covar_c, ALikelihood& lik) : CGPbase(covar_r,lik), covar_r(covar_r), covar_c(covar_c), cache(this,&covar_r,&covar_c)
 {
 }
 

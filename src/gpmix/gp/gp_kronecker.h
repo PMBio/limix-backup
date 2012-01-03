@@ -55,9 +55,9 @@ class CGPSVDCache : public CGPCholCache
 protected:
 	MatrixXd UK;
 	VectorXd SK;
-	ACovarianceFunction& covar;
+	ACovarianceFunction* covar;
 public:
-	CGPSVDCache(CGPbase& gp, ACovarianceFunction& covar) : CGPCholCache(gp), covar(covar)
+	CGPSVDCache(CGPbase* gp, ACovarianceFunction* covar) : CGPCholCache(gp), covar(covar)
 	{};
 	virtual ~CGPSVDCache()
 	{};
@@ -76,13 +76,13 @@ protected:
 	MatrixXd Si;
 	MatrixXd YSi;
 	MatrixXd Knoise;
-	CGPbase& gp;
+	CGPbase* gp;
 
 public:
 	CGPSVDCache cache_r;
 	CGPSVDCache cache_c;
 
-	CGPKroneckerCache(CGPbase& gp,ACovarianceFunction& covar_r,ACovarianceFunction& covar_c );
+	CGPKroneckerCache(CGPbase* gp,ACovarianceFunction* covar_r,ACovarianceFunction* covar_c );
 	virtual ~CGPKroneckerCache()
 	{};
 	virtual void clearCache();

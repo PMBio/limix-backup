@@ -28,8 +28,8 @@ if __name__ == '__main__':
     D = 20
 
     SP.random.seed(1)
-    S = SP.random.randn(N,K)
-    W = SP.random.randn(D,K)
+    S = SP.random.randn(N,Kr)
+    W = SP.random.randn(D,Kr)
 
     Y = SP.dot(W,S.T).T
     Y += 0.1*SP.random.randn(N,D)
@@ -37,7 +37,6 @@ if __name__ == '__main__':
     X0r= SP.random.randn(N,Kr)
     X0c= SP.random.randn(D,Kc)
 
-    Kc = SP.eye(D)
     covariance_c = linear.LinearCFISO(n_dimensions=Kc)
     covariance_r = linear.LinearCFISO(n_dimensions=Kr)
     
@@ -51,7 +50,7 @@ if __name__ == '__main__':
     #hyperparams['x_r'] = X0
 
     kgp = kronecker_gplvm.KroneckerGPLVM(covar_func_r=covariance_r,covar_func_c=covariance_c,likelihood=likelihood)
-    kgp.setData(x_r=X0,y=Y)
+    kgp.setData(x_r=X0r,x_c=X0c,y=Y)
     gradcheck=True
     [hyperparams_o,opt_lml_o] = opt.opt_hyper(kgp,hyperparams,gradcheck=gradcheck)
     
