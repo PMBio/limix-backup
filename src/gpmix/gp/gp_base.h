@@ -116,9 +116,9 @@ protected:
 	MatrixXd Kinv;
 	MatrixXd KinvY;
 	MatrixXd DKinv_KinvYYKinv;
-	CGPbase& gp;
+	CGPbase* gp;
 public:
-	CGPCholCache(CGPbase& gp) : gp(gp)
+	CGPCholCache(CGPbase* gp) : gp(gp)
 	{};
 	virtual ~CGPCholCache()
 	{};
