@@ -16,6 +16,10 @@ using namespace std;
 
 namespace gpmix{
 
+#ifndef PI
+#define PI 3.14159265358979323846
+#endif
+
 
 //note: for swig it is important that everyhing is typed def and not merely "defined"
 typedef double float64_t;
@@ -44,6 +48,11 @@ inline mfloat_t sqrt (mfloat_t x)
 inline mfloat_t log (mfloat_t x)
 {
 		return (mfloat_t)std::log((long double) x );
+}
+
+inline mfloat_t inverse (mfloat_t x)
+{
+	return 1.0/x;
 }
 
 //we exclude these int he wrapping section of SWIG

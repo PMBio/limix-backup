@@ -8,9 +8,6 @@
 #include "gp_base.h"
 #include "gpmix/utils/matrix_helper.h"
 
-#ifndef PI
-#define PI 3.14159265358979323846
-#endif
 
 namespace gpmix {
 
@@ -112,10 +109,9 @@ bool CGPHyperParams::exists(string name) const
 
 void CGPCholCache::clearCache()
 {
-	gp.covar.makeSync();
-	gp.lik.makeSync();
-	gp.dataTerm.makeSync();
-
+	gp->dataTerm.makeSync();
+	covar->makeSync();
+	gp->lik.makeSync();
 	//set null:
 	this->K=MatrixXd();
 	this->Kinv=MatrixXd();
@@ -127,7 +123,9 @@ void CGPCholCache::clearCache()
 
 bool CGPCholCache::isInSync() const
 {
-	return (gp.covar.isInSync() && gp.lik.isInSync() && gp.dataTerm.isInSync());
+
+	return (covar->isInSync() && gp->lik.isInSync() && gp->dataTerm.isInSync());
+
 }
 
 MatrixXd* CGPCholCache::getKinv()
@@ -158,7 +156,7 @@ MatrixXd* CGPCholCache::getYeffective()
 
 	if (isnull(Yeffective))
 	{
-		Yeffective = gp.dataTerm.evaluate();
+		Yeffective = gp->dataTerm.evaluate();
 	}
 	return &Yeffective;
 }
@@ -185,7 +183,7 @@ MatrixXd* CGPCholCache::getDKinv_KinvYYKinv()
 	{
 		MatrixXd* KiY  = getKinvY();
 		MatrixXd* Kinv = getKinv();
-		DKinv_KinvYYKinv = ((mfloat_t)(gp.getNumberDimension())) * (*Kinv) - (*KiY) * (*KiY).transpose();
+		DKinv_KinvYYKinv = ((mfloat_t)(gp->getNumberDimension())) * (*Kinv) - (*KiY) * (*KiY).transpose();
 	}
 	return &DKinv_KinvYYKinv;
 }
@@ -208,8 +206,19 @@ MatrixXd* CGPCholCache::getK()
 		this->clearCache();
 	if (isnull(K))
 	{
-		gp.covar.aK(&K);
-		K += gp.lik.K();
+		covar->aK(&K);
+		K += gp->lik.K();
+	}
+	return &K;
+}
+
+MatrixXd* CGPCholCache::getK0()
+{
+	if (!isInSync())
+		this->clearCache();
+	if (isnull(K))
+	{
+		covar->aK(&K);
 	}
 	return &K;
 }
@@ -218,7 +227,7 @@ MatrixXd* CGPCholCache::getK()
 
 /* CGPbase */
 
-CGPbase::CGPbase(ADataTerm& dataTerm, ACovarianceFunction& covar, ALikelihood& lik) : cache(*this), dataTerm(dataTerm), covar(covar), lik(lik) {
+CGPbase::CGPbase(ADataTerm& dataTerm, ACovarianceFunction& covar, ALikelihood& lik) : cache(this,&covar),dataTerm(dataTerm),covar(covar), lik(lik) {
 	this->dataTerm = dataTerm;
 	this->covar = covar;
 	this->lik = lik;
@@ -295,7 +304,13 @@ void CGPbase::agetY(MatrixXd* out)
 #if 0
 void CGPbase::setY(const MatrixXd& Y)
 {
+<<<<<<< HEAD
 	this->dataTerm.setY(Y);
+=======
+	this->Y = Y;
+	//update lik
+	this->lik.setX(MatrixXd::Zero(Y.rows(),0));
+>>>>>>> f86d833cfc51e8c63db3e0f8e61f40d78a3cbb61
 }
 #endif
 void CGPbase::agetX(CovarInput* out) const
@@ -306,7 +321,6 @@ void CGPbase::setX(const CovarInput& X) throw (CGPMixException)
 {
 	//use covariance to set everything
 	this->covar.setX(X);
-	this->lik.setX(X);
 	if (isnull(gplvmDimensions))
 			this->gplvmDimensions = VectorXi::LinSpaced(X.cols(),0,X.cols()-1);
 }

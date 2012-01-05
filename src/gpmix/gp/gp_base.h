@@ -112,14 +112,16 @@ class CGPCholCache
 {
 protected:
 	MatrixXd K;
+	MatrixXd K0;
 	MatrixXdChol cholK;
 	MatrixXd Kinv;
 	MatrixXd KinvY;
 	MatrixXd DKinv_KinvYYKinv;
 	MatrixXd Yeffective;
-	CGPbase& gp;
+	CGPbase* gp;
+	ACovarianceFunction* covar;
 public:
-	CGPCholCache(CGPbase& gp) : gp(gp)
+	CGPCholCache(CGPbase* gp,ACovarianceFunction* covar) : gp(gp), covar(covar)
 	{};
 	virtual ~CGPCholCache()
 	{};
@@ -127,12 +129,22 @@ public:
 	virtual void clearCache();
 	virtual bool isInSync() const;
 
+	MatrixXd* getK0();
 	MatrixXd* getK();
 	MatrixXd* getKinv();
 	MatrixXd* getYeffective();
 	MatrixXd* getKinvY();
 	MatrixXdChol* getCholK();
 	MatrixXd* getDKinv_KinvYYKinv();
+
+	void agetK0(MatrixXd* out)
+	{
+		(*out) =  *getK0();
+	}
+	void agetK(MatrixXd* out)
+	{
+		(*out) =  *getK();
+	}
 };
 
 
@@ -150,9 +162,10 @@ public:
 %rename(LMLgrad_lik) CGPbase::aLMLgrad_lik;
 #endif
 
-
+class CGPKroneckerCache;
 class CGPbase {
 	friend class CGPCholCache;
+	friend class CGPKroneckerCache;
 protected:
 
 	//cached GP-parameters:
