@@ -71,7 +71,7 @@ protected:
 	VectorXi gplvmDimensions_c;  //gplvm dimensions
 	virtual void updateParams() throw (CGPMixException);
 public:
-	CGPkronecker(ACovarianceFunction& covar_r, ACovarianceFunction& covar_c, ALikelihood& lik);
+	CGPkronecker(ADataTerm& mean, ACovarianceFunction& covar_r, ACovarianceFunction& covar_c, ALikelihood& lik);
 	virtual ~CGPkronecker();
 };
 

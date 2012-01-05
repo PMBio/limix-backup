@@ -24,7 +24,6 @@ CGPHyperParams CGPopt::getFilter() const
 
 void CGPopt::opt()
 {
-
 	//0. set evaluation counter to 0:
 	numEvaluations = 0;
 	//1. get starging point
@@ -62,7 +61,6 @@ void CGPopt::opt()
 	    // dump gradients:
 	    std::cout << "covar grad:" << gp.LMLgrad()["covar"] << "\n";
 	    std::cout << "lml:" << gp.LML() << "\n";
-
 	}
 }
 

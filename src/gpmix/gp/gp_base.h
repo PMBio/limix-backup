@@ -10,6 +10,7 @@
 
 #include <gpmix/covar/covariance.h>
 #include <gpmix/likelihood/likelihood.h>
+#include <gpmix/mean/ADataTerm.h>
 #include <string>
 #include <map>
 #include <vector>
@@ -115,6 +116,7 @@ protected:
 	MatrixXd Kinv;
 	MatrixXd KinvY;
 	MatrixXd DKinv_KinvYYKinv;
+	MatrixXd Yeffective;
 	CGPbase& gp;
 public:
 	CGPCholCache(CGPbase& gp) : gp(gp)
@@ -127,6 +129,7 @@ public:
 
 	MatrixXd* getK();
 	MatrixXd* getKinv();
+	MatrixXd* getYeffective();
 	MatrixXd* getKinvY();
 	MatrixXdChol* getCholK();
 	MatrixXd* getDKinv_KinvYYKinv();
@@ -152,22 +155,21 @@ class CGPbase {
 	friend class CGPCholCache;
 protected:
 
-	MatrixXd Y;    //training targets
 	//cached GP-parameters:
 	CGPCholCache cache;
 	CGPHyperParams params;
 
-	ACovarianceFunction& covar;//Covariance function
-	ALikelihood& lik;          //likelihood model
-	VectorXi gplvmDimensions;  //gplvm dimensions
+	ADataTerm& dataTerm;       	//Mean function
+	ACovarianceFunction& covar;	//Covariance function
+	ALikelihood& lik;          	//likelihood model
 
+	VectorXi gplvmDimensions;  //gplvm dimensions
 
 	virtual void updateParams() throw (CGPMixException);
 	void updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions,const MatrixXd& X) throw (CGPMixException);
 
-
 public:
-	CGPbase(ACovarianceFunction& covar, ALikelihood& lik);
+	CGPbase(ADataTerm& data, ACovarianceFunction& covar, ALikelihood& lik);
 	virtual ~CGPbase();
 
 	//TODO: add interface that is suitable for optimizer
@@ -182,14 +184,16 @@ public:
 	virtual void agetParamArray(VectorXd* out) const;
 
 
-	void agetY(MatrixXd* out) const;
+	void agetY(MatrixXd* out);
+#if 0
 	void setY(const MatrixXd& Y);
+#endif
 
 	void agetX(CovarInput* out) const;
 	void setX(const CovarInput& X) throw (CGPMixException);
 
-	inline muint_t getNumberSamples(){return this->Y.rows();} //get the number of training data samples
-	inline muint_t getNumberDimension(){return this->Y.cols();} //get the dimension of the target data
+	inline muint_t getNumberSamples(){return this->cache.getYeffective()->rows();} //get the number of training data samples
+	inline muint_t getNumberDimension(){return this->cache.getYeffective()->cols();} //get the dimension of the target data
 
 	ACovarianceFunction* getCovar(){return &covar;}
 	ALikelihood* getLik(){return &lik;}
@@ -201,7 +205,6 @@ public:
 	//same for concatenated list of parameters
 	virtual mfloat_t LML(const VectorXd& params) throw (CGPMixException);
 
-
 	//overall gradient:
 	virtual CGPHyperParams LMLgrad() throw (CGPMixException);
 	virtual CGPHyperParams LMLgrad(const CGPHyperParams& params) throw (CGPMixException);
@@ -211,12 +214,11 @@ public:
 	virtual void aLMLgrad(VectorXd* out,const CGPHyperParams& params) throw (CGPMixException);
 	virtual void aLMLgrad(VectorXd* out,const VectorXd& paramArray) throw (CGPMixException);
 
-
-
 	//gradient components:
 	virtual void aLMLgrad_covar(VectorXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_lik(VectorXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_X(MatrixXd* out) throw (CGPMixException);
+	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);
 	//interface for optimization:
 
 	//predictions:
@@ -227,13 +229,14 @@ public:
 	inline VectorXd LMLgrad_covar() throw (CGPMixException);
 	inline VectorXd LMLgrad_lik() throw (CGPMixException);
 	inline MatrixXd LMLgrad_X() throw (CGPMixException);
-	inline MatrixXd getY() const;
+	inline MatrixXd LMLgrad_dataTerm() throw (CGPMixException);
+	inline MatrixXd getY();
 	inline MatrixXd getX() const;
 	inline VectorXd getParamArray() const;
 };
 
 
-inline MatrixXd CGPbase::getY() const
+inline MatrixXd CGPbase::getY()
 {
 	MatrixXd rv;
 	this->agetY(&rv);
@@ -269,6 +272,12 @@ inline MatrixXd CGPbase::LMLgrad_X() throw (CGPMixException)
 	return rv;
 }
 
+inline MatrixXd CGPbase::LMLgrad_dataTerm() throw (CGPMixException)
+{
+	MatrixXd rv;
+	aLMLgrad_dataTerm(&rv);
+	return rv;
+}
 
 inline VectorXd CGPbase::getParamArray() const
 {

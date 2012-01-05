@@ -65,7 +65,7 @@ bool CGPKroneckerCache::isInSync() const
 }
 
 
-CGPkronecker::CGPkronecker(ACovarianceFunction& covar_r, ACovarianceFunction& covar_c, ALikelihood& lik) : CGPbase(covar_r,lik), covar_r(covar_r), covar_c(covar_c), cache_r((*this),covar_r), cache_c((*this),covar_c)
+CGPkronecker::CGPkronecker(ADataTerm &dataTerm, ACovarianceFunction& covar_r, ACovarianceFunction& covar_c, ALikelihood& lik) : CGPbase(dataTerm,covar_r,lik), covar_r(covar_r), covar_c(covar_c), cache_r((*this),covar_r), cache_c((*this),covar_c)
 {
 
 

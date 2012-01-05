@@ -38,7 +38,7 @@ void CGPHyperParams::agetParamArray(VectorXd* out) const
 }
 
 void CGPHyperParams::setParamArray(const VectorXd& param) throw (CGPMixException)
-		{
+{
 	//1. check that param has correct shape
 	if ((muint_t)param.rows()!=getNumberParams())
 	{
@@ -114,6 +114,7 @@ void CGPCholCache::clearCache()
 {
 	gp.covar.makeSync();
 	gp.lik.makeSync();
+	gp.dataTerm.makeSync();
 
 	//set null:
 	this->K=MatrixXd();
@@ -126,7 +127,7 @@ void CGPCholCache::clearCache()
 
 bool CGPCholCache::isInSync() const
 {
-	return (gp.covar.isInSync() && gp.lik.isInSync());
+	return (gp.covar.isInSync() && gp.lik.isInSync() && gp.dataTerm.isInSync());
 }
 
 MatrixXd* CGPCholCache::getKinv()
@@ -149,6 +150,19 @@ MatrixXd* CGPCholCache::getKinv()
 	return (&Kinv);
 }
 
+MatrixXd* CGPCholCache::getYeffective()
+{
+	//Invalidate Cache?
+	if (!isInSync())
+		this->clearCache();
+
+	if (isnull(Yeffective))
+	{
+		Yeffective = gp.dataTerm.evaluate();
+	}
+	return &Yeffective;
+}
+
 MatrixXd* CGPCholCache::getKinvY()
 {
 	//Invalidate Cache?
@@ -158,7 +172,7 @@ MatrixXd* CGPCholCache::getKinvY()
 	if (isnull(KinvY))
 	{
 		MatrixXdChol* chol = this->getCholK();
-		KinvY = (*chol).solve(gp.Y);
+		KinvY = (*chol).solve(*this->getYeffective());
 	}
 	return &KinvY;
 }
@@ -204,7 +218,8 @@ MatrixXd* CGPCholCache::getK()
 
 /* CGPbase */
 
-CGPbase::CGPbase(ACovarianceFunction& covar, ALikelihood& lik) : cache(*this),covar(covar), lik(lik) {
+CGPbase::CGPbase(ADataTerm& dataTerm, ACovarianceFunction& covar, ALikelihood& lik) : cache(*this), dataTerm(dataTerm), covar(covar), lik(lik) {
+	this->dataTerm = dataTerm;
 	this->covar = covar;
 	this->lik = lik;
 	//this->clearCache();
@@ -216,7 +231,7 @@ CGPbase::~CGPbase() {
 
 void CGPbase::set_data(MatrixXd& Y)
 {
-	this->Y = Y;
+	this->dataTerm.setY(Y);
 }
 
 void CGPbase::updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions,const MatrixXd& X) throw (CGPMixException)
@@ -273,16 +288,16 @@ void CGPbase::agetParamArray(VectorXd* out) const
 
 
 
-void CGPbase::agetY(MatrixXd* out) const
+void CGPbase::agetY(MatrixXd* out)
 {
-	(*out) = Y;
+	(*out) = *this->cache.getYeffective();
 }
-
+#if 0
 void CGPbase::setY(const MatrixXd& Y)
 {
-	this->Y = Y;
+	this->dataTerm.setY(Y);
 }
-
+#endif
 void CGPbase::agetX(CovarInput* out) const
 {
 	this->covar.agetX(out);
@@ -316,48 +331,58 @@ mfloat_t CGPbase::LML() throw (CGPMixException)
 {
 	//update the covariance parameters
 	MatrixXdChol* chol = cache.getCholK();
-	//logdet:
-	mfloat_t lml_det  = 0.5*Y.cols()*logdet((*chol));
+
+	//get effective Y:
+	MatrixXd* Yeff = this->cache.getYeffective();
+	//cout << Yeff<<endl;
+	//log-det:
+	mfloat_t lml_det  = 0.5* (*Yeff).cols()*logdet((*chol));
+
 	//2. quadratic term
 	mfloat_t lml_quad = 0.0;
 	MatrixXd* KinvY = cache.getKinvY();
 	//quadratic form
-	lml_quad = 0.5*((*KinvY).array() * Y.array()).sum();
+	lml_quad = 0.5*((*KinvY).array() * (*Yeff).array()).sum();
+
+	//sum of the log-Jacobian term
+	mfloat_t logJac = this->dataTerm.sumJacobianGradParams().sum();
+
 	//constants
-	mfloat_t lml_const = 0.5*Y.cols() * Y.rows() * gpmix::log((2.0 * PI));
-	return lml_quad + lml_det + lml_const;
+	mfloat_t lml_const = 0.5 * (*Yeff).cols() * (*Yeff).rows() * gpmix::log((2.0 * PI));
+	return lml_quad + lml_det + lml_const - logJac;
 };
 
 
 /* Gradient interface functions:*/
 void CGPbase::aLMLgrad(VectorXd* out,const CGPHyperParams& params) throw (CGPMixException)
-		{
+{
 	setParams(params);
 	aLMLgrad(out);
-		}
+}
 
 void CGPbase::aLMLgrad(VectorXd* out,const VectorXd& paramArray) throw (CGPMixException)
-		{
+{
 	setParamArray(paramArray);
 	aLMLgrad(out);
-		}
+}
 
 void CGPbase::aLMLgrad(VectorXd* out) throw (CGPMixException)
-		{
+{
 	CGPHyperParams rv = LMLgrad();
 	rv.agetParamArray(out);
-		}
+}
 
 CGPHyperParams CGPbase::LMLgrad(const CGPHyperParams& params) throw (CGPMixException)
-		{
+{
 	setParams(params);
 	return LMLgrad();
-		}
+}
+
 CGPHyperParams CGPbase::LMLgrad(const VectorXd& paramArray) throw (CGPMixException)
-		{
+{
 	setParamArray(paramArray);
 	return LMLgrad();
-		}
+}
 
 /* Main routine: gradient calculation*/
 CGPHyperParams CGPbase::LMLgrad() throw (CGPMixException)
@@ -377,17 +402,23 @@ CGPHyperParams CGPbase::LMLgrad() throw (CGPMixException)
 		rv.set("lik",grad_lik);
 	}
 	if (params.exists("X"))
-		{
-			MatrixXd grad_X;
-			aLMLgrad_X(&grad_X);
-			rv.set("X",grad_X);
-		}
+	{
+		MatrixXd grad_X;
+		aLMLgrad_X(&grad_X);
+		rv.set("X",grad_X);
+	}
+	if (params.exists("dataTerm"))
+	{
+		MatrixXd grad_dataTerm;
+		aLMLgrad_dataTerm(&grad_dataTerm);
+		rv.set("dataTerm",grad_dataTerm);
+	}
 	return rv;
 }
 
 
 void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
-				{
+{
 	//vector with results
 	VectorXd grad_covar(covar.getNumberParams());
 	//W:
@@ -399,11 +430,11 @@ void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
 		grad_covar(param) = 0.5 * (Kd.array() * (*W).array()).sum();
 	}
 	(*out) = grad_covar;
-				}
+}
 
 
 void CGPbase::aLMLgrad_lik(VectorXd* out) throw (CGPMixException)
-				{
+{
 	LikParams grad_lik(lik.getNumberParams());
 	MatrixXd* W = cache.getDKinv_KinvYYKinv();
 	MatrixXd Kd;
@@ -413,7 +444,7 @@ void CGPbase::aLMLgrad_lik(VectorXd* out) throw (CGPMixException)
 		grad_lik(row) = 0.5*(Kd.array() * (*W).array()).sum();
 	}
 	(*out) = grad_lik;
-				}
+}
 
 void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
 {
@@ -440,17 +471,23 @@ void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
 	}
 }
 
+void CGPbase::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
+{
+	//0. set output dimensions
+	(*out).resize(this->dataTerm.getParams().rows(),this->dataTerm.getParams().cols());
+	(*out)=this->dataTerm.getParams();
+}
 
 void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException)
-				{
+{
 	/*
 	MatrixXd KstarCross = covar.
 	return KstarCross * this->getKinvY();
 	 */
-				}
+}
 
 void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) throw (CGPMixException)
-				{
+{
 	/*
 	MatrixXd KstarDiag = this->covar.Kdiag(this->params.get("covar"), Xstar);
 	KstarDiag+=this->lik.Kdiag(this->params.get("lik"), Xstar);
@@ -460,6 +497,6 @@ void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) throw (CGPMixExce
 	MatrixXd S2 = KstarDiag - vv.transpose();
 	return S2;
 	 */
-				}
+}
 
 } /* namespace gpmix */
