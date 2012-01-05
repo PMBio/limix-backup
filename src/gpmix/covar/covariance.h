@@ -85,8 +85,7 @@ public:
 	virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException);
 	//get the X
 	virtual void agetX(CovarInput* Xout) const throw (CGPMixException);
-	inline muint_t getDimX() const {return (muint_t)(this->X.cols());
-	}
+	inline muint_t getDimX() const {return (muint_t)(this->X.cols());}
 	virtual muint_t getNumberParams() const;
 	virtual muint_t getNumberDimensions() const;
 	virtual void setNumberDimensions(muint_t numberDimensions);

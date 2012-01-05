@@ -6,11 +6,10 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
-#include "gpmix/gp/gp_lvm.h"
 #include "gpmix/gp/gp_opt.h"
 #include "gpmix/types.h"
 #include "gpmix/likelihood/likelihood.h"
@@ -20,7 +19,8 @@
 #include "gpmix/covar/se.h"
 #include "gpmix/covar/fixed.h"
 #include "gpmix/covar/combinators.h"
-
+#include "gpmix/mean/CLinearMean.h"
+#include "gpmix/mean/CData.h"
 
 using namespace std;
 using namespace gpmix;
@@ -42,6 +42,18 @@ int main() {
 		MatrixXd w = randn((muint_t)dim,(muint_t)1);
 		MatrixXd y = X*w + 0.1*randn((muint_t)100,(muint_t)1);
 
+#if 0
+		//dummy mean fucntion
+		CData data = CData(y);
+#else
+		//Linear Mean Function
+		MatrixXd fixedEffects = MatrixXd::Ones((muint_t)100,(muint_t)dim);
+		y = fixedEffects*w + y;
+		CLinearMean data = CLinearMean(y,w,fixedEffects);
+		data.setParams(w);
+		data.setfixedEffects(fixedEffects);
+
+#endif
 		//Ard covariance
 		CCovLinearARD covar(X.cols());
 
@@ -49,8 +61,8 @@ int main() {
 		CLikNormalIso lik;
 
 		//GP object
-		CGPlvm gp(covar,lik);
-		gp.setY(y);
+		CGPbase gp(data, covar, lik);
+		//gp.setY(y);
 		gp.setX(X);
 		//hyperparams
 		CovarInput covar_params = randn(covar.getNumberParams(),(muint_t)1);
@@ -64,13 +76,13 @@ int main() {
 		mfloat_t lml = gp.LML(params);
 		CGPHyperParams grad = gp.LMLgrad();
 
-		std::cout << lml << "\n";
-		std::cout << grad["covar"] << "\n";
-		std::cout << grad["lik"] << "\n";
+		std::cout <<"lml : "<< lml << "\n";
+		std::cout <<"grad[covar] :"<< grad["covar"] << "\n";
+		std::cout <<"grad[lik] :"<< grad["lik"] << "\n";
 
 		CGPopt opt(gp);
 		std::cout << "gradcheck: "<< opt.gradCheck();
-#if 0
+#if 1
 		//optimize:
 		opt.opt();
 #endif
