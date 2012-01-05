@@ -16,7 +16,7 @@ namespace gpmix {
 //math utils
 inline void akronravel(MatrixXd* out, const MatrixXd& A, const MatrixXd& B, const MatrixXd& X)
 {
-	(*out) = A*B*X.transpose();
+	(*out) = A*X*B.transpose();
 }
 
 inline MatrixXd kronravel(const MatrixXd& A, const MatrixXd& B, const MatrixXd& X)
@@ -32,7 +32,7 @@ inline void akrondiag(MatrixXd* out, const VectorXd& v1, const VectorXd& v2)
 	(*out).rowwise()  = v2;
 	//loop and multiply v1
 	for (muint_t ic=0;ic<(muint_t)(*out).cols();ic++)
-		(*out).col(ic) *= v1;
+		(*out).col(ic).array() *= v1.array();
 }
 
 inline MatrixXd krondiag(const VectorXd& v1, const VectorXd& v2)
@@ -57,7 +57,7 @@ protected:
 	VectorXd SK;
 	ACovarianceFunction* covar;
 public:
-	CGPSVDCache(CGPbase* gp, ACovarianceFunction* covar) : CGPCholCache(gp), covar(covar)
+	CGPSVDCache(CGPbase* gp, ACovarianceFunction* covar) : CGPCholCache(gp,covar), covar(covar)
 	{};
 	virtual ~CGPSVDCache()
 	{};
@@ -66,6 +66,16 @@ public:
 
 	MatrixXd* getUK();
 	VectorXd* getSK();
+    ACovarianceFunction *getCovar() const;
+    void agetUK(MatrixXd* out)
+    {
+    	(*out) = *getUK();
+    }
+    void agetSK(VectorXd* out)
+    {
+    	(*out) = *getSK();
+    }
+
 };
 
 class CGPKroneckerCache
@@ -75,7 +85,7 @@ protected:
 	MatrixXd Yrot;
 	MatrixXd Si;
 	MatrixXd YSi;
-	MatrixXd Knoise;
+	mfloat_t Knoise;
 	CGPbase* gp;
 
 public:
@@ -90,7 +100,20 @@ public:
 	MatrixXd* getYrot();
 	MatrixXd* getSi();
 	MatrixXd* getYSi();
-	MatrixXd* getKnoise();
+	mfloat_t getKnoise();
+
+	void agetSi(MatrixXd* out)
+	{
+		(*out) = *getSi();
+	}
+	void agetYSi(MatrixXd* out)
+	{
+		(*out) = *getYSi();
+	}
+	void agetYrot(MatrixXd* out)
+	{
+		(*out) = *getYrot();
+	}
 };
 
 class CGPkronecker: public CGPbase {
@@ -139,6 +162,13 @@ public:
 	virtual void aLMLgrad_lik(VectorXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_X_r(MatrixXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_X_c(MatrixXd* out) throw (CGPMixException);
+    CGPKroneckerCache getCache() const;
+    ACovarianceFunction & getCovarC() const;
+    ACovarianceFunction & getCovarR() const;
+    VectorXi getGplvmDimensionsC() const;
+    VectorXi getGplvmDimensionsR() const;
+    void setGplvmDimensionsC(VectorXi gplvmDimensionsC);
+    void setGplvmDimensionsR(VectorXi gplvmDimensionsR);
 
 
 
