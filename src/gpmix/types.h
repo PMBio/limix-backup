@@ -50,6 +50,11 @@ inline mfloat_t log (mfloat_t x)
 		return (mfloat_t)std::log((long double) x );
 }
 
+inline mfloat_t inverse (mfloat_t x)
+{
+	return 1.0/x;
+}
+
 //we exclude these int he wrapping section of SWIG
 //this is somewhat ugly but makes a lot easier to wrap the Eigen arays with swig
 #if (!defined(SWIG) || defined(SWIG_FILE_WITH_INIT))

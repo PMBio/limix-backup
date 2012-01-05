@@ -72,10 +72,13 @@ int main() {
 		params["covar_r"] = covar_params_r;
 		params["covar_c"] = covar_params_c;
 		params["lik"] = lik_params;
-#if 0
+#if 1
 		params["X_r"] = Xr;
+#endif
+#if 1
 		params["X_c"] = Xc;
 #endif
+		gp.setParams(params);
 
 		//get lml and grad
 		mfloat_t lml = gp.LML(params);

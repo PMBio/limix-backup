@@ -117,8 +117,9 @@ protected:
 	MatrixXd KinvY;
 	MatrixXd DKinv_KinvYYKinv;
 	CGPbase* gp;
+	ACovarianceFunction* covar;
 public:
-	CGPCholCache(CGPbase* gp) : gp(gp)
+	CGPCholCache(CGPbase* gp,ACovarianceFunction* covar) : gp(gp), covar(covar)
 	{};
 	virtual ~CGPCholCache()
 	{};
@@ -132,6 +133,15 @@ public:
 	MatrixXd* getKinvY();
 	MatrixXdChol* getCholK();
 	MatrixXd* getDKinv_KinvYYKinv();
+
+	void agetK0(MatrixXd* out)
+	{
+		(*out) =  *getK0();
+	}
+	void agetK(MatrixXd* out)
+	{
+		(*out) =  *getK();
+	}
 };
 
 
