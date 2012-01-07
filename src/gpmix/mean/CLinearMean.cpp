@@ -24,4 +24,14 @@ CLinearMean::~CLinearMean() {
 	// TODO Auto-generated destructor stub
 }
 
+void CLinearMean::aEvaluate(MatrixXd* outY)
+{
+	*outY = (this->Y - (this->fixedEffects * this->weights));
+}
+
+void CLinearMean::aGradParams(MatrixXd* outGradParams)
+{
+	*outGradParams = ( -fixedEffects );
+}
+
 } /* namespace gpmix */

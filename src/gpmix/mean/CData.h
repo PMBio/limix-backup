@@ -17,11 +17,6 @@ public:
 	CData();
 	CData(MatrixXd& Y);
 	~CData();
-	inline MatrixXd evaluate(){return Y;};
-	inline MatrixXd gradY(){return MatrixXd::Ones(Y.rows(), Y.cols());};
-	inline MatrixXd gradParams(){ return MatrixXd(); };
-	inline MatrixXd sumJacobianGradParams() {return MatrixXd();};
-	inline MatrixXd sumLogJacobian(){return MatrixXd();};
 };
 
 } /* namespace gpmix */
