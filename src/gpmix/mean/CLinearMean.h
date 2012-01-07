@@ -19,9 +19,12 @@ public:
 	CLinearMean();
 	CLinearMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects);
 	virtual ~CLinearMean();
-	inline MatrixXd evaluate(){ return (this->getY() - (this->fixedEffects * this->weights)); };
-	inline MatrixXd gradParams(){ return ( -fixedEffects ); };
-	inline MatrixXd gradY(){return MatrixXd::Ones(Y.rows(),Y.cols());};
+
+	void aEvaluate(MatrixXd* outY);
+	void aGradParams(MatrixXd* outGradParams);
+
+	inline MatrixXd evaluate(){ MatrixXd Y = MatrixXd(); aEvaluate(&Y); return Y; };
+	inline MatrixXd gradParams(){ MatrixXd gradParams = MatrixXd(); aEvaluate(&gradParams); return gradParams;  };
 };
 
 } /* namespace gpmix */
