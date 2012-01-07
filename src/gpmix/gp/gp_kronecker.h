@@ -64,16 +64,16 @@ public:
 	virtual void clearCache();
 	virtual bool isInSync() const;
 
-	MatrixXd* getUK();
-	VectorXd* getSK();
-    ACovarianceFunction *getCovar() const;
+	MatrixXd& getUK();
+	VectorXd& getSK();
+    ACovarianceFunction& getCovar();
     void agetUK(MatrixXd* out)
     {
-    	(*out) = *getUK();
+    	(*out) = getUK();
     }
     void agetSK(VectorXd* out)
     {
-    	(*out) = *getSK();
+    	(*out) = getSK();
     }
 
 };
@@ -97,22 +97,22 @@ public:
 	{};
 	virtual void clearCache();
 	virtual bool isInSync() const;
-	MatrixXd* getYrot();
-	MatrixXd* getSi();
-	MatrixXd* getYSi();
+	MatrixXd& getYrot();
+	MatrixXd& getSi();
+	MatrixXd& getYSi();
 	mfloat_t getKnoise();
 
 	void agetSi(MatrixXd* out)
 	{
-		(*out) = *getSi();
+		(*out) = getSi();
 	}
 	void agetYSi(MatrixXd* out)
 	{
-		(*out) = *getYSi();
+		(*out) = getYSi();
 	}
 	void agetYrot(MatrixXd* out)
 	{
-		(*out) = *getYrot();
+		(*out) = getYrot();
 	}
 };
 
@@ -162,7 +162,7 @@ public:
 	virtual void aLMLgrad_lik(VectorXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_X_r(MatrixXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_X_c(MatrixXd* out) throw (CGPMixException);
-    CGPKroneckerCache getCache() const;
+    CGPKroneckerCache* getCache();
     ACovarianceFunction & getCovarC() const;
     ACovarianceFunction & getCovarR() const;
     VectorXi getGplvmDimensionsC() const;
