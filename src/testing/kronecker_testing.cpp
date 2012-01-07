@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -59,11 +59,12 @@ int main() {
 		CLikNormalIso lik;
 
 		//Data term
-		CData data = CData(y);
+		CData data = CData();
 		//GP object
 		CGPkronecker gp(data, covar_r,covar_c,lik);
 		gp.setX_r(Xr);
 		gp.setX_c(Xc);
+		gp.setY(y);
 
 		//hyperparams
 		CovarInput covar_params_r = randn(covar_r.getNumberParams(),(muint_t)1);
@@ -73,16 +74,21 @@ int main() {
 		params["covar_r"] = covar_params_r;
 		params["covar_c"] = covar_params_c;
 		params["lik"] = lik_params;
-#if 1
+#if 0
 		params["X_r"] = Xr;
 #endif
-#if 1
+#if 0
 		params["X_c"] = Xc;
 #endif
 		gp.setParams(params);
+		double lml = gp.LML();
+		covar_params_r(0,0)= 4;
+		params["covar_r"] = covar_params_r;
+		gp.setParams(params);
+		double lml2 = gp.LML();
 
-		//get lml and grad
-		mfloat_t lml = gp.LML(params);
+		std::cout << (lml-lml2);
+
 		CGPHyperParams grad = gp.LMLgrad();
 
 		std::cout << lml << "\n";
