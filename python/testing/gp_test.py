@@ -17,11 +17,12 @@ import time
 
 SP.random.seed(1)
 
-n_dimensions=5
-n_samples = 100
+pdb.set_trace()
+n_dimensions=1
+n_samples = 200
 X = SP.randn(n_samples,n_dimensions)
 y = SP.dot(X,SP.randn(n_dimensions,1))
-y += 0.1*SP.randn(y.shape[0],y.shape[1])
+y += 0.2*SP.randn(y.shape[0],y.shape[1])
 
 covar_params = SP.random.randn(n_dimensions+1)
 lik_params = SP.random.randn(1)
@@ -65,6 +66,18 @@ dlml = gp.LMLgrad(hyperparams)
 #optimization
 gpopt = gpmix.CGPopt(gp)
 cc=gpopt.gradCheck()
+
+#build constraints
+constrainU = gpmix.CGPHyperParams()
+constrainL = gpmix.CGPHyperParams()
+constrainU['covar'] = +10*SP.ones_like(covar_params);
+constrainL['covar'] = -10*SP.ones_like(covar_params);
+constrainU['lik'] = +5*SP.ones_like(lik_params);
+constrainL['lik'] = -5*SP.ones_like(lik_params);
+gpopt.setOptBoundLower(constrainL);
+gpopt.setOptBoundUpper(constrainU);
+
+
 pdb.set_trace()
 gpopt.opt()
 opt_params = gp.getParamArray()
