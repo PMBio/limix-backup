@@ -198,9 +198,7 @@ public:
 
 
 	void agetY(MatrixXd* out);
-#if 0
 	void setY(const MatrixXd& Y);
-#endif
 
 	void agetX(CovarInput* out) const;
 	void setX(const CovarInput& X) throw (CGPMixException);

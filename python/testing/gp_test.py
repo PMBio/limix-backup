@@ -49,12 +49,13 @@ t2 = time.time()
 #GPMIX:
 covar  = gpmix.CCovSqexpARD(n_dimensions)
 ll  = gpmix.CLikNormalIso()
+data = gpmix.CData()
 #create hyperparm     
 hyperparams = gpmix.CGPHyperParams()
 hyperparams['covar'] = covar_params
 hyperparams['lik'] = lik_params
 #cretae GP
-gp=gpmix.CGPbase(covar,ll)
+gp=gpmix.CGPbase(data,covar,ll)
 #set data
 gp.setY(y)
 gp.setX(X)

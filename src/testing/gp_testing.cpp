@@ -42,9 +42,9 @@ int main() {
 		MatrixXd w = randn((muint_t)dim,(muint_t)1);
 		MatrixXd y = X*w + 0.1*randn((muint_t)100,(muint_t)1);
 
-#if 0
+#if 1
 		//dummy mean fucntion
-		CData data = CData(y);
+		CData data = CData();
 #else
 		//Linear Mean Function
 		MatrixXd fixedEffects = MatrixXd::Ones((muint_t)100,(muint_t)dim);
@@ -62,7 +62,7 @@ int main() {
 
 		//GP object
 		CGPbase gp(data, covar, lik);
-		//gp.setY(y);
+		gp.setY(y);
 		gp.setX(X);
 		//hyperparams
 		CovarInput covar_params = randn(covar.getNumberParams(),(muint_t)1);
@@ -81,7 +81,7 @@ int main() {
 		std::cout <<"grad[lik] :"<< grad["lik"] << "\n";
 
 		CGPopt opt(gp);
-		std::cout << "gradcheck: "<< opt.gradCheck();
+		std::cout << "gradcheck: "<< opt.gradCheck() << "\n";
 #if 1
 		//optimize:
 		opt.opt();

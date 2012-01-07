@@ -227,12 +227,14 @@ MatrixXd* CGPCholCache::getK0()
 
 /* CGPbase */
 
+
 CGPbase::CGPbase(ADataTerm& dataTerm, ACovarianceFunction& covar, ALikelihood& lik) : cache(this,&covar),dataTerm(dataTerm),covar(covar), lik(lik) {
 	this->dataTerm = dataTerm;
 	this->covar = covar;
 	this->lik = lik;
 	//this->clearCache();
 }
+
 
 CGPbase::~CGPbase() {
 	// TODO Auto-generated destructor stub
@@ -301,18 +303,14 @@ void CGPbase::agetY(MatrixXd* out)
 {
 	(*out) = *this->cache.getYeffective();
 }
-#if 0
+
 void CGPbase::setY(const MatrixXd& Y)
 {
-<<<<<<< HEAD
 	this->dataTerm.setY(Y);
-=======
-	this->Y = Y;
-	//update lik
 	this->lik.setX(MatrixXd::Zero(Y.rows(),0));
->>>>>>> f86d833cfc51e8c63db3e0f8e61f40d78a3cbb61
 }
-#endif
+
+
 void CGPbase::agetX(CovarInput* out) const
 {
 	this->covar.agetX(out);

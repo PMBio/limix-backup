@@ -73,10 +73,10 @@ bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
 	VectorXd x  = x0;
 
 	//1. analytical solution
-	VectorXd grad_anal;
-	gp.aLMLgrad(&grad_anal);
+	VectorXd grad_analyt;
+	gp.aLMLgrad(&grad_analyt);
 	//2. numerical solution;
-	VectorXd grad_numerical(grad_anal.rows());
+	VectorXd grad_numerical(grad_analyt.rows());
 	//loop
 	for (muint_t i=0;i<(muint_t)x0.rows();i++)
 	{
@@ -94,7 +94,7 @@ bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
 		mfloat_t diff_numerical  = (Lplus-Lminus)/(2.*change);
 		grad_numerical(i) = diff_numerical;
 	}
-	rv = ((grad_numerical-grad_anal).squaredNorm()<threshold);
+	rv = ((grad_numerical-grad_analyt).squaredNorm()<threshold);
 	return rv;
 }
 
