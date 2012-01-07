@@ -11,42 +11,42 @@
 namespace gpmix {
 
 
-MatrixXd* CGPSVDCache::getUK()
+MatrixXd& CGPSVDCache::getUK()
 {
 	if (!isInSync())
 		this->clearCache();
 	if (isnull(UK))
 	{
-		Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver((*getK0()));
+		Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(getK0());
 		UK = eigensolver.eigenvectors();
 		SK = eigensolver.eigenvalues();
 	}
-	return &UK;
+	return UK;
 }
 
-ACovarianceFunction *CGPSVDCache::getCovar() const
+ACovarianceFunction& CGPSVDCache::getCovar()
 {
-	return covar;
+	return (*covar);
 }
 
 
-VectorXd *CGPSVDCache::getSK()
+VectorXd& CGPSVDCache::getSK()
 {
 	if(!isInSync())
 		this->clearCache();
 
 	if(isnull(UK)){
-		Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver((*getK0()));
+		Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(getK0());
 		UK = eigensolver.eigenvectors();
 		SK = eigensolver.eigenvalues();
 	}
-	return &SK;
+	return SK;
 }
 
 void CGPSVDCache::clearCache()
 {
 	covar->makeSync();
-	K = MatrixXd();
+	K0 = MatrixXd();
 	UK = MatrixXd();
 	SK = VectorXd();
 }
@@ -68,43 +68,43 @@ bool CGPKroneckerCache::isInSync() const
 	return cache_r.covar->isInSync() && cache_c.covar->isInSync();
 }
 
-    MatrixXd *CGPKroneckerCache::getYrot()
+    MatrixXd& CGPKroneckerCache::getYrot()
     {
         if(!isInSync())
             this->clearCache();
 
         if(isnull(Yrot)){
-            akronravel(&Yrot, (*cache_r.getUK()).transpose(), (*cache_c.getUK()).transpose(), gp->dataTerm.evaluate());
+            akronravel(&Yrot, (cache_r.getUK()).transpose(), (cache_c.getUK()).transpose(), gp->dataTerm.evaluate());
         }
-        return &Yrot;
+        return Yrot;
     }
 
-    MatrixXd *CGPKroneckerCache::getSi()
+    MatrixXd& CGPKroneckerCache::getSi()
     {
         if(!isInSync())
             this->clearCache();
 
         if(isnull(Si)){
-            akrondiag(&Si, *(cache_r.getSK()), *(cache_c.getSK()));
+            akrondiag(&Si, (cache_r.getSK()), (cache_c.getSK()));
             //add noise
             Si.array() += getKnoise();
             //elementwise inversion:
             Si = Si.unaryExpr(ptr_fun(inverse));
         }
-        return &Si;
+        return Si;
     }
 
-    MatrixXd *CGPKroneckerCache::getYSi()
+    MatrixXd& CGPKroneckerCache::getYSi()
     {
         if(!isInSync())
             this->clearCache();
 
         if(isnull(YSi)){
-        	MatrixXd* Si   = getSi();
-        	MatrixXd* Yrot = getYrot();
-            YSi = (*Si).array() * (*Yrot).array();
+        	MatrixXd& Si   = getSi();
+        	MatrixXd& Yrot = getYrot();
+            YSi = (Si).array() * (Yrot).array();
         }
-        return &YSi;
+        return YSi;
     }
 
     mfloat_t CGPKroneckerCache::getKnoise()
@@ -172,20 +172,20 @@ bool CGPKroneckerCache::isInSync() const
     mfloat_t CGPkronecker::LML() throw (CGPMixException)
     {
         //update the covariance parameters
-        MatrixXd *Si = cache.getSi();
+        MatrixXd& Si = cache.getSi();
 
         //1. logdet:
         //loop through entries of Si: note we Si has non-vec shape, so we use the raw interface for this:
-        muint_t size = Si->rows()*Si->cols();
+        muint_t size = Si.rows()*Si.cols();
         mfloat_t lml_det = 0;
-        for(mfloat_t* Siraw = Si->data(); Siraw < Si->data()+size;++Siraw)
+        for(mfloat_t* Siraw = Si.data(); Siraw < Si.data()+size;++Siraw)
         {
             lml_det += gpmix::log(*Siraw);
         }
         lml_det *= -0.5;
         //2. quadratic term
-        MatrixXd LMLq = (*cache.getYrot());
-        LMLq.array() *= (*cache.getYSi()).array();
+        MatrixXd LMLq = (cache.getYrot());
+        LMLq.array() *= (cache.getYSi()).array();
         mfloat_t lml_quad = 0.5 * LMLq.sum();
         //3. constants
         mfloat_t lml_const = 0.5*CGPbase::dataTerm.evaluate().cols() * CGPbase::dataTerm.evaluate().rows() * gpmix::log((2.0 * PI));
@@ -228,74 +228,72 @@ bool CGPKroneckerCache::isInSync() const
 
     mfloat_t CGPkronecker::_gradLogDet(MatrixXd & dK, bool columns)
     {
-        MatrixXd *Si = cache.getSi();
-        MatrixXd *U;
-        VectorXd *S;
+        MatrixXd& Si = cache.getSi();
         MatrixXd rv;
         if(columns){
-            U = cache.cache_c.getUK();
-            S = cache.cache_r.getSK();
-            MatrixXd d = ((*U).array() * (dK * (*U)).array()).colwise().sum();
-            rv = (*S).transpose() * (*Si) * d.transpose();
+        	MatrixXd& U= cache.cache_c.getUK();
+            VectorXd& S = cache.cache_r.getSK();
+            MatrixXd d = (U.array() * (dK * U).array()).colwise().sum();
+            rv = S.transpose() * Si * d.transpose();
         }else{
-            U = cache.cache_r.getUK();
-            S = cache.cache_c.getSK();
-            MatrixXd d = ((*U).array() * (dK * (*U)).array()).colwise().sum();
-            rv = d* (*Si) * (*S);
+            MatrixXd& U = cache.cache_r.getUK();
+            VectorXd& S = cache.cache_c.getSK();
+            MatrixXd d = (U.array() * (dK * U).array()).colwise().sum();
+            rv = d* Si * S;
         }
         return rv(0, 0);
     }
 
     mfloat_t CGPkronecker::_gradQuadrForm(MatrixXd & dK, bool columns)
     {
-        MatrixXd *Ysi = cache.getYSi();
+        MatrixXd& Ysi = cache.getYSi();
         MatrixXd UdKU;
         MatrixXd SYUdKU;
         if(columns){
-            MatrixXd *U = cache.cache_c.getUK();
-            VectorXd *S = cache.cache_r.getSK();
-            UdKU = (*U).transpose() * dK * (*U);
+            MatrixXd& U = cache.cache_c.getUK();
+            VectorXd& S = cache.cache_r.getSK();
+            UdKU = U.transpose() * dK * U;
             //start with multiplying Y with Sc
-            SYUdKU = (*Ysi);
-            MatrixXd St = MatrixXd::Zero((*Ysi).rows(), (*Ysi).cols());
-            St.colwise() = (*S);
+            SYUdKU = Ysi;
+            MatrixXd St = MatrixXd::Zero(Ysi.rows(), Ysi.cols());
+            St.colwise() = S;
             SYUdKU.array() *= St.array();
             //dot product with UdKU
             SYUdKU = SYUdKU * UdKU.transpose();
         }else{
-            MatrixXd *U = cache.cache_r.getUK();
-            VectorXd *S = cache.cache_c.getSK();
-            UdKU = (*U).transpose() * dK * (*U);
+            MatrixXd& U = cache.cache_r.getUK();
+            VectorXd& S = cache.cache_c.getSK();
+            UdKU = U.transpose() * dK * U;
             //start with multiplying Y with Sc
-            SYUdKU = (*Ysi);
-            MatrixXd St = MatrixXd::Zero((*Ysi).rows(), (*Ysi).cols());
-            St.rowwise() = (*S);
+            SYUdKU = Ysi;
+            MatrixXd St = MatrixXd::Zero(Ysi.rows(), Ysi.cols());
+            St.rowwise() = S;
             SYUdKU.array() *= St.array();
             //dot product with UdKU
             SYUdKU = UdKU * SYUdKU;
         }
-        SYUdKU.array() *= (*Ysi).array();
+        SYUdKU.array() *= Ysi.array();
         return SYUdKU.sum();
     }
 
     void CGPkronecker::_gradQuadrFormX(VectorXd *rv, MatrixXd & dK, bool columns)
     {
-        MatrixXd *Ysi = cache.getYSi();
+        MatrixXd& Ysi = cache.getYSi();
         MatrixXd UY;
         MatrixXd UYS;
         MatrixXd UYSYU;
         if(columns){
-            MatrixXd *U = cache.cache_c.getUK();
-            VectorXd *S = cache.cache_r.getSK();
-            UY = (*U) * (*Ysi).transpose();
+            MatrixXd& U = cache.cache_c.getUK();
+            VectorXd& S = cache.cache_r.getSK();
+            UY = U * Ysi.transpose();
             UYS = MatrixXd::Zero(UY.rows(), UY.cols());
-            UYS.rowwise() = (*S);
+            UYS.rowwise() = S;
         }else{
-            MatrixXd *U = cache.cache_r.getUK();
-            VectorXd *S = cache.cache_c.getSK();
-            UY = (*U) * (*Ysi);
+            MatrixXd& U = cache.cache_r.getUK();
+            VectorXd& S = cache.cache_c.getSK();
+            UY = U * Ysi;
             UYS = MatrixXd::Zero(UY.rows(), UY.cols());
-            UYS.rowwise() = (*S);
+            UYS.rowwise() = S;
         }
         UYS.array() *= UY.array();
         UYSYU = UYS * UY.transpose();
@@ -305,17 +303,17 @@ bool CGPKroneckerCache::isInSync() const
 
     void CGPkronecker::_gradLogDetX(VectorXd *out, MatrixXd & dK, bool columns)
     {
-        MatrixXd *Si = cache.getSi();
+        MatrixXd& Si = cache.getSi();
         if(columns){
-            MatrixXd *U = cache.cache_c.getUK();
-            VectorXd *S = cache.cache_r.getSK();
-            MatrixXd D = 2.0*(*U).array() * (dK * (*U)).array();
-            (*out) = (*S).transpose() * (*Si) * D.transpose();
+            MatrixXd& U = cache.cache_c.getUK();
+            VectorXd& S = cache.cache_r.getSK();
+            MatrixXd D = 2.0*U.array() * (dK * U).array();
+            (*out) = S.transpose() * Si * D.transpose();
         }else{
-            MatrixXd *U = cache.cache_r.getUK();
-            VectorXd *S = cache.cache_c.getSK();
-            MatrixXd D = 2.0*(*U).array() * (dK * (*U)).array();
-            (*out) = D * (*Si) * (*S);
+            MatrixXd& U = cache.cache_r.getUK();
+            VectorXd& S = cache.cache_c.getSK();
+            MatrixXd D = 2.0*U.array() * (dK * U).array();
+            (*out) = D * Si * S;
         }
     }
 
@@ -349,11 +347,11 @@ bool CGPKroneckerCache::isInSync() const
         out->resize(lik.getNumberParams());
         MatrixXd dK_ = lik.Kgrad_param(0);
         mfloat_t dK = dK_(0, 0);
-        MatrixXd *Si = cache.getSi();
-        MatrixXd *YSi = cache.getYSi();
-        mfloat_t grad_logdet = 0.5 * dK * (*Si).sum();
-        MatrixXd YSiYSi = (*YSi);
-        YSiYSi.array() *= (*YSi).array();
+        MatrixXd& Si = cache.getSi();
+        MatrixXd& YSi = cache.getYSi();
+        mfloat_t grad_logdet = 0.5 * dK * Si.sum();
+        MatrixXd YSiYSi = YSi;
+        YSiYSi.array() *= YSi.array();
         mfloat_t grad_quad = -0.5 * dK * YSiYSi.sum();
         (*out)(0) = grad_quad + grad_logdet;
     }
@@ -384,9 +382,9 @@ bool CGPKroneckerCache::isInSync() const
         }
     }
 
-    CGPKroneckerCache CGPkronecker::getCache() const
+    CGPKroneckerCache* CGPkronecker::getCache()
     {
-        return cache;
+        return &cache;
     }
 
     ACovarianceFunction & CGPkronecker::getCovarC() const

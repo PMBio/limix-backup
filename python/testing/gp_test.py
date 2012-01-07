@@ -64,6 +64,8 @@ dlml = gp.LMLgrad(hyperparams)
 
 #optimization
 gpopt = gpmix.CGPopt(gp)
+cc=gpopt.gradCheck()
+pdb.set_trace()
 gpopt.opt()
 opt_params = gp.getParamArray()
 lmlo = gp.LML()
