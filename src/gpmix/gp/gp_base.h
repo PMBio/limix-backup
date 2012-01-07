@@ -129,21 +129,21 @@ public:
 	virtual void clearCache();
 	virtual bool isInSync() const;
 
-	MatrixXd* getK0();
-	MatrixXd* getK();
-	MatrixXd* getKinv();
-	MatrixXd* getYeffective();
-	MatrixXd* getKinvY();
-	MatrixXdChol* getCholK();
-	MatrixXd* getDKinv_KinvYYKinv();
+	MatrixXd& getK0();
+	MatrixXd& getK();
+	MatrixXd& getKinv();
+	MatrixXd& getYeffective();
+	MatrixXd& getKinvY();
+	MatrixXdChol& getCholK();
+	MatrixXd& getDKinv_KinvYYKinv();
 
 	void agetK0(MatrixXd* out)
 	{
-		(*out) =  *getK0();
+		(*out) =  getK0();
 	}
 	void agetK(MatrixXd* out)
 	{
-		(*out) =  *getK();
+		(*out) =  getK();
 	}
 };
 
@@ -203,8 +203,8 @@ public:
 	void agetX(CovarInput* out) const;
 	void setX(const CovarInput& X) throw (CGPMixException);
 
-	inline muint_t getNumberSamples(){return this->cache.getYeffective()->rows();} //get the number of training data samples
-	inline muint_t getNumberDimension(){return this->cache.getYeffective()->cols();} //get the dimension of the target data
+	inline muint_t getNumberSamples(){return this->cache.getYeffective().rows();} //get the number of training data samples
+	inline muint_t getNumberDimension(){return this->cache.getYeffective().cols();} //get the dimension of the target data
 
 	ACovarianceFunction* getCovar(){return &covar;}
 	ALikelihood* getLik(){return &lik;}

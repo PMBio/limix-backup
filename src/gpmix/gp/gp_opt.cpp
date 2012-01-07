@@ -94,6 +94,10 @@ bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
 		mfloat_t diff_numerical  = (Lplus-Lminus)/(2.*change);
 		grad_numerical(i) = diff_numerical;
 	}
+	std::cout << grad_numerical << "\n";
+	std::cout << grad_analyt << "\n";
+
+	std::cout << (grad_numerical-grad_analyt) << "\n";
 	rv = ((grad_numerical-grad_analyt).squaredNorm()<threshold);
 	return rv;
 }
