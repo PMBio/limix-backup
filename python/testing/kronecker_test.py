@@ -81,7 +81,8 @@ if __name__ == '__main__':
         covariance_r = gpmix.CCovLinearISO(Kr)
         covariance_c = gpmix.CCovLinearISO(Kc)
     likelihood   = gpmix.CLikNormalIso();
-    gp=gpmix.CGPkronecker(covariance_r,covariance_c,likelihood)
+    data = gpmix.CData()
+    gp=gpmix.CGPkronecker(data,covariance_r,covariance_c,likelihood)
     gp.setY(Y);
     gp.setX_r(X0r);
     gp.setX_c(X0c);

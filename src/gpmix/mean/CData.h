@@ -14,6 +14,7 @@ namespace gpmix {
 
 class CData: public gpmix::ADataTerm {
 public:
+	CData();
 	CData(MatrixXd& Y);
 	~CData();
 	inline MatrixXd evaluate(){return Y;};

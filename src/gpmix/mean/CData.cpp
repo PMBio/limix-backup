@@ -9,6 +9,9 @@
 
 namespace gpmix {
 
+CData::CData() : ADataTerm() {
+}
+
 CData::CData(MatrixXd& Y) : ADataTerm(Y) {
 }
 
