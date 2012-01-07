@@ -26,4 +26,30 @@ bool ADataTerm::isInSync() const
 void ADataTerm::makeSync()
 { insync = true;}
 
+void ADataTerm::aEvaluate(MatrixXd* outY)
+{
+	*outY = this->Y;
+}
+
+void ADataTerm::aGradY(MatrixXd* outGradY)
+{
+	*outGradY = MatrixXd::Ones(this->Y.rows(), this->Y.cols());
+}
+
+void ADataTerm::aGradParams(MatrixXd* outGradParams)
+{
+	*outGradParams = MatrixXd();
+}
+
+void ADataTerm::aSumJacobianGradParams(MatrixXd* outSumJacobianGradParams)
+{
+	*outSumJacobianGradParams = MatrixXd();
+}
+
+void ADataTerm::aSumLogJacobian(MatrixXd* outSumJacobianGradParams)
+{
+	*outSumJacobianGradParams = MatrixXd();
+}
+
+
 } /* namespace gpmix */
