@@ -17,9 +17,8 @@ import time
 
 SP.random.seed(1)
 
-pdb.set_trace()
-n_dimensions=1
-n_samples = 200
+n_dimensions=10
+n_samples = 100
 X = SP.randn(n_samples,n_dimensions)
 y = SP.dot(X,SP.randn(n_dimensions,1))
 y += 0.2*SP.randn(y.shape[0],y.shape[1])
@@ -78,24 +77,26 @@ gpopt.setOptBoundLower(constrainL);
 gpopt.setOptBoundUpper(constrainU);
 
 
-pdb.set_trace()
 gpopt.opt()
 opt_params = gp.getParamArray()
 lmlo = gp.LML()
-t3 = time.time()
-for x in xx:
-    covar_params[0] = x
-    hyperparams['covar'] = covar_params
-    tmp = gp.LML(hyperparams)
-t4 = time.time()
 
-print "lml: %.2f -- %.2f" % (lml,lml_)
-print "lmlO: %.2f -- %.2f" % (lmlo,lmlo_)
 
-print "optimization timing:"
-print (t1-t0)
-print (t3-t2)
-print "LML eval timing"
-print (t2-t1)
-print (t4-t3)
+if 0:
+    t3 = time.time()
+    for x in xx:
+        covar_params[0] = x
+        hyperparams['covar'] = covar_params
+        tmp = gp.LML(hyperparams)
+    t4 = time.time()
+
+    print "lml: %.2f -- %.2f" % (lml,lml_)
+    print "lmlO: %.2f -- %.2f" % (lmlo,lmlo_)
+
+    print "optimization timing:"
+    print (t1-t0)
+    print (t3-t2)
+    print "LML eval timing"
+    print (t2-t1)
+    print (t4-t3)
 
