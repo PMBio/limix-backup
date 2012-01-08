@@ -69,6 +69,9 @@ public:
 	CGPHyperParams()
 	{
 	}
+	//copy constructor
+	CGPHyperParams(const CGPHyperParams &_param);
+
 	//from a list of params
 	~CGPHyperParams()
 	{
