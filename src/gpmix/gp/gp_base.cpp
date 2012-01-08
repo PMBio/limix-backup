@@ -275,7 +275,7 @@ void CGPbase::updateParams() throw(CGPMixException)
 	if (params.exists("X"))
 		this->updateX(covar,gplvmDimensions,params["X"]);
 	if (params.exists("dataTerm"))
-			this->dataTerm.setParams(this->params["dataTerm"]);
+		this->dataTerm.setParams(this->params["dataTerm"]);
 }
 
 void CGPbase::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException)

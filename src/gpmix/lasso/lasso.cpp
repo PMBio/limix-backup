@@ -38,7 +38,7 @@ void ridge_regression(MatrixXd* out, const MatrixXd& X, const MatrixXd& y,mfloat
 	}
 }
 
-
+//#define LASSO_IRR
 
 void lasso_irr(MatrixXd* w_out,const MatrixXd& Xfull,const MatrixXd& y, mfloat_t mu, mfloat_t optTol,mfloat_t threshold, muint_t maxIter)
 {
@@ -66,6 +66,7 @@ void lasso_irr(MatrixXd* w_out,const MatrixXd& Xfull,const MatrixXd& y, mfloat_t
 
 	// intialize NN
 	MatrixXd NN = MatrixXd::Zero(n,n);
+	MatrixXd NNiter = MatrixXd::Zero(n,n);
 	MatrixXd XmuwXIy;
 	mfloat_t mw;
 
@@ -86,15 +87,19 @@ void lasso_irr(MatrixXd* w_out,const MatrixXd& Xfull,const MatrixXd& y, mfloat_t
 		//loop over non-zero entries in w_tmp
 		for (muint_t i_d=0;i_d<(muint_t)w_abs.rows();i_d++)
 		{
+	#ifdef LASSO_IRR
 			//1. check whether non-zero
 			if (w_abs(i_d,0)<threshold)
 				continue;
+	#endif
 			//ok, otherwise increment non-zeros
 			n_zero++;
 			// (1.0/mu) * abs
 			mw = imu*w_abs(i_d,0);
 			//reweighted inner product of this patricual feature onto NN
-			NN += mw * (Xfull.col(i_d)*Xfull.col(i_d).transpose());
+			NNiter.noalias() = (Xfull.col(i_d)*Xfull.col(i_d).transpose());
+			NNiter *= mw;
+			NN += NNiter;
 		}//end for all non-zero SNPs
 		//check whethere any feature is non-zero
 		if (n_zero==0)
@@ -107,11 +112,13 @@ void lasso_irr(MatrixXd* w_out,const MatrixXd& Xfull,const MatrixXd& y, mfloat_t
 		//compile new weight vector:
 		for (muint_t i_d=0;i_d<(muint_t)w_abs.rows();i_d++)
 		{
+	#ifdef LASSO_IRR
 			if (w_abs(i_d,0)<threshold)
 				continue;
+	#endif
 			//update w:
 			mw = imu*w_abs(i_d,0);
-			w.block(i_d,0,1,1) = mw*XmuwXIy*Xfull.col(i_d);
+			w.block(i_d,0,1,1).noalias() = mw*XmuwXIy*Xfull.col(i_d);
 			//move internal non-zero weight index forward
 		} //end
 		//check tolerenace of weight changes:

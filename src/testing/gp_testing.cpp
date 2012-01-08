@@ -70,7 +70,7 @@ int main() {
 		CGPHyperParams params;
 		params["covar"] = covar_params;
 		params["lik"] = lik_params;
-		params["X"] = X;
+		//params["X"] = X;
 
 		//get lml and grad
 		mfloat_t lml = gp.LML(params);
