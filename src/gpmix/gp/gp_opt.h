@@ -43,11 +43,7 @@ public:
 
 	CGPHyperParams getOptParams()
 	{ return optParams; }
-
 };
-
-
-
 
 } /* namespace gpmix */
 #endif /* CGPOPT_H_ */

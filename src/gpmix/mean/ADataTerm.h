@@ -50,9 +50,9 @@ public:
 	ADataTerm(MatrixXd& Y);
 	virtual ~ADataTerm();
 	virtual inline void setParams(MatrixXd& params){};
-	virtual inline void setfixedEffects(MatrixXd& fixedEfects) {};
-	virtual inline MatrixXd getParams(){ return MatrixXd();	};
-	virtual inline MatrixXd getFixedEffects(){ return MatrixXd(); };
+
+	virtual void aGetParams(MatrixXd* outParams){};
+	virtual inline MatrixXd getParams(){ MatrixXd outParams = MatrixXd(); aGetParams(&outParams); return outParams;	};
 	virtual inline void setY(const MatrixXd& Y){
 		this->insync = false;
 		this->Y = Y;

@@ -15,16 +15,22 @@ namespace gpmix {
 class CLinearMean: public ADataTerm {
 	MatrixXd weights;
 	MatrixXd fixedEffects;
+	void zeroInitWeights();
 public:
 	CLinearMean();
 	CLinearMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects);
+	CLinearMean(MatrixXd& Y, MatrixXd& fixedEffects);
 	virtual ~CLinearMean();
 
 	void aEvaluate(MatrixXd* outY);
 	void aGradParams(MatrixXd* outGradParams);
 
-	inline MatrixXd evaluate(){ MatrixXd Y = MatrixXd(); aEvaluate(&Y); return Y; };
-	inline MatrixXd gradParams(){ MatrixXd gradParams = MatrixXd(); aEvaluate(&gradParams); return gradParams;  };
+	virtual inline void setParams(MatrixXd& weightMatrix);
+	virtual inline void setfixedEffects(MatrixXd& fixedEfects);
+	virtual void aGetParams(MatrixXd* outParams);
+	virtual void aGetFixedEffects(MatrixXd* outFixedEffects);
+
+	virtual inline MatrixXd getFixedEffects(){MatrixXd outFixedEffects; aGetFixedEffects(&outFixedEffects); return outFixedEffects;}
 };
 
 } /* namespace gpmix */

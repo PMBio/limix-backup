@@ -169,9 +169,6 @@ public:
     VectorXi getGplvmDimensionsR() const;
     void setGplvmDimensionsC(VectorXi gplvmDimensionsC);
     void setGplvmDimensionsR(VectorXi gplvmDimensionsR);
-
-
-
 };
 
 } /* namespace gpmix */
