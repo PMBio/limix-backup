@@ -25,8 +25,8 @@ public:
 	void aEvaluate(MatrixXd* outY);
 	void aGradParams(MatrixXd* outGradParams);
 
-	virtual inline void setParams(MatrixXd& weightMatrix);
-	virtual inline void setfixedEffects(MatrixXd& fixedEfects);
+	virtual void setParams(MatrixXd& weightMatrix);
+	virtual void setfixedEffects(MatrixXd& fixedEfects);
 	virtual void aGetParams(MatrixXd* outParams);
 	virtual void aGetFixedEffects(MatrixXd* outFixedEffects);
 

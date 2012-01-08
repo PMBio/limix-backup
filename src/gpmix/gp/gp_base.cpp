@@ -126,6 +126,7 @@ void CGPCholCache::clearCache()
 	this->KinvY=MatrixXd();
 	this->cholK=MatrixXdChol();
 	this->DKinv_KinvYYKinv = MatrixXd();
+	this->Yeffective = MatrixXd();
 }
 
 
@@ -493,7 +494,11 @@ void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
 void CGPbase::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 {
 	//0. set output dimensions
-	*out=this->dataTerm.gradParams().transpose() * cache.getKinvY();
+	MatrixXd dParams =this->dataTerm.gradParams();
+	if (dParams.rows()>0 && dParams.cols()>0)
+	{
+		*out=dParams.transpose() * cache.getKinvY();
+	}
 	//TODO gradient of log Jacobian term
 }
 
