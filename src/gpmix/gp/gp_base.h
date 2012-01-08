@@ -297,6 +297,5 @@ inline VectorXd CGPbase::getParamArray() const
 	return rv;
 }
 
-
 } /* namespace gpmix */
 #endif /* GP_BASE_H_ */

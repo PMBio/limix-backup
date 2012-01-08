@@ -267,6 +267,8 @@ void CGPbase::updateParams() throw(CGPMixException)
 		this->lik.setParams(this->params["lik"]);
 	if (params.exists("X"))
 		this->updateX(covar,gplvmDimensions,params["X"]);
+	if (params.exists("dataTerm"))
+			this->dataTerm.setParams(this->params["dataTerm"]);
 }
 
 void CGPbase::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException)
@@ -290,14 +292,6 @@ void CGPbase::agetParamArray(VectorXd* out) const
 {
 	this->params.agetParamArray(out);
 }
-
-
-
-
-
-
-
-
 
 void CGPbase::agetY(MatrixXd* out)
 {
@@ -486,8 +480,8 @@ void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
 void CGPbase::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 {
 	//0. set output dimensions
-	(*out).resize(this->dataTerm.getParams().rows(),this->dataTerm.getParams().cols());
-	(*out)=this->dataTerm.getParams();
+	*out=this->dataTerm.gradParams().transpose() * cache.getKinvY();
+	//TODO gradient of log Jacobian term
 }
 
 void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException)
