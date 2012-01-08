@@ -14,6 +14,13 @@ namespace gpmix {
 
 /* CGPHyperParmas */
 
+CGPHyperParams::CGPHyperParams(const CGPHyperParams &_param) : map<string,MatrixXd>(_param)
+{
+
+}
+
+
+
 void CGPHyperParams::agetParamArray(VectorXd* out) const
 {
 	//1. get size
@@ -314,7 +321,13 @@ void CGPbase::setX(const CovarInput& X) throw (CGPMixException)
 	//use covariance to set everything
 	this->covar.setX(X);
 	if (isnull(gplvmDimensions))
+	{
+		if (X.cols()==1)
+			//special case for a single dimensions...
+			this->gplvmDimensions = VectorXi::Zero(1);
+		else
 			this->gplvmDimensions = VectorXi::LinSpaced(X.cols(),0,X.cols()-1);
+	}
 }
 
 

@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -35,7 +35,7 @@ int main() {
 
 	try {
 		//random input X
-		muint_t dim=3;
+		muint_t dim=1;
 
 		MatrixXd X = randn((muint_t)100,(muint_t)dim);
 		//y ~ w*X
@@ -84,6 +84,13 @@ int main() {
 		std::cout << "gradcheck: "<< opt.gradCheck() << "\n";
 #if 1
 		//optimize:
+		//construct constraints
+		CGPHyperParams upper;
+		CGPHyperParams lower;
+		upper["lik"] = 5.0*MatrixXd::Ones(1,1);
+		lower["lik"] = -5.0*MatrixXd::Ones(1,1);
+		opt.setOptBoundLower(lower);
+		opt.setOptBoundUpper(upper);
 		opt.opt();
 #endif
 

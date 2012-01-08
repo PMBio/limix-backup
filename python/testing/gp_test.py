@@ -17,11 +17,11 @@ import time
 
 SP.random.seed(1)
 
-n_dimensions=5
+n_dimensions=10
 n_samples = 100
 X = SP.randn(n_samples,n_dimensions)
 y = SP.dot(X,SP.randn(n_dimensions,1))
-y += 0.1*SP.randn(y.shape[0],y.shape[1])
+y += 0.2*SP.randn(y.shape[0],y.shape[1])
 
 covar_params = SP.random.randn(n_dimensions+1)
 lik_params = SP.random.randn(1)
@@ -65,24 +65,38 @@ dlml = gp.LMLgrad(hyperparams)
 #optimization
 gpopt = gpmix.CGPopt(gp)
 cc=gpopt.gradCheck()
-pdb.set_trace()
+
+#build constraints
+constrainU = gpmix.CGPHyperParams()
+constrainL = gpmix.CGPHyperParams()
+constrainU['covar'] = +10*SP.ones_like(covar_params);
+constrainL['covar'] = -10*SP.ones_like(covar_params);
+constrainU['lik'] = +5*SP.ones_like(lik_params);
+constrainL['lik'] = -5*SP.ones_like(lik_params);
+gpopt.setOptBoundLower(constrainL);
+gpopt.setOptBoundUpper(constrainU);
+
+
 gpopt.opt()
 opt_params = gp.getParamArray()
 lmlo = gp.LML()
-t3 = time.time()
-for x in xx:
-    covar_params[0] = x
-    hyperparams['covar'] = covar_params
-    tmp = gp.LML(hyperparams)
-t4 = time.time()
 
-print "lml: %.2f -- %.2f" % (lml,lml_)
-print "lmlO: %.2f -- %.2f" % (lmlo,lmlo_)
 
-print "optimization timing:"
-print (t1-t0)
-print (t3-t2)
-print "LML eval timing"
-print (t2-t1)
-print (t4-t3)
+if 0:
+    t3 = time.time()
+    for x in xx:
+        covar_params[0] = x
+        hyperparams['covar'] = covar_params
+        tmp = gp.LML(hyperparams)
+    t4 = time.time()
+
+    print "lml: %.2f -- %.2f" % (lml,lml_)
+    print "lmlO: %.2f -- %.2f" % (lmlo,lmlo_)
+
+    print "optimization timing:"
+    print (t1-t0)
+    print (t3-t2)
+    print "LML eval timing"
+    print (t2-t1)
+    print (t4-t3)
 
