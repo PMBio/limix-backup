@@ -17,6 +17,7 @@ public:
 	CData();
 	CData(MatrixXd& Y);
 	~CData();
+	virtual inline string getName() const {return "CData";};
 };
 
 } /* namespace gpmix */

@@ -121,6 +121,7 @@ protected:
 	MatrixXd KinvY;
 	MatrixXd DKinv_KinvYYKinv;
 	MatrixXd Yeffective;
+	MatrixXd gradDataParams;
 	CGPbase* gp;
 	ACovarianceFunction* covar;
 public:
@@ -132,6 +133,7 @@ public:
 	virtual void clearCache();
 	virtual bool isInSync() const;
 
+	MatrixXd& getGradDataParams();
 	MatrixXd& getK0();
 	MatrixXd& getK();
 	MatrixXd& getKinv();
