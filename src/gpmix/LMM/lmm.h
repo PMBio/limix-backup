@@ -10,8 +10,22 @@
 
 #include "gpmix/types.h"
 
-
 namespace gpmix {
+
+//rename argout operators for swig interface
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//ignore C++ versions
+%ignore ALMM::getPheno;
+%ignore ALMM::getPv;
+%ignore ALMM::getSnps;
+%ignore ALMM::getCovs;
+
+//rename argout versions for python; this overwrites the C++ convenience functions
+%rename(getPheno) ALMM::agetPheno;
+%rename(getPv) ALMM::agetPv;
+%rename(getSnps) ALMM::agetSnps;
+%rename(getCovs) ALMM::agetCovs;
+#endif
 
 //Abstract base class for LMM models*/
 class ALMM {
@@ -37,10 +51,15 @@ protected:
 	bool Upheno_cached;
 	bool Ucovs_cached;
 
+	int testStatistics;
 
 public:
 	ALMM();
 	virtual ~ALMM();
+
+	//constants: test statistics
+	static const int TEST_LLR=0;
+	static const int TEST_F=1;
 
 	//setter fors data:
 	mfloat_t getLdeltamin0() const;
@@ -52,30 +71,37 @@ public:
 	void setNumIntervalsAlt(muint_t num_intervalsAlt);
 
 	//getters:
-	void getPheno(MatrixXd *out) const;
-	void getPv(MatrixXd *out) const;
-	void getSnps(MatrixXd *out) const;
-	void getCovs(MatrixXd* out) const;
+	void agetPheno(MatrixXd *out) const;
+	void agetPv(MatrixXd *out) const;
+	void agetSnps(MatrixXd *out) const;
+	void agetCovs(MatrixXd* out) const;
+	//setters:
 	void setCovs(const MatrixXd& covs);
 	void setPheno(const MatrixXd& pheno);
 	void setSNPs(const MatrixXd& snps);
 
-	//virtual function
+	//abstract function
 	virtual void process() =0;
 	virtual void updateDecomposition() =0;
 
 
-#ifndef SWIG
-	//covenience versions:
+	//convenience wrappers:
 	MatrixXd getPheno() const;
 	MatrixXd getPv() const;
 	MatrixXd getSnps() const;
 	MatrixXd getCovs() const;
-#endif
-
+    int getTestStatistics() const;
+    void setTestStatistics(int testStatistics);
 };
 
+//rename argout operators for swig interface
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//ignore C++ versions
+%ignore CLMM::getK;
 
+//rename argout versions for python; this overwrites the C++ convenience functions
+%rename(getK) CLMM::agetK;
+#endif
 //Standard mixed liner model
 class CLMM : public ALMM
 {
@@ -83,6 +109,20 @@ protected:
 	MatrixXd K;
 	MatrixXd U;
 	VectorXd S;
+
+	//variables for optimization etc.
+	VectorXd Sdi_p;
+	MatrixXd XSdi;
+	MatrixXd XSX;
+	MatrixXd XSY;
+	MatrixXd beta;
+	MatrixXd res;
+
+	double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals,double ldeltamin,double ldeltamax);
+	double nLLeval(MatrixXd* F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
+
+
+
 public:
 	CLMM();
 	virtual ~CLMM();
@@ -93,14 +133,12 @@ public:
 	virtual void process();
 	virtual void updateDecomposition();
 
-	void getK(MatrixXd* out) const;
+	void agetK(MatrixXd* out) const;
 	void setK(const MatrixXd& K);
 	void setK(const MatrixXd& K,const MatrixXd& U, const VectorXd& S);
 
-
-#ifndef SWIG
+	//convenience functions:
 	MatrixXd getK() const;
-#endif
 };
 
 /*Simple Kronecker model.

@@ -26,6 +26,7 @@ bool isnull(const Eigen::LDLT<gpmix::MatrixXd>& m);
 mfloat_t logdet(Eigen::LLT<gpmix::MatrixXd>& chol);
 mfloat_t logdet(Eigen::LDLT<gpmix::MatrixXd>& chol);
 
+void arrayInverseInplace(MatrixXd& m);
 
 double sum(MatrixXd& m);
 

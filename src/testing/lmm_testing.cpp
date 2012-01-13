@@ -1,5 +1,5 @@
 
-#if 0
+#if 1
 //============================================================================
 // Name        : GPmix.cpp
 // Author      :
@@ -48,7 +48,7 @@ int main() {
 
 
 
-	if (1){ //Simple Kronecker LMM
+	if (0){ //Simple Kronecker LMM
 		MatrixXd Kp = 1.0/p * (snps.block(0,0,p,s)*snps.block(0,0,p,s).transpose());
 
 		MatrixXd Wkron0 = MatrixXd::Ones(p,1);
@@ -67,7 +67,7 @@ int main() {
 		lmm.process();
 	}
 
-	if (0){ //LMM testing using new code
+	if (1){ //LMM testing using new code
 		CLMM lmm;
 
 
@@ -75,6 +75,7 @@ int main() {
 		lmm.setSNPs(snps);
 		lmm.setPheno(pheno);
 		lmm.setCovs(covs);
+		lmm.setTestStatistics(lmm.TEST_F);
 
 		lmm.process();
 		MatrixXd pv = lmm.getPv();

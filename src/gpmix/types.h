@@ -20,6 +20,8 @@ namespace gpmix{
 #define PI 3.14159265358979323846
 #endif
 
+const double L2pi = 1.8378770664093453;
+
 
 //note: for swig it is important that everyhing is typed def and not merely "defined"
 typedef double float64_t;
