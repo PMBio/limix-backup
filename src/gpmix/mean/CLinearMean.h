@@ -32,11 +32,14 @@ public:
 	virtual void aGetFixedEffects(MatrixXd* outFixedEffects);
 
 	virtual inline MatrixXd getFixedEffects(){MatrixXd outFixedEffects; aGetFixedEffects(&outFixedEffects); return outFixedEffects;}
-	inline void checkParamDimensions(const MatrixXd& params);
+	//inline void checkParamDimensions(const MatrixXd& params);
 	virtual inline string getName() const {return "CLinearMean";};
 	inline void checkDimensions(const MatrixXd& Y){checkDimensions(this->weights, this->fixedEffects, Y, false, false, true);};
 	inline void checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights = false, const bool checkStrictFixedEffects = false, const bool checkStrictY = false) const throw (CGPMixException);
 };
+
+
+
 
 inline void CLinearMean::checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights, const bool checkStrictFixedEffects, const bool checkStrictY) const throw (CGPMixException)
 {
