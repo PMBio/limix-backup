@@ -300,6 +300,7 @@ void ALMM::agetCovs(MatrixXd *out) const
             }
             arrayInverseInplace(Sdi);
             (*F_tests).resize(d, n_pheno);
+            F_tests->setConstant(0.0);
             beta.resize(d, n_pheno);
             //replice Sdi
             for(muint_t phen = 0;phen < n_pheno;++phen){
