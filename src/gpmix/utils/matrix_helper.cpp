@@ -14,7 +14,7 @@ namespace gpmix{
 
 bool isnull(const MatrixXd& m)
 {
-	return (m.cols()==0) & (m.rows()==0);
+	return ((m.cols()==0) && (m.rows()==0));
 }
 
 
@@ -25,12 +25,12 @@ bool isnull(const VectorXi& m)
 
 bool isnull(const Eigen::LLT<gpmix::MatrixXd>& m)
 {
-	return (m.cols()==0) & (m.rows()==0);
+	return ((m.cols()==0) && (m.rows()==0));
 }
 
 bool isnull(const Eigen::LDLT<gpmix::MatrixXd>& m)
 {
-	return (m.cols()==0) & (m.rows()==0);
+	return ((m.cols()==0) && (m.rows()==0));
 }
 
 void arrayInverseInplace(MatrixXd& m)

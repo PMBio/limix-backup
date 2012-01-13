@@ -28,7 +28,7 @@ using namespace gpmix;
 #define PI 3.14159265358979323846
 #endif
 
-
+#define linMean
 
 int main() {
 
@@ -42,16 +42,18 @@ int main() {
 		MatrixXd w = randn((muint_t)dim,(muint_t)1);
 		MatrixXd y = X*w + 0.1*randn((muint_t)100,(muint_t)1);
 
-#if 1
-		//dummy mean fucntion
+		CGPHyperParams params;
+#ifndef linMean	//dummy mean fucntion
 		CData data = CData();
+		params["dataTerm"] = MatrixXd();
 #else
+		params["dataTerm"] = w;
 		//Linear Mean Function
 		MatrixXd fixedEffects = MatrixXd::Ones((muint_t)100,(muint_t)dim);
 		y = fixedEffects*w + y;
 		CLinearMean data = CLinearMean(y,w,fixedEffects);
-		data.setParams(w);
-		data.setfixedEffects(fixedEffects);
+		//data.setParams(w);
+		//data.setfixedEffects(fixedEffects);
 
 #endif
 		//Ard covariance
@@ -67,10 +69,11 @@ int main() {
 		//hyperparams
 		CovarInput covar_params = randn(covar.getNumberParams(),(muint_t)1);
 		CovarInput lik_params = randn(lik.getNumberParams(),(muint_t)1);
-		CGPHyperParams params;
+
 		params["covar"] = covar_params;
 		params["lik"] = lik_params;
 		//params["X"] = X;
+
 
 		//get lml and grad
 		mfloat_t lml = gp.LML(params);
@@ -78,6 +81,9 @@ int main() {
 
 		std::cout <<"lml : "<< lml << "\n";
 		std::cout <<"grad[covar] :"<< grad["covar"] << "\n";
+#if defined linMean
+		std::cout <<"grad[dataTerm] :"<< grad["dataTerm"] << "\n";
+#endif
 		std::cout <<"grad[lik] :"<< grad["lik"] << "\n";
 
 		CGPopt opt(gp);

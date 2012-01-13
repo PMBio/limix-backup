@@ -15,28 +15,19 @@ namespace gpmix {
 //rename argout operators for swig interface
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //ignore C++ versions
-%ignore ACovarianceFunction::K;
-%ignore ACovarianceFunction::Kdiag;
-%ignore ACovarianceFunction::Kdiag_grad_X;
-%ignore ACovarianceFunction::Kgrad_X;
-%ignore ACovarianceFunction::Kcross;
-%ignore ACovarianceFunction::Kgrad_param;
-%ignore ACovarianceFunction::Kcross_grad_X;
+%ignore ADataTerm::evaluate();
+%ignore ADataTerm::gradY();
+%ignore ADataTerm::gradParams();
+%ignore ADataTerm::sumJacobianGradParams();
+%ignore ADataTerm::sumLogJacobian();
 
-%ignore ACovarianceFunction::getParams;
-%ignore ACovarianceFunction::getX;
 
 //rename argout versions for python; this overwrites the C++ convenience functions
-%rename(K) ACovarianceFunction::aK;
-%rename(Kdiag) ACovarianceFunction::aKdiag;
-%rename(Kdiag_grad_X) ACovarianceFunction::aKdiag_grad_X;
-%rename(Kgrad_X) ACovarianceFunction::aKgrad_X;
-%rename(Kcross) ACovarianceFunction::aKcross;
-%rename(Kgrad_param) ACovarianceFunction::aKgrad_param;
-%rename(Kcross_grad_X) ACovarianceFunction::aKcross_grad_X;
-
-%rename(getParams) ACovarianceFunction::agetParams;
-%rename(getX) ACovarianceFunction::agetX;
+%rename(evaluate) ADataTerm::aEvaluate;
+%rename(gradY) ADataTerm::aGradY;
+%rename(gradParams) ADataTerm::aGradParams;
+%rename(sumJacobianGradParams) ADataTerm::aSumJacobianGradParams;
+%rename(sumLogJacobian) ADataTerm::aSumLogJacobian;
 #endif
 
 
@@ -53,7 +44,9 @@ public:
 
 	virtual void aGetParams(MatrixXd* outParams){};
 	virtual inline MatrixXd getParams(){ MatrixXd outParams = MatrixXd(); aGetParams(&outParams); return outParams;	};
-	virtual inline void setY(const MatrixXd& Y){
+	virtual inline void setY(const MatrixXd& Y)
+	{
+		checkDimensions(Y);
 		this->insync = false;
 		this->Y = Y;
 	}
@@ -70,6 +63,8 @@ public:
 	virtual inline MatrixXd gradParams(){ MatrixXd ret = MatrixXd(); aGradParams(&ret); return ret;};
 	virtual inline MatrixXd sumJacobianGradParams(){ MatrixXd ret = MatrixXd(); aSumJacobianGradParams(&ret); return ret;};
 	virtual inline MatrixXd sumLogJacobian(){ MatrixXd ret = MatrixXd(); aSumLogJacobian(&ret); return ret;};
+	virtual inline string getName() const {return "ADataTerm";};
+	virtual inline void checkDimensions(const MatrixXd& Y){};
 	bool isInSync() const;
 	void makeSync();
 };
