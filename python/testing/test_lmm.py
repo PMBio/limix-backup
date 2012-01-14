@@ -62,20 +62,22 @@ if __name__ == '__main__':
     lm.process()    
     t4 = time.time()
     pv1_llr = lm.getPv()
-    if 0:
+    if 1:
         #ftests
         lm.setTestStatistics(gpmix.CLMM.TEST_F)
         lm.process()    
         pv1_ft = lm.getPv()
     
     if 1:
-        Nperm = 5
+        Nperm = 10
         PVp = SP.zeros([Nperm,X_.shape[1]])
+        t5=time.time()
         for i in xrange(Nperm):
             perm = SP.random.permutation(y_.shape[0])
             lm.setPermutation(perm)
             lm.process()    
             PVp[i,:] = lm.getPv().squeeze()
+        t6=time.time()
                
     
     print SP.absolute(pv1_llr-pv0).max()

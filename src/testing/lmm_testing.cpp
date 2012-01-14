@@ -23,8 +23,8 @@ using namespace gpmix;
 int main() {
 
 	int n = 100;
-	int p = 10;
-	int s = 2000;
+	int p = 2;
+	int s = 5;
 	int ncov = 1;
 	MatrixXd snps = (MatrixXd)randn((muint_t)n,(muint_t)s);
 	MatrixXd pheno = (MatrixXd)randn((muint_t)n,(muint_t)p);
@@ -41,7 +41,7 @@ int main() {
 	double ldeltamaxAlt =1.0;
 	MatrixXd pvals = MatrixXd(p, s);
 
-	if (0){ //LMM testing using old code
+	if (1){ //LMM testing using old code
 		lmm_old::train_associations(&pvals, snps, pheno,	K, covs, num_intervalsAlt,ldeltaminAlt, ldeltamaxAlt, num_intervals0, ldeltamin0, ldeltamax0);
 		cout << "pv_old:\n"<<scientific<<pvals<<endl;
 	}

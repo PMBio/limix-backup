@@ -10,6 +10,36 @@
 
 namespace gpmix {
 
+//kronecker maths:
+void akronravel(MatrixXd* out, const MatrixXd& A, const MatrixXd& B, const MatrixXd& X)
+{
+	(*out).noalias() = A*X*B.transpose();
+}
+
+MatrixXd kronravel(const MatrixXd& A, const MatrixXd& B, const MatrixXd& X)
+{
+	MatrixXd rv;
+	akronravel(&rv,A,B,X);
+	return rv;
+}
+
+void akrondiag(MatrixXd* out, const VectorXd& v1, const VectorXd& v2)
+{
+	(*out).resize(v1.rows(),v2.rows());
+	(*out).rowwise()  = v2.transpose();
+	//loop and multiply v1
+	for (muint_t ic=0;ic<(muint_t)(*out).cols();ic++)
+		(*out).col(ic).array() *= v1.array();
+}
+
+MatrixXd krondiag(const VectorXd& v1, const VectorXd& v2)
+{
+	MatrixXd rv;
+	akrondiag(&rv,v1,v2);
+	return rv;
+}
+
+
 
 MatrixXd& CGPSVDCache::getUK()
 {
@@ -267,7 +297,7 @@ bool CGPKroneckerCache::isInSync() const
             //start with multiplying Y with Sc
             SYUdKU = Ysi;
             MatrixXd St = MatrixXd::Zero(Ysi.rows(), Ysi.cols());
-            St.rowwise() = S;
+            St.rowwise() = S.transpose();
             SYUdKU.array() *= St.array();
             //dot product with UdKU
             SYUdKU = UdKU * SYUdKU;
@@ -287,13 +317,13 @@ bool CGPKroneckerCache::isInSync() const
             VectorXd& S = cache.cache_r.getSK();
             UY = U * Ysi.transpose();
             UYS = MatrixXd::Zero(UY.rows(), UY.cols());
-            UYS.rowwise() = S;
+            UYS.rowwise() = S.transpose();
         }else{
             MatrixXd& U = cache.cache_r.getUK();
             VectorXd& S = cache.cache_c.getSK();
             UY = U * Ysi;
             UYS = MatrixXd::Zero(UY.rows(), UY.cols());
-            UYS.rowwise() = S;
+            UYS.rowwise() = S.transpose();
         }
         UYS.array() *= UY.array();
         UYSYU = UYS * UY.transpose();

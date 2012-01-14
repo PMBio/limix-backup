@@ -14,34 +14,10 @@ namespace gpmix {
 
 
 //math utils
-inline void akronravel(MatrixXd* out, const MatrixXd& A, const MatrixXd& B, const MatrixXd& X)
-{
-	(*out) = A*X*B.transpose();
-}
-
-inline MatrixXd kronravel(const MatrixXd& A, const MatrixXd& B, const MatrixXd& X)
-{
-	MatrixXd rv;
-	akronravel(&rv,A,B,X);
-	return rv;
-}
-
-inline void akrondiag(MatrixXd* out, const VectorXd& v1, const VectorXd& v2)
-{
-	(*out).resize(v1.rows(),v2.rows());
-	(*out).rowwise()  = v2;
-	//loop and multiply v1
-	for (muint_t ic=0;ic<(muint_t)(*out).cols();ic++)
-		(*out).col(ic).array() *= v1.array();
-}
-
-inline MatrixXd krondiag(const VectorXd& v1, const VectorXd& v2)
-{
-	MatrixXd rv;
-	akrondiag(&rv,v1,v2);
-	return rv;
-}
-
+void akronravel(MatrixXd* out, const MatrixXd& A, const MatrixXd& B, const MatrixXd& X);
+MatrixXd kronravel(const MatrixXd& A, const MatrixXd& B, const MatrixXd& X);
+void akrondiag(MatrixXd* out, const VectorXd& v1, const VectorXd& v2);
+MatrixXd krondiag(const VectorXd& v1, const VectorXd& v2);
 
 
 //forward definition:
