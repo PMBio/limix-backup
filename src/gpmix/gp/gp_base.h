@@ -19,6 +19,12 @@ using namespace std;
 
 namespace gpmix {
 
+/* Forward declaratins of classes */
+class CGPbase;
+class CGPKroneckerCache;
+
+
+
 //type of cholesky decomposition to use:
 //LDL
 //typedef Eigen::LDLT<gpmix::MatrixXd> MatrixXdChol;
@@ -107,7 +113,7 @@ inline VectorXd CGPHyperParams::getParamArray()
 	return rv;
 }
 
-class CGPbase; // forward declaration
+
 
 //cache class for a covariance function.
 //offers cached access to a number of covaraince accessors and derived quantities:
@@ -167,7 +173,6 @@ public:
 %rename(LMLgrad_lik) CGPbase::aLMLgrad_lik;
 #endif
 
-class CGPKroneckerCache;
 class CGPbase {
 	friend class CGPCholCache;
 	friend class CGPKroneckerCache;
@@ -240,6 +245,10 @@ public:
 	//predictions:
 	virtual void apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException);
 	virtual void apredictVar(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException);
+
+	//class factory for LMM instances:
+	template <class lmmType>
+	lmmType* getLMMInstance();
 
 	//convenience function
 	inline VectorXd LMLgrad_covar() throw (CGPMixException);

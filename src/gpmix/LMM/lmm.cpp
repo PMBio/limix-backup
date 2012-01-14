@@ -89,6 +89,23 @@ void ALMM::agetCovs(MatrixXd *out) const
 	(*out) = covs;
 }
 
+void ALMM::agetK(MatrixXd *out) const
+    {
+        (*out) = K;
+    }
+
+MatrixXd ALMM::getK() const
+{
+    return K;
+}
+
+void ALMM::setK(const MatrixXd & K)
+{
+    this->K = K;
+    this->UK_cached = false;
+}
+
+
     int ALMM::getTestStatistics() const
     {
         return testStatistics;
@@ -129,10 +146,47 @@ void ALMM::agetCovs(MatrixXd *out) const
         this->ldeltaminAlt = ldeltaminAlt;
     }
 
+    void ALMM::setPermutation(const VectorXi& perm)
+    {
+    	this->perm = perm;
+    }
+
     MatrixXd ALMM::getSnps() const
     {
         return snps;
     }
+
+    VectorXi ALMM::getPermutation() const
+    {
+    	VectorXi rv;
+    	agetPermutation(&rv);
+    	return rv;
+    }
+
+    void ALMM::agetPermutation(VectorXi* out) const
+    {
+    	(*out) = perm;
+    }
+
+
+
+    void ALMM::applyPermutation(MatrixXd& M) throw(CGPMixException)
+    {
+      	if (isnull(perm))
+       		return;
+       	if (perm.rows()!=M.rows())
+       	{
+       		throw CGPMixException("ALMM:Permutation vector has incompatbile length");
+       	}
+       	//create temporary copy
+       	MatrixXd Mc = M;
+       	//apply permutation;
+       	for (muint_t i=0;i<(muint_t)Mc.rows();++i)
+       	{
+       		M.row(i) = Mc.row(perm(i));
+       	}
+    }
+
 
     /*CLMM*/
     CLMM::CLMM()
@@ -145,21 +199,6 @@ void ALMM::agetCovs(MatrixXd *out) const
         // TODO Auto-generated destructor stub
     }
 
-    void CLMM::agetK(MatrixXd *out) const
-    {
-        (*out) = K;
-    }
-
-    MatrixXd CLMM::getK() const
-    {
-        return K;
-    }
-
-    void CLMM::setK(const MatrixXd & K)
-    {
-        this->K = K;
-        this->UK_cached = false;
-    }
 
     void CLMM::setK(const MatrixXd & K, const MatrixXd & U, const VectorXd & S)
     {
@@ -169,8 +208,10 @@ void ALMM::agetCovs(MatrixXd *out) const
         this->UK_cached = true;
     }
 
+
+
     /*CLMM*/
-    void CLMM::updateDecomposition()
+    void CLMM::updateDecomposition() throw(CGPMixException)
     {
         //check that dimensions match
         this->num_samples = snps.rows();
@@ -203,7 +244,8 @@ void ALMM::agetCovs(MatrixXd *out) const
         }
     }
 
-    void CLMM::process()
+
+    void CLMM::process() throw(CGPMixException)
     {
         //get decomposition
         updateDecomposition();
@@ -219,13 +261,22 @@ void ALMM::agetCovs(MatrixXd *out) const
         MatrixXd UX_(num_samples, num_covs + 1);
         //store covariates upfront
         UX_.block(0, 0, num_samples, num_covs) = Ucovs;
+
+        //reserver memory for ftests?
         MatrixXd f_tests;
+        MatrixXd* pf_tests = NULL;
+        if (this->testStatistics==ALMM::TEST_F)
+        	pf_tests = &f_tests;
+
         for(muint_t ip = 0;ip < num_pheno;ip++){
             //get UY columns
             MatrixXd UY_ = Upheno.block(0, ip, num_samples, 1);
+            //Apply permutation if applicable:
+            applyPermutation(UY_);
             //fit delta on null model
             ldelta0(ip) = optdelta(UY_, Ucovs, S, num_intervals0, ldeltamin0, ldeltamax0);
-            nLL0(ip) = this->nLLeval(&f_tests, ldelta0(ip), UY_, Ucovs, S);
+
+            nLL0(ip) = this->nLLeval(NULL, ldelta0(ip), UY_, Ucovs, S);
             for(muint_t is = 0;is < num_snps;is++){
                 //1. construct foreground testing SNP transformed:
                 UX_.block(0, num_covs, num_samples, 1) = Usnps.block(0, is, num_samples, 1);
@@ -238,8 +289,7 @@ void ALMM::agetCovs(MatrixXd *out) const
                     ldelta(ip, is) = ldelta0(ip);
 
                 //3. evaluate
-                MatrixXd f_tests;
-                nLL(ip, is) = this->nLLeval(&f_tests, ldelta(ip, is), UY_, UX_, S);
+                nLL(ip, is) = this->nLLeval(pf_tests, ldelta(ip, is), UY_, UX_, S);
                 //4. calc p-value
                 if (this->testStatistics==ALMM::TEST_LLR)
                 	this->pv(ip, is) = Gamma::gammaQ(nLL0(ip, 0) - nLL(ip, is), (double)((((0.5)))) * 1.0);
@@ -278,18 +328,20 @@ void ALMM::agetCovs(MatrixXd *out) const
         /* internal functions */
         double CLMM::nLLeval(MatrixXd *F_tests, double ldelta, const MatrixXd & UY, const MatrixXd & UX, const MatrixXd & S)
         {
-        	VectorXd Sdi_p;
-        	MatrixXd XSdi;
+        	/*
         	MatrixXd XSX;
         	MatrixXd XSY;
         	MatrixXd beta;
         	MatrixXd res;
         	MatrixXd Sdi;
+        	*/
 
         	size_t n = UX.rows();
             size_t d = UX.cols();
             size_t n_pheno = UY.cols();
-            assert(UY.cols() == S.cols());
+            assert(UY.cols() == 1);
+            assert(S.cols() == 1);
+
             assert(UY.rows() == S.rows());
             assert(UY.rows() == UX.rows());
             double delta = exp(ldelta);
@@ -299,43 +351,52 @@ void ALMM::agetCovs(MatrixXd *out) const
                 ldet += log(Sdi.data()[ind]);
             }
             arrayInverseInplace(Sdi);
-            (*F_tests).resize(d, n_pheno);
-            F_tests->setConstant(0.0);
-            beta.resize(d, n_pheno);
-            //replice Sdi
-            for(muint_t phen = 0;phen < n_pheno;++phen){
-                Sdi_p = Sdi.block(0, phen, n, 1);
-                XSdi = (UX.array() * Sdi_p.replicate(1, d).array()).transpose();
-                XSX.noalias() = XSdi * UX;
-                XSY.noalias() = XSdi * UY.block(0, phen, n, 1);
-                //least sqaures solution of XSX*beta = XSY
-                //decomposition of K
-                Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(XSX);
-                MatrixXd U_X = eigensolver.eigenvectors();
-                MatrixXd S_X = eigensolver.eigenvalues();
-                beta.block(0, phen, d, 1) = U_X.transpose() * XSY;
-                for(size_t dim = 0;dim < d;++dim){
-                    if(S_X(dim, 0) > 3E-8){
-                        beta(dim, phen) /= S_X(dim, 0);
-                        for(size_t dim2 = 0;dim2 < d;++dim2){
-                            (*F_tests)(dim2, phen) += U_X(dim2, dim) * U_X(dim2, dim) / S_X(dim, 0);
-                        }
-                    }
-                    else{
-                        beta(dim, phen) = 0.0;
-                    }
-                }
-                beta.block(0, phen, d, 1) = U_X * beta.block(0, phen, d, 1);
+            if (F_tests!=NULL)
+            {
+            	(*F_tests).resize(d, n_pheno);
+            	F_tests->setConstant(0.0);
             }
+            beta.resize(d, n_pheno);
 
+            //replice Sdi
+            XSdi = (UX.array() * Sdi.replicate(1, d).array()).transpose();
+            XSX.noalias() = XSdi * UX;
+            XSY.noalias() = XSdi * UY;
+            //least sqaures solution of XSX*beta = XSY
+            //decomposition of K
+            Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(XSX);
+            MatrixXd U_X = eigensolver.eigenvectors();
+            MatrixXd S_X = eigensolver.eigenvalues();
+            beta = U_X.transpose() * XSY;
+            //loop over genotype dimensions:
+            for(size_t dim = 0;dim < d;++dim)
+            {
+            	if(S_X(dim, 0) > 3E-8)
+            	{
+            		beta(dim) /= S_X(dim, 0);
+            		if (F_tests!=NULL)
+            		{
+            			for(size_t dim2 = 0;dim2 < d;++dim2)
+            				(*F_tests)(dim2) += U_X(dim2, dim) * U_X(dim2, dim) / S_X(dim, 0);
+            		}
+            	}
+                else
+                	beta(dim) = 0.0;
+            } //end for
+
+            beta = U_X * beta;
             res.noalias() = UY - UX * beta;
+
             //sqared residuals
             res.array() *= res.array();
             res.array() *= Sdi.array();
             double sigg2 = res.array().sum() / (n * n_pheno);
             //compute the F-statistics
-            (*F_tests).array() = beta.array() * beta.array() / (*F_tests).array();
-            (*F_tests).array() /= sigg2;
+            if (F_tests!=NULL)
+            {
+            	(*F_tests).array() = beta.array() * beta.array() / (*F_tests).array();
+            	(*F_tests).array() /= sigg2;
+            }
             double nLL = 0.5 * (n * n_pheno * L2pi + ldet + n * n_pheno + n * n_pheno * log(sigg2));
             return nLL;
         }
