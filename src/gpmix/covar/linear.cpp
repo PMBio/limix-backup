@@ -62,7 +62,7 @@ void CCovLinearISO::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const 
 	//create empty matrix
 	(*out) = MatrixXd::Zero(Xstar.rows(),this->X.rows());
 	//otherwise update computation:
-	(*out).rowwise() = A*Xstar.col(d);
+	(*out).rowwise() = A*Xstar.col(d).transpose();
 																												}
 
 void CCovLinearISO::aKdiag_grad_X(VectorXd* out, const muint_t d ) const throw (CGPMixException)
@@ -124,7 +124,7 @@ void CCovLinearARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const 
 	VectorXd L = 2*params;
 	L = L.unaryExpr(ptr_fun(exp));
 	(*out) = MatrixXd::Zero(Xstar.rows(),this->X.rows());
-	(*out).rowwise() = L(d)*Xstar.col(d);
+	(*out).rowwise() = L(d)*Xstar.col(d).transpose();
 }
 
 void CCovLinearARD::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw (CGPMixException)

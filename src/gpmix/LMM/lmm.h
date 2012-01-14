@@ -114,11 +114,29 @@ public:
 };
 
 
+class CFastFixedEigenSolver
+{
+protected:
+	//instances of eigensolvers for caching
+	Eigen::SelfAdjointEigenSolver<MatrixXd2> solver2;
+	Eigen::SelfAdjointEigenSolver<MatrixXd3> solver3;
+
+public:
+	CFastFixedEigenSolver() : solver2(2),solver3(3)
+	{
+	}
+	inline void SelfAdjointEigenSolver(MatrixXd& U, MatrixXd& S, const MatrixXd& M);
+};
+
+
+
+
+
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //ignore C++ versions
 #endif
 //Standard mixed liner model
-class CLMM : public ALMM
+class CLMM : public ALMM, CFastFixedEigenSolver
 {
 protected:
 	//caching variables
@@ -128,15 +146,15 @@ protected:
 	//variables for optimization etc.
 	MatrixXd XSX;
 	MatrixXd XSY;
-	MatrixXd beta;
+	VectorXd beta;
 	MatrixXd res;
 	MatrixXd Sdi;
 	MatrixXd XSdi;
+	MatrixXd U_X;
+	MatrixXd S_X;
 
 	double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals,double ldeltamin,double ldeltamax);
 	double nLLeval(MatrixXd* F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
-
-
 public:
 	CLMM();
 	virtual ~CLMM();
@@ -248,6 +266,7 @@ public:
 };
 
 
+
 /* Standalone helper functions.
  * These will also be wrapped in python
  */
@@ -261,6 +280,42 @@ double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numi
 void optdeltaAllY(MatrixXd* out, const MatrixXd& UY, const MatrixXd& UX, const MatrixXd& S, const MatrixXd& ldeltagrid);
 double nLLeval(MatrixXd* F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
 void nLLevalAllY(MatrixXd* out, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
+
+
+
+/* Inline functions */
+inline void CFastFixedEigenSolver::SelfAdjointEigenSolver(MatrixXd& U, MatrixXd& S, const MatrixXd& M)
+{
+	//1. check size of matrix
+	muint_t dim = M.rows();
+    if (dim==1)
+    {
+		//trivial
+		U = MatrixXd::Ones(1,1);
+		S = M;
+    }
+    else if (dim==2)
+    {
+    	solver2.computeDirect(M);
+    	U = solver2.eigenvectors();
+    	S = solver2.eigenvalues();
+    }
+    else if (dim==3)
+    {
+    	//use eigen direct solver
+    	solver3.computeDirect(M);
+    	U = solver3.eigenvectors();
+    	S = solver3.eigenvalues();
+    }
+    else
+    {
+    	//use dynamic standard solver
+    	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(M);
+        U = eigensolver.eigenvectors();
+        S = eigensolver.eigenvalues();
+	}
+}
+
 
 } /* namespace gpmix */
 #endif /* ALMM_H_ */

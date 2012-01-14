@@ -9,6 +9,8 @@
 #include "gpmix/utils/gamma.h"
 #include "gpmix/utils/fisherf.h"
 #include "gpmix/utils/matrix_helper.h"
+#include <math.h>
+#include <cmath>
 
 
 namespace gpmix {
@@ -258,9 +260,9 @@ void ALMM::setK(const MatrixXd & K)
         MatrixXd nLL0(num_pheno, 1);
         MatrixXd nLL(num_pheno, num_snps);
         //reserve memory for snp-wise foreground model
-        MatrixXd UX_(num_samples, num_covs + 1);
-        //store covariates upfront
-        UX_.block(0, 0, num_samples, num_covs) = Ucovs;
+        MatrixXd UXps(num_samples, num_covs + 1);
+        MatrixXd Sp;
+        MatrixXd Ucovsp;
 
         //reserver memory for ftests?
         MatrixXd f_tests;
@@ -268,28 +270,36 @@ void ALMM::setK(const MatrixXd & K)
         if (this->testStatistics==ALMM::TEST_F)
         	pf_tests = &f_tests;
 
-        for(muint_t ip = 0;ip < num_pheno;ip++){
-            //get UY columns
-            MatrixXd UY_ = Upheno.block(0, ip, num_samples, 1);
-            //Apply permutation if applicable:
-            applyPermutation(UY_);
-            //fit delta on null model
-            ldelta0(ip) = optdelta(UY_, Ucovs, S, num_intervals0, ldeltamin0, ldeltamax0);
+        //reserve memory for permuted variables, if needed
 
-            nLL0(ip) = this->nLLeval(NULL, ldelta0(ip), UY_, Ucovs, S);
+        for(muint_t ip = 0;ip < num_pheno;ip++){
+            //get UY columns and permute data if needed
+            MatrixXd UYp = Upheno.block(0, ip, num_samples, 1);
+            //X is >> Y, Ucovs, S; so we permutet these to save computation
+            MatrixXd Sp = S;
+            MatrixXd Ucovsp = Ucovs;
+            applyPermutation(UYp);
+            applyPermutation(Ucovsp);
+            applyPermutation(Sp);
+            //store covariates upfront
+            UXps.block(0, 0, num_samples, num_covs) = Ucovsp;
+
+            //fit delta on null model
+            ldelta0(ip) = optdelta(UYp, Ucovsp, Sp, num_intervals0, ldeltamin0, ldeltamax0);
+            nLL0(ip) = this->nLLeval(NULL, ldelta0(ip), UYp, Ucovsp, Sp);
             for(muint_t is = 0;is < num_snps;is++){
                 //1. construct foreground testing SNP transformed:
-                UX_.block(0, num_covs, num_samples, 1) = Usnps.block(0, is, num_samples, 1);
+                UXps.block(0, num_covs, num_samples, 1) = Usnps.block(0, is, num_samples, 1);
                 //2. fit delta
                 if(num_intervalsAlt > 0)
                     //fit delta on alt model also
-                    ldelta(ip, is) = this->optdelta(UY_, UX_, S, num_intervalsAlt, ldelta0(ip) + ldeltaminAlt, ldelta0(ip) + ldeltamaxAlt);
+                    ldelta(ip, is) = this->optdelta(UYp, UXps, Sp, num_intervalsAlt, ldelta0(ip) + ldeltaminAlt, ldelta0(ip) + ldeltamaxAlt);
 
                 else
                     ldelta(ip, is) = ldelta0(ip);
 
                 //3. evaluate
-                nLL(ip, is) = this->nLLeval(pf_tests, ldelta(ip, is), UY_, UX_, S);
+                nLL(ip, is) = this->nLLeval(pf_tests, ldelta(ip, is), UYp, UXps, Sp);
                 //4. calc p-value
                 if (this->testStatistics==ALMM::TEST_LLR)
                 	this->pv(ip, is) = Gamma::gammaQ(nLL0(ip, 0) - nLL(ip, is), (double)((((0.5)))) * 1.0);
@@ -347,16 +357,18 @@ void ALMM::setK(const MatrixXd & K)
             double delta = exp(ldelta);
             Sdi = S.array() + delta;
             double ldet = 0.0;
+            //calc log det and invert at the same time Sdi elementwise
             for(size_t ind = 0;ind < n_pheno * n;++ind){
                 ldet += log(Sdi.data()[ind]);
+                Sdi.data()[ind] = 1.0/(Sdi.data()[ind]);
             }
-            arrayInverseInplace(Sdi);
+            //arrayInverseInplace(Sdi); (done in loop above)
             if (F_tests!=NULL)
             {
             	(*F_tests).resize(d, n_pheno);
             	F_tests->setConstant(0.0);
             }
-            beta.resize(d, n_pheno);
+            beta.resize(d);
 
             //replice Sdi
             XSdi = (UX.array() * Sdi.replicate(1, d).array()).transpose();
@@ -364,9 +376,12 @@ void ALMM::setK(const MatrixXd & K)
             XSY.noalias() = XSdi * UY;
             //least sqaures solution of XSX*beta = XSY
             //decomposition of K
+            SelfAdjointEigenSolver(U_X,S_X,XSX);
+            /*
             Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(XSX);
             MatrixXd U_X = eigensolver.eigenvectors();
             MatrixXd S_X = eigensolver.eigenvalues();
+            */
             beta = U_X.transpose() * XSY;
             //loop over genotype dimensions:
             for(size_t dim = 0;dim < d;++dim)
@@ -602,6 +617,8 @@ std::cout << S<< "\n\n";
             (*out)(0, phen) = 0.5 * (n * L2pi + ldet + n + n * log(sigg2));
         }
     }
+
+
 
 
 
