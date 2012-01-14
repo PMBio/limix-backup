@@ -71,6 +71,9 @@ typedef Eigen::Matrix<string, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXs;
 //SCIPY matrices for python interface: these are row major
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXdscipy;
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, 1> VectorXdscipy;
+typedef Eigen::Matrix<mint_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXiscipy;
+typedef Eigen::Matrix<mint_t, Eigen::Dynamic, 1> VectorXiscipy;
+
 
 //typedef Eigen::Matrix<float32_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXfscipy;
 #endif
