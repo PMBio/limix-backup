@@ -41,14 +41,15 @@ if __name__ == '__main__':
     y_ = Y[:,ip:ip+1]
     Iok = (~SP.isnan(y_)).all(axis=1)
     y_ = y_[Iok]
-    X_ = X[Iok,::2]
-
-    #population covariance
+    X_ = X[Iok,::1]
     K = 1./X_.shape[1]*SP.dot(X_,X_.T)
     C_ = SP.ones([X_.shape[0],1])
-    t0 = time.time()
-    [lod,pv0] = lmm.train_associations(X_,y_,K,C_)
-    t1 = time.time()
+        
+    if 1:
+        #population covariance
+        t0 = time.time()
+        [lod,pv0] = lmm.train_associations(X_,y_,K,C_)
+        t1 = time.time()
   
     #gpmix
     lm = gpmix.CLMM()
@@ -66,6 +67,16 @@ if __name__ == '__main__':
         lm.setTestStatistics(gpmix.CLMM.TEST_F)
         lm.process()    
         pv1_ft = lm.getPv()
+    
+    if 1:
+        Nperm = 5
+        PVp = SP.zeros([Nperm,X_.shape[1]])
+        for i in xrange(Nperm):
+            perm = SP.random.permutation(y_.shape[0])
+            lm.setPermutation(perm)
+            lm.process()    
+            PVp[i,:] = lm.getPv().squeeze()
+               
     
     print SP.absolute(pv1_llr-pv0).max()
     if 0:

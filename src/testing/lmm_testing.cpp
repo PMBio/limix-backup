@@ -82,6 +82,9 @@ int main() {
 		cout <<"pv_new:\n"<< scientific <<pv<<endl;
 	}
 
+
+
+
 	if(0) //kronecker product LMM
 	{
 		//TODO: calculate dofs for arbitrary WkronDiag and WkronBlock, currently we expect all ones...

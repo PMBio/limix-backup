@@ -21,7 +21,7 @@ CKroneckerLMM::~CKroneckerLMM()
 {
 }
 
-void CKroneckerLMM::updateDecomposition()
+void CKroneckerLMM::updateDecomposition() throw(CGPMixException)
 {
     //TODO: think about caching procedures:
 }
@@ -127,7 +127,7 @@ mfloat_t CKroneckerLMM::nLLeval(MatrixXd *F_tests, mfloat_t ldelta, const Matrix
     return nLL;
 }
 
-void CKroneckerLMM::process()
+void CKroneckerLMM::process() throw(CGPMixException)
 {
     this->Usnps = this->U_R.transpose() * this->snps;
     this->Upheno = this->U_R.transpose() * this->pheno * this->U_C;
@@ -274,7 +274,7 @@ CSimpleKroneckerLMM::CSimpleKroneckerLMM()
         (*out) = U_R * x * U_C.transpose();
     }
 
-    void CSimpleKroneckerLMM::process()
+    void CSimpleKroneckerLMM::process() throw(CGPMixException)
     {
         //0. update decomposition
         updateDecomposition();
@@ -335,7 +335,7 @@ CSimpleKroneckerLMM::CSimpleKroneckerLMM()
 
 }
 
-void CSimpleKroneckerLMM::updateDecomposition()
+void CSimpleKroneckerLMM::updateDecomposition() throw(CGPMixException)
 {
 	//check that dimensions match
 	this->num_samples = snps.rows();

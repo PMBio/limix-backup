@@ -19,12 +19,18 @@ namespace gpmix {
 %ignore ALMM::getPv;
 %ignore ALMM::getSnps;
 %ignore ALMM::getCovs;
+%ignore ALMM::getK;
+%ignore ALMM::getPermutation;
+
+
 
 //rename argout versions for python; this overwrites the C++ convenience functions
 %rename(getPheno) ALMM::agetPheno;
 %rename(getPv) ALMM::agetPv;
 %rename(getSnps) ALMM::agetSnps;
 %rename(getCovs) ALMM::agetCovs;
+%rename(getK) ALMM::agetK;
+%rename(getPermutation) ALMM::agetPermutation;
 #endif
 
 //Abstract base class for LMM models*/
@@ -37,6 +43,11 @@ protected:
 	MatrixXd Usnps;
 	MatrixXd Upheno;
 	MatrixXd Ucovs;
+	MatrixXd K;
+	//permutation, if needed:
+	VectorXi perm;
+
+
 	//number of samples, snps and pheno
 	muint_t num_samples,num_pheno,num_snps,num_covs;
 	//common settings
@@ -50,8 +61,10 @@ protected:
 	bool Usnps_cached;
 	bool Upheno_cached;
 	bool Ucovs_cached;
-
 	int testStatistics;
+
+	void applyPermutation(MatrixXd& V) throw(CGPMixException);
+
 
 public:
 	ALMM();
@@ -81,11 +94,17 @@ public:
 	void setSNPs(const MatrixXd& snps);
 
 	//abstract function
-	virtual void process() =0;
-	virtual void updateDecomposition() =0;
+	virtual void process() throw(CGPMixException) =0;
+	virtual void updateDecomposition() throw(CGPMixException) =0;
 
+	virtual void agetK(MatrixXd* out) const;
+	virtual void setK(const MatrixXd& K);
+	void setPermutation(const VectorXi& perm);
+	void agetPermutation(VectorXi* out) const;
 
 	//convenience wrappers:
+	VectorXi getPermutation() const;
+	MatrixXd getK() const;
 	MatrixXd getPheno() const;
 	MatrixXd getPv() const;
 	MatrixXd getSnps() const;
@@ -94,33 +113,28 @@ public:
     void setTestStatistics(int testStatistics);
 };
 
-//rename argout operators for swig interface
+
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //ignore C++ versions
-%ignore CLMM::getK;
-
-//rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getK) CLMM::agetK;
 #endif
 //Standard mixed liner model
 class CLMM : public ALMM
 {
 protected:
-	MatrixXd K;
+	//caching variables
 	MatrixXd U;
 	VectorXd S;
 
 	//variables for optimization etc.
-	VectorXd Sdi_p;
-	MatrixXd XSdi;
 	MatrixXd XSX;
 	MatrixXd XSY;
 	MatrixXd beta;
 	MatrixXd res;
+	MatrixXd Sdi;
+	MatrixXd XSdi;
 
 	double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals,double ldeltamin,double ldeltamax);
 	double nLLeval(MatrixXd* F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
-
 
 
 public:
@@ -130,15 +144,12 @@ public:
 	//function to add testing kernel
 
 	//processing;
-	virtual void process();
-	virtual void updateDecomposition();
+	virtual void process() throw(CGPMixException);
+	virtual void updateDecomposition() throw(CGPMixException);
 
-	void agetK(MatrixXd* out) const;
-	void setK(const MatrixXd& K);
 	void setK(const MatrixXd& K,const MatrixXd& U, const VectorXd& S);
-
-	//convenience functions:
-	MatrixXd getK() const;
+	void setK(const MatrixXd& K)
+	{ ALMM::setK(K);}
 };
 
 /*Simple Kronecker model.
@@ -167,8 +178,8 @@ public:
 	CSimpleKroneckerLMM();
 	virtual ~CSimpleKroneckerLMM();
 	//processing;
-	virtual void process();
-	virtual void updateDecomposition();
+	virtual void process() throw(CGPMixException);
+	virtual void updateDecomposition() throw(CGPMixException);
 
 	void setK_C(const MatrixXd& C);
 	void setK_C(const MatrixXd& C,const MatrixXd& U_C, const VectorXd& S_C);
@@ -216,8 +227,8 @@ public:
 	virtual ~CKroneckerLMM();
 
 	//processing;
-	virtual void process();
-	virtual void updateDecomposition();
+	virtual void process() throw(CGPMixException);
+	virtual void updateDecomposition() throw(CGPMixException);
 
 	void setK_C(const MatrixXd& C);
 	void setK_C(const MatrixXd& C,const MatrixXd& U_C, const VectorXd& S_C);

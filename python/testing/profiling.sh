@@ -1,4 +1,4 @@
 export CPUPROFILE=/tmp/prof.out
-python ./kronecker_test.py
+python ./test_lmm.py
 pprof --dot ./../_gpmix.so /tmp/prof.out > ./prof.dot 
 dot -oprof.png -Tpng prof.dot
