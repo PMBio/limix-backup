@@ -265,8 +265,8 @@ void ALMM::setK(const MatrixXd & K)
         MatrixXd Ucovsp;
 
         //reserver memory for ftests?
-        MatrixXd f_tests;
-        MatrixXd* pf_tests = NULL;
+        VectorXd f_tests;
+        VectorXd* pf_tests = NULL;
         if (this->testStatistics==ALMM::TEST_F)
         	pf_tests = &f_tests;
 
@@ -321,9 +321,8 @@ void ALMM::setK(const MatrixXd & K)
             ldeltaD /= ((double)(((((numintervals))))) - 1);
             double nllmin = HUGE_VAL;
             double ldeltaopt_glob = 0;
-            MatrixXd f_tests;
             for(int i = 0;i < (numintervals);i++){
-                nllgrid(i, 0) = this->nLLeval(&f_tests, ldelta, UY, UX, S);
+                nllgrid(i, 0) = this->nLLeval(NULL, ldelta, UY, UX, S);
                 ldeltagrid(i, 0) = ldelta;
                 if(nllgrid(i, 0) < nllmin){
                     nllmin = nllgrid(i, 0);
@@ -336,7 +335,7 @@ void ALMM::setK(const MatrixXd & K)
         }
 
         /* internal functions */
-        double CLMM::nLLeval(MatrixXd *F_tests, double ldelta, const MatrixXd & UY, const MatrixXd & UX, const MatrixXd & S)
+        double CLMM::nLLeval(VectorXd *F_tests, double ldelta, const VectorXd & UY, const MatrixXd & UX, const VectorXd & S)
         {
         	/*
         	MatrixXd XSX;
@@ -348,24 +347,23 @@ void ALMM::setK(const MatrixXd & K)
 
         	size_t n = UX.rows();
             size_t d = UX.cols();
-            size_t n_pheno = UY.cols();
-            assert(UY.cols() == 1);
-            assert(S.cols() == 1);
-
             assert(UY.rows() == S.rows());
             assert(UY.rows() == UX.rows());
+
             double delta = exp(ldelta);
             Sdi = S.array() + delta;
             double ldet = 0.0;
             //calc log det and invert at the same time Sdi elementwise
-            for(size_t ind = 0;ind < n_pheno * n;++ind){
+            for(size_t ind = 0;ind < n;++ind){
+            	//ldet
                 ldet += log(Sdi.data()[ind]);
+                //inverse:
                 Sdi.data()[ind] = 1.0/(Sdi.data()[ind]);
             }
             //arrayInverseInplace(Sdi); (done in loop above)
             if (F_tests!=NULL)
             {
-            	(*F_tests).resize(d, n_pheno);
+            	(*F_tests).resize(d);
             	F_tests->setConstant(0.0);
             }
             beta.resize(d);
@@ -375,13 +373,10 @@ void ALMM::setK(const MatrixXd & K)
             XSX.noalias() = XSdi * UX;
             XSY.noalias() = XSdi * UY;
             //least sqaures solution of XSX*beta = XSY
-            //decomposition of K
+
+            //Call internal solver which uses fixed solvers for 2d and 3d
             SelfAdjointEigenSolver(U_X,S_X,XSX);
-            /*
-            Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(XSX);
-            MatrixXd U_X = eigensolver.eigenvectors();
-            MatrixXd S_X = eigensolver.eigenvalues();
-            */
+
             beta = U_X.transpose() * XSY;
             //loop over genotype dimensions:
             for(size_t dim = 0;dim < d;++dim)
@@ -405,14 +400,14 @@ void ALMM::setK(const MatrixXd & K)
             //sqared residuals
             res.array() *= res.array();
             res.array() *= Sdi.array();
-            double sigg2 = res.array().sum() / (n * n_pheno);
+            double sigg2 = res.sum() / (n);
             //compute the F-statistics
             if (F_tests!=NULL)
             {
             	(*F_tests).array() = beta.array() * beta.array() / (*F_tests).array();
             	(*F_tests).array() /= sigg2;
             }
-            double nLL = 0.5 * (n * n_pheno * L2pi + ldet + n * n_pheno + n * n_pheno * log(sigg2));
+            double nLL = 0.5 * (n * L2pi + ldet + n + n * log(sigg2));
             return nLL;
         }
 

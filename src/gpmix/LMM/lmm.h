@@ -145,7 +145,7 @@ protected:
 
 	//variables for optimization etc.
 	MatrixXd XSX;
-	MatrixXd XSY;
+	VectorXd XSY;
 	VectorXd beta;
 	MatrixXd res;
 	MatrixXd Sdi;
@@ -154,7 +154,7 @@ protected:
 	MatrixXd S_X;
 
 	double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals,double ldeltamin,double ldeltamax);
-	double nLLeval(MatrixXd* F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
+	double nLLeval(VectorXd* F_tests, double ldelta,const VectorXd& UY,const MatrixXd& UX,const VectorXd& S);
 public:
 	CLMM();
 	virtual ~CLMM();
