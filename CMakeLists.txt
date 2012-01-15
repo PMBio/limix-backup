@@ -20,6 +20,10 @@ SET(CMAKE_OSX_ARCHITECTURES "i386;x86_64")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif (BUILD_UNIVERSAL)
 
+#architecture (cluster)
+set(TARGET_ARCHITECTURE "k8")
+
+
 #optimization for architecture:
 include (OptimizeForArchitecture)
 include (AddCompilerFlag)
@@ -86,6 +90,9 @@ set(CMAKE_MODULE_PATH "${GPMix_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 add_definitions(-g -Wextra -D_BSD_SOURCE)
 #optimize automatically for architecture:
 OptimizeForArchitecture()
+
+
+
 #fPic while compiling on
 #this seems to be needed on some linux systems
 #set(CMAKE_CXX_FLAGS "-fPIC -O3 -march=core2")

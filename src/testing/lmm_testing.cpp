@@ -71,6 +71,14 @@ int main() {
 		CLMM lmm;
 
 
+		VectorXd v = VectorXd::Ones(3);
+		MatrixXd M = MatrixXd::Ones(3,2);
+
+		isnull(v);
+		isnull(v.transpose());
+
+		isnull(M);
+
 		lmm.setK(K);
 		lmm.setSNPs(snps);
 		lmm.setPheno(pheno);

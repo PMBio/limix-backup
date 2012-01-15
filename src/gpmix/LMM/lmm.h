@@ -125,7 +125,8 @@ public:
 	CFastFixedEigenSolver() : solver2(2),solver3(3)
 	{
 	}
-	inline void SelfAdjointEigenSolver(MatrixXd& U, MatrixXd& S, const MatrixXd& M);
+	template <typename Derived, typename OtherDerived>
+	inline void SelfAdjointEigenSolver(const Eigen::MatrixBase<Derived>& U, const Eigen::MatrixBase<Derived>& S, const Eigen::MatrixBase<OtherDerived>& M);
 };
 
 
@@ -148,7 +149,7 @@ protected:
 	VectorXd XSY;
 	VectorXd beta;
 	MatrixXd res;
-	MatrixXd Sdi;
+	VectorXd Sdi;
 	MatrixXd XSdi;
 	MatrixXd U_X;
 	MatrixXd S_X;
@@ -284,35 +285,37 @@ void nLLevalAllY(MatrixXd* out, double ldelta,const MatrixXd& UY,const MatrixXd&
 
 
 /* Inline functions */
-inline void CFastFixedEigenSolver::SelfAdjointEigenSolver(MatrixXd& U, MatrixXd& S, const MatrixXd& M)
+
+template <typename Derived, typename OtherDerived>
+inline void CFastFixedEigenSolver::SelfAdjointEigenSolver(const Eigen::MatrixBase<Derived>& U, const Eigen::MatrixBase<Derived>& S, const Eigen::MatrixBase<OtherDerived>& M)
 {
 	//1. check size of matrix
 	muint_t dim = M.rows();
     if (dim==1)
     {
 		//trivial
-		U = MatrixXd::Ones(1,1);
-		S = M;
+    	const_cast<Eigen::MatrixBase<Derived>& >(U) = MatrixXd::Ones(1,1);
+    	const_cast<Eigen::MatrixBase<Derived>& >(S) = M;
     }
     else if (dim==2)
     {
     	solver2.computeDirect(M);
-    	U = solver2.eigenvectors();
-    	S = solver2.eigenvalues();
+    	const_cast<Eigen::MatrixBase<Derived>& >(U) = solver2.eigenvectors();
+    	const_cast<Eigen::MatrixBase<Derived>& >(S) = solver2.eigenvalues();
     }
     else if (dim==3)
     {
     	//use eigen direct solver
     	solver3.computeDirect(M);
-    	U = solver3.eigenvectors();
-    	S = solver3.eigenvalues();
+    	const_cast<Eigen::MatrixBase<Derived>& >(U) = solver3.eigenvectors();
+    	const_cast<Eigen::MatrixBase<Derived>& >(S) = solver3.eigenvalues();
     }
     else
     {
     	//use dynamic standard solver
     	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(M);
-        U = eigensolver.eigenvectors();
-        S = eigensolver.eigenvalues();
+    	const_cast<Eigen::MatrixBase<Derived>& >(U) = eigensolver.eigenvectors();
+    	const_cast<Eigen::MatrixBase<Derived>& >(S) = eigensolver.eigenvalues();
 	}
 }
 
