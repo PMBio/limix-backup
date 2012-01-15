@@ -45,7 +45,7 @@ if __name__ == '__main__':
     K = 1./X_.shape[1]*SP.dot(X_,X_.T)
     C_ = SP.ones([X_.shape[0],1])
         
-    if 0:
+    if 1:
         #population covariance
         t0 = time.time()
         [lod,pv0] = lmm.train_associations(X_,y_,K,C_)
@@ -62,13 +62,13 @@ if __name__ == '__main__':
     lm.process()    
     t4 = time.time()
     pv1_llr = lm.getPv()
-    if 0:
+    if 1:
         #ftests
         lm.setTestStatistics(gpmix.CLMM.TEST_F)
         lm.process()    
         pv1_ft = lm.getPv()
     
-    if 1:
+    if 0:
         Nperm = 10
         PVp = SP.zeros([Nperm,X_.shape[1]])
         t5=time.time()

@@ -4,13 +4,13 @@
  *  Created on: Nov 27, 2011
  *      Author: stegle
  */
-
 #include "lmm.h"
 #include "gpmix/utils/gamma.h"
 #include "gpmix/utils/fisherf.h"
 #include "gpmix/utils/matrix_helper.h"
 #include <math.h>
 #include <cmath>
+#include<Eigen/Core>
 
 
 namespace gpmix {
@@ -233,15 +233,15 @@ void ALMM::setK(const MatrixXd & K)
             S = eigensolver.eigenvalues();
         }
         if(!Usnps_cached){
-            Usnps = U.transpose() * snps;
+            Usnps.noalias() = U.transpose() * snps;
             Usnps_cached = true;
         }
         if(!Upheno_cached){
-            Upheno = U.transpose() * pheno;
+            Upheno.noalias() = U.transpose() * pheno;
             Upheno_cached = true;
         }
         if(!Ucovs_cached){
-            Ucovs = U.transpose() * covs;
+            Ucovs.noalias() = U.transpose() * covs;
             Ucovs_cached = true;
         }
     }
@@ -337,14 +337,6 @@ void ALMM::setK(const MatrixXd & K)
         /* internal functions */
         double CLMM::nLLeval(VectorXd *F_tests, double ldelta, const VectorXd & UY, const MatrixXd & UX, const VectorXd & S)
         {
-        	/*
-        	MatrixXd XSX;
-        	MatrixXd XSY;
-        	MatrixXd beta;
-        	MatrixXd res;
-        	MatrixXd Sdi;
-        	*/
-
         	size_t n = UX.rows();
             size_t d = UX.cols();
             assert(UY.rows() == S.rows());
@@ -369,15 +361,18 @@ void ALMM::setK(const MatrixXd & K)
             beta.resize(d);
 
             //replice Sdi
-            XSdi = (UX.array() * Sdi.replicate(1, d).array()).transpose();
+            //EIGEN_ASM_COMMENT("begin");
+            XSdi = UX.array().transpose();
+            XSdi.array().rowwise() *= Sdi.array().transpose();
             XSX.noalias() = XSdi * UX;
             XSY.noalias() = XSdi * UY;
-            //least sqaures solution of XSX*beta = XSY
+            //EIGEN_ASM_COMMENT("end");
 
-            //Call internal solver which uses fixed solvers for 2d and 3d
+            //least sqaures solution of XSX*beta = XSY
+            //Call internal solver which uses fixed solvers for 2d and 3d matrices
             SelfAdjointEigenSolver(U_X,S_X,XSX);
 
-            beta = U_X.transpose() * XSY;
+            beta.noalias() = U_X.transpose() * XSY;
             //loop over genotype dimensions:
             for(size_t dim = 0;dim < d;++dim)
             {
@@ -616,6 +611,39 @@ std::cout << S<< "\n\n";
 
 
 
+    /*
+void CFastFixedEigenSolver::SelfAdjointEigenSolver(MatrixXd& U, MatrixXd& S, const MatrixXd& M)
+    {
+    	//1. check size of matrix
+    	muint_t dim = M.rows();
+        if (dim==1)
+        {
+    		//trivial
+    		U = MatrixXd::Ones(1,1);
+    		S = M;
+        }
+        else if (dim==2)
+        {
+        	solver2.computeDirect(M);
+        	U = solver2.eigenvectors();
+        	S = solver2.eigenvalues();
+        }
+        else if (dim==3)
+        {
+        	//use eigen direct solver
+        	solver3.computeDirect(M);
+        	U = solver3.eigenvectors();
+        	S = solver3.eigenvalues();
+        }
+        else
+        {
+        	//use dynamic standard solver
+        	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(M);
+            U = eigensolver.eigenvectors();
+            S = eigensolver.eigenvalues();
+    	}
+    }
+*/
 
 
 

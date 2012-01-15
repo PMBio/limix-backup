@@ -12,6 +12,17 @@
 
 namespace gpmix{
 
+
+/*
+template <typename Derived>
+bool isnull(const Eigen::EigenBase<Derived>& m)
+{
+	return ((m.cols()==0) && (m.rows()==0));
+}
+*/
+
+
+/*
 bool isnull(const MatrixXd& m)
 {
 	return ((m.cols()==0) && (m.rows()==0));
@@ -22,6 +33,8 @@ bool isnull(const VectorXi& m)
 {
 	return (m.rows()==0);
 }
+*/
+
 
 bool isnull(const Eigen::LLT<gpmix::MatrixXd>& m)
 {
@@ -33,12 +46,9 @@ bool isnull(const Eigen::LDLT<gpmix::MatrixXd>& m)
 	return ((m.cols()==0) && (m.rows()==0));
 }
 
-void arrayInverseInplace(MatrixXd& m)
-{
-	for (muint_t r=0;r<(muint_t)m.rows();++r)
-		for(muint_t c=0;c<(muint_t)m.cols();++c)
-			m(r,c) = 1.0/m(r,c);
-}
+//void arrayInverseInplace(MatrixXd& m)
+//{
+//}
 
 
 
