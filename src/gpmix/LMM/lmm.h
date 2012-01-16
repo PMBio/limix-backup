@@ -63,6 +63,8 @@ protected:
 	bool Ucovs_cached;
 	int testStatistics;
 
+	virtual void clearCache();
+
 	void applyPermutation(MatrixXd& V) throw(CGPMixException);
 
 

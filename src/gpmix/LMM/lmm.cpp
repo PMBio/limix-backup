@@ -104,9 +104,17 @@ MatrixXd ALMM::getK() const
 void ALMM::setK(const MatrixXd & K)
 {
     this->K = K;
-    this->UK_cached = false;
+    this->clearCache();
 }
 
+
+void ALMM::clearCache()
+{
+    this->UK_cached = false;
+    this->Usnps_cached = false;
+    this->Ucovs_cached = false;
+    this->Upheno_cached = false;
+}
 
     int ALMM::getTestStatistics() const
     {
@@ -126,16 +134,19 @@ void ALMM::setK(const MatrixXd & K)
     void ALMM::setCovs(const MatrixXd & covs)
     {
         this->covs = covs;
+        Ucovs_cached = false;
     }
 
     void ALMM::setPheno(const MatrixXd & pheno)
     {
         this->pheno = pheno;
+        Upheno_cached = false;
     }
 
     void ALMM::setSNPs(const MatrixXd & snps)
     {
         this->snps = snps;
+        Usnps_cached = false;
     }
 
     mfloat_t ALMM::getLdeltaminAlt() const
@@ -207,7 +218,7 @@ void ALMM::setK(const MatrixXd & K)
         this->K = K;
         this->U = U;
         this->S = S;
-        this->UK_cached = true;
+        clearCache();
     }
 
 
