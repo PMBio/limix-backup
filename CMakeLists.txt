@@ -20,8 +20,8 @@ SET(CMAKE_OSX_ARCHITECTURES "i386;x86_64")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif (BUILD_UNIVERSAL)
 
-#architecture (cluster)
-set(TARGET_ARCHITECTURE "k8")
+#set architecture manually (cluster)
+#set(TARGET_ARCHITECTURE "k8")
 
 
 #optimization for architecture:
