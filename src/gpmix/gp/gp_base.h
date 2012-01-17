@@ -165,12 +165,17 @@ public:
 %ignore CGPbase::LMLgrad_covar;
 %ignore CGPbase::LMLgrad_lik;
 %ignore CGPbase::getParamArray;
+%ignore CGPbase::predictMean;
+%ignore CGPbase::predictVar;
+
 
 %rename(getParamArray) CGPbase::agetParamArray;
 %rename(getX) CGPbase::agetX;
 %rename(getY) CGPbase::agetY;
 %rename(LMLgrad_covar) CGPbase::aLMLgrad_covar;
 %rename(LMLgrad_lik) CGPbase::aLMLgrad_lik;
+%rename(predictMean) CGPbase::apredictMean;
+%rename(predictVar) CGPbase::apredictVar;
 #endif
 
 class CGPbase {
@@ -258,7 +263,22 @@ public:
 	inline MatrixXd getY();
 	inline MatrixXd getX() const;
 	inline VectorXd getParamArray() const;
+	inline MatrixXd predictMean(const MatrixXd& Xstar) throw (CGPMixException);
+	inline MatrixXd predictVar(const MatrixXd& Xstar) throw (CGPMixException);
 };
+
+inline MatrixXd CGPbase::predictMean(const MatrixXd& Xstar) throw (CGPMixException)
+		{
+		MatrixXd rv;
+		apredictMean(&rv,Xstar);
+		return rv;
+		}
+inline MatrixXd CGPbase::predictVar(const MatrixXd& Xstar) throw (CGPMixException)
+		{
+		MatrixXd rv;
+		apredictVar(&rv,Xstar);
+		return rv;
+		}
 
 
 inline MatrixXd CGPbase::getY()

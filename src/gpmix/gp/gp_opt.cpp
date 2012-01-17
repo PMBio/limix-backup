@@ -95,9 +95,6 @@ void CGPopt::opt() throw (CGPMixException)
 	    //store optimized values:
 	    optParams = gp.getParams();
 	    optParams.setParamArray(x);
-	    // dump gradients:
-	    std::cout << "covar grad:" << gp.LMLgrad()["covar"] << "\n";
-	    std::cout << "lml:" << gp.LML() << "\n";
 	}
 }
 

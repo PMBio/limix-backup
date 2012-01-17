@@ -101,7 +101,8 @@ int main() {
 #endif
 
 
-
+		gp.predictMean(X.block(0,0,10,X.cols()));
+		gp.predictVar(X.block(0,0,10,X.cols()));
 
 
 

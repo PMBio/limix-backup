@@ -515,23 +515,25 @@ void CGPbase::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 
 void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException)
 {
-	/*
-	MatrixXd KstarCross = covar.
-	return KstarCross * this->getKinvY();
-	 */
+	MatrixXd KstarCross;
+	this->covar.aKcross(&KstarCross,Xstar);
+	MatrixXd& KinvY = this->cache.getKinvY();
+	(*out).noalias() = KstarCross * KinvY;
 }
 
 void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) throw (CGPMixException)
 {
-	/*
-	MatrixXd KstarDiag = this->covar.Kdiag(this->params.get("covar"), Xstar);
-	KstarDiag+=this->lik.Kdiag(this->params.get("lik"), Xstar);
-	MatrixXd Kcross = this->covar.K(this->params.get("covar"), this->X, Xstar);
-	MatrixXd v = this->getCholK().solve(Kcross);
+	MatrixXd KstarCross;
+	this->covar.aKcross(&KstarCross,Xstar);
+	VectorXd KstarDiag;
+	this->covar.aKcross_diag(&KstarDiag,Xstar);
+
+
+	MatrixXd v = this->cache.getCholK().solve(KstarCross.transpose());
 	MatrixXd vv = (v.array()*v.array()).matrix().colwise().sum();
-	MatrixXd S2 = KstarDiag - vv.transpose();
-	return S2;
-	 */
+
+	std::cout << v.rows() <<"," << vv.rows() << "," << vv.cols() << "\n";
+	(*out) = KstarDiag - vv.transpose();
 }
 
 //class factories for LMMs

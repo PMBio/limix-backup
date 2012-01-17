@@ -18,6 +18,7 @@ SET(SOURCES gpmix/covar/covariance.cpp
 	    gpmix/covar/se.cpp
 	    gpmix/covar/combinators.cpp
 	    gpmix/covar/linear.cpp
+	    gpmix/covar/freeform.cpp
 	    gpmix/covar/dist.cpp
 	    gpmix/utils/matrix_helper.cpp
 	    gpmix/utils/beta.cpp

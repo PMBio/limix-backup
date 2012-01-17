@@ -24,6 +24,12 @@ void ALikelihood::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(C
 {
 	(*out) = MatrixXd::Zero(Xstar.rows(),X.rows());
 }
+
+void ALikelihood::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+		{
+		(*out) = VectorXd::Zero(Xstar.rows());
+		}
+
 void ALikelihood::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException)
 {
 	(*out) = MatrixXd::Zero(Xstar.rows(),X.rows());

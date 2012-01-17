@@ -26,6 +26,7 @@ public:
 
 	//overloaded pure virtual functions:
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
 	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);

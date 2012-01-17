@@ -27,6 +27,7 @@ public:
 
 	//pure virtual functions we don't really need...
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 };

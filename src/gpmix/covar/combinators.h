@@ -69,6 +69,7 @@ public:
 
 	//overloaded pure virtual members
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
 	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
@@ -78,6 +79,29 @@ public:
 	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
 	virtual string getName() const;
 };
+
+
+
+class CProductCF : public AMultiCF {
+public:
+	CProductCF(const ACovarVec& covariances);
+	CProductCF(const muint_t numCovariances=0);
+	//destructors
+	virtual ~CProductCF();
+
+	//overloaded pure virtual members
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
+	//optional overloadings:
+	virtual void aK(MatrixXd* out) const;
+	virtual void aKdiag(VectorXd* out) const;
+	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
+	virtual string getName() const;
+};
+
 
 }
 

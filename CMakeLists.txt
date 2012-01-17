@@ -21,7 +21,7 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif (BUILD_UNIVERSAL)
 
 #set architecture manually (cluster)
-#set(TARGET_ARCHITECTURE "k8")
+set(TARGET_ARCHITECTURE "auto")
 
 
 #optimization for architecture:
