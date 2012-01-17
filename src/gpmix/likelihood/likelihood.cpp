@@ -72,6 +72,13 @@ void CLikNormalIso::aKdiag(VectorXd* out) const throw (CGPMixException)
 	(*out).setConstant(sigma_2);
 }
 
+void CLikNormalIso::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+		mfloat_t sigma_2 = gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
+		(*out).setConstant(Xstar.rows(),sigma_2);
+}
+
+
 void CLikNormalIso::aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException)
 {
 	mfloat_t sigma_2 = 2.0*gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion

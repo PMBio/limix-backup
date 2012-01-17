@@ -43,6 +43,7 @@ public:
 	//pure virtual functions that need to be overwritten
 	virtual void aK(MatrixXd* out) const throw (CGPMixException);
 	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
 	virtual void aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException);
 	//overwrite setX. We merely ignore the number of columns here:
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
