@@ -17,14 +17,16 @@ import time
 
 SP.random.seed(1)
 
-n_dimensions=10
-n_samples = 100
+n_dimensions=1
+n_samples = 30
 X = SP.randn(n_samples,n_dimensions)
 y = SP.dot(X,SP.randn(n_dimensions,1))
 y += 0.2*SP.randn(y.shape[0],y.shape[1])
 
 covar_params = SP.random.randn(n_dimensions+1)
 lik_params = SP.random.randn(1)
+
+Xs = SP.linspace(X.min()-3,X.max()+3)[:,SP.newaxis]
 
 t0 = time.time()
 #pygp: OLD
@@ -37,12 +39,6 @@ dlml_ = gp_.LMLgrad(hyperparams_)
 #optimize using pygp:
 opt_params_ = opt.opt_hyper(gp_,hyperparams_)[0]
 lmlo_ = gp_.LML(opt_params_)
-t1 = time.time()
-xx = SP.linspace(-1,1,100)
-for x in xx:
-    hyperparams_['covar'][0] = x
-    tmp = gp_.LML(hyperparams_)
-t2 = time.time()
 
 
 
@@ -62,7 +58,6 @@ gp.setX(X)
 lml = gp.LML(hyperparams)
 dlml = gp.LMLgrad(hyperparams)
 
-
 #build constraints
 constrainU = gpmix.CGPHyperParams()
 constrainL = gpmix.CGPHyperParams()
@@ -77,6 +72,36 @@ gpopt.opt()
 opt_params = gp.getParamArray()
 lmlo = gp.LML()
 
+
 #prediction
-Xmean = gp.predictMean(X)
+Xmean = gp.predictMean(Xs)
+Xstd = gp.predictVar(Xs)
+
+#predict
+[M,S] = gp_.predict(opt_params_,Xs)
+
+
+import pylab as PL
+PL.figure()
+PL.plot(X,y,'b.')
+PL.plot(Xs,M)
+PL.plot(Xs,M+SP.sqrt(S))
+PL.plot(Xs,M-SP.sqrt(S))
+
+
+PL.figure()
+PL.plot(X,y,'b.')
+PL.plot(Xs,Xmean)
+PL.plot(Xs,Xmean+SP.sqrt(Xstd))
+PL.plot(Xs,Xmean-SP.sqrt(Xstd))
+
+
+Kcross=covar.Kcross(Xs)
+Kcross_ = gp_.covar.K(opt_params_['covar'],X,Xs).T
+
+Kcross_diag=covar.Kcross_diag(Xs)
+Kcross_diag_ = gp_.covar.Kdiag(opt_params_['covar'],Xs)
+
+Kcross_diag_noise = ll.Kcross_diag(Xs)
+Kcross_diag_noise_ = gp_.likelihood.Kdiag(opt_params_['lik'],Xs)
 

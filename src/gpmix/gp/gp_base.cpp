@@ -526,13 +526,15 @@ void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) throw (CGPMixExce
 	MatrixXd KstarCross;
 	this->covar.aKcross(&KstarCross,Xstar);
 	VectorXd KstarDiag;
+	//get self covariance
 	this->covar.aKcross_diag(&KstarDiag,Xstar);
+	//add noise
+	KstarDiag+=this->lik.Kcross_diag(Xstar);
 
 
 	MatrixXd v = this->cache.getCholK().solve(KstarCross.transpose());
 	MatrixXd vv = (v.array()*v.array()).matrix().colwise().sum();
 
-	std::cout << v.rows() <<"," << vv.rows() << "," << vv.cols() << "\n";
 	(*out) = KstarDiag - vv.transpose();
 }
 

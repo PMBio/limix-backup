@@ -25,6 +25,7 @@ typedef VectorXd CovarParams;
 //ignore C++ versions
 %ignore ACovarianceFunction::K;
 %ignore ACovarianceFunction::Kdiag;
+%ignore ACovarianceFunction::aKcross_diag;
 %ignore ACovarianceFunction::Kdiag_grad_X;
 %ignore ACovarianceFunction::Kgrad_X;
 %ignore ACovarianceFunction::Kcross;
@@ -40,6 +41,7 @@ typedef VectorXd CovarParams;
 %rename(Kdiag_grad_X) ACovarianceFunction::aKdiag_grad_X;
 %rename(Kgrad_X) ACovarianceFunction::aKgrad_X;
 %rename(Kcross) ACovarianceFunction::aKcross;
+%rename(Kcross_diag) ACovarianceFunction::aKcross_diag;
 %rename(Kgrad_param) ACovarianceFunction::aKgrad_param;
 %rename(Kcross_grad_X) ACovarianceFunction::aKcross_grad_X;
 
