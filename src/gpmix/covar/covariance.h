@@ -98,6 +98,8 @@ public:
 
 	//pure functions that need to be implemented
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException) = 0;
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException) = 0;
+
 	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException) =0;
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) = 0;
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) = 0;
@@ -108,6 +110,8 @@ public:
 	inline CovarInput getX() const {return this->X;}
 	inline VectorXd Kdiag() const;
 	inline MatrixXd Kcross( const CovarInput& Xstar ) const throw(CGPMixException);
+	inline VectorXd Kcross_diag(const CovarInput& Xstar) const throw(CGPMixException);
+
 	inline MatrixXd Kgrad_param(const muint_t i) const throw(CGPMixException);
 	inline MatrixXd Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	inline MatrixXd Kgrad_X(const muint_t d) const throw(CGPMixException);
@@ -142,6 +146,13 @@ inline  MatrixXd ACovarianceFunction::Kcross( const CovarInput& Xstar ) const th
 {
 	MatrixXd RV;
 	aKcross(&RV,Xstar);
+	return RV;
+}
+
+inline VectorXd ACovarianceFunction::Kcross_diag(const CovarInput& Xstar) const throw (CGPMixException)
+{
+	VectorXd RV;
+	aKcross_diag(&RV,Xstar);
 	return RV;
 }
 

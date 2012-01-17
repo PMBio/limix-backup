@@ -62,9 +62,6 @@ gp.setX(X)
 lml = gp.LML(hyperparams)
 dlml = gp.LMLgrad(hyperparams)
 
-#optimization
-gpopt = gpmix.CGPopt(gp)
-cc=gpopt.gradCheck()
 
 #build constraints
 constrainU = gpmix.CGPHyperParams()
@@ -73,30 +70,13 @@ constrainU['covar'] = +10*SP.ones_like(covar_params);
 constrainL['covar'] = -10*SP.ones_like(covar_params);
 constrainU['lik'] = +5*SP.ones_like(lik_params);
 constrainL['lik'] = -5*SP.ones_like(lik_params);
+gpopt = gpmix.CGPopt(gp)
 gpopt.setOptBoundLower(constrainL);
 gpopt.setOptBoundUpper(constrainU);
-
-
 gpopt.opt()
 opt_params = gp.getParamArray()
 lmlo = gp.LML()
 
-
-if 0:
-    t3 = time.time()
-    for x in xx:
-        covar_params[0] = x
-        hyperparams['covar'] = covar_params
-        tmp = gp.LML(hyperparams)
-    t4 = time.time()
-
-    print "lml: %.2f -- %.2f" % (lml,lml_)
-    print "lmlO: %.2f -- %.2f" % (lmlo,lmlo_)
-
-    print "optimization timing:"
-    print (t1-t0)
-    print (t3-t2)
-    print "LML eval timing"
-    print (t2-t1)
-    print (t4-t3)
+#prediction
+Xmean = gp.predictMean(X)
 

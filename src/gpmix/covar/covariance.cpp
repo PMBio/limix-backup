@@ -15,6 +15,8 @@ ACovarianceFunction::ACovarianceFunction(muint_t numberParams)
 	this->numberParams =numberParams;
 	this->insync = false;
 	this->params = VectorXd(numberParams);
+	//default: 0 dimensions
+	this->numberDimensions = 0;
 }
 
 

@@ -31,15 +31,24 @@ void CCovLinearISO::aKcross(MatrixXd* out,const CovarInput& Xstar) const throw(C
 	}
 	//kernel matrix is constant hyperparmeter and dot product
 	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
-	(*out) = A* Xstar*this->X.transpose();
+	(*out).noalias() = A* Xstar*this->X.transpose();
 																												}
+
+
+void CCovLinearISO::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+	out->resize(Xstar.rows());
+	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
+	(*out) = A* (Xstar*Xstar.transpose()).diagonal();
+}
+
 
 void CCovLinearISO::aKgrad_param(MatrixXd* out, const muint_t i ) const throw(CGPMixException)
 		{
 	if (i==0)
 	{
 		out->resize(this->X.rows(),this->X.rows());
-		(*out) = 2.0*this->K();
+		(*out).noalias() = 2.0*this->K();
 	}
 	else
 	{
@@ -98,8 +107,16 @@ void CCovLinearARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw
 	//get all amplitude parameters, one per dimension
 	VectorXd L = 2*params;
 	L = L.unaryExpr(ptr_fun(exp));
-	(*out) = Xstar*L.asDiagonal()*this->X.transpose();
+	(*out).noalias() = Xstar*L.asDiagonal()*this->X.transpose();
 }
+
+void CCovLinearARD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+		{
+		VectorXd L = 2*params;
+		L = L.unaryExpr(ptr_fun(exp));
+		(*out).noalias() = (Xstar*L.asDiagonal()*Xstar.transpose()).diagonal();
+		}
+
 
 void CCovLinearARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGPMixException)
 {
@@ -112,7 +129,7 @@ void CCovLinearARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGP
 	//2. get amplitude
 	mfloat_t A = exp((mfloat_t)(2*params(i)));
 	//outer product of the corresponding dimension.
-	(*out) =  A*2.0*(x1i*x1i.transpose());
+	(*out).noalias() =  A*2.0*(x1i*x1i.transpose());
 }
 
 void CCovLinearARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw (CGPMixException)
@@ -132,7 +149,7 @@ void CCovLinearARD::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw (CG
 	VectorXd L = 2*params;
 	L = L.unaryExpr(ptr_fun(exp));
 	(*out) = VectorXd::Zero(X.rows());
-	(*out) = 2.0*L(d)*X.col(d);
+	(*out).noalias() = 2.0*L(d)*X.col(d);
 }
 
 

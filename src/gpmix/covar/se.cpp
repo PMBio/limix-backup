@@ -41,6 +41,13 @@ void CCovSqexpARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw 
 	(*out) = A*RV.unaryExpr(ptr_fun(exp));
 } // end :: K
 
+void CCovSqexpARD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+		{
+		mfloat_t A = exp((mfloat_t)(2.0*params(0)));
+		(*out) = A*VectorXd::Ones(Xstar.rows());
+		}
+
+
 void CCovSqexpARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGPMixException)
 {
 	//code copied from K
