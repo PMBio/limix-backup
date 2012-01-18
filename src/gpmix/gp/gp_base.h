@@ -331,5 +331,21 @@ inline VectorXd CGPbase::getParamArray() const
 	return rv;
 }
 
+
+//class factories for LMMs
+template <class lmmType>
+lmmType* CGPbase::getLMMInstance()
+{
+	//create instance
+	lmmType* rv = new lmmType();
+	//set K0
+	MatrixXd& K0 = this->cache.getK0();
+	rv->setK(K0);
+	//set phenotypes
+	MatrixXd&  pheno = this->cache.getYeffective();
+	rv->setPheno(pheno);
+	return rv;
+}
+
 } /* namespace gpmix */
 #endif /* GP_BASE_H_ */

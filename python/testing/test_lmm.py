@@ -45,7 +45,8 @@ if __name__ == '__main__':
     K = 1./X_.shape[1]*SP.dot(X_,X_.T)
     C_ = SP.ones([X_.shape[0],1])
         
-    if 1:
+    if 0:
+        #OLD
         #population covariance
         t0 = time.time()
         [lod,pv0] = lmm.train_associations(X_,y_,K,C_)
@@ -57,8 +58,15 @@ if __name__ == '__main__':
     lm.setSNPs(X_)
     lm.setPheno(y_)
     lm.setCovs(C_)
+    
+    #condition on SNP
+    C_ = SP.concatenate((C_,X_[:,89790:89790+1]),axis=1)
+    lm.setCovs(C_)
+    
+    
     #likelihood ratios
     t3 = time.time()
+    lm.setTestStatistics(gpmix.CLMM.TEST_LLR)
     lm.process()    
     t4 = time.time()
     pv1_llr = lm.getPv()
@@ -67,20 +75,8 @@ if __name__ == '__main__':
         lm.setTestStatistics(gpmix.CLMM.TEST_F)
         lm.process()    
         pv1_ft = lm.getPv()
-    
-    if 0:
-        Nperm = 10
-        PVp = SP.zeros([Nperm,X_.shape[1]])
-        t5=time.time()
-        for i in xrange(Nperm):
-            perm = SP.random.permutation(y_.shape[0])
-            lm.setPermutation(perm)
-            lm.process()    
-            PVp[i,:] = lm.getPv().squeeze()
-        t6=time.time()
-               
-    
-    print SP.absolute(pv1_llr-pv0).max()
-    if 0:
-        PL.plot(-SP.log(pv1[0,:]))
+            
+    import pylab as PL
+    PL.plot(-SP.log(pv1_llr.ravel()),'b.')
+    PL.plot(-SP.log(pv1_ft.ravel()),'r.')
     
