@@ -27,6 +27,13 @@ bool isnull(const Eigen::EigenBase<Derived>& m)
 bool isnull(const Eigen::LLT<gpmix::MatrixXd>& m);
 bool isnull(const Eigen::LDLT<gpmix::MatrixXd>& m);
 
+template <typename Derived>
+string printDim(const Eigen::EigenBase<Derived>& m)
+{
+	ostringstream os;
+	os << "("<<m.rows() << "," << m.cols()<<")";
+	return os.str();
+}
 
 //calculate log determinant form cholesky factor
 mfloat_t logdet(Eigen::LLT<gpmix::MatrixXd>& chol);

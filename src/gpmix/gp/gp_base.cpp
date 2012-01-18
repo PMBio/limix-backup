@@ -531,27 +531,12 @@ void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) throw (CGPMixExce
 	//add noise
 	KstarDiag+=this->lik.Kcross_diag(Xstar);
 
-
-	MatrixXd v = this->cache.getCholK().solve(KstarCross.transpose());
-	MatrixXd vv = (v.array()*v.array()).matrix().colwise().sum();
-
-	(*out) = KstarDiag - vv.transpose();
+	MatrixXd KK = KstarCross*this->cache.getKinv();
+	KK.array()*=KstarCross.array();
+	(*out) = KstarDiag - KK.rowwise().sum();
 }
 
-//class factories for LMMs
-template <class lmmType>
-lmmType* CGPbase::getLMMInstance()
-{
-	//create instance
-	lmmType* rv = new lmmType();
-	//set K0
-	MatrixXd& K0 = this->cache.getK0();
-	rv->setK(K0);
-	//set phenotypes
-	MatrixXd&  pheno = this->cache.getYeffective();
-	rv->setPheno(pheno);
-	return rv;
-}
+
 
 
 

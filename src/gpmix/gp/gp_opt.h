@@ -13,8 +13,9 @@
 
 
 namespace gpmix {
-#define solver NLOPT_LD_SLSQP
-#define DEFAULT_TOL 1E-6
+//#define solver NLOPT_LD_SLSQP
+#define solver NLOPT_LD_LBFGS
+#define DEFAULT_TOL 1E-4
 
 class CGPopt {
 protected:
