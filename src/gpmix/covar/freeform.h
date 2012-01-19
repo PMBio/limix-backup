@@ -15,14 +15,16 @@ namespace gpmix {
 class CCovFreeform: public gpmix::ACovarianceFunction {
 protected:
 	muint_t numberGroups;
-	void agetL0(MatrixXd* out) const;
-	void agetK0(MatrixXd* out) const;
 	void agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
 	void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
 	void projectKcross(MatrixXd* out,const MatrixXd& K0,const CovarInput& Xstar) const throw (CGPMixException);
 public:
 	CCovFreeform(muint_t numberGroups);
 	virtual ~CCovFreeform();
+
+	void agetL0(MatrixXd* out) const;
+	void agetK0(MatrixXd* out) const;
+
 
 	void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
 	void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
