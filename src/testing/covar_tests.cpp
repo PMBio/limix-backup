@@ -129,13 +129,28 @@ int main() {
 		covar7.setX(X7);
 
 		CovarParams params7 = VectorXd::LinSpaced(covar7.getNumberParams(),1,7);
-		covar7.setParams(params);
+		covar7.setParams(params7);
 
-		MatrixXd K = covar7.K();
+		MatrixXd K7 = covar7.K();
 
-		std::cout << K << "\n";
+		std::cout << K7 << "\n";
 		//draw random params
 		gradcheck(covar7,MatrixXd());
+
+
+		//8. Eye
+		CEyeCF covar8;
+		MatrixXd X8 = MatrixXd::Zero(6,0);
+		covar8.setX(X8);
+
+		CovarParams params8 = VectorXd::LinSpaced(covar8.getNumberParams(),1,7);
+		covar8.setParams(params8);
+
+		MatrixXd K8 = covar8.K();
+
+		std::cout << K8 << "\n";
+		//draw random params
+		gradcheck(covar8,MatrixXd());
 
 
 	}

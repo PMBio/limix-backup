@@ -100,5 +100,38 @@ void gpmix::CFixedCF::agetK0cross(MatrixXd *out) const
 
 
 
+void CEyeCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+		{
+	(*out).setConstant(Xstar.rows(),X.rows(),0);
+		}
+void CEyeCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+		{
+	(*out).setConstant(Xstar.rows(),0);
+		}
+void CEyeCF::aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException)
+		{
+	aK(out);
+	(*out).diagonal().array()*=2;
+		}
+void CEyeCF::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException)
+		{
+	(*out) = MatrixXd::Zero(X.rows(),Xstar.rows());
+}
+
+void CEyeCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMixException)
+{
+	(*out) = VectorXd::Zero(X.rows());
+}
+
+//other overloads
+void CEyeCF::aK(MatrixXd* out) const
+{
+	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
+	(*out).setConstant(X.rows(),X.rows(),0.0);
+	(*out).diagonal().setConstant(A);
+}
+
+
+
 /* namespace gpmix */
 }
