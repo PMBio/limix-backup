@@ -27,7 +27,7 @@ public:
 	void aGradParams(MatrixXd* outGradParams);
 
 	virtual void setParams(MatrixXd& weightMatrix);
-	virtual void setfixedEffects(MatrixXd& fixedEffects);
+	virtual void setFixedEffects(MatrixXd& fixedEffects);
 	virtual void aGetParams(MatrixXd* outParams);
 	virtual void aGetFixedEffects(MatrixXd* outFixedEffects);
 
@@ -63,17 +63,17 @@ inline void CLinearMean::checkDimensions(const MatrixXd& weights, const MatrixXd
 
 	if (notIsnullweights && notIsnullFixed && (weights.rows()) != fixedEffects.cols() ){
 		ostringstream os;
-		os << this->getName() << ": Number of weights and fixed effects do not match. number fixed effects = " << this->fixedEffects.cols() << ", number weights = " << weights.rows();
+		os << this->getName() << ": Number of weights and fixed effects do not match. number fixed effects = " << fixedEffects.cols() << ", number weights = " << weights.rows();
 		throw gpmix::CGPMixException(os.str());
 	}
-	if (notIsnullFixed && notIsnullY && (weights.rows()) != fixedEffects.cols() ){
+	if (notIsnullFixed && notIsnullY && (fixedEffects.rows()) != Y.rows() ){
 			ostringstream os;
-			os << this->getName() << ": Number of samples in fixedEffects and Y do not match. fixed effects : " << this->fixedEffects.rows() << ", Y = " << Y.rows();
+			os << this->getName() << ": Number of samples in fixedEffects and Y do not match. fixed effects : " << fixedEffects.rows() << ", Y = " << Y.rows();
 			throw gpmix::CGPMixException(os.str());
 		}
-	if ( notIsnullweights && notIsnullY && (weights.rows()) != fixedEffects.cols() ){
+	if ( notIsnullweights && notIsnullY && (weights.cols()) != Y.cols() ){
 			ostringstream os;
-			os << this->getName() << ": Number of target dimensions do not match in Y and weights. Y: " << this->Y.cols() << ", weights = " << weights.cols();
+			os << this->getName() << ": Number of target dimensions do not match in Y and weights. Y: " << Y.cols() << ", weights = " << weights.cols();
 			throw gpmix::CGPMixException(os.str());
 		}
 }

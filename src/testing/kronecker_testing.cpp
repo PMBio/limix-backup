@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -98,13 +98,10 @@ int main() {
 
 		CGPopt opt(gp);
 		std::cout << "gradcheck: "<< opt.gradCheck();
-#if 0
+#if 1
 		//optimize:
 		opt.opt();
 #endif
-
-
-
 
 
 
