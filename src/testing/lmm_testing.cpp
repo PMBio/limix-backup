@@ -1,5 +1,5 @@
 
-#if 0
+#if 1
 //============================================================================
 // Name        : GPmix.cpp
 // Author      :
@@ -88,6 +88,20 @@ int main() {
 		lmm.process();
 		MatrixXd pv = lmm.getPv();
 		cout <<"pv_new:\n"<< scientific <<pv<<endl;
+
+		CInteractLMM ilmm;
+		ilmm.setK(K);
+		ilmm.setSNPs(snps);
+		ilmm.setPheno(pheno);
+		ilmm.setCovs(MatrixXd(snps.rows(),0));
+		ilmm.setInter(covs);
+		ilmm.setTestStatistics(lmm.TEST_F);
+
+		ilmm.process();
+		MatrixXd ipv = ilmm.getPv();
+
+		std::cout << "delta" <<"\n";
+		std::cout << pv-ipv << "\n";
 	}
 
 
