@@ -18,6 +18,41 @@ import time
 
 
 if __name__ == '__main__':
+    
+    
+    
+    if 1:
+        K = SP.eye(100)
+        X = SP.random.randn(100,1000)
+        C = SP.ones([100,1])
+        I = 1.0*(SP.random.rand(100,2)<0.2)
+        I0 = 1.0*SP.ones([100,1])
+        
+        y = 0.2*(I[:,0:1]*X[:,333:333+1]) 
+        y/=y.std()
+        y+= 0.2*SP.random.randn(y.shape[0],y.shape[1])
+        
+        try:
+            lm = gpmix.CInteractLMM()
+            #lm.setTestStatistics(gpmix.CLMM.TEST_F)
+            lm.setK(K)
+            lm.setSNPs(X)
+            lm.setPheno(y)
+            lm.setCovs(SP.concatenate((C,I[:,0:1]),axis=1))
+            lm.setInter(I[:,0:1])
+            lm.setInter0(I0)
+
+            lm.process()
+            pv1_llr = lm.getPv()
+            
+        except Exception:
+            print "outch"
+            pass    
+        PL.plot(-SP.log(pv1_llr).ravel())
+        pdb.set_trace()
+        pass
+    
+    
     hd = h5py.File('/kyb/agbs/stegle/work/projects/warpedlmm/data/Nordborg_data.h5py','r')
     geno = hd['geno']
     pheno = hd['pheno']
@@ -79,4 +114,8 @@ if __name__ == '__main__':
     import pylab as PL
     PL.plot(-SP.log(pv1_llr.ravel()),'b.')
     PL.plot(-SP.log(pv1_ft.ravel()),'r.')
+    
+    
+    
+    
     

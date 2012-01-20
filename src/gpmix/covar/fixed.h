@@ -21,7 +21,6 @@ namespace gpmix {
 %rename(getK0) CFixedCF::agetK0;
 %rename(getK0cross) CFixedCF::agetK0cross;
 #endif
-
 class CFixedCF : public ACovarianceFunction {
 protected:
 	MatrixXd K0;
@@ -52,6 +51,28 @@ public:
 
 	MatrixXd getK0() const;
 	MatrixXd getK0cross() const;
+};
+
+class CEyeCF : public ACovarianceFunction
+{
+protected:
+	MatrixXd K0;
+	MatrixXd K0cross;
+public:
+	CEyeCF() : ACovarianceFunction(1) {};
+	~CEyeCF() {};
+
+	//overloaded pure virtual functions:
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
+	//other overloads
+	virtual void aK(MatrixXd* out) const;
+
+	//class information
+	inline string getName() const{ return "EyeCF";}
 };
 
 } /* namespace gpmix */

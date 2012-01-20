@@ -173,6 +173,55 @@ public:
 	{ ALMM::setK(K);}
 };
 
+
+//interaction tests
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//ignore C++ versions
+%ignore CInteractLMM::getInter;
+
+//rename argout versions for python; this overwrites the C++ convenience functions
+%rename(getInter) CInteractLMM::agetInter;
+#endif
+
+class CInteractLMM : public CLMM
+{
+protected:
+
+	//interaction data: foreground model
+	MatrixXd I;
+	//interaction data: null model
+	MatrixXd I0;
+	//rotated interaction term
+	MatrixXd Uinter;
+	muint_t num_inter,num_inter0;
+	bool refitDelta0Pheno;
+
+public:
+	CInteractLMM();
+	virtual ~CInteractLMM();
+
+	//setter, getter
+	void setInter(const MatrixXd& Inter);
+	void agetInter(MatrixXd* out) const;
+	//setter, getter
+	void setInter0(const MatrixXd& Inter);
+	void agetInter0(MatrixXd* out) const;
+
+
+	//processing;
+	virtual void process() throw(CGPMixException);
+	virtual void updateDecomposition() throw(CGPMixException);
+
+
+	//convenience
+	MatrixXd getInter() const;
+	MatrixXd getInter0() const;
+    bool isRefitDelta0Pheno() const;
+    void setRefitDelta0Pheno(bool refitDelta0Pheno);
+};
+
+
+
 /*Simple Kronecker model.
  * Kroneckers are merely used to efficiently rotate the phenotypes and genotypes
  */
