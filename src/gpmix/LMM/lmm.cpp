@@ -189,7 +189,7 @@ void ALMM::applyPermutation(MatrixXd& M) throw(CGPMixException)
 		return;
 	if (perm.rows()!=M.rows())
 	{
-		throw CGPMixException("ALMM:Permutation vector has incompatbile length");
+		throw CGPMixException("ALMM:Permutation vector has incompatible length");
 	}
 	//create temporary copy
 	MatrixXd Mc = M;
@@ -220,7 +220,7 @@ void CLMM::setK(const MatrixXd & K, const MatrixXd & U, const VectorXd & S)
 
 /*CLMM*/
 void CLMM::updateDecomposition() throw (CGPMixException)
-    		{
+{
 	//check that dimensions match
 	this->num_samples = snps.rows();
 	this->num_snps = snps.cols();
@@ -250,7 +250,7 @@ void CLMM::updateDecomposition() throw (CGPMixException)
 		Ucovs.noalias() = U.transpose() * covs;
 		Ucovs_cached = true;
 	}
-    		}
+}
 
 void CLMM::process() throw (CGPMixException)
     		{
@@ -259,7 +259,7 @@ void CLMM::process() throw (CGPMixException)
 	//resize phenotype output
 	this->pv.resize(this->num_pheno, this->num_snps);
 	MatrixXd pvF = MatrixXd(this->num_pheno, this->num_snps);
-	//result matries: think about what to store in the end
+	//result matrices: think about what to store in the end
 	MatrixXd ldelta0(num_pheno, 1);
 	MatrixXd ldelta(num_pheno, num_snps);
 	MatrixXd nLL0(num_pheno, 1);

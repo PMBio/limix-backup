@@ -93,8 +93,10 @@ int main() {
 		ilmm.setK(K);
 		ilmm.setSNPs(snps);
 		ilmm.setPheno(pheno);
-		ilmm.setCovs(MatrixXd(snps.rows(),0));
+		ilmm.setCovs(covs);
 		ilmm.setInter(covs);
+		ilmm.setInter0(MatrixXd::Ones(snps.rows(),1));
+
 		ilmm.setTestStatistics(lmm.TEST_F);
 
 		ilmm.process();

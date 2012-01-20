@@ -8,10 +8,20 @@
 #include "CLinearMean.h"
 
 namespace gpmix {
-
 CLinearMean::CLinearMean() : ADataTerm::ADataTerm() {
-	// TODO Auto-generated constructor stub
 	this->insync = false;
+	this->nTargets = 0;
+	this->fixedEffects = MatrixXd();
+	this->weights = MatrixXd();
+	this->Y = MatrixXd();
+}
+
+CLinearMean::CLinearMean(muint_t nTargets) : ADataTerm::ADataTerm() {
+	this->insync = false;
+	this->nTargets = nTargets;
+	this->fixedEffects = MatrixXd();
+	this->weights = MatrixXd();
+	this->Y = MatrixXd();
 }
 
 CLinearMean::CLinearMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects) : ADataTerm::ADataTerm(Y)
@@ -26,6 +36,7 @@ CLinearMean::CLinearMean(MatrixXd& Y, MatrixXd& fixedEffects) : ADataTerm::AData
 {
 	this->checkDimensions(Y, weights, fixedEffects, true, false, true);
 	this->insync = false;
+	this->fixedEffects = fixedEffects;
 	this->zeroInitWeights();
 }
 
@@ -76,6 +87,26 @@ void CLinearMean::aGetParams(MatrixXd* outParams)
 void CLinearMean::aGetFixedEffects(MatrixXd* outFixedEffects)
 {
 	*outFixedEffects = this->fixedEffects;
+}
+
+void CLinearMean::aPredictY(MatrixXd* outY) const
+{
+	*outY = this->fixedEffects * this->weights;
+}
+
+void CLinearMean::aPredictYstar(MatrixXd* outY, const MatrixXd* fixedEffects) const
+{
+	*outY = (*fixedEffects) * this->weights;
+}
+
+void CLinearMean::setWeightsOLS()
+{
+	this->weights = this->fixedEffects.jacobiSvd().solve(this->Y);
+}
+
+void CLinearMean::setWeightsOLS(const MatrixXd& Y)
+{
+	this->weights = this->fixedEffects.jacobiSvd().solve(Y);
 }
 
 } /* namespace gpmix */

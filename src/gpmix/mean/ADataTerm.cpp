@@ -10,6 +10,7 @@
 namespace gpmix {
 ADataTerm::ADataTerm()
 {
+	this->Y = MatrixXd();
 }
 
 ADataTerm::ADataTerm(MatrixXd& Y) {
@@ -50,6 +51,7 @@ void ADataTerm::aSumLogJacobian(MatrixXd* outSumJacobianGradParams)
 {
 	*outSumJacobianGradParams = MatrixXd();
 }
+
 
 
 } /* namespace gpmix */
