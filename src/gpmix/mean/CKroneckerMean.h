@@ -15,16 +15,16 @@ namespace gpmix {
 
 class CKroneckerMean : public gpmix::CLinearMean {
 	MatrixXd A;
-	MatrixXd weights;
-	MatrixXd fixedEffects;
-	bool inSync;
 public:
 	CKroneckerMean(muint_t nSamples, muint_t nTargets);
+	CKroneckerMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects, MatrixXd& A);
 	virtual ~CKroneckerMean();
 
 	virtual void setA(MatrixXd& A);
 	virtual void setWeightsOLS(const MatrixXd& Y);
-	virtual void aGradParams(MatrixXd* outGradParams);
+
+	virtual void aEvaluate(MatrixXd* outY);
+	inline virtual void aGradParamsCols(MatrixXd* outGradParamsCols){*outGradParamsCols = this->A.transpose();};
 	inline virtual void setWeightsOLS(){setWeightsOLS(this->Y);};
 	inline void checkDimensions(const MatrixXd& fixedEffects, const MatrixXd& weights, const MatrixXd& A, const bool checkStrictFixedEffects = false, const bool checkStrictWeights = false, const bool checkStrictA = false) const throw (CGPMixException);
 	inline void checkDimensions(const MatrixXd& Y, const bool checkStrictWeights) const throw (CGPMixException);
@@ -47,6 +47,7 @@ inline void CKroneckerMean::checkDimensions(const MatrixXd& Y, const bool checkS
 
 inline void CKroneckerMean::checkDimensions(const MatrixXd& fixedEffects, const MatrixXd& weights, const MatrixXd& A, const bool checkStrictFixedEffects, const bool checkStrictWeights, const bool checkStrictA) const throw (CGPMixException)
 {
+#if 0
 	bool notIsnullFixed = false;
 	bool notIsnullweights = false;
 	bool notIsnullA = false;
@@ -82,6 +83,7 @@ inline void CKroneckerMean::checkDimensions(const MatrixXd& fixedEffects, const 
 			os << this->getName() << ": #Cols of weights and #Rows of A do not match: weights = " << weights.cols() << ", A = " << A.rows();
 			throw gpmix::CGPMixException(os.str());
 		}
+#endif
 }
 
 } /* namespace gpmix */

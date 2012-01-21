@@ -17,7 +17,7 @@ namespace gpmix {
 //ignore C++ versions
 %ignore ADataTerm::evaluate();
 %ignore ADataTerm::gradY();
-%ignore ADataTerm::gradParams();
+%ignore ADataTerm::gradParamsRows();
 %ignore ADataTerm::sumJacobianGradParams();
 %ignore ADataTerm::sumLogJacobian();
 
@@ -25,7 +25,7 @@ namespace gpmix {
 //rename argout versions for python; this overwrites the C++ convenience functions
 %rename(evaluate) ADataTerm::aEvaluate;
 %rename(gradY) ADataTerm::aGradY;
-%rename(gradParams) ADataTerm::aGradParams;
+%rename(gradParamsRows) ADataTerm::aGradParamsRows;
 %rename(sumJacobianGradParams) ADataTerm::aSumJacobianGradParams;
 %rename(sumLogJacobian) ADataTerm::aSumLogJacobian;
 #endif
@@ -53,14 +53,16 @@ public:
 
 	virtual void aEvaluate(MatrixXd* Y);
 	virtual void aGradY(MatrixXd* gradY);
-	virtual void aGradParams(MatrixXd* gradParams);
+	virtual void aGradParamsRows(MatrixXd* outGradParamsRows);
+	virtual void aGradParamsCols(MatrixXd* outGradParamsCols);
 	virtual void aSumJacobianGradParams(MatrixXd* sumJacobianGradParams);
 	virtual void aSumLogJacobian(MatrixXd* sumJacobianGradParams);
 
 	virtual inline MatrixXd getY(){return Y;}
 	virtual inline MatrixXd evaluate() { MatrixXd ret = MatrixXd(); aEvaluate(&ret); return ret;};
 	virtual inline MatrixXd gradY() { MatrixXd ret = MatrixXd(); aGradY(&ret); return ret;};
-	virtual inline MatrixXd gradParams(){ MatrixXd ret = MatrixXd(); aGradParams(&ret); return ret;};
+	virtual inline MatrixXd gradParamsRows(){ MatrixXd ret = MatrixXd(); aGradParamsRows(&ret); return ret;};
+	virtual inline MatrixXd gradParamsCols(){ MatrixXd ret = MatrixXd(); aGradParamsCols(&ret); return ret;};
 	virtual inline MatrixXd sumJacobianGradParams(){ MatrixXd ret = MatrixXd(); aSumJacobianGradParams(&ret); return ret;};
 	virtual inline MatrixXd sumLogJacobian(){ MatrixXd ret = MatrixXd(); aSumLogJacobian(&ret); return ret;};
 	virtual inline string getName() const {return "ADataTerm";};
