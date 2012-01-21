@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -20,6 +20,7 @@
 #include "gpmix/covar/fixed.h"
 #include "gpmix/covar/combinators.h"
 #include "gpmix/mean/CLinearMean.h"
+#include "gpmix/mean/CKroneckerMean.h"
 #include "gpmix/mean/CData.h"
 
 using namespace std;
@@ -29,6 +30,7 @@ using namespace gpmix;
 #endif
 
 #define linMean
+#define kronMean
 
 int main() {
 
@@ -36,25 +38,36 @@ int main() {
 	try {
 		//random input X
 		muint_t dim=1;
+		muint_t nsamples =100;
+		muint_t targets = 2;
+		muint_t nWeights = 1;
 
-		MatrixXd X = randn((muint_t)100,(muint_t)dim);
+		MatrixXd X = randn(nsamples,dim);
 		//y ~ w*X
-		MatrixXd w = randn((muint_t)dim,(muint_t)1);
-		MatrixXd y = X*w + 0.1*randn((muint_t)100,(muint_t)1);
+		MatrixXd w = randn(dim,nWeights);
+		MatrixXd A = randn(nWeights, targets);
+		MatrixXd y = X*w*A + 0.1*randn(nsamples,targets);
 
 		CGPHyperParams params;
 #ifndef linMean	//dummy mean fucntion
 		CData data = CData();
-		params["dataTerm"] = MatrixXd();
+		MatrixXd w_ = MatrixXd();
 #else
-		params["dataTerm"] = w;
+#ifndef kronMean
 		//Linear Mean Function
-		MatrixXd fixedEffects = MatrixXd::Ones((muint_t)100,(muint_t)dim);
-		y = fixedEffects*w + y;
-		CLinearMean data = CLinearMean(y,w,fixedEffects);
-		//data.setParams(w);
-		//data.setfixedEffects(fixedEffects);
+		MatrixXd fixedEffects = MatrixXd::Ones((muint_t)nsamples,(muint_t)dim);
+		y = fixedEffects*w*A + y;
+		MatrixXd w_ = w*A;
+		CLinearMean data = CLinearMean(y,w_,fixedEffects);
 
+#else
+		//Linear Mean Function
+		MatrixXd fixedEffects = MatrixXd::Ones((muint_t)nsamples,(muint_t)dim);
+		y = fixedEffects*w*A + y;
+		MatrixXd w_ = w;
+		CKroneckerMean data = CKroneckerMean(y,w_,fixedEffects,A);
+
+#endif
 #endif
 		//Ard covariance
 		CCovLinearARD covar(X.cols());
@@ -73,7 +86,7 @@ int main() {
 		params["covar"] = covar_params;
 		params["lik"] = lik_params;
 		//params["X"] = X;
-
+		params["dataTerm"] = w_;
 
 		//get lml and grad
 		mfloat_t lml = gp.LML(params);

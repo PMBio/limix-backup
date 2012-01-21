@@ -12,7 +12,7 @@ namespace gpmix {
 
 CKroneckerMean::CKroneckerMean(muint_t nSamples, muint_t nTargets)
 {
-	this->inSync = false;
+	this->insync = false;
 	this->A = MatrixXd();
 	this->fixedEffects = MatrixXd();
 	this->weights = MatrixXd();
@@ -23,15 +23,21 @@ CKroneckerMean::~CKroneckerMean()
 
 }
 
-void CKroneckerMean::aGradParams(MatrixXd* out)
+CKroneckerMean::CKroneckerMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects, MatrixXd& A) : CLinearMean(Y,weights,fixedEffects)
 {
-	//TODO How does this one look???
+	this->A=A;
+}
+
+void CKroneckerMean::aEvaluate(MatrixXd* outY)
+{
+	checkDimensions(weights,fixedEffects,Y, true, true, true);
+	*outY = (this->Y - (this->fixedEffects * this->weights) * this->A);
 }
 
 void CKroneckerMean::setWeightsOLS(const MatrixXd& Y)
 {
 	this->checkDimensions(Y, false);
-	this->inSync = false;
+	this->insync = false;
 
 	//TODO: make case nTargets > nSamples efficient
 	MatrixXd Adagger;
@@ -50,7 +56,7 @@ void CKroneckerMean::setWeightsOLS(const MatrixXd& Y)
 void CKroneckerMean::setA(MatrixXd& A)
 {
 	this->checkDimensions(fixedEffects, weights, A);
-	this->inSync = false;
+	this->insync = false;
 	this->A = A;
 }
 

@@ -27,14 +27,14 @@ CLinearMean::CLinearMean(muint_t nTargets) : ADataTerm::ADataTerm() {
 CLinearMean::CLinearMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects) : ADataTerm::ADataTerm(Y)
 {
 	this->insync = false;
-	this->checkDimensions(Y, weights, fixedEffects, true, true, true);
+	this->checkDimensions(weights, fixedEffects, Y, true, true, true);
 	this->fixedEffects = fixedEffects;
 	this->weights = weights;
 }
 
 CLinearMean::CLinearMean(MatrixXd& Y, MatrixXd& fixedEffects) : ADataTerm::ADataTerm(Y)
 {
-	this->checkDimensions(Y, weights, fixedEffects, true, false, true);
+	this->checkDimensions(weights, fixedEffects, Y, true, false, true);
 	this->insync = false;
 	this->fixedEffects = fixedEffects;
 	this->zeroInitWeights();
@@ -51,7 +51,7 @@ void CLinearMean::aEvaluate(MatrixXd* outY)
 	*outY = (this->Y - (this->fixedEffects * this->weights));
 }
 
-void CLinearMean::aGradParams(MatrixXd* outGradParams)
+void CLinearMean::aGradParamsRows(MatrixXd* outGradParams)
 {
 	this->checkDimensions(Y, *outGradParams, fixedEffects, true, true, true);
 	*outGradParams = ( -fixedEffects );

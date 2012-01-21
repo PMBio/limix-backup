@@ -14,6 +14,7 @@
 namespace gpmix {
 
 class CLinearMean: public ADataTerm {
+	friend class CKroneckerMean;
 	MatrixXd weights;
 	MatrixXd fixedEffects;
 	muint_t nTargets;
@@ -26,7 +27,7 @@ public:
 	virtual ~CLinearMean();
 
 	virtual void aEvaluate(MatrixXd* outY);
-	void aGradParams(MatrixXd* outGradParams);
+	void aGradParamsRows(MatrixXd* outGradParams);
 
 	virtual void setParams(MatrixXd& weightMatrix);
 	virtual void setFixedEffects(MatrixXd& fixedEffects);
