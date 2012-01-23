@@ -21,6 +21,7 @@
 #include "gpmix/covar/combinators.h"
 #include "gpmix/mean/CLinearMean.h"
 #include "gpmix/mean/CKroneckerMean.h"
+#include "gpmix/mean/CSumLinear.h"
 #include "gpmix/mean/CData.h"
 
 using namespace std;
@@ -31,6 +32,7 @@ using namespace gpmix;
 
 #define linMean
 #define kronMean
+#define sumKronMean
 
 int main() {
 
@@ -53,21 +55,19 @@ int main() {
 		CData data = CData();
 		MatrixXd w_ = MatrixXd();
 #else
-#ifndef kronMean
 		//Linear Mean Function
 		MatrixXd fixedEffects = MatrixXd::Ones((muint_t)nsamples,(muint_t)dim);
 		y = fixedEffects*w*A + y;
 		MatrixXd w_ = w*A;
-		CLinearMean data = CLinearMean(y,w_,fixedEffects);
+		CLinearMean data_1 = CLinearMean(y,w_,fixedEffects);
 
-#else
-		//Linear Mean Function
-		MatrixXd fixedEffects = MatrixXd::Ones((muint_t)nsamples,(muint_t)dim);
-		y = fixedEffects*w*A + y;
-		MatrixXd w_ = w;
-		CKroneckerMean data = CKroneckerMean(y,w_,fixedEffects,A);
+		//Kronecker Mean Function
+		MatrixXd w__ = w;
+		CKroneckerMean data_2 = CKroneckerMean(y,w__,fixedEffects,A);
 
-#endif
+		CSumLinear dataSum = CSumLinear();
+		dataSum.appendTerm(data_1);
+		dataSum.appendTerm(data_2);
 #endif
 		//Ard covariance
 		CCovLinearARD covar(X.cols());
@@ -76,7 +76,7 @@ int main() {
 		CLikNormalIso lik;
 
 		//GP object
-		CGPbase gp(data, covar, lik);
+		CGPbase gp(dataSum, covar, lik);
 		gp.setY(y);
 		gp.setX(X);
 		//hyperparams
@@ -86,7 +86,8 @@ int main() {
 		params["covar"] = covar_params;
 		params["lik"] = lik_params;
 		//params["X"] = X;
-		params["dataTerm"] = w_;
+		//(w_.rows() * w_.cols()) +
+		params["dataTerm"] = MatrixXd::Zero( (w_.rows() * w_.cols()) + (w__.rows() * w__.cols()), 1);
 
 		//get lml and grad
 		mfloat_t lml = gp.LML(params);

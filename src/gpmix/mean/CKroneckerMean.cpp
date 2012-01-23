@@ -28,10 +28,20 @@ CKroneckerMean::CKroneckerMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEf
 	this->A=A;
 }
 
+void CKroneckerMean::aPredictY(MatrixXd* outY) const
+{
+	*outY = this->fixedEffects * this->weights * this->A;
+}
+
 void CKroneckerMean::aEvaluate(MatrixXd* outY)
 {
 	checkDimensions(weights,fixedEffects,Y, true, true, true);
 	*outY = (this->Y - (this->fixedEffects * this->weights) * this->A);
+}
+
+void CKroneckerMean::aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY)
+{
+	*outGradParams = ( -fixedEffects ).transpose() * (*KinvY) * this->A.transpose();
 }
 
 void CKroneckerMean::setWeightsOLS(const MatrixXd& Y)

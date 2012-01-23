@@ -53,16 +53,14 @@ public:
 
 	virtual void aEvaluate(MatrixXd* Y);
 	virtual void aGradY(MatrixXd* gradY);
-	virtual void aGradParamsRows(MatrixXd* outGradParamsRows);
-	virtual void aGradParamsCols(MatrixXd* outGradParamsCols);
+	virtual void aGradParams(MatrixXd* outGradParamsRows, const MatrixXd* KinvY);
 	virtual void aSumJacobianGradParams(MatrixXd* sumJacobianGradParams);
 	virtual void aSumLogJacobian(MatrixXd* sumJacobianGradParams);
 
 	virtual inline MatrixXd getY(){return Y;}
 	virtual inline MatrixXd evaluate() { MatrixXd ret = MatrixXd(); aEvaluate(&ret); return ret;};
 	virtual inline MatrixXd gradY() { MatrixXd ret = MatrixXd(); aGradY(&ret); return ret;};
-	virtual inline MatrixXd gradParamsRows(){ MatrixXd ret = MatrixXd(); aGradParamsRows(&ret); return ret;};
-	virtual inline MatrixXd gradParamsCols(){ MatrixXd ret = MatrixXd(); aGradParamsCols(&ret); return ret;};
+	virtual inline MatrixXd gradParams(const MatrixXd& KinvY){ MatrixXd ret = MatrixXd(); aGradParams(&ret, &KinvY); return ret;};
 	virtual inline MatrixXd sumJacobianGradParams(){ MatrixXd ret = MatrixXd(); aSumJacobianGradParams(&ret); return ret;};
 	virtual inline MatrixXd sumLogJacobian(){ MatrixXd ret = MatrixXd(); aSumLogJacobian(&ret); return ret;};
 	virtual inline string getName() const {return "ADataTerm";};

@@ -27,7 +27,7 @@ public:
 	virtual ~CLinearMean();
 
 	virtual void aEvaluate(MatrixXd* outY);
-	void aGradParamsRows(MatrixXd* outGradParams);
+	void aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY);
 
 	virtual void setParams(MatrixXd& weightMatrix);
 	virtual void setFixedEffects(MatrixXd& fixedEffects);
@@ -36,8 +36,11 @@ public:
 	virtual void aGetFixedEffects(MatrixXd* outFixedEffects);
 	virtual void aPredictY(MatrixXd* outY) const ;
 	virtual void aPredictYstar(MatrixXd* outY, const MatrixXd* fixedEffects) const;
-
-	virtual inline MatrixXd getFixedEffects(){MatrixXd outFixedEffects; this->aGetFixedEffects(&outFixedEffects); return outFixedEffects;}
+	virtual inline muint_t getRowsParams() {return (muint_t) this->fixedEffects.cols();};
+	virtual muint_t getColsParams() {
+		return this->nTargets;
+	}
+	virtual inline MatrixXd getFixedEffects(){MatrixXd outFixedEffects; this->aGetFixedEffects(&outFixedEffects); return outFixedEffects;};
 
 	virtual inline string getName() const {return "CLinearMean";};
 	virtual inline void checkDimensions(const MatrixXd& Y){checkDimensions(this->weights, this->fixedEffects, Y, false, false, true);};

@@ -24,12 +24,17 @@ public:
 	virtual void setWeightsOLS(const MatrixXd& Y);
 
 	virtual void aEvaluate(MatrixXd* outY);
-	inline virtual void aGradParamsCols(MatrixXd* outGradParamsCols){*outGradParamsCols = this->A.transpose();};
+	virtual void aPredictY(MatrixXd* outY) const;
+	virtual void aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY);
 	inline virtual void setWeightsOLS(){setWeightsOLS(this->Y);};
 	inline void checkDimensions(const MatrixXd& fixedEffects, const MatrixXd& weights, const MatrixXd& A, const bool checkStrictFixedEffects = false, const bool checkStrictWeights = false, const bool checkStrictA = false) const throw (CGPMixException);
 	inline void checkDimensions(const MatrixXd& Y, const bool checkStrictWeights) const throw (CGPMixException);
-	inline string getName() const { return "CKoneckerFixedTerm"; };
+	virtual inline string getName() const { return "CKoneckerFixedTerm"; };
 	inline muint_t getDimFixedEffects() const { return this->fixedEffects.cols(); };
+	virtual muint_t getColsParams() {
+		return (muint_t) this->A.rows();
+	}
+
 	inline void makeSync() const {}
 };
 
