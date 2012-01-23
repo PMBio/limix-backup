@@ -37,14 +37,9 @@ void ADataTerm::aGradY(MatrixXd* outGradY)
 	*outGradY = MatrixXd::Ones(this->Y.rows(), this->Y.cols());
 }
 
-void ADataTerm::aGradParamsRows(MatrixXd* outGradParamsRows)
+void ADataTerm::aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY)
 {
-	*outGradParamsRows = MatrixXd();
-}
-
-void ADataTerm::aGradParamsCols(MatrixXd* outGradParamsCols)
-{
-	*outGradParamsCols = MatrixXd();
+	*outGradParams = MatrixXd();
 }
 
 void ADataTerm::aSumJacobianGradParams(MatrixXd* outSumJacobianGradParams)

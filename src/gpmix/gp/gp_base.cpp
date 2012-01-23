@@ -124,7 +124,7 @@ void CGPCholCache::clearCache()
 	this->cholK=MatrixXdChol();
 	this->DKinv_KinvYYKinv = MatrixXd();
 	this->Yeffective = MatrixXd();
-	this->gradDataParamsRows = MatrixXd();
+	this->gradDataParams = MatrixXd();
 	gp->dataTerm.makeSync();
 	covar->makeSync();
 	gp->lik.makeSync();
@@ -138,24 +138,14 @@ bool CGPCholCache::isInSync() const
 
 }
 
-MatrixXd& CGPCholCache::getGradDataParamsRows()
+MatrixXd& CGPCholCache::getGradDataParams()
 {
 	if(!isInSync()) clearCache();
-	if(isnull(this->gradDataParamsRows))
+	if(isnull(this->gradDataParams))
 	{
-		this->gradDataParamsRows = this->gp->dataTerm.gradParamsRows();
+		this->gradDataParams = this->gp->dataTerm.gradParams(this->getKinvY());
 	}
-	return this->gradDataParamsRows;
-}
-
-MatrixXd& CGPCholCache::getGradDataParamsCols()
-{
-	if(!isInSync()) clearCache();
-	if(isnull(this->gradDataParamsCols))
-	{
-		this->gradDataParamsCols = this->gp->dataTerm.gradParamsCols();
-	}
-	return this->gradDataParamsCols;
+	return this->gradDataParams;
 }
 
 MatrixXd& CGPCholCache::getKinv()
@@ -515,17 +505,7 @@ void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
 void CGPbase::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 {
 	//0. set output dimensions
-	MatrixXd dParams = cache.getGradDataParamsRows();
-	if (dParams.rows()>0 && dParams.cols()>0)
-	{
-		*out=dParams.transpose() * cache.getKinvY();
-	}
-	dParams = cache.getGradDataParamsCols();
-		if (dParams.rows()>0 && dParams.cols()>0)
-		{
-			*out=(*out) * dParams;
-		}
-	//TODO gradient of log Jacobian term
+	*out  = cache.getGradDataParams();
 }
 
 void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException)
