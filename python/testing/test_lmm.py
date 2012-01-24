@@ -11,8 +11,8 @@ sys.path.append('./../../..')
 import h5py
 import scipy as SP
 import gpmix
-import panama.core.lmm.lmm as lmm
-import pylab as PL
+#import panama.core.lmm.lmm as lmm
+#import pylab as PL
 import pdb
 import time
 
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     
     
     
-    if 1:
+    if 0:
         K = SP.eye(100)
         X = SP.random.randn(100,1000)
         C = SP.ones([100,1])
