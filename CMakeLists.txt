@@ -21,7 +21,7 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif (BUILD_UNIVERSAL)
 
 #set architecture manually (cluster)
-set(TARGET_ARCHITECTURE "auto")
+set(TARGET_ARCHITECTURE "generic")
 
 
 #optimization for architecture:
@@ -88,17 +88,14 @@ set(CMAKE_SWIG_FLAGS "")
 set(CMAKE_MODULE_PATH "${GPMix_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 add_definitions(-g -Wextra -D_BSD_SOURCE)
+
 #optimize automatically for architecture:
-OptimizeForArchitecture()
 
-
-
-#fPic while compiling on
-#this seems to be needed on some linux systems
-#set(CMAKE_CXX_FLAGS "-fPIC -O3 -march=core2")
-#set(CMAKE_CXX_FLAGS "-fPIC")
+#OptimizeForArchitecture()
+AddCompilerFlag("-march=i686")
+AddCompilerFlag("-sse2")
 AddCompilerFlag("-fPIC")
-AddCompilerFlag("-O3")
+AddCompilerFlag("-O2")
 
 #includes
 include_directories(./External)
