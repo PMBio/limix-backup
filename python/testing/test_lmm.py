@@ -11,8 +11,8 @@ sys.path.append('./../../..')
 import h5py
 import scipy as SP
 import gpmix
-#import panama.core.lmm.lmm as lmm
-#import pylab as PL
+import panama.core.lmm.lmm as lmm
+import pylab as PL
 import pdb
 import time
 
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     K = 1./X_.shape[1]*SP.dot(X_,X_.T)
     C_ = SP.ones([X_.shape[0],1])
         
-    if 0:
+    if 1:
         #OLD
         #population covariance
         t0 = time.time()
@@ -95,8 +95,8 @@ if __name__ == '__main__':
     lm.setCovs(C_)
     
     #condition on SNP
-    C_ = SP.concatenate((C_,X_[:,89790:89790+1]),axis=1)
-    lm.setCovs(C_)
+    #C_ = SP.concatenate((C_,X_[:,89790:89790+1]),axis=1)
+    #lm.setCovs(C_)
     
     
     #likelihood ratios

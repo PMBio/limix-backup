@@ -9,6 +9,7 @@
 #define ALMM_H_
 
 #include "gpmix/types.h"
+#include "gpmix/utils/matrix_helper.h"
 
 namespace gpmix {
 
@@ -47,7 +48,6 @@ protected:
 	//permutation, if needed:
 	VectorXi perm;
 
-
 	//number of samples, snps and pheno
 	muint_t num_samples,num_pheno,num_snps,num_covs;
 	//common settings
@@ -64,10 +64,7 @@ protected:
 	int testStatistics;
 
 	virtual void clearCache();
-
 	void applyPermutation(MatrixXd& V) throw(CGPMixException);
-
-
 public:
 	ALMM();
 	virtual ~ALMM();
@@ -116,35 +113,12 @@ public:
 };
 
 
-class CFastFixedEigenSolver
+class CLMMCore
 {
 protected:
 	//instances of eigensolvers for caching
 	Eigen::SelfAdjointEigenSolver<MatrixXd2> solver2;
 	Eigen::SelfAdjointEigenSolver<MatrixXd3> solver3;
-
-public:
-	CFastFixedEigenSolver() : solver2(2),solver3(3)
-	{
-	}
-	template <typename Derived, typename OtherDerived>
-	inline void SelfAdjointEigenSolver(const Eigen::MatrixBase<Derived>& U, const Eigen::MatrixBase<Derived>& S, const Eigen::MatrixBase<OtherDerived>& M);
-};
-
-
-
-
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-#endif
-//Standard mixed liner model
-class CLMM : public ALMM, CFastFixedEigenSolver
-{
-protected:
-	//caching variables
-	MatrixXd U;
-	VectorXd S;
 
 	//variables for optimization etc.
 	MatrixXd XSX;
@@ -155,9 +129,147 @@ protected:
 	MatrixXd XSdi;
 	MatrixXd U_X;
 	MatrixXd S_X;
+	MatrixXd sigg2;
 
-	double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals,double ldeltamin,double ldeltamax);
-	double nLLeval(VectorXd* F_tests, double ldelta,const VectorXd& UY,const MatrixXd& UX,const VectorXd& S);
+public:
+	CLMMCore() : solver2(2),solver3(3)
+	{
+	}
+	//selfadjoint eigen solver which is optimized for 1d/2d/3d matrices
+	template <typename Derived, typename OtherDerived>
+	inline void SelfAdjointEigenSolver(const Eigen::MatrixBase<Derived>& U, const Eigen::MatrixBase<Derived>& S, const Eigen::MatrixBase<OtherDerived>& M);
+	//public functions for nlleval, optdelta etc.
+	mfloat_t optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals,double ldeltamin,double ldeltamax);
+	mfloat_t nLLeval(VectorXd* F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const VectorXd& S);
+
+	template <typename Derived1, typename Derived2,typename Derived3,typename Derived4, typename Derived5>
+	inline void nLLevalEx(const Eigen::MatrixBase<Derived1>& AOF_tests_,const Eigen::MatrixBase<Derived2>& AOnLL_,const Eigen::MatrixBase<Derived3>& UY, const Eigen::MatrixBase<Derived4>& UX, const Eigen::MatrixBase<Derived5>& S,double ldelta,bool calc_ftest=false);
+
+};
+
+
+/*
+mfloat_t CLMMCore::optdelta(const MatrixXd & UY, const MatrixXd & UX, const MatrixXd & S, int numintervals, double ldeltamin, double ldeltamax)
+{
+	//grid variable with the current likelihood evaluations
+	MatrixXd nllgrid     = MatrixXd::Ones(numintervals,1).array()*HUGE_VAL;
+	MatrixXd ldeltagrid = MatrixXd::Zero(numintervals, 1);
+	//current delta
+	mfloat_t ldelta = ldeltamin;
+	mfloat_t ldeltaD = (ldeltamax - ldeltamin);
+	ldeltaD /= ((mfloat_t)((((((numintervals)))))) - 1);
+	mfloat_t nllmin = HUGE_VAL;
+	mfloat_t ldeltaopt_glob = 0;
+	for(int i = 0;i < (numintervals);i++){
+		nllgrid(i, 0) = this->nLLeval(NULL, ldelta, UY, UX, S);
+		ldeltagrid(i, 0) = ldelta;
+		if(nllgrid(i, 0) < nllmin){
+			nllmin = nllgrid(i, 0);
+			ldeltaopt_glob = ldelta;
+		}
+		//move on delta
+		ldelta += ldeltaD;
+	}
+	return ldeltaopt_glob;
+}
+*/
+
+template <typename Derived1, typename Derived2,typename Derived3,typename Derived4,typename Derived5>
+inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AOF_tests_,const Eigen::MatrixBase<Derived2>& AOnLL_,const Eigen::MatrixBase<Derived3>& UY, const Eigen::MatrixBase<Derived4>& UX, const Eigen::MatrixBase<Derived5>& S,double ldelta,bool calc_ftest)
+{
+	//cast out arguments
+	Eigen::MatrixBase<Derived1>& AOF_tests = const_cast< Eigen::MatrixBase<Derived1>& >(AOF_tests_);
+	Eigen::MatrixBase<Derived2>& AOnLL = const_cast< Eigen::MatrixBase<Derived2>& >(AOnLL_);
+
+
+	//number of samples
+	muint_t n = UX.rows();
+	//number of dimensions for fitting (X)
+	muint_t d = UX.cols();
+	//number of phenotypes to evaluate:
+	//muint_t p = UY.cols();
+
+	assert(UY.rows() == S.rows());
+	assert(UY.rows() == UX.rows());
+
+	mfloat_t delta = exp(ldelta);
+	Sdi = S.array() + delta;
+	mfloat_t ldet = 0.0;
+	//calc log det and invert at the same time Sdi elementwise
+	for(size_t ind = 0;ind < n;++ind)
+	{
+		//ldet
+		ldet += log(Sdi.data()[ind]);
+		//inverse:
+		Sdi.data()[ind] = 1.0 / (Sdi.data()[ind]);
+	}
+
+	if (calc_ftest)
+		AOF_tests.setConstant(0.0);
+
+	XSdi = UX.array().transpose();
+	XSdi.array().rowwise() *= Sdi.array().transpose();
+	XSX.noalias() = XSdi * UX;
+	XSY.noalias() = XSdi * UY;
+
+	//least squares solution of XSX*beta = XSY
+	//Call internal solver which uses fixed solvers for 2d and 3d matrices
+	SelfAdjointEigenSolver(U_X, S_X, XSX);
+	beta.noalias() = U_X.transpose() * XSY;
+
+	//loop over genotype dimensions:
+	for(size_t dim = 0;dim < d;++dim)
+	{
+		if(S_X(dim) > 3E-8)
+		{
+			beta.row(dim).array() /= S_X(dim);
+			if (calc_ftest)
+			{
+				for(size_t dim2 = 0;dim2 < d;++dim2)
+					AOF_tests.array().row(dim2) += U_X(dim2, dim) * U_X(dim2, dim) / S_X(dim, 0);
+			}
+		}
+		else
+			beta.row(dim).setConstant(0.0);
+	}
+	beta = U_X * beta;
+	res.noalias() = UY - UX * beta;
+	//sqared residuals
+	res.array() *= res.array();
+	res.array() *= Sdi.array();
+
+	sigg2 = res.colwise().sum() / (n);
+	//compute the F-statistics
+	if(calc_ftest)
+	{
+		AOF_tests.array() = beta.array() * beta.array() / AOF_tests.array();
+		AOF_tests.array().rowwise() /= sigg2.array().row(0);
+	}
+
+	//WARNING: elementwise log of sigg2
+	logInplace(sigg2);
+	//calc likelihood:
+	AOnLL = 0.5*n*sigg2;
+	AOnLL.array() += 0.5*(n*L2pi+ldet + n);
+
+}
+
+
+
+
+
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//ignore C++ versions
+#endif
+//Standard mixed liner model
+class CLMM :  public CLMMCore, public ALMM
+{
+protected:
+	//caching variables
+	MatrixXd U;
+	VectorXd S;
+
+
 public:
 	CLMM();
 	virtual ~CLMM();
@@ -331,14 +443,14 @@ void train_associations_SingleSNP(MatrixXd* PV, MatrixXd* LL, MatrixXd* ldelta,
 double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals,double ldeltamin,double ldeltamax);
 void optdeltaAllY(MatrixXd* out, const MatrixXd& UY, const MatrixXd& UX, const MatrixXd& S, const MatrixXd& ldeltagrid);
 double nLLeval(MatrixXd* F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
-void nLLevalAllY(MatrixXd* out, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S);
+void nLLevalAllY(MatrixXd* out, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const VectorXd& S);
 
 
 
 /* Inline functions */
 
 template <typename Derived, typename OtherDerived>
-inline void CFastFixedEigenSolver::SelfAdjointEigenSolver(const Eigen::MatrixBase<Derived>& U, const Eigen::MatrixBase<Derived>& S, const Eigen::MatrixBase<OtherDerived>& M)
+inline void CLMMCore::SelfAdjointEigenSolver(const Eigen::MatrixBase<Derived>& U, const Eigen::MatrixBase<Derived>& S, const Eigen::MatrixBase<OtherDerived>& M)
 {
 	//1. check size of matrix
 	muint_t dim = M.rows();

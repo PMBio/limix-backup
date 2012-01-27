@@ -199,6 +199,103 @@ void ALMM::applyPermutation(MatrixXd& M) throw(CGPMixException)
 	}
     		}
 
+/*CLMMCore*/
+
+mfloat_t CLMMCore::optdelta(const MatrixXd & UY, const MatrixXd & UX, const MatrixXd & S, int numintervals, double ldeltamin, double ldeltamax)
+{
+	//grid variable with the current likelihood evaluations
+	MatrixXd nllgrid     = MatrixXd::Ones(numintervals,1).array()*HUGE_VAL;
+	MatrixXd ldeltagrid = MatrixXd::Zero(numintervals, 1);
+	//current delta
+	mfloat_t ldelta = ldeltamin;
+	mfloat_t ldeltaD = (ldeltamax - ldeltamin);
+	ldeltaD /= ((mfloat_t)((((((numintervals)))))) - 1);
+	mfloat_t nllmin = HUGE_VAL;
+	mfloat_t ldeltaopt_glob = 0;
+	for(int i = 0;i < (numintervals);i++){
+		nllgrid(i, 0) = this->nLLeval(NULL, ldelta, UY, UX, S);
+		ldeltagrid(i, 0) = ldelta;
+		if(nllgrid(i, 0) < nllmin){
+			nllmin = nllgrid(i, 0);
+			ldeltaopt_glob = ldelta;
+		}
+		//move on delta
+		ldelta += ldeltaD;
+	}
+	return ldeltaopt_glob;
+}
+
+/* internal functions */
+mfloat_t CLMMCore::nLLeval(VectorXd *F_tests, mfloat_t ldelta, const MatrixXd & UY, const MatrixXd & UX, const VectorXd & S)
+{
+	size_t n = UX.rows();
+	size_t d = UX.cols();
+
+	assert(UY.rows() == S.rows());
+	assert(UY.rows() == UX.rows());
+
+	mfloat_t delta = exp(ldelta);
+	Sdi = S.array() + delta;
+	mfloat_t ldet = 0.0;
+	//calc log det and invert at the same time Sdi elementwise
+	for(size_t ind = 0;ind < n;++ind){
+		//ldet
+		ldet += log(Sdi.data()[ind]);
+		//inverse:
+		Sdi.data()[ind] = 1.0 / (Sdi.data()[ind]);
+	}
+	//arrayInverseInplace(Sdi); (done in loop above)
+	if (F_tests!=NULL)
+	{
+		(*F_tests).resize(d);
+		F_tests->setConstant(0.0);
+	}
+	beta.resize(d);
+	//replice Sdi
+	//EIGEN_ASM_COMMENT("begin");
+	XSdi = UX.array().transpose();
+	XSdi.array().rowwise() *= Sdi.array().transpose();
+	XSX.noalias() = XSdi * UX;
+	XSY.noalias() = XSdi * UY;
+	//EIGEN_ASM_COMMENT("end");
+	//least sqaures solution of XSX*beta = XSY
+	//Call internal solver which uses fixed solvers for 2d and 3d matrices
+	SelfAdjointEigenSolver(U_X, S_X, XSX);
+	beta.noalias() = U_X.transpose() * XSY;
+	//loop over genotype dimensions:
+	for(size_t dim = 0;dim < d;++dim)
+	{
+		if(S_X(dim, 0) > 3E-8)
+		{
+			beta(dim) /= S_X(dim, 0);
+			if (F_tests!=NULL)
+			{
+				for(size_t dim2 = 0;dim2 < d;++dim2)
+					(*F_tests)(dim2) += U_X(dim2, dim) * U_X(dim2, dim) / S_X(dim, 0);
+			}
+		}
+		else
+			beta(dim) = 0.0;
+	}
+	beta = U_X * beta;
+	res.noalias() = UY - UX * beta;
+	//sqared residuals
+	res.array() *= res.array();
+	res.array() *= Sdi.array();
+	mfloat_t sigg2 = res.sum() / (n);
+	//compute the F-statistics
+	if (F_tests!=NULL)
+	{
+		(*F_tests).array() = beta.array() * beta.array() / (*F_tests).array();
+		(*F_tests).array() /= sigg2;
+	}
+	mfloat_t nLL = 0.5 * (n * L2pi + ldet + n + n * log(sigg2));
+	return nLL;
+}
+
+
+
+
 /*CLMM*/
 CLMM::CLMM()
 :ALMM()
@@ -268,14 +365,15 @@ void CLMM::process() throw (CGPMixException)
 	MatrixXd UXps(num_samples, num_covs + 1);
 	MatrixXd Sp;
 	MatrixXd Ucovsp;
-	//reserver memory for ftests?
-	VectorXd f_tests;
-	VectorXd* pf_tests = NULL;
-	if(this->testStatistics == ALMM::TEST_F)
-		pf_tests = &f_tests;
+	MatrixXd f_tests;
+	bool calc_ftests = (this->testStatistics == ALMM::TEST_F);
+	if(calc_ftests)
+		f_tests.resize(num_covs+1,1);
+
 
 	//reserve memory for permuted variables, if needed
-	for(muint_t ip = 0;ip < num_pheno;ip++){
+	for(muint_t ip = 0;ip < num_pheno;ip++)
+	{
 		//get UY columns and permute data if needed
 		MatrixXd UYp = Upheno.block(0, ip, num_samples, 1);
 		//X is >> Y, Ucovs, S; so we permutet these to save computation
@@ -289,8 +387,10 @@ void CLMM::process() throw (CGPMixException)
 
 		//fit delta on null model
 		ldelta0(ip) = optdelta(UYp, Ucovsp, Sp, num_intervals0, ldeltamin0, ldeltamax0);
-		nLL0(ip) = this->nLLeval(NULL, ldelta0(ip), UYp, Ucovsp, Sp);
-		for(muint_t is = 0;is < num_snps;is++){
+		//nLL0(ip) = this->nLLeval(NULL, ldelta0(ip), UYp, Ucovsp, Sp);
+		this->nLLevalEx(f_tests,nLL0.block(ip,0,1,1),UYp,Ucovsp,Sp,ldelta0(ip));
+		for(muint_t is = 0;is < num_snps;is++)
+		{
 			//1. construct foreground testing SNP transformed:
 			UXps.block(0, num_covs, num_samples, 1) = Usnps.block(0, is, num_samples, 1);
 			//2. fit delta
@@ -300,9 +400,9 @@ void CLMM::process() throw (CGPMixException)
 
 			else
 				ldelta(ip, is) = ldelta0(ip);
-
 			//3. evaluate
-			nLL(ip, is) = this->nLLeval(pf_tests, ldelta(ip, is), UYp, UXps, Sp);
+			this->nLLevalEx(f_tests,nLL.block(ip,is,1,1),UYp,UXps,Sp,ldelta(ip,is),calc_ftests);
+			//nLL(ip, is) = this->nLLeval(pf_tests, ldelta(ip, is), UYp, UXps, Sp);
 			//4. calc p-value
 			if (this->testStatistics==ALMM::TEST_LLR)
 				this->pv(ip, is) = Gamma::gammaQ(nLL0(ip, 0) - nLL(ip, is), (double)((((0.5)))) * 1.0);
@@ -310,95 +410,6 @@ void CLMM::process() throw (CGPMixException)
 				this->pv(ip,is) = 1.0 -FisherF::Cdf(f_tests(num_covs),1.0 , (double)(num_samples - f_tests.rows()));
 		} //end for SNP
 	}
-    		}
-double CLMM::optdelta(const MatrixXd & UY, const MatrixXd & UX, const MatrixXd & S, int numintervals, double ldeltamin, double ldeltamax)
-{
-	//grid variable with the current likelihood evaluations
-	MatrixXd nllgrid     = MatrixXd::Ones(numintervals,1).array()*HUGE_VAL;
-	MatrixXd ldeltagrid = MatrixXd::Zero(numintervals, 1);
-	//current delta
-	double ldelta = ldeltamin;
-	double ldeltaD = (ldeltamax - ldeltamin);
-	ldeltaD /= ((double)((((((numintervals)))))) - 1);
-	double nllmin = HUGE_VAL;
-	double ldeltaopt_glob = 0;
-	for(int i = 0;i < (numintervals);i++){
-		nllgrid(i, 0) = this->nLLeval(NULL, ldelta, UY, UX, S);
-		ldeltagrid(i, 0) = ldelta;
-		if(nllgrid(i, 0) < nllmin){
-			nllmin = nllgrid(i, 0);
-			ldeltaopt_glob = ldelta;
-		}
-		//move on delta
-		ldelta += ldeltaD;
-	}
-	return ldeltaopt_glob;
-}
-
-/* internal functions */
-double CLMM::nLLeval(VectorXd *F_tests, double ldelta, const VectorXd & UY, const MatrixXd & UX, const VectorXd & S)
-{
-	size_t n = UX.rows();
-	size_t d = UX.cols();
-	assert(UY.rows() == S.rows());
-	assert(UY.rows() == UX.rows());
-	double delta = exp(ldelta);
-	Sdi = S.array() + delta;
-	double ldet = 0.0;
-	//calc log det and invert at the same time Sdi elementwise
-	for(size_t ind = 0;ind < n;++ind){
-		//ldet
-		ldet += log(Sdi.data()[ind]);
-		//inverse:
-		Sdi.data()[ind] = 1.0 / (Sdi.data()[ind]);
-	}
-	//arrayInverseInplace(Sdi); (done in loop above)
-	if (F_tests!=NULL)
-	{
-		(*F_tests).resize(d);
-		F_tests->setConstant(0.0);
-	}
-	beta.resize(d);
-	//replice Sdi
-	//EIGEN_ASM_COMMENT("begin");
-	XSdi = UX.array().transpose();
-	XSdi.array().rowwise() *= Sdi.array().transpose();
-	XSX.noalias() = XSdi * UX;
-	XSY.noalias() = XSdi * UY;
-	//EIGEN_ASM_COMMENT("end");
-	//least sqaures solution of XSX*beta = XSY
-	//Call internal solver which uses fixed solvers for 2d and 3d matrices
-	SelfAdjointEigenSolver(U_X, S_X, XSX);
-	beta.noalias() = U_X.transpose() * XSY;
-	//loop over genotype dimensions:
-	for(size_t dim = 0;dim < d;++dim)
-	{
-		if(S_X(dim, 0) > 3E-8)
-		{
-			beta(dim) /= S_X(dim, 0);
-			if (F_tests!=NULL)
-			{
-				for(size_t dim2 = 0;dim2 < d;++dim2)
-					(*F_tests)(dim2) += U_X(dim2, dim) * U_X(dim2, dim) / S_X(dim, 0);
-			}
-		}
-		else
-			beta(dim) = 0.0;
-	}
-	beta = U_X * beta;
-	res.noalias() = UY - UX * beta;
-	//sqared residuals
-	res.array() *= res.array();
-	res.array() *= Sdi.array();
-	double sigg2 = res.sum() / (n);
-	//compute the F-statistics
-	if (F_tests!=NULL)
-	{
-		(*F_tests).array() = beta.array() * beta.array() / (*F_tests).array();
-		(*F_tests).array() /= sigg2;
-	}
-	double nLL = 0.5 * (n * L2pi + ldet + n + n * log(sigg2));
-	return nLL;
 }
 
 //CInteractLmm
@@ -596,10 +607,13 @@ double nLLeval(MatrixXd *F_tests, double ldelta, const MatrixXd & UY, const Matr
 	Sdi = Sdi.array().inverse();
 	(*F_tests).resize(d, n_pheno);
 	MatrixXd beta = MatrixXd(d, n_pheno);
+
+	MatrixXd XSdi;
 	//replice Sdi
 	for(muint_t phen = 0;phen < n_pheno;++phen){
 		VectorXd Sdi_p = Sdi.block(0, phen, n, 1);
-		MatrixXd XSdi = (UX.array() * Sdi_p.replicate(1, d).array()).transpose();
+
+		XSdi = (UX.array() * Sdi_p.replicate(1, d).array()).transpose();
 		MatrixXd XSX = XSdi * UX;
 		MatrixXd XSY = XSdi * UY.block(0, phen, n, 1);
 		//least sqaures solution of XSX*beta = XSY
@@ -644,11 +658,11 @@ void optdeltaAllY(MatrixXd *out, const MatrixXd & UY, const MatrixXd & UX, const
 	//grid variable with the current likelihood evaluations
 	(*out) = MatrixXd::Ones(numintervals,n_p).array()*HUGE_VAL;
 	//current delta
-	for(size_t i = 0;i < numintervals;i++){
+	for(size_t i = 0;i < numintervals;i++)
+	{
 		MatrixXd row;
 		nLLevalAllY(&row, ldeltagrid(i, 0), UY, UX, S);
 		(*out).row(i) = row;
-		//ldeltagrid(0,i) = ldelta;
 	} //end for all intervals
 }
 
@@ -664,6 +678,10 @@ void train_associations_SingleSNP(MatrixXd *PV, MatrixXd *LL, MatrixXd *ldelta, 
 	size_t np = Y.cols();
 	//covaraites
 	size_t nc = C.cols();
+
+	//reserve mom. for temp objects
+	MatrixXd UY_,f_tests;
+
 	//make sure the size of N/Y is correct
 	assert((int)nn==(int)Y.rows());
 	assert((int)nn==(int)C.rows());
@@ -688,22 +706,23 @@ void train_associations_SingleSNP(MatrixXd *PV, MatrixXd *LL, MatrixXd *ldelta, 
 	}
 	MatrixXd nllgrid;
 	optdeltaAllY(&nllgrid, UY, UX_, S, ldeltagrid);
+
+
 	//1. fit background covariances on phenotype and covariates alone
 	for(size_t ip = 0;ip < np;ip++){
 		(*ldelta)(ip) = ldeltamin;
 		size_t i_min = 0;
-		for(size_t interval = 1;interval < (size_t)((((numintervals))));++interval){
-			if(nllgrid(interval, ip) < nllgrid(i_min, ip)){
-				//printf("oldmin : %.4f, newmin : %.4f, newdelta : %.4f, interval : %i\n" ,nllgrid(i_min,ip) , nllgrid(interval,ip), ldeltagrid(interval,0),interval);
+		for(size_t interval = 1;interval < (size_t)((((numintervals))));++interval)
+		{
+			if(nllgrid(interval, ip) < nllgrid(i_min, ip))
+			{
 				(*ldelta)(ip, 0) = ldeltagrid(interval, 0);
 				i_min = interval;
 			}
 		}
-
 		//get UY columns
-		MatrixXd UY_ = UY.block(0, ip, nn, 1);
+		UY_ = UY.block(0, ip, nn, 1);
 		//fit delta on null model
-		MatrixXd f_tests;
 		(*LL)(ip, 0) = -1.0 * nLLeval(&f_tests, (*ldelta)(ip), UY_, UX_, S);
 		(*PV)(ip, 0) = 1.0 - FisherF::Cdf(f_tests(nc, 0), 1.0, (double)(((((nn - f_tests.rows()))))));
 	}
@@ -711,36 +730,42 @@ void train_associations_SingleSNP(MatrixXd *PV, MatrixXd *LL, MatrixXd *ldelta, 
 }
 
 /* Internal C++ functions */
-void nLLevalAllY(MatrixXd *out, double ldelta, const MatrixXd & UY, const MatrixXd & UX, const MatrixXd & S)
+void nLLevalAllY(MatrixXd *out, double ldelta, const MatrixXd & UY, const MatrixXd & UX, const VectorXd & S)
 {
 	size_t n = UX.rows();
-	size_t d = UX.cols();
 	size_t p = UY.cols();
-	/*
-std::cout << UX<< "\n\n";
-std::cout << UY<< "\n\n";
-std::cout << S<< "\n\n";
-	 */
+
+	MatrixXd XSdi,XSX,XSY,U_X,S_X;
+
 	double delta = exp(ldelta);
-	MatrixXd Sdi = S.array() + delta;
+	VectorXd Sdi = S.array() + delta;
+
+	double ldet = 0.0;
+	//calc log det and invert at the same time Sdi elementwise
+	for(size_t ind = 0;ind < n;++ind)
+	{
+		//ldet
+		ldet += log(Sdi.data()[ind]);
+		//inverse:
+		Sdi.data()[ind] = 1.0 / (Sdi.data()[ind]);
+	}
+	/*
 	double ldet = Sdi.array().log().sum();
-	//std::cout << "ldet" << ldet << "\n\n";
-	//elementwise inverse
 	Sdi = Sdi.array().inverse();
-	//std::cout << "Sdi" << Sdi << "\n\n";
-	//replice Sdi
-	MatrixXd XSdi = (UX.array() * Sdi.replicate(1, d).array()).transpose();
-	MatrixXd XSX = XSdi * UX;
-	MatrixXd XSY = XSdi * UY;
-	//std::cout << "XSdi" << XSdi << "\n\n";
-	//std::cout << "XSX" << XSX << "\n\n";
+	*/
+
+	XSdi = UX.array().transpose();
+	XSdi.array().rowwise() *= Sdi.array().transpose();
+	XSX.noalias() = XSdi * UX;
+	XSY.noalias() = XSdi * UY;
+
 	//least squares solution of XSX*beta = XSY
 	MatrixXd beta = XSX.colPivHouseholderQr().solve(XSY);
 	MatrixXd res = UY - UX * beta;
 	//squared residuals
 	res.array() *= res.array();
 	res.array() *= Sdi.replicate(1, p).array();
-	//MatrixXd sigg2 = MatrixXd(1,p);
+
 	(*out) = MatrixXd(1, p);
 	for(size_t phen = 0;phen < p;++phen){
 		double sigg2 = res.col(phen).array().sum() / n;
@@ -749,41 +774,6 @@ std::cout << S<< "\n\n";
 }
 
 
-
-
-/*
-void CFastFixedEigenSolver::SelfAdjointEigenSolver(MatrixXd& U, MatrixXd& S, const MatrixXd& M)
-    {
-    	//1. check size of matrix
-    	muint_t dim = M.rows();
-        if (dim==1)
-        {
-    		//trivial
-    		U = MatrixXd::Ones(1,1);
-    		S = M;
-        }
-        else if (dim==2)
-        {
-        	solver2.computeDirect(M);
-        	U = solver2.eigenvectors();
-        	S = solver2.eigenvalues();
-        }
-        else if (dim==3)
-        {
-        	//use eigen direct solver
-        	solver3.computeDirect(M);
-        	U = solver3.eigenvectors();
-        	S = solver3.eigenvalues();
-        }
-        else
-        {
-        	//use dynamic standard solver
-        	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(M);
-            U = eigensolver.eigenvectors();
-            S = eigensolver.eigenvalues();
-    	}
-    }
- */
 
 
 
