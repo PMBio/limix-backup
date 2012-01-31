@@ -23,8 +23,8 @@ using namespace gpmix;
 int main() {
 
 	int n = 100;
-	int p = 2;
-	int s = 5;
+	int p = 3;
+	int s = 10;
 	int ncov = 1;
 	MatrixXd snps = (MatrixXd)randn((muint_t)n,(muint_t)s);
 	MatrixXd pheno = (MatrixXd)randn((muint_t)n,(muint_t)p);
@@ -78,9 +78,12 @@ int main() {
 		lmm.setSNPs(snps);
 		lmm.setPheno(pheno);
 		lmm.setCovs(covs);
+		lmm.setEMMAX(-5,5,10);
 		lmm.setTestStatistics(lmm.TEST_F);
 
 		lmm.process();
+		std::cout << lmm.getLdelta0() << "\n\n\n\n";
+		std::cout << lmm.getLdeltaAlt() << "\n";
 		MatrixXd pv = lmm.getPv();
 		cout <<"pv_new:\n"<< scientific <<pv<<endl;
 
@@ -99,7 +102,7 @@ int main() {
 		ilmm.process();
 		MatrixXd ipv = ilmm.getPv();
 
-		std::cout << "delta" <<"\n";
+
 		std::cout << pv-ipv << "\n";
 	}
 

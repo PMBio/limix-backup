@@ -9,6 +9,8 @@ option(BUILD_PYTHON_PACKAGE "Enable Python bindings" ON)
 option(BUILD_R_PACKAGE "Enable R bindings" OFF)
 #profiling using google perftools (currently only python .so)
 option(GOOGLE_PERF "Enable google perftools support" OFF)
+#architecture secific optimization
+option(OPTIMIZE_ARCHITECTURE "Enanle architecture specific optimizations" OFF)
 
 #build stuff
 option(BUILD_UNIVERSAL "Build both 32 and 64 bit versions" OFF)
@@ -21,7 +23,7 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif (BUILD_UNIVERSAL)
 
 #set architecture manually (cluster)
-set(TARGET_ARCHITECTURE "generic")
+set(TARGET_ARCHITECTURE "auto")
 
 
 #optimization for architecture:
@@ -91,11 +93,18 @@ add_definitions(-g -Wextra -D_BSD_SOURCE)
 
 #optimize automatically for architecture:
 
-#OptimizeForArchitecture()
+if (OPTIMIZE_ARCHITECTURE)
+OptimizeForArchitecture()
+else (OPTIMIZE_ARCHITECTURE)
 AddCompilerFlag("-march=i686")
-AddCompilerFlag("-sse2")
+AddCompilerFlag("-msse")
+AddCompilerFlag("-msse2")
+endif (OPTIMIZE_ARCHITECTURE)
+
 AddCompilerFlag("-fPIC")
 AddCompilerFlag("-O2")
+
+
 
 #includes
 include_directories(./External)

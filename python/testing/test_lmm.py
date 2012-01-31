@@ -31,23 +31,19 @@ if __name__ == '__main__':
         y = 0.2*(I[:,0:1]*X[:,333:333+1]) 
         y/=y.std()
         y+= 0.2*SP.random.randn(y.shape[0],y.shape[1])
-        
-        try:
-            lm = gpmix.CInteractLMM()
-            #lm.setTestStatistics(gpmix.CLMM.TEST_F)
-            lm.setK(K)
-            lm.setSNPs(X)
-            lm.setPheno(y)
-            lm.setCovs(SP.concatenate((C,I[:,0:1]),axis=1))
-            lm.setInter(I[:,0:1])
-            lm.setInter0(I0)
+        lm = gpmix.CInteractLMM()
+        lm.setTestStatistics(gpmix.CLMM.TEST_F)
+        lm.setK(K)
+        lm.setSNPs(X)
+        lm.setPheno(y)
+        lm.setCovs(SP.concatenate((C,I[:,0:1]),axis=1))
+        lm.setInter(I[:,0:1])
+        lm.setInter0(I0)
 
-            lm.process()
-            pv1_llr = lm.getPv()
+        pdb.set_trace()
+        lm.process()
+        pv1_llr = lm.getPv()
             
-        except Exception:
-            print "outch"
-            pass    
         PL.plot(-SP.log(pv1_llr).ravel())
         pdb.set_trace()
         pass
@@ -73,7 +69,7 @@ if __name__ == '__main__':
     X/-X.std()
 
     ip = 7
-    y_ = Y[:,ip:ip+1]
+    y_ = Y[:,ip:ip+5]
     Iok = (~SP.isnan(y_)).all(axis=1)
     y_ = y_[Iok]
     X_ = X[Iok,::1]
@@ -93,28 +89,36 @@ if __name__ == '__main__':
     lm.setSNPs(X_)
     lm.setPheno(y_)
     lm.setCovs(C_)
-    
+    lm.setEMMAX()    
     #condition on SNP
     #C_ = SP.concatenate((C_,X_[:,89790:89790+1]),axis=1)
     #lm.setCovs(C_)
     
     
     #likelihood ratios
-    t3 = time.time()
-    lm.setTestStatistics(gpmix.CLMM.TEST_LLR)
-    lm.process()    
-    t4 = time.time()
-    pv1_llr = lm.getPv()
+    if 1:
+        t3 = time.time()
+        lm.setTestStatistics(gpmix.CLMM.TEST_LLR)
+        lm.process()    
+        t4 = time.time()
+        pv1_llr = lm.getPv()
+        nll0 = lm.getNLL0()
+        nllalt = lm.getNLLAlt()
     if 1:
         #ftests
+        t5= time.time()
         lm.setTestStatistics(gpmix.CLMM.TEST_F)
         lm.process()    
         pv1_ft = lm.getPv()
-            
-    import pylab as PL
-    PL.plot(-SP.log(pv1_llr.ravel()),'b.')
-    PL.plot(-SP.log(pv1_ft.ravel()),'r.')
-    
+        print lm.getNLL0()
+        print lm.getNLLAlt()       
+        t6= time.time()
+        
+    if 0:
+        import pylab as PL
+        PL.plot(-SP.log(pv1_llr.ravel()),'b.')
+        PL.plot(-SP.log(pv1_ft.ravel()),'r.')
+        
     
     
     
