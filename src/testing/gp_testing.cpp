@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -19,6 +19,7 @@
 #include "gpmix/covar/se.h"
 #include "gpmix/covar/fixed.h"
 #include "gpmix/covar/combinators.h"
+#include "gpmix/covar/freeform.h"
 #include "gpmix/mean/CLinearMean.h"
 #include "gpmix/mean/CKroneckerMean.h"
 #include "gpmix/mean/CSumLinear.h"
@@ -35,6 +36,61 @@ using namespace gpmix;
 #define sumKronMean
 
 int main() {
+
+	muint_t N = 100;
+	muint_t S = 1000;
+	muint_t G = 500;
+	muint_t Ne = 5;
+
+	MatrixXd Y = randn((muint_t)N,(muint_t)G);
+	MatrixXd X = randn((muint_t)N,(muint_t) S);
+	MatrixXd Kpop = 1.0/S * X*X.transpose();
+	MatrixXd E=MatrixXd::Zero(N,1);
+
+	MatrixXd XE = MatrixXd::Zero(N,2);
+
+	CSumCF covar;
+
+	CFixedCF CG1(Kpop);
+	CCovFreeform CG2(Ne);
+	CProductCF CG;
+	CG.addCovariance(&CG1);
+	CG.addCovariance(&CG2);
+	CCovFreeform CE(Ne);
+
+	covar.addCovariance(&CG);
+	covar.addCovariance(&CE);
+
+
+	CLikNormalIso lik;
+	CData data;
+	CGPHyperParams params;
+	CovarInput covar_params = randn(covar.getNumberParams(),(muint_t)1);
+	CovarInput lik_params = randn(lik.getNumberParams(),(muint_t)1);
+
+	params["covar"] = covar_params;
+	params["lik"] = lik_params;
+
+
+
+	CGPbase gp(data, covar, lik);
+	gp.setY(Y);
+	gp.setX(XE);
+	gp.setParams(params);
+
+	CGPopt opt(gp);
+	std::cout << "gradcheck: "<< opt.gradCheck() << "\n";
+
+	//optimize:
+	//construct constraints
+	CGPHyperParams upper;
+	CGPHyperParams lower;
+	upper["lik"] = 5.0*MatrixXd::Ones(1,1);
+	lower["lik"] = -5.0*MatrixXd::Ones(1,1);
+	opt.setOptBoundLower(lower);
+	opt.setOptBoundUpper(upper);
+	opt.opt();
+
 
 
 	try {

@@ -29,8 +29,6 @@ class AMultiCF : public ACovarianceFunction
 {
 protected:
 	ACovarVec vecCovariances;
-
-	muint_t getXRows() const;
 public:
 	AMultiCF(const ACovarVec& covariances);
 	AMultiCF(const muint_t numCovariances=0);
@@ -39,6 +37,8 @@ public:
 
 	virtual bool isInSync() const;
 	virtual void makeSync();
+
+	virtual muint_t Kdim() const throw(CGPMixException);
 
 	//access to covariance arrays
 	void addCovariance(ACovarianceFunction* covar) throw (CGPMixException);

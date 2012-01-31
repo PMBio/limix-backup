@@ -1,5 +1,5 @@
 
-#if 1
+#if 0
 //============================================================================
 // Name        : GPmix.cpp
 // Author      :
@@ -75,15 +75,20 @@ int main() {
 		MatrixXd M = MatrixXd::Ones(3,2);
 
 		lmm.setK(K);
-		lmm.setSNPs(snps);
+		lmm.setSNPs(covs);
 		lmm.setPheno(pheno);
 		lmm.setCovs(covs);
-		lmm.setEMMAX(-5,5,10);
+		lmm.setEMMA(-5,5,10);
+		lmm.setNumIntervals0(10);
 		lmm.setTestStatistics(lmm.TEST_F);
 
 		lmm.process();
 		std::cout << lmm.getLdelta0() << "\n\n\n\n";
 		std::cout << lmm.getLdeltaAlt() << "\n";
+
+		std::cout << lmm.getNLL0() << "\n\n\n\n";
+		std::cout << lmm.getNLLAlt() << "\n";
+
 		MatrixXd pv = lmm.getPv();
 		cout <<"pv_new:\n"<< scientific <<pv<<endl;
 

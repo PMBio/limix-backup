@@ -26,6 +26,15 @@ ACovarianceFunction::~ACovarianceFunction()
 }
 
 
+muint_t ACovarianceFunction::Kdim() const throw(CGPMixException)
+{
+	if(isnull(X))
+		throw CGPMixException("ACovarianceFunction: cannot query covariance dimension without X!");
+	//standard: use X to determine dimension:
+	return X.rows();
+}
+
+
 
 //set the parameters to a new value.
 void ACovarianceFunction::setParams(const CovarParams& params)

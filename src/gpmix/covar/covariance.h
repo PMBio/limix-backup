@@ -59,6 +59,7 @@ protected:
 	CovarParams params;
 	muint_t numberParams;
 	muint_t numberDimensions;
+
 	//helper functions:
 	inline void checkWithinDimensions(muint_t d) const throw (CGPMixException);
 	inline void checkWithinParams(muint_t i) const throw (CGPMixException);
@@ -94,6 +95,8 @@ public:
 
 	// call by 
 	//virtual functions that have trivial implementations
+	virtual muint_t Kdim() const throw(CGPMixException);
+
 	virtual void aK(MatrixXd* out) const;
 	virtual void aKdiag(VectorXd* out) const;
 	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);

@@ -26,9 +26,9 @@ AMultiCF::~AMultiCF()
 }
 
 
-muint_t AMultiCF::getXRows() const
+muint_t AMultiCF::Kdim() const throw(CGPMixException)
 {
-	return vecCovariances.begin()[0]->getX().rows();
+	return vecCovariances.begin()[0]->Kdim();
 }
 
 
@@ -102,7 +102,7 @@ void AMultiCF::setX(const CovarInput& X) throw (CGPMixException)
 
 void AMultiCF::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
 {
-	if(((col+(muint_t)X.cols())>=getNumberDimensions()) || ((muint_t)X.rows()!=this->getXRows()))
+	if(((col+(muint_t)X.cols())>=getNumberDimensions()) || ((muint_t)X.rows()!=this->Kdim()))
 	{
 		ostringstream os;
 		os << "setXcol out of range. Current X:"<<this->getNumberDimensions() <<")";
@@ -137,7 +137,7 @@ void AMultiCF::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
 void AMultiCF::agetX(CovarInput* Xout) const throw (CGPMixException)
 {
 	//1. determine size of Xout
-	muint_t trows = getXRows();
+	muint_t trows = Kdim();
 	muint_t tcols = getNumberDimensions();
 	(*Xout).resize(trows,tcols);
 
@@ -250,7 +250,7 @@ string CSumCF::getName() const
 
 void CSumCF::aK(MatrixXd* out) const
 {
-	muint_t trows = this->getXRows();
+	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,trows,0);
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
@@ -265,7 +265,7 @@ void CSumCF::aK(MatrixXd* out) const
 
 void CSumCF::aKdiag(VectorXd* out) const
 {
-	muint_t trows = this->getXRows();
+	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,0);
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
@@ -284,7 +284,7 @@ void CSumCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CGPMix
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
 		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
-	(*out).setConstant(Xstar.rows(),this->getXRows(),0);
+	(*out).setConstant(Xstar.rows(),this->Kdim(),0);
 	muint_t c0=0;
 	muint_t cols;
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
@@ -461,7 +461,7 @@ string CProductCF::getName() const
 
 void CProductCF::aK(MatrixXd* out) const
 {
-	muint_t trows = this->getXRows();
+	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,trows,1);
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
@@ -476,7 +476,7 @@ void CProductCF::aK(MatrixXd* out) const
 
 void CProductCF::aKdiag(VectorXd* out) const
 {
-	muint_t trows = this->getXRows();
+	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,1.0);
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
@@ -495,7 +495,7 @@ void CProductCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CG
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
 		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
-	(*out).setConstant(Xstar.rows(),this->getXRows(),1.0);
+	(*out).setConstant(Xstar.rows(),this->Kdim(),1.0);
 	muint_t c0=0;
 	muint_t cols;
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
@@ -546,7 +546,7 @@ void CProductCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMix
 	//2. loop through covariances until we found the correct one
 	muint_t i0=0;
 	muint_t params;
-	(*out).setConstant(this->getXRows(),this->getXRows(),1.0);
+	(*out).setConstant(this->Kdim(),this->Kdim(),1.0);
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		ACovarianceFunction* cp = iter[0];
@@ -572,7 +572,7 @@ void CProductCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixExcep
 	//2. loop over covarainces and get the one corresponding to d
 	muint_t c0=0;
 	muint_t cols;
-	(*out).setConstant(this->getXRows(),this->getXRows(),1.0);
+	(*out).setConstant(this->Kdim(),this->Kdim(),1.0);
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		ACovarianceFunction* cp = iter[0];
@@ -595,7 +595,7 @@ void CProductCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMi
 	this->checkWithinDimensions(d);
 	muint_t c0=0;
 	muint_t cols;
-	(*out).setConstant(this->getXRows(),1.0);
+	(*out).setConstant(this->Kdim(),1.0);
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		ACovarianceFunction* cp = iter[0];
@@ -621,7 +621,7 @@ void CProductCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const m
 	//2. loop over covarainces and get the one corresponding to d
 	muint_t c0=0;
 	muint_t cols;
-	(*out).setConstant(Xstar.rows(),this->getXRows(),1.0);
+	(*out).setConstant(Xstar.rows(),this->Kdim(),1.0);
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		ACovarianceFunction* cp = iter[0];
