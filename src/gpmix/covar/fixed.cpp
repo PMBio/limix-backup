@@ -6,6 +6,7 @@
  */
 #include "fixed.h"
 #include "gpmix/types.h"
+#include "gpmix/utils/matrix_helper.h"
 #include "assert.h"
 
 namespace gpmix {
@@ -20,6 +21,15 @@ gpmix::CFixedCF::CFixedCF(const MatrixXd & K0) : ACovarianceFunction(1)
 
 gpmix::CFixedCF::~CFixedCF()
 {
+}
+
+muint_t gpmix::CFixedCF::Kdim() const throw(CGPMixException)
+{
+	if(isnull(K0))
+	{
+		throw CGPMixException("FixedCF: Kdim cannot be evaluated before K0 is defined");
+	}
+	return K0.rows();
 }
 
 

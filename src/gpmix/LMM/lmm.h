@@ -268,7 +268,7 @@ public:
 	}
 	MatrixXd& getLdelta0()
 	{
-		return ldelta0;
+		return ldeltaAlt;
 	}
 
 

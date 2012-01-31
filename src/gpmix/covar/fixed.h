@@ -31,6 +31,7 @@ public:
 	{};
 	~CFixedCF();
 
+	virtual muint_t Kdim() const throw(CGPMixException);
 
 	//overloaded pure virtual functions:
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
