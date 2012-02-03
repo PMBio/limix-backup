@@ -42,7 +42,7 @@ void gpmix::CFixedCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const thr
 void gpmix::CFixedCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
 {
 	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
-	(*out) = A*VectorXd::Ones(Xstar.rows());
+	(*out) = A*K0cross_diag;
 }
 
 
@@ -106,6 +106,16 @@ void gpmix::CFixedCF::agetK0(MatrixXd *out) const
 void gpmix::CFixedCF::agetK0cross(MatrixXd *out) const
 {
 	(*out) = K0cross;
+}
+
+void gpmix::CFixedCF::agetK0cross_diag(VectorXd *out) const
+{
+	(*out) = K0cross_diag;
+}
+
+VectorXd gpmix::CFixedCF::getK0cross_diag() const
+{
+	 return K0cross_diag;
 }
 
 

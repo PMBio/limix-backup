@@ -20,11 +20,13 @@ namespace gpmix {
 %ignore CFixedCF::getK0cross;
 %rename(getK0) CFixedCF::agetK0;
 %rename(getK0cross) CFixedCF::agetK0cross;
+%rename(getK0cross_diag) CFixedCF::agetK0cross_diag;
 #endif
 class CFixedCF : public ACovarianceFunction {
 protected:
 	MatrixXd K0;
 	MatrixXd K0cross;
+	VectorXd K0cross_diag;
 public:
 	CFixedCF(const MatrixXd& K0);
  	CFixedCF() : ACovarianceFunction(1)
@@ -46,12 +48,16 @@ public:
 	void setK0cross(const MatrixXd& Kcross);
 	void agetK0(MatrixXd* out) const;
 	void agetK0cross(MatrixXd* out) const;
+	void setK0cross_diag(const VectorXd& Kcross);
+	void agetK0cross_diag(VectorXd* out) const;
+
 
 	//class information
 	inline string getName() const{ return "FixedCF";}
 
 	MatrixXd getK0() const;
 	MatrixXd getK0cross() const;
+	VectorXd getK0cross_diag() const;
 };
 
 class CEyeCF : public ACovarianceFunction
