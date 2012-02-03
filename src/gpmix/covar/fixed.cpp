@@ -118,6 +118,11 @@ VectorXd gpmix::CFixedCF::getK0cross_diag() const
 	 return K0cross_diag;
 }
 
+void gpmix::CFixedCF::setK0cross_diag(const VectorXd& Kcross_diag)
+{
+	this->K0cross_diag = Kcross_diag;
+}
+
 
 
 void CEyeCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)

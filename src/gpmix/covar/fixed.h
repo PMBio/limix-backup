@@ -48,7 +48,7 @@ public:
 	void setK0cross(const MatrixXd& Kcross);
 	void agetK0(MatrixXd* out) const;
 	void agetK0cross(MatrixXd* out) const;
-	void setK0cross_diag(const VectorXd& Kcross);
+	void setK0cross_diag(const VectorXd& Kcross_diag);
 	void agetK0cross_diag(VectorXd* out) const;
 
 
