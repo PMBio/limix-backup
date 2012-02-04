@@ -1,7 +1,7 @@
 import sys
 
 import os
-os.chdir('/kyb/agbs/stegle/work/projects/GPmix/python/testing')
+#os.chdir('/kyb/agbs/stegle/work/projects/GPmix/python/testing')
 
 sys.path.append('./../../pygp')
 sys.path.append('./..')

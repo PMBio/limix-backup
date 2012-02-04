@@ -11,13 +11,25 @@ import pdb
 import pylab as PL
 
 
+def scale_k(k, verbose=False):
+    c = SP.sum((SP.eye(len(k)) - (1.0 / len(k)) * SP.ones(k.shape)) * SP.array(k))
+    scalar = (len(k) - 1) / c
+    if verbose:
+        print 'Kinship scaled by: %0.4f' % scalar
+    k = scalar * k
+    return k
+
+
+
+SP.random.seed(1)
+
 #1. simulate
 #samples:
 N = 200
 #number of low rank population structure factors
 K = 5
 #number of SNPs
-S = 100000
+S = 10000
 #number of traits
 T=2 
 
@@ -28,20 +40,23 @@ assert T==2, 'not supported yet!'
 #variance components
 V00 = 1.0
 V11 = 1.0
-V01 = 0.001
+V01 = 0.9
+
 Vnoise = 1.0
 
 #number of genetic factors
 Nsnp_common = 1
 Vsnp_common = 0.8
-Nsnp_interacting = 0
+Nsnp_interacting = 1
 Vsnp_interacting = 0.8
 
 
 #1.1 simluate SNPs with low rank structure (population)
-X = SP.dot(SP.random.randn(N,K),SP.random.randn(K,S))
-X-= X.mean(axis=0)
-X/= X.std(axis=0)
+Xp = SP.dot(SP.random.randn(N,K),SP.random.randn(K,S))
+Xp-= Xp.mean(axis=0)
+Xp/= Xp.std(axis=0)
+Xr = SP.random.randn(N,S)
+X = 0.5*Xp + 0.5*Xr
 
 #1.2 population structure covariance
 Kpop = 1.0/X.shape[1] *SP.dot(X,X.T)
@@ -60,22 +75,35 @@ K +=  Vnoise * SP.eye(K.shape[0])
 L = SP.linalg.cholesky(K).T
 Yr = SP.dot(L,SP.random.randn(K.shape[0],1))  
 
+
+#make all data full scale
+Xf = SP.concatenate((X,X),axis=0)
+Kpopf = 1.0/Xf.shape[1] * SP.dot(Xf,Xf.T)
+
+
 #1.6 add fixed effect (SNP)
 #TODO: make this proper
+Iasso = []
+Iinter= []
 Yf = SP.zeros_like(Yr)
 for ii in xrange(Nsnp_common):
     iis = SP.random.permutation(S)[0]
     w   = SP.sqrt(Vsnp_common)*SP.random.randn()
-    ys   = w*X[:,ii]
+    ys   = w*X[:,iis]
     #kron [1,1] : in both environments
     Yf   += SP.kron([1,1],ys)[:,SP.newaxis]
+    Iasso.append(iis)
 
 for ii in xrange(Nsnp_interacting):
     iis = SP.random.permutation(S)[0]
     w   = SP.sqrt(Vsnp_interacting)*SP.random.randn()
-    ys   = w*X[:,ii]
+    ys   = w*X[:,iis]
     #kron [1,1] : in both environments
-    Yf   += SP.kron([1,1],ys)[:,SP.newaxis]
+    Yf   += SP.kron([1,0],ys)[:,SP.newaxis]
+    Iinter.append(iis)
+    
+Iasso = SP.array(Iasso)
+Iinter = SP.array(Iinter)
 
 
 #1.7: sum of fixed and random effect
@@ -84,10 +112,6 @@ Y = Yf + Yr
 Y -= Y.mean()
 Y/= Y.std()
 
-
-#make all data full scale
-Xf = SP.concatenate((X,X),axis=0)
-Kpopf = 1.0/Xf.shape[1] * SP.dot(Xf,Xf.T)
 
 #2. fitting using mmtk
 GP = {}
@@ -104,35 +128,47 @@ GP['covar'].addCovariance(GP['covar_E'])
 GP['ll'] = mmtk.CLikNormalIso()
 GP['data'] =  mmtk.CData()
 GP['hyperparams'] = mmtk.CGPHyperParams()
-covar_params = SP.zeros([GP['covar'].getNumberParams()])
-lik_params   =  SP.log([0.1])
-GP['hyperparams']['covar'] = covar_params
-GP['hyperparams']['lik']   = lik_params
+
+
 #Create GP instance
 GP['gp']=mmtk.CGPbase(GP['data'],GP['covar'],GP['ll'])
-GP['gp'].setParams(GP['hyperparams'])
-    
 #set data
 GP['gp'].setY(Y)
-
 #input: effectively we require the group for each sample (CCovFreeform requires this)
 Xtrain = SP.zeros([Y.shape[0],1])
 Xtrain[N::1] = 1        
 GP['gp'].setX(Xtrain)
+
+gpopt = mmtk.CGPopt(GP['gp'])
 #constraints
 constrainU = mmtk.CGPHyperParams()
 constrainL = mmtk.CGPHyperParams()
-constrainU['lik'] = +5*SP.ones_like(lik_params);
-constrainL['lik'] = -5*SP.ones_like(lik_params);
-
-gpopt = mmtk.CGPopt(GP['gp'])
-#checking tha gradients work
-#print gpopt.gradCheck()
+constrainU['lik'] = +5*SP.ones([1]);
+constrainL['lik'] = -5*SP.ones([1]);
 gpopt.setOptBoundLower(constrainL);
 gpopt.setOptBoundUpper(constrainU);
+
+
+P = []
+L = []
+#use a number of restarts...
+#TODO: think about a more elegant scheme to handle multiple restarts properly
 t0=time.time()
-gpopt.opt()
+for i in xrange(1):
+    covar_params =  0.5*SP.random.randn(GP['covar'].getNumberParams())
+    lik_params   =  0.5*SP.random.randn(1)
+    GP['hyperparams']['covar'] = covar_params
+    GP['hyperparams']['lik']   = lik_params
+    GP['gp'].setParams(GP['hyperparams'])
+    gpopt.opt()
+    P.append(GP['gp'].getParamArray())
+    L.append(GP['gp'].LML())
+im=SP.array(L).argmin()
+GP['gp'].setParamArray(P[im])
 t1=time.time()
+
+#checking tha gradients work
+#print gpopt.gradCheck()
 print "needed %.2f seconds for variance component learning" % (t1-t0)
 
 #get optmized variance component
@@ -143,22 +179,65 @@ K = GP['covar'].K()
 params_E=GP['covar_E'].getParams()
 params_G=GP['covar_G'].getParams()
     
-#get full covariance and use for testijng
+    
+K0 = SP.eye(K.shape[0])
+
+#1. Main effect
+#covariates
+C = SP.ones([2*N,1])
 lmm = mmtk.CLMM()
-lmm.setK(K)
+lmm.setK(scale_k(K))
 lmm.setSNPs(Xf)
 lmm.setPheno(Y)
 #covariates: column of ones
-lmm.setCovs(SP.ones([2*N,1]))
+lmm.setCovs(C)
 #EmmaX mode with useful default settings
 lmm.setEMMAX()
 t0 = time.time()
 lmm.process()
 t1 = time.time()
-
-print "neede %.2f seconds for GWAS scan" % (t1-t0) 
 pv = lmm.getPv().flatten()
+print "neede %.2f seconds for GWAS scan" % (t1-t0) 
 
-PL.figure()
-PL.plot(-SP.log10(pv))    
+#comparison with standard Kpop
+lmm.setK(Kpopf)
+lmm.process()
+pvk = lmm.getPv().flatten()
+
+
+#2. interaction effects (env 0 only)
+I = SP.zeros([Y.shape[0],1])
+I0 = SP.ones([Y.shape[0],1])
+
+I[0:N]=1
+lmi = mmtk.CInteractLMM()
+lmi.setK(scale_k(K))
+lmi.setSNPs(Xf)
+lmi.setPheno(Y)
+lmi.setCovs(SP.concatenate((C,I),axis=1))
+lmi.setEMMAX()
+lmi.setInter(I)
+lmi.setInter0(I0)
+lmi.process()
+pvI = lmi.getPv().flatten()
+
+#comparison with standard Kpop
+lmi.setK(scale_k(Kpopf))
+lmi.process()
+pvIk = lmi.getPv().flatten()
+
+
+if 1:
+    PL.figure()
+    pk=PL.plot(-SP.log10(pvk),'b.',alpha=0.5)    
+    p=PL.plot(-SP.log10(pv),'r.',alpha=0.5)
+    PL.plot(Iasso,0*SP.ones_like(Iasso),'r*',markersize=15)
+    PL.legend([pk,p],['LMM','LMM2trait'],loc='upper left')    
+
+if 1:
+    PL.figure()
+    pk=PL.plot(-SP.log10(pvIk),'b.',alpha=0.5)    
+    p=PL.plot(-SP.log10(pvI),'r.',alpha=0.5)
+    PL.plot(Iinter,0*SP.ones_like(Iinter),'r*',markersize=15)
+    PL.legend([pk,p],['LMM','LMM2trait'],loc='upper left')        
         
