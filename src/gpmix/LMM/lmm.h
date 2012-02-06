@@ -110,7 +110,7 @@ public:
 	void agetPermutation(VectorXi* out) const;
 
 	//setting of certain behaviour
-	void setEMMAX(mfloat_t ldeltamin0 = -5, mfloat_t ldeltamax0=5,muint_t num_intervals0=100)
+	void setVarcompApprox0(mfloat_t ldeltamin0 = -5, mfloat_t ldeltamax0=5,muint_t num_intervals0=100)
 	{
 		this->ldeltamax0 = ldeltamax0;
 		this->ldeltamin0 = ldeltamin0;
@@ -119,7 +119,7 @@ public:
 		this->ldeltamaxAlt =0;
 		this->num_intervalsAlt = 0;
 	}
-	void setEMMA(mfloat_t ldeltamin = -5, mfloat_t ldeltamax=5,muint_t num_intervals=100)
+	void setVarcompExact(mfloat_t ldeltamin = -5, mfloat_t ldeltamax=5,muint_t num_intervals=100)
 	{
 			this->ldeltamaxAlt = ldeltamax;
 			this->ldeltaminAlt = ldeltamin;

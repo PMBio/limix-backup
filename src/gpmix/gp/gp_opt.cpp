@@ -188,9 +188,14 @@ bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
         double lml;
         //set Params
         gp.setParamArray(paramArray,optParamMask);
+        //std::cout << "D:" << gp.getParamArray().segment(1,paramArray.rows())-paramArray << "\n\n";
+        //std::cout << paramArray << "--" << gp.getParamArray() << "\n\n";
         lml = gp.LML();
         CGPHyperParams grad = gp.LMLgrad();
+        //std::cout << "dLML(" << grad << ")" << "\n";
         grad.agetParamArray(gradParamArray,optParamMask);
+        //std::cout << "Dgrad" << grad.getParamArray().segment(1,paramArray.rows())-*gradParamArray << "\n\n";
+        //std::cout << "dLMLmask(" << grad << ")" << "\n";
         return lml;
     }
 

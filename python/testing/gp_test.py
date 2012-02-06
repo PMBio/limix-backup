@@ -70,14 +70,18 @@ constrainL['lik'] = -5*SP.ones_like(lik_params);
 
 
 mask = gpmix.CGPHyperParams()
-mask['covar'] = SP.ones(covar_params.shape[0])
-mask['lik'] = SP.ones(lik_params.shape[0])
+covar_mask = SP.ones(covar_params.shape[0])
+covar_mask[0] = 1
+covar_mask[1] = 0
+
+mask['covar'] = covar_mask
+#mask['lik'] = SP.ones(lik_params.shape[0])
 
 
 gpopt = gpmix.CGPopt(gp)
 gpopt.setOptBoundLower(constrainL);
 gpopt.setOptBoundUpper(constrainU);
-#gpopt.setParamMask(mask)
+gpopt.setParamMask(mask)
 gpopt.opt()
 opt_params = gp.getParamArray()
 lmlo = gp.LML()
