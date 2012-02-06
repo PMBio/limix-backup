@@ -98,7 +98,7 @@ class CMMT(object):
             self.lmm.setCovs(_C)
             self.lmm.setPheno(_Y)
             #optimize delta -10..10
-            self.lmm.setEMMAX(-20,10,1000)
+            self.lmm.setVarcompApprox0(-20,10,1000)
             self.lmm.process()
             #get delta
             ldelta = self.lmm.getLdelta0().flatten()
@@ -151,6 +151,13 @@ class CMMT(object):
         GP['gp'].setX(Xgp)
         #optimization interface
         GP['gpopt'] = mmtk.CGPopt(GP['gp'])
+        #filter?
+        covar_mask = SP.ones([GP['covar'].getNumberParams(),1])
+        covar_mask[0] = 0 
+        covar_mask[4] = 0 
+        mask = mmtk.CGPHyperParams()
+        mask['covar'] = covar_mask
+        GP['gpopt'].setParamMask(mask)
         #hyperparams object
         GP['hyperparams'] = mmtk.CGPHyperParams()
         self.GP=GP
@@ -252,7 +259,7 @@ class CMMT(object):
         #covariates: column of ones
         self.lmm.setCovs(self.C)
         #EmmaX mode with useful default settings
-        self.lmm.setEMMAX()
+        self.lmm.setVarcompApprox0()
         self.lmm.process()
         pv = self.lmm.getPv().flatten()
         return pv
@@ -266,7 +273,7 @@ class CMMT(object):
         self.lmi.setSNPs(self.X)
         self.lmi.setPheno(self.Y)
         self.lmi.setCovs(self.C)
-        self.lmi.setEMMAX()
+        self.lmi.setVarcompApprox0()
         self.lmi.setInter(I)
         self.lmi.setInter0(I0)
         self.lmi.process()

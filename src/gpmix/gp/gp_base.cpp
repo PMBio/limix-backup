@@ -63,9 +63,7 @@ void CGPHyperParams::agetParamArray(VectorXd* out,const CGPHyperParams& mask) co
 		//2. check whether filter applied for this field
 		CGPHyperParams::const_iterator itf = mask.find(name);
 		if (itf!=mask.end())
-		{
 			value=filterMask(value,(*itf).second);
-		}
 		muint_t nc = value.rows()*value.cols();
 		//2. flatten to vector shape
 		value.resize(nc,1);
@@ -86,6 +84,8 @@ void CGPHyperParams::setParamArray(const VectorXd& param,const CGPHyperParams& m
 		throw gpmix::CGPMixException(os.str());
 	}
 
+	muint_t nc;
+	MatrixXd value;
 	//2. loop through elements and slot in params
 	muint_t ncurrent=0;
 	for(CGPHyperParams::const_iterator iter = this->begin(); iter!=this->end();iter++)
@@ -99,28 +99,29 @@ void CGPHyperParams::setParamArray(const VectorXd& param,const CGPHyperParams& m
 			muint_t vr = mask_.col(0).count();
 			//TODO: masking of columns not supported
 			muint_t vc = (*iter).second.cols();
-			muint_t nc = vr*vc;
+			nc = vr*vc;
 			//get value and resize
 			MatrixXd value_ = param.segment(ncurrent,nc);
 			value_.resize(vr,vc);
 			//expand mask:
-			MatrixXd value  = this->get(name);
+			value  = this->get(name);
 			//expand
 			expandMask(value,value_,mask_);
-			set(name,value);
 		}
 		else
 		{
-			muint_t nc = (*iter).second.rows()*(*iter).second.cols();
+			nc = (*iter).second.rows()*(*iter).second.cols();
 			//get  elements:
-			MatrixXd value = param.segment(ncurrent,nc);
+			value = param.segment(ncurrent,nc);
 			//reshape
 			value.resize((*iter).second.rows(),(*iter).second.cols());
 			//set
 			set(name,value);
-			//move on
-			ncurrent += nc;
 		}
+		set(name,value);
+		//std::cout << "name:" << name << "value:" << value << "\n\n";
+		//move on
+		ncurrent += nc;
 	}//end for
 
 }
