@@ -1,3 +1,4 @@
 1) unit tests
-2) GP predictions not working (Variance is off)
-3) Class factories for mixed model tests needs to be tested.
+2) Class factories for mixed model tests needs to be tested.
+3) masking not working 
+4) Logging framework needed

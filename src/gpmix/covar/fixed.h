@@ -18,6 +18,7 @@ namespace gpmix {
 //rename functions and select the visible component for SWIG
 %ignore CFixedCF::getK0;
 %ignore CFixedCF::getK0cross;
+%ignore CFixedCF::getK0cross_diag;
 %rename(getK0) CFixedCF::agetK0;
 %rename(getK0cross) CFixedCF::agetK0cross;
 %rename(getK0cross_diag) CFixedCF::agetK0cross_diag;

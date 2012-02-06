@@ -46,10 +46,12 @@ lmlo_ = gp_.LML(opt_params_)
 covar  = gpmix.CCovSqexpARD(n_dimensions)
 ll  = gpmix.CLikNormalIso()
 data = gpmix.CData()
+
 #create hyperparm     
 hyperparams = gpmix.CGPHyperParams()
 hyperparams['covar'] = covar_params
 hyperparams['lik'] = lik_params
+
 #cretae GP
 gp=gpmix.CGPbase(data,covar,ll)
 #set data
@@ -65,13 +67,20 @@ constrainU['covar'] = +10*SP.ones_like(covar_params);
 constrainL['covar'] = -10*SP.ones_like(covar_params);
 constrainU['lik'] = +5*SP.ones_like(lik_params);
 constrainL['lik'] = -5*SP.ones_like(lik_params);
+
+
+mask = gpmix.CGPHyperParams()
+mask['covar'] = SP.ones(covar_params.shape[0])
+mask['lik'] = SP.ones(lik_params.shape[0])
+
+
 gpopt = gpmix.CGPopt(gp)
 gpopt.setOptBoundLower(constrainL);
 gpopt.setOptBoundUpper(constrainU);
+#gpopt.setParamMask(mask)
 gpopt.opt()
 opt_params = gp.getParamArray()
 lmlo = gp.LML()
-
 
 #prediction
 Xmean = gp.predictMean(Xs)
@@ -94,14 +103,3 @@ PL.plot(X,y,'b.')
 PL.plot(Xs,Xmean)
 PL.plot(Xs,Xmean+SP.sqrt(Xstd))
 PL.plot(Xs,Xmean-SP.sqrt(Xstd))
-
-
-Kcross=covar.Kcross(Xs)
-Kcross_ = gp_.covar.K(opt_params_['covar'],X,Xs).T
-
-Kcross_diag=covar.Kcross_diag(Xs)
-Kcross_diag_ = gp_.covar.Kdiag(opt_params_['covar'],Xs)
-
-Kcross_diag_noise = ll.Kcross_diag(Xs)
-Kcross_diag_noise_ = gp_.likelihood.Kdiag(opt_params_['lik'],Xs)
-
