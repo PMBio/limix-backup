@@ -10,6 +10,8 @@
 
 #include "gp_base.h";
 #include "nlopt/api/nlopt.h"
+#include <vector>
+
 
 
 namespace gpmix {
@@ -17,14 +19,22 @@ namespace gpmix {
 #define solver NLOPT_LD_LBFGS
 #define DEFAULT_TOL 1E-4
 
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//list of CGPHyperParams
+//%template(HyperParmasVec) vector<CGHyperParmas>;
+#endif
+
 class CGPopt {
 protected:
-
+	//gp object which is optimized:
 	CGPbase& gp;
+	//starting points for optimization, if any
+	vector<CGPHyperParams> optStartParams;
 	CGPHyperParams optParams;
+	mfloat_t optLML;
 	CGPHyperParams optBoundLower;
 	CGPHyperParams optBoundUpper;
-	CGPHyperParams filter;
+	CGPHyperParams optParamMask;
 	mfloat_t tolerance;
 	muint_t numEvaluations;
 
@@ -44,8 +54,8 @@ public:
 	virtual bool gradCheck(mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
 	virtual void opt() throw (CGPMixException);
 
-	CGPHyperParams getFilter() const;
-	void setFilter(CGPHyperParams filter);
+	CGPHyperParams getParamMask() const;
+	void setParamMask(CGPHyperParams filter);
 	double getTolerance() const;
 	void setTolerance(double tol = 1E-4);
 
@@ -53,6 +63,12 @@ public:
     void setOptBoundLower(CGPHyperParams optBoundLower);
     CGPHyperParams getOptBoundUpper() const;
     void setOptBoundUpper(CGPHyperParams optBoundUpper);
+    vector<CGPHyperParams> getOptStartParams() const;
+    void setOptStartParams(const vector<CGPHyperParams>& optStartParams);
+
+    void addOptStartParams(const CGPHyperParams& params);
+    void addOptStartParams(const VectorXd& paramArray);
+
     CGPHyperParams getOptParams()
 	{ return optParams; }
 };

@@ -41,6 +41,45 @@ void ALikelihood::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMi
 
 
 
+/*CLikNormalNULL*/
+CLikNormalNULL::CLikNormalNULL() : ALikelihood(0)
+{
+}
+
+CLikNormalNULL::~CLikNormalNULL()
+{
+}
+
+void CLikNormalNULL::setX(const CovarInput& X) throw (CGPMixException)
+{
+	this->numRows = X.rows();
+}
+
+
+void CLikNormalNULL::aK(MatrixXd* out) const throw (CGPMixException)
+{
+	(*out) = MatrixXd::Zero(numRows,numRows);
+}
+
+void CLikNormalNULL::aKdiag(VectorXd* out) const throw (CGPMixException)
+{
+	(*out).resize(numRows);
+	(*out).setConstant(0);
+}
+
+void CLikNormalNULL::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+		(*out).setConstant(Xstar.rows(),0.0);
+}
+
+
+void CLikNormalNULL::aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException)
+{
+	throw CGPMixException("CLikNormalNULL has no hyperparameters!");
+}
+
+
+
 /*CLikNormalIso*/
 
 CLikNormalIso::CLikNormalIso() : ALikelihood(1)

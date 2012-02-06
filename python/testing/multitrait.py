@@ -140,13 +140,15 @@ Xtrain[N::1] = 1
 GP['gp'].setX(Xtrain)
 
 gpopt = mmtk.CGPopt(GP['gp'])
-#constraints
+#constraints: make sure that noise level does not go completel crazy
 constrainU = mmtk.CGPHyperParams()
 constrainL = mmtk.CGPHyperParams()
 constrainU['lik'] = +5*SP.ones([1]);
 constrainL['lik'] = -5*SP.ones([1]);
 gpopt.setOptBoundLower(constrainL);
 gpopt.setOptBoundUpper(constrainU);
+#filters: we do not need to optimize the overall scaling prameter in front of Kpop
+
 
 
 P = []

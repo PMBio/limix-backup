@@ -48,28 +48,32 @@ typedef Eigen::LLT<gpmix::MatrixXd> MatrixXdChol;
 
 //list of strings: names of hyperparams
 %template(StringVec) vector<string>;
+
 //ok: this causes trouble at the moment, due to Eigen specifics.
 //we rely on the interfaces we added for python use
 //%template(StringMatrixMap) map<std::string,MatrixXd>;
+
 #endif
-
-typedef map<string,MatrixXd> CGPHyperParamsMap;
-
-/*
- * CGHyperParams:
- * helper class to handle different types of paramters
- * Map: string -> MatrixXd
- * Parameters can be vectors or matrices (MatrixXd)
- *
- * if set using .set(), the current structure of the parameter array is destroyed.
- * if set using .setArrayParams(), the current structure is enforced.
- * Usage:
- * - set the structure using repeated calls of .set(name,value)
- * - once built, optimizers and CGPbase rely on setParamArray(), getParamArra() to convert the
- *   readle representation of parameters to and from a vectorial one.
- */
-
-class CGPHyperParams : public map<string,MatrixXd> {
+//typedef map<string,MatrixXd> CGPHyperParamsMap;
+class CGPHyperParams : public map<string,MatrixXd>
+{
+	/*
+	 * CGHyperParams:
+	 * helper class to handle different types of paramters
+	 * Map: string -> MatrixXd
+	 * Parameters can be vectors or matrices (MatrixXd)
+	 *
+	 * if set using .set(), the current structure of the parameter array is destroyed.
+	 * if set using .setArrayParams(), the current structure is enforced.
+	 * Usage:
+	 * - set the structure using repeated calls of .set(name,value)
+	 * - once built, optimizers and CGPbase rely on setParamArray(), getParamArra() to convert the
+	 *   readle representation of parameters to and from a vectorial one.
+	 */
+protected:
+	MatrixXd filterMask(const MatrixXd& array,const MatrixXd& mask) const;
+	void expandMask(MatrixXd& out,const MatrixXd& array,const MatrixXd& mask) const;
+	//	MatrixXd filterMask(const MatrixXd& array,const MatrixXd& mask) const;
 
 public:
 	CGPHyperParams()
@@ -83,10 +87,15 @@ public:
 	{
 	}
 
-	void agetParamArray(VectorXd* out) const;
+	void agetParamArray(VectorXd* out) const throw(CGPMixException);
 	void setParamArray(const VectorXd& param) throw (CGPMixException);
 
+	void agetParamArray(VectorXd* out,const CGPHyperParams& mask) const throw(CGPMixException);
+	void setParamArray(const VectorXd& param,const CGPHyperParams& mask) throw (CGPMixException);
+
+
 	muint_t getNumberParams() const;
+	muint_t getNumberParams(const CGPHyperParams& mask) const;
 
 	void set(const string& name, const MatrixXd& value);
 	void aget(MatrixXd* out, const string& name);
@@ -95,10 +104,19 @@ public:
 	//exists?
 	bool exists(string name) const;
 
+	//operator overloading
+
+	friend ostream& operator <<(ostream &os,const CGPHyperParams &obj);
+
 	//convenience functions for C++ access
 	inline MatrixXd get(const string&name);
-	inline VectorXd getParamArray();
+	inline VectorXd getParamArray() const;
+	inline VectorXd getParamArray(const CGPHyperParams& mask) const throw (CGPMixException);
+
 };
+
+	//ostream& operator <<(ostream &os,const CGPHyperParams &obj);
+
 
 inline MatrixXd CGPHyperParams::get(const string&name)
 {
@@ -106,10 +124,17 @@ inline MatrixXd CGPHyperParams::get(const string&name)
 	aget(&rv,name);
 	return rv;
 }
-inline VectorXd CGPHyperParams::getParamArray()
+inline VectorXd CGPHyperParams::getParamArray() const
 {
 	VectorXd rv;
 	agetParamArray(&rv);
+	return rv;
+}
+
+inline VectorXd CGPHyperParams::getParamArray(const CGPHyperParams& mask) const throw (CGPMixException)
+{
+	VectorXd rv;
+	agetParamArray(&rv,mask);
 	return rv;
 }
 
@@ -209,8 +234,10 @@ public:
 
 	//getter and setter for Parameters:
 	virtual void setParams(const CGPHyperParams& hyperparams) throw(CGPMixException);
+	virtual void setParams(const CGPHyperParams& hyperparams,const CGPHyperParams& mask) throw(CGPMixException);
 	virtual CGPHyperParams getParams() const;
 	virtual void setParamArray(const VectorXd& hyperparams) throw (CGPMixException);
+	virtual void setParamArray(const VectorXd& param,const CGPHyperParams& mask) throw (CGPMixException);
 	virtual void agetParamArray(VectorXd* out) const;
 
 

@@ -19,18 +19,53 @@ CGPHyperParams::CGPHyperParams(const CGPHyperParams &_param) : map<string,Matrix
 
 }
 
+void CGPHyperParams::agetParamArray(VectorXd* out) const throw(CGPMixException)
+{
+	CGPHyperParams mask;
+	agetParamArray(out,mask);
+}
+
+void CGPHyperParams::setParamArray(const VectorXd& param) throw (CGPMixException)
+{
+	CGPHyperParams mask;
+	setParamArray(param,mask);
+}
 
 
-void CGPHyperParams::agetParamArray(VectorXd* out) const
+MatrixXd CGPHyperParams::filterMask(const MatrixXd& array,const MatrixXd& mask) const
+{
+	//TODO: mask currently only supported for rows of array not on cols:
+	MatrixXd RV;
+	AfilterMask(RV,array,mask.col(0),VectorXd::Ones(array.cols()));
+	return RV;
+}
+
+void CGPHyperParams::expandMask(MatrixXd& out, const MatrixXd& array,const MatrixXd& mask) const
+{
+	//TODO: mask currently only supported for rows of array not on cols:
+	AexpandMask(out,array,mask.col(0),VectorXd::Ones(array.cols()));
+}
+
+
+
+
+void CGPHyperParams::agetParamArray(VectorXd* out,const CGPHyperParams& mask) const throw(CGPMixException)
 {
 	//1. get size
-	(*out).resize(this->getNumberParams());
+	(*out).resize(this->getNumberParams(mask));
 	//2. loop through entries
 	muint_t ncurrent=0;
-	for(CGPHyperParamsMap::const_iterator iter = this->begin(); iter!=this->end();iter++)
+	for(CGPHyperParams::const_iterator iter = this->begin(); iter!=this->end();iter++)
 	{
 		//1. get param object which can be a matrix or array:
 		MatrixXd value = (*iter).second;
+		string name = (*iter).first;
+		//2. check whether filter applied for this field
+		CGPHyperParams::const_iterator itf = mask.find(name);
+		if (itf!=mask.end())
+		{
+			value=filterMask(value,(*itf).second);
+		}
 		muint_t nc = value.rows()*value.cols();
 		//2. flatten to vector shape
 		value.resize(nc,1);
@@ -41,10 +76,10 @@ void CGPHyperParams::agetParamArray(VectorXd* out) const
 	}
 }
 
-void CGPHyperParams::setParamArray(const VectorXd& param) throw (CGPMixException)
+void CGPHyperParams::setParamArray(const VectorXd& param,const CGPHyperParams& mask) throw (CGPMixException)
 {
 	//1. check that param has correct shape
-	if ((muint_t)param.rows()!=getNumberParams())
+	if ((muint_t)param.rows()!=getNumberParams(mask))
 	{
 		ostringstream os;
 		os << "Wrong number of params HyperParams structure (HyperParams structure:"<<getNumberParams()<<", paramArray:"<<param.rows()<<")!";
@@ -53,33 +88,73 @@ void CGPHyperParams::setParamArray(const VectorXd& param) throw (CGPMixException
 
 	//2. loop through elements and slot in params
 	muint_t ncurrent=0;
-	for(CGPHyperParamsMap::const_iterator iter = this->begin(); iter!=this->end();iter++)
+	for(CGPHyperParams::const_iterator iter = this->begin(); iter!=this->end();iter++)
 	{
 		string name = (*iter).first;
-		muint_t nc = (*iter).second.rows()*(*iter).second.cols();
-		//get  elements:
-		MatrixXd value = param.segment(ncurrent,nc);
-		//reshape
-		value.resize((*iter).second.rows(),(*iter).second.cols());
-		//set
-		set(name,value);
-		//move on
-		ncurrent += nc;
-	}
+		CGPHyperParams::const_iterator itf = mask.find(name);
+		if (itf!=mask.end())
+		{
+			const MatrixXd& mask_ = (*itf).second;
+			//number of elements depends on mask:
+			muint_t vr = mask_.col(0).count();
+			//TODO: masking of columns not supported
+			muint_t vc = (*iter).second.cols();
+			muint_t nc = vr*vc;
+			//get value and resize
+			MatrixXd value_ = param.segment(ncurrent,nc);
+			value_.resize(vr,vc);
+			//expand mask:
+			MatrixXd value  = this->get(name);
+			//expand
+			expandMask(value,value_,mask_);
+			set(name,value);
 		}
+		else
+		{
+			muint_t nc = (*iter).second.rows()*(*iter).second.cols();
+			//get  elements:
+			MatrixXd value = param.segment(ncurrent,nc);
+			//reshape
+			value.resize((*iter).second.rows(),(*iter).second.cols());
+			//set
+			set(name,value);
+			//move on
+			ncurrent += nc;
+		}
+	}//end for
+
+}
 
 muint_t CGPHyperParams::getNumberParams() const
 {
-	// return effective number of params. Note that parameter entries can either be of matrix of column nature
-	// thus sizes is rows*cols
+	CGPHyperParams mask;
+	return getNumberParams(mask);
+}
+
+muint_t CGPHyperParams::getNumberParams(const CGPHyperParams& mask) const
+{
 	muint_t nparams=0;
-	for(CGPHyperParamsMap::const_iterator iter = this->begin(); iter!=this->end();iter++)
+	for(CGPHyperParams::const_iterator iter = this->begin(); iter!=this->end();iter++)
 	{
+		string name = (*iter).first;
 		MatrixXd value = (*iter).second;
-		nparams+=value.rows()*value.cols();
+		CGPHyperParams::const_iterator itf = mask.find(name);
+		if (itf!=mask.end())
+		{
+			//mask case: number of parameters are determined by mask:
+			const MatrixXd& mask_ = (*itf).second;
+			//TODO: only support for row filter
+			nparams += mask_.col(0).count()*value.cols();
+		}
+		else
+		{
+			//no mask for this value
+			nparams+=value.rows()*value.cols();
+		}
 	}
 	return nparams;
 }
+
 
 void CGPHyperParams::set(const string& name, const MatrixXd& value)
 {
@@ -95,7 +170,7 @@ void CGPHyperParams::aget(MatrixXd* out, const string& name)
 vector<string> CGPHyperParams::getNames() const
 {
 	vector<string> rv(this->size());
-	for(CGPHyperParamsMap::const_iterator iter = this->begin(); iter!=this->end();iter++)
+	for(CGPHyperParams::const_iterator iter = this->begin(); iter!=this->end();iter++)
 	{
 		rv.push_back((*iter).first);
 	}
@@ -104,12 +179,23 @@ vector<string> CGPHyperParams::getNames() const
 
 bool CGPHyperParams::exists(string name) const
 {
-	CGPHyperParamsMap::const_iterator iter = this->find(name);
+	CGPHyperParams::const_iterator iter = this->find(name);
 	if (iter==this->end())
 		return false;
 	else
 		return true;
 }
+
+ostream& operator <<(ostream &os,const CGPHyperParams &obj)
+{
+	for(CGPHyperParams::const_iterator iter = obj.begin(); iter!=obj.end();iter++)
+	{
+		os << (*iter).first << ":" << "\n";
+		os << (*iter).second << "\n\n";
+	}
+	return os;
+}
+
 
 
 /* CGPCholCache */
@@ -296,6 +382,15 @@ void CGPbase::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException
 	updateParams();
 }
 
+void CGPbase::setParams(const CGPHyperParams& hyperparams,const CGPHyperParams& mask) throw(CGPMixException)
+{
+	//TODO: implemenation missing
+	std::cout << "implement me" << "\n";
+	this->params = hyperparams;
+	updateParams();
+}
+
+
 
 CGPHyperParams CGPbase::getParams() const
 {
@@ -307,6 +402,14 @@ void CGPbase::setParamArray(const VectorXd& hyperparams) throw (CGPMixException)
 	this->params.setParamArray(hyperparams);
 	updateParams();
 }
+
+void CGPbase::setParamArray(const VectorXd& hyperparams,const CGPHyperParams& mask) throw (CGPMixException)
+{
+	this->params.setParamArray(hyperparams,mask);
+	updateParams();
+}
+
+
 void CGPbase::agetParamArray(VectorXd* out) const
 {
 	this->params.agetParamArray(out);
