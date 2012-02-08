@@ -386,7 +386,7 @@ void CGPbase::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException
 void CGPbase::setParams(const CGPHyperParams& hyperparams,const CGPHyperParams& mask) throw(CGPMixException)
 {
 	//TODO: implemenation missing
-	std::cout << "implement me" << "\n";
+	//std::cout << "implement me" << "\n";
 	this->params = hyperparams;
 	updateParams();
 }

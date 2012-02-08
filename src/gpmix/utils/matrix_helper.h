@@ -96,7 +96,6 @@ inline void AfilterMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::Mat
 	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
 	if ((filter_row.rows()!=m.rows()) || (filter_col.rows()!=m.cols()))
 	{
-		std::cout << "\n" << filter_row.rows() << "," << m.rows() << filter_col.cols() << "," << m.cols() << "\n";
 		throw CGPMixException("expandMask: filter and array inconsistent");
 	}
 	//1. reshape result matrix according to filter:
