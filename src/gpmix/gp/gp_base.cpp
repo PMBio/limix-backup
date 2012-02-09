@@ -7,7 +7,7 @@
 
 #include "gp_base.h"
 #include "gpmix/utils/matrix_helper.h"
-
+#include "gpmix/utils/logging.h"
 
 namespace gpmix {
 

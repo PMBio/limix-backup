@@ -6,12 +6,16 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <strstream>
+//#include <strstream>
+#include <sstream>
+//#include <stringstream>
+
 #include <fstream>
 #include <sstream>
 #include <cstring>
 #include <ctime>
 #include <vector>
+
 
 // The following #define's will change the behaviour of this library.
 //		#define CPPLOG_FILTER_LEVEL		<level>
@@ -74,11 +78,11 @@
 
 #ifndef CPPLOG_NO_THREADING
 #include <boost/thread.hpp>
-#include "concurrent_queue.hpp"
+#include "concurrent_queue.h"
 #endif
 
 #ifdef _WIN32
-#include "outputdebugstream.hpp"
+#include "outputdebugstream.h"
 #endif
 
 #ifdef CPPLOG_WITH_SCRIBE_LOGGER
@@ -178,8 +182,7 @@ namespace cpplog
 		static const size_t k_logBufferSize = 20000;
 
 		// Our stream to log data to.
-		std::ostrstream	stream;
-		
+		std::ostringstream	stream;
 		// Captured data.
 		unsigned int level;
 		unsigned long line;
@@ -198,8 +201,7 @@ namespace cpplog
 		char buffer[k_logBufferSize];
 
 		// Constructor that initializes our stream.
-		LogData(loglevel_t logLevel)
-			: stream(buffer, k_logBufferSize), level(logLevel)
+		LogData(loglevel_t logLevel) : level(logLevel)
 #ifndef CPPLOG_NO_SYSTEM_IDS
 			  , processId(0), threadId(0)
 #endif
@@ -319,9 +321,12 @@ namespace cpplog
 			if( !m_flushed )
 			{
 				// Check if we have a newline.
-				char lastChar = m_logData->buffer[m_logData->stream.pcount() - 1];
+				/*
+				m_logData->stream()
+				char lastChar = m_logData->buffer[m_logData->stream. - 1];
 				if( lastChar != '\n' )
 					m_logData->stream << std::endl;
+				*/
 
 				// Null-terminate.
 				m_logData->stream << '\0';
@@ -506,7 +511,7 @@ namespace cpplog
 			bool deleteMessage = OstreamLogger::sendLogMessage(logData);
 
 			// Check if we're over our limit.
-			if( m_outStream.tellp() > m_maxSize )
+			if( (size_t)m_outStream.tellp() > m_maxSize )
 			{
 				// Yep, increment our log number and rotate.
 				m_logNumber++;

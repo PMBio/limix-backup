@@ -7,51 +7,20 @@
 
 #ifndef LOGGING_H_
 #define LOGGING_H_
+//disable boost
+#define CPPLOG_NO_THREADING
+#define CPPLOG_NO_SYSTEM_IDS
 
+#include <cpplog/cpplog.h>
 #include <gpmix/types.h>
+
+using namespace cpplog;
+
+
 namespace gpmix{
 
-/*
- *
- * TODO: finish this (see http://drdobbs.com/cpp/201804215)
-// Log, version 0.1: a simple logging class
-enum TLogLevel {logERROR, logWARNING, logINFO, logDEBUG, logDEBUG1,
-logDEBUG2, logDEBUG3, logDEBUG4};
+extern StdErrLogger Log;
 
-class Log
-{
-public:
-   Log();
-   virtual ~Log();
-   std::ostringstream& Get(TLogLevel level = logINFO);
-public:
-   static TLogLevel& ReportingLevel();
-protected:
-   std::ostringstream os;
-private:
-   Log(const Log&);
-   Log& operator =(const Log&);
-private:
-   TLogLevel messageLevel;
-};
-std::ostringstream& Log::Get(TLogLevel level)
-{
-   //os << "- " << NowTime();
-   //jos << " " << ToString(level) << ": ";
-   os << std::string(level > logDEBUG ? 0 : level - logDEBUG, '\t');
-   messageLevel = level;
-   return os;
-}
-Log::~Log()
-{
-   if (messageLevel >= Log::ReportingLevel())
-   {
-      os << std::endl;
-      fprintf(stderr, "%s", os.str().c_str());
-      fflush(stderr);
-   }
-}
-*/
 
 }
 
