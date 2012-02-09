@@ -165,13 +165,13 @@ public:
 	virtual void clearCache();
 	virtual bool isInSync() const;
 
-	MatrixXd& getGradDataParams();
+	virtual MatrixXd& getGradDataParams();
 
 	MatrixXd& getK0();
 	MatrixXd& getK();
 	MatrixXd& getKinv();
 	MatrixXd& getYeffective();
-	MatrixXd& getKinvY();
+	virtual MatrixXd& getKinvY();
 	MatrixXdChol& getCholK();
 	MatrixXd& getDKinv_KinvYYKinv();
 

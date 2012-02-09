@@ -132,7 +132,7 @@ int main() {
 		CLikNormalIso lik;
 
 		//GP object
-		CGPbase gp(dataSum, covar, lik);
+		CGPbase gp(data_2, covar, lik);
 		gp.setY(y);
 		gp.setX(X);
 		//hyperparams
@@ -143,7 +143,7 @@ int main() {
 		params["lik"] = lik_params;
 		//params["X"] = X;
 		//(w_.rows() * w_.cols()) +
-		params["dataTerm"] = MatrixXd::Zero( (w_.rows() * w_.cols()) + (w__.rows() * w__.cols()), 1);
+		params["dataTerm"] = w__;//MatrixXd::Zero( (w_.rows() * w_.cols()) + (w__.rows() * w__.cols()), 1);
 
 		//get lml and grad
 		mfloat_t lml = gp.LML(params);

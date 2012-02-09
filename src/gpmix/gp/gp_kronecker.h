@@ -61,9 +61,11 @@ protected:
 	MatrixXd Yrot;
 	MatrixXd Si;
 	MatrixXd YSi;
+	MatrixXd KinvY;
 	mfloat_t Knoise;
 	CGPbase* gp;
 
+	MatrixXd gradDataParams;
 public:
 	CGPSVDCache cache_r;
 	CGPSVDCache cache_c;
@@ -76,7 +78,9 @@ public:
 	MatrixXd& getYrot();
 	MatrixXd& getSi();
 	MatrixXd& getYSi();
+	MatrixXd& getKinvY();
 	mfloat_t getKnoise();
+	virtual MatrixXd& getGradDataParams();
 
 	void agetSi(MatrixXd* out)
 	{
@@ -100,9 +104,9 @@ protected:
 	//row and column covariance functions:
 	ACovarianceFunction& covar_r;
 	ACovarianceFunction& covar_c;
+
 	//cache:
 	CGPKroneckerCache cache;
-
 	VectorXi gplvmDimensions_r;  //gplvm dimensions
 	VectorXi gplvmDimensions_c;  //gplvm dimension
 
@@ -138,7 +142,8 @@ public:
 	virtual void aLMLgrad_lik(VectorXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_X_r(MatrixXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_X_c(MatrixXd* out) throw (CGPMixException);
-    CGPKroneckerCache* getCache();
+	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);
+    CGPKroneckerCache& getCache();
     ACovarianceFunction & getCovarC() const;
     ACovarianceFunction & getCovarR() const;
     VectorXi getGplvmDimensionsC() const;

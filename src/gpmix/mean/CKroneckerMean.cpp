@@ -41,6 +41,7 @@ void CKroneckerMean::aEvaluate(MatrixXd* outY)
 
 void CKroneckerMean::aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY)
 {
+	//std::cout << this->weights << "\n";
 	*outGradParams = ( -fixedEffects ).transpose() * (*KinvY) * this->A.transpose();
 }
 
