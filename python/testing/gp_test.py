@@ -40,6 +40,7 @@ dlml_ = gp_.LMLgrad(hyperparams_)
 opt_params_ = opt.opt_hyper(gp_,hyperparams_)[0]
 lmlo_ = gp_.LML(opt_params_)
 
+pdb.set_trace()
 
 
 #GPMIX:
@@ -72,7 +73,7 @@ constrainL['lik'] = -5*SP.ones_like(lik_params);
 mask = gpmix.CGPHyperParams()
 covar_mask = SP.ones(covar_params.shape[0])
 covar_mask[0] = 1
-covar_mask[1] = 0
+covar_mask[1] = 1
 
 mask['covar'] = covar_mask
 #mask['lik'] = SP.ones(lik_params.shape[0])

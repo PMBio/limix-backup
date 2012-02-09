@@ -37,6 +37,8 @@ using namespace gpmix;
 
 int main() {
 
+#if 0
+
 	muint_t N = 100;
 	muint_t S = 1000;
 	muint_t G = 500;
@@ -93,14 +95,14 @@ int main() {
 
 	opt.opt();
 
-
+#endif
 
 	try {
 		//random input X
-		muint_t dim=1;
+		muint_t dim=2;
 		muint_t nsamples =100;
-		muint_t targets = 2;
-		muint_t nWeights = 1;
+		muint_t targets = 4;
+		muint_t nWeights = 2;
 
 		MatrixXd X = randn(nsamples,dim);
 		//y ~ w*X
@@ -134,7 +136,7 @@ int main() {
 		CLikNormalIso lik;
 
 		//GP object
-		CGPbase gp(data_2, covar, lik);
+		CGPbase gp(dataSum, covar, lik);
 		gp.setY(y);
 		gp.setX(X);
 		//hyperparams
@@ -146,7 +148,7 @@ int main() {
 		//params["X"] = X;
 		//(w_.rows() * w_.cols()) +
 		std::cout <<"W"<<w__ <<endl;
-		params["dataTerm"] = w__;//MatrixXd::Zero( (w_.rows() * w_.cols()) + (w__.rows() * w__.cols()), 1);
+		params["dataTerm"] = MatrixXd::Zero( (w_.rows() * w_.cols()) + (w__.rows() * w__.cols()), 1);
 		std::cout << "params[dataterm]" << params["dataTerm"] <<endl;
 		//get lml and grad
 		mfloat_t lml = gp.LML(params);

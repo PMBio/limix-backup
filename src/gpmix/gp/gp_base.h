@@ -152,20 +152,16 @@ protected:
 	MatrixXd KinvY;
 	MatrixXd DKinv_KinvYYKinv;
 	MatrixXd Yeffective;
-	MatrixXd gradDataParams;
-	MatrixXd gradDataParamsCols;
+	bool KNull,K0Null,cholKNull,KinvNull,KinvYNull,DKinv_KinvYYKinvNull,YeffectiveNull,gradDataParamsNull,gradDataParamsColsNull;
 	CGPbase* gp;
 	ACovarianceFunction* covar;
 public:
-	CGPCholCache(CGPbase* gp,ACovarianceFunction* covar) : gp(gp), covar(covar)
-	{};
+	CGPCholCache(CGPbase* gp,ACovarianceFunction* covar);
 	virtual ~CGPCholCache()
 	{};
 
 	virtual void clearCache();
 	virtual bool isInSync() const;
-
-	virtual MatrixXd& getGradDataParams();
 
 	MatrixXd& getK0();
 	MatrixXd& getK();
