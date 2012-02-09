@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 1
+#if 0
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -77,7 +77,8 @@ int main() {
 	gp.setY(Y);
 	gp.setX(XE);
 	gp.setParams(params);
-
+	std::cout <<"grad[covar] :"<< params["covar"] << "\n";
+	std::cout <<"grad[lik] :"<< params["lik"] << "\n";
 	CGPopt opt(gp);
 	std::cout << "gradcheck: "<< opt.gradCheck() << "\n";
 
@@ -89,6 +90,7 @@ int main() {
 	lower["lik"] = -5.0*MatrixXd::Ones(1,1);
 	opt.setOptBoundLower(lower);
 	opt.setOptBoundUpper(upper);
+
 	opt.opt();
 
 
@@ -143,8 +145,9 @@ int main() {
 		params["lik"] = lik_params;
 		//params["X"] = X;
 		//(w_.rows() * w_.cols()) +
+		std::cout <<"W"<<w__ <<endl;
 		params["dataTerm"] = w__;//MatrixXd::Zero( (w_.rows() * w_.cols()) + (w__.rows() * w__.cols()), 1);
-
+		std::cout << "params[dataterm]" << params["dataTerm"] <<endl;
 		//get lml and grad
 		mfloat_t lml = gp.LML(params);
 		CGPHyperParams grad = gp.LMLgrad();
