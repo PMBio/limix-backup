@@ -118,9 +118,8 @@ void CGPopt::opt() throw (CGPMixException)
 	}
 	//get best solution in restart array
 	VectorXd::Index argmax;
-
-	std::cout << "LML" << optLMLArray << "\n";
-	optLML = optLMLArray.maxCoeff(&argmax);
+	//std::cout << "LML " << optLMLArray << "\n";
+	optLML = optLMLArray.minCoeff(&argmax);
 	//get corresponding param array and store
 	optParams = params0;
 	optParams.setParamArray(optParamArray.row(argmax),optParamMask);
@@ -155,10 +154,11 @@ bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
             mfloat_t diff_numerical = (Lplus - Lminus) / (2. * change);
             grad_numerical(i) = diff_numerical;
         }
-        std::cout << grad_numerical << "\n";
-        std::cout << grad_analyt << "\n";
-        std::cout << (grad_numerical - grad_analyt) << "\n";
+        std::cout <<"numerical:\n"<< grad_numerical << "\n";
+        std::cout <<"analytical:\n"<< grad_analyt << "\n";
+        std::cout <<"diff:\n"<< (grad_numerical - grad_analyt) << "\n";
         rv = ((grad_numerical - grad_analyt).squaredNorm() < threshold);
+        std::cout <<"passed?:\n"<< rv << "\n";
         return rv;
     }
 

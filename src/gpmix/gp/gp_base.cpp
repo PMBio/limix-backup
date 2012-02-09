@@ -46,9 +46,6 @@ void CGPHyperParams::expandMask(MatrixXd& out, const MatrixXd& array,const Matri
 	AexpandMask(out,array,mask.col(0),VectorXd::Ones(array.cols()));
 }
 
-
-
-
 void CGPHyperParams::agetParamArray(VectorXd* out,const CGPHyperParams& mask) const throw(CGPMixException)
 {
 	//1. get size
