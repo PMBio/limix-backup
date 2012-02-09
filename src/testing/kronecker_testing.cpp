@@ -22,6 +22,8 @@
 #include "gpmix/covar/combinators.h"
 #include "gpmix/mean/CData.h"
 #include "gpmix/mean/CKroneckerMean.h"
+#include "gpmix/utils/logging.h"
+
 
 using namespace std;
 using namespace gpmix;
@@ -119,9 +121,9 @@ int main() {
 		//opt_params.erase("lik");
 		//opt_params.erase("covar_r");
 		//opt_params.erase("covar_c");
-		opt_params.erase("X_r");
-		//opt_params.erase("dataTerm");
-		opt_params.erase("X_c");
+		//opt_params.erase("X_r");
+		opt_params.erase("dataTerm");
+		//opt_params.erase("X_c");
 
 		//double lml = gp.LML();
 

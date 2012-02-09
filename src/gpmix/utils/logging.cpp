@@ -10,7 +10,7 @@
 
 namespace gpmix {
 
-//Log::ReportingLevel = logDEBUG2;
+StdErrLogger Log;
 
 
 }
