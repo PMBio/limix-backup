@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -59,13 +59,16 @@ int main() {
 
 #ifdef GPLVM
 		//inputs:
-		//MatrixXd Xc = randn((muint_t)D,Kc);
+#if 1
+		MatrixXd Xc = randn((muint_t)D,Kc);
+		MatrixXd Xr = X;
+#else
 		MatrixXd Xc = MatrixXd::Identity(D,D);
 		Kc = D;
-
-		//MatrixXd Xr = X;
 		MatrixXd Xr = MatrixXd::Identity(N,N);
 		Kr = N;
+#endif
+
 		//covariances
 		CCovLinearISO covar_r(Kr);
 		CCovLinearISO covar_c(Kc);
@@ -117,6 +120,7 @@ int main() {
 		//opt_params.erase("covar_r");
 		//opt_params.erase("covar_c");
 		opt_params.erase("X_r");
+		//opt_params.erase("dataTerm");
 		opt_params.erase("X_c");
 
 		//double lml = gp.LML();
@@ -149,6 +153,13 @@ int main() {
 		//std::cout << gp.getCache().cache_c.getUK() << "\n";
 
 		CGPopt opt(gp);
+		CGPHyperParams upper;
+		CGPHyperParams lower;
+		upper["lik"] = 5.0*MatrixXd::Ones(1,1);
+		lower["lik"] = -5.0*MatrixXd::Ones(1,1);
+		opt.setOptBoundLower(lower);
+		opt.setOptBoundUpper(upper);
+
 		std::cout << "gradcheck"
 				": "<< opt.gradCheck()<<"\n";
 		//optimize:

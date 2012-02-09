@@ -12,12 +12,25 @@
 
 namespace gpmix {
 
+/*Inline math functions*/
+template <typename Derived1, typename Derived2,typename Derived3,typename Derived4>
+inline void akronravel(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& A,const Eigen::MatrixBase<Derived3>& B,const Eigen::MatrixBase<Derived4>& X)
+{
+	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
+	out.noalias() = A*X*B.transpose();
+}
 
-//math utils
-void akronravel(MatrixXd* out, const MatrixXd& A, const MatrixXd& B, const MatrixXd& X);
-MatrixXd kronravel(const MatrixXd& A, const MatrixXd& B, const MatrixXd& X);
-void akrondiag(MatrixXd* out, const VectorXd& v1, const VectorXd& v2);
-MatrixXd krondiag(const VectorXd& v1, const VectorXd& v2);
+template <typename Derived1, typename Derived2,typename Derived3>
+inline void akrondiag(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2)
+{
+	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
+	out.derived().resize(v1.rows(),v2.rows());
+	out.rowwise()  = v2.transpose();
+	//loop and multiply v1
+	for (muint_t ic=0;ic<(muint_t)out.cols();ic++)
+		out.col(ic).array() *= v1.array();
+}
+
 
 
 //forward definition:
@@ -31,10 +44,10 @@ class CGPSVDCache : public CGPCholCache
 protected:
 	MatrixXd UK;
 	VectorXd SK;
+	bool UKNull,SKNull;
 	ACovarianceFunction* covar;
 public:
-	CGPSVDCache(CGPbase* gp, ACovarianceFunction* covar) : CGPCholCache(gp,covar), covar(covar)
-	{};
+	CGPSVDCache(CGPbase* gp, ACovarianceFunction* covar);
 	virtual ~CGPSVDCache()
 	{};
 	virtual void clearCache();
@@ -63,9 +76,9 @@ protected:
 	MatrixXd YSi;
 	MatrixXd KinvY;
 	mfloat_t Knoise;
-	CGPbase* gp;
 
-	MatrixXd gradDataParams;
+	CGPbase* gp;
+	bool YrotNull,SiNull,YSiNull,KinvYNull;
 public:
 	CGPSVDCache cache_r;
 	CGPSVDCache cache_c;
@@ -80,7 +93,6 @@ public:
 	MatrixXd& getYSi();
 	MatrixXd& getKinvY();
 	mfloat_t getKnoise();
-	virtual MatrixXd& getGradDataParams();
 
 	void agetSi(MatrixXd* out)
 	{

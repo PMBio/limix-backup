@@ -197,19 +197,23 @@ ostream& operator <<(ostream &os,const CGPHyperParams &obj)
 
 
 /* CGPCholCache */
+CGPCholCache::CGPCholCache(CGPbase* gp,ACovarianceFunction* covar) : gp(gp), covar(covar)
+{
+};
+
 
 void CGPCholCache::clearCache()
 {
 	//set null:
-	this->K=MatrixXd();
-	this->K0=MatrixXd();
-	this->Kinv=MatrixXd();
-	this->KinvY=MatrixXd();
-	this->cholK=MatrixXdChol();
-	this->DKinv_KinvYYKinv = MatrixXd();
-	this->Yeffective = MatrixXd();
-	this->gradDataParams = MatrixXd();
-	gp->dataTerm.makeSync();
+	KNull = true;
+	K0Null = true;
+	KinvNull =true;
+	KinvYNull = true;
+	cholKNull = true;
+	DKinv_KinvYYKinvNull = true;
+	YeffectiveNull= true;
+	gradDataParamsNull = true;
+	//sync:
 	covar->makeSync();
 	gp->lik.makeSync();
 }
@@ -218,25 +222,15 @@ void CGPCholCache::clearCache()
 bool CGPCholCache::isInSync() const
 {
 
-	return (covar->isInSync() && gp->lik.isInSync() && gp->dataTerm.isInSync());
+	return (covar->isInSync() && gp->lik.isInSync());
 
-}
-
-MatrixXd& CGPCholCache::getGradDataParams()
-{
-	if(!isInSync()) clearCache();
-	if(isnull(this->gradDataParams))
-	{
-		this->gradDataParams = this->gp->dataTerm.gradParams(this->getKinvY());
-	}
-	return this->gradDataParams;
 }
 
 MatrixXd& CGPCholCache::getKinv()
 {
 	if (!isInSync())
 		clearCache();
-	if (isnull(Kinv))
+	if (KinvNull)
 	{
 		MatrixXdChol& chol = this->getCholK();
 		Kinv = MatrixXd::Identity(K.rows(),K.rows());
@@ -258,7 +252,7 @@ MatrixXd& CGPCholCache::getYeffective()
 	if (!isInSync())
 		this->clearCache();
 
-	if (isnull(Yeffective))
+	if (YeffectiveNull)
 	{
 		Yeffective = gp->dataTerm.evaluate();
 	}
@@ -271,7 +265,7 @@ MatrixXd& CGPCholCache::getKinvY()
 	if (!isInSync())
 		this->clearCache();
 
-	if (isnull(KinvY))
+	if (KinvYNull)
 	{
 		KinvY = this->getCholK().solve(this->getYeffective());
 	}
@@ -282,7 +276,7 @@ MatrixXd& CGPCholCache::getDKinv_KinvYYKinv()
 {
 	if (!isInSync())
 		this->clearCache();
-	if (isnull(DKinv_KinvYYKinv))
+	if (DKinv_KinvYYKinvNull)
 	{
 		MatrixXd& KiY  = getKinvY();
 		MatrixXd& Kinv = getKinv();
@@ -296,7 +290,7 @@ MatrixXdChol& CGPCholCache::getCholK()
 	if (!isInSync())
 		this->clearCache();
 
-	if (isnull(cholK))
+	if (cholKNull)
 	{
 		cholK = MatrixXdChol((this->getK()));
 	}
@@ -307,7 +301,7 @@ MatrixXd& CGPCholCache::getK()
 {
 	if (!isInSync())
 		this->clearCache();
-	if (isnull(K))
+	if(KNull)
 	{
 		covar->aK(&K);
 		K += gp->lik.K();
@@ -319,7 +313,7 @@ MatrixXd& CGPCholCache::getK0()
 {
 	if (!isInSync())
 		this->clearCache();
-	if (isnull(K0))
+	if (K0Null)
 	{
 		covar->aK(&K0);
 	}
@@ -329,13 +323,10 @@ MatrixXd& CGPCholCache::getK0()
 
 
 /* CGPbase */
-
-
 CGPbase::CGPbase(ADataTerm& dataTerm, ACovarianceFunction& covar, ALikelihood& lik) : cache(this,&covar),dataTerm(dataTerm),covar(covar), lik(lik) {
 	this->dataTerm = dataTerm;
 	this->covar = covar;
 	this->lik = lik;
-	//this->clearCache();
 }
 
 
@@ -606,7 +597,7 @@ void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
 void CGPbase::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 {
 	//0. set output dimensions
-	*out  = cache.getGradDataParams();
+	(*out) = dataTerm.gradParams(this->cache.getKinvY());
 }
 
 void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException)
