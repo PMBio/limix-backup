@@ -218,8 +218,8 @@ bool CGPKroneckerCache::isInSync() const
         }
         lml_det *= -0.5;
         //2. quadratic term
-        MatrixXd LMLq = (cache.getYrot());
-        LMLq.array() *= (cache.getYSi()).array();
+        MatrixXd LMLq = cache.getYrot();
+        LMLq.array() *= cache.getYSi().array();
         mfloat_t lml_quad = 0.5 * LMLq.sum();
         //3. constants
         mfloat_t lml_const = 0.5* LMLq.cols() * LMLq.rows() * gpmix::log((2.0 * PI));
