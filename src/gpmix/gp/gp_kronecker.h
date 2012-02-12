@@ -32,28 +32,28 @@ inline void akrondiag(const Eigen::MatrixBase<Derived1> & out_, const Eigen::Mat
 }
 
 
+//TODO: remove test script for shared pointers
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 #endif
 class CTest
 {
 public:
-	CTest()
+	CTest(muint_t i)
+	{
+		std::cout << i << "\n";
+	};
+	virtual ~CTest()
 	{};
-	//virtual ~CTest()
-	//{};
 	void print0(CTest& other)
 	{
 			std::cout << "prin called" << "\n";
 	}
-	/*
-	void print1(std::tr1::shared_ptr<CTest> other)
+	void print1(sptr<CTest> other)
 	{
 		std::cout << "prin called" << "\n";
 	}
-	*/
 };
-
-//typedef sptr<CTest> PTest;
+//typedef sptr<gpmix::CTest> PTest;
 
 //forward definition:
 class CGPkronecker;
@@ -130,6 +130,11 @@ public:
 	}
 };
 
+
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//%shared_ptr(gpmix::CGPkronecker)
+#endif
+
 class CGPkronecker: public CGPbase {
 	friend class CGPKroneckerCache;
 	virtual void updateParams() throw (CGPMixException);
@@ -150,12 +155,15 @@ protected:
 	void _gradLogDetX(VectorXd* out, MatrixXd& dK,bool columns);
 
 public:
-	CGPkronecker(PDataTerm mean, PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik);
+	CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik=PLikelihood(),PDataTerm mean=PDataTerm());
 	virtual ~CGPkronecker();
 
 	void setX_r(const CovarInput& X) throw (CGPMixException);
 	void setX_c(const CovarInput& X) throw (CGPMixException);
 	void setY(const MatrixXd& Y);
+	void setCovar_r(PCovarianceFunction covar);
+	void setCovar_c(PCovarianceFunction covar);
+
 
 	mfloat_t LML() throw (CGPMixException);
 	virtual mfloat_t LML(const CGPHyperParams& params) throw (CGPMixException)
@@ -185,6 +193,8 @@ public:
     void setGplvmDimensionsC(VectorXi gplvmDimensionsC);
     void setGplvmDimensionsR(VectorXi gplvmDimensionsR);
 };
+typedef sptr<CGPkronecker> PGPkronecker;
+
 
 } /* namespace gpmix */
 #endif /* GP_KRONECKER_H_ */

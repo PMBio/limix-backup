@@ -12,6 +12,9 @@
 
 namespace gpmix {
 
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//%shared_ptr(gpmix::CCovSqexpARD)
+#endif
 class CCovSqexpARD: public gpmix::ACovarianceFunction {
 public:
 	CCovSqexpARD(muint_t numberDimensions=1): ACovarianceFunction(1)

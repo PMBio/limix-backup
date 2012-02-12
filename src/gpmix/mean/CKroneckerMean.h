@@ -13,6 +13,10 @@
 #include "gpmix/utils/matrix_helper.h"
 namespace gpmix {
 
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//%shared_ptr(gpmix::CKroneckerMean)
+#endif
+
 class CKroneckerMean : public gpmix::CLinearMean {
 	MatrixXd A;
 public:

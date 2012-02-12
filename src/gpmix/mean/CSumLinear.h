@@ -14,6 +14,9 @@
 
 namespace gpmix {
 
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//%shared_ptr(gpmix::CSumLinear)
+#endif
 class CSumLinear: public gpmix::ADataTerm {
 	std::vector<CLinearMean*> terms;
 	size_t nParams;

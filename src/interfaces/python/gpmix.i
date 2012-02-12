@@ -32,6 +32,7 @@ using namespace gpmix;
 %include "eigen.i"
 //support for std libs
 //suport for std_shared pointers in tr1 namespace
+
 #define SWIG_SHARED_PTR_NAMESPACE std
 #define SWIG_SHARED_PTR_SUBNAMESPACE tr1
 %include "std_shared_ptr.i"
@@ -45,12 +46,12 @@ using namespace gpmix;
 %}
 
 
-
-/* Include the header file to be wrapped */
-//%template(HyperParmasVec) std::vector<CGPHyperParams>;
-//%template(StringVec) std::vector<std::string>;
-%shared_ptr(CTest)
-//SWIG_SHARED_PTR(PTest, CTest)
+//%shared_ptr(gpmix::CTest)
+%include "covar.i"
+%include "gp.i"
+%include "lik.i"
+%include "mean.i"
+%include "lmm.i"
 
 
 //generated outodoc:

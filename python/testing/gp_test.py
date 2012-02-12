@@ -54,7 +54,7 @@ hyperparams['covar'] = covar_params
 hyperparams['lik'] = lik_params
 
 #cretae GP
-gp=gpmix.CGPbase(data,covar,ll)
+gp=gpmix.CGPbase(covar,ll,data)
 #set data
 gp.setY(y)
 gp.setX(X)

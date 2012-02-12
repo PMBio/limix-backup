@@ -152,8 +152,8 @@ bool CGPKroneckerCache::isInSync() const
 
 
 
-    CGPkronecker::CGPkronecker(PDataTerm dataTerm, PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik)
-    :CGPbase(dataTerm, covar_r, lik), covar_r(covar_r), covar_c(covar_c), cache(this, covar_r, covar_c)
+    CGPkronecker::CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik,PDataTerm dataTerm)
+    :CGPbase(covar_r, lik,dataTerm), covar_r(covar_r), covar_c(covar_c), cache(this, covar_r, covar_c)
     {
     }
 
@@ -202,6 +202,18 @@ bool CGPKroneckerCache::isInSync() const
         CGPbase::dataTerm->setY(Y);
         this->lik->setX(MatrixXd::Zero(Y.rows() * Y.cols(), 0));
     }
+    void CGPkronecker::setCovar_r(PCovarianceFunction covar)
+    {
+    	this->covar_r = covar;
+    	this->cache.cache_r.setCovar(covar);
+    }
+    void CGPkronecker::setCovar_c(PCovarianceFunction covar)
+    {
+        	this->covar_c = covar;
+        	this->cache.cache_c.setCovar(covar);
+    }
+
+
 
     mfloat_t CGPkronecker::LML() throw (CGPMixException)
     {

@@ -202,6 +202,11 @@ CGPCholCache::CGPCholCache(CGPbase* gp,PCovarianceFunction covar) : gp(gp), cova
 };
 
 
+void CGPCholCache::setCovar(PCovarianceFunction covar)
+{
+	this->covar = covar;
+}
+
 
 void CGPCholCache::clearCache()
 {
@@ -324,12 +329,36 @@ MatrixXd& CGPCholCache::getK0()
 
 
 /* CGPbase */
-CGPbase::CGPbase(PDataTerm dataTerm, PCovarianceFunction covar, PLikelihood lik) : cache(this,covar)
+CGPbase::CGPbase(PCovarianceFunction covar, PLikelihood lik,PDataTerm dataTerm) : cache(this,covar)
 {
-	this->dataTerm = dataTerm;
 	this->covar = covar;
+
+	if(!dataTerm)
+		this->dataTerm = PDataTerm(new CData());
+	else
+		this->dataTerm = dataTerm;
+	if(!lik)
+		this->lik = PLikelihood(new CLikNormalIso());
+	else
+		this->lik = lik;
+}
+
+
+void CGPbase::setCovar(PCovarianceFunction covar)
+{
+	this->covar = covar;
+	this->cache.setCovar(covar);
+}
+void CGPbase::setLik(PLikelihood lik)
+{
 	this->lik = lik;
 }
+
+void CGPbase::setDataTerm(PDataTerm dataTerm)
+{
+	this->dataTerm = dataTerm;
+}
+
 
 
 CGPbase::~CGPbase()

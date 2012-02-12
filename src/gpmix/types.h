@@ -106,40 +106,6 @@ class CGPMixException
   private:
     std::string What;
 };
-
-//GpMix base class for memory ownership management
-/*
- * Class has a pointer to the owner
- * This allows to track where the object is initially created and hence needs to be cleaned up
- */
-class CGPMixObject
-{
-private:
-	//owner of this object: (this) by default
-	CGPMixObject* owner;
-public:
-	CGPMixObject()
-	{
-		owner = this;
-	}
-	virtual ~CGPMixObject()
-	{};
-	void setOwner (CGPMixObject* owner)
-	{
-		this->owner = owner;
-	}
-	CGPMixObject* getOwner()
-	{
-		return this->owner;
-	}
-	bool isOwner(CGPMixObject* owner)
-	{
-		return (this->owner==owner);
-	}
-};
-
-
-
 }
 
 

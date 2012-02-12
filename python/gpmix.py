@@ -1,1 +1,1 @@
-./../build/src/python_interface/gpmix.py
+./../build/src/interfaces/python/gpmix.py

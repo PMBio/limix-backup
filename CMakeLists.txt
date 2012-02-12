@@ -71,7 +71,7 @@ include (AddCompilerFlag)
 
 
 # OLI's build options
-#set(LIBR_SO "/opt/local/lib/R/lib/x86_64/libR.dylib")
+set(LIBR_SO "/opt/local/lib/R/lib/x86_64/libR.dylib")
 ##/R END
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -118,9 +118,9 @@ add_subdirectory(./src)
 
 #### build external interface (optional) #####
 if (BUILD_PYTHON_PACKAGE)
-add_subdirectory(./src/python_interface)
+add_subdirectory(./src/interfaces/python)
 endif (BUILD_PYTHON_PACKAGE)
 if (BUILD_R_PACKAGE)
-add_subdirectory(./R)
+add_subdirectory(./src/interfaces/R)
 endif (BUILD_R_PACKAGE)
 

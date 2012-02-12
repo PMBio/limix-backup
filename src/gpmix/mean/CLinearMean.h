@@ -13,6 +13,9 @@
 
 namespace gpmix {
 
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//%shared_ptr(gpmix::CLinearMean)
+#endif
 class CLinearMean: public ADataTerm {
 	friend class CKroneckerMean;
 	MatrixXd weights;
