@@ -3,7 +3,6 @@
 find_package(SWIG REQUIRED)
 
 #default: enable python bindings
-option(BUILD_PYTHON_PACKAGE "Enable Python bindings" ON)
 
 #1. find swig
 INCLUDE(${SWIG_USE_FILE})
@@ -22,7 +21,6 @@ endif()
 #find python libs and includes
 if (NOT PYTHON_LIBRARIES OR NOT PYTHON_INCLUDE_DIRS)
    FIND_PACKAGE(PythonLibsDist)
-  #FIND_PACKAGE(PythonLibs)
 endif()
 
 #find dist-packages
@@ -65,16 +63,13 @@ endif()
 if(BUILD_PYTHON_PACKAGE)
 
 
-#include_directories(${PYTHON_INCLUDE_DIR})
-#include_directories(${NUMPY_INCLUDE_DIR})
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${NUMPY_INCLUDE_DIR})
 
 
-include_directories(./../External)
-include_directories(${GPMIX_SRC_DIR}/External)
-include_directories(${GPMIX_SRC_DIR}/src)
+include_directories(./../)
+
 
 set(CMAKE_SWIG_FLAGS "")
 
@@ -86,7 +81,7 @@ endif (GOOGLE_PERF)
 set_source_files_properties(gpmix.i PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-includeall")
 set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
-swig_add_module(gpmix python gpmix.i)
+swig_add_module(gpmix r gpmix.i)
 swig_link_libraries(gpmix gpmixlib nlopt ${SWIGLINKLIBS})
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")	 

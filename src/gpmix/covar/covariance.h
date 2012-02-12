@@ -47,9 +47,10 @@ typedef VectorXd CovarParams;
 
 %rename(getParams) ACovarianceFunction::agetParams;
 %rename(getX) ACovarianceFunction::agetX;
+//%shared_ptr(gpmix::ACovarianceFunction)
 #endif
 
-class ACovarianceFunction : public CGPMixObject {
+class ACovarianceFunction {
 protected:
 	//indicator if the class is synced with the cache
 	bool insync;

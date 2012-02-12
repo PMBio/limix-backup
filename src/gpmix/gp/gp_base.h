@@ -11,10 +11,13 @@
 #include <gpmix/covar/covariance.h>
 #include <gpmix/likelihood/likelihood.h>
 #include <gpmix/mean/ADataTerm.h>
+#include <gpmix/mean/CData.h>
 #include <string>
 #include <map>
 #include <vector>
 #include <gpmix/types.h>
+#include <iostream>
+
 
 namespace gpmix {
 
@@ -40,18 +43,19 @@ typedef Eigen::LLT<gpmix::MatrixXd> MatrixXdChol;
 
 %rename(get) CGPHyperParams::aget;
 %rename(getParamArray) CGPHyperParams::agetParamArray;
+//%template(StringVec) std::vector<std::string>;
 //PYTHON:
 #ifdef SWIGPYTHON
 %rename(__getitem__) CGPHyperParams::aget;
 %rename(__setitem__) CGPHyperParams::set;
 #endif
 
-
 //TODO: work on map handling in swig
 //%template(StringMatrixMap) map<std::string,MatrixXd>;
+//%shared_ptr(gpmix::CGPHyperParams)
 #endif
 //typedef map<string,MatrixXd> CGPHyperParamsMap;
-class CGPHyperParams : public CGPMixObject, public std::map<std::string,MatrixXd>
+class CGPHyperParams : public std::map<std::string,MatrixXd>
 {
 	/*
 	 * CGHyperParams:
@@ -107,8 +111,8 @@ public:
 	inline MatrixXd get(const std::string& name);
 	inline VectorXd getParamArray() const;
 	inline VectorXd getParamArray(const CGPHyperParams& mask) const throw (CGPMixException);
-
 };
+typedef sptr<CGPHyperParams> PGPHyperParams;
 
 
 inline MatrixXd CGPHyperParams::get(const std::string& name)
@@ -135,7 +139,7 @@ inline VectorXd CGPHyperParams::getParamArray(const CGPHyperParams& mask) const 
 
 //cache class for a covariance function.
 //offers cached access to a number of covaraince accessors and derived quantities:
-class CGPCholCache : public CGPMixObject
+class CGPCholCache
 {
 protected:
 	MatrixXd K;
@@ -153,6 +157,7 @@ public:
 	virtual ~CGPCholCache()
 	{};
 
+	void setCovar(PCovarianceFunction covar);
 	virtual void clearCache();
 	virtual bool isInSync() const;
 
@@ -192,11 +197,11 @@ public:
 %rename(LMLgrad_lik) CGPbase::aLMLgrad_lik;
 %rename(predictMean) CGPbase::apredictMean;
 %rename(predictVar) CGPbase::apredictVar;
-
-//%shared_ptr(CGPbase)
+//
+//%shared_ptr(gpmix::CGPbase)
 #endif
 
-class CGPbase : public CGPMixObject,public enable_shared_from_this<CGPbase> {
+class CGPbase : public enable_shared_from_this<CGPbase> {
 	friend class CGPCholCache;
 	friend class CGPKroneckerCache;
 protected:
@@ -216,13 +221,19 @@ protected:
 	void updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions,const MatrixXd& X) throw (CGPMixException);
 
 public:
-	CGPbase(PDataTerm data, PCovarianceFunction covar, PLikelihood lik);
+	CGPbase(PCovarianceFunction covar, PLikelihood lik=PLikelihood(),PDataTerm data=PDataTerm());
 	virtual ~CGPbase();
 
 	//TODO: add interface that is suitable for optimizer
 	// virtual double LML(double* params);
 	// virtual void LML(double* params, double* gradients);
 	virtual void set_data(MatrixXd& Y);
+
+	virtual void setCovar(PCovarianceFunction covar);
+	virtual void setLik(PLikelihood lik);
+	virtual void setDataTerm(PDataTerm data);
+
+
 
 	//getter and setter for Parameters:
 	virtual void setParams(const CGPHyperParams& hyperparams) throw(CGPMixException);

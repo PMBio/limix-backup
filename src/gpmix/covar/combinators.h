@@ -14,15 +14,13 @@
 namespace gpmix {
 
 //Define a vector of covariances which is needed to represent the sum and product CF
-typedef std::vector<ACovarianceFunction*> ACovarVec;
+typedef std::vector<PCovarianceFunction> ACovarVec;
 //SWIG template declaration:
+//TODO: swig vector
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
-//%template(ACovarVec) vector<ACovarianceFunction* >;
+//%template(ACovarVec) std::vector<gpmix::PCovarianceFunction>;
+//%shared_ptr(gpmix::AMultiCF)
 #endif
-
-
-
-
 
 class AMultiCF : public ACovarianceFunction
 {
@@ -40,9 +38,9 @@ public:
 	virtual muint_t Kdim() const throw(CGPMixException);
 
 	//access to covariance arrays
-	void addCovariance(ACovarianceFunction* covar) throw (CGPMixException);
-	void setCovariance(muint_t i,ACovarianceFunction* covar) throw (CGPMixException);
-	ACovarianceFunction* getCovariance(muint_t i) throw (CGPMixException);
+	void addCovariance(PCovarianceFunction covar) throw (CGPMixException);
+	void setCovariance(muint_t i,PCovarianceFunction covar) throw (CGPMixException);
+	PCovarianceFunction getCovariance(muint_t i) throw (CGPMixException);
 
 	virtual muint_t getNumberDimensions() const throw (CGPMixException);
 	virtual void setNumberDimensions(muint_t numberDimensions) throw (CGPMixException);
@@ -58,6 +56,9 @@ public:
 	virtual void agetParams(CovarParams* out);
 };
 
+#if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
+//%shared_ptr(gpmix::CSumCF)
+#endif
 
 class CSumCF : public AMultiCF {
 public:
@@ -80,6 +81,9 @@ public:
 };
 
 
+#if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
+//%shared_ptr(gpmix::CProductCF)
+#endif
 
 class CProductCF : public AMultiCF {
 public:

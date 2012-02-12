@@ -21,9 +21,10 @@ namespace gpmix {
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //list of CGPHyperParams
+//%template(HyperParmasVec) std::vector<gpmix::CGPHyperParams>;
 #endif
 
-class CGPopt : public CGPMixObject {
+class CGPopt {
 protected:
 	//gp object which is optimized:
 	PGPbase gp;

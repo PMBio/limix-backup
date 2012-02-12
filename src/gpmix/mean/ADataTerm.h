@@ -28,10 +28,11 @@ namespace gpmix {
 %rename(gradParamsRows) ADataTerm::aGradParamsRows;
 %rename(sumJacobianGradParams) ADataTerm::aSumJacobianGradParams;
 %rename(sumLogJacobian) ADataTerm::aSumLogJacobian;
+//%shared_ptr(gpmix::ADataTerm)
 #endif
 
 
-class ADataTerm : public CGPMixObject {
+class ADataTerm {
 protected:
 	MatrixXd Y;
 	bool insync;

@@ -1,0 +1,5 @@
+%shared_ptr(gpmix::ALMM)
+%shared_ptr(gpmix::CLMM)
+%shared_ptr(gpmix::CGPLMM)
+%shared_ptr(gpmix::CInteractLMM)
+%shared_ptr(gpmix::CKroneckerLMM)

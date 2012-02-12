@@ -12,6 +12,9 @@
 
 namespace gpmix {
 
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//%shared_ptr(gpmix::CCovFreeform)
+#endif
 class CCovFreeform: public gpmix::ACovarianceFunction {
 protected:
 	muint_t numberGroups;

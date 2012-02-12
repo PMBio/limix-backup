@@ -22,9 +22,6 @@ namespace gpmix {
 %ignore ALMM::getCovs;
 %ignore ALMM::getK;
 %ignore ALMM::getPermutation;
-
-
-
 //rename argout versions for python; this overwrites the C++ convenience functions
 %rename(getPheno) ALMM::agetPheno;
 %rename(getPv) ALMM::agetPv;
@@ -32,10 +29,12 @@ namespace gpmix {
 %rename(getCovs) ALMM::agetCovs;
 %rename(getK) ALMM::agetK;
 %rename(getPermutation) ALMM::agetPermutation;
+//%shared_ptr(gpmix::ALMM)
 #endif
 
 //Abstract base class for LMM models*/
-class ALMM : public CGPMixObject {
+class ALMM
+{
 protected:
 	//Data and sample information
 	MatrixXd snps;
@@ -138,7 +137,11 @@ public:
     void setTestStatistics(int testStatistics);
 };
 
-
+//rename argout operators for swig interface
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//ignore C++ versions
+%ignore CLMMCore;
+#endif
 class CLMMCore
 {
 protected:
@@ -192,6 +195,7 @@ public:
 %rename(getLdeltaAlt) CLMM::agetLdeltaAlt;
 %rename(getLdelta0) CLMM::agetLdelta0;
 %rename(getFtests) CLMM::agetFtests;
+//%shared_ptr(gpmix::CLMM)
 #endif
 //Standard mixed liner model
 class CLMM :  public CLMMCore, public ALMM
@@ -272,6 +276,7 @@ public:
 
 
 };
+typedef sptr<CLMM> PLMM;
 
 
 
@@ -283,6 +288,7 @@ public:
 
 //rename argout versions for python; this overwrites the C++ convenience functions
 %rename(getInter) CInteractLMM::agetInter;
+//%shared_ptr(gpmix::CInteractLMM)
 #endif
 
 class CInteractLMM : public CLMM
@@ -321,6 +327,7 @@ public:
     bool isRefitDelta0Pheno() const;
     void setRefitDelta0Pheno(bool refitDelta0Pheno);
 };
+typedef sptr<CInteractLMM> PInteractLMM;
 
 
 
