@@ -11,7 +11,7 @@
 
 namespace gpmix {
 
-CGPopt::CGPopt(CGPbase& gp) : gp (gp)
+CGPopt::CGPopt(PGPbase gp) : gp (gp)
 {
 	tolerance = DEFAULT_TOL;
 	// TODO Auto-generated constructor stub
@@ -29,7 +29,7 @@ void CGPopt::completeConstraints(CGPHyperParams& constraints, const CGPHyperPara
 	for(CGPHyperParams::const_iterator iter = params.begin(); iter!=params.end();iter++)
 		{
 			//1. get param object which can be a matrix or array:
-			string name = (*iter).first;
+			std::string name = (*iter).first;
 			MatrixXd value = (*iter).second;
 			if (!constraints.exists(name))
 			{
@@ -47,7 +47,7 @@ void CGPopt::opt() throw (CGPMixException)
 	//0. set evaluation counter to 0:
 	numEvaluations = 0;
 	//1. get parameter vector from GP object
-	CGPHyperParams params0 = gp.getParams();
+	CGPHyperParams params0 = gp->getParams();
 
 	//1.2 determine effective number of parameters we optimize over:
 	muint_t numOptParams = params0.getNumberParams(optParamMask);
@@ -79,7 +79,7 @@ void CGPopt::opt() throw (CGPMixException)
 	}
 
 	double minf; /* the minimum objective value, upon return */
-	vector<CGPHyperParams> opt_start_points;
+	std::vector<CGPHyperParams> opt_start_points;
 
 	//5. is starting point list empty? if yes: use current parameters (a single starting point)
 	if(this->optStartParams.size()==0)
@@ -94,7 +94,7 @@ void CGPopt::opt() throw (CGPMixException)
 	VectorXd optLMLArray   = VectorXd(opt_start_points.size());
 	optLMLArray.setConstant(HUGE_VAL);
 	muint_t iopt_success =0;
-	for(vector<CGPHyperParams>::const_iterator iter = opt_start_points.begin(); iter!=opt_start_points.end();iter++)
+	for(std::vector<CGPHyperParams>::const_iterator iter = opt_start_points.begin(); iter!=opt_start_points.end();iter++)
 	{
 		//get starting point
 		const CGPHyperParams& params0_ = (*iter);
@@ -110,9 +110,9 @@ void CGPopt::opt() throw (CGPMixException)
 		{
 			//1. reevaluate at optimum
 		    //store optimized values:
-			CGPHyperParams _optParams = gp.getParams();
+			CGPHyperParams _optParams = gp->getParams();
 			optParamArray.row(iopt_success) = _optParams.getParamArray(optParamMask);
-			optLMLArray(iopt_success) = gp.LML();
+			optLMLArray(iopt_success) = gp->LML();
 			iopt_success++;
 		}
 	}
@@ -130,24 +130,24 @@ bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
 {
 	bool rv;
 	//current x0:
-	VectorXd x0 = gp.getParamArray();
+	VectorXd x0 = gp->getParamArray();
 	VectorXd x  = x0;
 
 	//1. analytical solution
 	VectorXd grad_analyt;
-	gp.aLMLgrad(&grad_analyt);
+	gp->aLMLgrad(&grad_analyt);
 	//2. numerical solution;
 	VectorXd grad_numerical(grad_analyt.rows());
 	//loop
 	for (muint_t i=0;i<(muint_t)(((x0.rows())));i++){
             mfloat_t change = relchange * x0(i);
-            change = max(change, 1E-5);
+            change = std::max(change, 1E-5);
             x(i) = x0(i) + change;
-            gp.setParamArray(x);
-            mfloat_t Lplus = gp.LML();
+            gp->setParamArray(x);
+            mfloat_t Lplus = gp->LML();
             x(i) = x0(i) - change;
-            gp.setParamArray(x);
-            mfloat_t Lminus = gp.LML();
+            gp->setParamArray(x);
+            mfloat_t Lminus = gp->LML();
             //restore
             x(i) = x0(i);
             //numerical gradient
@@ -177,8 +177,8 @@ bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
         this->numEvaluations++;
         double lml;
         //set Params
-        gp.setParamArray(paramArray,optParamMask);
-        lml = gp.LML();
+        gp->setParamArray(paramArray,optParamMask);
+        lml = gp->LML();
         return lml;
     }
 
@@ -187,11 +187,11 @@ bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
         this->numEvaluations++;
         double lml;
         //set Params
-        gp.setParamArray(paramArray,optParamMask);
+        gp->setParamArray(paramArray,optParamMask);
         //std::cout << "D:" << gp.getParamArray().segment(1,paramArray.rows())-paramArray << "\n\n";
         //std::cout << paramArray << "--" << gp.getParamArray() << "\n\n";
-        lml = gp.LML();
-        CGPHyperParams grad = gp.LMLgrad();
+        lml = gp->LML();
+        CGPHyperParams grad = gp->LMLgrad();
         //std::cout << "dLML(" << grad << ")" << "\n";
         grad.agetParamArray(gradParamArray,optParamMask);
         //std::cout << "Dgrad" << grad.getParamArray().segment(1,paramArray.rows())-*gradParamArray << "\n\n";
@@ -214,12 +214,12 @@ bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
         return optBoundUpper;
     }
 
-    vector<CGPHyperParams> CGPopt::getOptStartParams() const
+    std::vector<CGPHyperParams> CGPopt::getOptStartParams() const
     {
         return optStartParams;
     }
 
-    void CGPopt::setOptStartParams(const vector<CGPHyperParams>& optStartParams)
+    void CGPopt::setOptStartParams(const std::vector<CGPHyperParams>& optStartParams)
     {
         this->optStartParams = optStartParams;
     }
@@ -232,7 +232,7 @@ bool CGPopt::gradCheck(mfloat_t relchange,mfloat_t threshold)
     void CGPopt::addOptStartParams(const VectorXd& paramArray)
     {
     	//1. convert to hyperParams object
-    	CGPHyperParams params(this->gp.getParams());
+    	CGPHyperParams params(this->gp->getParams());
     	params.setParamArray(paramArray);
     	addOptStartParams(params);
     }

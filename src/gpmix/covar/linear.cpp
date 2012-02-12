@@ -25,7 +25,7 @@ void CCovLinearISO::aKcross(MatrixXd* out,const CovarInput& Xstar) const throw(C
 	//We dfine Xstar [N X D] where N are samples...
 	if (Xstar.cols()!=this->X.cols())
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << this->getName() <<": Xstar has wrong number of dimensions. Xstar.cols() = "<< Xstar.cols() <<". X.cols() = "<< this->X.cols() << ".";
 		throw gpmix::CGPMixException(os.str());
 	}
@@ -52,7 +52,7 @@ void CCovLinearISO::aKgrad_param(MatrixXd* out, const muint_t i ) const throw(CG
 	}
 	else
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << this->getName() <<": wrong index of hyperparameter. i = "<< i <<". this->params.cols() = "<< this->getNumberParams() << ".";
 		throw gpmix::CGPMixException(os.str());
 	}
@@ -62,7 +62,7 @@ void CCovLinearISO::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const 
 																												{
 	if (d>this->numberDimensions)
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << this->getName() <<": wrong dimension index";
 		throw gpmix::CGPMixException(os.str());
 	}
@@ -78,7 +78,7 @@ void CCovLinearISO::aKdiag_grad_X(VectorXd* out, const muint_t d ) const throw (
 {
 	if (d>this->numberDimensions)
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << this->getName() <<": wrong dimension index";
 		throw gpmix::CGPMixException(os.str());
 	}
@@ -106,14 +106,14 @@ void CCovLinearARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw
 {
 	//get all amplitude parameters, one per dimension
 	VectorXd L = 2*params;
-	L = L.unaryExpr(ptr_fun(exp));
+	L = L.unaryExpr(std::ptr_fun(exp));
 	(*out).noalias() = Xstar*L.asDiagonal()*this->X.transpose();
 }
 
 void CCovLinearARD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
 		{
 		VectorXd L = 2*params;
-		L = L.unaryExpr(ptr_fun(exp));
+		L = L.unaryExpr(std::ptr_fun(exp));
 		(*out).noalias() = (Xstar*L.asDiagonal()*Xstar.transpose()).diagonal();
 		}
 
@@ -139,7 +139,7 @@ void CCovLinearARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const 
 		throw CGPMixException("derivative for gradient outside specification requested.");
 	}
 	VectorXd L = 2*params;
-	L = L.unaryExpr(ptr_fun(exp));
+	L = L.unaryExpr(std::ptr_fun(exp));
 	(*out) = MatrixXd::Zero(Xstar.rows(),this->X.rows());
 	(*out).rowwise() = L(d)*Xstar.col(d).transpose();
 }
@@ -147,7 +147,7 @@ void CCovLinearARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const 
 void CCovLinearARD::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw (CGPMixException)
 {
 	VectorXd L = 2*params;
-	L = L.unaryExpr(ptr_fun(exp));
+	L = L.unaryExpr(std::ptr_fun(exp));
 	(*out) = VectorXd::Zero(X.rows());
 	(*out).noalias() = 2.0*L(d)*X.col(d);
 }

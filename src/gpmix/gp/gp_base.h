@@ -15,13 +15,13 @@
 #include <map>
 #include <vector>
 #include <gpmix/types.h>
-using namespace std;
 
 namespace gpmix {
 
 /* Forward declaratins of classes */
 class CGPbase;
 class CGPKroneckerCache;
+typedef sptr<CGPbase> PGPbase;
 
 
 
@@ -46,16 +46,12 @@ typedef Eigen::LLT<gpmix::MatrixXd> MatrixXdChol;
 %rename(__setitem__) CGPHyperParams::set;
 #endif
 
-//list of strings: names of hyperparams
-%template(StringVec) vector<string>;
 
-//ok: this causes trouble at the moment, due to Eigen specifics.
-//we rely on the interfaces we added for python use
+//TODO: work on map handling in swig
 //%template(StringMatrixMap) map<std::string,MatrixXd>;
-
 #endif
 //typedef map<string,MatrixXd> CGPHyperParamsMap;
-class CGPHyperParams : public map<string,MatrixXd>
+class CGPHyperParams : public CGPMixObject, public std::map<std::string,MatrixXd>
 {
 	/*
 	 * CGHyperParams:
@@ -97,28 +93,25 @@ public:
 	muint_t getNumberParams() const;
 	muint_t getNumberParams(const CGPHyperParams& mask) const;
 
-	void set(const string& name, const MatrixXd& value);
-	void aget(MatrixXd* out, const string& name);
+	void set(const std::string& name, const MatrixXd& value);
+	void aget(MatrixXd* out, const std::string& name);
 	//get vector with existing names
-	vector<string> getNames() const;
+	std::vector<std::string> getNames() const;
 	//exists?
-	bool exists(string name) const;
+	bool exists(std::string name) const;
 
 	//operator overloading
-
-	friend ostream& operator <<(ostream &os,const CGPHyperParams &obj);
+	friend std::ostream& operator <<(std::ostream &os,const CGPHyperParams &obj);
 
 	//convenience functions for C++ access
-	inline MatrixXd get(const string&name);
+	inline MatrixXd get(const std::string& name);
 	inline VectorXd getParamArray() const;
 	inline VectorXd getParamArray(const CGPHyperParams& mask) const throw (CGPMixException);
 
 };
 
-	//ostream& operator <<(ostream &os,const CGPHyperParams &obj);
 
-
-inline MatrixXd CGPHyperParams::get(const string&name)
+inline MatrixXd CGPHyperParams::get(const std::string& name)
 {
 	MatrixXd rv;
 	aget(&rv,name);
@@ -142,7 +135,7 @@ inline VectorXd CGPHyperParams::getParamArray(const CGPHyperParams& mask) const 
 
 //cache class for a covariance function.
 //offers cached access to a number of covaraince accessors and derived quantities:
-class CGPCholCache
+class CGPCholCache : public CGPMixObject
 {
 protected:
 	MatrixXd K;
@@ -154,9 +147,9 @@ protected:
 	MatrixXd Yeffective;
 	bool KNull,K0Null,cholKNull,KinvNull,KinvYNull,DKinv_KinvYYKinvNull,YeffectiveNull,gradDataParamsNull,gradDataParamsColsNull;
 	CGPbase* gp;
-	ACovarianceFunction* covar;
+	PCovarianceFunction covar;
 public:
-	CGPCholCache(CGPbase* gp,ACovarianceFunction* covar);
+	CGPCholCache(CGPbase* gp,PCovarianceFunction covar);
 	virtual ~CGPCholCache()
 	{};
 
@@ -199,9 +192,11 @@ public:
 %rename(LMLgrad_lik) CGPbase::aLMLgrad_lik;
 %rename(predictMean) CGPbase::apredictMean;
 %rename(predictVar) CGPbase::apredictVar;
+
+//%shared_ptr(CGPbase)
 #endif
 
-class CGPbase {
+class CGPbase : public CGPMixObject,public enable_shared_from_this<CGPbase> {
 	friend class CGPCholCache;
 	friend class CGPKroneckerCache;
 protected:
@@ -210,9 +205,10 @@ protected:
 	CGPCholCache cache;
 	CGPHyperParams params;
 
-	ADataTerm& dataTerm;       	//Mean function
-	ACovarianceFunction& covar;	//Covariance function
-	ALikelihood& lik;          	//likelihood model
+	//smart pointers for data Term,covar,lik
+	PDataTerm dataTerm;       	//Mean function
+	PCovarianceFunction covar;	//Covariance function
+	PLikelihood lik;          	//likelihood model
 
 	VectorXi gplvmDimensions;  //gplvm dimensions
 
@@ -220,7 +216,7 @@ protected:
 	void updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions,const MatrixXd& X) throw (CGPMixException);
 
 public:
-	CGPbase(ADataTerm& data, ACovarianceFunction& covar, ALikelihood& lik);
+	CGPbase(PDataTerm data, PCovarianceFunction covar, PLikelihood lik);
 	virtual ~CGPbase();
 
 	//TODO: add interface that is suitable for optimizer
@@ -246,8 +242,11 @@ public:
 	inline muint_t getNumberSamples(){return this->cache.getYeffective().rows();} //get the number of training data samples
 	inline muint_t getNumberDimension(){return this->cache.getYeffective().cols();} //get the dimension of the target data
 
-	ACovarianceFunction* getCovar(){return &covar;}
-	ALikelihood* getLik(){return &lik;}
+
+	PCovarianceFunction getCovar(){return covar;}
+	PLikelihood getLik(){return lik;}
+	PDataTerm getDataTerm() {return dataTerm;}
+
 
 	//likelihood evaluation of current object
 	virtual mfloat_t LML() throw (CGPMixException);
@@ -291,6 +290,7 @@ public:
 	inline MatrixXd predictMean(const MatrixXd& Xstar) throw (CGPMixException);
 	inline MatrixXd predictVar(const MatrixXd& Xstar) throw (CGPMixException);
 };
+
 
 inline MatrixXd CGPbase::predictMean(const MatrixXd& Xstar) throw (CGPMixException)
 		{

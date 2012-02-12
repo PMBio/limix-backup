@@ -49,7 +49,7 @@ typedef VectorXd CovarParams;
 %rename(getX) ACovarianceFunction::agetX;
 #endif
 
-class ACovarianceFunction {
+class ACovarianceFunction : public CGPMixObject {
 protected:
 	//indicator if the class is synced with the cache
 	bool insync;
@@ -72,7 +72,7 @@ public:
 	virtual ~ACovarianceFunction();
 
 	//getters and setters
-	virtual string getName() const = 0;
+	virtual std::string getName() const = 0;
 
 	//get the Vector of hyperparameters
 	//set the parameters to a new value.
@@ -127,6 +127,9 @@ public:
 	static bool check_covariance_Kgrad_theta(ACovarianceFunction& covar,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
 	static bool check_covariance_Kgrad_x(ACovarianceFunction& covar,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2,bool check_diag=true);
 };
+
+typedef sptr<ACovarianceFunction> PCovarianceFunction;
+
 
 
 
@@ -196,7 +199,7 @@ inline void ACovarianceFunction::checkWithinDimensions(muint_t d) const throw (C
 {
 	if (d>=getNumberDimensions())
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << "Dimension index ("<<d<<") out of range in covariance (0.."<<getNumberDimensions()<<").";
 		throw CGPMixException(os.str());
 	}
@@ -205,7 +208,7 @@ inline void ACovarianceFunction::checkWithinParams(muint_t i) const throw (CGPMi
 {
 	if (i>=getNumberParams())
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << "Parameter index ("<<i<<") out of range in covariance (0.."<<getNumberParams()<<").";
 		throw CGPMixException(os.str());
 	}
@@ -216,7 +219,7 @@ inline void ACovarianceFunction::checkXDimensions(const CovarInput& X) const thr
 {
 	if ((muint_t)X.cols()!=this->getNumberDimensions())
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << "X("<<(muint_t)X.rows()<<","<<(muint_t)X.cols()<<") column dimension missmatch (covariance: "<<this->getNumberDimensions() <<")";
 		throw CGPMixException(os.str());
 	}
@@ -224,7 +227,7 @@ inline void ACovarianceFunction::checkXDimensions(const CovarInput& X) const thr
 inline void ACovarianceFunction::checkParamDimensions(const CovarParams& params) const throw (CGPMixException)
 {
 	if ((muint_t)(params.rows()) != this->getNumberParams()){
-		ostringstream os;
+		std::ostringstream os;
 		os << "Wrong number of params for covariance funtion " << this->getName() << ". numberParams = " << this->getNumberParams() << ", params.cols() = " << params.cols();
 		throw gpmix::CGPMixException(os.str());
 	}

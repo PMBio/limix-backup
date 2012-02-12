@@ -5,6 +5,7 @@
 #define SWIG
 #include "gpmix/types.h"
 #include "gpmix/LMM/lmm.h"
+#include "gpmix/LMM/kronecker_lmm.h"
 #include "gpmix/lasso/lasso.h"
 #include "gpmix/covar/covariance.h"
 #include "gpmix/covar/linear.h"
@@ -16,21 +17,24 @@
 #include "gpmix/mean/ADataTerm.h"
 #include "gpmix/mean/CData.h"
 #include "gpmix/mean/CLinearMean.h"
+#include "gpmix/mean/CKroneckerMean.h"
 #include "gpmix/gp/gp_base.h"
 #include "gpmix/gp/gp_kronecker.h"
 #include "gpmix/gp/gp_opt.h"
 
-
-
-	//typedef unsigned int uint64_t;
-  using namespace gpmix;
+using namespace gpmix;
+//  removed namespace bindings (12.02.12)
 %}
-//typedef unsigned int uint_t;
-//typedef unsigned int uint64_t;
 
 /* Get the numpy typemaps */
 %include "numpy.i"
+//support for eigen matrix stuff
 %include "eigen.i"
+//support for std libs
+//suport for std_shared pointers in tr1 namespace
+#define SWIG_SHARED_PTR_NAMESPACE std
+#define SWIG_SHARED_PTR_SUBNAMESPACE tr1
+%include "std_shared_ptr.i"
 %include "std_vector.i"
 %include "std_map.i"
 %include "std_string.i"
@@ -42,32 +46,18 @@
 
 
 
-/* numpy wrappers for default wrapping
-   Note: we are not using these. The real wrappers are in eigen.i
-*/
-%apply (short*  IN_ARRAY1, int DIM1) {(short*  series, int size)};
-%apply (int*    IN_ARRAY1, int DIM1) {(int*    series, int size)};
-%apply (long*   IN_ARRAY1, int DIM1) {(long*   series, int size)};
-%apply (float*  IN_ARRAY1, int DIM1) {(float*  series, int size)};
-%apply (double* IN_ARRAY1, int DIM1) {(double* series, int size)};
-
-%apply (int*    IN_ARRAY2, int DIM1, int DIM2) {(int*    matrix, int rows, int cols)};
-%apply (double* IN_ARRAY2, int DIM1, int DIM2) {(double* matrix, int rows, int cols)};
-
-%apply (int*    INPLACE_ARRAY1, int DIM1) {(int*    array,   int size)};
-%apply (double* INPLACE_ARRAY1, int DIM1) {(double* array,   int size)};
-
-
-
-/* Remove C Prefix 
-%rename(VBFA) cVBFA;
-%rename(PEER) cSPARSEFA;
-*/
-
-
 /* Include the header file to be wrapped */
+//%template(HyperParmasVec) std::vector<CGPHyperParams>;
+//%template(StringVec) std::vector<std::string>;
+%shared_ptr(CTest)
+//SWIG_SHARED_PTR(PTest, CTest)
+
+
+//generated outodoc:
+//%feature("autodoc", "1")
 %include "gpmix/types.h"
 %include "gpmix/LMM/lmm.h"
+%include "gpmix/LMM/kronecker_lmm.h"
 %include "gpmix/lasso/lasso.h"
 %include "gpmix/covar/covariance.h"
 %include "gpmix/covar/linear.h"
@@ -79,6 +69,7 @@
 %include "gpmix/mean/ADataTerm.h"
 %include "gpmix/mean/CData.h"
 %include "gpmix/mean/CLinearMean.h"
+%include "gpmix/mean/CKroneckerMean.h"
 %include "gpmix/gp/gp_base.h"
 %include "gpmix/gp/gp_kronecker.h"
 %include "gpmix/gp/gp_opt.h"

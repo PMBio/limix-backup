@@ -14,12 +14,10 @@
 #include <cpplog/cpplog.h>
 #include <gpmix/types.h>
 
-using namespace cpplog;
-
 
 namespace gpmix{
 
-extern StdErrLogger Log;
+extern cpplog::StdErrLogger Log;
 
 
 }

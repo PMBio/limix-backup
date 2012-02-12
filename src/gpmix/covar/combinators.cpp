@@ -104,13 +104,13 @@ void AMultiCF::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
 {
 	if(((col+(muint_t)X.cols())>=getNumberDimensions()) || ((muint_t)X.rows()!=this->Kdim()))
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << "setXcol out of range. Current X:"<<this->getNumberDimensions() <<")";
 		throw CGPMixException(os.str());
 	}
 	if (X.cols()>1)
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << "setXcol (Combinator CF) only suports setting individual columns" << "\n";
 		throw CGPMixException(os.str());
 	}
@@ -240,7 +240,7 @@ CSumCF::~CSumCF()
 
 
 
-string CSumCF::getName() const
+std::string CSumCF::getName() const
 {
 	return "SumCF";
 
@@ -451,7 +451,7 @@ CProductCF::~CProductCF()
 }
 
 
-string CProductCF::getName() const
+std::string CProductCF::getName() const
 {
 	return "ProductCF";
 

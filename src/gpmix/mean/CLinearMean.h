@@ -42,7 +42,7 @@ public:
 	}
 	virtual inline MatrixXd getFixedEffects(){MatrixXd outFixedEffects; this->aGetFixedEffects(&outFixedEffects); return outFixedEffects;};
 
-	virtual inline string getName() const {return "CLinearMean";};
+	virtual inline std::string getName() const {return "CLinearMean";};
 	virtual inline void checkDimensions(const MatrixXd& Y){checkDimensions(this->weights, this->fixedEffects, Y, false, false, true);};
 	virtual inline void checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights = false, const bool checkStrictFixedEffects = false, const bool checkStrictY = false) const throw (CGPMixException);
 	inline virtual MatrixXd predictY() const {MatrixXd out = MatrixXd(); aPredictY(&out); return out;};
@@ -73,17 +73,17 @@ inline void CLinearMean::checkDimensions(const MatrixXd& weights, const MatrixXd
 	}
 
 	if (notIsnullweights && notIsnullFixed && (weights.rows()) != fixedEffects.cols() ){
-		ostringstream os;
+		std::ostringstream os;
 		os << this->getName() << ": Number of weights and fixed effects do not match. number fixed effects = " << fixedEffects.cols() << ", number weights = " << weights.rows();
 		throw gpmix::CGPMixException(os.str());
 	}
 	if (notIsnullFixed && notIsnullY && (fixedEffects.rows()) != Y.rows() ){
-			ostringstream os;
+			std::ostringstream os;
 			os << this->getName() << ": Number of samples in fixedEffects and Y do not match. fixed effects : " << fixedEffects.rows() << ", Y = " << Y.rows();
 			throw gpmix::CGPMixException(os.str());
 		}
 	if ( notIsnullweights && notIsnullY && (weights.cols()) != Y.cols() ){
-			ostringstream os;
+			std::ostringstream os;
 			os << this->getName() << ": Number of target dimensions do not match in Y and weights. Y: " << Y.cols() << ", weights = " << weights.cols();
 			throw gpmix::CGPMixException(os.str());
 		}

@@ -31,6 +31,10 @@ public:
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 };
+typedef sptr<ALikelihood> PLikelihood;
+
+
+
 
 /* Null likelihood model: assuming all variation is explained in covar*/
 class CLikNormalNULL : public ALikelihood {
@@ -48,7 +52,7 @@ public:
 	//overwrite setX. We merely ignore the number of columns here:
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
 
-	string getName() const {return "LikNormalIso";};
+	std::string getName() const {return "LikNormalIso";};
 };
 
 
@@ -68,7 +72,7 @@ public:
 	//overwrite setX. We merely ignore the number of columns here:
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
 
-	string getName() const {return "LikNormalIso";};
+	std::string getName() const {return "LikNormalIso";};
 };
 
 

@@ -10,9 +10,15 @@
 
 #include <Eigen/Dense>
 //using namespace Eigen;
+//using namespace std;
+//using namespace std::tr1;
+
 #include <string>
-using namespace std;
-//#include <inttypes.h>
+#include <tr1/memory>
+
+//define shortcut for shared pointer
+#define sptr std::tr1::shared_ptr
+#define enable_shared_from_this std::tr1::enable_shared_from_this
 
 namespace gpmix{
 
@@ -67,7 +73,7 @@ typedef Eigen::Matrix<mfloat_t, 3, 3,Eigen::ColMajor> MatrixXd3;
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXi;
 typedef Eigen::Matrix<mint_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXi;
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXd;
-typedef Eigen::Matrix<string, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXs;
+typedef Eigen::Matrix<std::string, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXs;
 //typedef Eigen::Array<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> ArrayXd;
 
 //SCIPY matrices for python interface: these are row major
@@ -75,11 +81,9 @@ typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> 
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, 1> VectorXdscipy;
 typedef Eigen::Matrix<mint_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXiscipy;
 typedef Eigen::Matrix<mint_t, Eigen::Dynamic, 1> VectorXiscipy;
-
-
-//typedef Eigen::Matrix<float32_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXfscipy;
 #endif
 
+//GpMix Exception Class
 class CGPMixException
 {
   public:
@@ -89,19 +93,52 @@ class CGPMixException
 	    {
 	    }
 
-	CGPMixException(string str)
+	CGPMixException(std::string str)
       : What(str)
     {
     }
 
-    string what()
+    std::string what()
     {
       return What;
     }
 
   private:
-    string What;
+    std::string What;
 };
+
+//GpMix base class for memory ownership management
+/*
+ * Class has a pointer to the owner
+ * This allows to track where the object is initially created and hence needs to be cleaned up
+ */
+class CGPMixObject
+{
+private:
+	//owner of this object: (this) by default
+	CGPMixObject* owner;
+public:
+	CGPMixObject()
+	{
+		owner = this;
+	}
+	virtual ~CGPMixObject()
+	{};
+	void setOwner (CGPMixObject* owner)
+	{
+		this->owner = owner;
+	}
+	CGPMixObject* getOwner()
+	{
+		return this->owner;
+	}
+	bool isOwner(CGPMixObject* owner)
+	{
+		return (this->owner==owner);
+	}
+};
+
+
 
 }
 

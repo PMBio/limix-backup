@@ -32,6 +32,28 @@ inline void akrondiag(const Eigen::MatrixBase<Derived1> & out_, const Eigen::Mat
 }
 
 
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+#endif
+class CTest
+{
+public:
+	CTest()
+	{};
+	//virtual ~CTest()
+	//{};
+	void print0(CTest& other)
+	{
+			std::cout << "prin called" << "\n";
+	}
+	/*
+	void print1(std::tr1::shared_ptr<CTest> other)
+	{
+		std::cout << "prin called" << "\n";
+	}
+	*/
+};
+
+//typedef sptr<CTest> PTest;
 
 //forward definition:
 class CGPkronecker;
@@ -45,9 +67,9 @@ protected:
 	MatrixXd UK;
 	VectorXd SK;
 	bool UKNull,SKNull;
-	ACovarianceFunction* covar;
+	PCovarianceFunction covar;
 public:
-	CGPSVDCache(CGPbase* gp, ACovarianceFunction* covar);
+	CGPSVDCache(CGPbase* gp, PCovarianceFunction covar);
 	virtual ~CGPSVDCache()
 	{};
 	virtual void clearCache();
@@ -83,7 +105,7 @@ public:
 	CGPSVDCache cache_r;
 	CGPSVDCache cache_c;
 
-	CGPKroneckerCache(CGPbase* gp,ACovarianceFunction* covar_r,ACovarianceFunction* covar_c );
+	CGPKroneckerCache(CGPbase* gp,PCovarianceFunction covar_r,PCovarianceFunction covar_c );
 	virtual ~CGPKroneckerCache()
 	{};
 	virtual void clearCache();
@@ -114,8 +136,8 @@ class CGPkronecker: public CGPbase {
 
 protected:
 	//row and column covariance functions:
-	ACovarianceFunction& covar_r;
-	ACovarianceFunction& covar_c;
+	PCovarianceFunction covar_r;
+	PCovarianceFunction covar_c;
 
 	//cache:
 	CGPKroneckerCache cache;
@@ -128,7 +150,7 @@ protected:
 	void _gradLogDetX(VectorXd* out, MatrixXd& dK,bool columns);
 
 public:
-	CGPkronecker(ADataTerm& mean, ACovarianceFunction& covar_r, ACovarianceFunction& covar_c, ALikelihood& lik);
+	CGPkronecker(PDataTerm mean, PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik);
 	virtual ~CGPkronecker();
 
 	void setX_r(const CovarInput& X) throw (CGPMixException);
@@ -156,8 +178,8 @@ public:
 	virtual void aLMLgrad_X_c(MatrixXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);
     CGPKroneckerCache& getCache();
-    ACovarianceFunction & getCovarC() const;
-    ACovarianceFunction & getCovarR() const;
+    PCovarianceFunction  getCovarC() const;
+    PCovarianceFunction  getCovarR() const;
     VectorXi getGplvmDimensionsC() const;
     VectorXi getGplvmDimensionsR() const;
     void setGplvmDimensionsC(VectorXi gplvmDimensionsC);

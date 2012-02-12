@@ -10,7 +10,7 @@
 
 namespace gpmix {
 
-CGPSVDCache::CGPSVDCache(CGPbase* gp, ACovarianceFunction* covar) : CGPCholCache(gp,covar), covar(covar)
+CGPSVDCache::CGPSVDCache(CGPbase* gp, PCovarianceFunction covar) : CGPCholCache(gp,covar), covar(covar)
 {
 }
 
@@ -63,7 +63,7 @@ bool CGPSVDCache::isInSync() const
 }
 
 
-CGPKroneckerCache::CGPKroneckerCache(CGPbase *gp, ACovarianceFunction *covar_r, ACovarianceFunction *covar_c)
+CGPKroneckerCache::CGPKroneckerCache(CGPbase* gp, PCovarianceFunction covar_r, PCovarianceFunction covar_c)
 :gp(gp), cache_r(gp, covar_r), cache_c(gp, covar_c)
 {
 }
@@ -76,12 +76,12 @@ void CGPKroneckerCache::clearCache()
 	SiNull = true;
 	YSiNull = true;
 	KinvYNull= true;
-	gp->dataTerm.makeSync();
+	gp->dataTerm->makeSync();
 }
 
 bool CGPKroneckerCache::isInSync() const
 {
-	return cache_r.covar->isInSync() && cache_c.covar->isInSync() && gp->dataTerm.isInSync() && gp->lik.isInSync();
+	return cache_r.covar->isInSync() && cache_c.covar->isInSync() && gp->dataTerm->isInSync() && gp->lik->isInSync();
 }
 
    	   MatrixXd& CGPKroneckerCache::getYrot()
@@ -93,7 +93,7 @@ bool CGPKroneckerCache::isInSync() const
         {
         //TODO: think about akronravel
         	//Yrot.noalias() = cache_r.getUK().transpose() * gp->dataTerm.evaluate() * cache_c.getUK();
-            akronravel(Yrot, (cache_r.getUK()).transpose(), (cache_c.getUK()).transpose(), gp->dataTerm.evaluate());
+            akronravel(Yrot, (cache_r.getUK()).transpose(), (cache_c.getUK()).transpose(), gp->dataTerm->evaluate());
         }
         return Yrot;
     }
@@ -109,7 +109,7 @@ bool CGPKroneckerCache::isInSync() const
             //add noise
             Si.array() += getKnoise();
             //elementwise inversion:
-            Si = Si.unaryExpr(ptr_fun(inverse));
+            Si = Si.unaryExpr(std::ptr_fun(inverse));
         }
         return Si;
     }
@@ -141,10 +141,10 @@ bool CGPKroneckerCache::isInSync() const
 
     mfloat_t CGPKroneckerCache::getKnoise()
     {
-        if(!gp->lik.isInSync()){
-            gp->lik.makeSync();
+        if(!gp->lik->isInSync()){
+            gp->lik->makeSync();
         }
-    	Knoise = gpmix::exp( (mfloat_t)(2.0*gp->lik.getParams()(0)));
+    	Knoise = gpmix::exp( (mfloat_t)(2.0*gp->lik->getParams()(0)));
         return Knoise;
     }
 
@@ -152,8 +152,8 @@ bool CGPKroneckerCache::isInSync() const
 
 
 
-    CGPkronecker::CGPkronecker(ADataTerm& dataTerm, ACovarianceFunction & covar_r, ACovarianceFunction & covar_c, ALikelihood & lik)
-    :CGPbase(dataTerm, covar_r, lik), covar_r(covar_r), covar_c(covar_c), cache(this, &covar_r, &covar_c)
+    CGPkronecker::CGPkronecker(PDataTerm dataTerm, PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik)
+    :CGPbase(dataTerm, covar_r, lik), covar_r(covar_r), covar_c(covar_c), cache(this, covar_r, covar_c)
     {
     }
 
@@ -166,41 +166,41 @@ bool CGPKroneckerCache::isInSync() const
     {
         CGPbase::updateParams();
         if(this->params.exists("covar_r"))
-            this->covar_r.setParams(this->params["covar_r"]);
+            this->covar_r->setParams(this->params["covar_r"]);
 
         if(this->params.exists("covar_c"))
-            this->covar_c.setParams(this->params["covar_c"]);
+            this->covar_c->setParams(this->params["covar_c"]);
 
         if(params.exists("X_r"))
         {
-        	this->updateX(covar_r, gplvmDimensions_r, params["X_r"]);
+        	this->updateX(*covar_r, gplvmDimensions_r, params["X_r"]);
         }
 
         if(params.exists("X_c"))
-            this->updateX(covar_c, gplvmDimensions_c, params["X_c"]);
+            this->updateX(*covar_c, gplvmDimensions_c, params["X_c"]);
 
         if(this->params.exists("dataTerm"))
-        	this->dataTerm.setParams(this->params["dataTerm"]);
+        	this->dataTerm->setParams(this->params["dataTerm"]);
     }
 
     void CGPkronecker::setX_r(const CovarInput & X) throw (CGPMixException)
     {
-        this->covar_r.setX(X);
+        this->covar_r->setX(X);
         if(isnull(gplvmDimensions_r))
             this->gplvmDimensions_r = VectorXi::LinSpaced(X.cols(), 0, X.cols() - 1);
 
     }
     void CGPkronecker::setX_c(const CovarInput & X) throw (CGPMixException)
     {
-        this->covar_c.setX(X);
+        this->covar_c->setX(X);
         if(isnull(gplvmDimensions_c))
             this->gplvmDimensions_c = VectorXi::LinSpaced(X.cols(), 0, X.cols() - 1);
 
     }
     void CGPkronecker::setY(const MatrixXd & Y)
     {
-        CGPbase::dataTerm.setY(Y);
-        this->lik.setX(MatrixXd::Zero(Y.rows() * Y.cols(), 0));
+        CGPbase::dataTerm->setY(Y);
+        this->lik->setX(MatrixXd::Zero(Y.rows() * Y.cols(), 0));
     }
 
     mfloat_t CGPkronecker::LML() throw (CGPMixException)
@@ -358,12 +358,12 @@ bool CGPKroneckerCache::isInSync() const
 
     void CGPkronecker::aLMLgrad_covar(VectorXd *out, bool columns) throw (CGPMixException)
     {
-        ACovarianceFunction *covar;
+        PCovarianceFunction covar;
         if(columns)
-            covar = &covar_c;
+            covar = covar_c;
 
         else
-            covar = &covar_r;
+            covar = covar_r;
 
         MatrixXd dK;
         mfloat_t grad_logdet;
@@ -384,8 +384,8 @@ bool CGPKroneckerCache::isInSync() const
     void CGPkronecker::aLMLgrad_lik(VectorXd *out) throw (CGPMixException)
     {
         //TODO: we can only treat the boring standard noise level in this variant
-        out->resize(lik.getNumberParams());
-        MatrixXd dK_ = lik.Kgrad_param(0);
+        out->resize(lik->getNumberParams());
+        MatrixXd dK_ = lik->Kgrad_param(0);
         mfloat_t dK = dK_(0, 0);
         MatrixXd& Si = cache.getSi();
         MatrixXd& YSi = cache.getYSi();
@@ -409,14 +409,14 @@ bool CGPKroneckerCache::isInSync() const
     void CGPkronecker::aLMLgrad_X_r(MatrixXd *out) throw (CGPMixException)
     {
         //0. set output dimensions
-        (*out).resize(CGPbase::dataTerm.evaluate().rows(), this->gplvmDimensions_r.rows());
+        (*out).resize(CGPbase::dataTerm->evaluate().rows(), this->gplvmDimensions_r.rows());
         MatrixXd dKx;
         VectorXd grad_column_quad;
         VectorXd grad_column_logdet;
         for(muint_t ic = 0;ic < (muint_t)((this->gplvmDimensions_r.rows()));ic++)
         {
             muint_t col = gplvmDimensions_r(ic);
-            covar_r.aKgrad_X(&dKx, col);
+            covar_r->aKgrad_X(&dKx, col);
             _gradQuadrFormX(&grad_column_quad, dKx, false);
             _gradLogDetX(&grad_column_logdet, dKx, false);
             (*out).col(ic) = 0.5 * (grad_column_quad + grad_column_logdet);
@@ -428,12 +428,12 @@ bool CGPKroneckerCache::isInSync() const
         return cache;
     }
 
-    ACovarianceFunction & CGPkronecker::getCovarC() const
+    PCovarianceFunction CGPkronecker::getCovarC() const
     {
         return covar_c;
     }
 
-    ACovarianceFunction & CGPkronecker::getCovarR() const
+    PCovarianceFunction CGPkronecker::getCovarR() const
     {
         return covar_r;
     }
@@ -462,14 +462,14 @@ bool CGPKroneckerCache::isInSync() const
  void CGPkronecker::aLMLgrad_X_c(MatrixXd *out) throw (CGPMixException)
  {
 	//0. set output dimensions
-	(*out).resize(CGPbase::dataTerm.evaluate().cols(), this->gplvmDimensions_c.rows());
+	(*out).resize(CGPbase::dataTerm->evaluate().cols(), this->gplvmDimensions_c.rows());
 	MatrixXd dKx;
 	VectorXd grad_column_quad;
 	VectorXd grad_column_logdet;
 	for(muint_t ic = 0;ic < (muint_t)((this->gplvmDimensions_c.rows()));ic++)
 	{
 		muint_t col = gplvmDimensions_c(ic);
-		covar_c.aKgrad_X(&dKx, col);
+		covar_c->aKgrad_X(&dKx, col);
 		_gradQuadrFormX(&grad_column_quad,dKx,true);
 		_gradLogDetX(&grad_column_logdet,dKx,true);
 		//std::cout << "_gradQuadrFormX("<< ic << ")=" << grad_column_quad << "\n";
@@ -481,7 +481,7 @@ bool CGPKroneckerCache::isInSync() const
  void CGPkronecker::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 {
  	//0. set output dimensions
-	 (*out) = this->dataTerm.gradParams(this->cache.getKinvY());
+	 (*out) = this->dataTerm->gradParams(this->cache.getKinvY());
 }
 
 } /* namespace gpmix */

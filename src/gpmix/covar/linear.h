@@ -30,9 +30,11 @@ public:
 	void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 
 	//class information
-	inline string getName() const {return "CCovLinearISO";};
+	inline std::string getName() const {return "CCovLinearISO";};
 
 };
+typedef sptr<CCovLinearISO> PCovLinearISO;
+
 
 class CCovLinearARD: public ACovarianceFunction  {
 public:
@@ -53,8 +55,9 @@ public:
 	void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 
 	//class information
-	inline string getName() const{ return "CovLinearARD";}
+	inline std::string getName() const{ return "CovLinearARD";}
 };
+typedef sptr<CCovLinearARD> PCovLinearARD;
 
 
 
