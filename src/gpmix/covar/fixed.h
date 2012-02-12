@@ -54,12 +54,13 @@ public:
 
 
 	//class information
-	inline string getName() const{ return "FixedCF";}
+	inline std::string getName() const{ return "FixedCF";}
 
 	MatrixXd getK0() const;
 	MatrixXd getK0cross() const;
 	VectorXd getK0cross_diag() const;
 };
+typedef sptr<CFixedCF> PFixedCF;
 
 class CEyeCF : public ACovarianceFunction
 {
@@ -80,8 +81,10 @@ public:
 	virtual void aK(MatrixXd* out) const;
 
 	//class information
-	inline string getName() const{ return "EyeCF";}
+	inline std::string getName() const{ return "EyeCF";}
 };
+typedef sptr<CEyeCF> PEyeCF;
+
 
 } /* namespace gpmix */
 #endif /* FIXED_H_ */

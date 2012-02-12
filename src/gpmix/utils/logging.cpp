@@ -10,7 +10,7 @@
 
 namespace gpmix {
 
-StdErrLogger Log;
+cpplog::StdErrLogger Log;
 
 
 }

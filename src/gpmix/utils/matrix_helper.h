@@ -28,9 +28,9 @@ bool isnull(const Eigen::LLT<gpmix::MatrixXd>& m);
 bool isnull(const Eigen::LDLT<gpmix::MatrixXd>& m);
 
 template <typename Derived>
-string printDim(const Eigen::EigenBase<Derived>& m)
+std::string printDim(const Eigen::EigenBase<Derived>& m)
 {
-	ostringstream os;
+	std::ostringstream os;
 	os << "("<<m.rows() << "," << m.cols()<<")";
 	return os.str();
 }

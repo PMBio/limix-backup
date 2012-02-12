@@ -15,7 +15,7 @@
 namespace gpmix {
 
 class CSumLinear: public gpmix::ADataTerm {
-	vector<CLinearMean*> terms;
+	std::vector<CLinearMean*> terms;
 	size_t nParams;
 public:
 	CSumLinear();

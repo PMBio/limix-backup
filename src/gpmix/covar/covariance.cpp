@@ -79,7 +79,7 @@ void ACovarianceFunction::setXcol(const CovarInput& X,muint_t col) throw (CGPMix
 	//1. check dimensions etc.
 	if(((col+X.cols())>(muint_t)this->X.cols()) || (X.rows()!=this->X.rows()))
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << "setXcol out of range. Current X:"<<this->getNumberDimensions() <<")";
 		throw CGPMixException(os.str());
 	}
@@ -122,7 +122,7 @@ bool ACovarianceFunction::check_covariance_Kgrad_theta(ACovarianceFunction& cova
 	for(mint_t i=0;i<L.rows();i++)
 	{
 		mfloat_t change = relchange*L(i);
-		change = max(change,1E-5);
+		change = std::max(change,1E-5);
 		L(i) = L0(i) + change;
 		covar.setParams(L);
 		MatrixXd Lplus = covar.K();
@@ -153,7 +153,7 @@ bool ACovarianceFunction::check_covariance_Kgrad_x(ACovarianceFunction& covar,mf
 		for (int ir=0;ir<X.rows();ir++)
 		{
 			mfloat_t change = relchange*X0(ir,ic);
-			change = max(change,1E-5);
+			change = std::max(change,1E-5);
 			X(ir,ic) = X0(ir,ic) + change;
 			covar.setX(X);
 			MatrixXd Lplus = covar.K();

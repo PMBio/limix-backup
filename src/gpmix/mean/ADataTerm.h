@@ -31,7 +31,7 @@ namespace gpmix {
 #endif
 
 
-class ADataTerm {
+class ADataTerm : public CGPMixObject {
 protected:
 	MatrixXd Y;
 	bool insync;
@@ -63,11 +63,14 @@ public:
 	virtual inline MatrixXd gradParams(const MatrixXd& KinvY){ MatrixXd ret = MatrixXd(); aGradParams(&ret, &KinvY); return ret;};
 	virtual inline MatrixXd sumJacobianGradParams(){ MatrixXd ret = MatrixXd(); aSumJacobianGradParams(&ret); return ret;};
 	virtual inline MatrixXd sumLogJacobian(){ MatrixXd ret = MatrixXd(); aSumLogJacobian(&ret); return ret;};
-	virtual inline string getName() const {return "ADataTerm";};
+	virtual inline std::string getName() const {return "ADataTerm";};
 	virtual inline void checkDimensions(const MatrixXd& Y){};
 	bool isInSync() const;
 	void makeSync();
 };
+typedef sptr<ADataTerm> PDataTerm;
+
+
 
 } /* namespace gpmix */
 #endif /* ADATATERM_H_ */

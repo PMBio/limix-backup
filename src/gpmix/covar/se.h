@@ -32,7 +32,7 @@ public:
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 
 	//class information
-	inline string getName() const{ return "CovSEARD";}
+	inline std::string getName() const{ return "CovSEARD";}
 }; //end class CCovSqexpARD
 
 

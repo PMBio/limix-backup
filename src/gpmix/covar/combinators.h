@@ -12,13 +12,12 @@
 #include <vector>
 
 namespace gpmix {
-using namespace std;
 
 //Define a vector of covariances which is needed to represent the sum and product CF
-typedef vector<ACovarianceFunction*> ACovarVec;
+typedef std::vector<ACovarianceFunction*> ACovarVec;
 //SWIG template declaration:
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
-%template(ACovarVec) vector<ACovarianceFunction* >;
+//%template(ACovarVec) vector<ACovarianceFunction* >;
 #endif
 
 
@@ -77,7 +76,7 @@ public:
 	virtual void aK(MatrixXd* out) const;
 	virtual void aKdiag(VectorXd* out) const;
 	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
-	virtual string getName() const;
+	virtual std::string getName() const;
 };
 
 
@@ -99,7 +98,7 @@ public:
 	virtual void aK(MatrixXd* out) const;
 	virtual void aKdiag(VectorXd* out) const;
 	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
-	virtual string getName() const;
+	virtual std::string getName() const;
 };
 
 

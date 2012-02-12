@@ -17,8 +17,10 @@ public:
 	CData();
 	CData(MatrixXd& Y);
 	~CData();
-	virtual inline string getName() const {return "CData";};
+	virtual inline std::string getName() const {return "CData";};
 };
+
+
 
 } /* namespace gpmix */
 #endif /* CDATA_H_ */

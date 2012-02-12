@@ -30,7 +30,7 @@ void CCovSqexpARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw 
 	//amplitude
 	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
 	//lengthscales
-	MatrixXd L = params.block(1,0,params.rows()-1,1).unaryExpr(ptr_fun(exp));
+	MatrixXd L = params.block(1,0,params.rows()-1,1).unaryExpr(std::ptr_fun(exp));
 	//rescale with length
 	MatrixXd x1l = Xstar * L.asDiagonal().inverse();
 	MatrixXd x2l = this->X * L.asDiagonal().inverse();
@@ -38,7 +38,7 @@ void CCovSqexpARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw 
 	MatrixXd RV;
 	sq_dist(&RV,x1l,x2l);
 	RV*= -0.5;
-	(*out) = A*RV.unaryExpr(ptr_fun(exp));
+	(*out) = A*RV.unaryExpr(std::ptr_fun(exp));
 } // end :: K
 
 void CCovSqexpARD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
@@ -53,14 +53,14 @@ void CCovSqexpARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGPM
 	//code copied from K
 	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
 	//lengthscales
-	MatrixXd L = params.block(1,0,params.rows()-1,1).unaryExpr(ptr_fun(exp));
+	MatrixXd L = params.block(1,0,params.rows()-1,1).unaryExpr(std::ptr_fun(exp));
 	//rescale with length
 	MatrixXd x1l = X * L.asDiagonal().inverse();
 	//squared exponential distance
 	MatrixXd RV;
 	sq_dist(&RV,x1l,x1l);
 	RV*= -0.5;
-	(*out) = A*RV.unaryExpr(ptr_fun(exp));
+	(*out) = A*RV.unaryExpr(std::ptr_fun(exp));
 
 	if (i==0)
 		//derivative w.r.t. amplitude
@@ -85,7 +85,7 @@ void CCovSqexpARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const m
 	this->aKcross(out,Xstar);
 	//lengthscales: now we need to squre explicitly
 	MatrixXd L2 = 2.0*params.block(1,0,params.rows()-1,1);
-	L2 = L2.unaryExpr(ptr_fun(exp));
+	L2 = L2.unaryExpr(std::ptr_fun(exp));
 	MatrixXd dist;
 	lin_dist(&dist,X,Xstar,d);
 	//rescale with squared lengthscale of the corresponding dimension:

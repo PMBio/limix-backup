@@ -21,15 +21,14 @@ namespace gpmix {
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //list of CGPHyperParams
-//%template(HyperParmasVec) vector<CGHyperParmas>;
 #endif
 
-class CGPopt {
+class CGPopt : public CGPMixObject {
 protected:
 	//gp object which is optimized:
-	CGPbase& gp;
+	PGPbase gp;
 	//starting points for optimization, if any
-	vector<CGPHyperParams> optStartParams;
+	std::vector<CGPHyperParams> optStartParams;
 	CGPHyperParams optParams;
 	mfloat_t optLML;
 	CGPHyperParams optBoundLower;
@@ -49,7 +48,7 @@ protected:
 
 	void completeConstraints(CGPHyperParams& constraints, const CGPHyperParams& params,mfloat_t fill_value);
 public:
-	CGPopt(CGPbase& gp);
+	CGPopt(PGPbase gp);
 	virtual ~CGPopt();
 	virtual bool gradCheck(mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
 	virtual void opt() throw (CGPMixException);
@@ -63,8 +62,8 @@ public:
     void setOptBoundLower(CGPHyperParams optBoundLower);
     CGPHyperParams getOptBoundUpper() const;
     void setOptBoundUpper(CGPHyperParams optBoundUpper);
-    vector<CGPHyperParams> getOptStartParams() const;
-    void setOptStartParams(const vector<CGPHyperParams>& optStartParams);
+    std::vector<CGPHyperParams> getOptStartParams() const;
+    void setOptStartParams(const std::vector<CGPHyperParams>& optStartParams);
 
     void addOptStartParams(const CGPHyperParams& params);
     void addOptStartParams(const VectorXd& paramArray);

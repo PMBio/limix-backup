@@ -34,7 +34,7 @@ public:
 	void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 
 	//class information
-	inline string getName() const {return "CFreeform";};
+	inline std::string getName() const {return "CFreeform";};
 
 };
 

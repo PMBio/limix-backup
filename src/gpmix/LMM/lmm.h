@@ -35,7 +35,7 @@ namespace gpmix {
 #endif
 
 //Abstract base class for LMM models*/
-class ALMM {
+class ALMM : public CGPMixObject {
 protected:
 	//Data and sample information
 	MatrixXd snps;
@@ -102,7 +102,6 @@ public:
     void setSNPs(const MatrixXd & snps);
     //abstract function
     virtual void process() throw (CGPMixException) =0;
-    virtual void updateDecomposition() throw (CGPMixException) =0;
 
 	virtual void agetK(MatrixXd* out) const;
 	virtual void setK(const MatrixXd& K);
@@ -325,100 +324,6 @@ public:
 
 
 
-/*Simple Kronecker model.
- * Kroneckers are merely used to efficiently rotate the phenotypes and genotypes
- */
-
-class CSimpleKroneckerLMM: public ALMM
-{
-protected:
-	MatrixXd C;
-	MatrixXd R;
-	MatrixXd U_R;
-	MatrixXd U_C;
-	VectorXd S_R;
-	VectorXd S_C;
-	VectorXd S;
-	//kronecker structure: Wkron - p x D where D is the number of weights to be fitted
-	MatrixXd Wkron;
-	//kronecker structure: same but for the background model:
-	MatrixXd Wkron0;
-
-	void kron_snps(MatrixXd* out,const MatrixXd& x,const MatrixXd& kron);
-
-	void kron_rot(MatrixXd* out,const MatrixXd&  x);
-public:
-	CSimpleKroneckerLMM();
-	virtual ~CSimpleKroneckerLMM();
-	//processing;
-	virtual void process() throw(CGPMixException);
-	virtual void updateDecomposition() throw(CGPMixException);
-
-	void setK_C(const MatrixXd& C);
-	void setK_C(const MatrixXd& C,const MatrixXd& U_C, const VectorXd& S_C);
-
-	void setK_R(const MatrixXd& R);
-	void setK_R(const MatrixXd& R,const MatrixXd& U_R, const VectorXd& S_R);
-
-	void getK_R(MatrixXd* out) const;
-	void getK_C(MatrixXd* out) const;
-	void setWkron(const MatrixXd& Wkron);
-    void setWkron0(const MatrixXd& Wkron0);
-
-
-#ifndef SWIG
-    MatrixXd getK_R() const;
-    MatrixXd getK_C() const;
-    MatrixXd getWkron() const;
-    MatrixXd getWkron0() const;
-#endif
-
-};
-
-/*
-Efficient mixed liner model
-However, there are limitations as to which hypothesis can be tested
-TODO: add documentation here
-*/
-class CKroneckerLMM : public ALMM
-{
-	//TODO: check what is a symmetric matrix type!
-protected:
-	MatrixXd C;
-	MatrixXd R;
-	MatrixXd U_R;
-	MatrixXd U_C;
-	VectorXd S_R;
-	VectorXd S_C;
-	MatrixXd WkronDiag0;
-	MatrixXd WkronBlock0;
-	MatrixXd WkronDiag;
-	MatrixXd WkronBlock;
-
-public:
-	CKroneckerLMM();
-	virtual ~CKroneckerLMM();
-
-	//processing;
-	virtual void process() throw(CGPMixException);
-	virtual void updateDecomposition() throw(CGPMixException);
-
-	void setK_C(const MatrixXd& C);
-	void setK_C(const MatrixXd& C,const MatrixXd& U_C, const VectorXd& S_C);
-
-	void setK_R(const MatrixXd& R);
-	void setK_R(const MatrixXd& R,const MatrixXd& U_R, const VectorXd& S_R);
-
-	void getK_R(MatrixXd* out) const;
-	void getK_C(MatrixXd* out) const;
-	void setKronStructure(const MatrixXd& WkronDiag0, const MatrixXd& WkronBlock0, const MatrixXd& WkronDiag, const MatrixXd& WkronBlock);
-	static mfloat_t nLLeval(MatrixXd* F_tests, mfloat_t ldelta, const MatrixXd& WkronDiag, const MatrixXd& WkronBlock, const MatrixXd& UX, const MatrixXd& UYU, const VectorXd& S_C, const VectorXd& S_R);
-	static mfloat_t optdelta(const MatrixXd& UX, const MatrixXd& UYU, const VectorXd& S_C, const VectorXd& S_R, const muint_t numintervals, const mfloat_t ldeltamin, const mfloat_t ldeltamax, const MatrixXd& WkronDiag, const MatrixXd& WkronBlock);
-#ifndef SWIG
-	MatrixXd getK_R() const;
-	MatrixXd getK_C() const;
-#endif
-};
 
 
 

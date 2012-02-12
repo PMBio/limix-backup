@@ -29,7 +29,7 @@ public:
 	inline virtual void setWeightsOLS(){setWeightsOLS(this->Y);};
 	inline void checkDimensions(const MatrixXd& fixedEffects, const MatrixXd& weights, const MatrixXd& A, const bool checkStrictFixedEffects = false, const bool checkStrictWeights = false, const bool checkStrictA = false) const throw (CGPMixException);
 	inline void checkDimensions(const MatrixXd& Y, const bool checkStrictWeights) const throw (CGPMixException);
-	virtual inline string getName() const { return "CKoneckerFixedTerm"; };
+	virtual inline std::string getName() const { return "CKoneckerFixedTerm"; };
 	inline muint_t getDimFixedEffects() const { return this->fixedEffects.cols(); };
 	virtual muint_t getColsParams() {
 		return (muint_t) this->A.rows();
@@ -43,7 +43,7 @@ inline void CKroneckerMean::checkDimensions(const MatrixXd& Y, const bool checkS
 {
 	if (Y.rows() != this->fixedEffects.rows() && (muint_t)Y.cols() != this->getNTargets())
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << this->getName() << ": Number of number samples and number of targets specified do not match with given Y. Y.rows() = " << Y.rows() << ", Y.cols() = " << Y.cols() << ", nSamples = " << fixedEffects.rows() << ", nTargets = " << this->getNTargets();
 		throw gpmix::CGPMixException(os.str());
 	}
