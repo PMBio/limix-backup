@@ -64,7 +64,7 @@ void CKroneckerMean::setWeightsOLS(const MatrixXd& Y)
 	this->weights = this->fixedEffects.jacobiSvd().solve(YAd);
 }
 
-void CKroneckerMean::setA(MatrixXd& A)
+void CKroneckerMean::setA(const MatrixXd& A)
 {
 	this->checkDimensions(fixedEffects, weights, A);
 	this->insync = false;

@@ -32,8 +32,8 @@ public:
 	virtual void aEvaluate(MatrixXd* outY);
 	void aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY);
 
-	virtual void setParams(MatrixXd& weightMatrix);
-	virtual void setFixedEffects(MatrixXd& fixedEffects);
+	virtual void setParams(const MatrixXd& weightMatrix);
+	virtual void setFixedEffects(const MatrixXd& fixedEffects);
 
 	virtual void aGetParams(MatrixXd* outParams);
 	virtual void aGetFixedEffects(MatrixXd* outFixedEffects);
@@ -44,7 +44,6 @@ public:
 		return this->nTargets;
 	}
 	virtual inline MatrixXd getFixedEffects(){MatrixXd outFixedEffects; this->aGetFixedEffects(&outFixedEffects); return outFixedEffects;};
-
 	virtual inline std::string getName() const {return "CLinearMean";};
 	virtual inline void checkDimensions(const MatrixXd& Y){checkDimensions(this->weights, this->fixedEffects, Y, false, false, true);};
 	virtual inline void checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights = false, const bool checkStrictFixedEffects = false, const bool checkStrictY = false) const throw (CGPMixException);

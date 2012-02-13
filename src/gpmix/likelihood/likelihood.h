@@ -62,6 +62,7 @@ public:
 
 	std::string getName() const {return "LikNormalIso";};
 };
+typedef sptr<CLikNormalNULL> PLikNormalNULL;
 
 
 /* Gaussian likelihood model*/
@@ -85,6 +86,7 @@ public:
 
 	std::string getName() const {return "LikNormalIso";};
 };
+typedef sptr<CLikNormalIso> PLikNormalIso;
 
 
 

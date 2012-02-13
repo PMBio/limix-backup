@@ -15,44 +15,6 @@
 
 namespace gpmix {
 
-/*
- * CGPLMM:
- * testing based on GP class
- */
-//interaction tests
-class CGPLMM : public ALMM
-{
-
-protected:
-	PGPkronecker gp;
-	void checkConsistency() throw (CGPMixException);
-	void setMeanTerm() throw (CGPMixException);
-
-	//design matrices for foreground and background model
-	MatrixXd A;
-	MatrixXd A0;
-
-	sptr<CKroneckerMean> meanAlt;
-	sptr<CKroneckerMean> mean0;
-public:
-	CGPLMM(PGPkronecker gp) : gp(gp)
-	{
-	}
-	virtual ~CGPLMM()
-	{};
-
-	//overload pure virtual functions:
-	virtual void process() throw (CGPMixException);
-    MatrixXd getA() const;
-    void setA(MatrixXd a);
-    MatrixXd getA0() const;
-    void setA0(MatrixXd a0);
-    void agetA0(MatrixXd* out) const;
-    void agetA(MatrixXd* out) const;
-    PGPkronecker getGp() const;
-    void setGp(PGPkronecker gp);
-
-};
 
 
 /*

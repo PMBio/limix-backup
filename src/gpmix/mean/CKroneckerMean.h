@@ -24,7 +24,7 @@ public:
 	CKroneckerMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects, MatrixXd& A);
 	virtual ~CKroneckerMean();
 
-	virtual void setA(MatrixXd& A);
+	virtual void setA(const MatrixXd& A);
 	virtual void setWeightsOLS(const MatrixXd& Y);
 
 	virtual void aEvaluate(MatrixXd* outY);
@@ -41,7 +41,7 @@ public:
 
 	inline void makeSync() const {}
 };
-
+typedef sptr<CKroneckerMean> PKroneckerMean;
 
 inline void CKroneckerMean::checkDimensions(const MatrixXd& Y, const bool checkStrictWeights = true) const throw (CGPMixException)
 {
