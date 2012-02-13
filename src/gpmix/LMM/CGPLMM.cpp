@@ -132,23 +132,15 @@ void CGPLMM::process() throw (CGPMixException)
 		//1. evaluate null model
 		gp->setDataTerm(mean);
 		gp->setParams(hp);
-#if 0
-		std::cout << "gradcheck"
-						": "<< opt->gradCheck()<<"\n";
-#endif
 		opt->opt();
 		nLL0(0,is) = gp->LML();
 		//2. evaluate alternative model
 		gp->setDataTerm(meanAlt);
 		gp->setParams(hpAlt);
-#if 0
-		std::cout << "NLLAlt_" << nLLAlt(0,is) <<"\n";
-		std::cout << "gradcheck"
-					": "<< opt->gradCheck()<<"\n";
-#endif
 		opt->opt();
 		nLLAlt(0,is) = gp->LML();
 		//3. pvalues
+		std::cout << nLL0(0,is) << "--" << nLLAlt(0,is) << "\n";
 		this->pv(0, is) = Gamma::gammaQ(nLL0(0, is) - nLLAlt(0, is), (double)(((((((0.5))))))) * df);
 	}
 
