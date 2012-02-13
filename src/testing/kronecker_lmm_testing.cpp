@@ -63,14 +63,7 @@ int main() {
 		//inputs are fake inputs
 		MatrixXd Xr = MatrixXd::Zero(N,0);
 		MatrixXd Xc = MatrixXd::Zero(D,0);
-		//likelihood
-		sptr<CLikNormalIso> lik(new CLikNormalIso());
 
-		//Data term
-		MatrixXd A = MatrixXd::Ones(1,D);
-		MatrixXd fixedEffects = MatrixXd::Ones(N,1);
-		MatrixXd weights = 0.5+MatrixXd::Zero(1,1).array();
-		sptr<CKroneckerMean> data(new CKroneckerMean(y,weights,fixedEffects,A));
 
 
 		//hyperparams: scalig parameters of covariace functions
@@ -78,18 +71,18 @@ int main() {
 		CovarInput covar_params_c = MatrixXd::Zero(covar_c->getNumberParams(),1);
 
 		//GP object
-		sptr<CGPkronecker> gp(new CGPkronecker(covar_r,covar_c,lik,data));
+		sptr<CGPkronecker> gp(new CGPkronecker(covar_r,covar_c));
 		gp->setX_r(Xr);
 		gp->setX_c(Xc);
 		gp->setY(y);
 
 
-		CovarInput lik_params = randn(lik->getNumberParams(),1);
+		CovarInput lik_params = randn(gp->getLik()->getNumberParams(),1);
 		CGPHyperParams params;
 		params["covar_r"] = covar_params_r;
 		params["covar_c"] = covar_params_c;
 		params["lik"] = lik_params;
-		params["dataTerm"] = weights;
+		//params["dataTerm"] = weights;
 
 		//set full params for initialization
 		gp->setParams(params);
@@ -129,9 +122,19 @@ int main() {
 		std::cout << "==========" << "\n";
 #endif
 
-#if 0
+#if 1
 		//test CGPLMM
 		CGPLMM lmm(gp);
+		//set SNPs
+		lmm.setSNPs(X);
+		//set covariates
+		lmm.setCovs(MatrixXd::Ones(X.rows(),1));
+		//set design matrics: both testing all genes
+		MatrixXd A = MatrixXd::Ones(1,D);
+		MatrixXd A0= MatrixXd::Ones(1,D);
+		lmm.setA(A);
+		lmm.setA0(A0);
+
 		lmm.process();
 #endif
 

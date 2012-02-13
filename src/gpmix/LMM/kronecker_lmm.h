@@ -20,18 +20,22 @@ namespace gpmix {
  * testing based on GP class
  */
 //interaction tests
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%shared_ptr(gpmix::CGPLMM)
-#endif
 class CGPLMM : public ALMM
 {
 
 protected:
-	CGPkronecker& gp;
+	PGPkronecker gp;
 	void checkConsistency() throw (CGPMixException);
+	void setMeanTerm() throw (CGPMixException);
 
+	//design matrices for foreground and background model
+	MatrixXd A;
+	MatrixXd A0;
+
+	sptr<CKroneckerMean> meanAlt;
+	sptr<CKroneckerMean> mean0;
 public:
-	CGPLMM(CGPkronecker& gp) : gp(gp)
+	CGPLMM(PGPkronecker gp) : gp(gp)
 	{
 	}
 	virtual ~CGPLMM()
@@ -39,6 +43,15 @@ public:
 
 	//overload pure virtual functions:
 	virtual void process() throw (CGPMixException);
+    MatrixXd getA() const;
+    void setA(MatrixXd a);
+    MatrixXd getA0() const;
+    void setA0(MatrixXd a0);
+    void agetA0(MatrixXd* out) const;
+    void agetA(MatrixXd* out) const;
+    PGPkronecker getGp() const;
+    void setGp(PGPkronecker gp);
+
 };
 
 
