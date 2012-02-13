@@ -23,7 +23,7 @@
 #include "gpmix/mean/CData.h"
 #include "gpmix/mean/CKroneckerMean.h"
 #include "gpmix/utils/logging.h"
-#include "gpmix/LMM/kronecker_lmm.h"
+#include "gpmix/LMM/CGPLMM.h"
 
 using namespace std;
 using namespace gpmix;
@@ -64,8 +64,6 @@ int main() {
 		MatrixXd Xr = MatrixXd::Zero(N,0);
 		MatrixXd Xc = MatrixXd::Zero(D,0);
 
-
-
 		//hyperparams: scalig parameters of covariace functions
 		CovarInput covar_params_r = MatrixXd::Zero(covar_r->getNumberParams(),1);
 		CovarInput covar_params_c = MatrixXd::Zero(covar_c->getNumberParams(),1);
@@ -74,6 +72,7 @@ int main() {
 		sptr<CGPkronecker> gp(new CGPkronecker(covar_r,covar_c));
 		gp->setX_r(Xr);
 		gp->setX_c(Xc);
+		//gp->setDataTerm(data);
 		gp->setY(y);
 
 
@@ -82,7 +81,6 @@ int main() {
 		params["covar_r"] = covar_params_r;
 		params["covar_c"] = covar_params_c;
 		params["lik"] = lik_params;
-		//params["dataTerm"] = weights;
 
 		//set full params for initialization
 		gp->setParams(params);
@@ -100,10 +98,23 @@ int main() {
 
 		//set restricted param object without lik, covar_r, covar_c:
 		gp->setParams(opt_params);
-
-
-#if 1
 		CGPopt opt(gp);
+
+
+#if 0
+		opt_params["dataTerm"](0) =2.2;
+		gp->setParams(opt_params);
+		std::cout << "lmlgrad("<<opt_params << "):\n";
+		std::cout << gp->LMLgrad() << "\n";
+
+		opt_params["dataTerm"](0) =1.0;
+		gp->setParams(opt_params);
+		std::cout << "lmlgrad("<<opt_params << "):\n";
+		std::cout << gp->LMLgrad() << "\n";
+#endif
+
+
+#if 0
 		CGPHyperParams upper;
 		CGPHyperParams lower;
 		upper["lik"] = 5.0*MatrixXd::Ones(1,1);
@@ -122,11 +133,34 @@ int main() {
 		std::cout << "==========" << "\n";
 #endif
 
+#if 0
+		std::cout << "gradcheck"
+						": "<< opt.gradCheck()<<"\n";
+
+		//Data term
+		MatrixXd A = MatrixXd::Ones(1,D);
+		MatrixXd fixedEffects = MatrixXd::Ones(N,1);
+		MatrixXd weights = 0.5+MatrixXd::Zero(1,1).array();
+		PKroneckerMean data(new CKroneckerMean(y,weights,fixedEffects,A));
+		opt_params["dataTerm"] = weights;
+		gp->setParams(opt_params);
+		gp->setDataTerm(data);
+
+		std::cout << "gradcheck"
+					": "<< opt.gradCheck()<<"\n";
+
+
+
+#endif
+
+
 #if 1
 		//test CGPLMM
 		CGPLMM lmm(gp);
 		//set SNPs
 		lmm.setSNPs(X);
+		//set Phenotypes
+		lmm.setPheno(y);
 		//set covariates
 		lmm.setCovs(MatrixXd::Ones(X.rows(),1));
 		//set design matrics: both testing all genes
@@ -134,7 +168,6 @@ int main() {
 		MatrixXd A0= MatrixXd::Ones(1,D);
 		lmm.setA(A);
 		lmm.setA0(A0);
-
 		lmm.process();
 #endif
 

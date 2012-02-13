@@ -64,11 +64,14 @@ void CGPopt::opt() throw (CGPMixException)
 	if ((optBoundLower.size()>0) || (optBoundUpper.size()>0))
 	{
 		//1. complete constraints
-		completeConstraints(optBoundUpper,params0,+1.0*std::numeric_limits<mfloat_t>::infinity());
-		completeConstraints(optBoundLower,params0,-1.0*std::numeric_limits<mfloat_t>::infinity());
+		CGPHyperParams optBoundLower_(optBoundLower);
+		CGPHyperParams optBoundUpper_(optBoundUpper);
+
+		completeConstraints(optBoundUpper_,params0,+1.0*std::numeric_limits<mfloat_t>::infinity());
+		completeConstraints(optBoundLower_,params0,-1.0*std::numeric_limits<mfloat_t>::infinity());
 		//2. get constraints
-		x_min = optBoundLower.getParamArray(optParamMask);
-		x_max = optBoundUpper.getParamArray(optParamMask);
+		x_min = optBoundLower_.getParamArray(optParamMask);
+		x_max = optBoundUpper_.getParamArray(optParamMask);
 		//3. check that they have the same shape than X
 		if ((x_min.rows()!=x_max.rows()) || (numOptParams!=(muint_t)x_max.rows()))
 		{

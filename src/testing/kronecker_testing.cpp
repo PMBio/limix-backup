@@ -59,62 +59,52 @@ int main() {
 
 
 
-#ifdef GPLVM
-		//inputs:
-#if 1
-		MatrixXd Xc = randn((muint_t)D,Kc);
-		MatrixXd Xr = X;
-#else
+#if 0
 		MatrixXd Xc = MatrixXd::Identity(D,D);
 		Kc = D;
 		MatrixXd Xr = MatrixXd::Identity(N,N);
 		Kr = N;
-#endif
 
 		//covariances
-		CCovLinearISO covar_r(Kr);
-		CCovLinearISO covar_c(Kc);
+		PCovLinearISO covar_r(new CCovLinearISO(Kr));
+		PCovLinearISO covar_c(new CCovLinearISO(Kc));
 #else
 		//use simple fixed covarainces: identities on rows and colmns
-		CFixedCF covar_r(MatrixXd::Identity(N,N));
-		CFixedCF covar_c(MatrixXd::Identity(D,D));
+		sptr<CFixedCF> covar_r(new CFixedCF(MatrixXd::Identity(N,N)));
+		sptr<CFixedCF> covar_c(new CFixedCF(MatrixXd::Identity(D,D)));
 		//inputs are fake inputs
 		MatrixXd Xr = MatrixXd::Zero(N,0);
 		MatrixXd Xc = MatrixXd::Zero(D,0);
 #endif
 		//likelihood
-		CLikNormalIso lik;
+		PLikNormalIso lik(new CLikNormalIso());
 
 		//Data term
 		MatrixXd A = MatrixXd::Ones(1,D);
 		MatrixXd fixedEffects = MatrixXd::Ones(N,1);
 		MatrixXd weights = 0.5+MatrixXd::Zero(1,1).array();
-		CKroneckerMean data = CKroneckerMean(y,weights,fixedEffects,A);
+		PKroneckerMean data(new CKroneckerMean(y,weights,fixedEffects,A));
 
 		//hyperparams: scalig parameters of covariace functions
-		CovarInput covar_params_r = MatrixXd::Zero(covar_r.getNumberParams(),1);
-		CovarInput covar_params_c = MatrixXd::Zero(covar_c.getNumberParams(),1);
+		CovarInput covar_params_r = MatrixXd::Zero(covar_r->getNumberParams(),1);
+		CovarInput covar_params_c = MatrixXd::Zero(covar_c->getNumberParams(),1);
 
 		//GP object
-		CGPkronecker gp(data, covar_r,covar_c,lik);
-		gp.setX_r(Xr);
-		gp.setX_c(Xc);
-		gp.setY(y);
+		PGPkronecker gp(new CGPkronecker(covar_r,covar_c,lik,data));
+		gp->setX_r(Xr);
+		gp->setX_c(Xc);
+		gp->setY(y);
 
 
-		CovarInput lik_params = randn(lik.getNumberParams(),1);
+		CovarInput lik_params = randn(lik->getNumberParams(),1);
 		CGPHyperParams params;
 		params["covar_r"] = covar_params_r;
 		params["covar_c"] = covar_params_c;
 		params["lik"] = lik_params;
 		params["dataTerm"] = weights;
-#ifdef GPLVM
-		//GPLVM mode: inputs are part of hyperparams:
-		params["X_r"] = Xr;
-		params["X_c"] = Xc;
-#endif
+
 		//set full params for initialization
-		gp.setParams(params);
+		gp->setParams(params);
 
 		//simplify optimizatin: remove covar_r, covar_c, lik
 		CGPHyperParams opt_params(params);
@@ -122,24 +112,24 @@ int main() {
 		//opt_params.erase("covar_r");
 		//opt_params.erase("covar_c");
 		//opt_params.erase("X_r");
-		opt_params.erase("dataTerm");
+		//opt_params.erase("dataTerm");
 		//opt_params.erase("X_c");
 
 		//double lml = gp.LML();
 
 		//set restricted param object without lik, covar_r, covar_c:
-		gp.setParams(opt_params);
+		gp->setParams(opt_params);
 
 #if 0
-		opt_params["dataTerm"](0) =2.2;
-		gp.setParams(opt_params);
+		opt_params["dataTerm"](0) =4.2;
+		gp->setParams(opt_params);
 		std::cout << "lmlgrad("<<opt_params << "):\n";
-		std::cout << gp.LMLgrad() << "\n";
+		std::cout << gp->LML()<< "---" << gp->LMLgrad() << "----\n";
 
 		opt_params["dataTerm"](0) =1.0;
-		gp.setParams(opt_params);
+		gp->setParams(opt_params);
 		std::cout << "lmlgrad("<<opt_params << "):\n";
-		std::cout << gp.LMLgrad() << "\n";
+		std::cout << gp->LML()<< "---" << gp->LMLgrad() << "----\n";
 #endif
 
 #if 1
@@ -168,8 +158,8 @@ int main() {
 		opt.opt();
 
 		std::cout << "=====post opt=====" << "\n";
-		std::cout << "lml("<<gp.getParams()<<")=" <<gp.LML()<< "\n";
-		std::cout << "dlml("<<gp.getParams()<<")=" <<gp.LMLgrad()<< "\n";
+		std::cout << "lml("<<gp->getParams()<<")=" <<gp->LML()<< "\n";
+		std::cout << "dlml("<<gp->getParams()<<")=" <<gp->LMLgrad()<< "\n";
 		std::cout << "==========" << "\n";
 
 		std::cout << "gradcheck: "<< opt.gradCheck()<<"\n";

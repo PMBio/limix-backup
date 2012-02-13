@@ -41,7 +41,7 @@ public:
 	ADataTerm();
 	ADataTerm(MatrixXd& Y);
 	virtual ~ADataTerm();
-	virtual inline void setParams(MatrixXd& params){};
+	virtual inline void setParams(const MatrixXd& params){};
 
 	virtual void aGetParams(MatrixXd* outParams){};
 	virtual inline MatrixXd getParams(){ MatrixXd outParams = MatrixXd(); aGetParams(&outParams); return outParams;	};

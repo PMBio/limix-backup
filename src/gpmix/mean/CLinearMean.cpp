@@ -65,14 +65,14 @@ void CLinearMean::zeroInitWeights()
 	this->weights = MatrixXd::Zero(this->fixedEffects.cols(), this->Y.cols());
 }
 
-void CLinearMean::setParams(MatrixXd& weightMatrix)
+void CLinearMean::setParams(const MatrixXd& weightMatrix)
 {
 	this->checkDimensions(weightMatrix, this->fixedEffects, this->Y, true, false, false);
 	this->insync = false;
 	this->weights = weightMatrix;
 }
 
-void CLinearMean::setFixedEffects(MatrixXd& fixedEffects)
+void CLinearMean::setFixedEffects(const MatrixXd& fixedEffects)
 {
 	this->checkDimensions(this->weights, fixedEffects, this->Y, false, true, false);
 	this->insync = false;

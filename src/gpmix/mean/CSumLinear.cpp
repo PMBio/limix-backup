@@ -34,7 +34,7 @@ void CSumLinear::aGetParams(MatrixXd* outParams)
 	}
 }
 
-void CSumLinear::setParams(MatrixXd& params)
+void CSumLinear::setParams(const MatrixXd& params)
 {
 	muint_t sumParams = 0;
 	for (muint_t i = 0; i<this->terms.size(); ++i)

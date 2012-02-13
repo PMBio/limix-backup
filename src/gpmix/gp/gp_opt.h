@@ -72,6 +72,7 @@ public:
     CGPHyperParams getOptParams()
 	{ return optParams; }
 };
+typedef sptr<CGPopt> PGPopt;
 
 } /* namespace gpmix */
 #endif /* CGPOPT_H_ */

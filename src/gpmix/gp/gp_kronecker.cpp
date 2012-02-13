@@ -180,7 +180,9 @@ bool CGPKroneckerCache::isInSync() const
             this->updateX(*covar_c, gplvmDimensions_c, params["X_c"]);
 
         if(this->params.exists("dataTerm"))
+        {
         	this->dataTerm->setParams(this->params["dataTerm"]);
+        }
     }
 
     void CGPkronecker::setX_r(const CovarInput & X) throw (CGPMixException)

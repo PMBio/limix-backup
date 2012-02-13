@@ -24,7 +24,7 @@ public:
 	CSumLinear();
 	virtual ~CSumLinear();
 	virtual void aGetParams(MatrixXd* outParams);
-	virtual void setParams(MatrixXd& params);
+	virtual void setParams(const MatrixXd& params);
 	virtual void aEvaluate(MatrixXd* Y);
 	virtual void aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY);
 	virtual inline void appendTerm(CLinearMean& term) { this->terms.push_back(&term); };
