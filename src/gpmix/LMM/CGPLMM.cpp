@@ -41,17 +41,17 @@ void CGPLMM::initTesting() throw (CGPMixException)
 	MatrixXd fixedEffects = MatrixXd::Ones(num_samples,1+num_covs);
 	MatrixXd fixedEffects0 = MatrixXd::Ones(num_samples,num_covs);
 	weightsAlt    = 0.5+MatrixXd::Zero(1+num_covs,AAlt.rows()).array();
-	weights   = 0.5+MatrixXd::Zero(num_covs,AAlt.rows()).array();
+	weights0   = 0.5+MatrixXd::Zero(num_covs,A0.rows()).array();
 
 	meanAlt = PKroneckerMean(new CKroneckerMean(this->pheno,weightsAlt,fixedEffects,AAlt));
-	mean = PKroneckerMean(new CKroneckerMean(this->pheno,weights,fixedEffects0,A0));
+	mean0 = PKroneckerMean(new CKroneckerMean(this->pheno,weights0,fixedEffects0,A0));
 
 	//create hyperparams objects
 	hpAlt = gp->getParams();
-	hp    = gp->getParams();
+	hp0    = gp->getParams();
 	//set data Term paramtetes
 	hpAlt["dataTerm"] = weightsAlt;
-	hp["dataTerm"] = weights;
+	hp0["dataTerm"] = weights0;
 	//init optimization
 	opt = PGPopt(new CGPopt(gp));
 	//bound hyperparameter Optimization (lik)
@@ -126,12 +126,22 @@ void CGPLMM::process() throw (CGPMixException)
 	//count difference of non-zero entries
 	muint_t df = this->AAlt.count()-this->A0.count();
 
+	//initialize covaraites and x
+	MatrixXd xAlt  = MatrixXd::Zero(num_samples,1+num_covs);
+	MatrixXd x0 = MatrixXd::Zero(num_samples,num_covs);
+	xAlt.block(0,1,num_samples,num_covs) = this->covs;
+	x0.block(0,0,num_samples,num_covs) = this->covs;
+	//mean->setFixedEffects(x0);
 	//2. loop over SNPs
 	for (muint_t is=0;is<num_snps;++is)
 	{
+		//0. update mean term
+		xAlt.block(0,0,num_samples,1) = this->snps.block(0,is,num_samples,1);
+		meanAlt->setFixedEffects(xAlt);
+
 		//1. evaluate null model
-		gp->setDataTerm(mean);
-		gp->setParams(hp);
+		gp->setDataTerm(mean0);
+		gp->setParams(hp0);
 		opt->opt();
 		nLL0(0,is) = gp->LML();
 		//2. evaluate alternative model
@@ -140,8 +150,8 @@ void CGPLMM::process() throw (CGPMixException)
 		opt->opt();
 		nLLAlt(0,is) = gp->LML();
 		//3. pvalues
-		std::cout << nLL0(0,is) << "--" << nLLAlt(0,is) << "\n";
-		this->pv(0, is) = Gamma::gammaQ(nLL0(0, is) - nLLAlt(0, is), (double)(((((((0.5))))))) * df);
+		std::cout << "DeltaNLL" << (nLL0(0,is) - nLLAlt(0,is)) << "\n";
+		this->pv(0, is) = Gamma::gammaQ(nLL0(0, is) - nLLAlt(0, is), (double)(0.5) * df);
 	}
 
 

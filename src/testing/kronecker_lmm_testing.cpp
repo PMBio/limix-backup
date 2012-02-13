@@ -49,6 +49,9 @@ int main() {
 		//y ~ w*X
 		MatrixXd w = randn((muint_t)Kr,(muint_t)D);
 		MatrixXd y = X*w + eps*randn((muint_t)N,(muint_t)D);
+		//SNPS: all random except for one true causal guy
+		MatrixXd S = randn((muint_t)N,10);
+		S.block(0,4,N,Kr) = X;
 
 
 
@@ -158,17 +161,19 @@ int main() {
 		//test CGPLMM
 		CGPLMM lmm(gp);
 		//set SNPs
-		lmm.setSNPs(X);
+		lmm.setSNPs(S);
 		//set Phenotypes
 		lmm.setPheno(y);
 		//set covariates
 		lmm.setCovs(MatrixXd::Ones(X.rows(),1));
 		//set design matrics: both testing all genes
-		MatrixXd A = MatrixXd::Ones(1,D);
+		MatrixXd A = MatrixXd::Ones(2,D);
 		MatrixXd A0= MatrixXd::Ones(1,D);
 		lmm.setA(A);
 		lmm.setA0(A0);
+		std::cout << "True SNPs are 4 and 5, so looks like this is somewhat working..." << "\n";
 		lmm.process();
+		MatrixXd pv = lmm.getPv();
 #endif
 
 

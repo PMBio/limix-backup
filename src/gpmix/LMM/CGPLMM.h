@@ -45,15 +45,15 @@ protected:
 	MatrixXd A0;
 	//weight matrices (starting point of opt)
 	MatrixXd weightsAlt;
-	MatrixXd weights;
+	MatrixXd weights0;
 	//hyperparam objects for 0 and alt
 	CGPHyperParams hpAlt;
-	CGPHyperParams hp;
+	CGPHyperParams hp0;
 	//negative log likelihoods for foreground/background model
 	MatrixXd nLL0, nLLAlt;
 
 	sptr<CKroneckerMean> meanAlt;
-	sptr<CKroneckerMean> mean;
+	sptr<CKroneckerMean> mean0;
 public:
 	CGPLMM(PGPkronecker gp) : gp(gp)
 	{
