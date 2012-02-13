@@ -8,7 +8,7 @@
 #ifndef CGPOPT_H_
 #define CGPOPT_H_
 
-#include "gp_base.h";
+#include "gp_base.h"
 #include "nlopt/api/nlopt.h"
 #include <vector>
 
