@@ -89,7 +89,7 @@ if __name__ == '__main__':
     lm.setSNPs(X_)
     lm.setPheno(y_)
     lm.setCovs(C_)
-    lm.setEMMAX()    
+    lm.setVarcompApprox0()    
     #condition on SNP
     #C_ = SP.concatenate((C_,X_[:,89790:89790+1]),axis=1)
     #lm.setCovs(C_)

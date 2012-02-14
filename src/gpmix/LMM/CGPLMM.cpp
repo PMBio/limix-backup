@@ -83,12 +83,12 @@ MatrixXd CGPLMM::getA0() const
     return A0;
 }
 
-void CGPLMM::setA0(MatrixXd a0)
+void CGPLMM::setA0(const MatrixXd& a0)
 {
     A0 = a0;
 }
 
-void CGPLMM::setA(MatrixXd a)
+void CGPLMM::setA(const MatrixXd& a)
 {
     AAlt = a;
 }

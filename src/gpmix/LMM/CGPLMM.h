@@ -63,9 +63,9 @@ public:
 	//overload pure virtual functions:
 	virtual void process() throw (CGPMixException);
     MatrixXd getA() const;
-    void setA(MatrixXd a);
+    void setA(const MatrixXd& a);
     MatrixXd getA0() const;
-    void setA0(MatrixXd a0);
+    void setA0(const MatrixXd& a0);
     void agetA0(MatrixXd* out) const;
     void agetA(MatrixXd* out) const;
     PGPkronecker getGp() const;

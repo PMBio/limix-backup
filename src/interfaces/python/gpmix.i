@@ -4,8 +4,6 @@
 #define SWIG_FILE_WITH_INIT
 #define SWIG
 #include "gpmix/types.h"
-#include "gpmix/LMM/lmm.h"
-#include "gpmix/LMM/kronecker_lmm.h"
 #include "gpmix/lasso/lasso.h"
 #include "gpmix/covar/covariance.h"
 #include "gpmix/covar/linear.h"
@@ -21,6 +19,10 @@
 #include "gpmix/gp/gp_base.h"
 #include "gpmix/gp/gp_kronecker.h"
 #include "gpmix/gp/gp_opt.h"
+#include "gpmix/LMM/lmm.h"
+#include "gpmix/LMM/kronecker_lmm.h"
+#include "gpmix/LMM/CGPLMM.h"
+
 
 using namespace gpmix;
 //  removed namespace bindings (12.02.12)
@@ -57,8 +59,6 @@ using namespace gpmix;
 //generated outodoc:
 //%feature("autodoc", "1")
 %include "gpmix/types.h"
-%include "gpmix/LMM/lmm.h"
-%include "gpmix/LMM/kronecker_lmm.h"
 %include "gpmix/lasso/lasso.h"
 %include "gpmix/covar/covariance.h"
 %include "gpmix/covar/linear.h"
@@ -74,6 +74,9 @@ using namespace gpmix;
 %include "gpmix/gp/gp_base.h"
 %include "gpmix/gp/gp_kronecker.h"
 %include "gpmix/gp/gp_opt.h"
+%include "gpmix/LMM/lmm.h"
+%include "gpmix/LMM/CGPLMM.h"
+%include "gpmix/LMM/kronecker_lmm.h"
 
 
 
