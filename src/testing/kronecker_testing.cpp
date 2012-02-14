@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -34,7 +34,7 @@ using namespace gpmix;
 #define GPLVM
 
 int main() {
-	bool useIdentity = true;
+	bool useIdentity = false;
 
 	try {
 		//random input X
@@ -59,19 +59,30 @@ int main() {
 
 
 
-#if 0
-		MatrixXd Xc = MatrixXd::Identity(D,D);
-		Kc = D;
-		MatrixXd Xr = MatrixXd::Identity(N,N);
-		Kr = N;
+#if 1
+		MatrixXd Xc = randn(D,Kc);
+		//Kc = D;
+		MatrixXd Xr = randn(N,Kr);
+		//Kr = N;
 
 		//covariances
 		PCovLinearISO covar_r(new CCovLinearISO(Kr));
 		PCovLinearISO covar_c(new CCovLinearISO(Kc));
 #else
 		//use simple fixed covarainces: identities on rows and colmns
-		sptr<CFixedCF> covar_r(new CFixedCF(MatrixXd::Identity(N,N)));
-		sptr<CFixedCF> covar_c(new CFixedCF(MatrixXd::Identity(D,D)));
+		MatrixXd Mr = MatrixXd::Identity(N,N);
+		for (muint_t i = 0;i<N;++i)
+		{
+			Mr(i,i) =Mr(i,i)+ i;
+		}
+		MatrixXd Mc = MatrixXd::Identity(D,D);
+		for (muint_t i = 0;i<D;++i)
+		{
+			Mc(i,i) =Mc(i,i)/ (1.0+i);
+		}
+
+		sptr<CFixedCF> covar_r(new CFixedCF(Mr));
+		sptr<CFixedCF> covar_c(new CFixedCF(Mc));
 		//inputs are fake inputs
 		MatrixXd Xr = MatrixXd::Zero(N,0);
 		MatrixXd Xc = MatrixXd::Zero(D,0);
