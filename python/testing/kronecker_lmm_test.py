@@ -61,7 +61,7 @@ if __name__ == '__main__':
         #opt.gradCheck()
 
         opt_params = gpmix.CGPHyperParams()
-        opt_params["lik"] = params["lik"]
+        #opt_params["lik"] = params["lik"]
         gp.setParams(opt_params)
         
 

@@ -90,7 +90,7 @@ int main() {
 
 		//simplify optimizatin: remove covar_r, covar_c, lik
 		CGPHyperParams opt_params(params);
-		//opt_params.erase("lik");
+		opt_params.erase("lik");
 		//opt_params.erase("covar_r");
 		//opt_params.erase("covar_c");
 		//opt_params.erase("X_r");
@@ -101,6 +101,11 @@ int main() {
 
 		//set restricted param object without lik, covar_r, covar_c:
 		gp->setParams(opt_params);
+
+		std::cout << gp->LML();
+		std::cout << gp->LMLgrad();
+
+
 		CGPopt opt(gp);
 
 
@@ -157,7 +162,7 @@ int main() {
 #endif
 
 
-#if 1
+#if 0
 		//test CGPLMM
 		CGPLMM lmm(gp);
 		//set SNPs

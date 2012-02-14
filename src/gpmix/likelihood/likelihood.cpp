@@ -122,7 +122,9 @@ void CLikNormalIso::aKgrad_param(MatrixXd* out, const muint_t row) const throw (
 {
 	mfloat_t sigma_2 = 2.0*gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));//WARNING: mfloat_t conversion
 
-	(*out) = MatrixXd::Zero(numRows,numRows);
+	std::cout << "NR" <<  numRows << "\n";
+	(*out).setConstant(numRows,numRows,0.0);
+	//(*out) = MatrixXd::Zero(numRows,numRows);
 	(*out).diagonal().setConstant(sigma_2);
 }
 

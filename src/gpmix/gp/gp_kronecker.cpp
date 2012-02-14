@@ -155,6 +155,10 @@ bool CGPKroneckerCache::isInSync() const
     CGPkronecker::CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik,PDataTerm dataTerm)
     :CGPbase(covar_r, lik,dataTerm), covar_r(covar_r), covar_c(covar_c), cache(this, covar_r, covar_c)
     {
+    	//check that likelihood is Iso
+    	//TODO: shall we create an svd optimized likelihood model with sigma0^2, delta?
+    	if (typeid(*(this->lik))!=typeid(CLikNormalIso))
+    		throw CGPMixException("KroneckerGP is only compatiable with ISO likelihood");
     }
 
     CGPkronecker::~CGPkronecker()
@@ -399,8 +403,10 @@ bool CGPKroneckerCache::isInSync() const
     {
         //TODO: we can only treat the boring standard noise level in this variant
         out->resize(lik->getNumberParams());
-        MatrixXd dK_ = lik->Kgrad_param(0);
-        mfloat_t dK = dK_(0, 0);
+        // calc gradient manually, ..
+        //MatrixXd dK_ = lik->Kgrad_param(0);
+        //TODO:
+        mfloat_t dK = 2.0*gpmix::exp( (mfloat_t)(2.0*lik->getParams()(0)));
         MatrixXd& Si = cache.getSi();
         MatrixXd& YSi = cache.getYSi();
         mfloat_t grad_logdet = 0.5 * dK * Si.sum();
