@@ -130,6 +130,7 @@ inline void AfilterMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::Mat
 MatrixXd randn(const muint_t n, const muint_t m);
 MatrixXd Mrand(const muint_t n,const muint_t m);
 
+MatrixXd kron(const MatrixXd& A, const MatrixXd& B);
 
 }
 #endif /* MATRIX_HELPER_H_ */

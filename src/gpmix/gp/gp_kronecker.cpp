@@ -132,11 +132,12 @@ bool CGPKroneckerCache::isInSync() const
         if(!isInSync())
             this->clearCache();
 
-        if(KinvYNull){
+        if(KinvYNull)
+        {
         	MatrixXd& YSi = getYSi();
         	akronravel(KinvY,cache_r.getUK(), cache_c.getUK(),YSi);
         }
-        return YSi;
+        return KinvY;
     }
 
     mfloat_t CGPKroneckerCache::getKnoise()
@@ -501,7 +502,11 @@ bool CGPKroneckerCache::isInSync() const
  void CGPkronecker::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 {
  	//0. set output dimensions
+#if 1
 	 (*out) = this->dataTerm->gradParams(this->cache.getKinvY());
+#else
+	 (*out) =
+#endif
 }
 
 } /* namespace gpmix */
