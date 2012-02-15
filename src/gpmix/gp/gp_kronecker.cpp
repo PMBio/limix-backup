@@ -104,9 +104,11 @@ bool CGPKroneckerCache::isInSync() const
         	//1. add Delta
         	Si.array() += gp->lik->getDelta();
         	//2. scale with sigmaK2
+#if 1
         	mfloat_t sg = gp->lik->getSigmaK2();
         	std::cout << sg << "using sigmaK2 factor:" << sg << "\n";
         	Si.array()*=sg;
+#endif
         	//elementwise inverse
             Si = Si.unaryExpr(std::ptr_fun(inverse));
         }
@@ -135,7 +137,7 @@ bool CGPKroneckerCache::isInSync() const
         	MatrixXd& YSi = getYSi();
         	akronravel(KinvY,cache_r.getUK(), cache_c.getUK(),YSi);
         }
-        return YSi;
+        return KinvY;
     }
 
 
@@ -534,7 +536,11 @@ bool CGPKroneckerCache::isInSync() const
  void CGPkronecker::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 {
  	//0. set output dimensions
+#if 1
 	 (*out) = this->dataTerm->gradParams(this->cache.getKinvY());
+#else
+	 (*out) =
+#endif
 }
 
 } /* namespace gpmix */
