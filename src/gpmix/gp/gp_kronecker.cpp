@@ -104,11 +104,7 @@ bool CGPKroneckerCache::isInSync() const
         	//1. add Delta
         	Si.array() += gp->lik->getDelta();
         	//2. scale with sigmaK2
-#if 1
-        	mfloat_t sg = gp->lik->getSigmaK2();
-        	std::cout << sg << "using sigmaK2 factor:" << sg << "\n";
-        	Si.array()*=sg;
-#endif
+        	Si.array()*=gp->lik->getSigmaK2();
         	//elementwise inverse
             Si = Si.unaryExpr(std::ptr_fun(inverse));
         }
@@ -391,11 +387,14 @@ bool CGPKroneckerCache::isInSync() const
             //2. caclculate grad_quad and grad_logdet component
             grad_logdet = 0.5 * _gradLogDet(dK, columns);
             grad_quad = -0.5 * _gradQuadrForm(dK, columns);
-            //std::cout << "grad("<<param<<"), col="<< columns<< "; grad_quad:"<< grad_quad <<";"<< "grad_logdet:"<< grad_logdet << "\n";
-            (*out)[param] = grad_logdet + grad_quad;
+
+            //(*out)[param] = (grad_logdet + grad_quad)
+            //The gradients change with the sigma2:
+            (*out)[param] = (grad_logdet + grad_quad) * this->lik->getSigmaK2();
         }
     }
 
+#if 0  // this was the old code...
     void CGPkronecker::aLMLgrad_lik(VectorXd *out) throw (CGPMixException)
     {
         //TODO: we can only treat the boring standard noise level in this variant
@@ -411,10 +410,11 @@ bool CGPKroneckerCache::isInSync() const
         YSiYSi.array() *= YSi.array();
         mfloat_t grad_quad = -0.5 * dK * YSiYSi.sum();
         (*out)(0) = grad_quad + grad_logdet;
+        (*out)(1) = 0.0;
     }
 
-/*
- * this should be the new code...
+#else
+ // this should be the new code...
     void CGPkronecker::aLMLgrad_lik(VectorXd *out) throw (CGPMixException)
       {
           //TODO: we can only treat the boring standard noise level in this variant
@@ -443,11 +443,13 @@ bool CGPKroneckerCache::isInSync() const
           YSiYSi = YSi;
           YSiYSi.array()*=Y.array();
 
-          mfloat_t grad_sigmak2_quad = -0.5* 2.0 * YSiYSi.sum() / (this->lik->getSigmaK2());
+          //TODO verify where the additional factor of SigmaK2 comes from:
+          //mfloat_t grad_sigmak2_quad = -0.5 * 2.0 * YSiYSi.sum() / (this->lik->getSigmaK2());
+          mfloat_t grad_sigmak2_quad = -0.5 * SigmaK2 * 2.0 * YSiYSi.sum() / (this->lik->getSigmaK2());
           (*out)(0) = grad_sigmak2_logdet + grad_sigmak2_quad;
           (*out)(1) = grad_delta_logdet + grad_delta_quad;
       }
- */
+#endif
 
 
 
@@ -536,11 +538,7 @@ bool CGPKroneckerCache::isInSync() const
  void CGPkronecker::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 {
  	//0. set output dimensions
-#if 1
 	 (*out) = this->dataTerm->gradParams(this->cache.getKinvY());
-#else
-	 (*out) =
-#endif
 }
 
 } /* namespace gpmix */
