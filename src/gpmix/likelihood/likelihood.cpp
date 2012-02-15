@@ -128,5 +128,65 @@ void CLikNormalIso::aKgrad_param(MatrixXd* out, const muint_t row) const throw (
 	(*out).diagonal().setConstant(sigma_2);
 }
 
+/*CLikNormalSVD*/
+CLikNormalSVD::CLikNormalSVD() : ALikelihood(2)
+{
+}
+
+CLikNormalSVD::~CLikNormalSVD()
+{
+}
+
+void CLikNormalSVD::setX(const CovarInput& X) throw (CGPMixException)
+{
+	this->numRows = X.rows();
+}
+
+
+void CLikNormalSVD::aK(MatrixXd* out) const throw (CGPMixException)
+{
+	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
+}
+
+void CLikNormalSVD::aKdiag(VectorXd* out) const throw (CGPMixException)
+{
+	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
+}
+
+void CLikNormalSVD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
+}
+
+
+void CLikNormalSVD::aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException)
+{
+	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
+}
+
+mfloat_t CLikNormalSVD::getSigmaK2()
+{
+	return gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));
+}
+
+
+mfloat_t CLikNormalSVD::getDelta()
+{
+	return gpmix::exp( (mfloat_t)(2.0*this->getParams()(1)));
+}
+
+
+mfloat_t CLikNormalSVD::getSigmaK2grad()
+{
+	return 2.0*gpmix::exp( (mfloat_t)(2.0*this->getParams()(0)));
+}
+mfloat_t CLikNormalSVD::getDeltagrad()
+{
+	return 2.0*gpmix::exp( (mfloat_t)(2.0*this->getParams()(1)));
+}
+
+
+
+
 } // end:: namespace gpmix
 
