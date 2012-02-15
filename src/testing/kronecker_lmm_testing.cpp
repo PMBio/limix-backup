@@ -53,19 +53,29 @@ int main() {
 		MatrixXd S = randn((muint_t)N,10);
 		S.block(0,4,N,Kr) = X;
 
-
-
 		//2. consturction of GP object
-		//use identity matrices; in all other cases there is still a bug!
-		Kc = D;
-		Kr = N;
-
+#if 1
+		MatrixXd Xr = randn(N,Kr);
+		//covariances
+		PCovLinearISO covar_r(new CCovLinearISO(Kr));
+#else	//identity for rows
 		//use simple fixed covarainces: identities on rows and colmns
-		sptr<CFixedCF> covar_r(new CFixedCF(MatrixXd::Identity(N,N)));
-		sptr<CFixedCF> covar_c(new CFixedCF(MatrixXd::Identity(D,D)));
-		//inputs are fake inputs
+		MatrixXd Mr = MatrixXd::Identity(N,N);
 		MatrixXd Xr = MatrixXd::Zero(N,0);
+		sptr<CFixedCF> covar_r(new CFixedCF(Mr));
+#endif
+#if 1
+		MatrixXd Xc = randn(D,Kc);
+		//covariances
+		PCovLinearISO covar_c(new CCovLinearISO(Kc));
+#else	//identity for cols
+		//use simple fixed covarainces: identities on rows and colmns
+		MatrixXd Mc = MatrixXd::Identity(D,D);
+		sptr<CFixedCF> covar_c(new CFixedCF(Mc));
+		//inputs are fake inputs
 		MatrixXd Xc = MatrixXd::Zero(D,0);
+#endif
+
 
 		//hyperparams: scalig parameters of covariace functions
 		CovarInput covar_params_r = MatrixXd::Zero(covar_r->getNumberParams(),1);
@@ -162,7 +172,7 @@ int main() {
 #endif
 
 
-#if 0
+#if 1
 		//test CGPLMM
 		CGPLMM lmm(gp);
 		//set SNPs
@@ -179,6 +189,8 @@ int main() {
 		std::cout << "True SNPs are 4 and 5, so looks like this is somewhat working..." << "\n";
 		lmm.process();
 		MatrixXd pv = lmm.getPv();
+		std::cout << pv << "bla\n";
+
 #endif
 
 

@@ -142,7 +142,7 @@ void CGPLMM::process() throw (CGPMixException)
 		//1. evaluate null model
 		gp->setDataTerm(mean0);
 		gp->setParams(hp0);
-		opt->opt();
+		opt->opt();	//TODO crashes as number params to optimize is 3, while boundaries is 3
 		nLL0(0,is) = gp->LML();
 		//2. evaluate alternative model
 		gp->setDataTerm(meanAlt);
