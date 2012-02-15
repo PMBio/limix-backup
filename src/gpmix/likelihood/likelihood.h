@@ -88,6 +88,32 @@ public:
 };
 typedef sptr<CLikNormalIso> PLikNormalIso;
 
+/* Likelihood model for SVD Covariances */
+class CLikNormalSVD : public ALikelihood {
+protected:
+	muint_t numRows;
+public:
+	CLikNormalSVD();
+	~CLikNormalSVD();
+
+	//pure virtual functions that need to be overwritten
+	virtual void aK(MatrixXd* out) const throw (CGPMixException);
+	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
+	virtual void aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException);
+	//overwrite setX. We merely ignore the number of columns here:
+	virtual void setX(const CovarInput& X) throw (CGPMixException);
+
+	virtual mfloat_t getSigmaK2();
+	virtual mfloat_t getDelta();
+	virtual mfloat_t getSigmaK2grad();
+	virtual mfloat_t getDeltagrad();
+
+	std::string getName() const {return "ClikNormalSVD";};
+};
+typedef sptr<CLikNormalSVD> PLikNormalSVD;
+
+
 
 
 } /* namespace gpmix */

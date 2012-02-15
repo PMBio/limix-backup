@@ -87,7 +87,7 @@ int main() {
 		MatrixXd Xc = MatrixXd::Zero(D,0);
 #endif
 		//likelihood
-		PLikNormalIso lik(new CLikNormalIso());
+		PLikNormalSVD lik(new CLikNormalSVD());
 
 		//Data term
 		MatrixXd A = MatrixXd::Ones(1,D);
@@ -118,7 +118,7 @@ int main() {
 
 		//simplify optimization: remove covar_r, covar_c, lik
 		CGPHyperParams opt_params(params);
-		//opt_params.erase("lik");
+		opt_params.erase("lik");
 		//opt_params.erase("covar_r");
 		//opt_params.erase("covar_c");
 		//opt_params.erase("X_r");
@@ -165,7 +165,7 @@ int main() {
 		std::cout << "gradcheck"
 				": "<< opt.gradCheck()<<"\n";
 		//optimize:
-		opt.opt();
+		//opt.opt();
 
 		std::cout << "=====post opt=====" << "\n";
 		std::cout << "lml("<<gp->getParams()<<")=" <<gp->LML()<< "\n";
