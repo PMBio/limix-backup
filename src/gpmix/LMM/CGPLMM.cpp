@@ -57,8 +57,8 @@ void CGPLMM::initTesting() throw (CGPMixException)
 	//bound hyperparameter Optimization (lik)
 	CGPHyperParams upper;
 	CGPHyperParams lower;
-	upper["lik"] = 5.0*MatrixXd::Ones(1,1);
-	lower["lik"] = -5.0*MatrixXd::Ones(1,1);
+	upper["lik"] = 10.0*MatrixXd::Ones(2,1);
+	lower["lik"] = -10.0*MatrixXd::Ones(2,1);
 	opt->setOptBoundLower(lower);
 	opt->setOptBoundUpper(upper);
 
@@ -142,7 +142,9 @@ void CGPLMM::process() throw (CGPMixException)
 		//1. evaluate null model
 		gp->setDataTerm(mean0);
 		gp->setParams(hp0);
+		//std::cout << hp0 << "\n";
 		opt->opt();	//TODO crashes as number params to optimize is 3, while boundaries is 3
+		//std::cout << gp->LMLgrad();
 		nLL0(0,is) = gp->LML();
 		//2. evaluate alternative model
 		gp->setDataTerm(meanAlt);
@@ -150,7 +152,7 @@ void CGPLMM::process() throw (CGPMixException)
 		opt->opt();
 		nLLAlt(0,is) = gp->LML();
 		//3. pvalues
-		std::cout << "DeltaNLL" << (nLL0(0,is) - nLLAlt(0,is)) << "\n";
+		//std::cout << "DeltaNLL" << (nLL0(0,is) - nLLAlt(0,is)) << "\n";
 		this->pv(0, is) = Gamma::gammaQ(nLL0(0, is) - nLLAlt(0, is), (double)(0.5) * df);
 	}
 

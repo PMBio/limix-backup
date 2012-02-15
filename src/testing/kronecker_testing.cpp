@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 1
+#if 0
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -41,7 +41,7 @@ int main() {
 		muint_t Kr=2;
 		muint_t Kc=3;
 
-		muint_t D=1;
+		muint_t D=20;
 		muint_t N=20;
 
 		if (useIdentity)
@@ -165,7 +165,7 @@ int main() {
 		std::cout << "gradcheck"
 				": "<< opt.gradCheck()<<"\n";
 		//optimize:
-		//opt.opt();
+		opt.opt();
 
 		std::cout << "=====post opt=====" << "\n";
 		std::cout << "lml("<<gp->getParams()<<")=" <<gp->LML()<< "\n";

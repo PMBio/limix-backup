@@ -6,7 +6,7 @@
 // Test file for kronecker LMM test
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -35,11 +35,12 @@ using namespace gpmix;
 
 int main() {
 
+	try{
 		//random input X
 		muint_t Kr=2;
 		muint_t Kc=3;
 
-		muint_t D=10;
+		muint_t D=200;
 		muint_t N=20;
 
 		mfloat_t eps = 0.1;
@@ -91,8 +92,8 @@ int main() {
 
 		CovarInput lik_params = randn(gp->getLik()->getNumberParams(),1);
 		CGPHyperParams params;
-		params["covar_r"] = covar_params_r;
-		params["covar_c"] = covar_params_c;
+		//params["covar_r"] = covar_params_r;
+		//params["covar_c"] = covar_params_c;
 		params["lik"] = lik_params;
 
 		//set full params for initialization
@@ -100,24 +101,20 @@ int main() {
 
 		//simplify optimizatin: remove covar_r, covar_c, lik
 		CGPHyperParams opt_params(params);
-		opt_params.erase("lik");
+		//opt_params.erase("lik");
 		//opt_params.erase("covar_r");
 		//opt_params.erase("covar_c");
 		//opt_params.erase("X_r");
 		//opt_params.erase("dataTerm");
 		//opt_params.erase("X_c");
 
-		//double lml = gp.LML();
+		double lml = gp->LML();
+		std::cout << lml<<endl;
 
 		//set restricted param object without lik, covar_r, covar_c:
 		gp->setParams(opt_params);
 
-		std::cout << gp->LML();
-		std::cout << gp->LMLgrad();
-
-
 		CGPopt opt(gp);
-
 
 #if 0
 		opt_params["dataTerm"](0) =2.2;
@@ -186,14 +183,16 @@ int main() {
 		MatrixXd A0= MatrixXd::Ones(1,D);
 		lmm.setA(A);
 		lmm.setA0(A0);
-		std::cout << "True SNPs are 4 and 5, so looks like this is somewhat working..." << "\n";
+		std::cout << "Start:" << "\n";
 		lmm.process();
 		MatrixXd pv = lmm.getPv();
-		std::cout << pv << "bla\n";
+		std::cout << pv << "\n" << "   0.99032           1    0.999952    0.995441   0.0277248 0.000805652    0.999212           1    0.999999    0.600988bla" << "\n";
 
 #endif
-
-
+		}
+		catch(CGPMixException& e) {
+			cout <<"Exception : "<< e.what() << endl;
+		}
 
 }
 

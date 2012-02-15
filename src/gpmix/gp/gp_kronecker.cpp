@@ -15,17 +15,22 @@ CGPSVDCache::CGPSVDCache(CGPbase* gp, PCovarianceFunction covar) : CGPCholCache(
 }
 
 
+void CGPSVDCache::updateDecomposition()
+{
+	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(getK0());
+	UK = eigensolver.eigenvectors();
+	SK = eigensolver.eigenvalues();
+	//set sync
+	USVDNULL=false;
+}
+
 
 MatrixXd& CGPSVDCache::getUK()
 {
-	if (!isInSync())
+	if(!isInSync())
 		this->clearCache();
-	if (UKNull)
-	{
-		Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(getK0());
-		UK = eigensolver.eigenvectors();
-		SK = eigensolver.eigenvalues();
-	}
+	if(USVDNULL)
+		updateDecomposition();
 	return UK;
 }
 
@@ -39,22 +44,15 @@ VectorXd& CGPSVDCache::getSK()
 {
 	if(!isInSync())
 		this->clearCache();
-
-	if(UKNull)
-	{
-		Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(getK0());
-		UK = eigensolver.eigenvectors();
-		SK = eigensolver.eigenvalues();
-	}
+	if(USVDNULL)
+		updateDecomposition();
 	return SK;
 }
 
 void CGPSVDCache::clearCache()
 {
-	covar->makeSync();
-	K0Null=true;
-	UKNull=true;
-	SKNull=true;
+	CGPCholCache::clearCache();
+	USVDNULL=true;
 }
 
 bool CGPSVDCache::isInSync() const
@@ -84,54 +82,59 @@ bool CGPKroneckerCache::isInSync() const
 	return cache_r.covar->isInSync() && cache_c.covar->isInSync() && gp->dataTerm->isInSync() && gp->lik->isInSync();
 }
 
-   	   MatrixXd& CGPKroneckerCache::getYrot()
+MatrixXd& CGPKroneckerCache::getYrot()
     {
-   		//depnds on covar_r,covar_c,dataterm
-      	bool in_sync = cache_r.isInSync() && cache_c.isInSync() && gp->dataTerm->isInSync();
-        if(!in_sync)
+   		if(!isInSync())
+   			clearCache();
+		if(YrotNull)
         {
             akronravel(Yrot, (cache_r.getUK()).transpose(), (cache_c.getUK()).transpose(), gp->dataTerm->evaluate());
+            YrotNull=false;
         }
         return Yrot;
     }
 
     MatrixXd& CGPKroneckerCache::getSi()
     {
-    	bool is_sync = cache_r.covar->isInSync() && cache_c.covar->isInSync() && gp->lik->isInSync();
-    	if(!is_sync)
+    	if(!isInSync())
+    	   			clearCache();
+    	if(SiNull)
         {
         	akrondiag(Si, (cache_r.getSK()), (cache_c.getSK()));
         	//1. add Delta
-        	Si.array() += gp->lik->getDelta();
+        	Si.array() += gp->getLik()->getDelta();
         	//2. scale with sigmaK2
-        	Si.array()*=gp->lik->getSigmaK2();
+        	Si.array()*=gp->getLik()->getSigmaK2();
         	//elementwise inverse
             Si = Si.unaryExpr(std::ptr_fun(inverse));
+            SiNull=false;
         }
         return Si;
     }
 
     MatrixXd& CGPKroneckerCache::getYSi()
     {
-    	//sync state depends on all components
-    	bool in_sync = cache_r.isInSync() && cache_c.isInSync() && gp->dataTerm->isInSync() && gp->dataTerm->isInSync();
-
-    	if (!in_sync)
+    	if(!isInSync())
+    	   			clearCache();
+    	if(YSiNull)
     	{
         	MatrixXd& Si   = getSi();
         	MatrixXd& Yrot = getYrot();
             YSi = (Si).array() * (Yrot).array();
+            YSiNull=false;
         }
         return YSi;
     }
 
     MatrixXd& CGPKroneckerCache::getKinvY()
     {
-    	bool in_sync = cache_r.isInSync() && cache_c.isInSync() && gp->dataTerm->isInSync() && gp->dataTerm->isInSync();
-    	if (!in_sync)
+    	if(!isInSync())
+    	   			clearCache();
+    	if(KinvYNull)
     	{
         	MatrixXd& YSi = getYSi();
         	akronravel(KinvY,cache_r.getUK(), cache_c.getUK(),YSi);
+        	KinvYNull=false;
         }
         return KinvY;
     }
@@ -140,18 +143,19 @@ bool CGPKroneckerCache::isInSync() const
 
 
 
-    CGPkronecker::CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikNormalSVD lik,PDataTerm dataTerm)
+    CGPkronecker::CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik,PDataTerm dataTerm)
     :CGPbase(covar_r, lik,dataTerm), covar_r(covar_r), covar_c(covar_c), cache(this, covar_r, covar_c)
     {
-    	//check that likelihood is Iso
-        	if (lik)
-        	{
-        		this->lik = lik;
-        	}
-        	else
-        	{
-        		this->lik = PLikNormalSVD(new CLikNormalSVD());
-        	}
+      	if (lik)
+       	{
+       		this->lik = lik;
+       	}
+       	else
+       	{
+       		this->lik = PLikNormalSVD(new CLikNormalSVD());
+       	}
+       	if (typeid(*(this->lik))!=typeid(CLikNormalSVD))
+       	    throw CGPMixException("CGPLMM requires a SVD likelihood term");
     }
 
     CGPkronecker::~CGPkronecker()
@@ -390,7 +394,7 @@ bool CGPKroneckerCache::isInSync() const
 
             //(*out)[param] = (grad_logdet + grad_quad)
             //The gradients change with the sigma2:
-            (*out)[param] = (grad_logdet + grad_quad) * this->lik->getSigmaK2();
+            (*out)[param] = (grad_logdet + grad_quad) * this->getLik()->getSigmaK2();
         }
     }
 
@@ -421,8 +425,8 @@ bool CGPKroneckerCache::isInSync() const
           out->resize(lik->getNumberParams());
           //inner derivatives w.r.t Sigma and Delta
           //mfloat_t dSigmaK2 = lik->getSigmaK2grad();
-          mfloat_t dDelta   = lik->getDeltagrad();
-          mfloat_t SigmaK2 = lik->getSigmaK2();
+          mfloat_t dDelta   = getLik()->getDeltagrad();
+          mfloat_t SigmaK2 = getLik()->getSigmaK2();
           //mfloat_t Delta   = lik->getDelta();
 
           MatrixXd& Si = cache.getSi();
@@ -445,7 +449,7 @@ bool CGPKroneckerCache::isInSync() const
 
           //TODO verify where the additional factor of SigmaK2 comes from:
           //mfloat_t grad_sigmak2_quad = -0.5 * 2.0 * YSiYSi.sum() / (this->lik->getSigmaK2());
-          mfloat_t grad_sigmak2_quad = -0.5 * SigmaK2 * 2.0 * YSiYSi.sum() / (this->lik->getSigmaK2());
+          mfloat_t grad_sigmak2_quad = -0.5 * SigmaK2 * 2.0 * YSiYSi.sum() / (getLik()->getSigmaK2());
           (*out)(0) = grad_sigmak2_logdet + grad_sigmak2_quad;
           (*out)(1) = grad_delta_logdet + grad_delta_quad;
       }

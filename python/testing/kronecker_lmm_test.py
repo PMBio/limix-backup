@@ -26,7 +26,7 @@ if __name__ == '__main__':
     if 1:
         N = 100
         D = 20
-        NS = 10
+        NS = 100
 
         SP.random.seed(1)
         ir = SP.random.permutation(NS)[0]
@@ -52,7 +52,7 @@ if __name__ == '__main__':
         params = gpmix.CGPHyperParams()
         params["covar_r"] = SP.zeros([covar_r.getNumberParams()])
         params["covar_c"] = SP.zeros([covar_c.getNumberParams()])
-        params["lik"] = SP.log([0.1])
+        params["lik"] = SP.log([0.1,0.1])
 
         gp.setParams(params)
         opt=gpmix.CGPopt(gp)
@@ -60,8 +60,9 @@ if __name__ == '__main__':
         #opt.opt()
         #opt.gradCheck()
 
+    if 1:
         opt_params = gpmix.CGPHyperParams()
-        #opt_params["lik"] = params["lik"]
+        opt_params["lik"] = params["lik"]
         gp.setParams(opt_params)
         
 

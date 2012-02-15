@@ -66,8 +66,9 @@ class CGPSVDCache : public CGPCholCache
 protected:
 	MatrixXd UK;
 	VectorXd SK;
-	bool UKNull,SKNull;
+	bool USVDNULL;
 	PCovarianceFunction covar;
+	void updateDecomposition();
 public:
 	CGPSVDCache(CGPbase* gp, PCovarianceFunction covar);
 	virtual ~CGPSVDCache()
@@ -142,7 +143,6 @@ protected:
 	//row and column covariance functions:
 	PCovarianceFunction covar_r;
 	PCovarianceFunction covar_c;
-	PLikNormalSVD lik;          //likelihood model
 
 
 	//cache:
@@ -156,7 +156,7 @@ protected:
 	void _gradLogDetX(VectorXd* out, MatrixXd& dK,bool columns);
 
 public:
-	CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikNormalSVD lik=PLikNormalSVD(),PDataTerm mean=PDataTerm());
+	CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik=PLikelihood(),PDataTerm mean=PDataTerm());
 	virtual ~CGPkronecker();
 
 	void setX_r(const CovarInput& X) throw (CGPMixException);
@@ -175,6 +175,12 @@ public:
 	virtual mfloat_t LML(const VectorXd& params) throw (CGPMixException)
 	{
 		return CGPbase::LML(params);
+	}
+
+	PLikNormalSVD getLik()
+	{
+		PLikNormalSVD RV = std::tr1::static_pointer_cast<CLikNormalSVD> (this->lik);
+		return RV;
 	}
 
 
