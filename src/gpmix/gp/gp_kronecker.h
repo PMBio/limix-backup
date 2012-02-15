@@ -99,13 +99,13 @@ protected:
 	MatrixXd KinvY;
 	mfloat_t Knoise;
 
-	CGPbase* gp;
+	CGPkronecker* gp;
 	bool YrotNull,SiNull,YSiNull,KinvYNull;
 public:
 	CGPSVDCache cache_r;
 	CGPSVDCache cache_c;
 
-	CGPKroneckerCache(CGPbase* gp,PCovarianceFunction covar_r,PCovarianceFunction covar_c );
+	CGPKroneckerCache(CGPkronecker* gp,PCovarianceFunction covar_r,PCovarianceFunction covar_c );
 	virtual ~CGPKroneckerCache()
 	{};
 	virtual void clearCache();
@@ -114,7 +114,6 @@ public:
 	MatrixXd& getSi();
 	MatrixXd& getYSi();
 	MatrixXd& getKinvY();
-	mfloat_t getKnoise();
 
 	void agetSi(MatrixXd* out)
 	{
@@ -143,6 +142,8 @@ protected:
 	//row and column covariance functions:
 	PCovarianceFunction covar_r;
 	PCovarianceFunction covar_c;
+	PLikNormalSVD lik;          //likelihood model
+
 
 	//cache:
 	CGPKroneckerCache cache;
@@ -155,7 +156,7 @@ protected:
 	void _gradLogDetX(VectorXd* out, MatrixXd& dK,bool columns);
 
 public:
-	CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik=PLikelihood(),PDataTerm mean=PDataTerm());
+	CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikNormalSVD lik=PLikNormalSVD(),PDataTerm mean=PDataTerm());
 	virtual ~CGPkronecker();
 
 	void setX_r(const CovarInput& X) throw (CGPMixException);

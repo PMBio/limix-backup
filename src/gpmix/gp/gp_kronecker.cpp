@@ -63,7 +63,7 @@ bool CGPSVDCache::isInSync() const
 }
 
 
-CGPKroneckerCache::CGPKroneckerCache(CGPbase* gp, PCovarianceFunction covar_r, PCovarianceFunction covar_c)
+CGPKroneckerCache::CGPKroneckerCache(CGPkronecker* gp, PCovarianceFunction covar_r, PCovarianceFunction covar_c)
 :gp(gp), cache_r(gp, covar_r), cache_c(gp, covar_c)
 {
 }
@@ -86,13 +86,10 @@ bool CGPKroneckerCache::isInSync() const
 
    	   MatrixXd& CGPKroneckerCache::getYrot()
     {
-        if(!isInSync())
-            this->clearCache();
-
-        if(YrotNull)
+   		//depnds on covar_r,covar_c,dataterm
+      	bool in_sync = cache_r.isInSync() && cache_c.isInSync() && gp->dataTerm->isInSync();
+        if(!in_sync)
         {
-        //TODO: think about akronravel
-        	//Yrot.noalias() = cache_r.getUK().transpose() * gp->dataTerm.evaluate() * cache_c.getUK();
             akronravel(Yrot, (cache_r.getUK()).transpose(), (cache_c.getUK()).transpose(), gp->dataTerm->evaluate());
         }
         return Yrot;
@@ -100,15 +97,17 @@ bool CGPKroneckerCache::isInSync() const
 
     MatrixXd& CGPKroneckerCache::getSi()
     {
-        if(!isInSync())
-            this->clearCache();
-
-        if(SiNull)
+    	bool is_sync = cache_r.covar->isInSync() && cache_c.covar->isInSync() && gp->lik->isInSync();
+    	if(!is_sync)
         {
         	akrondiag(Si, (cache_r.getSK()), (cache_c.getSK()));
-            //add noise
-            Si.array() += getKnoise();
-            //elementwise inversion:
+        	//1. add Delta
+        	Si.array() += gp->lik->getDelta();
+        	//2. scale with sigmaK2
+        	mfloat_t sg = gp->lik->getSigmaK2();
+        	std::cout << sg << "using sigmaK2 factor:" << sg << "\n";
+        	Si.array()*=sg;
+        	//elementwise inverse
             Si = Si.unaryExpr(std::ptr_fun(inverse));
         }
         return Si;
@@ -116,10 +115,11 @@ bool CGPKroneckerCache::isInSync() const
 
     MatrixXd& CGPKroneckerCache::getYSi()
     {
-        if(!isInSync())
-            this->clearCache();
+    	//sync state depends on all components
+    	bool in_sync = cache_r.isInSync() && cache_c.isInSync() && gp->dataTerm->isInSync() && gp->dataTerm->isInSync();
 
-        if(YSiNull){
+    	if (!in_sync)
+    	{
         	MatrixXd& Si   = getSi();
         	MatrixXd& Yrot = getYrot();
             YSi = (Si).array() * (Yrot).array();
@@ -129,36 +129,31 @@ bool CGPKroneckerCache::isInSync() const
 
     MatrixXd& CGPKroneckerCache::getKinvY()
     {
-        if(!isInSync())
-            this->clearCache();
-
-        if(KinvYNull){
+    	bool in_sync = cache_r.isInSync() && cache_c.isInSync() && gp->dataTerm->isInSync() && gp->dataTerm->isInSync();
+    	if (!in_sync)
+    	{
         	MatrixXd& YSi = getYSi();
         	akronravel(KinvY,cache_r.getUK(), cache_c.getUK(),YSi);
         }
         return YSi;
     }
 
-    mfloat_t CGPKroneckerCache::getKnoise()
-    {
-        if(!gp->lik->isInSync()){
-            gp->lik->makeSync();
-        }
-    	Knoise = gpmix::exp( (mfloat_t)(2.0*gp->lik->getParams()(0)));
-        return Knoise;
-    }
 
 
 
 
-
-    CGPkronecker::CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik,PDataTerm dataTerm)
+    CGPkronecker::CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikNormalSVD lik,PDataTerm dataTerm)
     :CGPbase(covar_r, lik,dataTerm), covar_r(covar_r), covar_c(covar_c), cache(this, covar_r, covar_c)
     {
     	//check that likelihood is Iso
-    	//TODO: shall we create an svd optimized likelihood model with sigma0^2, delta?
-    	if (typeid(*(this->lik))!=typeid(CLikNormalIso))
-    		throw CGPMixException("KroneckerGP is only compatiable with ISO likelihood");
+        	if (lik)
+        	{
+        		this->lik = lik;
+        	}
+        	else
+        	{
+        		this->lik = PLikNormalSVD(new CLikNormalSVD());
+        	}
     }
 
     CGPkronecker::~CGPkronecker()
@@ -415,6 +410,44 @@ bool CGPKroneckerCache::isInSync() const
         mfloat_t grad_quad = -0.5 * dK * YSiYSi.sum();
         (*out)(0) = grad_quad + grad_logdet;
     }
+
+/*
+ * this should be the new code...
+    void CGPkronecker::aLMLgrad_lik(VectorXd *out) throw (CGPMixException)
+      {
+          //TODO: we can only treat the boring standard noise level in this variant
+          out->resize(lik->getNumberParams());
+          //inner derivatives w.r.t Sigma and Delta
+          //mfloat_t dSigmaK2 = lik->getSigmaK2grad();
+          mfloat_t dDelta   = lik->getDeltagrad();
+          mfloat_t SigmaK2 = lik->getSigmaK2();
+          //mfloat_t Delta   = lik->getDelta();
+
+          MatrixXd& Si = cache.getSi();
+          MatrixXd& YSi = cache.getYSi();
+          MatrixXd& Y = cache.getYrot();
+
+
+          //logdet
+          mfloat_t grad_delta_logdet   = 0.5 * dDelta * SigmaK2* Si.sum();
+          mfloat_t grad_sigmak2_logdet = Si.rows()*Si.cols();
+
+          //gradquad
+          //delta
+          MatrixXd YSiYSi = YSi;
+          YSiYSi.array() *= YSi.array();
+          mfloat_t grad_delta_quad   = -0.5 * dDelta * SigmaK2 * YSiYSi.sum();
+          //sigmaK2
+          YSiYSi = YSi;
+          YSiYSi.array()*=Y.array();
+
+          mfloat_t grad_sigmak2_quad = -0.5* 2.0 * YSiYSi.sum() / (this->lik->getSigmaK2());
+          (*out)(0) = grad_sigmak2_logdet + grad_sigmak2_quad;
+          (*out)(1) = grad_delta_logdet + grad_delta_quad;
+      }
+ */
+
+
 
     void CGPkronecker::aLMLgrad_covar_r(VectorXd *out) throw (CGPMixException)
     {
