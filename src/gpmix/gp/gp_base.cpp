@@ -247,6 +247,7 @@ MatrixXd& CGPCholCache::getKinv()
 		MatrixXd L = chol.matrixL();
 		L.triangularView<Eigen::Lower>().solveInPlace(Kinv);
 		Kinv.transpose()*=Kinv.triangularView<Eigen::Lower>();
+		KinvNull=false;
 #endif
 	}
 	return (Kinv);
@@ -261,6 +262,7 @@ MatrixXd& CGPCholCache::getYeffective()
 	if (YeffectiveNull)
 	{
 		Yeffective = gp->dataTerm->evaluate();
+		YeffectiveNull=false;
 	}
 	return Yeffective;
 }
@@ -274,6 +276,7 @@ MatrixXd& CGPCholCache::getKinvY()
 	if (KinvYNull)
 	{
 		KinvY = this->getCholK().solve(this->getYeffective());
+		KinvYNull=false;
 	}
 	return KinvY;
 }
@@ -287,6 +290,7 @@ MatrixXd& CGPCholCache::getDKinv_KinvYYKinv()
 		MatrixXd& KiY  = getKinvY();
 		MatrixXd& Kinv = getKinv();
 		DKinv_KinvYYKinv = ((mfloat_t)(gp->getNumberDimension())) * (Kinv) - (KiY) * (KiY).transpose();
+		DKinv_KinvYYKinvNull=false;
 	}
 	return DKinv_KinvYYKinv;
 }
@@ -299,6 +303,7 @@ MatrixXdChol& CGPCholCache::getCholK()
 	if (cholKNull)
 	{
 		cholK = MatrixXdChol((this->getK()));
+		cholKNull=false;
 	}
 	return cholK;
 }
@@ -311,6 +316,7 @@ MatrixXd& CGPCholCache::getK()
 	{
 		covar->aK(&K);
 		K += gp->lik->K();
+		KNull=false;
 	}
 	return K;
 }
@@ -322,6 +328,7 @@ MatrixXd& CGPCholCache::getK0()
 	if (K0Null)
 	{
 		covar->aK(&K0);
+		K0Null=false;
 	}
 	return K0;
 }
@@ -338,7 +345,9 @@ CGPbase::CGPbase(PCovarianceFunction covar, PLikelihood lik,PDataTerm dataTerm) 
 	else
 		this->dataTerm = dataTerm;
 	if(!lik)
+	{
 		this->lik = PLikelihood(new CLikNormalIso());
+	}
 	else
 		this->lik = lik;
 }
