@@ -118,7 +118,7 @@ int main() {
 
 		//simplify optimization: remove covar_r, covar_c, lik
 		CGPHyperParams opt_params(params);
-		opt_params.erase("lik");
+		//opt_params.erase("lik");
 		//opt_params.erase("covar_r");
 		//opt_params.erase("covar_c");
 		//opt_params.erase("X_r");
