@@ -41,7 +41,7 @@ int main() {
 		muint_t Kr=2;
 		muint_t Kc=3;
 
-		muint_t D=10;
+		muint_t D=1;
 		muint_t N=20;
 
 		if (useIdentity)
@@ -59,32 +59,31 @@ int main() {
 
 
 
-#if 1
-		MatrixXd Xc = randn(D,Kc);
+
 		//Kc = D;
-		MatrixXd Xr = randn(N,Kr);
 		//Kr = N;
 
+
+
+#if 1
+		MatrixXd Xr = randn(N,Kr);
 		//covariances
 		PCovLinearISO covar_r(new CCovLinearISO(Kr));
-		PCovLinearISO covar_c(new CCovLinearISO(Kc));
-#else
+#else	//identity for rows
 		//use simple fixed covarainces: identities on rows and colmns
 		MatrixXd Mr = MatrixXd::Identity(N,N);
-		for (muint_t i = 0;i<N;++i)
-		{
-			Mr(i,i) =Mr(i,i)+ i;
-		}
-		MatrixXd Mc = MatrixXd::Identity(D,D);
-		for (muint_t i = 0;i<D;++i)
-		{
-			Mc(i,i) =Mc(i,i)/ (1.0+i);
-		}
-
+		MatrixXd Xr = MatrixXd::Zero(N,0);
 		sptr<CFixedCF> covar_r(new CFixedCF(Mr));
+#endif
+#if 1
+		MatrixXd Xc = randn(D,Kc);
+		//covariances
+		PCovLinearISO covar_c(new CCovLinearISO(Kc));
+#else	//identity for cols
+		//use simple fixed covarainces: identities on rows and colmns
+		MatrixXd Mc = MatrixXd::Identity(D,D);
 		sptr<CFixedCF> covar_c(new CFixedCF(Mc));
 		//inputs are fake inputs
-		MatrixXd Xr = MatrixXd::Zero(N,0);
 		MatrixXd Xc = MatrixXd::Zero(D,0);
 #endif
 		//likelihood
@@ -96,7 +95,7 @@ int main() {
 		MatrixXd weights = 0.5+MatrixXd::Zero(1,1).array();
 		PKroneckerMean data(new CKroneckerMean(y,weights,fixedEffects,A));
 
-		//hyperparams: scalig parameters of covariace functions
+		//hyperparams: scaling parameters of covariance functions
 		CovarInput covar_params_r = MatrixXd::Zero(covar_r->getNumberParams(),1);
 		CovarInput covar_params_c = MatrixXd::Zero(covar_c->getNumberParams(),1);
 
@@ -117,7 +116,7 @@ int main() {
 		//set full params for initialization
 		gp->setParams(params);
 
-		//simplify optimizatin: remove covar_r, covar_c, lik
+		//simplify optimization: remove covar_r, covar_c, lik
 		CGPHyperParams opt_params(params);
 		//opt_params.erase("lik");
 		//opt_params.erase("covar_r");
