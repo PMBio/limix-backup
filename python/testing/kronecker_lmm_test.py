@@ -53,18 +53,18 @@ if __name__ == '__main__':
         params["covar_r"] = SP.zeros([covar_r.getNumberParams()])
         params["covar_c"] = SP.zeros([covar_c.getNumberParams()])
         params["lik"] = SP.log([0.1,0.1])
-
+    
         gp.setParams(params)
         opt=gpmix.CGPopt(gp)
 
-        #opt.opt()
+        opt.opt()
         #opt.gradCheck()
 
-    if 1:
+    if 0:
         opt_params = gpmix.CGPHyperParams()
         opt_params["lik"] = params["lik"]
         gp.setParams(opt_params)
-        
+        pdb.set_trace()
 
         #lmm object
         lmm = gpmix.CGPLMM(gp)
