@@ -127,10 +127,74 @@ inline void AfilterMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::Mat
 }
 
 
+
+
 MatrixXd randn(const muint_t n, const muint_t m);
 MatrixXd Mrand(const muint_t n,const muint_t m);
 
-MatrixXd kron(const MatrixXd& A, const MatrixXd& B);
+/*Inline math functions*/
+template <typename Derived1, typename Derived2,typename Derived3,typename Derived4>
+inline void akronravel(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& A,const Eigen::MatrixBase<Derived3>& B,const Eigen::MatrixBase<Derived4>& X)
+{
+	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
+	out.noalias() = A*X*B.transpose();
+}
+template <typename Derived1, typename Derived2,typename Derived3,typename Derived4>
+inline MatrixXd kronravel(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& A,const Eigen::MatrixBase<Derived3>& B,const Eigen::MatrixBase<Derived4>& X)
+{
+	MatrixXd out;
+	akronravel(out,A,B,X);
+	return out;
+}
+
+template <typename Derived1, typename Derived2,typename Derived3>
+inline void akrondiag(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2)
+{
+	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
+	out.derived().resize(v1.rows(),v2.rows());
+	out.rowwise()  = v2.transpose();
+	//loop and multiply v1
+	for (muint_t ic=0;ic<(muint_t)out.cols();ic++)
+		out.col(ic).array() *= v1.array();
+}
+template <typename Derived1, typename Derived2,typename Derived3>
+inline MatrixXd krondiag(const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2)
+{
+	MatrixXd out;
+	akrondiag(out,v1,v2);
+	return out;
+}
+
+
+template <typename Derived1, typename Derived2,typename Derived3>
+/* Kronecker product
+ * out = A kron B
+ * if addToOut:
+ * out += A kron B
+ */
+inline void akron(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2,bool addToOut=false)
+{
+	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
+	out.derived().resize(v1.rows()*v2.rows(),v1.cols()*v2.cols());
+	out.rowwise()  = v2.transpose();
+	for (muint_t ir=0;ir<v1.rows();++ir)
+		for (muint_t ic=0;ic<v1.cols();++ic)
+		{
+			if (addToOut)
+				out.block(ir*v2.rows(),ic*v2.cols(),v2.rows(),v2.cols()) += v1(ir,ic)*v2;
+			else
+				out.block(ir*v2.rows(),ic*v2.cols(),v2.rows(),v2.cols()) = v1(ir,ic)*v2;
+		}
+}
+
+template <typename Derived1, typename Derived2,typename Derived3>
+inline MatrixXd kron(const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2)
+{
+	MatrixXd out;
+	akron(out,v1,2);
+	return out;
+}
+
 
 }
 #endif /* MATRIX_HELPER_H_ */

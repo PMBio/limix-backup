@@ -12,48 +12,6 @@
 
 namespace gpmix {
 
-/*Inline math functions*/
-template <typename Derived1, typename Derived2,typename Derived3,typename Derived4>
-inline void akronravel(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& A,const Eigen::MatrixBase<Derived3>& B,const Eigen::MatrixBase<Derived4>& X)
-{
-	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
-	out.noalias() = A*X*B.transpose();
-}
-
-template <typename Derived1, typename Derived2,typename Derived3>
-inline void akrondiag(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2)
-{
-	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
-	out.derived().resize(v1.rows(),v2.rows());
-	out.rowwise()  = v2.transpose();
-	//loop and multiply v1
-	for (muint_t ic=0;ic<(muint_t)out.cols();ic++)
-		out.col(ic).array() *= v1.array();
-}
-
-
-//TODO: remove test script for shared pointers
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-#endif
-class CTest
-{
-public:
-	CTest(muint_t i)
-	{
-		std::cout << i << "\n";
-	};
-	virtual ~CTest()
-	{};
-	void print0(CTest& other)
-	{
-			std::cout << "prin called" << "\n";
-	}
-	void print1(sptr<CTest> other)
-	{
-		std::cout << "prin called" << "\n";
-	}
-};
-//typedef sptr<gpmix::CTest> PTest;
 
 //forward definition:
 class CGPkronecker;

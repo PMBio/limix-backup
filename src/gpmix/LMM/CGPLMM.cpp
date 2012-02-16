@@ -38,6 +38,7 @@ void CGPLMM::initTesting() throw (CGPMixException)
 {
 	//initialize testing basedon A and A0
 	checkConsistency();
+	std::cout << "consistent" << "\n";
 	MatrixXd fixedEffects = MatrixXd::Ones(num_samples,1+num_covs);
 	MatrixXd fixedEffects0 = MatrixXd::Ones(num_samples,num_covs);
 	weightsAlt    = 0.5+MatrixXd::Zero(1+num_covs,AAlt.rows()).array();
@@ -47,29 +48,28 @@ void CGPLMM::initTesting() throw (CGPMixException)
 	mean0 = PKroneckerMean(new CKroneckerMean(this->pheno,weights0,fixedEffects0,A0));
 
 	//create hyperparams objects
-	hpAlt = gp->getParams();
-	hp0    = gp->getParams();
+	hpAlt = params0;
+	hp0    = params0;
 	//set data Term paramtetes
 	hpAlt["dataTerm"] = weightsAlt;
 	hp0["dataTerm"] = weights0;
 	//init optimization
 	opt = PGPopt(new CGPopt(gp));
-	//bound hyperparameter Optimization (lik)
+	//bound all parameters
+
 	CGPHyperParams upper;
 	CGPHyperParams lower;
-	upper["lik"] = 10.0*MatrixXd::Ones(2,1);
-	lower["lik"] = -10.0*MatrixXd::Ones(2,1);
+	for(CGPHyperParams::const_iterator iter = params0.begin(); iter!=params0.end();iter++)
+	{
+		MatrixXd value = (*iter).second;
+		std::string name = (*iter).first;
+		MatrixXd bound_l = -10.0*MatrixXd::Ones(value.rows(),value.cols());
+		MatrixXd bound_u = +10.0*MatrixXd::Ones(value.rows(),value.cols());
+		lower[name] = bound_l;
+		upper[name] = bound_u;
+	}
 	opt->setOptBoundLower(lower);
 	opt->setOptBoundUpper(upper);
-
-
-
-	/*
-	//construct mean term for testing
-	MatrixXd fixedEffects = MatrixXd::Ones(N,1);
-	MatrixXd weights = 0.5+MatrixXd::Zero(1,1).array();
-	sptr<CKroneckerMean> data(new CKroneckerMean(y,weights,fixedEffects,A));
-	*/
 }
 
 
@@ -115,24 +115,26 @@ void CGPLMM::agetA(MatrixXd *out) const
 
 void CGPLMM::process() throw (CGPMixException)
 {
-    //1. init testing engine
+	//1. init testing engine
 	initTesting();
 	//2. init result arrays
 	nLL0.resize(1,num_snps);
 	nLLAlt.resize(1,num_snps);
 	pv.resize(1,num_snps);
-	//estimate effective degrees of freedom
-	//TODO: is this right?
-	//count difference of non-zero entries
-	muint_t df = this->AAlt.count()-this->A0.count();
+
+	//estimate effective degrees of freedom: differnece in number of weights
+	muint_t df = this->AAlt.rows()-this->A0.rows();
+
 
 	//initialize covaraites and x
 	MatrixXd xAlt  = MatrixXd::Zero(num_samples,1+num_covs);
 	MatrixXd x0 = MatrixXd::Zero(num_samples,num_covs);
 	xAlt.block(0,1,num_samples,num_covs) = this->covs;
 	x0.block(0,0,num_samples,num_covs) = this->covs;
-	//mean->setFixedEffects(x0);
+
+
 	//2. loop over SNPs
+	mfloat_t deltaNLL;
 	for (muint_t is=0;is<num_snps;++is)
 	{
 		//0. update mean term
@@ -142,18 +144,18 @@ void CGPLMM::process() throw (CGPMixException)
 		//1. evaluate null model
 		gp->setDataTerm(mean0);
 		gp->setParams(hp0);
-		//std::cout << hp0 << "\n";
 		opt->opt();	//TODO crashes as number params to optimize is 3, while boundaries is 3
-		//std::cout << gp->LMLgrad();
 		nLL0(0,is) = gp->LML();
 		//2. evaluate alternative model
 		gp->setDataTerm(meanAlt);
 		gp->setParams(hpAlt);
 		opt->opt();
 		nLLAlt(0,is) = gp->LML();
+		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
+		if (deltaNLL<=0)
+			deltaNLL = 1E-10;
 		//3. pvalues
-		//std::cout << "DeltaNLL" << (nLL0(0,is) - nLLAlt(0,is)) << "\n";
-		this->pv(0, is) = Gamma::gammaQ(nLL0(0, is) - nLLAlt(0, is), (double)(0.5) * df);
+		this->pv(0, is) = Gamma::gammaQ(deltaNLL, (double)(0.5) * df);
 	}
 
 

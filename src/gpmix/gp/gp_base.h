@@ -48,6 +48,7 @@ typedef Eigen::LLT<gpmix::MatrixXd> MatrixXdChol;
 #ifdef SWIGPYTHON
 %rename(__getitem__) CGPHyperParams::aget;
 %rename(__setitem__) CGPHyperParams::set;
+%rename(__str__) CGPHyperParams::toString;
 #endif
 
 //TODO: work on map handling in swig
@@ -104,6 +105,7 @@ public:
 	//exists?
 	bool exists(std::string name) const;
 
+	std::string toString() const;
 	//operator overloading
 	friend std::ostream& operator <<(std::ostream &os,const CGPHyperParams &obj);
 

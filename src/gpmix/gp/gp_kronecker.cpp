@@ -165,6 +165,8 @@ MatrixXd& CGPKroneckerCache::getYrot()
 
     void CGPkronecker::updateParams() throw (CGPMixException)
     {
+    	//std::cout << params << "\n";
+
         CGPbase::updateParams();
         if(this->params.exists("covar_r"))
             this->covar_r->setParams(this->params["covar_r"]);
