@@ -143,7 +143,7 @@ void CGPLMM::process() throw (CGPMixException)
 		gp->setDataTerm(mean0);
 		gp->setParams(hp0);
 		//std::cout << hp0 << "\n";
-		opt->opt();	//TODO crashes as number params to optimize is 3, while boundaries is 3
+		opt->opt();
 		//std::cout << gp->LMLgrad();
 		nLL0(0,is) = gp->LML();
 		//2. evaluate alternative model
@@ -153,10 +153,8 @@ void CGPLMM::process() throw (CGPMixException)
 		nLLAlt(0,is) = gp->LML();
 		//3. pvalues
 		//std::cout << "DeltaNLL" << (nLL0(0,is) - nLLAlt(0,is)) << "\n";
-		this->pv(0, is) = Gamma::gammaQ(nLL0(0, is) - nLLAlt(0, is), (double)(0.5) * df);
+		this->pv(0, is) = Gamma::gammaQ((double)(nLL0(0, is) - nLLAlt(0, is)), (double)(0.5) * df);
 	}
-
-
 }
 
 }//end: namespace
