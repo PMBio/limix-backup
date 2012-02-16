@@ -57,7 +57,7 @@ public:
 	void getK_R(MatrixXd* out) const;
 	void getK_C(MatrixXd* out) const;
 	void setKronStructure(const MatrixXd& WkronDiag0, const MatrixXd& WkronBlock0, const MatrixXd& WkronDiag, const MatrixXd& WkronBlock);
-	static mfloat_t nLLeval(MatrixXd* F_tests, mfloat_t ldelta, const MatrixXd& WkronDiag, const MatrixXd& WkronBlock, const MatrixXd& UX, const MatrixXd& UYU, const VectorXd& S_C, const VectorXd& S_R);
+	static mfloat_t nLLeval(std::vector<MatrixXd>& W, std::vector<MatrixXd>& F_tests, mfloat_t ldelta, const std::vector<MatrixXd>& A, const std::vector<MatrixXd>& X, const MatrixXd& Y, const VectorXd& S_C, const VectorXd& S_R);
 	static mfloat_t optdelta(const MatrixXd& UX, const MatrixXd& UYU, const VectorXd& S_C, const VectorXd& S_R, const muint_t numintervals, const mfloat_t ldeltamin, const mfloat_t ldeltamax, const MatrixXd& WkronDiag, const MatrixXd& WkronBlock);
 	MatrixXd getK_R() const;
 	MatrixXd getK_C() const;

@@ -176,9 +176,8 @@ inline void akron(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixB
 {
 	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
 	out.derived().resize(v1.rows()*v2.rows(),v1.cols()*v2.cols());
-	out.rowwise()  = v2.transpose();
-	for (muint_t ir=0;ir<v1.rows();++ir)
-		for (muint_t ic=0;ic<v1.cols();++ic)
+	for (muint_t ir=0;ir<(muint_t)v1.rows();++ir)
+		for (muint_t ic=0;ic<(muint_t)v1.cols();++ic)
 		{
 			if (addToOut)
 				out.block(ir*v2.rows(),ic*v2.cols(),v2.rows(),v2.cols()) += v1(ir,ic)*v2;
