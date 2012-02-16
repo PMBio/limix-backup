@@ -61,75 +61,73 @@ namespace gpmix {
         return ldeltaopt_glob;
     }
 
-    mfloat_t CKroneckerLMM::nLLeval(MatrixXd *F_tests, mfloat_t ldelta, const MatrixXd & WkronDiag, const MatrixXd & WkronBlock, const MatrixXd & UX, const MatrixXd & UYU, const VectorXd & S_C, const VectorXd & S_R)
+    mfloat_t CKroneckerLMM::nLLeval(MatrixXd& W, MatrixXd& F_tests, mfloat_t ldelta, const std::vector<MatrixXd>& A, const std::vector<MatrixXd>& X, const MatrixXd& Y, const VectorXd& S_C, const VectorXd& S_R)
     {
-        muint_t n = UX.rows();
-        muint_t d = UX.cols();
-        muint_t p = UYU.cols();
-        assert(UYU.cols() == S_C.rows());
-        assert(UYU.rows() == S_R.rows());
-        assert(UYU.rows() == UX.rows());
-        assert((muint_t)WkronDiag.cols() == d);
-        assert((muint_t)WkronBlock.cols() == d);
-        assert((muint_t)WkronDiag.rows() * (muint_t)WkronBlock.rows() == p);
+        muint_t R = (muint_t)Y.rows();
+        muint_t C = (muint_t)Y.cols();
+        assert(A.size() == X.size());
+        assert(R == (muint_t)S_R.rows());
+        assert(C == (muint_t)S_C.rows());
+        muint_t nWeights = 0;
+        for(muint_t term = 0; term < A.size();++term)
+        {
+        	assert((muint_t)(X[term].rows())==R);
+        	assert((muint_t)(A[term].cols())==C);
+        	nWeights+=(muint_t)(A[term].rows()) * (muint_t)(X[term].cols());
+        }
         mfloat_t delta = exp(ldelta);
         mfloat_t ldet = 0.0;
-        (*F_tests).resize(d, WkronDiag.rows());
-        MatrixXd beta = MatrixXd(d, (muint_t)(((((WkronDiag.rows()))))));
-        MatrixXd Sd = MatrixXd(S_R.rows(), S_C.rows());
-        for(muint_t col = 0;col < (muint_t)(((((S_C.rows())))));++col){
-            for(muint_t row = 0;row < (muint_t)(((((S_R.rows())))));++row){
-                Sd(row, col) = S_R(row) * S_C(col) + delta;
-                ldet += std::log((mfloat_t)(((((Sd(row, col)))))));
+
+        //build D and compute the logDet of D
+        MatrixXd D = MatrixXd(R,C);
+        for (muint_t r=0; r<R;++r)
+        {
+        	for (muint_t c=0; c<C;++c)
+        	{
+        		mfloat_t SSd = S_R.data()[r]*S_C.data()[c] + delta;
+        		ldet+=std::log(SSd);
+        		D(r,c) = 1.0/SSd;
+        	}
+        }
+
+        muint_t cumSumRowR = 0;
+        muint_t cumSumColR = 0;
+        MatrixXd covW = MatrixXd(nWeights,nWeights);
+        for(muint_t termR = 0; termR < A.size();++termR){
+        	muint_t nW_AR = A[termR].rows();
+        	muint_t nW_XR = A[termR].cols();
+        	muint_t rowsBlock = nW_AR * nW_XR;
+
+        	muint_t cumSumRowC = 0;
+        	muint_t cumSumColC = 0;
+        	for(muint_t termC = 0; termC < A.size(); ++termC){
+            	muint_t nW_AC = A[termC].rows();
+            	muint_t nW_XC = A[termC].cols();
+            	muint_t colsBlock = nW_AC * nW_XC;
+            	MatrixXd block = MatrixXd::Zero(rowsBlock,colsBlock);
+            	if (1)//(R<C)
+            	{
+            		for(muint_t r=0; r<R; ++r)
+            		{
+                		MatrixXd AD = A[termR].colwise() * D.block(r,0,1,C);
+                		MatrixXd AA = AD * A[termC].transpose();
+                		//sum up col matrices
+                		MatrixXd XX = X[termR].row(r).transpose() * X[termC].row(r);
+                		block += kron(AA,XX);
+            		}
+            	}
+            	else
+            	{//sum up col matrices
+            		for(muint_t c=0; c<C; ++c)
+            		{
+
+            		}
+            	}
+            	covW.block(cumSumRowR * cumSumColR, cumSumRowC * cumSumColC,rowsBlock,colsBlock) = block;
             }
         }
 
-        muint_t phen = 0;
-        MatrixXd XSdi = MatrixXd(UX.rows(), UX.cols());
-        mfloat_t res = (UYU.array() * UYU.array() / Sd.array()).sum();
-        for(muint_t i_diag = 0;i_diag < (muint_t)(((((WkronDiag.rows())))));++i_diag){
-            MatrixXd XSX = MatrixXd::Zero(d, d);
-            MatrixXd XSY = MatrixXd::Zero(d, 1);
-            for(muint_t i_block = 0;i_block < (muint_t)(((((WkronBlock.rows())))));++i_block){
-                VectorXd Sd_p = Sd.block(0, phen, n, 1);
-                for(muint_t dim = 0;dim < d;++dim){
-                    XSdi.block(0, dim, n, 1).array() = (UX.block(0, dim, n, 1).array() / Sd.block(0, phen, n, 1).array()) * (WkronDiag(i_diag, dim) * WkronBlock(i_block, dim));
-                }
-                XSX += XSdi.transpose() * UX;
-                XSY += XSdi.transpose() * UYU.block(0, phen, n, 1);
-                ++phen;
-            }
-
-            //least sqaures solution of XSX*beta = XSY
-            //decomposition of K
-            Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(XSX);
-            MatrixXd U_X = eigensolver.eigenvectors();
-            MatrixXd S_X = eigensolver.eigenvalues();
-            beta.block(0, i_diag, d, 1) = U_X.transpose() * XSY;
-            //MatrixXd S_i = MatrixXd::Zero(d,d);
-            for(size_t dim = 0;dim < d;++dim){
-                if(S_X(dim, 0) > 3E-8){
-                    beta(dim, i_diag) /= S_X(dim, 0);
-                    for(size_t dim2 = 0;dim2 < d;++dim2){
-                        (*F_tests)(dim2, i_diag) += U_X(dim2, dim) * U_X(dim2, dim) / S_X(dim, 0);
-                    }
-                    //S_i(dim,dim) = 1.0/S_X(dim,0);
-                }
-                else{
-                    beta(dim, i_diag) = 0.0;
-                }
-            }
-
-            beta.block(0, i_diag, d, 1) = U_X * beta.block(0, i_diag, d, 1);
-            res -= (XSY.array() * beta.block(0, i_diag, d, 1).array()).sum();
-        }
-
-        //sqared residuals
-        mfloat_t sigg2 = res / (n * p);
-        //compute the F-statistics
-        (*F_tests).array() = beta.array() * beta.array() / (*F_tests).array();
-        (*F_tests).array() /= sigg2;
-        double nLL = 0.5 * (n * p * L2pi + ldet + n * p + n * p * log(sigg2));
+        mfloat_t nLL = 0.0;
         return nLL;
     }
 
