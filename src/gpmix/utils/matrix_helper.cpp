@@ -143,17 +143,8 @@ MatrixXd Mrandrand(const muint_t n,const muint_t m)
 	return rv;
 }
 
-MatrixXd kron(const MatrixXd& A, const MatrixXd& B)
-{
-	MatrixXd out = MatrixXd(A.rows()*B.rows(),A.cols()*B.cols());
-	for (muint_t Ar = 0; Ar<(muint_t)A.rows();++Ar)
-	{
-		for (muint_t Ac = 0; Ac<(muint_t)A.cols();++Ac)
-		{
-			out.block(Ar*B.rows(),Ac*B.cols(),B.rows(),B.cols()) = B * A(Ar,Ac);
-		}
-	}
-	return out;
-}
+
+
+
 
 }

@@ -49,6 +49,8 @@ protected:
 	//hyperparam objects for 0 and alt
 	CGPHyperParams hpAlt;
 	CGPHyperParams hp0;
+	//starting parameters for optimization in general
+	CGPHyperParams params0;
 	//negative log likelihoods for foreground/background model
 	MatrixXd nLL0, nLLAlt;
 
@@ -88,6 +90,16 @@ public:
 	{
 		return nLLAlt;
 	}
+
+	CGPHyperParams getParams0()
+	{
+		return params0;
+	}
+	void setParams0(const CGPHyperParams& params0)
+	{
+		this->params0 = params0;
+	}
+
 };
 
 

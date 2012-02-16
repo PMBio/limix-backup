@@ -8,6 +8,7 @@
 #include "gp_base.h"
 #include "gpmix/utils/matrix_helper.h"
 #include "gpmix/utils/logging.h"
+#include <sstream>
 
 namespace gpmix {
 
@@ -182,6 +183,13 @@ bool CGPHyperParams::exists(std::string name) const
 		return false;
 	else
 		return true;
+}
+
+std::string CGPHyperParams::toString() const
+{
+	std::ostringstream os;
+	os<<(*this);
+	return os.str();
 }
 
 std::ostream& operator <<(std::ostream &os,const CGPHyperParams &obj)

@@ -87,16 +87,12 @@ typedef Eigen::Matrix<mint_t, Eigen::Dynamic, 1> VectorXiscipy;
 class CGPMixException
 {
   public:
-
-	CGPMixException()
-	      : What("Unlabeled Exception")
-	    {
-	    }
-
-	CGPMixException(std::string str)
+	CGPMixException(std::string str="Unlabeled exception")
       : What(str)
     {
+		std::cout <<"GPMIX Exception: " << str << "\n";
     }
+
 
     std::string what()
     {
