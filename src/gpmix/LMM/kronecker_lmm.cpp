@@ -15,7 +15,204 @@
 
 namespace gpmix {
 
+mfloat_t CKroneckerLMM::optdelta(mfloat_t& ldelta_opt, const std::vector<MatrixXd>& A, const std::vector<MatrixXd>& X, const MatrixXd& Y, const VectorXd& S_C, const VectorXd& S_R, mfloat_t ldeltamin, mfloat_t ldeltamax, muint_t numintervals)
+{
+    //grid variable with the current likelihood evaluations
+    MatrixXd nllgrid    = MatrixXd::Ones(numintervals,1).array()*HUGE_VAL;
+    MatrixXd ldeltagrid = MatrixXd::Zero(numintervals, 1);
+    //current delta
+    mfloat_t ldelta = ldeltamin;
+    mfloat_t ldeltaD = (ldeltamax - ldeltamin);
+    ldeltaD /= ((mfloat_t)(numintervals) - 1.0);
+    mfloat_t nllmin = HUGE_VAL;
+    mfloat_t ldeltaopt_glob = 0.0;
+    MatrixXd f_tests;
+    for(muint_t i = 0;i < numintervals;i++){
+    	nllgrid(i, 0) = CKroneckerLMM::nLLeval(ldelta, A, X, Y, S_C, S_R);
+        ldeltagrid(i, 0) = ldelta;
+        //std::cout<< "nnl( " << ldelta << ") = " << nllgrid(i,0) <<  "VS" << nllmin << ")\n\n";
+        if(nllgrid(i, 0) < nllmin){
+            //		std::cout << "new min (" << nllmin << ") -> " <<  nllgrid(i,0) << "\n\n";
+            nllmin = nllgrid(i, 0);
+            ldeltaopt_glob = ldelta;
+        }
+        //move on delta
+        ldelta += ldeltaD;
+    } //end for all intervals
 
+    //std::cout << "\n\n nLL_i:\n" << nllgrid;
+    ldelta_opt = ldeltaopt_glob;
+    return nllmin;
+}
+
+void CKroneckerLMM::process() throw (CGPMixException)
+{
+	//1. init testing engine
+	initTesting();
+	//2. init result arrays
+	nLL0.resize(1,num_snps);
+	nLLAlt.resize(1,num_snps);
+	pv.resize(1,num_snps);
+
+	//estimate effective degrees of freedom: difference in number of weights
+	muint_t df = this->AAlt.rows()-this->A0.rows();
+	gp->getCache().cache_c.getUK();
+	gp->getCache().cache_r.getUK();
+
+	//initialize covariates and x
+	std::vector<MatrixXd> xAlt;
+	xAlt.push_back(MatrixXd::Zero(num_samples,1+num_covs));
+	std::vector<MatrixXd> x0;
+	x0.push_back(MatrixXd::Zero(num_samples,num_covs));
+	xAlt[0].block(0,1,num_samples,num_covs) = this->covs;
+	x0[0].block(0,0,num_samples,num_covs) = this->covs;
+	std::vector<MatrixXd> A0_vec;
+	A0_vec.push_back(this->A0);
+
+	MatrixXd S_C = gp->getCache().cache_c.getSK();
+	MatrixXd S_R = gp->getCache().cache_r.getSK();
+	MatrixXd Yrot;
+	std::vector<MatrixXd> AaltRot;
+	AaltRot.push_back(this->AAlt * gp->getCache().cache_c.getUK());
+	akronravel(Yrot,gp->getCache().cache_r.getUK().transpose(),gp->getCache().cache_c.getUK().transpose(),gp->getY());	//note that this one does not match with the Yrot from the gp.
+	//evaluate null model
+	mfloat_t ldelta0 = 0.0;
+	nLL0(0,0) = CKroneckerLMM::optdelta(ldelta0,A0_vec, x0, Yrot, S_C, S_R, -10.0, 10.0, 100);
+	//2. loop over SNPs
+	mfloat_t deltaNLL;
+	for (muint_t is=0;is<num_snps;++is)
+	{
+		//0. update mean term
+		xAlt[0].block(0,0,num_samples,1) = this->snps.block(0,is,num_samples,1);
+		//1. evaluate null model
+		nLL0(0,is) = nLL0(0,0);
+		//2. evaluate alternative model
+		mfloat_t ldelta = ldelta0;
+		nLLAlt(0,is) = this->nLLeval(ldelta,AaltRot,xAlt,Yrot,S_C,S_R);
+		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
+		if (deltaNLL<=0)
+			deltaNLL = 1E-10;
+		//3. pvalues
+		this->pv(0, is) = Gamma::gammaQ(deltaNLL, (double)(0.5) * df);
+	}
+}
+
+#ifdef returnW
+mfloat_t CKroneckerLMM::nLLeval(std::vector<MatrixXd>& W, std::vector<MatrixXd>& F_tests, mfloat_t ldelta, const std::vector<MatrixXd>& A, const std::vector<MatrixXd>& X, const MatrixXd& Y, const VectorXd& S_C, const VectorXd& S_R)
+#else
+mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const std::vector<MatrixXd>& A, const std::vector<MatrixXd>& X, const MatrixXd& Y, const VectorXd& S_C, const VectorXd& S_R)
+#endif
+{
+	muint_t R = (muint_t)Y.rows();
+	muint_t C = (muint_t)Y.cols();
+	assert(A.size() == X.size());
+	assert(R == (muint_t)S_R.rows());
+	assert(C == (muint_t)S_C.rows());
+	muint_t nWeights = 0;
+	for(muint_t term = 0; term < A.size();++term)
+	{
+		assert((muint_t)(X[term].rows())==R);
+		assert((muint_t)(A[term].cols())==C);
+		nWeights+=(muint_t)(A[term].rows()) * (muint_t)(X[term].cols());
+	}
+	mfloat_t delta = exp(ldelta);
+	mfloat_t ldet = 0.0;
+
+	//build D and compute the logDet of D
+	MatrixXd D = MatrixXd(R,C);
+	for (muint_t r=0; r<R;++r)
+	{
+		for (muint_t c=0; c<C;++c)
+		{
+			mfloat_t SSd = S_R.data()[r]*S_C.data()[c] + delta;
+			ldet+=log(SSd);
+			D(r,c) = 1.0/SSd;
+		}
+	}
+
+	MatrixXd DY = Y.array() * D.array();
+
+	VectorXd XYA = VectorXd(nWeights);
+
+	muint_t cumSumRowR = 0;
+	muint_t cumSumColR = 0;
+
+	MatrixXd covW = MatrixXd(nWeights,nWeights);
+	for(muint_t termR = 0; termR < A.size();++termR){
+		muint_t nW_AR = A[termR].rows();
+		muint_t nW_XR = X[termR].cols();
+		muint_t rowsBlock = nW_AR * nW_XR;
+		MatrixXd XYAblock = X[termR].transpose() * DY * A[termR].transpose();
+		XYAblock.resize(rowsBlock,1);
+		XYA.block(cumSumRowR,0,rowsBlock,1) = XYAblock;
+
+		muint_t cumSumRowC = 0;
+		muint_t cumSumColC = 0;
+		for(muint_t termC = 0; termC < A.size(); ++termC){
+			muint_t nW_AC = A[termC].rows();
+			muint_t nW_XC = X[termC].cols();
+			muint_t colsBlock = nW_AC * nW_XC;
+			MatrixXd block = MatrixXd::Zero(rowsBlock,colsBlock);
+			if (R<C)
+			{
+				for(muint_t r=0; r<R; ++r)
+				{
+					MatrixXd AD = A[termR];
+					AD.array().rowwise() *= D.row(r).array();
+					MatrixXd AA = AD * A[termC].transpose();
+					//sum up col matrices
+					MatrixXd XX = X[termR].row(r).transpose() * X[termC].row(r);
+					akron(block,AA,XX,true);
+				}
+			}
+			else
+			{//sum up col matrices
+				for(muint_t c=0; c<C; ++c)
+				{
+					MatrixXd XD = X[termR];
+					XD.array().colwise() *= D.col(c).array();
+					MatrixXd XX = XD.transpose() * X[termC];
+					//sum up col matrices
+					MatrixXd AA = A[termR].col(c) * A[termC].col(c).transpose();
+					akron(block,AA,XX,true);
+				}
+			}
+			covW.block(cumSumRowR * cumSumColR, cumSumRowC * cumSumColC,rowsBlock,colsBlock) = block;
+		}
+	}
+	//std::cout << "covW = " << covW<<std::endl;
+	MatrixXd W_vec = covW.colPivHouseholderQr().solve(XYA);
+	//covW = covW.inverse();
+	//std::cout << "covW.inverse() = " << covW<<std::endl;
+	//MatrixXd W_vec = covW * XYA;
+	//std::cout << "W = " << W_vec<<std::endl;
+	//std::cout << "XYA = " << XYA<<std::endl;
+
+	mfloat_t res = (Y.array()*DY.array()).sum();
+	mfloat_t varPred = (W_vec.array() * XYA.array()).sum();
+	res-= varPred;
+
+	mfloat_t sigma = res/(mfloat_t)(R*C);
+
+	mfloat_t nLL = 0.5 * ( R * C * (L2pi + log(sigma) + 1.0) + ldet);
+#ifdef returnW
+	muint_t cumSum = 0;
+	VectorXd F_vec = W_vec.array() * W_vec.array() /covW.diagonal().array() / sigma;
+	for(muint_t term = 0; term < A.size();++term)
+	{
+		muint_t currSize = X[term].cols() * A[term].rows();
+		//W[term] = MatrixXd(X[term].cols(),A[term].rows());
+		W[term] = W_vec.block(cumSum,0,currSize,1);//
+		W[term].resize(X[term].cols(),A[term].rows());
+		//F_tests[term] = MatrixXd(X[term].cols(),A[term].rows());
+		F_tests[term] = F_vec.block(cumSum,0,currSize,1);//
+		F_tests[term].resize(X[term].cols(),A[term].rows());
+		cumSum+=currSize;
+	}
+#endif
+	return nLL;
+}
+#if 0
 
 
     /*KroneckerLMM*/
@@ -45,7 +242,8 @@ namespace gpmix {
         mfloat_t ldeltaopt_glob = 0;
         MatrixXd f_tests;
         for(muint_t i = 0;i < numintervals;i++){
-            nllgrid(i, 0) = CKroneckerLMM::nLLeval(&f_tests, ldeltagrid(i), WkronDiag, WkronBlock, UX, UYU, S_C, S_R);
+        	std::cout <<"commented out the nLL\n";//TODO commented out the nLL
+            nllgrid(i, 0) = 0.0;//CKroneckerLMM::nLLeval(&f_tests, ldeltagrid(i), WkronDiag, WkronBlock, UX, UYU, S_C, S_R);
             ldeltagrid(i, 0) = ldelta;
             //std::cout<< "nnl( " << ldelta << ") = " << nllgrid(i,0) <<  "VS" << nllmin << ")\n\n";
             if(nllgrid(i, 0) < nllmin){
@@ -61,77 +259,6 @@ namespace gpmix {
         return ldeltaopt_glob;
     }
 
-    mfloat_t CKroneckerLMM::nLLeval(MatrixXd *F_tests, mfloat_t ldelta, const MatrixXd & WkronDiag, const MatrixXd & WkronBlock, const MatrixXd & UX, const MatrixXd & UYU, const VectorXd & S_C, const VectorXd & S_R)
-    {
-        muint_t n = UX.rows();
-        muint_t d = UX.cols();
-        muint_t p = UYU.cols();
-        assert(UYU.cols() == S_C.rows());
-        assert(UYU.rows() == S_R.rows());
-        assert(UYU.rows() == UX.rows());
-        assert((muint_t)WkronDiag.cols() == d);
-        assert((muint_t)WkronBlock.cols() == d);
-        assert((muint_t)WkronDiag.rows() * (muint_t)WkronBlock.rows() == p);
-        mfloat_t delta = exp(ldelta);
-        mfloat_t ldet = 0.0;
-        (*F_tests).resize(d, WkronDiag.rows());
-        MatrixXd beta = MatrixXd(d, (muint_t)(((((WkronDiag.rows()))))));
-        MatrixXd Sd = MatrixXd(S_R.rows(), S_C.rows());
-        for(muint_t col = 0;col < (muint_t)(((((S_C.rows())))));++col){
-            for(muint_t row = 0;row < (muint_t)(((((S_R.rows())))));++row){
-                Sd(row, col) = S_R(row) * S_C(col) + delta;
-                ldet += std::log((mfloat_t)(((((Sd(row, col)))))));
-            }
-        }
-
-        muint_t phen = 0;
-        MatrixXd XSdi = MatrixXd(UX.rows(), UX.cols());
-        mfloat_t res = (UYU.array() * UYU.array() / Sd.array()).sum();
-        for(muint_t i_diag = 0;i_diag < (muint_t)(((((WkronDiag.rows())))));++i_diag){
-            MatrixXd XSX = MatrixXd::Zero(d, d);
-            MatrixXd XSY = MatrixXd::Zero(d, 1);
-            for(muint_t i_block = 0;i_block < (muint_t)(((((WkronBlock.rows())))));++i_block){
-                VectorXd Sd_p = Sd.block(0, phen, n, 1);
-                for(muint_t dim = 0;dim < d;++dim){
-                    XSdi.block(0, dim, n, 1).array() = (UX.block(0, dim, n, 1).array() / Sd.block(0, phen, n, 1).array()) * (WkronDiag(i_diag, dim) * WkronBlock(i_block, dim));
-                }
-                XSX += XSdi.transpose() * UX;
-                XSY += XSdi.transpose() * UYU.block(0, phen, n, 1);
-                ++phen;
-            }
-
-            //least sqaures solution of XSX*beta = XSY
-            //decomposition of K
-            Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(XSX);
-            MatrixXd U_X = eigensolver.eigenvectors();
-            MatrixXd S_X = eigensolver.eigenvalues();
-            beta.block(0, i_diag, d, 1) = U_X.transpose() * XSY;
-            //MatrixXd S_i = MatrixXd::Zero(d,d);
-            for(size_t dim = 0;dim < d;++dim){
-                if(S_X(dim, 0) > 3E-8){
-                    beta(dim, i_diag) /= S_X(dim, 0);
-                    for(size_t dim2 = 0;dim2 < d;++dim2){
-                        (*F_tests)(dim2, i_diag) += U_X(dim2, dim) * U_X(dim2, dim) / S_X(dim, 0);
-                    }
-                    //S_i(dim,dim) = 1.0/S_X(dim,0);
-                }
-                else{
-                    beta(dim, i_diag) = 0.0;
-                }
-            }
-
-            beta.block(0, i_diag, d, 1) = U_X * beta.block(0, i_diag, d, 1);
-            res -= (XSY.array() * beta.block(0, i_diag, d, 1).array()).sum();
-        }
-
-        //sqared residuals
-        mfloat_t sigg2 = res / (n * p);
-        //compute the F-statistics
-        (*F_tests).array() = beta.array() * beta.array() / (*F_tests).array();
-        (*F_tests).array() /= sigg2;
-        double nLL = 0.5 * (n * p * L2pi + ldet + n * p + n * p * log(sigg2));
-        return nLL;
-    }
 
     void CKroneckerLMM::process() throw (CGPMixException)
     {
@@ -153,7 +280,8 @@ namespace gpmix {
         MatrixXd f_tests;
         //fit delta on null model
         ldelta0(0) = CKroneckerLMM::optdelta(Ucovs, Upheno, this->S_C, this->S_R, this->num_intervals0, this->ldeltamin0, this->ldeltamax0, WkronDiag0, WkronBlock0);
-        nLL0(0) = this->nLLeval(&f_tests, ldelta0(0), WkronDiag0, WkronBlock0, Ucovs, Upheno, this->S_C, this->S_R);
+    	std::cout <<"commented out the nLL\n";//TODO commented out the nLL
+        nLL0(0) = 0.0;//this->nLLeval(&f_tests, ldelta0(0), WkronDiag0, WkronBlock0, Ucovs, Upheno, this->S_C, this->S_R);
         for(muint_t is = 0;is < (muint_t)(((((snps.cols())))));is++){
             //1. construct foreground testing SNP transformed
             UX.block(0, covs.cols(), snps.rows(), 1) = Usnps.block(0, is, snps.rows(), 1);
@@ -167,14 +295,15 @@ namespace gpmix {
 
             //3. evaluate
             MatrixXd f_tests;
-            nLL(0, is) = CKroneckerLMM::nLLeval(&f_tests, ldelta(0, is), WkronDiag, WkronBlock, UX, Upheno, this->S_C, this->S_R);
+        	std::cout <<"commented out the nLL\n";//TODO commented out the nLL
+            nLL(0, is) = 0.0;//CKroneckerLMM::nLLeval(&f_tests, ldelta(0, is), WkronDiag, WkronBlock, UX, Upheno, this->S_C, this->S_R);
             //				gpmix::nLLeval(&f_tests, ldelta(0, is), Upheno, UX, S);
             //TODO:
             //rotate F_tests to get per pheno P-values
             //4. calc lod score
             //TODO: calculate dofs for arbitrary WkronDiag and WkronBlock, currently we expect all ones...
             mfloat_t dof = ((mfloat_t)(((((Upheno.cols()))))) / (mfloat_t)(((((WkronBlock.rows()))))));
-            this->pv(0, is) = Gamma::gammaQ(nLL0(0, 0) - nLL(0, is), (double)(((((((0.5) * dof)))))));
+            this->pv(0, is) = Gamma::gammaQ((double)(nLL0(0, 0) - nLL(0, is)), (double)(((((((0.5) * dof)))))));
     } //end for phenotypes
 }
 
@@ -236,7 +365,7 @@ MatrixXd CKroneckerLMM::getK_C() const
     return C;
 }
 
-
+#endif
 
 
 

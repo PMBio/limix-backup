@@ -589,7 +589,7 @@ int ALMM::getTestStatistics() const
         }
 
         MatrixXd res = UY - UX * beta;
-        //sqared residuals
+        //squared residuals
         res.array() *= res.array();
         res.array() *= Sdi.array();
         double sigg2 = res.array().sum() / (n * n_pheno);
