@@ -52,42 +52,51 @@ void CKroneckerLMM::process() throw (CGPMixException)
 	//2. init result arrays
 	nLL0.resize(1,num_snps);
 	nLLAlt.resize(1,num_snps);
+	ldelta0.resize(1,num_snps);
+	ldeltaAlt.resize(1,num_snps);
 	pv.resize(1,num_snps);
 
 	//estimate effective degrees of freedom: difference in number of weights
 	muint_t df = this->AAlt.rows()-this->A0.rows();
-	gp->getCache().cache_c.getUK();
-	gp->getCache().cache_r.getUK();
+	MatrixXd& UC = gp->getCache().cache_c.getUK();
+	MatrixXd& UR = gp->getCache().cache_r.getUK();
+	MatrixXd covsRot = UR.transpose() * this->covs;
+	MatrixXd snpsRot = UR.transpose() * this->snps;
 
 	//initialize covariates and x
 	std::vector<MatrixXd> xAlt;
 	xAlt.push_back(MatrixXd::Zero(num_samples,1+num_covs));
 	std::vector<MatrixXd> x0;
 	x0.push_back(MatrixXd::Zero(num_samples,num_covs));
-	xAlt[0].block(0,1,num_samples,num_covs) = this->covs;
-	x0[0].block(0,0,num_samples,num_covs) = this->covs;
+	xAlt[0].block(0,1,num_samples,num_covs) = covsRot;
+	x0[0].block(0,0,num_samples,num_covs) = covsRot;
 	std::vector<MatrixXd> A0_vec;
-	A0_vec.push_back(this->A0);
+	A0_vec.push_back(this->A0 * UC);
 
-	MatrixXd S_C = gp->getCache().cache_c.getSK();
-	MatrixXd S_R = gp->getCache().cache_r.getSK();
+	VectorXd& S_C = gp->getCache().cache_c.getSK();
+	VectorXd& S_R = gp->getCache().cache_r.getSK();
 	MatrixXd Yrot;
 	std::vector<MatrixXd> AaltRot;
-	AaltRot.push_back(this->AAlt * gp->getCache().cache_c.getUK());
-	akronravel(Yrot,gp->getCache().cache_r.getUK().transpose(),gp->getCache().cache_c.getUK().transpose(),gp->getY());	//note that this one does not match with the Yrot from the gp.
+	AaltRot.push_back(this->AAlt * UC);
+	akronravel(Yrot,UR.transpose(),UC.transpose(),gp->getY());	//note that this one does not match with the Yrot from the gp.
 	//evaluate null model
-	mfloat_t ldelta0 = 0.0;
-	nLL0(0,0) = CKroneckerLMM::optdelta(ldelta0,A0_vec, x0, Yrot, S_C, S_R, -10.0, 10.0, 100);
+	mfloat_t ldelta0_ = 0.0;
+	mfloat_t nLL0_ = CKroneckerLMM::optdelta(ldelta0_,A0_vec, x0, Yrot, S_C, S_R, -10.0, 10.0, 100);
+	//store delta0
+	ldelta0.setConstant(ldelta0_);
+	nLL0.setConstant(nLL0_);
+
 	//2. loop over SNPs
 	mfloat_t deltaNLL;
 	for (muint_t is=0;is<num_snps;++is)
 	{
 		//0. update mean term
-		xAlt[0].block(0,0,num_samples,1) = this->snps.block(0,is,num_samples,1);
+		xAlt[0].block(0,0,num_samples,1) = snpsRot.block(0,is,num_samples,1);
 		//1. evaluate null model
-		nLL0(0,is) = nLL0(0,0);
+		// pass
 		//2. evaluate alternative model
-		mfloat_t ldelta = ldelta0;
+		mfloat_t ldelta = ldelta0(0,is);
+		ldeltaAlt(0,is) = ldelta;
 		nLLAlt(0,is) = this->nLLeval(ldelta,AaltRot,xAlt,Yrot,S_C,S_R);
 		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
 		if (deltaNLL<=0)

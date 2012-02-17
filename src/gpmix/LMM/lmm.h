@@ -250,26 +250,24 @@ public:
 		(*out) = ldelta0;
 	}
 
-
-
-	MatrixXd& getNLL0()
+	MatrixXd getNLL0()
 	{
 		return nLL0;
 	}
-	MatrixXd& getNLLAlt()
+	MatrixXd getNLLAlt()
 	{
 		return nLLAlt;
 	}
-	MatrixXd& getFtests()
+	MatrixXd getFtests()
 	{
 		return f_tests;
 	}
 
-	MatrixXd& getLdeltaAlt()
+	MatrixXd getLdeltaAlt()
 	{
 		return ldeltaAlt;
 	}
-	MatrixXd& getLdelta0()
+	MatrixXd getLdelta0()
 	{
 		return ldeltaAlt;
 	}
