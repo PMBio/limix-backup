@@ -51,15 +51,15 @@ protected:
 	CGPHyperParams hp0;
 	//starting parameters for optimization in general
 	CGPHyperParams params0;
+	//filter parameters
+	CGPHyperParams paramsMask;
 	//negative log likelihoods for foreground/background model
 	MatrixXd nLL0, nLLAlt;
 
 	sptr<CKroneckerMean> meanAlt;
 	sptr<CKroneckerMean> mean0;
 public:
-	CGPLMM(PGPkronecker gp) : gp(gp)
-	{
-	}
+	CGPLMM(PGPkronecker gp);
 	virtual ~CGPLMM()
 	{};
 	//overload pure virtual functions:
@@ -98,6 +98,15 @@ public:
 	void setParams0(const CGPHyperParams& params0)
 	{
 		this->params0 = params0;
+	}
+
+	CGPHyperParams getParamsMask()
+	{
+		return paramsMask;
+	}
+	void setParamsMask(const CGPHyperParams& p)
+	{
+		paramsMask = p;
 	}
 
 };

@@ -13,6 +13,7 @@
 //using namespace std;
 //using namespace std::tr1;
 
+#include <iostream>
 #include <string>
 #include <tr1/memory>
 
