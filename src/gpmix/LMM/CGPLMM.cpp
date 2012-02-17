@@ -11,6 +11,12 @@
 namespace gpmix {
 /*GPLMM*/
 
+CGPLMM::CGPLMM(PGPkronecker gp) : gp(gp)
+{
+	this->params0 = gp->getParams();
+}
+
+
 void CGPLMM::checkConsistency() throw (CGPMixException)
 {
 	//check that data term is correct type
@@ -55,8 +61,9 @@ void CGPLMM::initTesting() throw (CGPMixException)
 	hp0["dataTerm"] = weights0;
 	//init optimization
 	opt = PGPopt(new CGPopt(gp));
+	//set filter
+	opt->setParamMask(paramsMask);
 	//bound all parameters
-
 	CGPHyperParams upper;
 	CGPHyperParams lower;
 	for(CGPHyperParams::const_iterator iter = params0.begin(); iter!=params0.end();iter++)
