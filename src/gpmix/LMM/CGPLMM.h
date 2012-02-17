@@ -33,9 +33,9 @@ class CGPLMM : public ALMM
 {
 
 protected:
-	//pointer to GP intance used for testing
+	//pointer to GP instance used for testing
 	PGPkronecker gp;
-	//pointer to optimization enginge
+	//pointer to optimization engine
 	PGPopt opt;
 	void checkConsistency() throw (CGPMixException);
 	void initTesting() throw (CGPMixException);
@@ -60,8 +60,7 @@ public:
 	CGPLMM(PGPkronecker gp) : gp(gp)
 	{
 	}
-	virtual ~CGPLMM()
-	{};
+	virtual ~CGPLMM(){};
 	//overload pure virtual functions:
 	virtual void process() throw (CGPMixException);
     MatrixXd getA() const;
