@@ -151,7 +151,7 @@ void CGPLMM::process() throw (CGPMixException)
 		//1. evaluate null model
 		gp->setDataTerm(mean0);
 		gp->setParams(hp0);
-		opt->opt();	//TODO crashes as number params to optimize is 3, while boundaries is 3
+		opt->opt();
 		nLL0(0,is) = gp->LML();
 		//2. evaluate alternative model
 		gp->setDataTerm(meanAlt);
@@ -164,8 +164,6 @@ void CGPLMM::process() throw (CGPMixException)
 		//3. pvalues
 		this->pv(0, is) = Gamma::gammaQ(deltaNLL, (double)(0.5) * df);
 	}
-
-
 }
 
 }//end: namespace

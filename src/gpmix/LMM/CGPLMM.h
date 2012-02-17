@@ -33,9 +33,9 @@ class CGPLMM : public ALMM
 {
 
 protected:
-	//pointer to GP intance used for testing
+	//pointer to GP instance used for testing
 	PGPkronecker gp;
-	//pointer to optimization enginge
+	//pointer to optimization engine
 	PGPopt opt;
 	void checkConsistency() throw (CGPMixException);
 	void initTesting() throw (CGPMixException);

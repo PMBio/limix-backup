@@ -24,6 +24,7 @@
 #include "gpmix/mean/CKroneckerMean.h"
 #include "gpmix/utils/logging.h"
 #include "gpmix/LMM/CGPLMM.h"
+#include "gpmix/LMM/kronecker_lmm.h"
 
 using namespace std;
 using namespace gpmix;
@@ -37,30 +38,36 @@ int main() {
 
 	try{
 		//random input X
-		muint_t Kr=2;
-		muint_t Kc=3;
+		muint_t Wr=1;
+		muint_t Wc=1;
 
 		muint_t D=200;
 		muint_t N=20;
 
-		mfloat_t eps = 0.1;
+		mfloat_t eps = 100.0;
 
 		//1. "simulation"
-		MatrixXd X = randn((muint_t)N,(muint_t)Kr);
+		MatrixXd X = randn((muint_t)N,(muint_t)Wr);
 		//y ~ w*X
-		MatrixXd w = randn((muint_t)Kr,(muint_t)D);
-		MatrixXd y = X*w + eps*randn((muint_t)N,(muint_t)D);
-		//SNPS: all random except for one true causal guy
-		MatrixXd S = randn((muint_t)N,10);
-		S.block(0,4,N,Kr) = X;
+		MatrixXd w = randn((muint_t)Wr,(muint_t)Wc);
 
-		//2. consturction of GP object
+		MatrixXd A = MatrixXd::Ones((muint_t)Wc,(muint_t)D);
+		MatrixXd y = X*w*A + 1.0*eps*randn((muint_t)N,(muint_t)D);
+		//SNPS: all random except for one true causal guy
+
+		MatrixXd S = MatrixXd::Zero((muint_t)N,20);
+		S.block(0,5,N,10) = randn((muint_t)N,10);
+		S.block(0,4,N,Wr) = X;
+		//std::cout<<"SNPS: "<< S<<std::endl;
+		//2. construction of GP object
+		muint_t Kr=3;
+		muint_t Kc=4;
 #if 1
 		MatrixXd Xr = randn(N,Kr);
 		//covariances
 		PCovLinearISO covar_r(new CCovLinearISO(Kr));
 #else	//identity for rows
-		//use simple fixed covarainces: identities on rows and colmns
+		//use simple fixed covariances: identities on rows and colmns
 		MatrixXd Mr = MatrixXd::Identity(N,N);
 		MatrixXd Xr = MatrixXd::Zero(N,0);
 		sptr<CFixedCF> covar_r(new CFixedCF(Mr));
@@ -70,7 +77,7 @@ int main() {
 		//covariances
 		PCovLinearISO covar_c(new CCovLinearISO(Kc));
 #else	//identity for cols
-		//use simple fixed covarainces: identities on rows and colmns
+		//use simple fixed covariances: identities on rows and columns
 		MatrixXd Mc = MatrixXd::Identity(D,D);
 		sptr<CFixedCF> covar_c(new CFixedCF(Mc));
 		//inputs are fake inputs
@@ -102,11 +109,11 @@ int main() {
 		//simplify optimizatin: remove covar_r, covar_c, lik
 		CGPHyperParams opt_params(params);
 		//opt_params.erase("lik");
-		//opt_params.erase("covar_r");
-		//opt_params.erase("covar_c");
-		//opt_params.erase("X_r");
+		opt_params.erase("covar_r");
+		opt_params.erase("covar_c");
+		opt_params.erase("X_r");
 		//opt_params.erase("dataTerm");
-		//opt_params.erase("X_c");
+		opt_params.erase("X_c");
 
 		double lml = gp->LML();
 		std::cout << lml<<endl;
@@ -168,6 +175,27 @@ int main() {
 
 #endif
 
+#if 1
+		//test CGPLMM
+		CKroneckerLMM lmm_(gp);
+		//set SNPs
+		lmm_.setSNPs(S);
+		//set Phenotypes
+		lmm_.setPheno(y);
+		//set covariates
+		lmm_.setCovs(MatrixXd::Ones(X.rows(),1));
+		//set design matrics: both testing all genes
+		MatrixXd A_ = MatrixXd::Ones(2,D);
+		MatrixXd A0_= MatrixXd::Ones(1,D);
+		lmm_.setA(A_);
+		lmm_.setA0(A0_);
+		std::cout << "Start CKroneckerLMM:" << "\n";
+		lmm_.process();
+		MatrixXd pv_ = lmm_.getPv();
+		//std::cout << pv_ << "\n" << "   0.99032           1    0.999952    0.995441   0.0277248 0.000805652    0.999212           1    0.999999    0.600988bla" << "\n";
+
+#endif
+
 
 #if 1
 		//test CGPLMM
@@ -179,16 +207,18 @@ int main() {
 		//set covariates
 		lmm.setCovs(MatrixXd::Ones(X.rows(),1));
 		//set design matrics: both testing all genes
-		MatrixXd A = MatrixXd::Ones(2,D);
+		MatrixXd AAlt = MatrixXd::Ones(2,D);
 		MatrixXd A0= MatrixXd::Ones(1,D);
-		lmm.setA(A);
+		lmm.setA(AAlt);
 		lmm.setA0(A0);
 		std::cout << "Start:" << "\n";
 		lmm.process();
 		MatrixXd pv = lmm.getPv();
-		std::cout << pv << "\n" << "   0.99032           1    0.999952    0.995441   0.0277248 0.000805652    0.999212           1    0.999999    0.600988bla" << "\n";
+		//std::cout << pv << "\n" << "   0.99032           1    0.999952    0.995441   0.0277248 0.000805652    0.999212           1    0.999999    0.600988bla" << "\n";
 
 #endif
+
+
 		}
 		catch(CGPMixException& e) {
 			cout <<"Exception : "<< e.what() << endl;
