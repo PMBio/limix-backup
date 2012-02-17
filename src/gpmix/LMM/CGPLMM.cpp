@@ -127,6 +127,8 @@ void CGPLMM::process() throw (CGPMixException)
 	//2. init result arrays
 	nLL0.resize(1,num_snps);
 	nLLAlt.resize(1,num_snps);
+	ldelta0.resize(1,num_snps);
+	ldeltaAlt.resize(1,num_snps);
 	pv.resize(1,num_snps);
 
 	//estimate effective degrees of freedom: differnece in number of weights
@@ -152,12 +154,19 @@ void CGPLMM::process() throw (CGPMixException)
 		gp->setDataTerm(mean0);
 		gp->setParams(hp0);
 		opt->opt();
+		//store NLL
 		nLL0(0,is) = gp->LML();
+		//store delta
+		ldelta0(0,is) = 2*gp->getParams()["lik"](1);
+
 		//2. evaluate alternative model
 		gp->setDataTerm(meanAlt);
 		gp->setParams(hpAlt);
 		opt->opt();
 		nLLAlt(0,is) = gp->LML();
+		//store delta
+		ldeltaAlt(0,is) = 2*gp->getParams()["lik"](1);
+
 		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
 		if (deltaNLL<=0)
 			deltaNLL = 1E-10;

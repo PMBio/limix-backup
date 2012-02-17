@@ -24,11 +24,17 @@ namespace gpmix {
 //ignore C++ versions
 %ignore CGPLMM::getNLL0;
 %ignore CGPLMM::getNLLAlt;
+%ignore CGPLMM::getLdeltaAlt;
+%ignore CGPLMM::getLdelta0;
+
 
 //rename argout versions for python; this overwrites the C++ convenience functions
 %rename(getNLL0) CGPLMM::agetNLL0;
 %rename(getNLLAlt) CGPLMM::agetNLLAlt;
+%rename(getLdeltaAlt) CGPLMM::agetLdeltaAlt;
+%rename(getLdelta0) CGPLMM::agetLdelta0;
 #endif
+
 class CGPLMM : public ALMM
 {
 
@@ -54,7 +60,7 @@ protected:
 	//filter parameters
 	CGPHyperParams paramsMask;
 	//negative log likelihoods for foreground/background model
-	MatrixXd nLL0, nLLAlt;
+	MatrixXd nLL0, nLLAlt,ldeltaAlt,ldelta0;
 
 	sptr<CKroneckerMean> meanAlt;
 	sptr<CKroneckerMean> mean0;
@@ -108,6 +114,25 @@ public:
 	{
 		paramsMask = p;
 	}
+
+	void agetLdeltaAlt(MatrixXd *out)
+	{
+		(*out) = ldeltaAlt;
+	}
+	void agetLdelta0(MatrixXd *out)
+	{
+		(*out) = ldelta0;
+	}
+
+	MatrixXd getLdeltaAlt()
+	{
+		return ldeltaAlt;
+	}
+	MatrixXd getLdelta0()
+	{
+		return ldeltaAlt;
+	}
+
 
 };
 
