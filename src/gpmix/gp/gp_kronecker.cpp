@@ -400,46 +400,19 @@ MatrixXd& CGPKroneckerCache::getYrot()
         }
     }
 
-#if 0  // this was the old code...
-    void CGPkronecker::aLMLgrad_lik(VectorXd *out) throw (CGPMixException)
-    {
-        //TODO: we can only treat the boring standard noise level in this variant
-        out->resize(lik->getNumberParams());
-        // calc gradient manually, ..
-        //MatrixXd dK_ = lik->Kgrad_param(0);
-        //TODO:
-        mfloat_t dK = 2.0*gpmix::exp( (mfloat_t)(2.0*lik->getParams()(0)));
-        MatrixXd& Si = cache.getSi();
-        MatrixXd& YSi = cache.getYSi();
-        mfloat_t grad_logdet = 0.5 * dK * Si.sum();
-        MatrixXd YSiYSi = YSi;
-        YSiYSi.array() *= YSi.array();
-        mfloat_t grad_quad = -0.5 * dK * YSiYSi.sum();
-        (*out)(0) = grad_quad + grad_logdet;
-        (*out)(1) = 0.0;
-    }
-
-#else
- // this should be the new code...
+    // this should be the new code...
     void CGPkronecker::aLMLgrad_lik(VectorXd *out) throw (CGPMixException)
       {
-          //TODO: we can only treat the boring standard noise level in this variant
           out->resize(lik->getNumberParams());
           //inner derivatives w.r.t Sigma and Delta
-          //mfloat_t dSigmaK2 = lik->getSigmaK2grad();
           mfloat_t dDelta   = getLik()->getDeltagrad();
           mfloat_t SigmaK2 = getLik()->getSigmaK2();
-          //mfloat_t Delta   = lik->getDelta();
-
           MatrixXd& Si = cache.getSi();
           MatrixXd& YSi = cache.getYSi();
           MatrixXd& Y = cache.getYrot();
-
-
           //logdet
           mfloat_t grad_delta_logdet   = 0.5 * dDelta * SigmaK2* Si.sum();
           mfloat_t grad_sigmak2_logdet = Si.rows()*Si.cols();
-
           //gradquad
           //delta
           MatrixXd YSiYSi = YSi;
@@ -448,16 +421,10 @@ MatrixXd& CGPKroneckerCache::getYrot()
           //sigmaK2
           YSiYSi = YSi;
           YSiYSi.array()*=Y.array();
-
-          //TODO verify where the additional factor of SigmaK2 comes from:
-          //mfloat_t grad_sigmak2_quad = -0.5 * 2.0 * YSiYSi.sum() / (this->lik->getSigmaK2());
           mfloat_t grad_sigmak2_quad = -0.5 * SigmaK2 * 2.0 * YSiYSi.sum() / (getLik()->getSigmaK2());
           (*out)(0) = grad_sigmak2_logdet + grad_sigmak2_quad;
           (*out)(1) = grad_delta_logdet + grad_delta_quad;
       }
-#endif
-
-
 
     void CGPkronecker::aLMLgrad_covar_r(VectorXd *out) throw (CGPMixException)
     {
@@ -482,9 +449,27 @@ MatrixXd& CGPKroneckerCache::getYrot()
             covar_r->aKgrad_X(&dKx, col);
             _gradQuadrFormX(&grad_column_quad, dKx, false);
             _gradLogDetX(&grad_column_logdet, dKx, false);
-            (*out).col(ic) = 0.5 * (grad_column_quad + grad_column_logdet);
+            (*out).col(ic) = 0.5 * (grad_column_quad + grad_column_logdet)* this->getLik()->getSigmaK2();
         }
     }
+
+    void CGPkronecker::aLMLgrad_X_c(MatrixXd *out) throw (CGPMixException)
+     {
+    	//0. set output dimensions
+    	(*out).resize(CGPbase::dataTerm->evaluate().cols(), this->gplvmDimensions_c.rows());
+    	MatrixXd dKx;
+    	VectorXd grad_column_quad;
+    	VectorXd grad_column_logdet;
+    	for(muint_t ic = 0;ic < (muint_t)((this->gplvmDimensions_c.rows()));ic++)
+    	{
+    		muint_t col = gplvmDimensions_c(ic);
+    		covar_c->aKgrad_X(&dKx, col);
+    		_gradQuadrFormX(&grad_column_quad,dKx,true);
+    		_gradLogDetX(&grad_column_logdet,dKx,true);
+    		(*out).col(ic) = 0.5*(grad_column_quad + grad_column_logdet)* this->getLik()->getSigmaK2();
+    	}
+    }
+
 
     CGPKroneckerCache& CGPkronecker::getCache()
     {
@@ -522,29 +507,34 @@ MatrixXd& CGPKroneckerCache::getYrot()
         gplvmDimensions_r = gplvmDimensionsR;
     }
 
- void CGPkronecker::aLMLgrad_X_c(MatrixXd *out) throw (CGPMixException)
- {
-	//0. set output dimensions
-	(*out).resize(CGPbase::dataTerm->evaluate().cols(), this->gplvmDimensions_c.rows());
-	MatrixXd dKx;
-	VectorXd grad_column_quad;
-	VectorXd grad_column_logdet;
-	for(muint_t ic = 0;ic < (muint_t)((this->gplvmDimensions_c.rows()));ic++)
-	{
-		muint_t col = gplvmDimensions_c(ic);
-		covar_c->aKgrad_X(&dKx, col);
-		_gradQuadrFormX(&grad_column_quad,dKx,true);
-		_gradLogDetX(&grad_column_logdet,dKx,true);
-		//std::cout << "_gradQuadrFormX("<< ic << ")=" << grad_column_quad << "\n";
-		//std::cout << "_gradLogDetX("<< ic << ")=" << grad_column_logdet << "\n";
-		(*out).col(ic) = 0.5*(grad_column_quad + grad_column_logdet);
-	}
-}
 
  void CGPkronecker::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 {
  	//0. set output dimensions
 	 (*out) = this->dataTerm->gradParams(this->cache.getKinvY());
 }
+
+
+ void CGPkronecker::apredictMean(MatrixXd* out, const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) throw (CGPMixException)
+ {
+	//1. calc cross variances for row and columns
+ 	MatrixXd Kstar_r,Kstar_c;
+ 	this->covar_r->aKcross(&Kstar_r,Xstar_r);
+ 	this->covar_c->aKcross(&Kstar_c,Xstar_c);
+ 	std::cout << "matrices loaded" << "\n";
+ 	//MatrixXd Kstar_rU = Kstar_r;//*this->cache.cache_r.getUK();
+ 	//MatrixXd Kstar_cU = Kstar_c;//*this->cache.cache_c.getUK();
+ 	std::cout << "allmost done" << "\n";
+ 	akronravel(*out,Kstar_r,Kstar_c,cache.getKinvY());
+ 	(*out) *= this->getLik()->getSigmaK2();
+ }
+
+ void CGPkronecker::apredictVar(MatrixXd* out,const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) throw (CGPMixException)
+ {
+	 throw CGPMixException("CGPKronecker: apredictVar not implemented yet!");
+ }
+
+
+
 
 } /* namespace gpmix */

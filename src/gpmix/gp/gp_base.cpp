@@ -399,7 +399,9 @@ void CGPbase::updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions
 	}
 	//update
 	for (muint_t ic=0;ic<(muint_t)X.cols();ic++)
+	{
 		covar.setXcol(X.col(ic),gplvmDimensions(ic));
+	}
 }
 
 

@@ -59,6 +59,8 @@ public:
 	double getTolerance() const;
 	void setTolerance(double tol = 1E-4);
 
+	muint_t getNumEvaluations() { return numEvaluations;}
+
 	CGPHyperParams getOptBoundLower() const;
     void setOptBoundLower(CGPHyperParams optBoundLower);
     CGPHyperParams getOptBoundUpper() const;

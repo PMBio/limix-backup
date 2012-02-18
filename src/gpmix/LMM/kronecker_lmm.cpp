@@ -215,8 +215,13 @@ void CKroneckerLMM::process() throw (CGPMixException)
 	VectorXd& S_C = gp->getCache().cache_c.getSK();
 	VectorXd& S_R = gp->getCache().cache_r.getSK();
 
+	std::cout << "standardize on"<< "\n";
+	S_C/=((S_C).sum()/S_C.rows());
+	S_R/=((S_R).sum()/S_R.rows());
+
+
 	MatrixXd Yrot;
-	akronravel(Yrot,UR.transpose(),UC.transpose(),gp->getY());	//note that this one does not match with the Yrot from the gp.
+	akronravel(Yrot,UR.transpose(),UC.transpose(),this->pheno);	//note that this one does not match with the Yrot from the gp.
 	//evaluate null model
 	mfloat_t ldelta0_ = 0.0;
 	mfloat_t nLL0_ = CKroneckerLMM::optdelta(ldelta0_,A0Rot,X0Rot, Yrot, S_C, S_R, ldeltamin0, ldeltamax0, num_intervals0);

@@ -79,7 +79,7 @@ public:
 	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
 	virtual std::string getName() const;
 };
-
+typedef sptr<CSumCF> PSumCF;
 
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
 //%shared_ptr(gpmix::CProductCF)
@@ -104,9 +104,10 @@ public:
 	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
 	virtual std::string getName() const;
 };
+typedef sptr<CProductCF> PProductCF;
 
 
-}
+} //end namespace gpmix
 
 
 
