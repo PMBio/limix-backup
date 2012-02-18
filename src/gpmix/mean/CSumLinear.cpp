@@ -55,7 +55,7 @@ muint_t CSumLinear::getRowsParams()
 }
 muint_t CSumLinear::getColsParams()
 {
-	return 0;
+	return 1;
 }
 
 

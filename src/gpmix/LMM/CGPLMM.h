@@ -68,6 +68,8 @@ protected:
 	MatrixXd nLL0, nLLAlt,ldeltaAlt,ldelta0;
 	PSumLinear meanAlt;
 	PSumLinear mean0;
+	//data term for alt model (to change fixed effect)
+	PKroneckerMean altTerm;
 	muint_t degreesFreedom;
 public:
 	CGPLMM(PGPkronecker gp);

@@ -219,7 +219,7 @@ void CKroneckerLMM::process() throw (CGPMixException)
 	akronravel(Yrot,UR.transpose(),UC.transpose(),gp->getY());	//note that this one does not match with the Yrot from the gp.
 	//evaluate null model
 	mfloat_t ldelta0_ = 0.0;
-	mfloat_t nLL0_ = CKroneckerLMM::optdelta(ldelta0_,A0Rot,X0Rot, Yrot, S_C, S_R, -10.0, 10.0, 100);
+	mfloat_t nLL0_ = CKroneckerLMM::optdelta(ldelta0_,A0Rot,X0Rot, Yrot, S_C, S_R, ldeltamin0, ldeltamax0, num_intervals0);
 	//store delta0
 	ldelta0.setConstant(ldelta0_);
 	nLL0.setConstant(nLL0_);
@@ -231,12 +231,20 @@ void CKroneckerLMM::process() throw (CGPMixException)
 		//0. update mean term
 		XsnpRot = snpsRot.block(0,is,num_samples,1);
 		//std::cout << XsnpRot <<"\n\n";
-		//1. evaluate null model
-		// pass
 		//2. evaluate alternative model
-		mfloat_t ldelta = ldelta0(0,is);
+		mfloat_t ldelta;
+		mfloat_t nLL;
+		if (num_intervalsAlt>0)
+		{
+			nLL = CKroneckerLMM::optdelta(ldelta,AAltRot,XAltRot, Yrot, S_C, S_R, ldeltaminAlt, ldeltamaxAlt, num_intervalsAlt);
+		}
+		else
+		{
+			ldelta = ldelta0(0,is);
+			nLL = this->nLLeval(ldelta,AAltRot,XAltRot,Yrot,S_C,S_R);
+		}
+		nLLAlt(0,is) = nLL;
 		ldeltaAlt(0,is) = ldelta;
-		nLLAlt(0,is) = this->nLLeval(ldelta,AAltRot,XAltRot,Yrot,S_C,S_R);
 		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
 		//std::cout<< "nLL0(0,is)"<< nLL0(0,is)<< "nLLAlt(0,is)" << nLLAlt(0,is)<< "\n";
 		if (deltaNLL<0)
