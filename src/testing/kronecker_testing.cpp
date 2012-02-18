@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -36,7 +36,7 @@ using namespace gpmix;
 int main() {
 	bool useIdentity = false;
 
-	try {
+	//try {
 		//random input X
 		muint_t Kr=2;
 		muint_t Kc=3;
@@ -57,14 +57,6 @@ int main() {
 		MatrixXd w = randn((muint_t)Kr,(muint_t)D);
 		MatrixXd y = X*w + eps*randn((muint_t)N,(muint_t)D);
 
-
-
-
-		//Kc = D;
-		//Kr = N;
-
-
-
 #if 1
 		MatrixXd Xr = randn(N,Kr);
 		//covariances
@@ -78,7 +70,13 @@ int main() {
 #if 1
 		MatrixXd Xc = randn(D,Kc);
 		//covariances
-		PCovLinearISO covar_c(new CCovLinearISO(Kc));
+		PCovLinearISO covar_c1(new CCovLinearISO(Kc));
+		PEyeCF covar_c2(new CEyeCF());
+
+		PSumCF covar_c(new CSumCF());
+		covar_c->addCovariance(covar_c1);
+		covar_c->addCovariance(covar_c2);
+
 #else	//identity for cols
 		//use simple fixed covarainces: identities on rows and colmns
 		MatrixXd Mc = MatrixXd::Identity(D,D);
@@ -107,11 +105,15 @@ int main() {
 
 
 		CovarInput lik_params = randn(lik->getNumberParams(),1);
+		//lik_params(0) = 0.5*log(1);
+		lik_params(1) = 0.1;
 		CGPHyperParams params;
 		params["covar_r"] = covar_params_r;
 		params["covar_c"] = covar_params_c;
 		params["lik"] = lik_params;
 		params["dataTerm"] = weights;
+		params["X_r"] = Xr;
+		params["X_c"] = Xc;
 
 		//set full params for initialization
 		gp->setParams(params);
@@ -125,40 +127,13 @@ int main() {
 		//opt_params.erase("dataTerm");
 		//opt_params.erase("X_c");
 
-		//double lml = gp.LML();
-
-		//set restricted param object without lik, covar_r, covar_c:
-		gp->setParams(opt_params);
-
-#if 0
-		opt_params["dataTerm"](0) =4.2;
-		gp->setParams(opt_params);
-		std::cout << "lmlgrad("<<opt_params << "):\n";
-		std::cout << gp->LML()<< "---" << gp->LMLgrad() << "----\n";
-
-		opt_params["dataTerm"](0) =1.0;
-		gp->setParams(opt_params);
-		std::cout << "lmlgrad("<<opt_params << "):\n";
-		std::cout << gp->LML()<< "---" << gp->LMLgrad() << "----\n";
-#endif
-
 #if 1
-		/*
-		std::cout <<"grad" << grad << "\n";
-		std::cout << "=====pre opt=====" << "\n";
-		std::cout << "lml("<<gp.getParams()<<")=" <<gp.LML()<< "\n";
-		std::cout << "dlml("<<gp.getParams()<<")=" <<gp.LMLgrad()<< "\n";
-		std::cout << "==========" << "\n";
-		*/
-
-		//std::cout << gp.getCache().cache_c.getK0() << "\n";
-		//std::cout << gp.getCache().cache_c.getUK() << "\n";
-
 		CGPopt opt(gp);
+		opt.addOptStartParams(opt_params);
 		CGPHyperParams upper;
 		CGPHyperParams lower;
-		upper["lik"] = 5.0*MatrixXd::Ones(1,1);
-		lower["lik"] = -5.0*MatrixXd::Ones(1,1);
+		upper["lik"] = 5.0*MatrixXd::Ones(2,1);
+		lower["lik"] = -5.0*MatrixXd::Ones(2,1);
 		opt.setOptBoundLower(lower);
 		opt.setOptBoundUpper(upper);
 
@@ -166,6 +141,9 @@ int main() {
 				": "<< opt.gradCheck()<<"\n";
 		//optimize:
 		opt.opt();
+
+		MatrixXd out;
+		gp->apredictMean(&out,Xr,Xc);
 
 		std::cout << "=====post opt=====" << "\n";
 		std::cout << "lml("<<gp->getParams()<<")=" <<gp->LML()<< "\n";
@@ -175,11 +153,10 @@ int main() {
 		std::cout << "gradcheck: "<< opt.gradCheck()<<"\n";
 #endif
 
-	}
-	catch(CGPMixException& e) {
-		cout <<"Exception : "<< e.what() << endl;
-	}
-
+	//}
+	//catch(CGPMixException& e) {
+	//	cout <<"Exception : "<< e.what() << endl;
+	//}
 
 }
 

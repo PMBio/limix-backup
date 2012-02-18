@@ -102,10 +102,10 @@ void AMultiCF::setX(const CovarInput& X) throw (CGPMixException)
 
 void AMultiCF::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
 {
-	if(((col+(muint_t)X.cols())>=getNumberDimensions()) || ((muint_t)X.rows()!=this->Kdim()))
+	if(((col+(muint_t)X.cols())>getNumberDimensions()) || ((muint_t)X.rows()!=this->Kdim()))
 	{
 		std::ostringstream os;
-		os << "setXcol out of range. Current X:"<<this->getNumberDimensions() <<")";
+		os << "setXcol out of range. Current X:"<<col<< "..."<<col+X.cols()<<" own:"<<this->getNumberDimensions() <<")";
 		throw CGPMixException(os.str());
 	}
 	if (X.cols()>1)

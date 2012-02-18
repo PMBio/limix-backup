@@ -90,7 +90,11 @@ public:
 
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%shared_ptr(gpmix::CGPkronecker)
+%ignore CGPkronecker::predictMean;
+%ignore CGPkronecker::predictVar;
+
+%rename(predictMean) CGPkronecker::apredictMean;
+%rename(predictVar) CGPkronecker::apredictVar;
 #endif
 
 class CGPkronecker: public CGPbase {
@@ -140,6 +144,11 @@ public:
 		PLikNormalSVD RV = std::tr1::static_pointer_cast<CLikNormalSVD> (this->lik);
 		return RV;
 	}
+
+
+	//predictions:
+	virtual void apredictMean(MatrixXd* out, const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) throw (CGPMixException);
+	virtual void apredictVar(MatrixXd* out, const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) throw (CGPMixException);
 
 
 	CGPHyperParams LMLgrad() throw (CGPMixException);
