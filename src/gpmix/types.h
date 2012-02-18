@@ -9,10 +9,7 @@
 #define TYPES_H_
 
 #include <Eigen/Dense>
-//using namespace Eigen;
-//using namespace std;
-//using namespace std::tr1;
-
+#include <vector>
 #include <iostream>
 #include <string>
 #include <tr1/memory>
@@ -83,6 +80,10 @@ typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, 1> VectorXdscipy;
 typedef Eigen::Matrix<mint_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXiscipy;
 typedef Eigen::Matrix<mint_t, Eigen::Dynamic, 1> VectorXiscipy;
 #endif
+
+//convenience wrappers
+typedef std::vector<MatrixXd> MatrixXdVec;
+
 
 //GpMix Exception Class
 class CGPMixException

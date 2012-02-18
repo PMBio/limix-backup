@@ -40,29 +40,64 @@ void CGPLMM::checkConsistency() throw (CGPMixException)
 		throw CGPMixException("GP and kroneckerLMM sample inconsitency");
 }
 
+
+
+
 void CGPLMM::initTesting() throw (CGPMixException)
 {
 	//initialize testing basedon A and A0
 	checkConsistency();
 	std::cout << "consistent" << "\n";
-	MatrixXd fixedEffects = MatrixXd::Ones(num_samples,1+num_covs);
-	MatrixXd fixedEffects0 = MatrixXd::Ones(num_samples,num_covs);
-	weightsAlt    = 0.5+MatrixXd::Zero(1+num_covs,AAlt.rows()).array();
-	weights0   = 0.5+MatrixXd::Zero(num_covs,A0.rows()).array();
 
-	meanAlt = PKroneckerMean(new CKroneckerMean(this->pheno,weightsAlt,fixedEffects,AAlt));
-	mean0 = PKroneckerMean(new CKroneckerMean(this->pheno,weights0,fixedEffects0,A0));
+	MatrixXd fixedEffectsAlt = MatrixXd::Ones(num_samples,1);
+	MatrixXd fixedEffects0   = this->covs;
+
+	//0. create pointers for SumLinearMean
+	mean0 = PSumLinear(new CSumLinear());
+	meanAlt = PSumLinear(new CSumLinear());
+
+	//1. loop through terms and create fixed effect object
+	//1.1 Null model terms
+	for(MatrixXdVec::const_iterator iter = VA0.begin(); iter!=VA0.end();iter++)
+	{
+		PKroneckerMean term(new CKroneckerMean());
+		//set design
+		term->setA(iter[0]);
+		//set fixed effect
+		term->setFixedEffects(fixedEffects0);
+		//add this term to both, mean0 and meanAlt
+		mean0->appendTerm(term);
+		meanAlt->appendTerm(term);
+	}
+	//1.2 alternative model terms + 1 term for AAlt
+	PKroneckerMean term(new CKroneckerMean());
+	//set design
+	term->setA(AAlt);
+	//set fixed effect
+	term->setFixedEffects(fixedEffectsAlt);
+	//add this term to both, mean0 and meanAlt
+	meanAlt->appendTerm(term);
+
+	//estimate degrees of freedom
+	degreesFreedom = fixedEffectsAlt.cols();
+
+	//3. get weight parameters for both dataTerms
+	weights0.resize(mean0->getRowsParams(),mean0->getColsParams());
+	weightsAlt.resize(meanAlt->getRowsParams(),meanAlt->getColsParams());
 
 	//create hyperparams objects
 	hpAlt = params0;
 	hp0    = params0;
+
 	//set data Term paramtetes
-	hpAlt["dataTerm"] = weightsAlt;
 	hp0["dataTerm"] = weights0;
+	hpAlt["dataTerm"] = weightsAlt;
+
 	//init optimization
 	opt = PGPopt(new CGPopt(gp));
 	//set filter
 	opt->setParamMask(paramsMask);
+
 	//bound all parameters
 	CGPHyperParams upper;
 	CGPHyperParams lower;
@@ -80,30 +115,12 @@ void CGPLMM::initTesting() throw (CGPMixException)
 }
 
 
-MatrixXd CGPLMM::getA() const
-{
-    return AAlt;
-}
 
-MatrixXd CGPLMM::getA0() const
-{
-    return A0;
-}
 
-void CGPLMM::setA0(const MatrixXd& a0)
-{
-    A0 = a0;
-}
 
-void CGPLMM::setA(const MatrixXd& a)
-{
-    AAlt = a;
-}
 
-void CGPLMM::agetA0(MatrixXd* out) const
-{
-	(*out) = A0;
-}
+
+
 
 PGPkronecker CGPLMM::getGp() const
 {
@@ -115,10 +132,6 @@ void CGPLMM::setGp(PGPkronecker gp)
     this->gp = gp;
 }
 
-void CGPLMM::agetA(MatrixXd *out) const
-{
-    (*out) = AAlt;
-}
 
 void CGPLMM::process() throw (CGPMixException)
 {
@@ -130,10 +143,6 @@ void CGPLMM::process() throw (CGPMixException)
 	ldelta0.resize(1,num_snps);
 	ldeltaAlt.resize(1,num_snps);
 	pv.resize(1,num_snps);
-
-	//estimate effective degrees of freedom: differnece in number of weights
-	muint_t df = this->AAlt.rows()-this->A0.rows();
-
 
 	//initialize covaraites and x
 	MatrixXd xAlt  = MatrixXd::Zero(num_samples,1+num_covs);
@@ -148,7 +157,8 @@ void CGPLMM::process() throw (CGPMixException)
 	{
 		//0. update mean term
 		xAlt.block(0,0,num_samples,1) = this->snps.block(0,is,num_samples,1);
-		meanAlt->setFixedEffects(xAlt);
+		//TODO: test me
+		//meanAlt->setFixedEffects(xAlt);
 
 		//1. evaluate null model
 		gp->setDataTerm(mean0);
@@ -171,7 +181,7 @@ void CGPLMM::process() throw (CGPMixException)
 		if (deltaNLL<=0)
 			deltaNLL = 1E-10;
 		//3. pvalues
-		this->pv(0, is) = Gamma::gammaQ(deltaNLL, (double)(0.5) * df);
+		this->pv(0, is) = Gamma::gammaQ(deltaNLL, (double)(0.5) * getDegreesFredom());
 	}
 }
 

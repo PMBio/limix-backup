@@ -52,6 +52,10 @@ public:
 		this->Y = Y;
 	}
 
+	//getparams
+	virtual muint_t getRowsParams() = 0;
+	virtual muint_t getColsParams() = 0;
+
 	virtual void aEvaluate(MatrixXd* Y);
 	virtual void aGradY(MatrixXd* gradY);
 	virtual void aGradParams(MatrixXd* outGradParamsRows, const MatrixXd* KinvY);

@@ -19,33 +19,47 @@ CSumLinear::~CSumLinear() {
 
 void CSumLinear::aGetParams(MatrixXd* outParams)
 {
-	muint_t sumParams = 0;
-	for (muint_t i = 0; i<this->terms.size(); ++i)
-	{
-		sumParams += this->terms[i]->getRowsParams() * this->terms[i]->getColsParams();
-	}
+	muint_t sumParams = getRowsParams()*getColsParams();
 	outParams->resize(sumParams, 1);
+
 	sumParams = 0;
-	for (muint_t i = 0; i<this->terms.size(); ++i)
+	for(VecLinearMean::const_iterator iter = terms.begin(); iter!=terms.end();iter++)
 	{
-		MatrixXd currentParams = terms[i]->getParams();
-		outParams->block(sumParams,0,this->terms[i]->getRowsParams() * this->terms[i]->getColsParams(),1).array() = currentParams.array();
-		sumParams += this->terms[i]->getRowsParams() * this->terms[i]->getColsParams();
+		MatrixXd currentParams = iter[0]->getParams();
+		outParams->block(sumParams,0,iter[0]->getRowsParams() * iter[0]->getColsParams(),1).array() = currentParams.array();
+		sumParams += iter[0]->getRowsParams() * iter[0]->getColsParams();
 	}
 }
 
 void CSumLinear::setParams(const MatrixXd& params)
 {
 	muint_t sumParams = 0;
-	for (muint_t i = 0; i<this->terms.size(); ++i)
+	for(VecLinearMean::const_iterator iter = terms.begin(); iter!=terms.end();iter++)
 	{
-		MatrixXd currentGradParams = MatrixXd(this->terms[i]->getRowsParams() * this->terms[i]->getColsParams(),1);
+		MatrixXd currentGradParams = MatrixXd(iter[0]->getRowsParams() * iter[0]->getColsParams(),1);
 		currentGradParams.array() = params.block(sumParams,0,currentGradParams.rows(),1).array();
-		currentGradParams.resize(this->terms[i]->getRowsParams() , this->terms[i]->getColsParams());
-		this->terms[i]->setParams(currentGradParams);
-		sumParams += this->terms[i]->getRowsParams() * this->terms[i]->getColsParams();
+		currentGradParams.resize(iter[0]->getRowsParams() , iter[0]->getColsParams());
+		iter[0]->setParams(currentGradParams);
+		sumParams += iter[0]->getRowsParams() * iter[0]->getColsParams();
 	}
 }
+
+muint_t CSumLinear::getRowsParams()
+{
+	muint_t sumParams = 0;
+	for(VecLinearMean::const_iterator iter = terms.begin(); iter!=terms.end();iter++)
+	{
+		sumParams+=iter[0]->getRowsParams();
+	}
+	return sumParams;
+}
+muint_t CSumLinear::getColsParams()
+{
+	return 0;
+}
+
+
+
 
 void CSumLinear::aEvaluate(MatrixXd* Y)
 {

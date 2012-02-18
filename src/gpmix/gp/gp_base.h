@@ -50,10 +50,6 @@ typedef Eigen::LLT<gpmix::MatrixXd> MatrixXdChol;
 %rename(__setitem__) CGPHyperParams::set;
 %rename(__str__) CGPHyperParams::toString;
 #endif
-
-//TODO: work on map handling in swig
-//%template(StringMatrixMap) map<std::string,MatrixXd>;
-//%shared_ptr(gpmix::CGPHyperParams)
 #endif
 //typedef map<string,MatrixXd> CGPHyperParamsMap;
 class CGPHyperParams : public std::map<std::string,MatrixXd>

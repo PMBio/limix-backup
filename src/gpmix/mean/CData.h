@@ -17,12 +17,15 @@ namespace gpmix {
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //%shared_ptr(gpmix::CData)
 #endif
-class CData: public gpmix::ADataTerm {
+class CData: public gpmix::ADataTerm
+{
 public:
 	CData();
 	CData(MatrixXd& Y);
 	~CData();
 	virtual inline std::string getName() const {return "CData";};
+	muint_t getRowsParams() {return 0;};
+	muint_t getColsParams() {return 0;};
 };
 
 

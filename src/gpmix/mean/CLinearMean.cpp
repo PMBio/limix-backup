@@ -11,17 +11,11 @@ namespace gpmix {
 CLinearMean::CLinearMean() : ADataTerm::ADataTerm() {
 	this->insync = false;
 	this->nTargets = 0;
-	this->fixedEffects = MatrixXd();
-	this->weights = MatrixXd();
-	this->Y = MatrixXd();
 }
 
 CLinearMean::CLinearMean(muint_t nTargets) : ADataTerm::ADataTerm() {
 	this->insync = false;
 	this->nTargets = nTargets;
-	this->fixedEffects = MatrixXd();
-	this->weights = MatrixXd();
-	this->Y = MatrixXd();
 }
 
 CLinearMean::CLinearMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects) : ADataTerm::ADataTerm(Y)

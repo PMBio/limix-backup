@@ -14,10 +14,10 @@
 namespace gpmix {
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%shared_ptr(gpmix::CLinearMean)
 #endif
 class CLinearMean: public ADataTerm {
-	friend class CKroneckerMean;
+	//friend class CKroneckerMean;
+protected:
 	MatrixXd weights;
 	MatrixXd fixedEffects;
 	muint_t nTargets;
@@ -28,6 +28,22 @@ public:
 	CLinearMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects);
 	CLinearMean(MatrixXd& Y, MatrixXd& fixedEffects);
 	virtual ~CLinearMean();
+
+	virtual void agetA(MatrixXd* out)
+	{
+		//generate the pseudo Design matrix that is equivalent ot the one used by CKroneckerMean
+		//TODO: think about implementing CLinearMean as a special case of CKroneckerMean?!
+		(*out) = MatrixXd::Identity(nTargets,nTargets);
+	}
+	virtual MatrixXd getA()
+	{
+			//generate the pseudo Design matrix that is equivalent ot the one used by CKroneckerMean
+			//TODO: think about implementing CLinearMean as a special case of CKroneckerMean?!
+			MatrixXd rv;
+			agetA(&rv);
+			return rv;
+	}
+
 
 	virtual void aEvaluate(MatrixXd* outY);
 	void aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY);
@@ -90,7 +106,7 @@ inline void CLinearMean::checkDimensions(const MatrixXd& weights, const MatrixXd
 			throw gpmix::CGPMixException(os.str());
 		}
 }
-
+typedef sptr<CLinearMean> PLinearMean;
 
 } /* namespace gpmix */
 #endif /* CLINEARMEAN_H_ */

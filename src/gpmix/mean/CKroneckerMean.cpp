@@ -10,12 +10,8 @@
 namespace gpmix {
 
 
-CKroneckerMean::CKroneckerMean(muint_t nSamples, muint_t nTargets)
+CKroneckerMean::CKroneckerMean()
 {
-	this->insync = false;
-	this->A = MatrixXd();
-	this->fixedEffects = MatrixXd();
-	this->weights = MatrixXd();
 }
 
 CKroneckerMean::~CKroneckerMean()
@@ -35,7 +31,7 @@ void CKroneckerMean::aPredictY(MatrixXd* outY) const
 
 void CKroneckerMean::aEvaluate(MatrixXd* outY)
 {
-	checkDimensions(weights,fixedEffects,Y, true, true, true);
+	//checkDimensions(weights,fixedEffects,Y, true, true, true);
 	*outY = (this->Y - (this->fixedEffects * this->weights) * this->A);
 }
 
@@ -66,7 +62,7 @@ void CKroneckerMean::setWeightsOLS(const MatrixXd& Y)
 
 void CKroneckerMean::setA(const MatrixXd& A)
 {
-	this->checkDimensions(fixedEffects, weights, A);
+	//this->checkDimensions(fixedEffects, weights, A);
 	this->insync = false;
 	this->A = A;
 }
