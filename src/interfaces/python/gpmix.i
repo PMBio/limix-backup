@@ -15,6 +15,7 @@
 #include "gpmix/mean/ADataTerm.h"
 #include "gpmix/mean/CData.h"
 #include "gpmix/mean/CLinearMean.h"
+#include "gpmix/mean/CSumLinear.h"
 #include "gpmix/mean/CKroneckerMean.h"
 #include "gpmix/gp/gp_base.h"
 #include "gpmix/gp/gp_kronecker.h"
@@ -48,7 +49,7 @@ using namespace gpmix;
 %}
 
 
-//%shared_ptr(gpmix::CTest)
+// Includ dedicated interface files
 %include "covar.i"
 %include "gp.i"
 %include "lik.i"
@@ -70,6 +71,7 @@ using namespace gpmix;
 %include "gpmix/mean/ADataTerm.h"
 %include "gpmix/mean/CData.h"
 %include "gpmix/mean/CLinearMean.h"
+%include "gpmix/mean/CSumLinear.h"
 %include "gpmix/mean/CKroneckerMean.h"
 %include "gpmix/gp/gp_base.h"
 %include "gpmix/gp/gp_kronecker.h"

@@ -10,11 +10,13 @@
 namespace gpmix {
 ADataTerm::ADataTerm()
 {
-	this->Y = MatrixXd();
+	insync = false;
 }
 
-ADataTerm::ADataTerm(MatrixXd& Y) {
+ADataTerm::ADataTerm(MatrixXd& Y)
+{
 	this->Y = Y;
+	insync = false;
 }
 
 ADataTerm::~ADataTerm()

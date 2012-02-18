@@ -37,6 +37,7 @@ SET(SOURCES gpmix/covar/covariance.cpp
 	    gpmix/gp/gp_opt.cpp
 	    gpmix/mean/ADataTerm.cpp
 	    gpmix/mean/CLinearMean.cpp
+	    gpmix/mean/CSumLinear.cpp
 	    gpmix/mean/CKroneckerMean.cpp
 	    gpmix/mean/CData.cpp
 )

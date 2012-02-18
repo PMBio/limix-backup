@@ -185,10 +185,10 @@ int main() {
 		//set covariates
 		lmm_.setCovs(MatrixXd::Ones(X.rows(),1));
 		//set design matrics: both testing all genes
-		MatrixXd A_ = MatrixXd::Ones(2,D);
+		MatrixXd A_ = MatrixXd::Ones(1,D);
 		MatrixXd A0_= MatrixXd::Ones(1,D);
-		lmm_.setA(A_);
-		lmm_.setA0(A0_);
+		lmm_.setAAlt(A_);
+		lmm_.addA0(A0_);
 		std::cout << "Start CKroneckerLMM:" << "\n";
 		lmm_.process();
 		MatrixXd pv_ = lmm_.getPv();
@@ -197,7 +197,7 @@ int main() {
 #endif
 
 
-#if 1
+#if 0
 		//test CGPLMM
 		CGPLMM lmm(gp);
 		//set SNPs
@@ -207,10 +207,10 @@ int main() {
 		//set covariates
 		lmm.setCovs(MatrixXd::Ones(X.rows(),1));
 		//set design matrics: both testing all genes
-		MatrixXd AAlt = MatrixXd::Ones(2,D);
+		MatrixXd AAlt = MatrixXd::Ones(1,D);
 		MatrixXd A0= MatrixXd::Ones(1,D);
-		lmm.setA(AAlt);
-		lmm.setA0(A0);
+		lmm.setAAlt(AAlt);
+		lmm.addA0(A0);
 		std::cout << "Start:" << "\n";
 		lmm.process();
 		MatrixXd pv = lmm.getPv();

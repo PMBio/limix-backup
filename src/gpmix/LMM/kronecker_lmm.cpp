@@ -15,102 +15,8 @@
 
 namespace gpmix {
 
-mfloat_t CKroneckerLMM::optdelta(mfloat_t& ldelta_opt, const std::vector<MatrixXd>& A, const std::vector<MatrixXd>& X, const MatrixXd& Y, const VectorXd& S_C, const VectorXd& S_R, mfloat_t ldeltamin, mfloat_t ldeltamax, muint_t numintervals)
-{
-    //grid variable with the current likelihood evaluations
-    MatrixXd nllgrid    = MatrixXd::Ones(numintervals,1).array()*HUGE_VAL;
-    MatrixXd ldeltagrid = MatrixXd::Zero(numintervals, 1);
-    //current delta
-    mfloat_t ldelta = ldeltamin;
-    mfloat_t ldeltaD = (ldeltamax - ldeltamin);
-    ldeltaD /= ((mfloat_t)(numintervals) - 1.0);
-    mfloat_t nllmin = HUGE_VAL;
-    mfloat_t ldeltaopt_glob = 0.0;
-    MatrixXd f_tests;
-    for(muint_t i = 0;i < numintervals;i++){
-    	nllgrid(i, 0) = CKroneckerLMM::nLLeval(ldelta, A, X, Y, S_C, S_R);
-        ldeltagrid(i, 0) = ldelta;
-        //std::cout<< "nnl( " << ldelta << ") = " << nllgrid(i,0) <<  "VS" << nllmin << ")\n\n";
-        if(nllgrid(i, 0) < nllmin){
-            //		std::cout << "new min (" << nllmin << ") -> " <<  nllgrid(i,0) << "\n\n";
-            nllmin = nllgrid(i, 0);
-            ldeltaopt_glob = ldelta;
-        }
-        //move on delta
-        ldelta += ldeltaD;
-    } //end for all intervals
 
-    //std::cout << "\n\n nLL_i:\n" << nllgrid;
-    ldelta_opt = ldeltaopt_glob;
-    return nllmin;
-}
-
-void CKroneckerLMM::process() throw (CGPMixException)
-{
-	//1. init testing engine
-	initTesting();
-	//2. init result arrays
-	nLL0.resize(1,num_snps);
-	nLLAlt.resize(1,num_snps);
-	ldelta0.resize(1,num_snps);
-	ldeltaAlt.resize(1,num_snps);
-	pv.resize(1,num_snps);
-
-	//estimate effective degrees of freedom: difference in number of weights
-	muint_t df = this->AAlt.rows()-this->A0.rows();
-	MatrixXd& UC = gp->getCache().cache_c.getUK();
-	MatrixXd& UR = gp->getCache().cache_r.getUK();
-	MatrixXd covsRot = UR.transpose() * this->covs;
-	MatrixXd snpsRot = UR.transpose() * this->snps;
-
-	//initialize covariates and x
-	std::vector<MatrixXd> xAlt;
-	xAlt.push_back(MatrixXd::Zero(num_samples,1+num_covs));
-	std::vector<MatrixXd> x0;
-	x0.push_back(MatrixXd::Zero(num_samples,num_covs));
-	xAlt[0].block(0,1,num_samples,num_covs) = covsRot;
-	x0[0].block(0,0,num_samples,num_covs) = covsRot;
-	std::vector<MatrixXd> A0_vec;
-	A0_vec.push_back(this->A0 * UC);
-
-	VectorXd& S_C = gp->getCache().cache_c.getSK();
-	VectorXd& S_R = gp->getCache().cache_r.getSK();
-	MatrixXd Yrot;
-	std::vector<MatrixXd> AaltRot;
-	AaltRot.push_back(this->AAlt * UC);
-	akronravel(Yrot,UR.transpose(),UC.transpose(),gp->getY());	//note that this one does not match with the Yrot from the gp.
-	//evaluate null model
-	mfloat_t ldelta0_ = 0.0;
-	mfloat_t nLL0_ = CKroneckerLMM::optdelta(ldelta0_,A0_vec, x0, Yrot, S_C, S_R, -10.0, 10.0, 100);
-	//store delta0
-	ldelta0.setConstant(ldelta0_);
-	nLL0.setConstant(nLL0_);
-
-	//2. loop over SNPs
-	mfloat_t deltaNLL;
-	for (muint_t is=0;is<num_snps;++is)
-	{
-		//0. update mean term
-		xAlt[0].block(0,0,num_samples,1) = snpsRot.block(0,is,num_samples,1);
-		//1. evaluate null model
-		// pass
-		//2. evaluate alternative model
-		mfloat_t ldelta = ldelta0(0,is);
-		ldeltaAlt(0,is) = ldelta;
-		nLLAlt(0,is) = this->nLLeval(ldelta,AaltRot,xAlt,Yrot,S_C,S_R);
-		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
-		if (deltaNLL<=0)
-			deltaNLL = 1E-10;
-		//3. pvalues
-		this->pv(0, is) = Gamma::gammaQ(deltaNLL, (double)(0.5) * df);
-	}
-}
-
-#ifdef returnW
-mfloat_t CKroneckerLMM::nLLeval(std::vector<MatrixXd>& W, std::vector<MatrixXd>& F_tests, mfloat_t ldelta, const std::vector<MatrixXd>& A, const std::vector<MatrixXd>& X, const MatrixXd& Y, const VectorXd& S_C, const VectorXd& S_R)
-#else
-mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const std::vector<MatrixXd>& A, const std::vector<MatrixXd>& X, const MatrixXd& Y, const VectorXd& S_C, const VectorXd& S_R)
-#endif
+mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C, const VectorXd& S_R)
 {
 	muint_t R = (muint_t)Y.rows();
 	muint_t C = (muint_t)Y.cols();
@@ -187,15 +93,17 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const std::vector<MatrixXd>& A,
 				}
 			}
 			covW.block(cumSumRowR * cumSumColR, cumSumRowC * cumSumColC,rowsBlock,colsBlock) = block;
+			//TODO: think...
+
 		}
 	}
-	//std::cout << "covW = " << covW<<std::endl;
+	std::cout << "covW = " << covW<<std::endl;
 	MatrixXd W_vec = covW.colPivHouseholderQr().solve(XYA);
-	//covW = covW.inverse();
-	//std::cout << "covW.inverse() = " << covW<<std::endl;
+	covW = covW.inverse();
+	std::cout << "covW.inverse() = " << covW<<std::endl;
 	//MatrixXd W_vec = covW * XYA;
-	//std::cout << "W = " << W_vec<<std::endl;
-	//std::cout << "XYA = " << XYA<<std::endl;
+	std::cout << "W = " << W_vec<<std::endl;
+	std::cout << "XYA = " << XYA<<std::endl;
 
 	mfloat_t res = (Y.array()*DY.array()).sum();
 	mfloat_t varPred = (W_vec.array() * XYA.array()).sum();
@@ -221,6 +129,125 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const std::vector<MatrixXd>& A,
 #endif
 	return nLL;
 }
+
+
+mfloat_t CKroneckerLMM::optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C, const VectorXd& S_R, mfloat_t ldeltamin, mfloat_t ldeltamax, muint_t numintervals)
+{
+    //grid variable with the current likelihood evaluations
+    MatrixXd nllgrid    = MatrixXd::Ones(numintervals,1).array()*HUGE_VAL;
+    MatrixXd ldeltagrid = MatrixXd::Zero(numintervals, 1);
+    //current delta
+    mfloat_t ldelta = ldeltamin;
+    mfloat_t ldeltaD = (ldeltamax - ldeltamin);
+    ldeltaD /= ((mfloat_t)(numintervals) - 1.0);
+    mfloat_t nllmin = HUGE_VAL;
+    mfloat_t ldeltaopt_glob = 0.0;
+    MatrixXd f_tests;
+    for(muint_t i = 0;i < numintervals;i++){
+    	nllgrid(i, 0) = CKroneckerLMM::nLLeval(ldelta, A, X, Y, S_C, S_R);
+        ldeltagrid(i, 0) = ldelta;
+        //std::cout<< "nnl( " << ldelta << ") = " << nllgrid(i,0) <<  "VS" << nllmin << ")\n\n";
+        if(nllgrid(i, 0) < nllmin){
+            //		std::cout << "new min (" << nllmin << ") -> " <<  nllgrid(i,0) << "\n\n";
+            nllmin = nllgrid(i, 0);
+            ldeltaopt_glob = ldelta;
+        }
+        //move on delta
+        ldelta += ldeltaD;
+    } //end for all intervals
+
+    //std::cout << "\n\n nLL_i:\n" << nllgrid;
+    ldelta_opt = ldeltaopt_glob;
+    return nllmin;
+}
+
+void CKroneckerLMM::process() throw (CGPMixException)
+{
+	//1. init testing engine
+	initTesting();
+	//2. init result arrays
+	nLL0.resize(1,num_snps);
+	nLLAlt.resize(1,num_snps);
+	ldelta0.resize(1,num_snps);
+	ldeltaAlt.resize(1,num_snps);
+	pv.resize(1,num_snps);
+
+	//estimate effective degrees of freedom: difference in number of weights
+	MatrixXd& UC = gp->getCache().cache_c.getUK();
+	MatrixXd& UR = gp->getCache().cache_r.getUK();
+	MatrixXd covsRot = UR.transpose() * this->covs;
+	MatrixXd snpsRot = UR.transpose() * this->snps;
+
+	//initialize vectors of rotated fixed effects and designs:
+	MatrixXdVec X0Rot;
+	MatrixXdVec XAltRot;
+	MatrixXdVec A0Rot;
+	MatrixXdVec AAltRot;
+
+	//get alt terms and null model terms
+	VecLinearMean& terms0 = mean0->getTerms();
+	VecLinearMean& termsAlt = meanAlt->getTerms();
+
+	//null model terms
+	for(VecLinearMean::const_iterator iter = terms0.begin(); iter!=terms0.end();iter++)
+	{
+		MatrixXd X = iter[0]->getFixedEffects();
+		MatrixXd A = iter[0]->getA();
+		A0Rot.push_back(A*UC);
+		X0Rot.push_back(UR.transpose()*X);
+	}
+	//alternative model terms
+	for(VecLinearMean::const_iterator iter = termsAlt.begin(); iter!=termsAlt.end();iter++)
+	{
+		MatrixXd X = iter[0]->getFixedEffects();
+		MatrixXd A = iter[0]->getA();
+		AAltRot.push_back(A*UC);
+		XAltRot.push_back(UR.transpose()*X);
+	}
+	//create pointer to the last term in alt models which is SNP-dependent
+	MatrixXd& XsnpRot = XAltRot[XAltRot.size()-1];
+	XsnpRot(0,0) = 99;
+	std::cout << XsnpRot <<"\n\n";
+	std::cout << XAltRot[XAltRot.size()-1] <<"\n\n";
+
+
+	//evaluate cache details
+	VectorXd& S_C = gp->getCache().cache_c.getSK();
+	VectorXd& S_R = gp->getCache().cache_r.getSK();
+
+	MatrixXd Yrot;
+	akronravel(Yrot,UR.transpose(),UC.transpose(),gp->getY());	//note that this one does not match with the Yrot from the gp.
+	//evaluate null model
+	mfloat_t ldelta0_ = 0.0;
+	mfloat_t nLL0_ = CKroneckerLMM::optdelta(ldelta0_,A0Rot,X0Rot, Yrot, S_C, S_R, -10.0, 10.0, 100);
+	//store delta0
+	ldelta0.setConstant(ldelta0_);
+	nLL0.setConstant(nLL0_);
+
+	//2. loop over SNPs
+	mfloat_t deltaNLL;
+	for (muint_t is=0;is<num_snps;++is)
+	{
+		//0. update mean term
+		XsnpRot = snpsRot.block(0,is,num_samples,1);
+		std::cout << XsnpRot <<"\n\n";
+		//1. evaluate null model
+		// pass
+		//2. evaluate alternative model
+		mfloat_t ldelta = ldelta0(0,is);
+		ldeltaAlt(0,is) = ldelta;
+		nLLAlt(0,is) = this->nLLeval(ldelta,AAltRot,XAltRot,Yrot,S_C,S_R);
+		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
+		if (deltaNLL<=0)
+		{
+			std::cout << "outche" << "\n";
+			deltaNLL = 1E-10;
+		}
+		//3. pvalues
+		this->pv(0, is) = Gamma::gammaQ(deltaNLL, (double)(0.5) * getDegreesFredom());
+	}
+}
+
 #if 0
 
 

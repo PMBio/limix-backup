@@ -12,27 +12,32 @@
 #include "gpmix/gp/gp_kronecker.h"
 #include "gpmix/gp/gp_opt.h"
 #include "gpmix/mean/CKroneckerMean.h"
+#include "gpmix/mean/CSumLinear.h"
+
 
 
 namespace gpmix {
-
 /*
  * CGPLMM:
  * testing based on GP class
  */
+
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //ignore C++ versions
 %ignore CGPLMM::getNLL0;
 %ignore CGPLMM::getNLLAlt;
 %ignore CGPLMM::getLdeltaAlt;
 %ignore CGPLMM::getLdelta0;
-
+%ignore CGPLMM::getAAlt;
+%ignore CGPLMM::getA0;
 
 //rename argout versions for python; this overwrites the C++ convenience functions
 %rename(getNLL0) CGPLMM::agetNLL0;
 %rename(getNLLAlt) CGPLMM::agetNLLAlt;
 %rename(getLdeltaAlt) CGPLMM::agetLdeltaAlt;
 %rename(getLdelta0) CGPLMM::agetLdelta0;
+%rename(getAAlt) CGPLMM::agetAAlt;
+%rename(getA0) CGPLMM::agetA0;
 #endif
 
 class CGPLMM : public ALMM
@@ -48,7 +53,7 @@ protected:
 
 	//design matrices for foreground and background model
 	MatrixXd AAlt;
-	MatrixXd A0;
+	MatrixXdVec VA0;
 	//weight matrices (starting point of opt)
 	MatrixXd weightsAlt;
 	MatrixXd weights0;
@@ -61,21 +66,58 @@ protected:
 	CGPHyperParams paramsMask;
 	//negative log likelihoods for foreground/background model
 	MatrixXd nLL0, nLLAlt,ldeltaAlt,ldelta0;
-
-	sptr<CKroneckerMean> meanAlt;
-	sptr<CKroneckerMean> mean0;
+	PSumLinear meanAlt;
+	PSumLinear mean0;
+	muint_t degreesFreedom;
 public:
 	CGPLMM(PGPkronecker gp);
 	virtual ~CGPLMM()
 	{};
 	//overload pure virtual functions:
 	virtual void process() throw (CGPMixException);
-    MatrixXd getA() const;
-    void setA(const MatrixXd& a);
-    MatrixXd getA0() const;
-    void setA0(const MatrixXd& a0);
-    void agetA0(MatrixXd* out) const;
-    void agetA(MatrixXd* out) const;
+
+
+	//set get AAlt
+	void setAAlt(const MatrixXd& AAlt)
+	{
+		this->AAlt = AAlt;
+	}
+	MatrixXd getAAlt()
+	{
+		return AAlt;
+	}
+	void agetAAlt(MatrixXd* out)
+	{
+		(*out) = AAlt;
+	}
+
+	//VA0 and elements
+	void setVA0(const MatrixXdVec& VA0)
+	{
+		this->VA0 = VA0;
+	}
+	MatrixXdVec getVA0()
+	{
+		return VA0;
+	}
+    void addA0(const MatrixXd& a)
+    {
+    	VA0.push_back(a);
+    }
+    void setA0(const MatrixXd& a0,muint_t i)
+    {
+        VA0[i] = a0;
+    }
+    MatrixXd getA0(muint_t i) const
+    {
+    	return VA0[i];
+    }
+    void agetA0(MatrixXd* out,muint_t i) const
+    {
+    	(*out) = VA0[i];
+    }
+    muint_t getDegreesFredom() { return degreesFreedom;}
+
     PGPkronecker getGp() const;
     void setGp(PGPkronecker gp);
 
@@ -132,8 +174,6 @@ public:
 	{
 		return ldeltaAlt;
 	}
-
-
 };
 
 
