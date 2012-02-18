@@ -49,8 +49,7 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 
 	VectorXd XYA = VectorXd(nWeights);
 
-	muint_t cumSumRowR = 0;
-	muint_t cumSumColR = 0;
+	muint_t cumSumR = 0;
 
 	MatrixXd covW = MatrixXd(nWeights,nWeights);
 	for(muint_t termR = 0; termR < A.size();++termR){
@@ -59,10 +58,10 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 		muint_t rowsBlock = nW_AR * nW_XR;
 		MatrixXd XYAblock = X[termR].transpose() * DY * A[termR].transpose();
 		XYAblock.resize(rowsBlock,1);
-		XYA.block(cumSumRowR,0,rowsBlock,1) = XYAblock;
+		XYA.block(cumSumR,0,rowsBlock,1) = XYAblock;
 
-		muint_t cumSumRowC = 0;
-		muint_t cumSumColC = 0;
+		muint_t cumSumC = 0;
+
 		for(muint_t termC = 0; termC < A.size(); ++termC){
 			muint_t nW_AC = A[termC].rows();
 			muint_t nW_XC = X[termC].cols();
@@ -92,18 +91,16 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 					akron(block,AA,XX,true);
 				}
 			}
-			covW.block(cumSumRowR * cumSumColR, cumSumRowC * cumSumColC,rowsBlock,colsBlock) = block;
-			//TODO: think...
-
+			covW.block(cumSumR, cumSumC, rowsBlock, colsBlock) = block;
+			cumSumC+=colsBlock;
 		}
+		cumSumR+=rowsBlock;
 	}
-	std::cout << "covW = " << covW<<std::endl;
+	//std::cout << "covW = " << covW<<std::endl;
 	MatrixXd W_vec = covW.colPivHouseholderQr().solve(XYA);
-	covW = covW.inverse();
-	std::cout << "covW.inverse() = " << covW<<std::endl;
 	//MatrixXd W_vec = covW * XYA;
-	std::cout << "W = " << W_vec<<std::endl;
-	std::cout << "XYA = " << XYA<<std::endl;
+	//std::cout << "W = " << W_vec<<std::endl;
+	//std::cout << "XYA = " << XYA<<std::endl;
 
 	mfloat_t res = (Y.array()*DY.array()).sum();
 	mfloat_t varPred = (W_vec.array() * XYA.array()).sum();
@@ -113,6 +110,9 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 
 	mfloat_t nLL = 0.5 * ( R * C * (L2pi + log(sigma) + 1.0) + ldet);
 #ifdef returnW
+	covW = covW.inverse();
+	//std::cout << "covW.inverse() = " << covW<<std::endl;
+
 	muint_t cumSum = 0;
 	VectorXd F_vec = W_vec.array() * W_vec.array() /covW.diagonal().array() / sigma;
 	for(muint_t term = 0; term < A.size();++term)
@@ -206,9 +206,9 @@ void CKroneckerLMM::process() throw (CGPMixException)
 	}
 	//create pointer to the last term in alt models which is SNP-dependent
 	MatrixXd& XsnpRot = XAltRot[XAltRot.size()-1];
-	XsnpRot(0,0) = 99;
-	std::cout << XsnpRot <<"\n\n";
-	std::cout << XAltRot[XAltRot.size()-1] <<"\n\n";
+	//XsnpRot(0,0) = 99;
+	//std::cout << XsnpRot <<"\n\n";
+	//std::cout << XAltRot[XAltRot.size()-1] <<"\n\n";
 
 
 	//evaluate cache details
@@ -230,7 +230,7 @@ void CKroneckerLMM::process() throw (CGPMixException)
 	{
 		//0. update mean term
 		XsnpRot = snpsRot.block(0,is,num_samples,1);
-		std::cout << XsnpRot <<"\n\n";
+		//std::cout << XsnpRot <<"\n\n";
 		//1. evaluate null model
 		// pass
 		//2. evaluate alternative model
@@ -238,9 +238,10 @@ void CKroneckerLMM::process() throw (CGPMixException)
 		ldeltaAlt(0,is) = ldelta;
 		nLLAlt(0,is) = this->nLLeval(ldelta,AAltRot,XAltRot,Yrot,S_C,S_R);
 		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
-		if (deltaNLL<=0)
+		//std::cout<< "nLL0(0,is)"<< nLL0(0,is)<< "nLLAlt(0,is)" << nLLAlt(0,is)<< "\n";
+		if (deltaNLL<0)
 		{
-			std::cout << "outche" << "\n";
+			std::cout << "outch" << "\n";
 			deltaNLL = 1E-10;
 		}
 		//3. pvalues
