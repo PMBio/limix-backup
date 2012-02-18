@@ -197,7 +197,7 @@ int main() {
 #endif
 
 
-#if 0
+#if 1
 		//test CGPLMM
 		CGPLMM lmm(gp);
 		//set SNPs

@@ -55,6 +55,8 @@ void CGPLMM::initTesting() throw (CGPMixException)
 	//0. create pointers for SumLinearMean
 	mean0 = PSumLinear(new CSumLinear());
 	meanAlt = PSumLinear(new CSumLinear());
+	mean0->setY(this->pheno);
+	meanAlt->setY(this->pheno);
 
 	//1. loop through terms and create fixed effect object
 	//1.1 Null model terms
@@ -70,13 +72,13 @@ void CGPLMM::initTesting() throw (CGPMixException)
 		meanAlt->appendTerm(term);
 	}
 	//1.2 alternative model terms + 1 term for AAlt
-	PKroneckerMean term(new CKroneckerMean());
+	altTerm = PKroneckerMean(new CKroneckerMean());
 	//set design
-	term->setA(AAlt);
+	altTerm->setA(AAlt);
 	//set fixed effect
-	term->setFixedEffects(fixedEffectsAlt);
+	altTerm->setFixedEffects(fixedEffectsAlt);
 	//add this term to both, mean0 and meanAlt
-	meanAlt->appendTerm(term);
+	meanAlt->appendTerm(altTerm);
 
 	//estimate degrees of freedom
 	degreesFreedom = fixedEffectsAlt.cols();
@@ -116,12 +118,6 @@ void CGPLMM::initTesting() throw (CGPMixException)
 
 
 
-
-
-
-
-
-
 PGPkronecker CGPLMM::getGp() const
 {
     return gp;
@@ -144,21 +140,20 @@ void CGPLMM::process() throw (CGPMixException)
 	ldeltaAlt.resize(1,num_snps);
 	pv.resize(1,num_snps);
 
+	/*
 	//initialize covaraites and x
 	MatrixXd xAlt  = MatrixXd::Zero(num_samples,1+num_covs);
 	MatrixXd x0 = MatrixXd::Zero(num_samples,num_covs);
 	xAlt.block(0,1,num_samples,num_covs) = this->covs;
 	x0.block(0,0,num_samples,num_covs) = this->covs;
-
+	*/
 
 	//2. loop over SNPs
 	mfloat_t deltaNLL;
 	for (muint_t is=0;is<num_snps;++is)
 	{
-		//0. update mean term
-		xAlt.block(0,0,num_samples,1) = this->snps.block(0,is,num_samples,1);
-		//TODO: test me
-		//meanAlt->setFixedEffects(xAlt);
+		//swap out fixed effect:
+		altTerm->setFixedEffects(this->snps.block(0,is,num_samples,1));
 
 		//1. evaluate null model
 		gp->setDataTerm(mean0);
