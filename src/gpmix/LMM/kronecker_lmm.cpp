@@ -16,6 +16,40 @@
 namespace gpmix {
 
 
+void CKroneckerLMM::initTestingGP()
+{
+	//call base object init
+	CGPLMM::initTesting();
+	//store decompositions
+	Ur = gp->getCache().cache_r.getUK();
+	Uc = gp->getCache().cache_c.getUK();
+	Sr = gp->getCache().cache_r.getSK();
+	Sc = gp->getCache().cache_c.getSK();
+}
+
+void CKroneckerLMM::initTestingK()
+{
+	//assert that dimensions match
+	checkConsistency();
+	//additional checks for Kr and Kc
+	if(Kr.rows()!=snps.rows())
+	{
+		throw CGPMixException("KroneckerLMM: row covariance size missmatch");
+	}
+	if (Kc.rows()!=pheno.cols())
+	{
+		throw CGPMixException("KroneckerLMM: column covariance size missmatch!");
+	}
+	//carry out decomposition for caches
+	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolverR(Kr);
+	Ur = eigensolverR.eigenvectors();
+	Sr = eigensolverR.eigenvalues();
+	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolverC(Kc);
+	Uc = eigensolverC.eigenvectors();
+	Sc = eigensolverC.eigenvalues();
+}
+
+
 mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C, const VectorXd& S_R)
 {
 	muint_t R = (muint_t)Y.rows();
@@ -164,7 +198,14 @@ mfloat_t CKroneckerLMM::optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,cons
 void CKroneckerLMM::process() throw (CGPMixException)
 {
 	//1. init testing engine
-	initTesting();
+	//do we have a gp object?
+	initTestingGP();
+	//do we have manual Kr?
+	if ((!isnull(Kr)) && (!isnull(Kc)))
+	{
+		//use manually specified Kr/Kc
+		initTestingK();
+	}
 	//2. init result arrays
 	nLL0.resize(1,num_snps);
 	nLLAlt.resize(1,num_snps);
@@ -173,10 +214,8 @@ void CKroneckerLMM::process() throw (CGPMixException)
 	pv.resize(1,num_snps);
 
 	//estimate effective degrees of freedom: difference in number of weights
-	MatrixXd& UC = gp->getCache().cache_c.getUK();
-	MatrixXd& UR = gp->getCache().cache_r.getUK();
-	MatrixXd covsRot = UR.transpose() * this->covs;
-	MatrixXd snpsRot = UR.transpose() * this->snps;
+	MatrixXd covsRot = Ur.transpose() * this->covs;
+	MatrixXd snpsRot = Ur.transpose() * this->snps;
 
 	//initialize vectors of rotated fixed effects and designs:
 	MatrixXdVec X0Rot;
@@ -185,6 +224,7 @@ void CKroneckerLMM::process() throw (CGPMixException)
 	MatrixXdVec AAltRot;
 
 	//get alt terms and null model terms
+	//TODO: mean terms don't work.
 	VecLinearMean& terms0 = mean0->getTerms();
 	VecLinearMean& termsAlt = meanAlt->getTerms();
 
@@ -193,16 +233,16 @@ void CKroneckerLMM::process() throw (CGPMixException)
 	{
 		MatrixXd X = iter[0]->getFixedEffects();
 		MatrixXd A = iter[0]->getA();
-		A0Rot.push_back(A*UC);
-		X0Rot.push_back(UR.transpose()*X);
+		A0Rot.push_back(A*Uc);
+		X0Rot.push_back(Ur.transpose()*X);
 	}
 	//alternative model terms
 	for(VecLinearMean::const_iterator iter = termsAlt.begin(); iter!=termsAlt.end();iter++)
 	{
 		MatrixXd X = iter[0]->getFixedEffects();
 		MatrixXd A = iter[0]->getA();
-		AAltRot.push_back(A*UC);
-		XAltRot.push_back(UR.transpose()*X);
+		AAltRot.push_back(A*Uc);
+		XAltRot.push_back(Ur.transpose()*X);
 	}
 	//create pointer to the last term in alt models which is SNP-dependent
 	MatrixXd& XsnpRot = XAltRot[XAltRot.size()-1];
@@ -212,19 +252,17 @@ void CKroneckerLMM::process() throw (CGPMixException)
 
 
 	//evaluate cache details
-	VectorXd& S_C = gp->getCache().cache_c.getSK();
-	VectorXd& S_R = gp->getCache().cache_r.getSK();
 
 	std::cout << "standardize on"<< "\n";
-	S_C/=((S_C).sum()/S_C.rows());
-	S_R/=((S_R).sum()/S_R.rows());
+	Sc/=((Sc).sum()/Sc.rows());
+	Sr/=((Sr).sum()/Sr.rows());
 
 
 	MatrixXd Yrot;
-	akronravel(Yrot,UR.transpose(),UC.transpose(),this->pheno);	//note that this one does not match with the Yrot from the gp.
+	akronravel(Yrot,Ur.transpose(),Uc.transpose(),this->pheno);	//note that this one does not match with the Yrot from the gp.
 	//evaluate null model
 	mfloat_t ldelta0_ = 0.0;
-	mfloat_t nLL0_ = CKroneckerLMM::optdelta(ldelta0_,A0Rot,X0Rot, Yrot, S_C, S_R, ldeltamin0, ldeltamax0, num_intervals0);
+	mfloat_t nLL0_ = CKroneckerLMM::optdelta(ldelta0_,A0Rot,X0Rot, Yrot, Sc, Sr, ldeltamin0, ldeltamax0, num_intervals0);
 	//store delta0
 	ldelta0.setConstant(ldelta0_);
 	nLL0.setConstant(nLL0_);
@@ -241,12 +279,12 @@ void CKroneckerLMM::process() throw (CGPMixException)
 		mfloat_t nLL;
 		if (num_intervalsAlt>0)
 		{
-			nLL = CKroneckerLMM::optdelta(ldelta,AAltRot,XAltRot, Yrot, S_C, S_R, ldeltaminAlt, ldeltamaxAlt, num_intervalsAlt);
+			nLL = CKroneckerLMM::optdelta(ldelta,AAltRot,XAltRot, Yrot, Sc, Sr, ldeltaminAlt, ldeltamaxAlt, num_intervalsAlt);
 		}
 		else
 		{
 			ldelta = ldelta0(0,is);
-			nLL = this->nLLeval(ldelta,AAltRot,XAltRot,Yrot,S_C,S_R);
+			nLL = this->nLLeval(ldelta,AAltRot,XAltRot,Yrot,Sc,Sr);
 		}
 		nLLAlt(0,is) = nLL;
 		ldeltaAlt(0,is) = ldelta;

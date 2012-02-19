@@ -35,9 +35,12 @@ void CGPLMM::checkConsistency() throw (CGPMixException)
 	if(!num_samples == covs.rows())
 		throw CGPMixException("covariates and SNP dimensions inconsistent");
 
-	//check that SNPs have consisten dimension:
-	if(this->num_samples!=gp->getNumberSamples())
-		throw CGPMixException("GP and kroneckerLMM sample inconsitency");
+	if (gp)
+	{
+		//check that SNPs have consisten dimension:
+		if(this->num_samples!=gp->getNumberSamples())
+			throw CGPMixException("GP and kroneckerLMM sample inconsitency");
+	}
 }
 
 
