@@ -73,10 +73,13 @@ protected:
 	muint_t degreesFreedom;
 public:
 	CGPLMM(PGPkronecker gp);
+	CGPLMM()
+	{};
 	virtual ~CGPLMM()
 	{};
 	//overload pure virtual functions:
 	virtual void process() throw (CGPMixException);
+
 
 
 	//set get AAlt

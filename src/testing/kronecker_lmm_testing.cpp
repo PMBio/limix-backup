@@ -6,7 +6,7 @@
 // Test file for kronecker LMM test
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -178,6 +178,10 @@ int main() {
 #if 1
 		//test CGPLMM
 		CKroneckerLMM lmm_(gp);
+		lmm_.setKr(gp->getCovarR()->K());
+		lmm_.setKc(gp->getCovarC()->K());
+
+
 		//set SNPs
 		lmm_.setSNPs(S);
 		//set Phenotypes
@@ -197,7 +201,7 @@ int main() {
 #endif
 
 
-#if 1
+#if 0
 		//test CGPLMM
 		CGPLMM lmm(gp);
 		//set SNPs
