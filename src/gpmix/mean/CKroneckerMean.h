@@ -41,11 +41,10 @@ public:
 	inline void checkDimensions(const MatrixXd& Y, const bool checkStrictWeights) const throw (CGPMixException);
 	virtual inline std::string getName() const { return "CKoneckerFixedTerm"; };
 	inline muint_t getDimFixedEffects() const { return this->fixedEffects.cols(); };
-	virtual muint_t getColsParams() {
+	virtual muint_t getColsParams()
+	{
 		return (muint_t) this->A.rows();
 	}
-
-	inline void makeSync() const {}
 };
 typedef sptr<CKroneckerMean> PKroneckerMean;
 

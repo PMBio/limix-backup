@@ -10,24 +10,16 @@
 namespace gpmix {
 ADataTerm::ADataTerm()
 {
-	insync = false;
 }
 
 ADataTerm::ADataTerm(MatrixXd& Y)
 {
 	this->Y = Y;
-	insync = false;
 }
 
 ADataTerm::~ADataTerm()
 {
 }
-
-bool ADataTerm::isInSync() const
-{return insync;}
-
-void ADataTerm::makeSync()
-{ insync = true;}
 
 void ADataTerm::aEvaluate(MatrixXd* outY)
 {

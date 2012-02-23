@@ -10,133 +10,106 @@
 
 namespace gpmix {
 
-CGPSVDCache::CGPSVDCache(CGPbase* gp, PCovarianceFunction covar) : CGPCholCache(gp,covar), covar(covar)
+
+
+CGPKroneckerCache::CGPKroneckerCache(CGPkronecker* gp)
 {
-}
+	this->syncCovar_r = Pbool(new bool);
+	this->syncCovar_c = Pbool(new bool);
+	this->syncLik = Pbool(new bool);
+	this->syncData = Pbool(new bool);
 
-
-void CGPSVDCache::updateDecomposition()
-{
-	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(getK0());
-	UK = eigensolver.eigenvectors();
-	SK = eigensolver.eigenvalues();
-	//set sync
-	USVDNULL=false;
-}
-
-
-MatrixXd& CGPSVDCache::getUK()
-{
-	if(!isInSync())
-		this->clearCache();
-	if(USVDNULL)
-		updateDecomposition();
-	return UK;
-}
-
-ACovarianceFunction& CGPSVDCache::getCovar()
-{
-	return (*covar);
-}
-
-
-VectorXd& CGPSVDCache::getSK()
-{
-	if(!isInSync())
-		this->clearCache();
-	if(USVDNULL)
-		updateDecomposition();
-	return SK;
-}
-
-void CGPSVDCache::clearCache()
-{
-	CGPCholCache::clearCache();
-	USVDNULL=true;
-}
-
-bool CGPSVDCache::isInSync() const
-{
-	return covar->isInSync();
-}
-
-
-CGPKroneckerCache::CGPKroneckerCache(CGPkronecker* gp, PCovarianceFunction covar_r, PCovarianceFunction covar_c)
-:gp(gp), cache_r(gp, covar_r), cache_c(gp, covar_c)
-{
+	this->gp = gp;
+	this->covar_r = PCovarianceFunctionCache(new CCovarianceFunctionCache(this->gp->covar_r));
+	this->covar_c = PCovarianceFunctionCache(new CCovarianceFunctionCache(this->gp->covar_c));
+	//add sync liestener
+	covar_r->addSyncChild(this->syncCovar_r);
+	covar_c->addSyncChild(this->syncCovar_c);
+	this->gp->lik->addSyncChild(this->syncLik);
+	this->gp->dataTerm->addSyncChild(this->syncData);
+	//set all cache Variables to Null
+	YSiCacheNull=true;
+	KinvYCacheNull=true;
+	KinvYCacheNull= true;
+	SiCacheNull=true;
+	YrotCacheNull=true;
 }
 
 
 
-void CGPKroneckerCache::clearCache()
+void CGPKroneckerCache::validateCache()
 {
-	YrotNull = true;
-	SiNull = true;
-	YSiNull = true;
-	KinvYNull= true;
-	gp->dataTerm->makeSync();
+	//1. variables that depend on any of the caches
+	if((!syncCovar_c) || (!syncCovar_r) || (!syncLik) || (!syncData))
+	{
+		YSiCacheNull=true;
+		KinvYCacheNull=true;
+	}
+	//covar or lik
+	if((!syncCovar_c) || (!syncCovar_r) || (!syncLik))
+	{
+		SiCacheNull=true;
+	}
+	//covar or data
+	if((!syncCovar_c) || (!syncCovar_r) || (!syncData))
+	{
+		YrotCacheNull=true;
+	}
+	//set all sync
+	setSync();
 }
 
-bool CGPKroneckerCache::isInSync() const
+MatrixXd& CGPKroneckerCache::rgetYrot()
 {
-	return cache_r.covar->isInSync() && cache_c.covar->isInSync() && gp->dataTerm->isInSync() && gp->lik->isInSync();
-}
-
-MatrixXd& CGPKroneckerCache::getYrot()
+	validateCache();
+	if(YrotCacheNull)
     {
-   		if(!isInSync())
-   			clearCache();
-		if(YrotNull)
-        {
-            akronravel(Yrot, (cache_r.getUK()).transpose(), (cache_c.getUK()).transpose(), gp->dataTerm->evaluate());
-            YrotNull=false;
-        }
-        return Yrot;
+            akronravel(YrotCache, (covar_r->rgetUK()).transpose(), (covar_c->rgetUK()).transpose(), gp->dataTerm->evaluate());
+            YrotCacheNull=false;
     }
+        return YrotCache;
+}
 
-    MatrixXd& CGPKroneckerCache::getSi()
+MatrixXd& CGPKroneckerCache::rgetSi()
+{
+	validateCache();
+	if(SiCacheNull)
     {
-    	if(!isInSync())
-    	   			clearCache();
-    	if(SiNull)
-        {
-        	akrondiag(Si, (cache_r.getSK()), (cache_c.getSK()));
-        	//1. add Delta
-        	Si.array() += gp->getLik()->getDelta();
-        	//2. scale with sigmaK2
-        	Si.array()*=gp->getLik()->getSigmaK2();
-        	//elementwise inverse
-            Si = Si.unaryExpr(std::ptr_fun(inverse));
-            SiNull=false;
-        }
-        return Si;
+		akrondiag(SiCache, (covar_r->rgetSK()), (covar_c->rgetSK()));
+        //1. add Delta
+        SiCache.array() += gp->getLik()->getDelta();
+        //2. scale with sigmaK2
+        SiCache.array()*=gp->getLik()->getSigmaK2();
+        //elementwise inverse
+        SiCache = SiCache.unaryExpr(std::ptr_fun(inverse));
+        SiCacheNull=false;
     }
+    return SiCache;
+}
 
-    MatrixXd& CGPKroneckerCache::getYSi()
+    MatrixXd& CGPKroneckerCache::rgetYSi()
     {
-    	if(!isInSync())
-    	   			clearCache();
-    	if(YSiNull)
+    	validateCache();
+    	if(YSiCacheNull)
     	{
-        	MatrixXd& Si   = getSi();
-        	MatrixXd& Yrot = getYrot();
-            YSi = (Si).array() * (Yrot).array();
-            YSiNull=false;
+        	MatrixXd& Si   = rgetSi();
+        	MatrixXd& Yrot = rgetYrot();
+            YSiCache = (Si).array() * (Yrot).array();
+            YSiCacheNull=false;
         }
-        return YSi;
+        return YSiCache;
     }
 
-    MatrixXd& CGPKroneckerCache::getKinvY()
+    MatrixXd& CGPKroneckerCache::rgetKinvY()
     {
-    	if(!isInSync())
-    	   			clearCache();
-    	if(KinvYNull)
+    	validateCache();
+    	if(KinvYCacheNull)
     	{
-        	MatrixXd& YSi = getYSi();
-        	akronravel(KinvY,cache_r.getUK(), cache_c.getUK(),YSi);
-        	KinvYNull=false;
+        	MatrixXd& YSi = rgetYSi();
+        	akronravel(KinvYCache,covar_r->rgetUK(), covar_c->rgetUK(),YSi);
+        	KinvYCacheNull=false;
         }
-        return KinvY;
+        return KinvYCache;
     }
 
 
@@ -144,7 +117,7 @@ MatrixXd& CGPKroneckerCache::getYrot()
 
 
     CGPkronecker::CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik,PDataTerm dataTerm)
-    :CGPbase(covar_r, lik,dataTerm), covar_r(covar_r), covar_c(covar_c), cache(this, covar_r, covar_c)
+    :CGPbase(covar_r, lik,dataTerm), covar_r(covar_r), covar_c(covar_c)
     {
       	if (lik)
        	{
@@ -156,6 +129,7 @@ MatrixXd& CGPKroneckerCache::getYrot()
        	}
        	if (typeid(*(this->lik))!=typeid(CLikNormalSVD))
        	    throw CGPMixException("CGPLMM requires a SVD likelihood term");
+       	cache = PGPKroneckerCache(new CGPKroneckerCache(this));
     }
 
     CGPkronecker::~CGPkronecker()
@@ -210,12 +184,12 @@ MatrixXd& CGPKroneckerCache::getYrot()
     void CGPkronecker::setCovar_r(PCovarianceFunction covar)
     {
     	this->covar_r = covar;
-    	this->cache.cache_r.setCovar(covar);
+    	this->cache->covar_r->setCovar(covar);
     }
     void CGPkronecker::setCovar_c(PCovarianceFunction covar)
     {
         	this->covar_c = covar;
-        	this->cache.cache_c.setCovar(covar);
+        	this->cache->covar_c->setCovar(covar);
     }
 
 
@@ -223,7 +197,7 @@ MatrixXd& CGPKroneckerCache::getYrot()
     mfloat_t CGPkronecker::LML() throw (CGPMixException)
     {
         //update the covariance parameters
-        MatrixXd& Si = cache.getSi();
+        MatrixXd& Si = cache->rgetSi();
 
         //1. logdet:
         //loop through entries of Si: note we Si has non-vec shape, so we use the raw interface for this:
@@ -235,8 +209,8 @@ MatrixXd& CGPKroneckerCache::getYrot()
         }
         lml_det *= -0.5;
         //2. quadratic term
-        MatrixXd LMLq = cache.getYrot();
-        LMLq.array() *= cache.getYSi().array();
+        MatrixXd LMLq = cache->rgetYrot();
+        LMLq.array() *= cache->rgetYSi().array();
         mfloat_t lml_quad = 0.5 * LMLq.sum();
         //3. constants
         mfloat_t lml_const = 0.5* LMLq.cols() * LMLq.rows() * gpmix::log((2.0 * PI));
@@ -284,16 +258,16 @@ MatrixXd& CGPKroneckerCache::getYrot()
 
     mfloat_t CGPkronecker::_gradLogDet(MatrixXd & dK, bool columns)
     {
-        MatrixXd& Si = cache.getSi();
+        MatrixXd& Si = cache->rgetSi();
         MatrixXd rv;
         if(columns){
-        	MatrixXd& U= cache.cache_c.getUK();
-            VectorXd& S = cache.cache_r.getSK();
+        	MatrixXd& U= cache->covar_c->rgetUK();
+            VectorXd& S = cache->covar_r->rgetSK();
             MatrixXd d = (U.array() * (dK * U).array()).colwise().sum();
             rv.noalias() = S.transpose() * Si * d.transpose();
         }else{
-            MatrixXd& U = cache.cache_r.getUK();
-            VectorXd& S = cache.cache_c.getSK();
+            MatrixXd& U = cache->covar_r->rgetUK();
+            VectorXd& S = cache->covar_c->rgetSK();
             MatrixXd d = (U.array() * (dK * U).array()).colwise().sum();
             rv.noalias() = d* Si * S;
         }
@@ -302,12 +276,12 @@ MatrixXd& CGPKroneckerCache::getYrot()
 
     mfloat_t CGPkronecker::_gradQuadrForm(MatrixXd & dK, bool columns)
     {
-        MatrixXd& Ysi = cache.getYSi();
+        MatrixXd& Ysi = cache->rgetYSi();
         MatrixXd UdKU;
         MatrixXd SYUdKU;
         if(columns){
-            MatrixXd& U = cache.cache_c.getUK();
-            VectorXd& S = cache.cache_r.getSK();
+            MatrixXd& U = cache->covar_c->rgetUK();
+            VectorXd& S = cache->covar_r->rgetSK();
             UdKU.noalias() = U.transpose() * dK * U;
             //start with multiplying Y with Sc
             SYUdKU = Ysi;
@@ -317,8 +291,8 @@ MatrixXd& CGPKroneckerCache::getYrot()
             //dot product with UdKU
             SYUdKU = SYUdKU * UdKU.transpose();
         }else{
-            MatrixXd& U = cache.cache_r.getUK();
-            VectorXd& S = cache.cache_c.getSK();
+            MatrixXd& U = cache->covar_r->rgetUK();
+            VectorXd& S = cache->covar_c->rgetSK();
             UdKU.noalias() = U.transpose() * dK * U;
             //start with multiplying Y with Sc
             SYUdKU = Ysi;
@@ -334,19 +308,19 @@ MatrixXd& CGPKroneckerCache::getYrot()
 
     void CGPkronecker::_gradQuadrFormX(VectorXd *rv, MatrixXd & dK, bool columns)
     {
-        MatrixXd& Ysi = cache.getYSi();
+        MatrixXd& Ysi = cache->rgetYSi();
         MatrixXd UY;
         MatrixXd UYS;
         MatrixXd UYSYU;
         if(columns){
-            MatrixXd& U = cache.cache_c.getUK();
-            VectorXd& S = cache.cache_r.getSK();
+            MatrixXd& U = cache->covar_c->rgetUK();
+            VectorXd& S = cache->covar_r->rgetSK();
             UY.noalias() = U * Ysi.transpose();
             UYS = MatrixXd::Zero(UY.rows(), UY.cols());
             UYS.rowwise() = S.transpose();
         }else{
-            MatrixXd& U = cache.cache_r.getUK();
-            VectorXd& S = cache.cache_c.getSK();
+            MatrixXd& U = cache->covar_r->rgetUK();
+            VectorXd& S = cache->covar_c->rgetSK();
             UY.noalias() = U * Ysi;
             UYS = MatrixXd::Zero(UY.rows(), UY.cols());
             UYS.rowwise() = S.transpose();
@@ -359,15 +333,15 @@ MatrixXd& CGPKroneckerCache::getYrot()
 
     void CGPkronecker::_gradLogDetX(VectorXd *out, MatrixXd & dK, bool columns)
     {
-        MatrixXd& Si = cache.getSi();
+        MatrixXd& Si = cache->rgetSi();
         if(columns){
-            MatrixXd& U = cache.cache_c.getUK();
-            VectorXd& S = cache.cache_r.getSK();
+            MatrixXd& U = cache->covar_c->rgetUK();
+            VectorXd& S = cache->covar_r->rgetSK();
             MatrixXd D = 2.0*U.array() * (dK * U).array();
             (*out).noalias() = S.transpose() * Si * D.transpose();
         }else{
-            MatrixXd& U = cache.cache_r.getUK();
-            VectorXd& S = cache.cache_c.getSK();
+            MatrixXd& U = cache->covar_r->rgetUK();
+            VectorXd& S = cache->covar_c->rgetSK();
             MatrixXd D = 2.0*U.array() * (dK * U).array();
             (*out).noalias() = D * Si * S;
         }
@@ -407,9 +381,9 @@ MatrixXd& CGPKroneckerCache::getYrot()
           //inner derivatives w.r.t Sigma and Delta
           mfloat_t dDelta   = getLik()->getDeltagrad();
           mfloat_t SigmaK2 = getLik()->getSigmaK2();
-          MatrixXd& Si = cache.getSi();
-          MatrixXd& YSi = cache.getYSi();
-          MatrixXd& Y = cache.getYrot();
+          MatrixXd& Si = cache->rgetSi();
+          MatrixXd& YSi = cache->rgetYSi();
+          MatrixXd& Y = cache->rgetYrot();
           //logdet
           mfloat_t grad_delta_logdet   = 0.5 * dDelta * SigmaK2* Si.sum();
           mfloat_t grad_sigmak2_logdet = Si.rows()*Si.cols();
@@ -471,7 +445,7 @@ MatrixXd& CGPKroneckerCache::getYrot()
     }
 
 
-    CGPKroneckerCache& CGPkronecker::getCache()
+    PGPKroneckerCache CGPkronecker::getCache()
     {
         return cache;
     }
@@ -511,7 +485,7 @@ MatrixXd& CGPKroneckerCache::getYrot()
  void CGPkronecker::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 {
  	//0. set output dimensions
-	 (*out) = this->dataTerm->gradParams(this->cache.getKinvY());
+	 (*out) = this->dataTerm->gradParams(this->cache->rgetKinvY());
 }
 
 
@@ -525,7 +499,7 @@ MatrixXd& CGPKroneckerCache::getYrot()
  	//MatrixXd Kstar_rU = Kstar_r;//*this->cache.cache_r.getUK();
  	//MatrixXd Kstar_cU = Kstar_c;//*this->cache.cache_c.getUK();
  	std::cout << "allmost done" << "\n";
- 	akronravel(*out,Kstar_r,Kstar_c,cache.getKinvY());
+ 	akronravel(*out,Kstar_r,Kstar_c,cache->rgetKinvY());
  	(*out) *= this->getLik()->getSigmaK2();
  }
 

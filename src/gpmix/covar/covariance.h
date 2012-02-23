@@ -50,10 +50,8 @@ typedef VectorXd CovarParams;
 //%shared_ptr(gpmix::ACovarianceFunction)
 #endif
 
-class ACovarianceFunction {
+class ACovarianceFunction : public CParamObject {
 protected:
-	//indicator if the class is synced with the cache
-	bool insync;
 	//the inputs of the kernel
 	CovarInput X;
 	//the hyperparameters of K
@@ -80,16 +78,12 @@ public:
 	virtual void setParams(const CovarParams& params);
 	virtual void agetParams(CovarParams* out);
 
-	//check if object is  insync with cache
-	virtual bool isInSync() const;
-	//indicate that the cache has been cleared and is synced again
-	virtual void makeSync();
 	//set X to a new value
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
 	virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException);
 	//get the X
 	virtual void agetX(CovarInput* Xout) const throw (CGPMixException);
-	inline muint_t getDimX() const {return (muint_t)(this->X.cols());}
+	virtual muint_t getDimX() const {return (muint_t)(this->X.cols());}
 	virtual muint_t getNumberParams() const;
 	virtual muint_t getNumberDimensions() const;
 	virtual void setNumberDimensions(muint_t numberDimensions);
@@ -128,9 +122,61 @@ public:
 	static bool check_covariance_Kgrad_theta(ACovarianceFunction& covar,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
 	static bool check_covariance_Kgrad_x(ACovarianceFunction& covar,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2,bool check_diag=true);
 };
-
 typedef sptr<ACovarianceFunction> PCovarianceFunction;
 
+/*
+ * Cache object which inherits all the interface functions from Covar
+ */
+class CCovarianceFunctionCache : public CParamObject
+{
+protected:
+	//wrapper covariance Function
+	PCovarianceFunction covar;
+	MatrixXd KCache; //K
+	//SVD
+	MatrixXd UCache; //U
+	VectorXd SCache; //S
+	//Chol
+	MatrixXdChol cholKCache;
+	bool KCacheNull,SVDCacheNull,cholKCacheNull;
+	void updateSVD();
+	void validateCache();
+public:
+	CCovarianceFunctionCache()
+	{
+	}
+
+	CCovarianceFunctionCache(PCovarianceFunction covar)
+	{
+		setCovar(covar);
+	}
+	virtual ~CCovarianceFunctionCache()
+	{
+	};
+
+	void setCovar(PCovarianceFunction covar)
+	{
+		//delete sync child of old covar
+		if(this->covar)
+			this->covar->delSyncChild(sync);
+		//set new covar
+		this->covar = covar;
+		//register sync handler
+		this->covar->addSyncChild(sync);
+		//clear cache:
+		setSync(false);
+	}
+
+	//1. getter/setter
+	inline PCovarianceFunction getCovar()
+	{ return covar;}
+	//2. cache interface
+	virtual MatrixXd& rgetK();
+	virtual MatrixXd& rgetUK();
+	virtual VectorXd& rgetSK();
+	virtual MatrixXdChol& rgetCholK();
+};
+typedef sptr<CCovarianceFunctionCache> PCovarianceFunctionCache;
 
 
 

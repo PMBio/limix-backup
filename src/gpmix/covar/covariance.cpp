@@ -13,7 +13,6 @@ namespace gpmix {
 ACovarianceFunction::ACovarianceFunction(muint_t numberParams)
 {
 	this->numberParams =numberParams;
-	this->insync = false;
 	this->params = VectorXd(numberParams);
 	//default: 0 dimensions
 	this->numberDimensions = 0;
@@ -41,17 +40,12 @@ void ACovarianceFunction::setParams(const CovarParams& params)
 {
 	checkParamDimensions(params);
 	this->params = params;
-	this->insync = false;
+	//notify child objects that our state has changed
+	propagateSync(false);
 }
 
 void ACovarianceFunction::agetParams(CovarParams* out)
 {(*out) = params;};
-
-bool ACovarianceFunction::isInSync() const
-{return insync;}
-
-void ACovarianceFunction::makeSync()
-{ insync = true;}
 
 void ACovarianceFunction::setNumberDimensions(muint_t numberDimensions)
 {
@@ -71,7 +65,8 @@ void ACovarianceFunction::setX(const CovarInput & X) throw (CGPMixException)
 {
 	checkXDimensions(X);
 	this->X = X;
-	this->insync = false;
+	//notify child objects about sync state change:
+	propagateSync(false);
 }
 
 void ACovarianceFunction::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
@@ -178,6 +173,67 @@ bool ACovarianceFunction::check_covariance_Kgrad_x(ACovarianceFunction& covar,mf
 		} //end for ir
 	}
 	return (RV < threshold);
+}
+
+
+
+/*CCovarainceFunctionCache*/
+
+void CCovarianceFunctionCache::updateSVD()
+{
+	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(rgetK());
+	UCache = eigensolver.eigenvectors();
+	SCache = eigensolver.eigenvalues();
+	SVDCacheNull=false;
+}
+
+void CCovarianceFunctionCache::validateCache()
+{
+	if (!isInSync())
+	{
+		KCacheNull = true;
+		SVDCacheNull = true;
+		cholKCacheNull = true;
+		//set sync
+	}
+	setSync();
+}
+// caching functions
+MatrixXd& CCovarianceFunctionCache::rgetK()
+{
+	validateCache();
+	if (KCacheNull)
+	{
+		covar->aK(&KCache);
+		KCacheNull=false;
+	}
+	return KCache;
+
+}
+MatrixXd& CCovarianceFunctionCache::rgetUK()
+{
+	validateCache();
+	if (SVDCacheNull)
+		updateSVD();
+	return UCache;
+}
+VectorXd& CCovarianceFunctionCache::rgetSK()
+{
+	validateCache();
+	if (SVDCacheNull)
+		updateSVD();
+	return SCache;
+}
+
+MatrixXdChol& CCovarianceFunctionCache::rgetCholK()
+{
+	validateCache();
+	if(cholKCacheNull)
+	{
+		cholKCache = MatrixXdChol(rgetK());
+		cholKCacheNull=false;
+	}
+	return cholKCache;
 }
 
 

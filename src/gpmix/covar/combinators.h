@@ -31,11 +31,11 @@ public:
 	AMultiCF(const muint_t numCovariances=0);
 	//destructors
 	virtual ~AMultiCF();
-
-	virtual bool isInSync() const;
-	virtual void makeSync();
-
 	virtual muint_t Kdim() const throw(CGPMixException);
+
+	//sync stuff
+	void addSyncChild(Pbool l);
+	void delSyncChild(Pbool l);
 
 	//access to covariance arrays
 	void addCovariance(PCovarianceFunction covar) throw (CGPMixException);

@@ -31,9 +31,9 @@ using namespace gpmix;
 #define PI 3.14159265358979323846
 #endif
 
-#define linMean
-#define kronMean
-#define sumKronMean
+//#define linMean
+//#define kronMean
+//#define sumKronMean
 
 int main() {
 
@@ -111,55 +111,24 @@ int main() {
 		MatrixXd y = X*w*A + 0.1*randn(nsamples,targets);
 
 		CGPHyperParams params;
-#ifndef linMean	//dummy mean fucntion
-		CData data = CData();
-		MatrixXd w_ = MatrixXd();
-#else
-		//Linear Mean Function
-		MatrixXd fixedEffects = MatrixXd::Ones((muint_t)nsamples,(muint_t)dim);
-		y = fixedEffects*w*A + y;
-		MatrixXd w_ = w*A;
-		CLinearMean data_1 = CLinearMean(y,w_,fixedEffects);
-
-		//Kronecker Mean Function
-		MatrixXd w__ = w;
-		CKroneckerMean data_2 = CKroneckerMean(y,w__,fixedEffects,A);
-
-		CSumLinear dataSum = CSumLinear();
-		dataSum.appendTerm(data_1);
-		dataSum.appendTerm(data_2);
-#endif
 		//Ard covariance
-		CCovLinearARD covar(X.cols());
-
-		//standard Gaussian lik
-		CLikNormalIso lik;
+		PCovLinearARD covar(new CCovLinearARD(X.cols()));
 
 		//GP object
-		CGPbase gp(dataSum, covar, lik);
-		gp.setY(y);
-		gp.setX(X);
+		PGPbase gp(new CGPbase(covar));
+		gp->setY(y);
+		gp->setX(X);
 		//hyperparams
-		CovarInput covar_params = randn(covar.getNumberParams(),(muint_t)1);
-		CovarInput lik_params = randn(lik.getNumberParams(),(muint_t)1);
-
+		CovarInput covar_params = randn(gp->getCovar()->getNumberParams(),(muint_t)1);
+		CovarInput lik_params = randn(gp->getLik()->getNumberParams(),(muint_t)1);
 		params["covar"] = covar_params;
 		params["lik"] = lik_params;
-		//params["X"] = X;
-		//(w_.rows() * w_.cols()) +
-		std::cout <<"W"<<w__ <<endl;
-		params["dataTerm"] = MatrixXd::Zero( (w_.rows() * w_.cols()) + (w__.rows() * w__.cols()), 1);
-		std::cout << "params[dataterm]" << params["dataTerm"] <<endl;
-		//get lml and grad
-		mfloat_t lml = gp.LML(params);
-		CGPHyperParams grad = gp.LMLgrad();
+
+		mfloat_t lml = gp->LML(params);
+		CGPHyperParams grad = gp->LMLgrad();
 
 		std::cout <<"lml : "<< lml << "\n";
 		std::cout <<"grad[covar] :"<< grad["covar"] << "\n";
-#if defined linMean
-		std::cout <<"grad[dataTerm] :"<< grad["dataTerm"] << "\n";
-#endif
-		std::cout <<"grad[lik] :"<< grad["lik"] << "\n";
 
 		CGPopt opt(gp);
 		std::cout << "gradcheck: "<< opt.gradCheck() << "\n";
@@ -176,8 +145,8 @@ int main() {
 #endif
 
 
-		gp.predictMean(X.block(0,0,10,X.cols()));
-		gp.predictVar(X.block(0,0,10,X.cols()));
+		gp->predictMean(X.block(0,0,10,X.cols()));
+		gp->predictVar(X.block(0,0,10,X.cols()));
 
 
 

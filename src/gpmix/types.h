@@ -72,7 +72,11 @@ typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> 
 typedef Eigen::Matrix<mint_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXi;
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXd;
 typedef Eigen::Matrix<std::string, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXs;
-//typedef Eigen::Array<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> ArrayXd;
+typedef Eigen::Array<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> ArrayXd;
+//cholesky decomposition object (we use LLT as faster and more stable)
+typedef Eigen::LLT<gpmix::MatrixXd> MatrixXdChol;
+
+
 
 //SCIPY matrices for python interface: these are row major
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXdscipy;
@@ -94,8 +98,6 @@ class CGPMixException
     {
 		std::cout <<"GPMIX Exception: " << str << "\n";
     }
-
-
     std::string what()
     {
       return What;
@@ -104,7 +106,91 @@ class CGPMixException
   private:
     std::string What;
 };
-}
+
+
+//base class for ParameterObjects (caching)
+typedef sptr<bool> Pbool;
+typedef std::vector<Pbool> PboolVec;
+/* CParamObject:
+ * - provides basic handling for synchronization of precalculated data
+ * syncParents:  boolen sync states the computation of this object depends on
+ * syncChildren: children object whose calculations depend on (this)
+ *
+ * addSyncParent / addSyncChild: add a sync element
+ * isInSync(): checks that all parent sync objects are true (i.e. does the state of hte current object need to updated?)
+ * makeSync(): sets all parent sync true (i.e. set the current object to have an up2date state)
+ */
+class CParamObject
+{
+protected:
+	Pbool sync;
+	//paranets: objects that require sync above the hierarchy of this one
+	PboolVec syncParents;
+	//paranets: objects that require sync below the hierarchy of this one
+	PboolVec syncChildren;
+	//propagateSync: set all children sync states to false to force them update computations
+public:
+
+	CParamObject()
+	{
+		sync = Pbool(new bool);
+		//add standard sync paranet which is the own sync variable
+		addSyncParent(sync);
+	}
+
+	void addSyncParent(Pbool l)
+	{
+		//set false
+		*l = false;
+		syncParents.push_back(l);
+	}
+	void addSyncChild(Pbool l)
+	{
+		*l = false;
+		syncChildren.push_back(l);
+	}
+	void delSyncParent(Pbool l)
+	{
+		//TODO: implement me
+	}
+	void delSyncChild(Pbool l)
+	{
+		//TODO: implement me
+	}
+
+
+
+
+	void propagateSync(bool state=false)
+	{
+		for(PboolVec::iterator iter = syncChildren.begin(); iter!=syncChildren.end();iter++)
+			{
+				(*iter[0]) = state;
+			}
+	}
+
+	virtual bool isInSync()
+	{
+		for(PboolVec::iterator iter = syncParents.begin(); iter!=syncParents.end();iter++)
+			{
+				if (!(*iter[0]))
+					return false;
+			}
+		return true;
+	}
+
+	virtual void setSync(bool state=true)
+	{
+		for(PboolVec::iterator iter = syncParents.begin(); iter!=syncParents.end();iter++)
+		{
+			*iter[0] = state;
+		}
+	}
+
+
+};
+
+}//end ::namespace gpmix
 
 
 #endif /* TYPES_H_ */

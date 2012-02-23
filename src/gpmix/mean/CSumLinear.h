@@ -29,7 +29,8 @@ public:
 	virtual void setParams(const MatrixXd& params);
 	virtual void aEvaluate(MatrixXd* Y);
 	virtual void aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY);
-	virtual inline void appendTerm(PLinearMean term) { this->terms.push_back(term); };
+	virtual inline void appendTerm(PLinearMean term) { this->terms.push_back(term);	propagateSync(false);
+ };
 	virtual inline PLinearMean getTerm(muint_t ind) { return terms[ind]; };
 	virtual inline muint_t getNterms() const { return (muint_t) terms.size(); };
 	virtual inline VecLinearMean& getTerms() { return terms;};
