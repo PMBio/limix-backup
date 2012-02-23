@@ -17,77 +17,49 @@ namespace gpmix {
 class CGPkronecker;
 class CGPKroneckerCache;
 
-//caching module for SVD
-class CGPSVDCache : public CGPCholCache
-{
-	friend class CGPKroneckerCache;
-protected:
-	MatrixXd UK;
-	VectorXd SK;
-	bool USVDNULL;
-	PCovarianceFunction covar;
-	void updateDecomposition();
-public:
-	CGPSVDCache(CGPbase* gp, PCovarianceFunction covar);
-	virtual ~CGPSVDCache()
-	{};
-	virtual void clearCache();
-	virtual bool isInSync() const;
 
-	MatrixXd& getUK();
-	VectorXd& getSK();
-    ACovarianceFunction& getCovar();
-    void agetUK(MatrixXd* out)
-    {
-    	(*out) = getUK();
-    }
-    void agetSK(VectorXd* out)
-    {
-    	(*out) = getSK();
-    }
-
-};
-
-class CGPKroneckerCache
+class CGPKroneckerCache : public CParamObject
 {
 	friend class CGPKronecker;
 protected:
-	MatrixXd Yrot;
-	MatrixXd Si;
-	MatrixXd YSi;
-	MatrixXd KinvY;
-	mfloat_t Knoise;
+	MatrixXd YrotCache;
+	MatrixXd SiCache;
+	MatrixXd YSiCache;
+	MatrixXd KinvYCache;
+	mfloat_t KnoiseCache;
 
 	CGPkronecker* gp;
-	bool YrotNull,SiNull,YSiNull,KinvYNull;
+	bool YrotCacheNull,SiCacheNull,YSiCacheNull,KinvYCacheNull,KnoiseCacheNull;
+	//sync states
+	Pbool syncLik,syncCovar_r,syncCovar_c,syncData;
+	//validate & clear cache
+	void validateCache();
 public:
-	CGPSVDCache cache_r;
-	CGPSVDCache cache_c;
+	PCovarianceFunctionCache covar_r;
+	PCovarianceFunctionCache covar_c;
 
-	CGPKroneckerCache(CGPkronecker* gp,PCovarianceFunction covar_r,PCovarianceFunction covar_c );
+	CGPKroneckerCache(CGPkronecker* gp);
 	virtual ~CGPKroneckerCache()
 	{};
-	virtual void clearCache();
-	virtual bool isInSync() const;
-	MatrixXd& getYrot();
-	MatrixXd& getSi();
-	MatrixXd& getYSi();
-	MatrixXd& getKinvY();
+	MatrixXd& rgetYrot();
+	MatrixXd& rgetSi();
+	MatrixXd& rgetYSi();
+	MatrixXd& rgetKinvY();
 
 	void agetSi(MatrixXd* out)
 	{
-		(*out) = getSi();
+		(*out) = rgetSi();
 	}
 	void agetYSi(MatrixXd* out)
 	{
-		(*out) = getYSi();
+		(*out) = rgetYSi();
 	}
 	void agetYrot(MatrixXd* out)
 	{
-		(*out) = getYrot();
+		(*out) = rgetYrot();
 	}
 };
-
+typedef sptr<CGPKroneckerCache> PGPKroneckerCache;
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 %ignore CGPkronecker::predictMean;
@@ -108,7 +80,7 @@ protected:
 
 
 	//cache:
-	CGPKroneckerCache cache;
+	PGPKroneckerCache cache;
 	VectorXi gplvmDimensions_r;  //gplvm dimensions
 	VectorXi gplvmDimensions_c;  //gplvm dimension
 
@@ -159,7 +131,7 @@ public:
 	virtual void aLMLgrad_X_r(MatrixXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_X_c(MatrixXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);
-    CGPKroneckerCache& getCache();
+    PGPKroneckerCache getCache();
     PCovarianceFunction  getCovarC() const;
     PCovarianceFunction  getCovarR() const;
     VectorXi getGplvmDimensionsC() const;

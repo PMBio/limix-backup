@@ -21,10 +21,10 @@ void CKroneckerLMM::initTestingGP()
 	//call base object init
 	CGPLMM::initTesting();
 	//store decompositions
-	Ur = gp->getCache().cache_r.getUK();
-	Uc = gp->getCache().cache_c.getUK();
-	Sr = gp->getCache().cache_r.getSK();
-	Sc = gp->getCache().cache_c.getSK();
+	Ur = gp->getCache()->covar_r->rgetUK();
+	Uc = gp->getCache()->covar_c->rgetUK();
+	Sr = gp->getCache()->covar_r->rgetSK();
+	Sc = gp->getCache()->covar_c->rgetSK();
 }
 
 void CKroneckerLMM::initTestingK()

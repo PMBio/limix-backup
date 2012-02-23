@@ -28,15 +28,6 @@ typedef sptr<CGPbase> PGPbase;
 
 
 
-//type of cholesky decomposition to use:
-//LDL
-//typedef Eigen::LDLT<gpmix::MatrixXd> MatrixXdChol;
-//LL
-//typedef Eigen::LDLT<gpmix::MatrixXd> MatrixXdChol;
-typedef Eigen::LLT<gpmix::MatrixXd> MatrixXdChol;
-
-
-
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 %ignore CGPHyperParams::get;
 %ignore CGPHyperParams::getParamArray;
@@ -135,48 +126,41 @@ inline VectorXd CGPHyperParams::getParamArray(const CGPHyperParams& mask) const 
 
 
 
-//cache class for a covariance function.
-//offers cached access to a number of covaraince accessors and derived quantities:
-class CGPCholCache
+//Gaussian process caching class for Cholesky-basd inference
+class CGPCholCache : public CParamObject
 {
 protected:
-	MatrixXd K;
-	MatrixXd K0;
-	MatrixXdChol cholK;
-	MatrixXd Kinv;
-	MatrixXd KinvY;
-	MatrixXd DKinv_KinvYYKinv;
-	MatrixXd Yeffective;
-	bool KNull,K0Null,cholKNull,KinvNull,KinvYNull,DKinv_KinvYYKinvNull,YeffectiveNull,gradDataParamsNull,gradDataParamsColsNull;
+	MatrixXd KCacheFull;
+	MatrixXd KinvCache;
+	MatrixXd KinvYCache;
+	MatrixXd DKinv_KinvYYKinvCache;
+	MatrixXd YeffectiveCache;
+	bool KFullCacheNull,KinvCacheNull,KinvYCacheNull,DKinv_KinvYYKinvCacheNull,YeffectiveCacheNull;
+	//lik, covar and data term sync state
+	Pbool syncLik,syncCovar,syncData;
+	//TODO change this to shared pointer
 	CGPbase* gp;
-	PCovarianceFunction covar;
+	PCovarianceFunctionCache covar;
+	//validate & clear cache
+	void validateCache();
 public:
-	CGPCholCache(CGPbase* gp,PCovarianceFunction covar);
+	CGPCholCache(CGPbase* gp);
 	virtual ~CGPCholCache()
 	{};
-
+	PCovarianceFunctionCache getCovar()
+	{
+		return covar;
+	}
 	void setCovar(PCovarianceFunction covar);
-	virtual void clearCache();
-	virtual bool isInSync() const;
 
-	MatrixXd& getK0();
-	MatrixXd& getK();
-	MatrixXd& getKinv();
-	MatrixXd& getYeffective();
-	virtual MatrixXd& getKinvY();
-	MatrixXdChol& getCholK();
-	MatrixXd& getDKinv_KinvYYKinv();
 
-	void agetK0(MatrixXd* out)
-	{
-		(*out) =  getK0();
-	}
-	void agetK(MatrixXd* out)
-	{
-		(*out) =  getK();
-	}
+	virtual MatrixXd& rgetKFull();
+	virtual MatrixXd& rgetKinv();
+	virtual MatrixXd& rgetYeffective();
+	virtual MatrixXd& rgetKinvY();
+	virtual MatrixXd& getDKinv_KinvYYKinv();
 };
-
+typedef sptr<CGPCholCache> PGPCholCache;
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 %ignore CGPbase::getX;
@@ -205,7 +189,7 @@ class CGPbase : public enable_shared_from_this<CGPbase> {
 protected:
 
 	//cached GP-parameters:
-	CGPCholCache cache;
+	PGPCholCache cache;
 	CGPHyperParams params;
 
 	//smart pointers for data Term,covar,lik
@@ -248,8 +232,8 @@ public:
 	void agetX(CovarInput* out) const;
 	void setX(const CovarInput& X) throw (CGPMixException);
 
-	inline muint_t getNumberSamples(){return this->cache.getYeffective().rows();} //get the number of training data samples
-	inline muint_t getNumberDimension(){return this->cache.getYeffective().cols();} //get the dimension of the target data
+	inline muint_t getNumberSamples(){return this->cache->rgetYeffective().rows();} //get the number of training data samples
+	inline muint_t getNumberDimension(){return this->cache->rgetYeffective().cols();} //get the dimension of the target data
 
 
 	PCovarianceFunction getCovar(){return covar;}
@@ -373,10 +357,10 @@ lmmType* CGPbase::getLMMInstance()
 	//create instance
 	lmmType* rv = new lmmType();
 	//set K0
-	MatrixXd& K0 = this->cache.getK0();
+	MatrixXd& K0 = this->cache->getCovar()->rgetK();
 	rv->setK(K0);
 	//set phenotypes
-	MatrixXd&  pheno = this->cache.getYeffective();
+	MatrixXd&  pheno = this->cache->rgetYeffective();
 	rv->setPheno(pheno);
 	return rv;
 }

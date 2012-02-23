@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -23,6 +23,7 @@
 #include "gpmix/mean/CData.h"
 #include "gpmix/mean/CKroneckerMean.h"
 #include "gpmix/utils/logging.h"
+#include <vector>
 
 
 using namespace std;
@@ -35,6 +36,11 @@ using namespace gpmix;
 
 int main() {
 	bool useIdentity = false;
+
+	std::vector<Pbool> test;
+
+	Pbool a;
+	test.push_back(a);
 
 	//try {
 		//random input X

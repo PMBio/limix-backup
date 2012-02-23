@@ -157,7 +157,9 @@ void AMultiCF::agetX(CovarInput* Xout) const throw (CGPMixException)
 	}
 }
 
-bool AMultiCF::isInSync() const
+//synch child pointers are added to all covariance
+//if a single one of the covara changes, an update is triggered
+void AMultiCF::addSyncChild(Pbool l)
 {
 	//if at least one covariance is not in sync, return false
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
@@ -165,23 +167,21 @@ bool AMultiCF::isInSync() const
 			PCovarianceFunction cp = iter[0];
 			if (cp!=NULL)
 			{
-				if (!cp->isInSync())
-						return false;
+				cp->addSyncChild(l);
 			}
 		}
-	return true;
 }
-
-void AMultiCF::makeSync()
+void AMultiCF::delSyncChild(Pbool l)
 {
+	//if at least one covariance is not in sync, return false
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
+		{
+			PCovarianceFunction cp = iter[0];
+			if (cp!=NULL)
 			{
-				PCovarianceFunction cp = iter[0];
-				if (cp!=NULL)
-				{
-					cp->makeSync();
-				}
+				cp->delSyncChild(l);
 			}
+		}
 }
 
 void AMultiCF::setParams(const CovarParams& params)

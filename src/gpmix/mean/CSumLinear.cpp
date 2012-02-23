@@ -42,6 +42,7 @@ void CSumLinear::setParams(const MatrixXd& params)
 		iter[0]->setParams(currentGradParams);
 		sumParams += iter[0]->getRowsParams() * iter[0]->getColsParams();
 	}
+	propagateSync(false);
 }
 
 muint_t CSumLinear::getRowsParams()

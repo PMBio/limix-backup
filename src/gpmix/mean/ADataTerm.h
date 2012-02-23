@@ -32,24 +32,27 @@ namespace gpmix {
 #endif
 
 
-class ADataTerm {
+class ADataTerm : public CParamObject{
 protected:
 	MatrixXd Y;
-	bool insync;
 
 public:
 	ADataTerm();
 	ADataTerm(MatrixXd& Y);
 	virtual ~ADataTerm();
-	virtual inline void setParams(const MatrixXd& params){};
+	virtual inline void setParams(const MatrixXd& params)
+	{
+		propagateSync(false);
+	};
 
 	virtual void aGetParams(MatrixXd* outParams){};
 	virtual inline MatrixXd getParams(){ MatrixXd outParams = MatrixXd(); aGetParams(&outParams); return outParams;	};
 	virtual inline void setY(const MatrixXd& Y)
 	{
 		checkDimensions(Y);
-		this->insync = false;
 		this->Y = Y;
+		propagateSync(false);
+
 	}
 
 	//getparams
@@ -70,8 +73,6 @@ public:
 	virtual inline MatrixXd sumLogJacobian(){ MatrixXd ret = MatrixXd(); aSumLogJacobian(&ret); return ret;};
 	virtual inline std::string getName() const {return "ADataTerm";};
 	virtual inline void checkDimensions(const MatrixXd& Y){};
-	bool isInSync() const;
-	void makeSync();
 };
 typedef sptr<ADataTerm> PDataTerm;
 

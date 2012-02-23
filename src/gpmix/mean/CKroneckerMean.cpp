@@ -44,8 +44,6 @@ void CKroneckerMean::aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY)
 void CKroneckerMean::setWeightsOLS(const MatrixXd& Y)
 {
 	this->checkDimensions(Y, false);
-	this->insync = false;
-
 	//TODO: make case nTargets > nSamples efficient
 	MatrixXd Adagger;
 	if (A.rows() < A.cols())
@@ -58,13 +56,13 @@ void CKroneckerMean::setWeightsOLS(const MatrixXd& Y)
 	}
 	MatrixXd YAd = Y*Adagger;
 	this->weights = this->fixedEffects.jacobiSvd().solve(YAd);
+	propagateSync(false);
 }
 
 void CKroneckerMean::setA(const MatrixXd& A)
 {
-	//this->checkDimensions(fixedEffects, weights, A);
-	this->insync = false;
 	this->A = A;
+	propagateSync(false);
 }
 
 
