@@ -18,6 +18,12 @@ CGPKroneckerCache::CGPKroneckerCache(CGPkronecker* gp)
 	this->syncCovar_c = Pbool(new bool);
 	this->syncLik = Pbool(new bool);
 	this->syncData = Pbool(new bool);
+	//add to list of sync parents
+	this->addSyncParent(syncCovar_r);
+	this->addSyncParent(syncCovar_c);
+	this->addSyncParent(syncLik);
+	this->addSyncParent(syncData);
+
 
 	this->gp = gp;
 	this->covar_r = PCovarianceFunctionCache(new CCovarianceFunctionCache(this->gp->covar_r));
@@ -39,24 +45,27 @@ CGPKroneckerCache::CGPKroneckerCache(CGPkronecker* gp)
 
 void CGPKroneckerCache::validateCache()
 {
+	//std::cout << *syncCovar_c << "," << *syncCovar_r <<"," << *syncLik << "," << *syncData <<"\n";
+
 	//1. variables that depend on any of the caches
-	if((!syncCovar_c) || (!syncCovar_r) || (!syncLik) || (!syncData))
+	if((! *syncCovar_c) || (! *syncCovar_r) || (! *syncLik) || (! *syncData))
 	{
 		YSiCacheNull=true;
 		KinvYCacheNull=true;
 	}
 	//covar or lik
-	if((!syncCovar_c) || (!syncCovar_r) || (!syncLik))
+	if((! *syncCovar_c) || (! *syncCovar_r) || (! *syncLik))
 	{
 		SiCacheNull=true;
 	}
 	//covar or data
-	if((!syncCovar_c) || (!syncCovar_r) || (!syncData))
+	if((! *syncCovar_c) || (! *syncCovar_r) || (! *syncData))
 	{
 		YrotCacheNull=true;
 	}
 	//set all sync
 	setSync();
+	//std::cout << *syncCovar_c << "," << *syncCovar_r <<"," << *syncLik << "," << *syncData <<"\n";
 }
 
 MatrixXd& CGPKroneckerCache::rgetYrot()

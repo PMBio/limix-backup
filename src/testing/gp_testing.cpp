@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -123,16 +123,24 @@ int main() {
 		CovarInput lik_params = randn(gp->getLik()->getNumberParams(),(muint_t)1);
 		params["covar"] = covar_params;
 		params["lik"] = lik_params;
+		gp->setParams(params);
 
+
+		std::cout << gp->LML() << "\n";
+		std::cout << gp->LML() << "\n";
+
+		params["lik"](0) = -2;
+		gp->setParams(params);
+		std::cout << gp->LML() << "\n";
+
+
+#if 1
 		mfloat_t lml = gp->LML(params);
 		CGPHyperParams grad = gp->LMLgrad();
-
 		std::cout <<"lml : "<< lml << "\n";
 		std::cout <<"grad[covar] :"<< grad["covar"] << "\n";
-
 		CGPopt opt(gp);
 		std::cout << "gradcheck: "<< opt.gradCheck() << "\n";
-#if 1
 		//optimize:
 		//construct constraints
 		CGPHyperParams upper;

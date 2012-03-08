@@ -130,12 +130,13 @@ inline VectorXd CGPHyperParams::getParamArray(const CGPHyperParams& mask) const 
 class CGPCholCache : public CParamObject
 {
 protected:
-	MatrixXd KCacheFull;
-	MatrixXd KinvCache;
-	MatrixXd KinvYCache;
-	MatrixXd DKinv_KinvYYKinvCache;
+	MatrixXd KEffCache;
+	MatrixXdChol KEffCholCache;
+	MatrixXd KEffInvCache;
+	MatrixXd KEffInvYCache;
+	MatrixXd DKinv_KEffinvYYKEffinvCache;
 	MatrixXd YeffectiveCache;
-	bool KFullCacheNull,KinvCacheNull,KinvYCacheNull,DKinv_KinvYYKinvCacheNull,YeffectiveCacheNull;
+	bool KEffCacheNull,KEffCholNull,KEffInvCacheNull,KEffInvYCacheNull,DKinv_KEffInvYYKEffInvCacheNull,YeffectiveCacheNull;
 	//lik, covar and data term sync state
 	Pbool syncLik,syncCovar,syncData;
 	//TODO change this to shared pointer
@@ -154,11 +155,12 @@ public:
 	void setCovar(PCovarianceFunction covar);
 
 
-	virtual MatrixXd& rgetKFull();
-	virtual MatrixXd& rgetKinv();
+	virtual MatrixXd& rgetKEff();
+	virtual MatrixXdChol& rgetKEffChol();
+	virtual MatrixXd& rgetKEffInv();
 	virtual MatrixXd& rgetYeffective();
-	virtual MatrixXd& rgetKinvY();
-	virtual MatrixXd& getDKinv_KinvYYKinv();
+	virtual MatrixXd& rgetKEffInvY();
+	virtual MatrixXd& getDKEffInv_KEffInvYYKinv();
 };
 typedef sptr<CGPCholCache> PGPCholCache;
 
@@ -235,6 +237,8 @@ public:
 	inline muint_t getNumberSamples(){return this->cache->rgetYeffective().rows();} //get the number of training data samples
 	inline muint_t getNumberDimension(){return this->cache->rgetYeffective().cols();} //get the dimension of the target data
 
+	PGPCholCache getCache()
+	{return this->cache;};
 
 	PCovarianceFunction getCovar(){return covar;}
 	PLikelihood getLik(){return lik;}

@@ -150,21 +150,20 @@ public:
 	{
 		setCovar(covar);
 	}
+
 	virtual ~CCovarianceFunctionCache()
 	{
 	};
 
-	void setCovar(PCovarianceFunction covar)
+	void setCovar(PCovarianceFunction covar);
+	//transmit add and delete sync child to covar object
+	virtual void addSyncChild(Pbool l)
 	{
-		//delete sync child of old covar
-		if(this->covar)
-			this->covar->delSyncChild(sync);
-		//set new covar
-		this->covar = covar;
-		//register sync handler
-		this->covar->addSyncChild(sync);
-		//clear cache:
-		setSync(false);
+		covar->addSyncChild(l);
+	}
+	virtual void delSyncChild(Pbool l)
+	{
+		covar->delSyncChild(l);
 	}
 
 	//1. getter/setter
