@@ -58,8 +58,9 @@ gp=gpmix.CGPbase(covar,ll,data)
 #set data
 gp.setY(y)
 gp.setX(X)
-lml = gp.LML(hyperparams)
-dlml = gp.LMLgrad(hyperparams)
+gp.setParams(hyperparams)
+lml = gp.LML()
+dlml = gp.LMLgrad()
 
 #build constraints
 constrainU = gpmix.CGPHyperParams()

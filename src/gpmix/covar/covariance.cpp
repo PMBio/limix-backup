@@ -179,6 +179,20 @@ bool ACovarianceFunction::check_covariance_Kgrad_x(ACovarianceFunction& covar,mf
 
 /*CCovarainceFunctionCache*/
 
+void CCovarianceFunctionCache::setCovar(PCovarianceFunction covar)
+	{
+		//delete sync child of old covar
+		if(this->covar)
+			this->covar->delSyncChild(sync);
+		//set new covar
+		this->covar = covar;
+		//register sync handler
+		this->covar->addSyncChild(sync);
+		//clear cache:
+		setSync(false);
+	}
+
+
 void CCovarianceFunctionCache::updateSVD()
 {
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(rgetK());

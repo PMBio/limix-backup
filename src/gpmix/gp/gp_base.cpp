@@ -222,9 +222,11 @@ CGPCholCache::CGPCholCache(CGPbase* gp)
 	addSyncParent(syncCovar);
 	addSyncParent(syncData);
 	//set all cache varibles to Null
-	this->KFullCacheNull=true;
-	this->KinvCacheNull=true;
-	this->KinvYCacheNull=true;
+	this->KEffCacheNull=true;
+	this->KEffCholNull=true;
+	this->KEffInvCacheNull=true;
+	this->DKinv_KEffInvYYKEffInvCacheNull=true;
+	this->KEffInvYCacheNull=true;
 	this->YeffectiveCacheNull=true;
 };
 
@@ -237,56 +239,70 @@ void CGPCholCache::setCovar(PCovarianceFunction covar)
 
 void CGPCholCache::validateCache()
 {
+	//std::cout << *syncCovar << "," << *syncData << "," << *syncLik << "\n";
 	//1. variables that depend on any of the caches
-	if ((!syncCovar) || (!syncData) || (!syncLik))
+	if ((! *syncCovar) || (! *syncData) || (! *syncLik))
 	{
-		KinvYCacheNull =true;
-		DKinv_KinvYYKinvCacheNull = true;
+		KEffInvYCacheNull =true;
+		DKinv_KEffInvYYKEffInvCacheNull = true;
 	}
 	//2. varaibles that depend on covar or lik
-	if ((!syncCovar) || (!syncLik))
+	if ((! *syncCovar) || (! *syncLik))
 	{
-		KFullCacheNull = true;
-		KinvCacheNull = true;
+		KEffCacheNull = true;
+		KEffCholNull = true;
+		KEffInvCacheNull = true;
 	}
 	//3. variables that on data term only
-	if (!syncCovar)
+	if (! *syncData)
 	{
 		YeffectiveCacheNull = true;
 	}
 	//restore sync
 	setSync();
+	//std::cout << *syncCovar << "," << *syncData << "," << *syncLik << "\n";
 }
 
 
-MatrixXd& CGPCholCache::rgetKFull()
+MatrixXd& CGPCholCache::rgetKEff()
 {
 	validateCache();
-	if(KFullCacheNull)
+	if(KEffCacheNull)
 	{
-		KCacheFull  = covar->rgetK();
-		KCacheFull += gp->lik->K();
-		KFullCacheNull=false;
+		KEffCache  = covar->rgetK();
+		KEffCache += gp->lik->K();
+		KEffCacheNull=false;
 	}
-	return KCacheFull;
+	return KEffCache;
 }
 
 
-
-MatrixXd& CGPCholCache::rgetKinv()
+MatrixXdChol& CGPCholCache::rgetKEffChol()
 {
 	validateCache();
-	if (KinvCacheNull)
+	if(KEffCholNull)
 	{
-		MatrixXdChol& chol = this->covar->rgetCholK();
-		KinvCache = MatrixXd::Identity(chol.rows(),chol.rows());
+		KEffCholCache = MatrixXdChol(rgetKEff());
+		KEffCholNull=false;
+	}
+	return this->KEffCholCache;
+}
+
+
+MatrixXd& CGPCholCache::rgetKEffInv()
+{
+	validateCache();
+	if (KEffInvCacheNull)
+	{
+		MatrixXdChol& chol = rgetKEffChol();
+		KEffInvCache = MatrixXd::Identity(chol.rows(),chol.rows());
 		//faster alternative for chol.SolvInPlace(caache.Kinv)
 		MatrixXd L = chol.matrixL();
-		L.triangularView<Eigen::Lower>().solveInPlace(KinvCache);
-		KinvCache.transpose()*=KinvCache.triangularView<Eigen::Lower>();
-		KinvCacheNull=false;
+		L.triangularView<Eigen::Lower>().solveInPlace(KEffInvCache);
+		KEffInvCache.transpose()*=KEffInvCache.triangularView<Eigen::Lower>();
+		KEffInvCacheNull=false;
 	}
-	return KinvCache;
+	return KEffInvCache;
 }
 
 MatrixXd& CGPCholCache::rgetYeffective()
@@ -301,30 +317,30 @@ MatrixXd& CGPCholCache::rgetYeffective()
 	return YeffectiveCache;
 }
 
-MatrixXd& CGPCholCache::rgetKinvY()
+MatrixXd& CGPCholCache::rgetKEffInvY()
 {
 	//Invalidate Cache?
 	validateCache();
-	if (KinvYCacheNull)
+	if (KEffInvYCacheNull)
 	{
-		KinvYCache = covar->rgetCholK().solve(this->rgetYeffective());
-		KinvYCacheNull=false;
+		KEffInvYCache = rgetKEffChol().solve(this->rgetYeffective());
+		KEffInvYCacheNull=false;
 	}
-	return KinvYCache;
+	return KEffInvYCache;
 }
 
-MatrixXd& CGPCholCache::getDKinv_KinvYYKinv()
+MatrixXd& CGPCholCache::getDKEffInv_KEffInvYYKinv()
 {
 	//Invalidate Cache?
 	validateCache();
-	if (DKinv_KinvYYKinvCacheNull)
+	if (DKinv_KEffInvYYKEffInvCacheNull)
 	{
-		MatrixXd& KiY  = rgetKinvY();
-		MatrixXd& Kinv = rgetKinv();
-		DKinv_KinvYYKinvCache = ((mfloat_t)(gp->getNumberDimension())) * (Kinv) - (KiY) * (KiY).transpose();
-		DKinv_KinvYYKinvCacheNull=false;
+		MatrixXd& KiY  = rgetKEffInvY();
+		MatrixXd& Kinv = rgetKEffInv();
+		DKinv_KEffinvYYKEffinvCache = ((mfloat_t)(gp->getNumberDimension())) * (Kinv) - (KiY) * (KiY).transpose();
+		DKinv_KEffInvYYKEffInvCacheNull=false;
 	}
-	return DKinv_KinvYYKinvCache;
+	return DKinv_KEffinvYYKEffinvCache;
 }
 
 
@@ -493,7 +509,7 @@ mfloat_t CGPbase::LML(const VectorXd& params) throw (CGPMixException)
 mfloat_t CGPbase::LML() throw (CGPMixException)
 {
 	//update the covariance parameters
-	MatrixXdChol& chol = cache->getCovar()->rgetCholK();
+	MatrixXdChol& chol = cache->rgetKEffChol();
 
 	//get effective Y:
 	MatrixXd& Yeff = cache->rgetYeffective();
@@ -503,7 +519,7 @@ mfloat_t CGPbase::LML() throw (CGPMixException)
 
 	//2. quadratic term
 	mfloat_t lml_quad = 0.0;
-	MatrixXd& KinvY = cache->rgetKinvY();
+	MatrixXd& KinvY = cache->rgetKEffInvY();
 	//quadratic form
 	lml_quad = 0.5*((KinvY).array() * (Yeff).array()).sum();
 
@@ -585,7 +601,7 @@ void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
 	//vector with results
 	VectorXd grad_covar(covar->getNumberParams());
 	//W:
-	MatrixXd& W = cache->getDKinv_KinvYYKinv();
+	MatrixXd& W = cache->getDKEffInv_KEffInvYYKinv();
 	//Kd cachine result
 	MatrixXd Kd;
 	for(muint_t param = 0;param < (muint_t)(grad_covar.rows());param++){
@@ -599,7 +615,7 @@ void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
 void CGPbase::aLMLgrad_lik(VectorXd* out) throw (CGPMixException)
 {
 	LikParams grad_lik(lik->getNumberParams());
-	MatrixXd& W = cache->getDKinv_KinvYYKinv();
+	MatrixXd& W = cache->getDKEffInv_KEffInvYYKinv();
 	MatrixXd Kd;
 	for(muint_t row = 0 ; row<lik->getNumberParams(); ++row)	//WARNING: conversion
 	{
@@ -615,7 +631,7 @@ void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
 	(*out).resize(this->getNumberSamples(),this->gplvmDimensions.rows());
 
 	//1. get W:
-	MatrixXd& W = cache->getDKinv_KinvYYKinv();
+	MatrixXd& W = cache->getDKEffInv_KEffInvYYKinv();
 	//loop through GLVM dimensions and calculate gradient
 
 	MatrixXd WKgrad_X;
@@ -637,14 +653,14 @@ void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
 void CGPbase::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 {
 	//0. set output dimensions
-	(*out) = dataTerm->gradParams(this->cache->rgetKinvY());
+	(*out) = dataTerm->gradParams(this->cache->rgetKEffInvY());
 }
 
 void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException)
 {
 	MatrixXd KstarCross;
 	this->covar->aKcross(&KstarCross,Xstar);
-	MatrixXd& KinvY = this->cache->rgetKinvY();
+	MatrixXd& KinvY = this->cache->rgetKEffInvY();
 	(*out).noalias() = KstarCross * KinvY;
 }
 
@@ -658,7 +674,7 @@ void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) throw (CGPMixExce
 	//add noise
 	KstarDiag+=this->lik->Kcross_diag(Xstar);
 
-	MatrixXd KK = KstarCross*this->cache->rgetKinv();
+	MatrixXd KK = KstarCross*this->cache->rgetKEffInv();
 	KK.array()*=KstarCross.array();
 	(*out) = KstarDiag - KK.rowwise().sum();
 }

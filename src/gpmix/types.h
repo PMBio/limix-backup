@@ -138,22 +138,22 @@ public:
 		addSyncParent(sync);
 	}
 
-	void addSyncParent(Pbool l)
+	virtual void addSyncParent(Pbool l)
 	{
 		//set false
 		*l = false;
 		syncParents.push_back(l);
 	}
-	void addSyncChild(Pbool l)
+	virtual void addSyncChild(Pbool l)
 	{
 		*l = false;
 		syncChildren.push_back(l);
 	}
-	void delSyncParent(Pbool l)
+	virtual void delSyncParent(Pbool l)
 	{
 		//TODO: implement me
 	}
-	void delSyncChild(Pbool l)
+	virtual void delSyncChild(Pbool l)
 	{
 		//TODO: implement me
 	}

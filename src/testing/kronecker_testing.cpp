@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 1
+#if 0
 
 #include <iostream>
 #include "gpmix/gp/gp_base.h"
@@ -63,7 +63,7 @@ int main() {
 		MatrixXd w = randn((muint_t)Kr,(muint_t)D);
 		MatrixXd y = X*w + eps*randn((muint_t)N,(muint_t)D);
 
-#if 1
+#if 0
 		MatrixXd Xr = randn(N,Kr);
 		//covariances
 		PCovLinearISO covar_r(new CCovLinearISO(Kr));
@@ -73,7 +73,7 @@ int main() {
 		MatrixXd Xr = MatrixXd::Zero(N,0);
 		sptr<CFixedCF> covar_r(new CFixedCF(Mr));
 #endif
-#if 1
+#if 0
 		MatrixXd Xc = randn(D,Kc);
 		//covariances
 		PCovLinearISO covar_c1(new CCovLinearISO(Kc));
@@ -132,6 +132,15 @@ int main() {
 		//opt_params.erase("X_r");
 		//opt_params.erase("dataTerm");
 		//opt_params.erase("X_c");
+
+		std::cout << gp->LML() << "\n";
+		std::cout << gp->LML() << "\n";
+
+		params["covar_r"](0) = 5;
+		gp->setParams(params);
+		std::cout << gp->LML() << "\n";
+
+
 
 #if 1
 		CGPopt opt(gp);
