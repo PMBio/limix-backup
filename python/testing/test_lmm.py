@@ -17,6 +17,16 @@ import pdb
 import time
 
 
+def scale_k(k, verbose=False):
+    c = SP.sum((SP.eye(len(k)) - (1.0 / len(k)) * SP.ones(k.shape)) * SP.array(k))
+    scalar = (len(k) - 1) / c
+    if verbose:
+        print 'Kinship scaled by: %0.4f' % scalar
+    k = scalar * k
+    return k
+
+
+
 if __name__ == '__main__':
     
     
@@ -75,21 +85,30 @@ if __name__ == '__main__':
     X_ = X[Iok,::1]
     K = 1./X_.shape[1]*SP.dot(X_,X_.T)
     C_ = SP.ones([X_.shape[0],1])
+    
+    #standardize
+    y_-=y_.mean(axis=0)
+    y_/=y_.std(axis=0)
+    K/= (K.diagonal().sum()/K.shape[0])
+    
+    K=scale_k(K,verbose=True)
         
-    if 1:
+    if 0:
         #OLD
         #population covariance
         t0 = time.time()
         [lod,pv0] = lmm.train_associations(X_,y_,K,C_)
         t1 = time.time()
-  
-    #gpmix
-    lm = gpmix.CLMM()
-    lm.setK(K)
-    lm.setSNPs(X_)
-    lm.setPheno(y_)
-    lm.setCovs(C_)
-    lm.setVarcompApprox0()    
+    if 1:
+        print "K = 0!"
+        #K[:,:] = 0
+        #gpmix
+        lm = gpmix.CLMM()
+        lm.setK(K)
+        lm.setSNPs(X_)
+        lm.setPheno(y_)
+        lm.setCovs(C_)
+        lm.setVarcompApprox0()    
     #condition on SNP
     #C_ = SP.concatenate((C_,X_[:,89790:89790+1]),axis=1)
     #lm.setCovs(C_)
@@ -113,6 +132,14 @@ if __name__ == '__main__':
         print lm.getNLL0()
         print lm.getNLLAlt()       
         t6= time.time()
+        
+    if 1:
+        #analyze variances
+        Sigma = SP.exp(lm.getLSigma())
+        delta = SP.exp(lm.getLdelta0())
+        
+        Sigma*=delta
+        
         
     if 0:
         import pylab as PL

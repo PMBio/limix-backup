@@ -298,10 +298,9 @@ int ALMM::getTestStatistics() const
         ldeltaAlt.resize(num_pheno,num_snps);
         nLL0.resize(num_pheno,1);
         nLLAlt.resize(num_pheno,num_snps);
-        //MatrixXd ldelta0(num_pheno, 1);
-        //MatrixXd ldelta(num_pheno, num_snps);
-        //MatrixXd nLL0(num_pheno, 1);
-        //MatrixXd nLL(num_pheno, num_snps);
+        lsigma.resize(num_pheno,num_snps);
+        beta_snp.resize(num_pheno,num_snps);
+        beta_snp_ste.resize(num_pheno,num_snps);
 
         //reserve memory for snp-wise foreground model
         MatrixXd UXps(num_samples, num_covs + 1);
@@ -309,7 +308,9 @@ int ALMM::getTestStatistics() const
         UXps.block(0, 1, num_samples, num_covs) = Ucovs;
 
         MatrixXd UXi = MatrixXd::Zero(num_samples, 1);
-        MatrixXd f_tests_;
+        MatrixXd f_tests_,AObeta_,AObeta_ste_,AOsigma_;
+
+
         bool calc_ftests = (this->testStatistics == ALMM::TEST_F);
         if(calc_ftests)
            	f_tests.resize(num_pheno,num_snps);
@@ -337,7 +338,11 @@ int ALMM::getTestStatistics() const
             for(muint_t ip=0;ip<num_pheno;++ip)
             {
             	//3.1 evaluate test statistics (foreground)
-            	nLLevalEx(f_tests_, nLLAlt.block(ip, is, 1, 1), Upheno.block(0,ip,num_samples,1), UXps, S, ldeltaAlt(ip, is), calc_ftests);
+            	nLLevalEx(AObeta_,AObeta_ste_,AOsigma_,f_tests_,nLLAlt.block(ip, is, 1, 1), Upheno.block(0,ip,num_samples,1), UXps, S, ldeltaAlt(ip, is), calc_ftests);
+            	lsigma(ip,is) = AOsigma_(0,0);
+            	beta_snp(ip,is) = AObeta_(0,0);
+            	//beta_snp_ste(ip,is) = AObeta_ste_(0,0);
+
             	//3.2 evaluate test statistics (background)
                 if(this->testStatistics == ALMM::TEST_LLR)
                     this->pv(ip, is) = Gamma::gammaQ(nLL0(ip, 0) - nLLAlt(ip, is), (double)(((((((0.5))))))) * 1.0);
@@ -446,7 +451,7 @@ int ALMM::getTestStatistics() const
         II.block(0, 0, num_samples, num_inter) = I;
         II.block(0, num_inter, num_samples, num_inter0) = I0;
 
-        MatrixXd f_tests_;
+        MatrixXd f_tests_,AObeta_,AObeta_ste_,AOsigma_;
         //reserver memory for ftests?
         bool calc_ftests = (this->testStatistics == ALMM::TEST_F);
         if(calc_ftests)
@@ -493,7 +498,7 @@ int ALMM::getTestStatistics() const
         	for(muint_t ip = 0;ip < num_pheno;ip++)
         	{
         		//3. evaluate foreground likelihood
-        		nLLevalEx(f_tests_,nLLAlt.block(ip,is,1,1),Upheno.col(ip), UXps, S,ldeltaAlt(ip, is),(calc_ftests));
+        		nLLevalEx(AObeta_,AObeta_ste_,AOsigma_,f_tests_,nLLAlt.block(ip,is,1,1),Upheno.col(ip), UXps, S,ldeltaAlt(ip, is),(calc_ftests));
 
         		//4. calc p-value
         		if (this->testStatistics==ALMM::TEST_LLR)
@@ -835,6 +840,11 @@ mfloat_t CLMMCore::nLLeval(VectorXd *F_tests, mfloat_t ldelta, const MatrixXd & 
 
 
 /* namespace gpmix */
+
+
+
+
+
 }
 
 

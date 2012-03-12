@@ -170,8 +170,8 @@ public:
 	template <typename Derived, typename OtherDerived>
 	inline void SelfAdjointEigenSolver(const Eigen::MatrixBase<Derived>& U, const Eigen::MatrixBase<Derived>& S, const Eigen::MatrixBase<OtherDerived>& M);
 	//public functions for nlleval, optdelta etc.
-	template <typename Derived1, typename Derived2,typename Derived3,typename Derived4, typename Derived5>
-	inline void nLLevalEx(const Eigen::MatrixBase<Derived1>& AOF_tests_,const Eigen::MatrixBase<Derived2>& AOnLL_,const Eigen::MatrixBase<Derived3>& UY, const Eigen::MatrixBase<Derived4>& UX, const Eigen::MatrixBase<Derived5>& S,mfloat_t ldelta,bool calc_ftest=false);
+	template <typename Derived1, typename Derived2,typename Derived3,typename Derived4, typename Derived5,typename Derived6,typename Derived7,typename Derived8>
+	inline void nLLevalEx(const Eigen::MatrixBase<Derived1>& AObeta_, const Eigen::MatrixBase<Derived2>& AObeta_ste_, const Eigen::MatrixBase<Derived3>& AOsigma_, const Eigen::MatrixBase<Derived4>& AOF_tests_,const Eigen::MatrixBase<Derived5>& AOnLL_,const Eigen::MatrixBase<Derived6>& UY, const Eigen::MatrixBase<Derived7>& UX, const Eigen::MatrixBase<Derived8>& S,mfloat_t ldelta,bool calc_ftest=false,bool calc_ste=false);
 	template <typename Derived1, typename Derived2,typename Derived3,typename Derived4,typename Derived5>
 	inline void optdeltaEx(const Eigen::MatrixBase<Derived1> & AO_delta_,const Eigen::MatrixBase<Derived2> & AO_NLL_, const Eigen::MatrixBase<Derived3>& UY,const Eigen::MatrixBase<Derived4>& UX,const Eigen::MatrixBase<Derived5>& S,muint_t numintervals,mfloat_t ldeltamin,mfloat_t ldeltamax);
 };
@@ -188,6 +188,9 @@ public:
 %ignore CLMM::getLdeltaAlt;
 %ignore CLMM::getLdelta0;
 %ignore CLMM::getFtests;
+%ignore CLMM::getLSigma;
+%ignore CLMM::agetBetaSNP;
+
 
 //rename argout versions for python; this overwrites the C++ convenience functions
 %rename(getNLL0) CLMM::agetNLL0;
@@ -195,7 +198,8 @@ public:
 %rename(getLdeltaAlt) CLMM::agetLdeltaAlt;
 %rename(getLdelta0) CLMM::agetLdelta0;
 %rename(getFtests) CLMM::agetFtests;
-//%shared_ptr(gpmix::CLMM)
+%rename(getLSigma) CLMM::agetLSigma;
+%rename(getBetaSNP) CLMM::agetBetaSNP;
 #endif
 //Standard mixed liner model
 class CLMM :  public CLMMCore, public ALMM
@@ -206,7 +210,7 @@ protected:
 	VectorXd S;
 	//verbose results:
 	bool storeVerboseResults;
-	MatrixXd nLL0, nLLAlt,f_tests,ldeltaAlt,ldelta0;
+	MatrixXd nLL0, nLLAlt,f_tests,ldeltaAlt,ldelta0,beta_snp,beta_snp_ste,lsigma;
 
 
 public:
@@ -248,6 +252,36 @@ public:
 	void agetLdelta0(MatrixXd *out)
 	{
 		(*out) = ldelta0;
+	}
+
+	void agetLSigma(MatrixXd *out)
+	{
+		(*out) = lsigma;
+	}
+
+	void agetBetaSNP(MatrixXd *out)
+	{
+		(*out) = beta_snp;
+	}
+
+	void agetBetaSNPste(MatrixXd *out)
+	{
+		(*out) = beta_snp_ste;
+	}
+
+	MatrixXd getLSigma()
+	{
+		return lsigma;
+	}
+
+	MatrixXd getBetaSNP()
+	{
+		return beta_snp;
+	}
+
+	MatrixXd getBetaSNPste()
+	{
+		return beta_snp_ste;
 	}
 
 	MatrixXd getNLL0()
@@ -384,14 +418,17 @@ inline void CLMMCore::SelfAdjointEigenSolver(const Eigen::MatrixBase<Derived>& U
 }
 
 
-
-
-template <typename Derived1, typename Derived2,typename Derived3,typename Derived4,typename Derived5>
-inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AOF_tests_,const Eigen::MatrixBase<Derived2>& AOnLL_,const Eigen::MatrixBase<Derived3>& UY, const Eigen::MatrixBase<Derived4>& UX, const Eigen::MatrixBase<Derived5>& S,mfloat_t ldelta,bool calc_ftest)
+template <typename Derived1, typename Derived2,typename Derived3,typename Derived4, typename Derived5,typename Derived6,typename Derived7,typename Derived8>
+inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AObeta_, const Eigen::MatrixBase<Derived2>& AObeta_ste_, const Eigen::MatrixBase<Derived3>& AOsigma_, const Eigen::MatrixBase<Derived4>& AOF_tests_,const Eigen::MatrixBase<Derived5>& AOnLL_,const Eigen::MatrixBase<Derived6>& UY, const Eigen::MatrixBase<Derived7>& UX, const Eigen::MatrixBase<Derived8>& S,mfloat_t ldelta,bool calc_ftest,bool calc_ste)
 {
 	//cast out arguments
-	Eigen::MatrixBase<Derived1>& AOF_tests = const_cast< Eigen::MatrixBase<Derived1>& >(AOF_tests_);
-	Eigen::MatrixBase<Derived2>& AOnLL = const_cast< Eigen::MatrixBase<Derived2>& >(AOnLL_);
+	Eigen::MatrixBase<Derived1>& AObeta = const_cast< Eigen::MatrixBase<Derived1>& >(AObeta_);
+	Eigen::MatrixBase<Derived2>& AObeta_ste = const_cast< Eigen::MatrixBase<Derived2>& >(AObeta_ste_);
+	Eigen::MatrixBase<Derived3>& AOsigma = const_cast< Eigen::MatrixBase<Derived3>& >(AOsigma_);
+	Eigen::MatrixBase<Derived4>& AOF_tests = const_cast< Eigen::MatrixBase<Derived4>& >(AOF_tests_);
+	Eigen::MatrixBase<Derived5>& AOnLL = const_cast< Eigen::MatrixBase<Derived5>& >(AOnLL_);
+
+
 
 	//number of samples
 	muint_t n = UX.rows();
@@ -401,8 +438,15 @@ inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AOF_tests_,co
 	muint_t p = UY.cols();
 
 	//resize output arguments as needed
-	AOF_tests.derived().resize(UX.cols(),p);
 	AOnLL.derived().resize(1,p);
+	AObeta.derived().resize(d,p);
+	AOsigma.derived().resize(1,p);
+
+	if (calc_ftest)
+		AOF_tests.derived().resize(d,p);
+	if (calc_ste)
+		AObeta_ste.derived().resize(d,p);
+
 
 	assert(UY.rows() == S.rows());
 	assert(UY.rows() == UX.rows());
@@ -419,7 +463,7 @@ inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AOF_tests_,co
 		Sdi.data()[ind] = 1.0 / (Sdi.data()[ind]);
 	}
 
-	if (calc_ftest)
+	if (calc_ftest || calc_ste)
 		AOF_tests.setConstant(0.0);
 
 	XSdi = UX.array().transpose();
@@ -430,43 +474,56 @@ inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AOF_tests_,co
 	//least squares solution of XSX*beta = XSY
 	//Call internal solver which uses fixed solvers for 2d and 3d matrices
 	SelfAdjointEigenSolver(U_X, S_X, XSX);
-	beta.noalias() = U_X.transpose() * XSY;
+	AObeta.noalias() = U_X.transpose() * XSY;
 
 	//loop over genotype dimensions:
 	for(size_t dim = 0;dim < d;++dim)
 	{
 		if(S_X(dim) > 3E-8)
 		{
-			beta.row(dim).array() /= S_X(dim);
-			if (calc_ftest)
+			AObeta.row(dim).array() /= S_X(dim);
+			if (calc_ftest || calc_ste)
 			{
 				for(size_t dim2 = 0;dim2 < d;++dim2)
 					AOF_tests.array().row(dim2) += U_X(dim2, dim) * U_X(dim2, dim) / S_X(dim, 0);
 			}
 		}
 		else
-			beta.row(dim).setConstant(0.0);
+			AObeta.row(dim).setConstant(0.0);
 	}
-	beta = U_X * beta;
-	res.noalias() = UY - UX * beta;
+
+	AObeta = U_X * AObeta;
+	res.noalias() = UY - UX * AObeta;
 	//sqared residuals
 	res.array() *= res.array();
 	res.array().colwise() *= Sdi.array();
 
-	sigg2 = res.colwise().sum() / (n);
+	AOsigma = res.colwise().sum() / (mfloat_t)n;
+
+	//compute standard errors
+	if(calc_ste)
+	{
+		AObeta_ste  = AOF_tests.cwiseInverse();
+		AObeta_ste.array().rowwise() *= AOsigma.array().row(0);
+		AObeta_ste/=n;
+		AObeta_ste =AObeta_ste.cwiseSqrt();
+	}
 	//compute the F-statistics
 	if(calc_ftest)
 	{
-		AOF_tests.array() = beta.array() * beta.array() / AOF_tests.array();
-		AOF_tests.array().rowwise() /= sigg2.array().row(0);
+		AOF_tests.array() = AObeta.array() * AObeta.array() / AOF_tests.array();
+		AOF_tests.array().rowwise() /= AOsigma.array().row(0);
 	}
 
+
 	//WARNING: elementwise log of sigg2
-	logInplace(sigg2);
+	logInplace(AOsigma);
 	//calc likelihood:
-	AOnLL = 0.5*n*sigg2;
+	AOnLL = 0.5*n*AOsigma;
 	AOnLL.array() += 0.5*(n*L2pi+ldet + n);
 }
+
+
 
 
 template <typename Derived1, typename Derived2,typename Derived3,typename Derived4,typename Derived5>
@@ -493,13 +550,14 @@ inline void CLMMCore::optdeltaEx(const Eigen::MatrixBase<Derived1> & AO_delta_,c
     mfloat_t ldeltaD = (ldeltamax - ldeltamin);
     ldeltaD /= ((mfloat_t)(((((((((numintervals))))))))) - 1);
 
-    MatrixXd f_tests;
+    MatrixXd f_tests_,AObeta_,AObeta_ste_,AOsigma_;
+
     //forall elements in grid do:
     for(muint_t ii = 0;ii < (numintervals);++ii)
     {
     	ldeltagrid(ii) = ldelta;
     	//get nll for all phenotypes jointly (using current ldelta)
-    	this->nLLevalEx(f_tests, nllgrid.block(ii,0,1,Np),UY, UX, S,ldelta,false);
+    	this->nLLevalEx(f_tests_,AObeta_,AObeta_ste_,AOsigma_, nllgrid.block(ii,0,1,Np),UY, UX, S,ldelta,false);
     	//move on delta
     	ldelta += ldeltaD;
     }
