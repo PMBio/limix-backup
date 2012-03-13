@@ -190,6 +190,7 @@ public:
 %ignore CLMM::getFtests;
 %ignore CLMM::getLSigma;
 %ignore CLMM::agetBetaSNP;
+%ignore CLMM::agetBetaSNPste;
 
 
 //rename argout versions for python; this overwrites the C++ convenience functions
@@ -200,6 +201,7 @@ public:
 %rename(getFtests) CLMM::agetFtests;
 %rename(getLSigma) CLMM::agetLSigma;
 %rename(getBetaSNP) CLMM::agetBetaSNP;
+%rename(getBetaSNPste) CLMM::agetBetaSNPste;
 #endif
 //Standard mixed liner model
 class CLMM :  public CLMMCore, public ALMM
