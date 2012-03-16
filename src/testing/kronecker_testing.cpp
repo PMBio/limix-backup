@@ -9,25 +9,25 @@
 #if 0
 
 #include <iostream>
-#include "gpmix/gp/gp_base.h"
-#include "gpmix/gp/gp_opt.h"
-#include "gpmix/types.h"
-#include "gpmix/likelihood/likelihood.h"
-#include "gpmix/gp/gp_base.h"
-#include "gpmix/gp/gp_kronecker.h"
-#include "gpmix/utils/matrix_helper.h"
-#include "gpmix/covar/linear.h"
-#include "gpmix/covar/se.h"
-#include "gpmix/covar/fixed.h"
-#include "gpmix/covar/combinators.h"
-#include "gpmix/mean/CData.h"
-#include "gpmix/mean/CKroneckerMean.h"
-#include "gpmix/utils/logging.h"
+#include "limix/gp/gp_base.h"
+#include "limix/gp/gp_opt.h"
+#include "limix/types.h"
+#include "limix/likelihood/likelihood.h"
+#include "limix/gp/gp_base.h"
+#include "limix/gp/gp_kronecker.h"
+#include "limix/utils/matrix_helper.h"
+#include "limix/covar/linear.h"
+#include "limix/covar/se.h"
+#include "limix/covar/fixed.h"
+#include "limix/covar/combinators.h"
+#include "limix/mean/CData.h"
+#include "limix/mean/CKroneckerMean.h"
+#include "limix/utils/logging.h"
 #include <vector>
 
 
 using namespace std;
-using namespace gpmix;
+using namespace limix;
 #ifndef PI
 #define PI 3.14159265358979323846
 #endif

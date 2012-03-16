@@ -3,7 +3,7 @@ sys.path.append('./..')
 sys.path.append('./../../../pygp')
 
 
-import gpmix
+import limix
 import pygp.covar.linear as lin
 import pygp.likelihood as LIK
 from pygp.gp import gp_base,gplvm,kronecker_gplvm,gplvm_ard
@@ -73,18 +73,18 @@ if __name__ == '__main__':
     
 
 
-    #gpmix
+    #limix
     if ard:
-        covariance_r = gpmix.CCovLinearARD(Kr)
-        covariance_c = gpmix.CCovLinearARD(Kc)
+        covariance_r = limix.CCovLinearARD(Kr)
+        covariance_c = limix.CCovLinearARD(Kc)
     else:
-        covariance_r = gpmix.CCovLinearISO(Kr)
-        covariance_c = gpmix.CCovLinearISO(Kc)
-    gp=gpmix.CGPkronecker(covariance_r,covariance_c)
+        covariance_r = limix.CCovLinearISO(Kr)
+        covariance_c = limix.CCovLinearISO(Kc)
+    gp=limix.CGPkronecker(covariance_r,covariance_c)
     gp.setY(Y);
     gp.setX_r(X0r);
     gp.setX_c(X0c);
-    params = gpmix.CGPHyperParams();
+    params = limix.CGPHyperParams();
     params['covar_r'] = covar_r
     params['covar_c'] = covar_c
     params['lik'] = lik
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     print SP.absolute(LMLgrad['X_r']-LMLgrad_['x_r']).max()
     #print SP.absolute(LMLgrad['X_c']-LMLgrad_['x_c']).max()
     
-    gpopt = gpmix.CGPopt(gp)
+    gpopt = limix.CGPopt(gp)
     print "gradcheck"
     print gpopt.gradCheck()
     

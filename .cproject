@@ -66,6 +66,35 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.600230429" name="/" resourcePath="src">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.exe.debug.2026777636" name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.exe.debug" unusedChildren="">
+							<targetPlatform id="cdt.managedbuild.target.gnu.platform.macosx.exe.debug" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.macosx.exe.debug"/>
+							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.1327075616" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.1901029774"/>
+							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.890989207" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.1666394570"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.1956621294" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.1607678863">
+								<option id="gnu.both.asm.option.include.paths.1176160212" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/src}&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1548878236" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.macosx.base.1937608090" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base.67602408"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1089431654" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991">
+								<option id="gnu.cpp.compiler.option.include.paths.955021307" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/src}&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.725604847" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.1099391280" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.2053923706">
+								<option id="gnu.c.compiler.option.include.paths.2089382916" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/src}&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1951568007" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
 						<entry excluding="testing/kernel_test.cpp|gpmix/LMM/t|testing/GPmix.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
@@ -132,6 +161,41 @@
 								</option>
 								<option id="gnu.c.compiler.option.warnings.toerrors.79273622" name="Warnings as errors (-Werror)" superClass="gnu.c.compiler.option.warnings.toerrors" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.706557328" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.macosx.exe.release.1315739611.767657865" name="/" resourcePath="src">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.exe.release.2014021006" name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.exe.release" unusedChildren="">
+							<targetPlatform id="cdt.managedbuild.target.gnu.platform.macosx.exe.release" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.macosx.exe.release"/>
+							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.release.950731884" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.release.1234205262"/>
+							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.release.1377110871" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.release.1833938756"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.macosx.exe.release.584674581" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.exe.release.542920308">
+								<option id="gnu.both.asm.option.include.paths.233393457" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/src}&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1727564047" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.macosx.base.523651147" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base.1004763286"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1766061155" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1760785387">
+								<option id="gnu.cpp.compiler.option.include.paths.1937038559" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/src}&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.549594143" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.1540177686" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.693694189">
+								<option id="gnu.c.compiler.option.include.paths.933798494" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/src}&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1376084335" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
@@ -211,6 +275,41 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008.1158530358" name="/" resourcePath="src">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.exe.release.1282138151" name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.exe.release" unusedChildren="">
+							<targetPlatform id="cdt.managedbuild.target.gnu.platform.macosx.exe.release" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.macosx.exe.release"/>
+							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.release.1185902248" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.release.493013093"/>
+							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.release.2144140900" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.release.305162098"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.macosx.exe.release.754752846" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.exe.release.1434741637">
+								<option id="gnu.both.asm.option.include.paths.294977930" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/src}&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.2007511874" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.macosx.base.440202915" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base.1090211849"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.512719541" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1290263727">
+								<option id="gnu.cpp.compiler.option.include.paths.89873344" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/src}&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1240996653" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.1686144221" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.1426767067">
+								<option id="gnu.c.compiler.option.include.paths.926737227" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GPmix/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/External}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/LIMIX/src}&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.304124095" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
@@ -229,44 +328,62 @@
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037.780582164;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.564895527.816920020;cdt.managedbuild.tool.gnu.cpp.compiler.input.116318250">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.966971012;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991.730943277;cdt.managedbuild.tool.gnu.cpp.compiler.input.174629437">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611;cdt.managedbuild.config.macosx.exe.release.1315739611.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1760785387;cdt.managedbuild.tool.gnu.cpp.compiler.input.628924898">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.553290394;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991.544453052;cdt.managedbuild.tool.gnu.cpp.compiler.input.225547049">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008;cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008.1158530358;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.1686144221;cdt.managedbuild.tool.gnu.c.compiler.input.304124095">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
+		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037.;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.1709568626;cdt.managedbuild.tool.gnu.c.compiler.input.120242110">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.564895527;cdt.managedbuild.tool.gnu.cpp.compiler.input.1055891994">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008;cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008.1158530358;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.512719541;cdt.managedbuild.tool.gnu.cpp.compiler.input.1240996653">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008;cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1290263727;cdt.managedbuild.tool.gnu.cpp.compiler.input.1950121627">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.600230429;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1089431654;cdt.managedbuild.tool.gnu.cpp.compiler.input.725604847">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611;cdt.managedbuild.config.macosx.exe.release.1315739611.;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.693694189;cdt.managedbuild.tool.gnu.c.compiler.input.706557328">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.966971012;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991.730943277;cdt.managedbuild.tool.gnu.cpp.compiler.input.174629437">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008;cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008.;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.1426767067;cdt.managedbuild.tool.gnu.c.compiler.input.261285677">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.2053923706;cdt.managedbuild.tool.gnu.c.compiler.input.360468921">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
-		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991;cdt.managedbuild.tool.gnu.cpp.compiler.input.1154953977">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.553290394;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991.544453052;cdt.managedbuild.tool.gnu.cpp.compiler.input.225547049">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037.780582164;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.564895527.816920020;cdt.managedbuild.tool.gnu.cpp.compiler.input.116318250">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611;cdt.managedbuild.config.macosx.exe.release.1315739611.767657865;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1766061155;cdt.managedbuild.tool.gnu.cpp.compiler.input.549594143">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037.src/testing/GPmix.cpp;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1210316229;cdt.managedbuild.tool.gnu.cpp.compiler.input.1536965657">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1727900143;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1440297991.339731703;cdt.managedbuild.tool.gnu.cpp.compiler.input.201143614">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037.src/testing/GPmix.cpp;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1210316229;cdt.managedbuild.tool.gnu.cpp.compiler.input.1536965657">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.2053923706;cdt.managedbuild.tool.gnu.c.compiler.input.360468921">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008;cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.release.1290263727;cdt.managedbuild.tool.gnu.cpp.compiler.input.1950121627">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008;cdt.managedbuild.config.macosx.exe.release.1315739611.1061090008.;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.1426767067;cdt.managedbuild.tool.gnu.c.compiler.input.261285677">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.600230429;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.1099391280;cdt.managedbuild.tool.gnu.c.compiler.input.1951568007">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037;cdt.managedbuild.config.gnu.macosx.exe.debug.1166785845.1155565037.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.564895527;cdt.managedbuild.tool.gnu.cpp.compiler.input.1055891994">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.exe.release.1315739611;cdt.managedbuild.config.macosx.exe.release.1315739611.767657865;cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.release.1540177686;cdt.managedbuild.tool.gnu.c.compiler.input.1376084335">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
 </cproject>

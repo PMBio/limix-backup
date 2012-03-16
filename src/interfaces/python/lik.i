@@ -1,4 +1,4 @@
-%shared_ptr(gpmix::ALikelihood)
-%shared_ptr(gpmix::CLikNormalIso)
-%shared_ptr(gpmix::CLikNormalNULL)
-%shared_ptr(gpmix::CLikNormalSVD)
+%shared_ptr(limix::ALikelihood)
+%shared_ptr(limix::CLikNormalIso)
+%shared_ptr(limix::CLikNormalNULL)
+%shared_ptr(limix::CLikNormalSVD)

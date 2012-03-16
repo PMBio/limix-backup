@@ -1,28 +1,28 @@
-%module gpmix
+%module limix
 
 %{
 #define SWIG_FILE_WITH_INIT
 #define SWIG
-#include "gpmix/types.h"
-#include "gpmix/LMM/lmm.h"
-#include "gpmix/LMM/kronecker_lmm.h"
-#include "gpmix/lasso/lasso.h"
-#include "gpmix/covar/covariance.h"
-#include "gpmix/covar/linear.h"
-#include "gpmix/covar/se.h"
-#include "gpmix/covar/fixed.h"	
-#include "gpmix/covar/freeform.h"	
-#include "gpmix/covar/combinators.h"	
-#include "gpmix/likelihood/likelihood.h"
-#include "gpmix/mean/ADataTerm.h"
-#include "gpmix/mean/CData.h"
-#include "gpmix/mean/CLinearMean.h"
-#include "gpmix/mean/CKroneckerMean.h"
-#include "gpmix/gp/gp_base.h"
-#include "gpmix/gp/gp_kronecker.h"
-#include "gpmix/gp/gp_opt.h"
+#include "limix/types.h"
+#include "limix/LMM/lmm.h"
+#include "limix/LMM/kronecker_lmm.h"
+#include "limix/lasso/lasso.h"
+#include "limix/covar/covariance.h"
+#include "limix/covar/linear.h"
+#include "limix/covar/se.h"
+#include "limix/covar/fixed.h"	
+#include "limix/covar/freeform.h"	
+#include "limix/covar/combinators.h"	
+#include "limix/likelihood/likelihood.h"
+#include "limix/mean/ADataTerm.h"
+#include "limix/mean/CData.h"
+#include "limix/mean/CLinearMean.h"
+#include "limix/mean/CKroneckerMean.h"
+#include "limix/gp/gp_base.h"
+#include "limix/gp/gp_kronecker.h"
+#include "limix/gp/gp_opt.h"
 
-using namespace gpmix;
+using namespace limix;
 //  removed namespace bindings (12.02.12)
 %}
 
@@ -46,7 +46,7 @@ using namespace gpmix;
 %}
 
 
-//%shared_ptr(gpmix::CTest)
+//%shared_ptr(limix::CTest)
 %include "covar.i"
 %include "gp.i"
 %include "lik.i"
@@ -56,24 +56,24 @@ using namespace gpmix;
 
 //generated outodoc:
 //%feature("autodoc", "1")
-%include "gpmix/types.h"
-%include "gpmix/LMM/lmm.h"
-%include "gpmix/LMM/kronecker_lmm.h"
-%include "gpmix/lasso/lasso.h"
-%include "gpmix/covar/covariance.h"
-%include "gpmix/covar/linear.h"
-%include "gpmix/covar/se.h"
-%include "gpmix/covar/fixed.h"
-%include "gpmix/covar/freeform.h"	
-%include "gpmix/covar/combinators.h"	
-%include "gpmix/likelihood/likelihood.h"
-%include "gpmix/mean/ADataTerm.h"
-%include "gpmix/mean/CData.h"
-%include "gpmix/mean/CLinearMean.h"
-%include "gpmix/mean/CKroneckerMean.h"
-%include "gpmix/gp/gp_base.h"
-%include "gpmix/gp/gp_kronecker.h"
-%include "gpmix/gp/gp_opt.h"
+%include "limix/types.h"
+%include "limix/LMM/lmm.h"
+%include "limix/LMM/kronecker_lmm.h"
+%include "limix/lasso/lasso.h"
+%include "limix/covar/covariance.h"
+%include "limix/covar/linear.h"
+%include "limix/covar/se.h"
+%include "limix/covar/fixed.h"
+%include "limix/covar/freeform.h"	
+%include "limix/covar/combinators.h"	
+%include "limix/likelihood/likelihood.h"
+%include "limix/mean/ADataTerm.h"
+%include "limix/mean/CData.h"
+%include "limix/mean/CLinearMean.h"
+%include "limix/mean/CKroneckerMean.h"
+%include "limix/gp/gp_base.h"
+%include "limix/gp/gp_kronecker.h"
+%include "limix/gp/gp_opt.h"
 
 
 

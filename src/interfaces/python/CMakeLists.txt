@@ -78,11 +78,11 @@ if (GOOGLE_PERF)
 SET(SWIGLINKLIBS profiler)
 endif (GOOGLE_PERF)
 
-set_source_files_properties(gpmix.i PROPERTIES CPLUSPLUS ON)
-set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-includeall")
-set_source_files_properties(gpmix.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
-swig_add_module(gpmix python gpmix.i)
-swig_link_libraries(gpmix gpmixlib nlopt ${SWIGLINKLIBS})
+set_source_files_properties(limix.i PROPERTIES CPLUSPLUS ON)
+set_source_files_properties(limix.i PROPERTIES SWIG_FLAGS "-includeall")
+set_source_files_properties(limix.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
+swig_add_module(limix python limix.i)
+swig_link_libraries(limix limixlib nlopt ${SWIGLINKLIBS})
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")	 
   # Mac OS X specific code
@@ -92,8 +92,8 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 
 #Install python .so and python wrapper
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/_gpmix.so DESTINATION ${PYTHON_INSTDIR})
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/gpmix.py DESTINATION ${PYTHON_INSTDIR})
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/_limix.so DESTINATION ${PYTHON_INSTDIR})
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/limix.py DESTINATION ${PYTHON_INSTDIR})
 #install demo into the build directory
 
 endif(BUILD_PYTHON_PACKAGE)

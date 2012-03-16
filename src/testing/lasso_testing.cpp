@@ -11,17 +11,17 @@
 #if 0
 
 #include <iostream>
-#include "gpmix/gp/gp_base.h"
-#include "gpmix/types.h"
-#include "gpmix/utils/matrix_helper.h"
-#include "gpmix/likelihood/likelihood.h"
-#include "gpmix/covar/linear.h"
-#include "gpmix/gp/gp_base.h"
-#include "gpmix/lasso/lasso.h"
+#include "limix/gp/gp_base.h"
+#include "limix/types.h"
+#include "limix/utils/matrix_helper.h"
+#include "limix/likelihood/likelihood.h"
+#include "limix/covar/linear.h"
+#include "limix/gp/gp_base.h"
+#include "limix/lasso/lasso.h"
 
 
 using namespace std;
-using namespace gpmix;
+using namespace limix;
 
 int main() {
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!

@@ -1,50 +1,50 @@
 #add external headers (mainly Eigen)
 
 
-if(DEBUG_GPMIX)
+if(DEBUG_LIMIX)
   ADD_DEFINITIONS(-DOSSOLOG_COMPILE -DOSSOLOG_STDERR -DOSSOLOG_DEBUG)
-else(DEBUG_GPMIX)
-  if(SILENT_GPMIX)
+else(DEBUG_LIMIX)
+  if(SILENT_LIMIX)
     #do nothing: don't include OSSOLOG_COMPILE
-  else(SILENT_GPMIX)
+  else(SILENT_LIMIX)
     ADD_DEFINITIONS(-DOSSOLOG_COMPILE -DOSSOLOG_STDERR) 
-  endif(SILENT_GPMIX)
-endif(DEBUG_GPMIX)
+  endif(SILENT_LIMIX)
+endif(DEBUG_LIMIX)
 
-SET(SOURCES gpmix/covar/covariance.cpp
-	    gpmix/covar/covariance.cpp
-	    gpmix/covar/fixed.cpp	
-	    gpmix/covar/fixed.cpp	
-	    gpmix/covar/se.cpp
-	    gpmix/covar/combinators.cpp
-	    gpmix/covar/linear.cpp
-	    gpmix/covar/freeform.cpp
-	    gpmix/covar/dist.cpp
-	    gpmix/utils/matrix_helper.cpp
-	    gpmix/utils/beta.cpp
-	    gpmix/utils/brentc.cpp
-	    gpmix/utils/gamma.cpp
-	    gpmix/utils/mathfunctions.cpp
-	    gpmix/utils/fisherf.cpp
-	    gpmix/LMM/lmm_old.cpp
-	    gpmix/LMM/lmm.cpp	
-	    gpmix/LMM/kronecker_lmm.cpp	
-	    gpmix/LMM/CGPLMM.cpp	
-	    gpmix/lasso/lasso.cpp
-	    gpmix/likelihood/likelihood.cpp
-	    gpmix/gp/gp_base.cpp
-	    gpmix/gp/gp_kronecker.cpp
-	    gpmix/gp/gp_opt.cpp
-	    gpmix/mean/ADataTerm.cpp
-	    gpmix/mean/CLinearMean.cpp
-	    gpmix/mean/CSumLinear.cpp
-	    gpmix/mean/CKroneckerMean.cpp
-	    gpmix/mean/CData.cpp
+SET(SOURCES limix/covar/covariance.cpp
+	    limix/covar/covariance.cpp
+	    limix/covar/fixed.cpp	
+	    limix/covar/fixed.cpp	
+	    limix/covar/se.cpp
+	    limix/covar/combinators.cpp
+	    limix/covar/linear.cpp
+	    limix/covar/freeform.cpp
+	    limix/covar/dist.cpp
+	    limix/utils/matrix_helper.cpp
+	    limix/utils/beta.cpp
+	    limix/utils/brentc.cpp
+	    limix/utils/gamma.cpp
+	    limix/utils/mathfunctions.cpp
+	    limix/utils/fisherf.cpp
+	    limix/LMM/lmm_old.cpp
+	    limix/LMM/lmm.cpp	
+	    limix/LMM/kronecker_lmm.cpp	
+	    limix/LMM/CGPLMM.cpp	
+	    limix/lasso/lasso.cpp
+	    limix/likelihood/likelihood.cpp
+	    limix/gp/gp_base.cpp
+	    limix/gp/gp_kronecker.cpp
+	    limix/gp/gp_opt.cpp
+	    limix/mean/ADataTerm.cpp
+	    limix/mean/CLinearMean.cpp
+	    limix/mean/CSumLinear.cpp
+	    limix/mean/CKroneckerMean.cpp
+	    limix/mean/CData.cpp
 )
 
 
-ADD_LIBRARY(gpmixlib STATIC ${SOURCES})
+ADD_LIBRARY(limixlib STATIC ${SOURCES})
 
-INSTALL(TARGETS gpmixlib
+INSTALL(TARGETS limixlib
    ARCHIVE DESTINATION lib
    LIBRARY DESTINATION lib)
