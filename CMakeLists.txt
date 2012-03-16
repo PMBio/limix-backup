@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(GPMix)
+project(LIMIX)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 #build options
@@ -71,7 +71,7 @@ include (AddCompilerFlag)
 
 
 # OLI's build options
-#set(LIBR_SO "/opt/local/lib/R/lib/x86_64/libR.dylib")
+set(LIBR_SO "/opt/local/lib/R/lib/x86_64/libR.dylib")
 ##/R END
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -87,7 +87,7 @@ include(${SWIG_USE_FILE})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_SWIG_FLAGS "")
 
-set(CMAKE_MODULE_PATH "${GPMix_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${LIMIX_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 add_definitions(-g -Wextra -D_BSD_SOURCE)
 
@@ -113,14 +113,14 @@ include_directories(./src)
 #add Cmake modules
 #nlopt
 add_subdirectory(./External/nlopt)
-#gpmix source
+#LIMIX source
 add_subdirectory(./src)
 
 #### build external interface (optional) #####
 if (BUILD_PYTHON_PACKAGE)
-add_subdirectory(./src/python_interface)
+add_subdirectory(./src/interfaces/python)
 endif (BUILD_PYTHON_PACKAGE)
 if (BUILD_R_PACKAGE)
-add_subdirectory(./R)
+add_subdirectory(./src/interfaces/R)
 endif (BUILD_R_PACKAGE)
 

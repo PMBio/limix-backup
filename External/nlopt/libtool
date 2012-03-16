@@ -2,7 +2,7 @@
 
 # libtool - Provide generalized library-building support services.
 # Generated automatically by config.status (nlopt) 2.2.4
-# Libtool was configured on host Oliver-Stegles-MacBook-Pro.local:
+# Libtool was configured on host terek.as.localnet:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 #
 #   Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005,
@@ -65,13 +65,13 @@ fast_install=needless
 
 # The host system.
 host_alias=
-host=i386-apple-darwin10.8.0
-host_os=darwin10.8.0
+host=i386-apple-darwin11.3.0
+host_os=darwin11.3.0
 
 # The build system.
 build_alias=
-build=i386-apple-darwin10.8.0
-build_os=darwin10.8.0
+build=i386-apple-darwin11.3.0
+build_os=darwin11.3.0
 
 # A sed program that does not truncate output.
 SED="/opt/local/bin/gsed"
@@ -240,7 +240,7 @@ finish_eval=""
 hardcode_into_libs=no
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/usr/lib/gcc/i686-apple-darwin10/4.2.1/x86_64 /usr/lib/i686-apple-darwin10/4.2.1 /usr/lib /usr/local/lib"
+sys_lib_search_path_spec="/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/x86_64 /Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/x86_64 /usr/lib /usr/llvm-gcc-4.2/lib/gcc /usr/llvm-gcc-4.2/lib /Developer/usr/llvm-gcc-4.2/lib /usr/local/lib"
 
 # Run-time system search path for libraries.
 sys_lib_dlsearch_path_spec="/usr/local/lib /lib /usr/lib"
@@ -260,7 +260,7 @@ striplib="strip -x"
 
 
 # The linker used to build libraries.
-LD="/usr/libexec/gcc/i686-apple-darwin10/4.2.1/ld"
+LD="/usr/llvm-gcc-4.2/libexec/gcc/i686-apple-darwin11/4.2.1/ld"
 
 # Commands used to build an old-style archive.
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$oldlib"
@@ -8912,7 +8912,7 @@ build_old_libs=`case $build_libtool_libs in yes) echo no;; *) echo yes;; esac`
 # ### BEGIN LIBTOOL TAG CONFIG: CXX
 
 # The linker used to build libraries.
-LD="/usr/libexec/gcc/i686-apple-darwin10/4.2.1/ld"
+LD="/usr/llvm-gcc-4.2/libexec/gcc/i686-apple-darwin11/4.2.1/ld"
 
 # Commands used to build an old-style archive.
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$oldlib"

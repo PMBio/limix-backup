@@ -1,5 +1,4 @@
-
-#if 0
+#if 1
 //============================================================================
 // Name        : GPmix.cpp
 // Author      :
@@ -9,16 +8,16 @@
 //============================================================================
 
 #include <iostream>
-#include "gpmix/types.h"
-#include "gpmix/covar/covariance.h"
-#include "gpmix/covar/linear.h"
-#include "gpmix/utils/matrix_helper.h"
-#include "gpmix/LMM/lmm.h"
-#include "gpmix/LMM/lmm_old.h"
-using namespace gpmix;
+#include "limix/types.h"
+#include "limix/covar/covariance.h"
+#include "limix/covar/linear.h"
+#include "limix/utils/matrix_helper.h"
+#include "limix/LMM/lmm.h"
+#include "limix/LMM/lmm_old.h"
+using namespace limix;
 
 using namespace std;
-using namespace gpmix;
+using namespace limix;
 
 int main() {
 
@@ -48,25 +47,6 @@ int main() {
 
 
 
-	if (0){ //Simple Kronecker LMM
-		MatrixXd Kp = 1.0/p * (snps.block(0,0,p,s)*snps.block(0,0,p,s).transpose());
-
-		MatrixXd Wkron0 = MatrixXd::Ones(p,1);
-		MatrixXd Wkron  = MatrixXd::Zero(p,1);
-		//select one phenotype for testing only:
-		Wkron(0,0) = 1;
-
-		CSimpleKroneckerLMM lmm;
-		lmm.setK_R(K);
-		lmm.setK_C(Kp);
-		lmm.setPheno(pheno);
-		lmm.setSNPs(snps);
-		lmm.setCovs(covs);
-		lmm.setWkron(Wkron);
-		lmm.setWkron0(Wkron0);
-		lmm.process();
-	}
-
 	if (1){ //LMM testing using new code
 		CLMM lmm;
 
@@ -78,7 +58,6 @@ int main() {
 		lmm.setSNPs(covs);
 		lmm.setPheno(pheno);
 		lmm.setCovs(covs);
-		lmm.setEMMA(-5,5,10);
 		lmm.setNumIntervals0(10);
 		lmm.setTestStatistics(lmm.TEST_F);
 
@@ -111,45 +90,6 @@ int main() {
 		std::cout << pv-ipv << "\n";
 	}
 
-
-
-
-	if(0) //kronecker product LMM
-	{
-		//TODO: calculate dofs for arbitrary WkronDiag and WkronBlock, currently we expect all ones...
-		MatrixXd WkronDiag0, WkronBlock0, WkronDiag, WkronBlock;
-		if (0)
-		{//one weight per SNP over all phenotypes
-			WkronDiag0=MatrixXd::Ones(1,ncov);
-			WkronBlock0=MatrixXd::Ones(p,ncov);
-			WkronDiag=MatrixXd::Ones(1,ncov+1);
-			WkronBlock=MatrixXd::Ones(p,ncov+1);
-		}
-		else
-		{//phenotype many weights per SNP
-			WkronDiag0=MatrixXd::Ones(p,ncov);
-			WkronBlock0=MatrixXd::Ones(1,ncov);
-			WkronDiag=MatrixXd::Ones(p,ncov+1);
-			WkronBlock=MatrixXd::Ones(1,ncov+1);
-		}
-
-
-		MatrixXd Kp = 1.0/p * (snps.block(0,0,p,s)*snps.block(0,0,p,s).transpose());
-		//cout <<Kp;
-		CKroneckerLMM kron;
-		kron.setKronStructure(WkronDiag0, WkronBlock0, WkronDiag, WkronBlock);
-		kron.setK_R(K);
-		kron.setK_C(Kp);
-		kron.setPheno(pheno);
-		kron.setSNPs(snps);
-		kron.setCovs(covs);
-
-		kron.process();
-
-		MatrixXd pv = kron.getPv().block(0,0,1,s);
-		cout <<"pv_kron:\n"<< scientific <<pv<<endl;
-	}
-	cout << "finished";
 
 }
 #endif

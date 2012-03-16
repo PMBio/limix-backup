@@ -5,7 +5,7 @@ sys.path.append('./../../..')
 
 import scipy as SP
 import scipy.linalg
-import gpmix as mmtk
+import limix as limix
 import time
 import pdb
 import pylab as PL
@@ -113,25 +113,25 @@ Y -= Y.mean()
 Y/= Y.std()
 
 
-#2. fitting using mmtk
+#2. fitting using limix
 GP = {}
 #fix covariance, taking population structure
-GP['covar_G'] = mmtk.CFixedCF(Kpopf)
+GP['covar_G'] = limix.CFixedCF(Kpopf)
 #freeform covariance: requiring number of traits/group (T)
-GP['covar_E'] = mmtk.CCovFreeform(T)
+GP['covar_E'] = limix.CCovFreeform(T)
 
 #overall covarianc: product
-GP['covar'] = mmtk.CProductCF()
+GP['covar'] = limix.CProductCF()
 GP['covar'].addCovariance(GP['covar_G'])
 GP['covar'].addCovariance(GP['covar_E'])
 #liklihood: gaussian
-GP['ll'] = mmtk.CLikNormalIso()
-GP['data'] =  mmtk.CData()
-GP['hyperparams'] = mmtk.CGPHyperParams()
+GP['ll'] = limix.CLikNormalIso()
+GP['data'] =  limix.CData()
+GP['hyperparams'] = limix.CGPHyperParams()
 
 
 #Create GP instance
-GP['gp']=mmtk.CGPbase(GP['data'],GP['covar'],GP['ll'])
+GP['gp']=limix.CGPbase(GP['data'],GP['covar'],GP['ll'])
 #set data
 GP['gp'].setY(Y)
 #input: effectively we require the group for each sample (CCovFreeform requires this)
@@ -139,10 +139,10 @@ Xtrain = SP.zeros([Y.shape[0],1])
 Xtrain[N::1] = 1        
 GP['gp'].setX(Xtrain)
 
-gpopt = mmtk.CGPopt(GP['gp'])
+gpopt = limix.CGPopt(GP['gp'])
 #constraints: make sure that noise level does not go completel crazy
-constrainU = mmtk.CGPHyperParams()
-constrainL = mmtk.CGPHyperParams()
+constrainU = limix.CGPHyperParams()
+constrainL = limix.CGPHyperParams()
 constrainU['lik'] = +5*SP.ones([1]);
 constrainL['lik'] = -5*SP.ones([1]);
 gpopt.setOptBoundLower(constrainL);
@@ -187,7 +187,7 @@ K0 = SP.eye(K.shape[0])
 #1. Main effect
 #covariates
 C = SP.ones([2*N,1])
-lmm = mmtk.CLMM()
+lmm = limix.CLMM()
 lmm.setK(scale_k(K))
 lmm.setSNPs(Xf)
 lmm.setPheno(Y)
@@ -212,7 +212,7 @@ I = SP.zeros([Y.shape[0],1])
 I0 = SP.ones([Y.shape[0],1])
 
 I[0:N]=1
-lmi = mmtk.CInteractLMM()
+lmi = limix.CInteractLMM()
 lmi.setK(scale_k(K))
 lmi.setSNPs(Xf)
 lmi.setPheno(Y)
