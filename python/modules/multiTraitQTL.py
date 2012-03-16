@@ -5,7 +5,7 @@ sys.path.append('./../../..')
 
 import scipy as SP
 import scipy.linalg
-import limix as mmtk
+import limix
 import time
 import pdb
 import pylab as PL
@@ -66,8 +66,8 @@ class CMMT(object):
             self._standardize()
 
         #init lmm object: testing
-        self.lmm =  mmtk.CLMM()
-        self.lmi = mmtk.CInteractLMM()
+        self.lmm =  limix.CLMM()
+        self.lmi = limix.CInteractLMM()
         
         #fit variance components using delta - fitting
         if (SP.isnan(self.VinitG[0,0])):
@@ -116,21 +116,21 @@ class CMMT(object):
         """create GP instance for fitting"""
         GP = {}
         #overall covariace
-        GP['covar'] = mmtk.CSumCF()
+        GP['covar'] = limix.CSumCF()
         
         #1. genotype X env covariance
-        GP['covar_GG'] = mmtk.CFixedCF(self.Kpop)
+        GP['covar_GG'] = limix.CFixedCF(self.Kpop)
         #freeform covariance: requiring number of traits/group (T)
-        GP['covar_GE'] = mmtk.CCovFreeform(self.T)
-        GP['covar_G'] = mmtk.CProductCF()
+        GP['covar_GE'] = limix.CCovFreeform(self.T)
+        GP['covar_G'] = limix.CProductCF()
         GP['covar_G'].addCovariance(GP['covar_GG'])
         GP['covar_G'].addCovariance(GP['covar_GE'])
         
         #2. env covariance:
-        GP['covar_EG'] = mmtk.CFixedCF(self.Kgeno)
+        GP['covar_EG'] = limix.CFixedCF(self.Kgeno)
         #freeform covariance: requiring number of traits/group (T)
-        GP['covar_EE'] = mmtk.CCovFreeform(self.T)
-        GP['covar_E'] = mmtk.CProductCF()
+        GP['covar_EE'] = limix.CCovFreeform(self.T)
+        GP['covar_E'] = limix.CProductCF()
         GP['covar_E'].addCovariance(GP['covar_EG'])
         GP['covar_E'].addCovariance(GP['covar_EE'])      
           
@@ -139,27 +139,26 @@ class CMMT(object):
         GP['covar'].addCovariance(GP['covar_E'])
           
         #liklihood: NULL likleihhod; all variance is explained by covariance function.
-        GP['ll'] = mmtk.CLikNormalNULL()
-        GP['data'] =  mmtk.CData()
-        GP['hyperparams'] = mmtk.CGPHyperParams()
+        GP['ll'] = limix.CLikNormalNULL()
+        GP['hyperparams'] = limix.CGPHyperParams()
         #Create GP instance
-        GP['gp']=mmtk.CGPbase(GP['data'],GP['covar'],GP['ll'])
+        GP['gp']=limix.CGPbase(GP['covar'],GP['ll'])
         #set data
         GP['gp'].setY(self.Y)
         #create X: we have 2 covariances that need inputs (Cover_EE,covar_GE)
         Xgp = SP.concatenate((self.E,self.E),axis=1)
         GP['gp'].setX(Xgp)
         #optimization interface
-        GP['gpopt'] = mmtk.CGPopt(GP['gp'])
+        GP['gpopt'] = limix.CGPopt(GP['gp'])
         #filter?
         covar_mask = SP.ones([GP['covar'].getNumberParams(),1])
         covar_mask[0] = 0 
         covar_mask[4] = 0 
-        mask = mmtk.CGPHyperParams()
+        mask = limix.CGPHyperParams()
         mask['covar'] = covar_mask
         GP['gpopt'].setParamMask(mask)
         #hyperparams object
-        GP['hyperparams'] = mmtk.CGPHyperParams()
+        GP['hyperparams'] = limix.CGPHyperParams()
         self.GP=GP
     
     
@@ -227,7 +226,7 @@ class CMMT(object):
         #2. create covar params
         #set start parameters
         for i in xrange(1):
-            params = mmtk.CGPHyperParams()
+            params = limix.CGPHyperParams()
             params['covar'] = self._getParams0(vr=1E-1)
             if i==0:
                 self.GP['gp'].setParams(params)            
@@ -248,7 +247,7 @@ class CMMT(object):
         
     def GWAmain(self,useK=['multi_trait']):
         """main effect GWA, shared accross traits"""
-        self.lmm =  mmtk.CLMM()
+        self.lmm =  limix.CLMM()
         if useK=='multi_trait':
             self.lmm.setK(self.Ktesting)
         else:
@@ -265,7 +264,7 @@ class CMMT(object):
         return pv
     
     def GWAinter(self,useK=['multi_trait'],I=None,I0=None):
-        self.lmi = mmtk.CInteractLMM()
+        self.lmi = limix.CInteractLMM()
         if useK=='multi_trait':
             self.lmi.setK(self.Ktesting)
         else:
