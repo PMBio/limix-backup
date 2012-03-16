@@ -3,7 +3,7 @@ sys.path.append('./..')
 sys.path.append('./../../../pygp')
 
 
-import gpmix
+import limix
 import pygp.covar.linear as lin
 import pygp.likelihood as lik
 import pygp.gp.gp_base as GP
@@ -40,45 +40,47 @@ dlml_ = gp_.LMLgrad(hyperparams_)
 opt_params_ = opt.opt_hyper(gp_,hyperparams_)[0]
 lmlo_ = gp_.LML(opt_params_)
 
+pdb.set_trace()
 
 
 #GPMIX:
-covar  = gpmix.CCovSqexpARD(n_dimensions)
-ll  = gpmix.CLikNormalIso()
-data = gpmix.CData()
+covar  = limix.CCovSqexpARD(n_dimensions)
+ll  = limix.CLikNormalIso()
+data = limix.CData()
 
 #create hyperparm     
-hyperparams = gpmix.CGPHyperParams()
+hyperparams = limix.CGPHyperParams()
 hyperparams['covar'] = covar_params
 hyperparams['lik'] = lik_params
 
 #cretae GP
-gp=gpmix.CGPbase(data,covar,ll)
+gp=limix.CGPbase(covar,ll,data)
 #set data
 gp.setY(y)
 gp.setX(X)
-lml = gp.LML(hyperparams)
-dlml = gp.LMLgrad(hyperparams)
+gp.setParams(hyperparams)
+lml = gp.LML()
+dlml = gp.LMLgrad()
 
 #build constraints
-constrainU = gpmix.CGPHyperParams()
-constrainL = gpmix.CGPHyperParams()
+constrainU = limix.CGPHyperParams()
+constrainL = limix.CGPHyperParams()
 constrainU['covar'] = +10*SP.ones_like(covar_params);
 constrainL['covar'] = -10*SP.ones_like(covar_params);
 constrainU['lik'] = +5*SP.ones_like(lik_params);
 constrainL['lik'] = -5*SP.ones_like(lik_params);
 
 
-mask = gpmix.CGPHyperParams()
+mask = limix.CGPHyperParams()
 covar_mask = SP.ones(covar_params.shape[0])
 covar_mask[0] = 1
-covar_mask[1] = 0
+covar_mask[1] = 1
 
 mask['covar'] = covar_mask
 #mask['lik'] = SP.ones(lik_params.shape[0])
 
 
-gpopt = gpmix.CGPopt(gp)
+gpopt = limix.CGPopt(gp)
 gpopt.setOptBoundLower(constrainL);
 gpopt.setOptBoundUpper(constrainU);
 gpopt.setParamMask(mask)

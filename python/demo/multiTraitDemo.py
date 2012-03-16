@@ -7,7 +7,7 @@ sys.path.append('./../')
 
 import scipy as SP
 import scipy.linalg
-import gpmix as mmtk
+import limix
 import time
 import pdb
 import pylab as PL
