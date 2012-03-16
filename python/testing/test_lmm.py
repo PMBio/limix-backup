@@ -1,7 +1,7 @@
 import sys
 
 import os
-#os.chdir('/kyb/agbs/stegle/work/projects/GPmix/python/testing')
+#os.chdir('/kyb/agbs/stegle/work/projects/limix/python/testing')
 
 sys.path.append('./../../pygp')
 sys.path.append('./..')
@@ -10,7 +10,7 @@ sys.path.append('./../../..')
 
 import h5py
 import scipy as SP
-import gpmix
+import limix
 import panama.core.lmm.lmm as lmm
 import pylab as PL
 import pdb
@@ -41,8 +41,8 @@ if __name__ == '__main__':
         y = 0.2*(I[:,0:1]*X[:,333:333+1]) 
         y/=y.std()
         y+= 0.2*SP.random.randn(y.shape[0],y.shape[1])
-        lm = gpmix.CInteractLMM()
-        lm.setTestStatistics(gpmix.CLMM.TEST_F)
+        lm = limix.CInteractLMM()
+        lm.setTestStatistics(limix.CLMM.TEST_F)
         lm.setK(K)
         lm.setSNPs(X)
         lm.setPheno(y)
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     
     K=scale_k(K,verbose=True)
         
-    if 0:
+    if 1:
         #OLD
         #population covariance
         t0 = time.time()
@@ -102,8 +102,8 @@ if __name__ == '__main__':
     if 1:
         print "K = 0!"
         #K[:,:] = 0
-        #gpmix
-        lm = gpmix.CLMM()
+        #limix
+        lm = limix.CLMM()
         lm.setK(K)
         lm.setSNPs(X_)
         lm.setPheno(y_)
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     #likelihood ratios
     if 1:
         t3 = time.time()
-        lm.setTestStatistics(gpmix.CLMM.TEST_LLR)
+        lm.setTestStatistics(limix.CLMM.TEST_LLR)
         lm.process()    
         t4 = time.time()
         pv1_llr = lm.getPv()
@@ -126,7 +126,7 @@ if __name__ == '__main__':
     if 1:
         #ftests
         t5= time.time()
-        lm.setTestStatistics(gpmix.CLMM.TEST_F)
+        lm.setTestStatistics(limix.CLMM.TEST_F)
         lm.process()    
         pv1_ft = lm.getPv()
         print lm.getNLL0()

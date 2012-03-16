@@ -3,7 +3,7 @@ sys.path.append('./..')
 sys.path.append('./../../../pygp')
 
 
-import gpmix
+import limix
 import pygp.covar.linear as lin
 import pygp.covar.se as se
 import pygp.covar.gradcheck as GC
@@ -17,7 +17,7 @@ X = SP.randn(3,n_dimensions)
 params = SP.zeros([0])
 
 if 0:
-    c1 = gpmix.CCovLinearISO()
+    c1 = limix.CCovLinearISO()
     c2 = lin.LinearCFISO(n_dimensions=n_dimensions)
 
     c1.setX(X)
@@ -36,7 +36,7 @@ if 0:
 
 
 if 0:
-    c1 = gpmix.CCovSqexpARD()
+    c1 = limix.CCovSqexpARD()
     c2 = se.SqexpCFARD(n_dimensions=n_dimensions)
 
     params = SP.random.randn(n_dimensions+1)
@@ -60,10 +60,10 @@ if 1:
     params = SP.random.randn(n_dimensions+2)
 
     pdb.set_trace()
-    c1 = gpmix.CCovLinearISO(n_dimensions)
-    c2 = gpmix.CCovSqexpARD(n_dimensions)
+    c1 = limix.CCovLinearISO(n_dimensions)
+    c2 = limix.CCovSqexpARD(n_dimensions)
 
-    c  = gpmix.CSumCF()
+    c  = limix.CSumCF()
     c.addCovariance(c1)
     c.addCovariance(c2)
     X2 = SP.concatenate((X,X),axis=1)

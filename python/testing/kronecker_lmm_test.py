@@ -3,7 +3,7 @@ sys.path.append('./..')
 sys.path.append('./../../../pygp')
 
 
-import gpmix
+import limix
 import pygp.covar.linear as lin
 import pygp.likelihood as LIK
 from pygp.gp import gp_base,gplvm,kronecker_gplvm,gplvm_ard
@@ -39,35 +39,35 @@ if __name__ == '__main__':
 
 
     if 1:
-        covar_c = gpmix.CFixedCF(SP.eye(D))
-        covar_r = gpmix.CFixedCF(SP.eye(N))
+        covar_c = limix.CFixedCF(SP.eye(D))
+        covar_r = limix.CFixedCF(SP.eye(N))
         Xr      = SP.zeros([N,0])
         Xc      = SP.zeros([D,0])
 
-        gp = gpmix.CGPkronecker(covar_r,covar_c)
+        gp = limix.CGPkronecker(covar_r,covar_c)
         gp.setX_r(Xr)
         gp.setX_c(Xc)
         gp.setY(Y)
         
-        params = gpmix.CGPHyperParams()
+        params = limix.CGPHyperParams()
         params["covar_r"] = SP.zeros([covar_r.getNumberParams()])
         params["covar_c"] = SP.zeros([covar_c.getNumberParams()])
         params["lik"] = SP.log([0.1,0.1])
     
         gp.setParams(params)
-        opt=gpmix.CGPopt(gp)
+        opt=limix.CGPopt(gp)
 
         opt.opt()
         #opt.gradCheck()
 
     if 0:
-        opt_params = gpmix.CGPHyperParams()
+        opt_params = limix.CGPHyperParams()
         opt_params["lik"] = params["lik"]
         gp.setParams(opt_params)
         pdb.set_trace()
 
         #lmm object
-        lmm = gpmix.CGPLMM(gp)
+        lmm = limix.CGPLMM(gp)
         lmm.setSNPs(S)
         lmm.setCovs(SP.ones([N,1]))
         lmm.setPheno(Y)

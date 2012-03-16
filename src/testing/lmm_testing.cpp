@@ -8,16 +8,16 @@
 //============================================================================
 
 #include <iostream>
-#include "gpmix/types.h"
-#include "gpmix/covar/covariance.h"
-#include "gpmix/covar/linear.h"
-#include "gpmix/utils/matrix_helper.h"
-#include "gpmix/LMM/lmm.h"
-#include "gpmix/LMM/lmm_old.h"
-using namespace gpmix;
+#include "limix/types.h"
+#include "limix/covar/covariance.h"
+#include "limix/covar/linear.h"
+#include "limix/utils/matrix_helper.h"
+#include "limix/LMM/lmm.h"
+#include "limix/LMM/lmm_old.h"
+using namespace limix;
 
 using namespace std;
-using namespace gpmix;
+using namespace limix;
 
 int main() {
 

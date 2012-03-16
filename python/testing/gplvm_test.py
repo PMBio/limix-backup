@@ -3,7 +3,7 @@ sys.path.append('./..')
 sys.path.append('./../../../pygp')
 
 
-import gpmix
+import limix
 import pygp.covar.linear as lin
 import pygp.likelihood as lik
 from pygp.gp import gp_base,gplvm,gplvm_ard
@@ -57,15 +57,15 @@ dlml_ = g.LMLgrad(opt_hyperparams_)
 
 
 #GPMIX:
-covar  = gpmix.CCovLinearISO(K)
-ll  = gpmix.CLikNormalIso()
+covar  = limix.CCovLinearISO(K)
+ll  = limix.CLikNormalIso()
 #create hyperparm     
-hyperparams = gpmix.CGPHyperParams()
+hyperparams = limix.CGPHyperParams()
 hyperparams['covar'] = covar_params
 hyperparams['lik'] = lik_params
 hyperparams['X']   = X0
 #cretae GP
-gp=gpmix.CGPbase(covar,ll)
+gp=limix.CGPbase(covar,ll)
 #set data
 gp.setY(Y)
 gp.setX(X0)
@@ -76,7 +76,7 @@ dlml0 = gp.LMLgrad(hyperparams)
 lml0 = gp.LML()
 dlml0 = gp.LMLgrad(hyperparams)
 
-gpopt = gpmix.CGPopt(gp)
+gpopt = limix.CGPopt(gp)
 t2 = time.time()
 gpopt.opt()
 t3 = time.time()

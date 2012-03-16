@@ -1,7 +1,7 @@
-%shared_ptr(gpmix::CKroneckerLMM)
-%shared_ptr(gpmix::ADataTerm)
-%shared_ptr(gpmix::CData)
-%shared_ptr(gpmix::CKroneckerMean)
-%shared_ptr(gpmix::CLinearMean)
-%shared_ptr(gpmix::CSumLinear)
+%shared_ptr(limix::CKroneckerLMM)
+%shared_ptr(limix::ADataTerm)
+%shared_ptr(limix::CData)
+%shared_ptr(limix::CKroneckerMean)
+%shared_ptr(limix::CLinearMean)
+%shared_ptr(limix::CSumLinear)
 
