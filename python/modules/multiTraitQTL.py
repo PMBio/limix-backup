@@ -9,27 +9,21 @@ import limix
 import time
 import pdb
 import pylab as PL
+import utils.preprocess as preprocess
 
 
-def scale_k(k, verbose=False):
-    c = SP.sum((SP.eye(len(k)) - (1.0 / len(k)) * SP.ones(k.shape)) * SP.array(k))
-    scalar = (len(k) - 1) / c
-    if verbose:
-        print 'Kinship scaled by: %0.4f' % scalar
-    k = scalar * k
-    return k
 
 
 
 class CMMT(object):
-    def __init__(self, X=None, E=None, Y=None, C=None, Kpop=None, Kgeno=None, T=2, standardize=True, Ve00=SP.nan, Ve11=SP.nan, Ve01=SP.nan, Vg00=SP.nan, Vg01=SP.nan, Vg11=SP.nan):
+    def __init__(self, X=None, E=None, Y=None, C=None, Ks=None, Kgeno=None, T=2, standardize=True, Ve00=SP.nan, Ve11=SP.nan, Ve01=SP.nan, Vg00=SP.nan, Vg01=SP.nan, Vg11=SP.nan):
         """
         X: SNPS [N x S]
         Y: phenotype [N x 1]
         E: env. indocator [N x 1]
         C: covariates [N x C]
         T: number of traits (2)
-        Kpop[XX^T]: population covariance [N x N]
+        Ks[XX^T]: covariances to fit [N x N]
         Kgeno: genotype identity covariance [N x N]
         standardize[True]: standardize phenotype per trait?
         """
@@ -38,29 +32,29 @@ class CMMT(object):
         if X != None: #Allow users only to estimate variance components
             assert X.shape[0] == Y.shape[0], 'X and Y have incompatible shape'
         assert E.shape[0] == Y.shape[0], 'E and Y have incompatible shape'
-        assert Kpop.shape[0] == Y.shape[0], 'Kpop and Y have incompatible shape'
+        if Ks is None:
+            Ks = [1.0 / X.shpape[1] * SP.dot(X, X.T)]
+        for K in Ks:
+            assert K.shape[0] == Y.shape[0], 'Kpop and Y have incompatible shape'
         assert Kgeno.shape[0] == Y.shape[0], 'Kgeno and Y have incompatible shape'
         assert len(SP.unique(E)) == 2, 'Only supporting 2 environments (0/1) right now'
         assert 0 in E, 'Only supporting 2 environments (0/1) right now'
         assert 1 in E, 'Only supporting 2 environments (0/1) right now'
 
-
         if C is None:
             C = SP.ones([Y.shape[0], 1])
-        if Kpop is None:
-            Kpop = 1.0 / X.shpape[1] * SP.dot(X, X.T)
 
         self.X = X
         self.E = E
         self.Y = Y
         self.T = T
         self.C = C
-        self.Kpop = scale_k(Kpop)
-        self.Kgeno = scale_k(Kgeno)
+        self.Ks    = [preprocess.scale_K(K) for K in Ks]
+        self.Kgeno = preprocess.scale_K(Kgeno)
 
         #variance component init:
         self.VinitE = SP.array([[Ve00, Ve01], [Ve01, Ve11]])
-        self.VinitG = SP.array([[Vg00, Vg01], [Vg01, Vg11]])
+        self.VinitG = [SP.array([[Vg00, Vg01], [Vg01, Vg11]])]*len(self.Ks)
 
         #standardize data
         if standardize:
@@ -71,9 +65,8 @@ class CMMT(object):
         self.lmi = limix.CInteractLMM()
         
         #fit variance components using delta - fitting
-        if (SP.isnan(self.VinitG[0, 0])):
+        if SP.array([SP.isnan(V).any() for V in self.VinitG]).any():
             self._init_variance()
-
 
 
     def _standardize(self):
@@ -88,30 +81,39 @@ class CMMT(object):
 
     def _init_variance(self):
         """guess variance components based on independent analysis"""
-        D = []
-        for t in xrange(self.T):
-            Ie = (self.E[:, 0] == t)
-            _Y = self.Y[Ie]
-            _C = self.C[Ie]
-            _X = SP.zeros([_C.shape[0], 0])
-            self.lmm.setK(self.Kpop[Ie, :][:, Ie])
-            self.lmm.setSNPs(_X)
-            self.lmm.setCovs(_C)
-            self.lmm.setPheno(_Y)
-            #optimize delta -10..10
-            self.lmm.setVarcompApprox0(-20, 10, 1000)
-            self.lmm.process()
-            #get delta
-            ldelta = self.lmm.getLdelta0().flatten()
-            D.append(SP.exp(ldelta))
-            pass
-        #initialize variances from delta fit
-        #note we assume that Sg^2 + Se^2 =1, i.e. each trait has been standardized
-        self.VinitG[0, 0] = 1. / (1 + D[0])
-        self.VinitG[1, 1] = 1. / (1 + D[1])
-        self.VinitE[0, 0] = D[0] / (1 + D[0])
-        self.VinitE[1, 1] = D[1] / (1 + D[1])
-
+        VsG = []
+        VsE = []
+        for ik in xrange(len(self.Ks)):
+            D = []
+            K = self.Ks[ik]
+            VG = SP.zeros([2,2])
+            VE = SP.zeros([2,2])
+            for t in xrange(self.T):
+                Ie = (self.E[:, 0] == t)
+                _Y = self.Y[Ie]
+                _C = self.C[Ie]
+                _X = SP.zeros([_C.shape[0], 0])
+                self.lmm.setK(K[Ie, :][:, Ie])
+                self.lmm.setSNPs(_X)
+                self.lmm.setCovs(_C)
+                self.lmm.setPheno(_Y)
+                #optimize delta -10..10
+                self.lmm.setVarcompApprox0(-20, 10, 1000)
+                self.lmm.process()
+                #get delta
+                ldelta = self.lmm.getLdelta0().flatten()
+                D.append(SP.exp(ldelta))
+                pass
+            VG[0, 0] = 1. / (1 + D[0])
+            VG[1, 1] = 1. / (1 + D[1])
+            VE[0, 0] = D[0] / (1 + D[0])
+            VE[1, 1] = D[1] / (1 + D[1])
+            VsG.append(VG)
+            VsE.append(VE)
+        #use all fitted genotype models as staring point
+        self.VinitG = VsG
+        #arbitrarily use first environment model
+        self.VinitE = VsE[0]
 
     def _init_GP(self):
         """create GP instance for fitting"""
@@ -119,13 +121,21 @@ class CMMT(object):
         #overall covariace
         GP['covar'] = limix.CSumCF()
         
-        #1. genotype X env covariance
-        GP['covar_GG'] = limix.CFixedCF(self.Kpop)
-        #freeform covariance: requiring number of traits/group (T)
-        GP['covar_GE'] = limix.CCovFreeform(self.T)
-        GP['covar_G'] = limix.CProductCF()
-        GP['covar_G'].addCovariance(GP['covar_GG'])
-        GP['covar_G'].addCovariance(GP['covar_GE'])
+        #1. genotype X env covariances
+        GP['covar_GG']= []
+        GP['covar_GE']= []
+        GP['covar_G']= []
+        for K in self.Ks:
+            _covar_gg = limix.CFixedCF(K)
+            #freeform covariance: requiring number of traits/group (T)
+            _covar_ge = limix.CCovFreeform(self.T)
+            _covar_g = limix.CProductCF()
+            _covar_g.addCovariance(_covar_gg)
+            _covar_g.addCovariance(_covar_ge)
+            #add to list
+            GP['covar_GG'].append(_covar_gg)
+            GP['covar_GE'].append(_covar_ge)
+            GP['covar_G'].append(_covar_g)
 
         #2. env covariance:
         GP['covar_EG'] = limix.CFixedCF(self.Kgeno)
@@ -136,7 +146,10 @@ class CMMT(object):
         GP['covar_E'].addCovariance(GP['covar_EE'])
 
         #add to sum CF
-        GP['covar'].addCovariance(GP['covar_G'])
+        #1. genotype covariances
+        for ig in xrange(len(GP['covar_G'])):
+            GP['covar'].addCovariance(GP['covar_G'][ig])
+        #2. environment covariance
         GP['covar'].addCovariance(GP['covar_E'])
 
         #liklihood: NULL likleihhod; all variance is explained by covariance function.
@@ -146,20 +159,23 @@ class CMMT(object):
         GP['gp']=limix.CGPbase(GP['covar'],GP['ll'])
         #set data
         GP['gp'].setY(self.Y)
-        #create X: we have 2 covariances that need inputs (Cover_EE,covar_GE)
-        Xgp = SP.concatenate((self.E, self.E), axis=1)
+        #create X: we have 2 covariances that need inputs (Cover_GEs,covar_GE)
+        Xgp = self.E
+        #add term for each genotype covariance
+        for ig in xrange(len(GP['covar_G'])):
+            Xgp = SP.concatenate((Xgp,self.E),axis=1)
         GP['gp'].setX(Xgp)
         #optimization interface
         GP['gpopt'] = limix.CGPopt(GP['gp'])
+
         #filter?
+        #mask out scaling parameters for all covariance sum components
         covar_mask = SP.ones([GP['covar'].getNumberParams(),1])
-        covar_mask[0] = 0 
-        covar_mask[4] = 0 
+        for i in xrange((1+len(self.Ks))):
+            covar_mask[i*4] = 0
         mask = limix.CGPHyperParams()
         mask['covar'] = covar_mask
         GP['gpopt'].setParamMask(mask)
-        #hyperparams object
-        GP['hyperparams'] = limix.CGPHyperParams()
         self.GP=GP
     
     
@@ -205,19 +221,29 @@ class CMMT(object):
     def _getParams0(self, **kw_args):
         """get best guess starting points of parameters for optimization"""
         #1. full paramter vector 2 * 4 [Scale, L00, L01, L11]
-        cp = SP.zeros([2 * 4])
-        pG = self._var2params(self.VinitG, **kw_args)
+        cp = SP.zeros([(1+len(self.Ks)) * 4])
+        for ig in xrange(len(self.Ks)):
+            pG = self._var2params(self.VinitG[ig], **kw_args)
+            i0 = ig*4+1
+            i1 = ig*4+1+3
+            cp[i0:i1] = pG
         pE = self._var2params(self.VinitE, **kw_args)
-        cp[1:4] = pG
-        cp[5:8] = pE
+        cp[i1+1:i1+4] = pE
         return cp
 
     def _getVarComponents(self, covar_params):
-        Cg = self._params2var(covar_params[1:4])
-        Cg *= SP.exp(2 * covar_params[0])
-        Ce = self._params2var(covar_params[5:8])
-        Ce *= SP.exp(2 * covar_params[4])
-        return [Cg, Ce]
+        Ve = None
+        Vg = []
+        for i in xrange(len(self.Ks)):
+            i0 = i*4+1
+            i1 = i*4+1+3
+            Cg = self._params2var(covar_params[i0:i1])
+            #scaling (should be = 1):
+            Cg *= SP.exp(2 * covar_params[i0-1])
+            Vg.append(Cg)
+        Ve = self._params2var(covar_params[i1+1:i1+4])
+        Ve *= SP.exp(2 * covar_params[i1])
+        return [Vg, Ve]
 
 
     def fitVariance(self):
@@ -227,23 +253,30 @@ class CMMT(object):
         #2. create covar params
         #set start parameters
         for i in xrange(1):
-            params = limix.CGPHyperParams()
-            params['covar'] = self._getParams0(vr=1E-1)
+            params0 = limix.CGPHyperParams()
+            params0['covar'] = self._getParams0(vr=1E-1)
             if i == 0:
-                self.GP['gp'].setParams(params)
-            self.GP['gpopt'].addOptStartParams(params)
+                self.GP['gp'].setParams(params0)
+            self.GP['gpopt'].addOptStartParams(params0)
         self.GP['gpopt'].opt()
-
+        #get gradients and check that they are~0
+        lmlgrad=self.GP['gp'].LMLgrad()
+        assert lmlgrad['covar'].max() < 1E-3, 'optimization not propperly converged'
 
         #get optimized hyperparmas
         self.GP['hyperparamsO'] = self.GP['gp'].getParams()
+
+        #parse hyperparams into variance components
+        [VG, VE] = self._getVarComponents(params0['covar'])
+        self.VE0 = VE
+        self.VG0 = VG
 
         #parse hyperparams into variance components
         [VG, VE] = self._getVarComponents(self.GP['hyperparamsO']['covar'])
         self.VE = VE
         self.VG = VG
         #store covariance for testing
-        self.Ktesting = scale_k(self.GP['covar'].K())
+        self.Ktesting = preprocess.scale_K(self.GP['covar'].K())
         pass
 
     def GWAmain(self, useK=['multi_trait']):
@@ -252,7 +285,7 @@ class CMMT(object):
         if useK=='multi_trait':
             self.lmm.setK(self.Ktesting)
         else:
-            self.lmm.setK(self.Kpop)
+            self.lmm.setK(self.Ks[0])
 
         self.lmm.setSNPs(self.X)
         self.lmm.setPheno(self.Y)
@@ -269,7 +302,7 @@ class CMMT(object):
         if useK=='multi_trait':
             self.lmi.setK(self.Ktesting)
         else:
-            self.lmi.setK(self.Kpop)
+            self.lmi.setK(self.Ks[0])
         self.lmi.setSNPs(self.X)
         self.lmi.setPheno(self.Y)
         self.lmi.setCovs(self.C)
