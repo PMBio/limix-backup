@@ -11,6 +11,7 @@ import limix
 import time
 import pdb
 import pylab as PL
+import utils.preprocess as preprocess
 import modules.multiTraitQTL as MM
 
 
@@ -40,7 +41,7 @@ if __name__ == '__main__':
     #variance components: env
     Ve00 = 0.2
     Ve11 = 0.2
-    Ve01 = 0.0
+    Ve01 = 0.14
 
     #number of genetic factors
     Nsnp_common = 1
@@ -59,7 +60,7 @@ if __name__ == '__main__':
 
     #1.2 population structure covariance
     Kpop = 1.0 / X.shape[1] * SP.dot(X, X.T)
-    Kpop = MM.scale_k(Kpop)
+    Kpop = preprocess.scale_K(Kpop)
 
     #1.3 simulate covariance structure between traits without SNP effect
     Cg = SP.zeros([2, 2])
@@ -86,12 +87,6 @@ if __name__ == '__main__':
     L = SP.linalg.cholesky(K).T
     Yr = SP.dot(L, SP.random.randn(K.shape[0], 1))
 
-    #make all data full scale
-    Xf = SP.concatenate((X, X), axis=0)
-    Kpopf = 1.0 / Xf.shape[1] * SP.dot(Xf, Xf.T)
-    Kpopf = MM.scale_k(Kpopf)
-
-
     #1.6 add fixed effect (SNP)
     #TODO: make this proper
     Iasso = []
@@ -116,8 +111,21 @@ if __name__ == '__main__':
     Iasso = SP.array(Iasso)
     Iinter = SP.array(Iinter)
 
+    #1.7: make SNPs around one particular effect "cis"
+    I_cis = SP.arange(max(0,Iasso[0]-10),min(Iasso[0]+10,X.shape[1]))
 
-    #1.7: sum of fixed and random effect
+    #create kinships
+    #make all data full scale
+    Xf = SP.concatenate((X, X), axis=0)
+    Kpopf = 1.0 / Xf.shape[1] * SP.dot(Xf, Xf.T)
+    Kpopf = preprocess.scale_K(Kpopf)
+
+    Kcis = 1.0 / Xf.shape[1] * SP.dot(Xf[:,I_cis], Xf[:,I_cis].T)
+    Kcis = preprocess.scale_K(Kcis)
+
+
+    
+    #1.8: sum of fixed and random effect
     Y = Yf + Yr
     #standardize
     if 0:
@@ -131,45 +139,45 @@ if __name__ == '__main__':
     #genotye identity        
     Kgeno = SP.kron(SP.ones([2, 2]), SP.eye(N))
 
+
     #####ANALYSIS#####
-    print "Variance component fitting"
-
-    tt = MM.CMMT(X=Xf, E=E, Y=Y.copy(), Kpop=Kpopf, Kgeno=Kgeno, T=T)
-    t0 = time.time()
-    tt.fitVariance()
-    t1 = time.time()
-    print "--done (%.2f seconds)" % (t1 - t0)
-
-    VE = tt.VE
-    VG = tt.VG
-
-
-    print "fitted varaince components"
-    print "VE"
-    print VE
-    print "VG"
-    print VG
-
-    #GWA scan
-    print "Main effect GWAS scans (2)"
-    t0 = time.time()
-    pv_Kpop = tt.GWAmain(useK='Kpop')
-    pv_multiTrait = tt.GWAmain(useK='multi_trait')
-    t1 = time.time()
-    print "--done (%.2f seconds)" % (t1 - t0)
-
-    print "Interaction effect GWAS scans (2)"
-    t0 = time.time()
-    I = SP.zeros([2 * N, 1])
-    I[0:N] = 1
-    I0 = SP.ones([2 * N, 1])
-    pvi_Kpop = tt.GWAinter(useK='Kpop', I=I, I0=I0)
-    pvi_multiTrait = tt.GWAinter(useK='multi_trait', I=I, I0=I0)
-    t1 = time.time()
-    print "--done (%.2f seconds)" % (t1 - t0)
-
-
     if 1:
+        print "Variance component fitting"
+        tt = MM.CMMT(X=Xf, E=E, Y=Y.copy(), Ks=[Kpopf], Kgeno=Kgeno, T=T)
+        t0 = time.time()
+        tt.fitVariance()
+        t1 = time.time()
+        print "--done (%.2f seconds)" % (t1 - t0)
+    
+        VE = tt.VE
+        VG = tt.VG
+    
+    
+        print "fitted varaince components"
+        print "VE"
+        print VE
+        print "VG"
+        print VG
+    
+        #GWA scan
+        print "Main effect GWAS scans (2)"
+        t0 = time.time()
+        pv_Kpop = tt.GWAmain(useK='Kpop')
+        pv_multiTrait = tt.GWAmain(useK='multi_trait')
+        t1 = time.time()
+        print "--done (%.2f seconds)" % (t1 - t0)
+    
+        print "Interaction effect GWAS scans (2)"
+        t0 = time.time()
+        I = SP.zeros([2 * N, 1])
+        I[0:N] = 1
+        I0 = SP.ones([2 * N, 1])
+        pvi_Kpop = tt.GWAinter(useK='Kpop', I=I, I0=I0)
+        pvi_multiTrait = tt.GWAinter(useK='multi_trait', I=I, I0=I0)
+        t1 = time.time()
+        print "--done (%.2f seconds)" % (t1 - t0)
+
+    if 0:
         PL.figure()
         PL.subplot(211)
         PL.title('Kpop')
@@ -192,4 +200,28 @@ if __name__ == '__main__':
         PL.plot(Iinter, SP.zeros(len(Iinter)), 'r*', markersize=15)
         PL.title('Kmultitrait')
         PL.show()
+
+
+    if 1:
+        print "Variance component fitting with cis/pop covaraince"
+        tt =  MM.CMMT(X=Xf, E=E, Y=Y.copy(), Ks=[Kcis,Kpopf], Kgeno=Kgeno, T=T)
+
+        
+        t0 = time.time()
+        tt.fitVariance()
+        t1 = time.time()
+        print "--done (%.2f seconds)" % (t1 - t0)
+        
+        VE2_0 = tt.VE0
+        VG2_0 = tt.VG0
+
+        VE2 = tt.VE
+        VG2 = tt.VG
+        print "fitted varaince components"
+        print "VE"
+        print VE2
+        print "VG"
+        print VG
+
+
 
