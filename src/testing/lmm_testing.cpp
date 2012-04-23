@@ -1,4 +1,4 @@
-#if 0
+#if 1
 //============================================================================
 // Name        : GPmix.cpp
 // Author      :
@@ -22,7 +22,7 @@ using namespace limix;
 int main() {
 
 	int n = 100;
-	int p = 3;
+	int p = 1;
 	int s = 10;
 	int ncov = 1;
 	MatrixXd snps = (MatrixXd)randn((muint_t)n,(muint_t)s);
@@ -55,39 +55,44 @@ int main() {
 		MatrixXd M = MatrixXd::Ones(3,2);
 
 		lmm.setK(K);
-		lmm.setSNPs(covs);
+		lmm.setSNPs(snps);
 		lmm.setPheno(pheno);
 		lmm.setCovs(covs);
-		lmm.setNumIntervals0(10);
-		lmm.setTestStatistics(lmm.TEST_F);
+		//lmm.setNumIntervals0(10);
+		//lmm.setTestStatistics(lmm.TEST_F);
 
 		lmm.process();
-		std::cout << lmm.getLdelta0() << "\n\n\n\n";
-		std::cout << lmm.getLdeltaAlt() << "\n";
+		//std::cout << lmm.getLdelta0() << "\n\n\n\n";
+		//std::cout << lmm.getLdeltaAlt() << "\n";
 
-		std::cout << lmm.getNLL0() << "\n\n\n\n";
-		std::cout << lmm.getNLLAlt() << "\n";
+		//std::cout << lmm.getNLL0() << "\n\n\n\n";
+		//std::cout << lmm.getNLLAlt() << "\n";
 
 		MatrixXd pv = lmm.getPv();
-		cout <<"pv_new:\n"<< scientific <<pv<<endl;
-
-
+		cout <<"pv:\n"<< scientific <<pv<<endl;
 
 		CInteractLMM ilmm;
 		ilmm.setK(K);
 		ilmm.setSNPs(snps);
 		ilmm.setPheno(pheno);
 		ilmm.setCovs(covs);
-		ilmm.setInter(covs);
+		MatrixXd Im = MatrixXd::Ones(snps.rows(),1);
+		Im.block(0,0,50,1).setConstant(0.0);
+		ilmm.setInter(Im);
 		ilmm.setInter0(MatrixXd::Ones(snps.rows(),1));
-
-		ilmm.setTestStatistics(lmm.TEST_F);
-
 		ilmm.process();
 		MatrixXd ipv = ilmm.getPv();
 
 
-		std::cout << pv-ipv << "\n";
+		ilmm.setTestStatistics(ilmm.TEST_F);
+		ilmm.process();
+		MatrixXd ipv2 = ilmm.getPv();
+
+		cout <<"ipv:\n"<< scientific <<ipv<<endl;
+		cout <<"ipv2:\n"<< scientific <<ipv2<<endl;
+
+
+		//std::cout << pv-ipv << "\n";
 	}
 
 

@@ -419,14 +419,8 @@ int ALMM::getTestStatistics() const
     //processing;
     void CInteractLMM::process() throw (CGPMixException)
     {
-        /*
-	//check that statistics ok: only support Ftest if number of degrees =1
-	if ((num_inter<1) )
-	{
-			throw CGPMixException("CInteractLMM:: model requies at least one interaction partner!");
-	}
-	 */
-        if((num_inter > 1) && (this->testStatistics == ALMM::TEST_F)){
+    	//TODO: Ftest is not correct for simple cases where I0=0 as ftest_rows yields the wrong answer.
+    	if((num_inter > 1) && (this->testStatistics == ALMM::TEST_F)){
             throw CGPMixException("CInteractLMM:: cannot use Ftest for more than 1 interaction dimension!");
         }
         //get decomposition
@@ -466,7 +460,7 @@ int ALMM::getTestStatistics() const
         	MatrixXd nLL00;
         	optdeltaEx(ldelta00,nLL00,Upheno, Ucovs, S, num_intervals0, ldeltamin0, ldeltamax0);
         	ldelta0.colwise() = ldelta00.col(0);
-        	nLL0.colwise() = nLL00.col(0);
+        	//nLL0.colwise() = nLL00.col(0);
         }
 
         //loop over SNPs
@@ -486,7 +480,10 @@ int ALMM::getTestStatistics() const
         	UXps.block(0,0,num_samples,num_inter+num_inter0) = UXi;
 
     		if (refitDelta0Pheno && (testStatistics==ALMM::TEST_LLR))
+    		{
+    			//refit delta on new null model which has changed due to I0:
     			optdeltaEx(ldelta0.col(is),nLL0.col(is),Upheno, UXps.block(0,num_inter,num_samples,num_inter0+num_covs), S, num_intervals0, ldeltamin0, ldeltamax0);
+    		}
 
     		if (num_intervalsAlt>0)
     			//fit delta on alt model also
@@ -503,6 +500,8 @@ int ALMM::getTestStatistics() const
         		//4. calc p-value
         		if (this->testStatistics==ALMM::TEST_LLR)
         		{
+        			//for likelihood ratios, we require evaluation on the new null model due to I0:
+        			nLLevalEx(AObeta_,AObeta_ste_,AOsigma_,f_tests_,nLL0.block(ip,is,1,1),Upheno.col(ip), UXps.block(0,num_inter,num_samples,num_inter0+num_covs), S,ldelta0(ip, is),false);
         			//adjust degrees of freedom and calc pv:
         			this->pv(ip, is) = Gamma::gammaQ(nLL0(ip, is) - nLLAlt(ip, is), (double)0.5*(num_inter));
         		}
