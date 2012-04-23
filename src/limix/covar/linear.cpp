@@ -19,7 +19,7 @@ CCovLinearISO::~CCovLinearISO() {
 }
 
 void CCovLinearISO::aKcross(MatrixXd* out,const CovarInput& Xstar) const throw(CGPMixException)
-																												{
+{
 	//create result matrix:
 	out->resize(this->X.rows(),Xstar.rows());
 	//We dfine Xstar [N X D] where N are samples...
@@ -32,7 +32,7 @@ void CCovLinearISO::aKcross(MatrixXd* out,const CovarInput& Xstar) const throw(C
 	//kernel matrix is constant hyperparmeter and dot product
 	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
 	(*out).noalias() = A* Xstar*this->X.transpose();
-																												}
+}
 
 
 void CCovLinearISO::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
@@ -86,6 +86,63 @@ void CCovLinearISO::aKdiag_grad_X(VectorXd* out, const muint_t d ) const throw (
 	(*out) = VectorXd::Zero(this->X.rows());
 	(*out) = 2.0*A*this->X.col(d);
 }
+
+
+
+/***** CCovLinearISO *******/
+
+CCovLinearISODelta::~CCovLinearISODelta() {
+}
+
+void CCovLinearISODelta::aKcross(MatrixXd* out,const CovarInput& Xstar) const throw(CGPMixException)
+{
+	//create result matrix:
+	out->resize(this->X.rows(),Xstar.rows());
+	//We dfine Xstar [N X D] where N are samples...
+	if (Xstar.cols()!=this->X.cols())
+	{
+		std::ostringstream os;
+		os << this->getName() <<": Xstar has wrong number of dimensions. Xstar.cols() = "<< Xstar.cols() <<". X.cols() = "<< this->X.cols() << ".";
+		throw CGPMixException(os.str());
+	}
+	//kernel matrix is constant hyperparmeter and dot product
+	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
+	for (muint_t ir=0;ir< (muint_t)out->rows();++ir)
+	{
+		for (muint_t ic=0;ic<(muint_t)out->cols();++ic)
+		{
+			//kernel value is number of coinciding elements in that row
+			muint_t count = (X.row(ir).array()==Xstar.row(ic).array()).sum();
+			(*out)(ir,ic) = A*count;
+		}
+	}
+}
+
+
+void CCovLinearISODelta::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+	out->resize(Xstar.rows());
+	mfloat_t A = exp((mfloat_t)(2.0*params(0)));
+	out->setConstant(A* Xstar.cols());
+}
+
+
+void CCovLinearISODelta::aKgrad_param(MatrixXd* out, const muint_t i ) const throw(CGPMixException)
+{
+	if (i==0)
+	{
+		out->resize(this->X.rows(),this->X.rows());
+		(*out).noalias() = 2.0*this->K();
+	}
+	else
+	{
+		std::ostringstream os;
+		os << this->getName() <<": wrong index of hyperparameter. i = "<< i <<". this->params.cols() = "<< this->getNumberParams() << ".";
+		throw CGPMixException(os.str());
+	}
+}
+
+
 
 
 /***** CCovLinearARD *******/

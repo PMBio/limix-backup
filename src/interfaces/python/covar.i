@@ -9,3 +9,4 @@
 %shared_ptr(limix::CCovFreeform)
 %shared_ptr(limix::CCovLinearARD)
 %shared_ptr(limix::CCovLinearISO)
+%shared_ptr(limix::CCovLinearISODelta)
