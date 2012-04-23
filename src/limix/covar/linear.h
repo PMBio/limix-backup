@@ -66,6 +66,29 @@ typedef sptr<CCovLinearARD> PCovLinearARD;
 
 
 
+/* Delta kernel */
+class CCovLinearISODelta: public ACovarianceFunction  {
+public:
+	CCovLinearISODelta(muint_t numberDimensions=1) : ACovarianceFunction(1)
+	{
+		this->setNumberDimensions(numberDimensions);
+	}
+
+	~CCovLinearISODelta();
+
+	//overloaded pure virtual functions:
+	void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
+
+	void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+
+	//class information
+	inline std::string getName() const {return "CCovLinearISODelta";};
+
+};
+typedef sptr<CCovLinearISODelta> PCovLinearISODelta;
+
+
 
 
 } /* namespace limix */
