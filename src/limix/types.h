@@ -65,12 +65,20 @@ inline mfloat_t inverse (mfloat_t x)
 //this is somewhat ugly but makes a lot easier to wrap the Eigen arays with swig
 #if (!defined(SWIG) || defined(SWIG_FILE_WITH_INIT))
 //standard Matrix type to use in this project
+
+//float
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXd;
 typedef Eigen::Matrix<mfloat_t, 2, 2,Eigen::ColMajor> MatrixXd2;
 typedef Eigen::Matrix<mfloat_t, 3, 3,Eigen::ColMajor> MatrixXd3;
-typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXi;
-typedef Eigen::Matrix<mint_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXi;
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXd;
+
+//integer
+typedef Eigen::Matrix<mint_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXi;
+typedef Eigen::Matrix<mint_t, 2, 2,Eigen::ColMajor> MatrixXi2;
+typedef Eigen::Matrix<mint_t, 3, 3,Eigen::ColMajor> MatrixXi3;
+typedef Eigen::Matrix<mint_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXi;
+
+//string
 typedef Eigen::Matrix<std::string, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXs;
 typedef Eigen::Array<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> ArrayXd;
 //cholesky decomposition object (we use LLT as faster and more stable)
