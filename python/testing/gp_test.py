@@ -40,18 +40,30 @@ dlml_ = gp_.LMLgrad(hyperparams_)
 opt_params_ = opt.opt_hyper(gp_,hyperparams_)[0]
 lmlo_ = gp_.LML(opt_params_)
 
+
 pdb.set_trace()
 
 
 #GPMIX:
+cov = SP.ones([y.shape[0],2])
+cov[:,1] = SP.randn(cov.shape[0])
 covar  = limix.CCovSqexpARD(n_dimensions)
 ll  = limix.CLikNormalIso()
-data = limix.CData()
+
+if 1:
+    data = limix.CLinearMean(y,cov);
+    data_params = SP.ones([cov.shape[1]])
+else:
+    data = limix.CData()
+    data_params = None
 
 #create hyperparm     
 hyperparams = limix.CGPHyperParams()
 hyperparams['covar'] = covar_params
 hyperparams['lik'] = lik_params
+if data_params is not None:
+    hyperparams['dataTerm'] = data_params
+
 
 #cretae GP
 gp=limix.CGPbase(covar,ll,data)
@@ -77,7 +89,6 @@ covar_mask[0] = 1
 covar_mask[1] = 1
 
 mask['covar'] = covar_mask
-#mask['lik'] = SP.ones(lik_params.shape[0])
 
 
 gpopt = limix.CGPopt(gp)
