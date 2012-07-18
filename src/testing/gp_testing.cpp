@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "limix/gp/gp_base.h"
@@ -111,9 +111,15 @@ int main() {
 		MatrixXd y = X*w*A + 0.1*randn(nsamples,targets);
 
 		CGPHyperParams params;
+
+
+		MatrixXd cov = MatrixXd::Ones(nsamples,1);
+		CLinearMean mean(y,cov);
+		MatrixXd weights = MatrixXd::Ones(1,1);
+
+
 		//Ard covariance
 		PCovLinearARD covar(new CCovLinearARD(X.cols()));
-
 		//GP object
 		PGPbase gp(new CGPbase(covar));
 		gp->setY(y);
@@ -123,6 +129,7 @@ int main() {
 		CovarInput lik_params = randn(gp->getLik()->getNumberParams(),(muint_t)1);
 		params["covar"] = covar_params;
 		params["lik"] = lik_params;
+		params["dataTerm"] = weights;
 		gp->setParams(params);
 
 

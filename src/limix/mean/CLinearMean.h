@@ -25,8 +25,8 @@ protected:
 public:
 	CLinearMean();
 	CLinearMean(muint_t nTargets);
-	CLinearMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects);
-	CLinearMean(MatrixXd& Y, MatrixXd& fixedEffects);
+	CLinearMean(const MatrixXd& Y, const MatrixXd& weights, const MatrixXd& fixedEffects);
+	CLinearMean(const MatrixXd& Y, const MatrixXd& fixedEffects);
 	virtual ~CLinearMean();
 
 	virtual void agetA(MatrixXd* out)

@@ -12,7 +12,7 @@ ADataTerm::ADataTerm()
 {
 }
 
-ADataTerm::ADataTerm(MatrixXd& Y)
+ADataTerm::ADataTerm(const MatrixXd& Y)
 {
 	this->Y = Y;
 }

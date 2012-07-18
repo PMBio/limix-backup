@@ -16,7 +16,7 @@ CLinearMean::CLinearMean(muint_t nTargets) : ADataTerm::ADataTerm() {
 	this->nTargets = nTargets;
 }
 
-CLinearMean::CLinearMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects) : ADataTerm::ADataTerm(Y)
+CLinearMean::CLinearMean(const MatrixXd& Y, const MatrixXd& weights, const MatrixXd& fixedEffects) : ADataTerm::ADataTerm(Y)
 {
 	this->checkDimensions(weights, fixedEffects, Y, true, true, true);
 	this->fixedEffects = fixedEffects;
@@ -24,7 +24,7 @@ CLinearMean::CLinearMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects)
 	this->nTargets = Y.cols();
 }
 
-CLinearMean::CLinearMean(MatrixXd& Y, MatrixXd& fixedEffects) : ADataTerm::ADataTerm(Y)
+CLinearMean::CLinearMean(const MatrixXd& Y, const MatrixXd& fixedEffects) : ADataTerm::ADataTerm(Y)
 {
 	this->checkDimensions(weights, fixedEffects, Y, true, false, true);
 	this->fixedEffects = fixedEffects;

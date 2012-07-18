@@ -38,7 +38,7 @@ protected:
 
 public:
 	ADataTerm();
-	ADataTerm(MatrixXd& Y);
+	ADataTerm(const MatrixXd& Y);
 	virtual ~ADataTerm();
 	virtual inline void setParams(const MatrixXd& params)
 	{
