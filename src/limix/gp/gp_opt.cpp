@@ -42,7 +42,7 @@ void CGPopt::completeConstraints(CGPHyperParams& constraints, const CGPHyperPara
 
 
 
-void CGPopt::opt() throw (CGPMixException)
+bool CGPopt::opt() throw (CGPMixException)
 {
 	//0. set evaluation counter to 0:
 	numEvaluations = 0;
@@ -126,6 +126,8 @@ void CGPopt::opt() throw (CGPMixException)
 	//get corresponding param array and store
 	optParams = params0;
 	optParams.setParamArray(optParamArray.row(argmax),optParamMask);
+
+	return (iopt_success>0);
 }
 
 
