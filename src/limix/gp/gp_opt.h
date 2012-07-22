@@ -52,7 +52,7 @@ public:
 	CGPopt(PGPbase gp);
 	virtual ~CGPopt();
 	virtual bool gradCheck(mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
-	virtual void opt() throw (CGPMixException);
+	virtual bool opt() throw (CGPMixException);
 
 	CGPHyperParams getParamMask() const;
 	void setParamMask(CGPHyperParams filter);
