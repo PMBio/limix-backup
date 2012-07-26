@@ -125,8 +125,12 @@ public:
 	//grad checking functions
 	static bool check_covariance_Kgrad_theta(ACovarianceFunction& covar,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
 	static bool check_covariance_Kgrad_x(ACovarianceFunction& covar,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2,bool check_diag=true);
+	//covariance normalization
+	//template <typename Derived1, typename Derived2,typename Derived3,typename Derived4,typename Derived5>
+	//inline static void scale_K(const Eigen::MatrixBase<Derived1> & K_);
 };
 typedef sptr<ACovarianceFunction> PCovarianceFunction;
+
 
 /*
  * Cache object which inherits all the interface functions from Covar

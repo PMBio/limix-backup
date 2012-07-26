@@ -60,6 +60,16 @@ inline void logInplace(const Eigen::MatrixBase<Derived>& m_)
 			m(r,c) = log(m(r,c));
 }
 
+template <typename Derived>
+inline void expInplace(const Eigen::MatrixBase<Derived>& m_)
+{
+	Eigen::MatrixBase<Derived>& m = const_cast< Eigen::MatrixBase<Derived>& >(m_);
+
+	for (muint_t r=0;r<(muint_t)m.rows();++r)
+		for(muint_t c=0;c<(muint_t)m.cols();++c)
+			m(r,c) = exp(m(r,c));
+}
+
 
 template <typename Derived1,typename Derived2,typename Derived3,typename Derived4>
 inline void AexpandMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::MatrixBase<Derived2>& m,const Eigen::MatrixBase<Derived3>& filter_row, const Eigen::MatrixBase<Derived4>& filter_col) throw (CGPMixException)

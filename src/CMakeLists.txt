@@ -40,6 +40,7 @@ SET(SOURCES limix/covar/covariance.cpp
 	    limix/mean/CSumLinear.cpp
 	    limix/mean/CKroneckerMean.cpp
 	    limix/mean/CData.cpp
+	    limix/vqtl/CVqtl.cpp
 )
 
 
