@@ -196,7 +196,7 @@ const MatrixXi & (MatrixXi temp) {
 		case PyArray_LONG:
 		case PyArray_DOUBLE:
 		case PyArray_INT:
-			(*$1) = Eigen::Map<MatrixXiscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mint_t>();
+			(*$1) = Eigen::Map<MatrixXiscipy>((mint_t*)array_data( in_array ), in_rows, in_cols).cast<mint_t>();
 			break;
 		case PyArray_FLOAT:
 			

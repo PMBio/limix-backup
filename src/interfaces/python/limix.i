@@ -23,6 +23,7 @@
 #include "limix/LMM/lmm.h"
 #include "limix/LMM/kronecker_lmm.h"
 #include "limix/LMM/CGPLMM.h"
+#include "limix/vqtl/CVqtl.h"
 
 
 using namespace limix;
@@ -55,6 +56,7 @@ using namespace limix;
 %include "lik.i"
 %include "mean.i"
 %include "lmm.i"
+%include "vqtl.i"
 
 
 //generated outodoc:
@@ -79,6 +81,7 @@ using namespace limix;
 %include "limix/LMM/lmm.h"
 %include "limix/LMM/CGPLMM.h"
 %include "limix/LMM/kronecker_lmm.h"
+%include "limix/vqtl/CVqtl.h"
 
 
 
