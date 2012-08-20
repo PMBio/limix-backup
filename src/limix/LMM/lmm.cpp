@@ -432,6 +432,8 @@ int ALMM::getTestStatistics() const
         ldeltaAlt.resize(num_pheno,num_snps);
         nLL0.resize(num_pheno,num_snps);
         nLLAlt.resize(num_pheno,num_snps);
+        beta_snp.resize(num_pheno,num_snps);
+        beta_snp_ste.resize(num_pheno,num_snps);
 
 
         //result matries: think about what to store in the end
@@ -496,6 +498,11 @@ int ALMM::getTestStatistics() const
         	{
         		//3. evaluate foreground likelihood
         		nLLevalEx(AObeta_,AObeta_ste_,AOsigma_,f_tests_,nLLAlt.block(ip,is,1,1),Upheno.col(ip), UXps, S,ldeltaAlt(ip, is),(calc_ftests));
+
+        		//update lsigma and beta_snp:
+        		lsigma(ip,is) = AOsigma_(0,0);
+            	beta_snp(ip,is) = AObeta_(0,0);
+
 
         		//4. calc p-value
         		if (this->testStatistics==ALMM::TEST_LLR)
