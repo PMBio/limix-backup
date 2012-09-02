@@ -500,8 +500,8 @@ int ALMM::getTestStatistics() const
         		nLLevalEx(AObeta_,AObeta_ste_,AOsigma_,f_tests_,nLLAlt.block(ip,is,1,1),Upheno.col(ip), UXps, S,ldeltaAlt(ip, is),(calc_ftests));
 
         		//update lsigma and beta_snp:
-        		lsigma(ip,is) = AOsigma_(0,0);
-            	beta_snp(ip,is) = AObeta_(0,0);
+        		//lsigma(ip,is) = AOsigma_(0,0);
+            	//beta_snp(ip,is) = AObeta_(0,0);
 
 
         		//4. calc p-value

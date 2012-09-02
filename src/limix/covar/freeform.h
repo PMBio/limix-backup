@@ -15,15 +15,15 @@ namespace limix {
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //%shared_ptr(gpmix::CCovFreeform)
 #endif
-class CCovFreeform: public ACovarianceFunction {
+class CFreeFormCF: public ACovarianceFunction {
 protected:
 	muint_t numberGroups;
 	void agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
 	void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
 	void projectKcross(MatrixXd* out,const MatrixXd& K0,const CovarInput& Xstar) const throw (CGPMixException);
 public:
-	CCovFreeform(muint_t numberGroups);
-	virtual ~CCovFreeform();
+	CFreeFormCF(muint_t numberGroups);
+	virtual ~CFreeFormCF();
 
 	void agetL0(MatrixXd* out) const;
 	void agetK0(MatrixXd* out) const;
@@ -40,6 +40,8 @@ public:
 	inline std::string getName() const {return "CFreeform";};
 
 };
+typedef sptr<CFreeFormCF> PFreeFormCF;
+
 
 } /* namespace limix */
 #endif /* FREEFORM_H_ */
