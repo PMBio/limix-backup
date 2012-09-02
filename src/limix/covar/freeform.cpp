@@ -12,7 +12,7 @@
 
 namespace limix {
 
-CCovFreeform::CCovFreeform(muint_t numberGroups)
+CFreeFormCF::CFreeFormCF(muint_t numberGroups)
 {
 	//1 input dimension which selects the group:
 	this->numberDimensions = 1;
@@ -21,13 +21,13 @@ CCovFreeform::CCovFreeform(muint_t numberGroups)
 	this->numberParams = (0.5*numberGroups*(numberGroups-1) + numberGroups);
 }
 
-CCovFreeform::~CCovFreeform()
+CFreeFormCF::~CFreeFormCF()
 {
 }
 
 
 
-void CCovFreeform::agetL0(MatrixXd* out) const
+void CFreeFormCF::agetL0(MatrixXd* out) const
 {
 	/*contruct cholesky factor from hyperparameters*/
 	(*out).setConstant(numberGroups,numberGroups,0);
@@ -45,7 +45,7 @@ void CCovFreeform::agetL0(MatrixXd* out) const
 		}
 }
 
-void CCovFreeform::agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CFreeFormCF::agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
 {
 	/*contruct cholesky factor from hyperparameters*/
 		(*out).setConstant(numberGroups,numberGroups,0);
@@ -68,7 +68,7 @@ void CCovFreeform::agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixE
 
 
 
-void CCovFreeform::agetK0(MatrixXd* out) const
+void CFreeFormCF::agetK0(MatrixXd* out) const
 {
 	//create template matrix K
 	MatrixXd L;
@@ -78,7 +78,7 @@ void CCovFreeform::agetK0(MatrixXd* out) const
 
 
 
-void CCovFreeform::agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CFreeFormCF::agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
 {
 	MatrixXd L;
 	MatrixXd Lgrad_parami;
@@ -89,7 +89,7 @@ void CCovFreeform::agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixE
 	(*out).noalias() = Lgrad_parami*L.transpose() + L*Lgrad_parami.transpose();
 }
 
-void CCovFreeform::projectKcross(MatrixXd* out,const MatrixXd& K0,const CovarInput& Xstar) const throw (CGPMixException)
+void CFreeFormCF::projectKcross(MatrixXd* out,const MatrixXd& K0,const CovarInput& Xstar) const throw (CGPMixException)
 {
 	//2. loop thourugh entries and create effective covariance:
 	//index for param
@@ -109,7 +109,7 @@ void CCovFreeform::projectKcross(MatrixXd* out,const MatrixXd& K0,const CovarInp
 		}
 }
 
-void CCovFreeform::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CFreeFormCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
 {
 	checkXDimensions(Xstar);
 	//1. get K0 Matrix, the template for all others
@@ -118,7 +118,7 @@ void CCovFreeform::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(
 	projectKcross(out,K0,Xstar);
 }
 
-void CCovFreeform::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CFreeFormCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
 {
 	checkXDimensions(Xstar);
 	//dignal matrix of Kstar
@@ -135,7 +135,7 @@ void CCovFreeform::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const th
 	}
 }
 
-void CCovFreeform::aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException)
+void CFreeFormCF::aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException)
 {
 	checkWithinParams(i);
 	// same as Kcross, however using a different base matrix K0
@@ -145,11 +145,11 @@ void CCovFreeform::aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMi
 	projectKcross(out,K0,X);
 }
 
-void CCovFreeform::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException)
+void CFreeFormCF::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException)
 {
 }
 
-void CCovFreeform::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException)
+void CFreeFormCF::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException)
 {
 }
 
