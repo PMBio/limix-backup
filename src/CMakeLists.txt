@@ -41,7 +41,7 @@ SET(SOURCES limix/covar/covariance.cpp
 	    limix/mean/CKroneckerMean.cpp
 	    limix/mean/CData.cpp
 	    limix/modules/CVqtl.cpp
-	    limix/modules/CMultiTrait.cpp
+	    limix/modules/CMultiTraitVQTL.cpp
 )
 
 

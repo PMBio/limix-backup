@@ -44,8 +44,18 @@ void ACovarianceFunction::setParams(const CovarParams& params)
 	propagateSync(false);
 }
 
-void ACovarianceFunction::agetParams(CovarParams* out)
+void ACovarianceFunction::agetParams(CovarParams* out) const
 {(*out) = params;};
+
+
+CovarParams ACovarianceFunction::getParams() const
+{
+	CovarParams rv;
+	this->agetParams(&rv);
+	return rv;
+}
+
+
 
 void ACovarianceFunction::setNumberDimensions(muint_t numberDimensions)
 {

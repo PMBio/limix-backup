@@ -80,7 +80,7 @@ public:
 	//get the Vector of hyperparameters
 	//set the parameters to a new value.
 	virtual void setParams(const CovarParams& params);
-	virtual void agetParams(CovarParams* out);
+	virtual void agetParams(CovarParams* out) const;
 
 	//set X to a new value
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
@@ -110,8 +110,8 @@ public:
 
 	//Inline convenience functions:
 	inline MatrixXd K() const;
-	inline CovarParams getParams() const {return params;}
-	inline CovarInput getX() const {return this->X;}
+	virtual CovarParams getParams() const;
+	inline CovarInput getX() const;
 	inline VectorXd Kdiag() const;
 	inline MatrixXd Kcross( const CovarInput& Xstar ) const throw(CGPMixException);
 	inline VectorXd Kcross_diag(const CovarInput& Xstar) const throw(CGPMixException);
@@ -188,6 +188,25 @@ typedef sptr<CCovarianceFunctionCache> PCovarianceFunctionCache;
 
 
 /*Inline functions*/
+
+/*
+inline CovarParams ACovarianceFunction::getParams() const
+{
+	CovarParams rv;
+	this->agetParams(&rv);
+	return rv;
+}
+*/
+
+inline MatrixXd ACovarianceFunction::getX() const
+{
+	MatrixXd rv;
+	this->agetX(&rv);
+	return rv;
+}
+
+
+
 
 
 inline  MatrixXd ACovarianceFunction::K() const

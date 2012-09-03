@@ -204,6 +204,27 @@ inline MatrixXd kron(const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBa
 	return out;
 }
 
+template <typename Derived1>
+inline void scale_K(const Eigen::MatrixBase<Derived1> & K_) throw(CGPMixException)
+{
+	//cast out arguments
+	Eigen::MatrixBase<Derived1>& K = const_cast< Eigen::MatrixBase<Derived1>& >(K);
+	//ensure that it is a square matrix:
+
+	if (K_.rows()!=K_.cols())
+	{
+		throw CGPMixException("Kernel scaling requires square kernel matrix");
+	}
+
+	//diagonal
+	mfloat_t c = K.trace();
+	c -= 1.0/K.rows() * K.sum();
+
+	mfloat_t scalar = (K.rows()-1) / c;
+	K*=scalar;
+}
+
+
 
 }
 #endif /* MATRIX_HELPER_H_ */

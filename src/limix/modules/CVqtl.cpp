@@ -10,7 +10,7 @@
 #include "limix/gp/gp_opt.h"
 
 namespace limix {
-
+/*
 template <typename Derived1>
 inline void scale_K(const Eigen::MatrixBase<Derived1> & K_) throw(CGPMixException)
 {
@@ -29,7 +29,7 @@ inline void scale_K(const Eigen::MatrixBase<Derived1> & K_) throw(CGPMixExceptio
 	mfloat_t scalar = (K.rows()-1) / c;
 	K*=scalar;
 }
-
+*/
 
 CVqtl::CVqtl() {
 	// TODO Auto-generated constructor stub
