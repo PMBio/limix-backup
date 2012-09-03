@@ -24,7 +24,7 @@
 #include "limix/LMM/kronecker_lmm.h"
 #include "limix/LMM/CGPLMM.h"
 #include "limix/modules/CVqtl.h"
-#include "limix/modules/CMultiTrait.h"
+#include "limix/modules/CMultiTraitVQTL.h"
 
 
 using namespace limix;
@@ -83,7 +83,7 @@ using namespace limix;
 %include "limix/LMM/CGPLMM.h"
 %include "limix/LMM/kronecker_lmm.h"
 %include "limix/modules/CVqtl.h"
-%include "limix/modules/CMultiTrait.h"
+%include "limix/modules/CMultiTraitVQTL.h"
 
 
 

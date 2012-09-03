@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 1
+#if 0
 
 #include <iostream>
 #include "limix/gp/gp_base.h"

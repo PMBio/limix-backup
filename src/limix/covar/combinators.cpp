@@ -204,7 +204,7 @@ void AMultiCF::setParams(const CovarParams& params)
 	}
 }
 
-void AMultiCF::agetParams(CovarParams* out)
+void AMultiCF::agetParams(CovarParams* out) const
 {
 	//1. reserve memory
 	(*out).resize(getNumberParams());
@@ -212,7 +212,7 @@ void AMultiCF::agetParams(CovarParams* out)
 	muint_t i0=0;
 	muint_t nparams;
 	//loop through covariances and assign
-	for(ACovarVec::iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
+	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
 		if (cp!=NULL)

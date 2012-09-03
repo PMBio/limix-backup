@@ -54,7 +54,7 @@ public:
 
 	//set and get Params
 	virtual void setParams(const CovarParams& params);
-	virtual void agetParams(CovarParams* out);
+	virtual void agetParams(CovarParams* out) const;
 };
 
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))

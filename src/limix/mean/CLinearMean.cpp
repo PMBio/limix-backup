@@ -39,7 +39,9 @@ CLinearMean::~CLinearMean()
 void CLinearMean::aEvaluate(MatrixXd* outY)
 {
 	checkDimensions(weights,fixedEffects,Y, true, true, true);
-	*outY = (this->Y - (this->fixedEffects * this->weights));
+	*outY = this->Y;
+	if (!isnull(this->weights))
+		*outY -= (this->fixedEffects * this->weights);
 }
 
 void CLinearMean::aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY)
