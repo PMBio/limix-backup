@@ -483,7 +483,7 @@ template<> struct gemv_selector<OnTheRight,RowMajor,true>
 
     gemv_static_vector_if<RhsScalar,_ActualRhsType::SizeAtCompileTime,_ActualRhsType::MaxSizeAtCompileTime,!DirectlyUseRhs> static_rhs;
 
-    ei_declare_aligned_stack_constructed_variable(RhsScalar,actualRhsPtr,actualRhs.size(),
+    ei_declare_aligned_stack_constructed_variable(RhsScalar,actualRh,actualRhs.size(),
         DirectlyUseRhs ? const_cast<RhsScalar*>(actualRhs.data()) : static_rhs.data());
 
     if(!DirectlyUseRhs)
@@ -492,14 +492,14 @@ template<> struct gemv_selector<OnTheRight,RowMajor,true>
       int size = actualRhs.size();
       EIGEN_DENSE_STORAGE_CTOR_PLUGIN
       #endif
-      Map<typename _ActualRhsType::PlainObject>(actualRhsPtr, actualRhs.size()) = actualRhs;
+      Map<typename _ActualRhsType::PlainObject>(actualRh, actualRhs.size()) = actualRhs;
     }
 
     general_matrix_vector_product
       <Index,LhsScalar,RowMajor,LhsBlasTraits::NeedToConjugate,RhsScalar,RhsBlasTraits::NeedToConjugate>::run(
         actualLhs.rows(), actualLhs.cols(),
         actualLhs.data(), actualLhs.outerStride(),
-        actualRhsPtr, 1,
+        actualRh, 1,
         dest.data(), dest.innerStride(),
         actualAlpha);
   }

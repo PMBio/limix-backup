@@ -205,7 +205,7 @@ struct SelfadjointProductMatrix<Lhs,LhsMode,false,Rhs,0,true>
     ei_declare_aligned_stack_constructed_variable(ResScalar,actualDestPtr,dest.size(),
                                                   EvalToDest ? dest.data() : static_dest.data());
                                                   
-    ei_declare_aligned_stack_constructed_variable(RhsScalar,actualRhsPtr,rhs.size(),
+    ei_declare_aligned_stack_constructed_variable(RhsScalar,actualRh,rhs.size(),
         UseRhs ? const_cast<RhsScalar*>(rhs.data()) : static_rhs.data());
     
     if(!EvalToDest)
@@ -223,7 +223,7 @@ struct SelfadjointProductMatrix<Lhs,LhsMode,false,Rhs,0,true>
       int size = rhs.size();
       EIGEN_DENSE_STORAGE_CTOR_PLUGIN
       #endif
-      Map<typename _ActualRhsType::PlainObject>(actualRhsPtr, rhs.size()) = rhs;
+      Map<typename _ActualRhsType::PlainObject>(actualRh, rhs.size()) = rhs;
     }
       
       
@@ -231,7 +231,7 @@ struct SelfadjointProductMatrix<Lhs,LhsMode,false,Rhs,0,true>
       (
         lhs.rows(),                             // size
         &lhs.coeffRef(0,0),  lhs.outerStride(), // lhs info
-        actualRhsPtr, 1,                        // rhs info
+        actualRh, 1,                        // rhs info
         actualDestPtr,                          // result info
         actualAlpha                             // scale factor
       );

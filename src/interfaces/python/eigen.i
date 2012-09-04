@@ -220,7 +220,7 @@ MatrixXi* {
 	
 	// prepare resulting array
 	npy_intp dims[] = {$1->rows(), $1->cols()};
-	PyObject * out_array = PyArray_SimpleNew(2, dims, PyArray_INT);
+	PyObject * out_array = PyArray_SimpleNew(2, dims, PyArray_INT64);
 	
 	if (out_array == NULL){
 		PyErr_SetString(PyExc_ValueError,
@@ -229,8 +229,8 @@ MatrixXi* {
 		return NULL;
 	}
 	
-	mfloat_t* out_data = (mint_t*)array_data(out_array);
-	Eigen::Map<MatrixXdscipy>(out_data, dims[0], dims[1]) = (*$1);
+	mint_t* out_data = (mint_t*)array_data(out_array);
+	Eigen::Map<MatrixXiscipy>(out_data, dims[0], dims[1]) = (*$1);
 	
 	$result = SWIG_Python_AppendOutput($result, out_array);
 }

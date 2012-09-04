@@ -13,7 +13,7 @@
 namespace limix {
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%shared_ptr(gpmix::CCovLinearISO)
+//%sptr(gpmix::CCovLinearISO)
 #endif
 class CCovLinearISO: public ACovarianceFunction  {
 public:
@@ -39,7 +39,7 @@ public:
 typedef sptr<CCovLinearISO> PCovLinearISO;
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%shared_ptr(gpmix::CCovLinearARD)
+//%sptr(gpmix::CCovLinearARD)
 #endif
 class CCovLinearARD: public ACovarianceFunction  {
 public:

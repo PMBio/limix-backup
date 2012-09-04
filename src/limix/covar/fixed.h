@@ -22,7 +22,7 @@ namespace limix {
 %rename(getK0) CFixedCF::agetK0;
 %rename(getK0cross) CFixedCF::agetK0cross;
 %rename(getK0cross_diag) CFixedCF::agetK0cross_diag;
-//%shared_ptr(gpmix::CFixedCF)
+//%sptr(gpmix::CFixedCF)
 #endif
 class CFixedCF : public ACovarianceFunction {
 protected:
@@ -66,7 +66,7 @@ typedef sptr<CFixedCF> PFixedCF;
 
 //rename argout operators for swig interface
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%shared_ptr(gpmix::CEyeCF)
+//%sptr(gpmix::CEyeCF)
 #endif
 class CEyeCF : public ACovarianceFunction
 {

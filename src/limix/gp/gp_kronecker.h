@@ -113,7 +113,7 @@ public:
 
 	PLikNormalSVD getLik()
 	{
-		PLikNormalSVD RV = std::tr1::static_pointer_cast<CLikNormalSVD> (this->lik);
+		PLikNormalSVD RV = static_pointer_cast<CLikNormalSVD> (this->lik);
 		return RV;
 	}
 

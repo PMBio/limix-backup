@@ -1,6 +1,7 @@
 %shared_ptr(limix::CGPHyperParams)
 %shared_ptr(limix::CGPbase)
 %shared_ptr(limix::CGPkronecker)
+%shared_ptr(limix::CGPopt)
 
 
 //vector template definitions

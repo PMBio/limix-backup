@@ -71,18 +71,26 @@ protected:
 	MatrixXd pheno;
 	//trait indicator
 	MatrixXd trait;
-	//unique indiciates in trait
+	//is categorial triat?
+	bool categorial_trait;
+	//if yes: how many states?
+	muint_t numtraits;
+	//unique states in trait
 	MatrixXd utrait;
+
 
 	//fixed effects
 	MatrixXd fixed;
-
-	muint_t numtraits;
 
 	//gp object for fitting
 	PGPbase gp;
 	PGPopt opt;
 	PSumCF covar;
+	MatrixXdVec covar_params0;
+	MatrixXdVec covar_params_mask;
+
+	//helper function to estimate heritability of a given covariance matrix
+	mfloat_t estimateLogVariance(const MatrixXd& K);
 
 	//check consitency of the parameters and datasets supplied
 	void checkConsistency() throw(CGPMixException);
@@ -90,6 +98,9 @@ protected:
 	void initGP() throw(CGPMixException);
 	//calculate variance components form FreeForm Hyperparams und this->utrait
 	void agetFreeFormVariance(MatrixXd* out,CovarParams params);
+	//initialize covariance term
+	PProductCF initCovarTerm(MatrixXd* hp0,MatrixXd* hp_mask, const MatrixXd& Kfix,bool categorial_trait,bool trait_covariance);
+
 
 public:
 	CMultiTraitVQTL();
@@ -127,26 +138,15 @@ public:
 
 	PCovarianceFunction getCovar(){return this->covar;}
 	PGPbase getGP() {return this->gp;}
+	PGPopt  getOpt() {return this->opt;}
 
 	void setK(const MatrixXd& K,muint_t i,bool rescale=false);
 	void addK(const MatrixXd& K,bool rescale=false);
 	void setKgeno(const MatrixXd& Kgeno,bool rescale=false);
 	void setFixed(const MatrixXd& fixed);
-	void setTrait(const MatrixXd& trait);
+	void setTrait(const MatrixXd& trait,bool categorial=true);
 	void setPheno(const MatrixXd& pheno);
 
-	/*
-	//setters and getters
-	//getters:
-    void agetPheno(MatrixXd *out) const;
-    void agetSnps(MatrixXd *out) const;
-    void agetCovs(MatrixXd *out) const;
-    void setCovs(const MatrixXd & covs);
-    void setPheno(const MatrixXd & pheno) throw(CGPMixException);
-    void setSNPs(const MatrixXd & snps) throw(CGPMixException);
-    void setPosition(const VectorXi& position);
-    void setChrom(const VectorXi& chrom);
-	*/
 };
 typedef sptr<CMultiTraitVQTL> PMultiTraitVQTL;
 

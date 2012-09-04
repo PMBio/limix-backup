@@ -47,7 +47,7 @@ typedef VectorXd CovarParams;
 
 %rename(getParams) ACovarianceFunction::agetParams;
 %rename(getX) ACovarianceFunction::agetX;
-//%shared_ptr(gpmix::ACovarianceFunction)
+//%sptr(gpmix::ACovarianceFunction)
 #endif
 
 class ACovarianceFunction : public CParamObject {

@@ -306,7 +306,7 @@ template<> struct trmv_selector<RowMajor>
 
     gemv_static_vector_if<RhsScalar,_ActualRhsType::SizeAtCompileTime,_ActualRhsType::MaxSizeAtCompileTime,!DirectlyUseRhs> static_rhs;
 
-    ei_declare_aligned_stack_constructed_variable(RhsScalar,actualRhsPtr,actualRhs.size(),
+    ei_declare_aligned_stack_constructed_variable(RhsScalar,actualRh,actualRhs.size(),
         DirectlyUseRhs ? const_cast<RhsScalar*>(actualRhs.data()) : static_rhs.data());
 
     if(!DirectlyUseRhs)
@@ -315,7 +315,7 @@ template<> struct trmv_selector<RowMajor>
       int size = actualRhs.size();
       EIGEN_DENSE_STORAGE_CTOR_PLUGIN
       #endif
-      Map<typename _ActualRhsType::PlainObject>(actualRhsPtr, actualRhs.size()) = actualRhs;
+      Map<typename _ActualRhsType::PlainObject>(actualRh, actualRhs.size()) = actualRhs;
     }
     
     internal::triangular_matrix_vector_product
@@ -325,7 +325,7 @@ template<> struct trmv_selector<RowMajor>
        RowMajor>
       ::run(actualLhs.rows(),actualLhs.cols(),
             actualLhs.data(),actualLhs.outerStride(),
-            actualRhsPtr,1,
+            actualRh,1,
             dest.data(),dest.innerStride(),
             actualAlpha);
   }

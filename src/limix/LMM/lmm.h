@@ -29,7 +29,7 @@ namespace limix {
 %rename(getCovs) ALMM::agetCovs;
 %rename(getK) ALMM::agetK;
 %rename(getPermutation) ALMM::agetPermutation;
-//%shared_ptr(gpmix::ALMM)
+//%sptr(gpmix::ALMM)
 #endif
 
 //Abstract base class for LMM models*/
@@ -299,11 +299,12 @@ public:
 		return f_tests;
 	}
 
-	MatrixXd getLdeltaAlt()
-	{
-		return ldeltaAlt;
-	}
 	MatrixXd getLdelta0()
+	{
+		return ldelta0;
+	}
+
+	MatrixXd getLdeltaAlt()
 	{
 		return ldeltaAlt;
 	}
@@ -322,7 +323,7 @@ typedef sptr<CLMM> PLMM;
 
 //rename argout versions for python; this overwrites the C++ convenience functions
 %rename(getInter) CInteractLMM::agetInter;
-//%shared_ptr(gpmix::CInteractLMM)
+//%sptr(gpmix::CInteractLMM)
 #endif
 
 class CInteractLMM : public CLMM
