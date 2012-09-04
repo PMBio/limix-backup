@@ -28,7 +28,7 @@ namespace limix {
 %rename(gradParamsRows) ADataTerm::aGradParamsRows;
 %rename(sumJacobianGradParams) ADataTerm::aSumJacobianGradParams;
 %rename(sumLogJacobian) ADataTerm::aSumLogJacobian;
-//%shared_ptr(gpmix::ADataTerm)
+//%sptr(gpmix::ADataTerm)
 #endif
 
 

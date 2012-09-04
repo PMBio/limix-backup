@@ -153,5 +153,19 @@ void CFreeFormCF::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMi
 {
 }
 
+void CFreeFormCF::agetIparamDiag(MatrixXi* out)
+{
+	(*out) = MatrixXi::Zero(getNumberParams(),1);
+	//for rows
+	muint_t pindex=0;
+	for(muint_t ir=0;ir<numberGroups;++ir)
+		for (muint_t ic=0;ic<(ir+1);++ic)
+		{
+			//diagonal is exponentiated
+			if (ic==ir)
+				(*out)(pindex,0) = 1;
+			++pindex;
+		}
+}
 
 } /* namespace limix */

@@ -13,7 +13,7 @@
 namespace limix {
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%shared_ptr(gpmix::CCovFreeform)
+//%sptr(gpmix::CCovFreeform)
 #endif
 class CFreeFormCF: public ACovarianceFunction {
 protected:
@@ -38,6 +38,15 @@ public:
 
 	//class information
 	inline std::string getName() const {return "CFreeform";};
+
+	//information on parameter settings
+	void agetIparamDiag(MatrixXi* out);
+	MatrixXi getIparamDiag()
+	{
+		MatrixXi rv;
+		agetIparamDiag(&rv);
+		return rv;
+	}
 
 };
 typedef sptr<CFreeFormCF> PFreeFormCF;

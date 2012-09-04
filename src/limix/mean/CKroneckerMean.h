@@ -14,7 +14,7 @@
 namespace limix {
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%shared_ptr(gpmix::CKroneckerMean)
+//%sptr(gpmix::CKroneckerMean)
 #endif
 
 class CKroneckerMean : public CLinearMean {

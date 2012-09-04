@@ -9,9 +9,10 @@
 #include "limix/utils/matrix_helper.h"
 #include "limix/gp/gp_opt.h"
 #include "limix/covar/freeform.h"
+#include "limix/covar/se.h"
 #include "limix/covar/combinators.h"
 #include "limix/mean/CLinearMean.h"
-
+#include "limix/LMM/lmm.h"
 namespace limix {
 
 
@@ -60,6 +61,91 @@ void CMultiTraitVQTL::checkConsistency() throw (CGPMixException){
 }
 
 
+
+mfloat_t CMultiTraitVQTL::estimateLogVariance(const MatrixXd& K)
+{
+	//return the genetic varaince explained by K
+	CLMM lmm;
+	lmm.setK(K);
+	lmm.setSNPs(MatrixXd::Zero(K.rows(),1));
+	lmm.setPheno(this->pheno);
+	lmm.setCovs(this->fixed);
+	lmm.setVarcompApprox0(-20, 10, 1000);
+    lmm.process();
+    MatrixXd ldelta0 = lmm.getLdelta0();
+    MatrixXd lsigma  = lmm.getLSigma();
+    return ldelta0(0,0) + lsigma(0,0);
+}
+
+
+PProductCF CMultiTraitVQTL::initCovarTerm(MatrixXd* hp0,
+		MatrixXd* hp_mask, const MatrixXd& Kfix, bool categorial_trait, bool trait_covariance)
+{
+	//0. total term covar is a product
+	PProductCF cov_term = PProductCF(new CProductCF());
+
+	//1. fixed CF
+	PFixedCF cov_fixed    = PFixedCF(new CFixedCF(Kfix));
+	cov_term->addCovariance(cov_fixed);
+
+	//2. trait CF
+	PCovarianceFunction cov_trait;
+	//2.1 is categorial?
+	if(categorial_trait)
+	{
+		//freeform categorial CF
+		cov_trait = PFreeFormCF(new CFreeFormCF(this->numtraits));
+	}
+	else
+	{
+		//SE ard covariance
+		cov_trait = PCovSqexpARD(new CCovSqexpARD(1));
+	}
+	cov_term->addCovariance(cov_trait);
+	//set input for covar_term
+	cov_term->setX(this->trait);
+
+	//initialization of hyperparameters & constraints
+	(*hp0) = MatrixXd::Zero(cov_term->getNumberParams(),1);
+	//get heritability estimate
+
+	mfloat_t l2var = 0.5 * estimateLogVariance(Kfix);
+
+	//construct param mask
+	(*hp_mask) = MatrixXd::Ones(cov_term->getNumberParams(),1);
+	//1. exclude scaling factor
+	(*hp_mask)(0,0) = 0;
+	//2. exclude cross covariances if trait_covariance is false
+
+	if(categorial_trait)
+	{
+		PFreeFormCF cf = static_pointer_cast<CFreeFormCF>(cov_trait);
+		//2. get diagonal element indexb
+		MatrixXi Idiag = cf->getIparamDiag();
+		for(muint_t i=0;i<(muint_t) Idiag.rows();++i)
+		{
+			//diagonal has l2var scaling:
+			if (Idiag(i,0))
+				(*hp0)(i+1,0) = l2var;
+			//constrain off-diagonal to be zero?
+			if ((!trait_covariance) && (Idiag(i,0)==0))
+				(*hp_mask)(i+1,0) = 0;
+		}
+	}
+	else
+	{
+		//scaling of covariance
+		(*hp0)(0+1,0) = l2var;
+		//set lengthscale to 0, corresponding to independence of the traits
+		(*hp0)(1+1,0) = -10;
+		//constrain off-diagonal to be zero?
+		if (!trait_covariance)
+			(*hp_mask)(1+1,0) = 0;
+	}
+	return cov_term;
+}
+
+
 void CMultiTraitVQTL::initGP() throw(CGPMixException)
 {
 
@@ -68,30 +154,31 @@ void CMultiTraitVQTL::initGP() throw(CGPMixException)
 
 	//1. initialize covariance function
 	this->covar = PSumCF(new CSumCF());
+	covar_params0.clear();
+	covar_params_mask.clear();
 
 	//1.1 loop over covaraince components and create fixed CF
 	for(MatrixXdVec::iterator iter = this->K_terms.begin(); iter!=this->K_terms.end();iter++)
 	{
-		MatrixXd Kfix = iter[0];
-		PFixedCF cov_fixed    = PFixedCF(new CFixedCF(Kfix));
-		PFreeFormCF cov_freeform = PFreeFormCF(new CFreeFormCF(this->numtraits));
-		PProductCF cov_term = PProductCF(new CProductCF());
-		cov_term->addCovariance(cov_fixed);
-		cov_term->addCovariance(cov_freeform);
+		MatrixXd hp0;
+		MatrixXd hp_mask;
+		PProductCF cov_term = initCovarTerm(&hp0,&hp_mask,iter[0],this->categorial_trait,true);
 		this->covar->addCovariance(cov_term);
 		this->covar_terms.push_back(cov_term);
-		//set input for covar_term
-		cov_term->setX(this->trait);
+		this->covar_params0.push_back(hp0);
+		this->covar_params_mask.push_back(hp_mask);
 	}
 	//1.2 add noise covariance
 	PFixedCF    cov_fixed    = PFixedCF(new CFixedCF(this->Kgeno));
 	PFreeFormCF cov_freeform = PFreeFormCF(new CFreeFormCF(this->numtraits));
-	this->covar_noise = PProductCF(new CProductCF());
-	this->covar_noise->addCovariance(cov_fixed);
-	this->covar_noise->addCovariance(cov_freeform);
-	this->covar_noise->setX(this->trait);
+	MatrixXd hp0;
+	MatrixXd hp_mask;
+	this->covar_noise = initCovarTerm(&hp0,&hp_mask,this->Kgeno,this->categorial_trait,false);
 	this->covar->addCovariance(this->covar_noise);
-
+	this->covar_params0.push_back(hp0);
+	this->covar_params_mask.push_back(hp_mask);
+	//std::cout << hp0 << "\n";
+	//std::cout << "mask:" << hp_mask << "\n";
 
 	//2. construct GP model
 	PLikNormalNULL lik(new CLikNormalNULL());
@@ -106,6 +193,15 @@ void CMultiTraitVQTL::initGP() throw(CGPMixException)
 	CGPHyperParams params;
 	//CovarInput covar_params =  MatrixXd::Zero();
 	MatrixXd covar_params = MatrixXd::Zero(this->covar->getNumberParams(),1);
+	//initialize from covar_params0
+	muint_t ip=0;
+	for(MatrixXdVec::iterator iter = this->covar_params0.begin(); iter!=this->covar_params0.end();iter++)
+	{
+		covar_params.block(ip,0,iter[0].rows(),1) = iter[0];
+		ip += iter[0].rows();
+	}
+
+
 	//fixed effect weights
 	MatrixXd fixed_params = MatrixXd::Zero(fixed.cols(),1);
 	params["covar"] = covar_params;
@@ -115,8 +211,18 @@ void CMultiTraitVQTL::initGP() throw(CGPMixException)
 
 	//3. create optimization interface
 	this->opt = PGPopt(new CGPopt(gp));
-
-
+	//3.2 add constraints for the optimization
+	MatrixXd covar_mask = MatrixXd::Ones(covar->getNumberParams(),1);
+	//a) the fixed covarainces weights can be set to 0
+	ip=0;
+	for(MatrixXdVec::iterator iter = this->covar_params_mask.begin(); iter!=this->covar_params_mask.end();iter++)
+	{
+		covar_mask.block(ip,0,iter[0].rows(),1) = iter[0];
+		ip += iter[0].rows();
+	}
+	CGPHyperParams mask;
+	mask["covar"] = covar_mask;
+	opt->setParamMask(mask);
 }
 
 
@@ -186,36 +292,42 @@ void CMultiTraitVQTL::agetTrait(MatrixXd* out) const {
 	(*out) = trait;
 }
 
-void CMultiTraitVQTL::setTrait(const MatrixXd& trait)
+void CMultiTraitVQTL::setTrait(const MatrixXd& trait,bool categorial)
 {
+	this->categorial_trait = categorial;
 	//1. allocate trait vector
 	this->trait = trait;
-	//2. clear unique set of entries
-	mfloat_set utrait;
-	//3. add unique things
-	for (muint_t it=0;it<(muint_t) trait.rows();++it)
+	this->categorial_trait = categorial;
+	if(categorial)
 	{
-		mfloat_t el = trait(it,0);
-		if (utrait.find(el)==utrait.end())
+		//2. clear unique set of entries
+		mfloat_set utrait;
+		//3. add unique things
+		for (muint_t it=0;it<(muint_t) trait.rows();++it)
 		{
-			utrait.insert(el);
+			mfloat_t el = trait(it,0);
+			if (utrait.find(el)==utrait.end())
+			{
+				utrait.insert(el);
+			}
 		}
-	}
-	//set number of traits
-	this->numtraits=utrait.size();
-	//convert to array
-	this->utrait = MatrixXd::Zero(numtraits,1);
-	muint_t index=0;
-	for(mfloat_set::iterator iter = utrait.begin(); iter!=utrait.end();iter++)
-	{
-		this->utrait(index,0) = iter.operator *();
-		index++;
-	}
+		//set number of traits
+		this->numtraits=utrait.size();
+		//convert to array
+		this->utrait = MatrixXd::Zero(numtraits,1);
+		muint_t index=0;
+		for(mfloat_set::iterator iter = utrait.begin(); iter!=utrait.end();iter++)
+		{
+			this->utrait(index,0) = iter.operator *();
+			index++;
+		}
+	}//end if categorial
 }
 
 void CMultiTraitVQTL::agetPheno(MatrixXd* out) const {
 	(*out) = this->pheno;
 }
+
 
 void CMultiTraitVQTL::setPheno(const MatrixXd& pheno) {
 	this->pheno = pheno;

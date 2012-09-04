@@ -16,6 +16,9 @@
 
 //define shortcut for shared pointer
 #define sptr std::tr1::shared_ptr
+#define static_pointer_cast std::tr1::static_pointer_cast
+#define dynamic_pointer_cast std::tr1::dynamic_pointer_cast
+
 #define enable_shared_from_this std::tr1::enable_shared_from_this
 
 namespace limix{

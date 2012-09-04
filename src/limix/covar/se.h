@@ -13,7 +13,7 @@
 namespace limix {
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%shared_ptr(gpmix::CCovSqexpARD)
+//%sptr(gpmix::CCovSqexpARD)
 #endif
 class CCovSqexpARD: public ACovarianceFunction {
 public:
@@ -38,6 +38,7 @@ public:
 	inline std::string getName() const{ return "CovSEARD";}
 }; //end class CCovSqexpARD
 
+typedef sptr<CCovSqexpARD> PCovSqexpARD;
 
 
 } /* namespace limix */

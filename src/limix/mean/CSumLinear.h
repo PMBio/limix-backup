@@ -15,7 +15,7 @@
 namespace limix {
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%shared_ptr(gpmix::CSumLinear)
+//%sptr(gpmix::CSumLinear)
 #endif
 
 typedef std::vector<PLinearMean> VecLinearMean;

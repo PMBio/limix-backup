@@ -183,7 +183,7 @@ typedef sptr<CGPCholCache> PGPCholCache;
 %rename(predictMean) CGPbase::apredictMean;
 %rename(predictVar) CGPbase::apredictVar;
 //
-//%shared_ptr(gpmix::CGPbase)
+//%sptr(gpmix::CGPbase)
 #endif
 
 class CGPbase : public enable_shared_from_this<CGPbase> {

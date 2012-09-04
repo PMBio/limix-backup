@@ -20,7 +20,7 @@ typedef std::vector<PCovarianceFunction> ACovarVec;
 //TODO: swig vector
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
 //%template(ACovarVec) std::vector<gpmix::PCovarianceFunction>;
-//%shared_ptr(gpmix::AMultiCF)
+//%sptr(gpmix::AMultiCF)
 #endif
 
 class AMultiCF : public ACovarianceFunction
@@ -58,7 +58,7 @@ public:
 };
 
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
-//%shared_ptr(gpmix::CSumCF)
+//%sptr(gpmix::CSumCF)
 #endif
 
 class CSumCF : public AMultiCF {
@@ -83,7 +83,7 @@ public:
 typedef sptr<CSumCF> PSumCF;
 
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
-//%shared_ptr(gpmix::CProductCF)
+//%sptr(gpmix::CProductCF)
 #endif
 
 class CProductCF : public AMultiCF {
