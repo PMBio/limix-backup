@@ -26,7 +26,7 @@
 #define HAVE_GETTID_SYSCALL 1
 
 /* Define to 1 if you have the `gettimeofday' function. */
-#define HAVE_GETTIMEOFDAY 1
+//#define HAVE_GETTIMEOFDAY 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
@@ -121,7 +121,7 @@
 #define THREADLOCAL 
 
 /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
-#define TIME_WITH_SYS_TIME 1
+//#define TIME_WITH_SYS_TIME 1
 
 /* Version number of package */
 #define VERSION "2.2.4"
