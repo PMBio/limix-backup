@@ -16,8 +16,8 @@
     #include <unordered_map>
     #include <memory>
 #else
-    #include <tr1/unordered_map>
-    #include <trl/memory>
+//    #include <tr1/unordered_map>
+    #include <tr1/memory>
 #endif
 
 //define shortcut for shared pointer

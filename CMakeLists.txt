@@ -4,7 +4,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 #build options
 #PYTHON off by default
-option(BUILD_PYTHON_PACKAGE "Enable Python bindings" OFF)
+option(BUILD_PYTHON_PACKAGE "Enable Python bindings" ON)
 #R optional
 option(BUILD_R_PACKAGE "Enable R bindings" OFF)
 #profiling using google perftools (currently only python .so)
@@ -36,7 +36,7 @@ include (AddCompilerFlag)
 ##PYTHON build options##
 # Path to python executable. If specified peer is built against this
 # python version, otherwise "which python" is used for auto-detection
-#SET(PYTHON_EXECUTABLE "/c/python27/python.exe")
+#SET(PYTHON_EXECUTABLE "")
 #Python include directory 
 #normally there is no need to specify them;instead these are
 #auto-determined from the location of the binary.
@@ -45,7 +45,7 @@ include (AddCompilerFlag)
 #If specified, the peer module will be installed here. Otherwise the
 #default site-packages location of the respective python installation
 #is used. 
-SET(PYTHON_INSTDIR "/c/Python27")
+SET(PYTHON_INSTDIR "")
 #Numpy header fiels.
 #Usually there is no need to specify them as they are automatically
 #determined from the python binary.
