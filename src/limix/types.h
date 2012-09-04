@@ -12,7 +12,13 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include <tr1/memory>
+#ifdef _WIN32
+    #include <unordered_map>
+    #include <memory>
+#else
+    #include <tr1/unordered_map>
+    #include <trl/memory>
+#endif
 
 //define shortcut for shared pointer
 #define sptr std::tr1::shared_ptr
