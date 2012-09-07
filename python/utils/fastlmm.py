@@ -1,5 +1,6 @@
 import numpy as np
 import scipy as sp
+import glob
 import pdb, sys, pickle
 import matplotlib.pylab as plt
 from optparse import OptionParser 
@@ -12,8 +13,8 @@ np.random.seed(1)
 #from recode import *
 
 os.putenv('FastLmmUseAnyMklLib', '1')
-plink_path = 'plink' # 'D:/users/t-nfusi/code/plink.exe'
-fastlmm_path = 'fastlmmc' # 'D:/users/t-nfusi/projects/FaSTLMM/CPP/x64/MKL-Release/FastLmmC.exe'
+plink_path = 'plink' # 'D:/users/lippert/code/plink.exe'
+fastlmm_path = 'fastlmmc' # 'D:/users/lippert/Projects/FaSTLMM/CPP/x64/MKL-Release/FastLmmC.exe'
 
         
 #1) determine covariance matrix 
@@ -43,7 +44,7 @@ def extract_topN(N, selsnps_file, linreg_out):
     np.savetxt(selsnps_file, ordered_snps, fmt = '%s')
 
 def run_select_topN(pheno_file,linreg_out,file_test=None,bfile_test = None,tfile_test = None,bfile_sim = None,file_sim = None,tfile_sim= None, out_dir='./tmp', covariates = None, excl_dist = None, excl_pos = 
-None, chr_only = None, quiet = False, refit_delta = False, command=None, Nmin=0, Nmax=1000, increment=100 ,Nsnps = None):
+None, chr_only = None, quiet = False, refit_delta = False, command=None, Nmin=0, Nmax=1000, increment=100 ,Nsnps = None,recompute = False):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     selsnps_file =  os.path.join(out_dir, 'selectlist.txt')
@@ -56,17 +57,17 @@ None, chr_only = None, quiet = False, refit_delta = False, command=None, Nmin=0,
         current_dir = 'N%d'% Nsnps[i]
         out_dir_current = os.path.join(out_dir, current_dir)
         if Nsnps[i]>0:
-            run_fastlmm(pheno_file,file_test,bfile_test,tfile_test,bfile_sim,file_sim,tfile_sim, out_dir_current, covariates, excl_dist, excl_pos, chr_only, quiet, Nsnps[i],selsnps_file,refit_delta, command, True)
+            run_fastlmm(pheno_file,file_test,bfile_test,tfile_test,bfile_sim,file_sim,tfile_sim, out_dir_current, covariates, excl_dist, excl_pos, chr_only, quiet, Nsnps[i],selsnps_file,refit_delta, command, True,recompute=recompute)
             out_file_current = os.path.join(out_dir_current, 'results_LMM.txt')
             pvals = get_column(out_file_current,5)
         else:
-            run_linreg(pheno_file,file_test,bfile_test,tfile_test, out_dir_current, covariates, chr_only, quiet, command, True)
+            run_linreg(pheno_file,file_test,bfile_test,tfile_test, out_dir_current, covariates, chr_only, quiet, command, True,recompute=recompute)
             out_file_current = os.path.join(out_dir_current, 'results_linreg.txt')
             pvals = get_column(out_file_current,4)
         lambdas[i] = estimate_lambda(pvals.flatten())
     return Nsnps, lambdas
 
-def run_linreg(pheno_file,file_test=None,bfile_test = None,tfile_test = None, out_dir='./tmp', covariates = None, chr_only = None, quiet = False, command=None, run = True,**kw_args):
+def run_linreg(pheno_file,file_test=None,bfile_test = None,tfile_test = None, out_dir='./tmp', covariates = None, chr_only = None, quiet = False, command=None, run = True,recompute = False,**kw_args):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     out_file = os.path.join(out_dir, 'results_linreg.txt')
@@ -87,10 +88,19 @@ def run_linreg(pheno_file,file_test=None,bfile_test = None,tfile_test = None, ou
     if covariates != None:
         command += " -covar %s" % covariates
     
-    if run:
+    out_log = os.path.join(out_dir,'results_linreg.log')
+    
+    if len(glob.glob(out_log)) == 1:
+        f = open(out_log,'r')
+        for line in f:
+            commandold = line.strip('\n')
+            if commandold == command:
+                run  = False
+    np.savetxt(out_log, sp.array([command]),'%s')        
+    if (run or recompute):
         if quiet:
             print 'Running linear regression ...'
-            print command
+            print '%s' % (command)
             s.check_call(command, shell = True, stdout = fnull, stderr = fnull)
         else:
             s.check_call(command, shell = True)
@@ -98,7 +108,7 @@ def run_linreg(pheno_file,file_test=None,bfile_test = None,tfile_test = None, ou
         print 'returning without running linear regression'
     return command
 
-def run_fastlmm(pheno_file,file_test=None,bfile_test = None,tfile_test = None,bfile_sim = None,file_sim = None,tfile_sim= None, out_dir='./tmp', covariates = None, excl_dist = None, excl_pos = None, chr_only = None, quiet = False, N=None,selsnps_file = None,refit_delta = False, command=None,run = True,**kw_args):
+def run_fastlmm(pheno_file,file_test=None,bfile_test = None,tfile_test = None,bfile_sim = None,file_sim = None,tfile_sim= None, out_dir='./tmp', covariates = None, excl_dist = None, excl_pos = None, chr_only = None, quiet = False, N=None,selsnps_file = None,refit_delta = False, command=None,run = True,recompute=False,**kw_args):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     out_file = os.path.join(out_dir, 'results_LMM.txt')
@@ -132,7 +142,16 @@ def run_fastlmm(pheno_file,file_test=None,bfile_test = None,tfile_test = None,bf
         command += ' -excludebygeneticdistance %f' % (excl_dist)
     elif excl_pos != None:
         command += ' -excludebyposition %d' %  (excl_pos)
-    if run:
+    out_log = os.path.join(out_dir,'results_LMM.log')
+    
+    if len(glob.glob(out_log)) == 1:
+        f = open(out_log,'r')
+        for line in f:
+            commandold = line.strip('\n')
+            if commandold == command:
+                run  = False
+    np.savetxt(out_log, sp.array([command]),'%s')        
+    if (run or recompute):
         if quiet:
             print 'Running LMM ...'
             print command
@@ -143,7 +162,9 @@ def run_fastlmm(pheno_file,file_test=None,bfile_test = None,tfile_test = None,bf
         print 'returning without running LMM'
     return command
 
-if __name__ == '__main__':
+
+
+def get_options(opt = None):
     usage = 'usage: %prog [options] snps_file pheno_file'
     parser = OptionParser(usage = usage)
     parser.add_option('-f', '--file', dest = 'file_test', action = 'store', type = 'string', help = 'Plink PED fileset', default = None)
@@ -164,14 +185,21 @@ if __name__ == '__main__':
     parser.add_option('-T', '--testing', dest = 'testing', action = 'store_true',  help = 'only run the final LMM')
     parser.add_option('-R', '--one_chr', dest = 'chr_only', action = 'store_true',  help = 'test on one chr and build kernel on the rest')
     parser.add_option('-p', '--pheno', dest = 'pheno_file', action = 'store',  type = 'string', help = 'phenotype file')
-    (options, args) = parser.parse_args()
+    if opt is not None:
+        (options, args) = parser.parse_args(opt)
+    else:
+        (options, args) = parser.parse_args()
+    return options, args
+
+if __name__ == '__main__':
+    (options, args) = get_options()
     
     #command_LMM = run_fastlmm(pheno_file = options.pheno_file,file_test=options.file_test,bfile_test = options.bfile_test,tfile_test = options.tfile_test,bfile_sim = options.bfile_sim,file_sim = options.file_sim,tfile_sim= options.tfile_sim, out_dir=options.out_dir, covariates = options.covariates, excl_dist = options.excl_dist, excl_pos = options.excl_pos, chr_only = options.chr_only, testing = False, quiet = False, N=None,refit_delta = False)
 
 #    command_linreg = run_linreg(pheno_file = options.pheno_file, file_test=options.file_test, bfile_test = options.bfile_test, tfile_test = options.tfile_test, out_dir=options.out_dir, covariates = options.covariates, chr_only = options.chr_only, testing = False, quiet = False)
 
-#    linreg_out = os.path.join(options.out_dir, 'results_linreg.txt')
-#    pvals = load_pvals(linreg_out,True,True )
+    linreg_out = os.path.join(options.out_dir, 'results_linreg.txt')
+    pvals = load_pvals(linreg_out,True,True )
 
 
     
