@@ -147,6 +147,11 @@ public:
 	void setTrait(const MatrixXd& trait,bool categorial=true);
 	void setPheno(const MatrixXd& pheno);
 
+
+	//static methods
+	static mfloat_t estimateHeritability(const MatrixXd& Y,const MatrixXd& K);
+
+
 };
 typedef sptr<CMultiTraitVQTL> PMultiTraitVQTL;
 
