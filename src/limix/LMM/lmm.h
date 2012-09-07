@@ -571,6 +571,13 @@ inline void CLMMCore::optdeltaEx(const Eigen::MatrixBase<Derived1> & AO_delta_,c
     {
       	AO_NLL(ip) = nllgrid.col(ip).minCoeff(&min_index);
       	AO_delta(ip) = ldeltagrid(min_index);
+      	/*
+      	std::cout << nllgrid.col(ip) << "\n";
+    	std::cout << "\n\n";
+    	std::cout << "min index:" << min_index << "\n";
+    	std::cout << ldeltagrid << "\n";
+    	std::cout << "delta:"<< AO_delta(ip) << "\n";
+		*/
     }
     //std::cout << AO_NLL << "\n";
     //std::cout << AO_delta << "\n";

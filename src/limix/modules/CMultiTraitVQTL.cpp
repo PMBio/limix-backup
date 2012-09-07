@@ -378,4 +378,22 @@ void CMultiTraitVQTL::agetVarianceComponent_noise(MatrixXd* out)
 	this->agetFreeFormVariance(out,params);
 }
 
+mfloat_t CMultiTraitVQTL::estimateHeritability(const MatrixXd& Y,
+		const MatrixXd& K)
+{
+	MatrixXd covs = MatrixXd::Ones(Y.rows(),1);
+	CLMM lmm;
+	lmm.setK(K);
+	lmm.setSNPs(MatrixXd::Zero(K.rows(),1));
+	lmm.setPheno(Y);
+	lmm.setCovs(covs);
+	lmm.setVarcompApprox0(-20, 20, 1000);
+    lmm.process();
+    MatrixXd ldelta0 = lmm.getLdelta0();
+    //std::cout << ldelta0 << "\n";
+    mfloat_t rv = 1.0/(1.0+exp(ldelta0(0,0)));
+    return rv;
+
+}
+
 } /* namespace limix */
