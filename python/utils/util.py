@@ -2,8 +2,10 @@ import numpy as np
 import scipy as sp
 import pdb, sys, pickle
 import matplotlib.pylab as plt
-import scipy.stats
+import scipy.stats as st
 import scipy.interpolate
+
+
 
 def qvalues1(PV,m=None,pi=1.0):
     """estimate q vlaues from a list of Pvalues
@@ -226,54 +228,55 @@ def qqplot(pval, filename = None, distr = 'log10', alphaLevel = 0.05):
     if filename != None:
         plt.savefig(filename) 
 
-def manhattanplot(pval,chromosome,position):
-    plt.figure()
+def manhattanplot(pval,chromosome,position,pv_max=0.1,qv=None,alpha=0.05):
+    """plot manhattanplot
+    qv: q-values, only used to determine significane threshold
+    alpha: significance threshold. If no q-values provided we use Bonferroni
+    """
+
+    #1. determine significance threshold
+    if qv is None:
+        qv = pval*pval.shape[0]
+
+    #2. get max pv that is still significance
+    pv_max_sig = pval[qv<alpha]
+
+    if len(pv_max_sig)>0:
+        pv_max_sig = pv_max_sig.max()
+    else:
+        pv_max_sig = None
+
+    Iplot = (pval<pv_max)
+    pval = pval[Iplot]
+    chromosome = chromosome[Iplot]
+    position = position[Iplot]
+    
     chromosomes = sp.unique(chromosome)
     posmax  = sp.zeros(chromosomes.shape)
     posmax_cumsum = 0
     position_plot = position.copy()
-    
+
+    # loop over chromosomes
     for i in xrange(chromosomes.shape[0]):
         i_chr = chromosome == chromosomes[i]
         posmax[i] = position[i_chr].max()
-        position_plot[i_chr] = position[i_chr] + posmax_cumsum
+        position_plot[i_chr] += posmax_cumsum
         posmax_cumsum+=posmax[i]
         if sp.mod(i,2)>0:
             plt.plot(position_plot[i_chr],-sp.log10(pval[i_chr]),'.k')
         else:
             plt.plot(position_plot[i_chr],-sp.log10(pval[i_chr]),'.b')
-    #TODO: add nice axis labels
 
-# def mean_impute(X, imissX=None, maxval=2.0):
-#     if imissX is None:
-#         imissX = np.isnan(X)
+    #axes labels
+    plt.xlabel('Genomic position')
+    plt.ylabel('-Log10 PV')
+    #significance threshold
+    if pv_max_sig:
+        plt.hlines(-SP.log10(pv_max_sig),PL.xlim()[0],PL.xlim()[1])
+
+
     
-#     n_i,n_s=X.shape
-#     if imissX is None:
-#         n_obs_SNP=np.ones(X.shape)
-#     else:    
-#         i_nonan=(~imissX)
-#         n_obs_SNP=i_nonan.sum(0)
-#         X[imissX]=0.0
-#     snp_sum=(X).sum(0)
-#     one_over_sqrt_pi=(1.0+snp_sum)/(2.0+maxval*n_obs_SNP)
-#     one_over_sqrt_pi=1./np.sqrt(one_over_sqrt_pi*(1.-one_over_sqrt_pi))
-#     snp_mean=(snp_sum*1.0)/(n_obs_SNP)
-
-#     # X_ret=X-snp_mean
-#     for i in range(X.shape[1]):
-#         nan = np.isnan(X[:, i])
-#         i_nonan = (~nan)
-#         X[i_nonan,i] -= X[i_nonan, i].mean()
-#         X[i_nonan,i] /= X[i_nonan, i].std()
-
-#     #X[i_nonan] = X[i_nonan].mean(axis=0)
-#     X_ret = X/np.sqrt(X.shape[1])
-#     # X_ret*=one_over_sqrt_pi
-#     if imissX is not None:
-#         X_ret[imissX]=0.0
-#     return X_ret
-
+    
 
 def mean_impute(X, imissX=None, maxval=2.0):
     if imissX is None:
