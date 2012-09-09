@@ -1,5 +1,6 @@
 import numpy as np
 import scipy as sp
+import scipy as SP
 import pdb, sys, pickle
 import matplotlib.pylab as plt
 import scipy.stats as st
@@ -268,11 +269,14 @@ def manhattanplot(pval,chromosome,position,pv_max=0.1,qv=None,alpha=0.05):
             plt.plot(position_plot[i_chr],-sp.log10(pval[i_chr]),'.b')
 
     #axes labels
+    plt.xlim([position_plot.min(),position_plot.max()])
+    _ylim = plt.ylim()
+    plt.ylim([-SP.log10(pv_max),_ylim[1]])
     plt.xlabel('Genomic position')
     plt.ylabel('-Log10 PV')
     #significance threshold
     if pv_max_sig:
-        plt.hlines(-SP.log10(pv_max_sig),PL.xlim()[0],PL.xlim()[1])
+        plt.hlines(-SP.log10(pv_max_sig),plt.xlim()[0],plt.xlim()[1])
 
 
     
