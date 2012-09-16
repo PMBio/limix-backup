@@ -128,7 +128,7 @@ class CMMT(object):
         for K in self.Ks:
             _covar_gg = limix.CFixedCF(K)
             #freeform covariance: requiring number of traits/group (T)
-            _covar_ge = limix.CCovFreeform(self.T)
+            _covar_ge = limix.CFreeFormCF(self.T)
             _covar_g = limix.CProductCF()
             _covar_g.addCovariance(_covar_gg)
             _covar_g.addCovariance(_covar_ge)
@@ -140,7 +140,7 @@ class CMMT(object):
         #2. env covariance:
         GP['covar_EG'] = limix.CFixedCF(self.Kgeno)
         #freeform covariance: requiring number of traits/group (T)
-        GP['covar_EE'] = limix.CCovFreeform(self.T)
+        GP['covar_EE'] = limix.CFreeFormCF(self.T)
         GP['covar_E'] = limix.CProductCF()
         GP['covar_E'].addCovariance(GP['covar_EG'])
         GP['covar_E'].addCovariance(GP['covar_EE'])
