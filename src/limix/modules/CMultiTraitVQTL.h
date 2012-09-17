@@ -140,7 +140,7 @@ public:
 	PGPbase getGP() {return this->gp;}
 	PGPopt  getOpt() {return this->opt;}
 
-	void setK(const MatrixXd& K,muint_t i,bool rescale=false);
+	void setK(muint_t i,const MatrixXd& K,bool rescale=false);
 	void addK(const MatrixXd& K,bool rescale=false);
 	void setKgeno(const MatrixXd& Kgeno,bool rescale=false);
 	void setFixed(const MatrixXd& fixed);
