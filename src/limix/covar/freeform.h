@@ -13,8 +13,10 @@
 namespace limix {
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CCovFreeform)
+%ignore CFreeFormCF::getIparamDiag;
+%rename(getIparamDiag) CFreeFormCF::agetIparamDiag;
 #endif
+
 class CFreeFormCF: public ACovarianceFunction {
 protected:
 	muint_t numberGroups;
