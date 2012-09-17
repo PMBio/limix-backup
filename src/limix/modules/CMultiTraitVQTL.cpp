@@ -257,7 +257,7 @@ void CMultiTraitVQTL::agetKgeno(MatrixXd* out) const {
 	(*out) = Kgeno;
 }
 
-void CMultiTraitVQTL::setK(const MatrixXd& K,muint_t i,bool rescale) {
+void CMultiTraitVQTL::setK(muint_t i,const MatrixXd& K,bool rescale) {
 	this->K_terms[i] = K;
 }
 
