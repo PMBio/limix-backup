@@ -26,6 +26,7 @@ CMultiTraitVQTL::CMultiTraitVQTL()
 
 CMultiTraitVQTL::~CMultiTraitVQTL() {
 	// TODO Auto-generated destructor stub
+	estimate_noise_covar = false;
 }
 
 
@@ -173,7 +174,7 @@ void CMultiTraitVQTL::initGP() throw(CGPMixException)
 	PFreeFormCF cov_freeform = PFreeFormCF(new CFreeFormCF(this->numtraits));
 	MatrixXd hp0;
 	MatrixXd hp_mask;
-	this->covar_noise = initCovarTerm(&hp0,&hp_mask,this->Kgeno,this->categorial_trait,false);
+	this->covar_noise = initCovarTerm(&hp0,&hp_mask,this->Kgeno,this->categorial_trait,estimate_noise_covar);
 	this->covar->addCovariance(this->covar_noise);
 	this->covar_params0.push_back(hp0);
 	this->covar_params_mask.push_back(hp_mask);

@@ -71,6 +71,9 @@ protected:
 	MatrixXd pheno;
 	//trait indicator
 	MatrixXd trait;
+	//estimate noise covariance?
+	bool estimate_noise_covar;
+
 	//is categorial triat?
 	bool categorial_trait;
 	//if yes: how many states?
@@ -151,7 +154,13 @@ public:
 	//static methods
 	static mfloat_t estimateHeritability(const MatrixXd& Y,const MatrixXd& K);
 
+	bool isEstimateNoiseCovar() const {
+		return estimate_noise_covar;
+	}
 
+	void setEstimateNoiseCovar(bool estimateNoiseCovar) {
+		estimate_noise_covar = estimateNoiseCovar;
+	}
 };
 typedef sptr<CMultiTraitVQTL> PMultiTraitVQTL;
 
