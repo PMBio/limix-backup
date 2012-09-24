@@ -112,6 +112,8 @@ public:
 	//train
 	bool train() throw(CGPMixException);
 
+	//marginal likelihood
+	mfloat_t getLML();
 
 	//getters and setters
 	void agetK(MatrixXd* out,muint_t i) const;

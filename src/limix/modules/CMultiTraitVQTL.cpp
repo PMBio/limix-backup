@@ -379,6 +379,10 @@ void CMultiTraitVQTL::agetVarianceComponent_noise(MatrixXd* out)
 	this->agetFreeFormVariance(out,params);
 }
 
+mfloat_t CMultiTraitVQTL::getLML() {
+	return this->gp->LML();
+}
+
 mfloat_t CMultiTraitVQTL::estimateHeritability(const MatrixXd& Y,
 		const MatrixXd& K)
 {

@@ -32,9 +32,9 @@ using namespace limix;
 %}
 
 /* Get the numpy typemaps */
-%include "numpy.i"
+//%include "numpy.i"
 //support for eigen matrix stuff
-%include "eigen.i"
+//%include "eigen.i"
 //support for std libs
 //suport for std_shared pointers in tr1 namespace
 
