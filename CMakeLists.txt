@@ -7,6 +7,10 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 option(BUILD_PYTHON_PACKAGE "Enable Python bindings" ON)
 #R optional
 option(BUILD_R_PACKAGE "Enable R bindings" OFF)
+
+#Java interface
+option(BUILD_JAVA_PACKAGE "Enable Python bindings" OFF)
+
 #profiling using google perftools (currently only python .so)
 option(GOOGLE_PERF "Enable google perftools support" OFF)
 #architecture secific optimization
@@ -124,3 +128,6 @@ if (BUILD_R_PACKAGE)
 add_subdirectory(./src/interfaces/R)
 endif (BUILD_R_PACKAGE)
 
+if (BUILD_JAVA_PACKAGE)
+add_subdirectory(./src/interfaces/java)
+endif(BUILD_JAVA_PACKAGE)
