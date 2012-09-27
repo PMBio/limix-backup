@@ -4,7 +4,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 #build options
 #PYTHON off by default
-option(BUILD_PYTHON_PACKAGE "Enable Python bindings" ON)
+option(BUILD_PYTHON_PACKAGE "Enable Python bindings" OFF)
 #R optional
 option(BUILD_R_PACKAGE "Enable R bindings" OFF)
 
