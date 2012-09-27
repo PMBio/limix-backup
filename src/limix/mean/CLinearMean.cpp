@@ -8,15 +8,17 @@
 #include "CLinearMean.h"
 
 namespace limix {
-CLinearMean::CLinearMean() : ADataTerm::ADataTerm() {
+CLinearMean::CLinearMean() : ADataTerm()
+{
 	this->nTargets = 0;
 }
 
-CLinearMean::CLinearMean(muint_t nTargets) : ADataTerm::ADataTerm() {
+CLinearMean::CLinearMean(muint_t nTargets) : ADataTerm()
+{
 	this->nTargets = nTargets;
 }
 
-CLinearMean::CLinearMean(const MatrixXd& Y, const MatrixXd& weights, const MatrixXd& fixedEffects) : ADataTerm::ADataTerm(Y)
+CLinearMean::CLinearMean(const MatrixXd& Y, const MatrixXd& weights, const MatrixXd& fixedEffects) : ADataTerm(Y)
 {
 	this->checkDimensions(weights, fixedEffects, Y, true, true, true);
 	this->fixedEffects = fixedEffects;
@@ -24,7 +26,7 @@ CLinearMean::CLinearMean(const MatrixXd& Y, const MatrixXd& weights, const Matri
 	this->nTargets = Y.cols();
 }
 
-CLinearMean::CLinearMean(const MatrixXd& Y, const MatrixXd& fixedEffects) : ADataTerm::ADataTerm(Y)
+CLinearMean::CLinearMean(const MatrixXd& Y, const MatrixXd& fixedEffects) : ADataTerm(Y)
 {
 	this->checkDimensions(weights, fixedEffects, Y, true, false, true);
 	this->fixedEffects = fixedEffects;
