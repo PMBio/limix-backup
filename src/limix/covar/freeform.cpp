@@ -47,7 +47,7 @@ void CFreeFormCF::agetL0(MatrixXd* out) const
 
 void CFreeFormCF::agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
 {
-	/*contruct cholesky factor from hyperparameters*/
+	/*construct cholesky factors from hyperparameters*/
 		(*out).setConstant(numberGroups,numberGroups,0);
 		muint_t pindex=0;
 		//for rows
