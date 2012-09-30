@@ -5,10 +5,15 @@ find_package(SWIG REQUIRED)
 #1. find swig
 INCLUDE(${SWIG_USE_FILE})
 
-
-
-
 if(BUILD_JAVA_PACKAGE)
+
+
+#find python
+if(NOT BUILD_PYTHON_PACKAGE)
+       FIND_PACKAGE(JNI)
+endif()
+
+include_directories(${JAVA_INCLUDE_PATH})
 
 
 include_directories(./../)

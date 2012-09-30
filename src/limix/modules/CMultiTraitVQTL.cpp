@@ -54,9 +54,9 @@ void CMultiTraitVQTL::checkConsistency() throw (CGPMixException){
 	if (((muint_t)this->Kgeno.rows()!=Nn) || ((muint_t)this->Kgeno.rows()!=Nn))
 		throw CGPMixException("CMultiTraitVQTL: Kgeno matrix has inconsistent dimension.");
 
-	for(MatrixXdVec::iterator iter = this->K_terms.begin(); iter!=this->K_terms.end();iter++)
+	for(CMultiTraitCovarVec::iterator iter = this->K_terms.begin(); iter!=this->K_terms.end();iter++)
 	{
-		if (((muint_t)iter->rows()!=Nn) || ((muint_t)iter->cols()!=Nn))
+		if (((muint_t)iter->K.rows()!=Nn) || ((muint_t)iter->K.cols()!=Nn))
 			throw CGPMixException("CMultiTraitVQTL: Kterm matrix has inconsistent dimension.");
 	}
 }
@@ -80,7 +80,7 @@ mfloat_t CMultiTraitVQTL::estimateLogVariance(const MatrixXd& K)
 
 
 PProductCF CMultiTraitVQTL::initCovarTerm(MatrixXd* hp0,
-		MatrixXd* hp_mask, const MatrixXd& Kfix, bool categorial_trait, bool trait_covariance)
+		MatrixXd* hp_mask, const MatrixXd& Kfix, CMultiTraitCovarType type, bool trait_covariance)
 {
 	//0. total term covar is a product
 	PProductCF cov_term = PProductCF(new CProductCF());
@@ -92,17 +92,21 @@ PProductCF CMultiTraitVQTL::initCovarTerm(MatrixXd* hp0,
 	//2. trait CF
 	PCovarianceFunction cov_trait;
 	//2.1 is categorial?
-	if(categorial_trait)
+	if(type==categorial)
 	{
 		//freeform categorial CF
 		cov_trait = PFreeFormCF(new CFreeFormCF(this->numtraits));
 	}
-	else
+	else if (type==continuous)
 	{
 		//SE ard covariance
 		cov_trait = PCovSqexpARD(new CCovSqexpARD(1));
 	}
-	cov_term->addCovariance(cov_trait);
+
+	if (cov_trait!=NULL)
+	{
+		cov_term->addCovariance(cov_trait);
+	}
 	//set input for covar_term
 	cov_term->setX(this->trait);
 
@@ -118,7 +122,7 @@ PProductCF CMultiTraitVQTL::initCovarTerm(MatrixXd* hp0,
 	(*hp_mask)(0,0) = 0;
 	//2. exclude cross covariances if trait_covariance is false
 
-	if(categorial_trait)
+	if(type==categorial)
 	{
 		PFreeFormCF cf = static_pointer_cast<CFreeFormCF>(cov_trait);
 		//2. get diagonal element indexb
@@ -133,7 +137,7 @@ PProductCF CMultiTraitVQTL::initCovarTerm(MatrixXd* hp0,
 				(*hp_mask)(i+1,0) = 0;
 		}
 	}
-	else
+	else if(type==continuous)
 	{
 		//scaling of covariance
 		(*hp0)(0+1,0) = l2var;
@@ -159,11 +163,11 @@ void CMultiTraitVQTL::initGP() throw(CGPMixException)
 	covar_params_mask.clear();
 
 	//1.1 loop over covaraince components and create fixed CF
-	for(MatrixXdVec::iterator iter = this->K_terms.begin(); iter!=this->K_terms.end();iter++)
+	for(CMultiTraitCovarVec::iterator iter = this->K_terms.begin(); iter!=this->K_terms.end();iter++)
 	{
 		MatrixXd hp0;
 		MatrixXd hp_mask;
-		PProductCF cov_term = initCovarTerm(&hp0,&hp_mask,iter[0],this->categorial_trait,true);
+		PProductCF cov_term = initCovarTerm(&hp0,&hp_mask,iter->K,iter->type,true);
 		this->covar->addCovariance(cov_term);
 		this->covar_terms.push_back(cov_term);
 		this->covar_params0.push_back(hp0);
@@ -174,7 +178,7 @@ void CMultiTraitVQTL::initGP() throw(CGPMixException)
 	PFreeFormCF cov_freeform = PFreeFormCF(new CFreeFormCF(this->numtraits));
 	MatrixXd hp0;
 	MatrixXd hp_mask;
-	this->covar_noise = initCovarTerm(&hp0,&hp_mask,this->Kgeno,this->categorial_trait,estimate_noise_covar);
+	this->covar_noise = initCovarTerm(&hp0,&hp_mask,this->Kgeno,categorial,estimate_noise_covar);
 	this->covar->addCovariance(this->covar_noise);
 	this->covar_params0.push_back(hp0);
 	this->covar_params_mask.push_back(hp_mask);
@@ -251,27 +255,38 @@ bool CMultiTraitVQTL::train() throw(CGPMixException)
 //setters and getters
 
 void CMultiTraitVQTL::agetK(MatrixXd* out,muint_t i) const {
-	(*out) = K_terms[i];
+	(*out) = K_terms[i].K;
 }
 
 void CMultiTraitVQTL::agetKgeno(MatrixXd* out) const {
 	(*out) = Kgeno;
 }
 
-void CMultiTraitVQTL::setK(muint_t i,const MatrixXd& K,bool rescale) {
-	this->K_terms[i] = K;
-}
-
-void CMultiTraitVQTL::addK(const MatrixXd& K,bool rescale)
+void CMultiTraitVQTL::setK(muint_t i,const MatrixXd& K,bool rescale)
 {
 	if (rescale)
 	{
 		MatrixXd tmp = K;
 		scale_K(tmp);
-		this->K_terms.push_back(tmp);
+		this->K_terms[i].K = tmp;
 	}
 	else
-		this->K_terms.push_back(K);
+		this->K_terms[i].K = K;
+}
+
+void CMultiTraitVQTL::addK(const MatrixXd& K,bool rescale,CMultiTraitCovarType type)
+{
+	CMultiTraitCovar covar;
+	covar.type = type;
+	if (rescale)
+	{
+		MatrixXd tmp = K;
+		scale_K(tmp);
+		covar.K = tmp;
+	}
+	else
+		covar.K =K;
+	this->K_terms.push_back(covar);
 }
 
 
@@ -293,36 +308,31 @@ void CMultiTraitVQTL::agetTrait(MatrixXd* out) const {
 	(*out) = trait;
 }
 
-void CMultiTraitVQTL::setTrait(const MatrixXd& trait,bool categorial)
+void CMultiTraitVQTL::setTrait(const MatrixXd& trait)
 {
-	this->categorial_trait = categorial;
 	//1. allocate trait vector
 	this->trait = trait;
-	this->categorial_trait = categorial;
-	if(categorial)
+	//2. clear unique set of entries
+	mfloat_set utrait;
+	//3. add unique things
+	for (muint_t it=0;it<(muint_t) trait.rows();++it)
 	{
-		//2. clear unique set of entries
-		mfloat_set utrait;
-		//3. add unique things
-		for (muint_t it=0;it<(muint_t) trait.rows();++it)
+		mfloat_t el = trait(it,0);
+		if (utrait.find(el)==utrait.end())
 		{
-			mfloat_t el = trait(it,0);
-			if (utrait.find(el)==utrait.end())
-			{
-				utrait.insert(el);
-			}
+			utrait.insert(el);
 		}
-		//set number of traits
-		this->numtraits=utrait.size();
-		//convert to array
-		this->utrait = MatrixXd::Zero(numtraits,1);
-		muint_t index=0;
-		for(mfloat_set::iterator iter = utrait.begin(); iter!=utrait.end();iter++)
-		{
-			this->utrait(index,0) = iter.operator *();
-			index++;
-		}
-	}//end if categorial
+	}
+	//set number of traits
+	this->numtraits=utrait.size();
+	//convert to array
+	this->utrait = MatrixXd::Zero(numtraits,1);
+	muint_t index=0;
+	for(mfloat_set::iterator iter = utrait.begin(); iter!=utrait.end();iter++)
+	{
+		this->utrait(index,0) = iter.operator *();
+		index++;
+	}
 }
 
 void CMultiTraitVQTL::agetPheno(MatrixXd* out) const {

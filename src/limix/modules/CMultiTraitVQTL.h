@@ -46,17 +46,24 @@ namespace limix {
 
 
 //vector on SNP sets
+enum CMultiTraitCovarType {fixed,categorial,continuous};
+struct CMultiTraitCovar
+{
+	MatrixXd K;
+	CMultiTraitCovarType type;
+};
 
-typedef std::vector<MatrixXd> MatrixXdVec;
+typedef std::vector<CMultiTraitCovar> CMultiTraitCovarVec;
 typedef std::vector<PProductCF> PProductCFVec;
 typedef std::set<mfloat_t> mfloat_set;
+
 
 //typedef std::vector<bool> Trait
 
 class CMultiTraitVQTL {
 protected:
 	//Covariances for varaince decomposition:
-	MatrixXdVec K_terms;
+	CMultiTraitCovarVec K_terms;
 
 
 	//list of terms for each covariance
@@ -74,8 +81,6 @@ protected:
 	//estimate noise covariance?
 	bool estimate_noise_covar;
 
-	//is categorial triat?
-	bool categorial_trait;
 	//if yes: how many states?
 	muint_t numtraits;
 	//unique states in trait
@@ -102,7 +107,7 @@ protected:
 	//calculate variance components form FreeForm Hyperparams und this->utrait
 	void agetFreeFormVariance(MatrixXd* out,CovarParams params);
 	//initialize covariance term
-	PProductCF initCovarTerm(MatrixXd* hp0,MatrixXd* hp_mask, const MatrixXd& Kfix,bool categorial_trait,bool trait_covariance);
+	PProductCF initCovarTerm(MatrixXd* hp0,MatrixXd* hp_mask, const MatrixXd& Kfix,CMultiTraitCovarType type,bool trait_covariance);
 
 
 public:
@@ -146,10 +151,10 @@ public:
 	PGPopt  getOpt() {return this->opt;}
 
 	void setK(muint_t i,const MatrixXd& K,bool rescale=false);
-	void addK(const MatrixXd& K,bool rescale=false);
+	void addK(const MatrixXd& K,bool rescale=false,CMultiTraitCovarType type=categorial);
 	void setKgeno(const MatrixXd& Kgeno,bool rescale=false);
 	void setFixed(const MatrixXd& fixed);
-	void setTrait(const MatrixXd& trait,bool categorial=true);
+	void setTrait(const MatrixXd& trait);
 	void setPheno(const MatrixXd& pheno);
 
 
