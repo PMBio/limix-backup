@@ -290,6 +290,11 @@ int ALMM::getTestStatistics() const
     {
         //get decomposition
         updateDecomposition();
+        /*
+        std::cout << "U" << this->U << "\n";
+        std::cout << "S" << this->S << "\n";
+		*/
+
         //resize phenotype output
         this->pv.resize(this->num_pheno, this->num_snps);
         //result matrices: think about what to store in the end
