@@ -350,7 +350,12 @@ int ALMM::getTestStatistics() const
 
             	//3.2 evaluate test statistics (background)
                 if(this->testStatistics == ALMM::TEST_LLR)
-                    this->pv(ip, is) = Gamma::gammaQ(nLL0(ip, 0) - nLLAlt(ip, is), (double)(((((((0.5))))))) * 1.0);
+                {
+                	mfloat_t DL = nLL0(ip, 0) - nLLAlt(ip, is);
+                	if (DL<0)
+                		DL = 0;
+                    this->pv(ip, is) = Gamma::gammaQ(DL, (double)(((((((0.5))))))) * 1.0);
+                }
                 else if(this->testStatistics == ALMM::TEST_F)
                     {
                     	//store ftest statitics for testing SNP
