@@ -432,7 +432,6 @@ inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AObeta_, cons
 	Eigen::MatrixBase<Derived5>& AOnLL = const_cast< Eigen::MatrixBase<Derived5>& >(AOnLL_);
 
 
-
 	//number of samples
 	muint_t n = UX.rows();
 	//number of dimensions for fitting (X)
@@ -469,6 +468,7 @@ inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AObeta_, cons
 	if (calc_ftest || calc_ste)
 		AOF_tests.setConstant(0.0);
 
+
 	XSdi = UX.array().transpose();
 	XSdi.array().rowwise() *= Sdi.array().transpose();
 	XSX.noalias() = XSdi * UX;
@@ -502,6 +502,16 @@ inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AObeta_, cons
 	res.array().colwise() *= Sdi.array();
 
 	AOsigma = res.colwise().sum() / (mfloat_t)n;
+
+	/*
+	std::cout << "UX" << UX << "\n";
+	std::cout << "UY" << UX << "\n";
+	std::cout << "Sdi" << Sdi << "n";
+
+	std::cout << "AObeta" << AObeta << "\n";
+	std::cout << "res" << res << "n";
+	std::cout << "ldet" << ldet << "\n";
+	*/
 
 	//compute standard errors
 	if(calc_ste)
