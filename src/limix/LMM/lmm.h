@@ -10,6 +10,8 @@
 
 #include "limix/types.h"
 #include "limix/utils/matrix_helper.h"
+#include <cmath>
+
 
 namespace limix {
 
@@ -464,6 +466,12 @@ inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AObeta_, cons
 		//inverse:
 		Sdi.data()[ind] = 1.0 / (Sdi.data()[ind]);
 	}
+	//check whether ldet is NAN, => set to infinity
+	if(ldet==NAN)
+	{
+		ldet=INFINITY;
+	}
+
 
 	if (calc_ftest || calc_ste)
 		AOF_tests.setConstant(0.0);
