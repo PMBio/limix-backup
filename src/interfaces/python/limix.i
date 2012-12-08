@@ -25,6 +25,8 @@
 #include "limix/LMM/CGPLMM.h"
 #include "limix/modules/CVqtl.h"
 #include "limix/modules/CMultiTraitVQTL.h"
+#include "limix/modules/CVarianceDecomposition.h"
+
 
 
 using namespace limix;
@@ -52,6 +54,7 @@ using namespace limix;
 
 
 // Includ dedicated interface files
+%include "./../types.i"
 %include "./../covar.i"
 %include "./../gp.i"
 %include "./../lik.i"
@@ -84,7 +87,7 @@ using namespace limix;
 %include "limix/LMM/kronecker_lmm.h"
 %include "limix/modules/CVqtl.h"
 %include "limix/modules/CMultiTraitVQTL.h"
-
+%include "limix/modules/CVarianceDecomposition.h"
 
 
  

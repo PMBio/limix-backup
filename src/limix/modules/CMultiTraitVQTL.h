@@ -58,6 +58,7 @@ typedef std::vector<PProductCF> PProductCFVec;
 typedef std::set<mfloat_t> mfloat_set;
 
 
+
 //typedef std::vector<bool> Trait
 
 class CMultiTraitVQTL {

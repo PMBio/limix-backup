@@ -102,7 +102,6 @@ PProductCF CMultiTraitVQTL::initCovarTerm(MatrixXd* hp0,
 		//SE ard covariance
 		cov_trait = PCovSqexpARD(new CCovSqexpARD(1));
 	}
-
 	if (cov_trait!=NULL)
 	{
 		cov_term->addCovariance(cov_trait);
@@ -267,7 +266,7 @@ void CMultiTraitVQTL::setK(muint_t i,const MatrixXd& K,bool rescale)
 	if (rescale)
 	{
 		MatrixXd tmp = K;
-		scale_K(tmp);
+		VarianceScaleK(tmp);
 		this->K_terms[i].K = tmp;
 	}
 	else
@@ -281,7 +280,7 @@ void CMultiTraitVQTL::addK(const MatrixXd& K,bool rescale,CMultiTraitCovarType t
 	if (rescale)
 	{
 		MatrixXd tmp = K;
-		scale_K(tmp);
+		VarianceScaleK(tmp);
 		covar.K = tmp;
 	}
 	else
@@ -293,7 +292,7 @@ void CMultiTraitVQTL::addK(const MatrixXd& K,bool rescale,CMultiTraitCovarType t
 void CMultiTraitVQTL::setKgeno(const MatrixXd& Kgeno,bool rescale) {
 	this-> Kgeno = Kgeno;
 	if (rescale)
-		scale_K(this->Kgeno);
+		VarianceScaleK(this->Kgeno);
 }
 
 void CMultiTraitVQTL::agetFixed(MatrixXd* out) const {
