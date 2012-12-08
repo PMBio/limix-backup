@@ -191,8 +191,8 @@ public:
 %ignore CLMM::getLdelta0;
 %ignore CLMM::getFtests;
 %ignore CLMM::getLSigma;
-%ignore CLMM::agetBetaSNP;
-%ignore CLMM::agetBetaSNPste;
+%ignore CLMM::getBetaSNP;
+%ignore CLMM::getBetaSNPste;
 
 
 //rename argout versions for python; this overwrites the C++ convenience functions

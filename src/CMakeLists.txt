@@ -42,6 +42,7 @@ SET(SOURCES limix/covar/covariance.cpp
 	    limix/mean/CData.cpp
 	    limix/modules/CVqtl.cpp
 	    limix/modules/CMultiTraitVQTL.cpp
+	    limix/modules/CVarianceDecomposition.cpp
 )
 
 

@@ -174,7 +174,6 @@ typedef sptr<CGPCholCache> PGPCholCache;
 %ignore CGPbase::predictMean;
 %ignore CGPbase::predictVar;
 
-
 %rename(getParamArray) CGPbase::agetParamArray;
 %rename(getX) CGPbase::agetX;
 %rename(getY) CGPbase::agetY;
