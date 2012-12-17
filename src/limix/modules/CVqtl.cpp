@@ -105,7 +105,7 @@ void CVqtl::fitVariances(MatrixXd* out,const MatrixXi& snp_index) throw(CGPMixEx
 		muint_t istop  = snp_index(iblock,1);
 		MatrixXd Ki = this->snps.block(0,istart,this->snps.rows(),istop) * this->snps.block(0,istart,this->snps.rows(),istop).transpose();
 		//scale kernel matrix
-		scale_K(Ki);
+		VarianceScaleK(Ki);
 		//create covaraince and add
 		PFixedCF _covar(new CFixedCF(Ki));
 		covar->addCovariance(_covar);

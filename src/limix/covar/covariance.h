@@ -25,7 +25,7 @@ typedef VectorXd CovarParams;
 //ignore C++ versions
 %ignore ACovarianceFunction::K;
 %ignore ACovarianceFunction::Kdiag;
-%ignore ACovarianceFunction::aKcross_diag;
+%ignore ACovarianceFunction::Kcross_diag;
 %ignore ACovarianceFunction::Kdiag_grad_X;
 %ignore ACovarianceFunction::Kgrad_X;
 %ignore ACovarianceFunction::Kcross;

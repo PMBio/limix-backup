@@ -10,6 +10,7 @@
 #include "limix/covar/linear.h"
 #include "limix/utils/matrix_helper.h"
 #include "limix/modules/CMultiTraitVQTL.h"
+#include "limix/modules/CVarianceDecomposition.h"
 
 
 using namespace limix;
@@ -74,7 +75,17 @@ int main() {
 	std::cout << Vnoise << "\n";
 	std::cout << Vterm << "\n";
 
-	std::cout << mqtl->estimateHeritability(Y,K);
+
+	//4. new model
+	PVarianceDecomposition vdc(new CVarianceDecomposition(Y,T));
+	vdc->setFixed(C);
+	vdc->addTerm(K,CVarianceDecomposition::categorial,0.2,true);
+	vdc->addTerm(Kgeno,CVarianceDecomposition::categorial,0.8,false);
+
+	vdc->train();
+
+
+
 
 
 }
