@@ -467,11 +467,17 @@ inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AObeta_, cons
 		Sdi.data()[ind] = 1.0 / (Sdi.data()[ind]);
 	}
 	//check whether ldet is NAN, => set to infinity
+#ifdef _MSC_VER
+	if (ldet!=ldet)
+	{
+		ldet=std::numeric_limits<mfloat_t>::infinity();
+	}
+#else
 	if(ldet==NAN)
 	{
 		ldet=INFINITY;
 	}
-
+#endif
 
 	if (calc_ftest || calc_ste)
 		AOF_tests.setConstant(0.0);

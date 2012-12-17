@@ -1,7 +1,7 @@
-#if 1
+#if 0
 //============================================================================
 // Name        : GPmix.cpp
-// C++ testig file for varaince component QTL
+// C++ testig file for variance component QTL
 //============================================================================
 
 #include <iostream>
@@ -64,9 +64,10 @@ int main() {
 	mqtl->setPheno(Y);
 	mqtl->setFixed(C);
 
+
 	//train
 	mqtl->train();
-	//get varaince of a covar term & noise
+	//get variance of a covar term & noise
 	MatrixXd Vnoise = mqtl->getVarianceComponent_noise();
 	MatrixXd Vterm = mqtl->getVarianceComponent_term(0);
 
