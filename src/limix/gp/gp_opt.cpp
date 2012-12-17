@@ -105,7 +105,8 @@ bool CGPopt::opt() throw (CGPMixException)
 		VectorXd paramsArray0_ = params0_.getParamArray(optParamMask);
 		//std::cout << "\n" << paramsArray0_ << "\n"<< "\n";
 		double* x0d = paramsArray0_.data();
-		if (nlopt_optimize(optimizer, x0d, &minf) < 0)
+		double optret = nlopt_optimize(optimizer, x0d, &minf);
+		if (optret < 0)
 		{
 		    std::cout << "nlopt failed!\n";
 		}
