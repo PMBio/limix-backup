@@ -40,7 +40,7 @@ include (AddCompilerFlag)
 ##PYTHON build options##
 # Path to python executable. If specified peer is built against this
 # python version, otherwise "which python" is used for auto-detection
-#SET(PYTHON_EXECUTABLE "")
+SET(PYTHON_EXECUTABLE "c:/Python27/python.exe")
 #Python include directory 
 #normally there is no need to specify them;instead these are
 #auto-determined from the location of the binary.
