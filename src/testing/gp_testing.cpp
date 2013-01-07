@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 1
+#if 0
 
 #include <iostream>
 #include "limix/gp/gp_base.h"
@@ -101,7 +101,7 @@ int main() {
 		//random input X
 		muint_t dim=2;
 		muint_t nsamples =100;
-		muint_t targets = 4;
+		muint_t targets = 1;
 		muint_t nWeights = 2;
 
 		MatrixXd X = randn(nsamples,dim);
@@ -114,14 +114,17 @@ int main() {
 
 
 		MatrixXd cov = MatrixXd::Ones(nsamples,1);
-		CLinearMean mean(y,cov);
+		PLinearMean mean(new CLinearMean(y,cov));
+		PLikNormalIso lik(new CLikNormalIso());
+
+
 		MatrixXd weights = MatrixXd::Ones(1,1);
 
 
 		//Ard covariance
 		PCovLinearARD covar(new CCovLinearARD(X.cols()));
 		//GP object
-		PGPbase gp(new CGPbase(covar));
+		PGPbase gp(new CGPbase(covar,lik,mean));
 		gp->setY(y);
 		gp->setX(X);
 		//hyperparams
@@ -145,7 +148,7 @@ int main() {
 		mfloat_t lml = gp->LML(params);
 		CGPHyperParams grad = gp->LMLgrad();
 		std::cout <<"lml : "<< lml << "\n";
-		std::cout <<"grad[covar] :"<< grad["covar"] << "\n";
+		std::cout <<"grad :"<< grad << "\n";
 		CGPopt opt(gp);
 		std::cout << "gradcheck: "<< opt.gradCheck() << "\n";
 		//optimize:

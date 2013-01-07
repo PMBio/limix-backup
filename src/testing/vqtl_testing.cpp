@@ -1,4 +1,4 @@
-#if 0
+#if 1
 //============================================================================
 // Name        : GPmix.cpp
 // C++ testig file for variance component QTL
@@ -81,6 +81,10 @@ int main() {
 	vdc->setFixed(C);
 	vdc->addTerm(K,CVarianceDecomposition::categorial,0.2,true);
 	vdc->addTerm(Kgeno,CVarianceDecomposition::categorial,0.8,false);
+
+	vdc->initGP();
+
+	PGPbase gp = vdc->getGP();
 
 	vdc->train();
 

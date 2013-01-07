@@ -15,10 +15,11 @@
 #ifdef _WIN32
     #include <unordered_map>
     #include <memory>
+	#include<limits>
 #else
-//    #include <tr1/unordered_map>
     #include <tr1/memory>
 #endif
+
 
 //define shortcut for shared pointer
 #define sptr std::tr1::shared_ptr
@@ -46,6 +47,18 @@ typedef unsigned long int uint64_t;
 typedef float64_t mfloat_t;
 typedef int64_t mint_t;
 typedef uint64_t muint_t;
+
+
+#ifdef _WIN32
+    #ifndef NAN
+		#define NAN std::numeric_limits<mfloat_t>::quiet_NaN()
+	#endif
+#endif
+
+//simple definition of isnan
+#ifndef isnan
+	#define isnan(val) val!=val
+#endif
 
 
 //inline casts of exp and log
