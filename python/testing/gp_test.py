@@ -1,5 +1,6 @@
 import sys
 sys.path.append('./..')
+sys.path.append('./../../build/src/interfaces/python')
 sys.path.append('./../../../pygp')
 
 

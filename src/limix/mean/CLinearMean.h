@@ -46,7 +46,7 @@ public:
 
 
 	virtual void aEvaluate(MatrixXd* outY);
-	void aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY);
+	virtual void aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY);
 
 	virtual void setParams(const MatrixXd& weightMatrix);
 	virtual void setFixedEffects(const MatrixXd& fixedEffects);
