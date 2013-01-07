@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2011 Massachusetts Institute of Technology
+/* Copyright (c) 2007-2012 Massachusetts Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -111,6 +111,7 @@ typedef struct {
      unsigned m; /* dimensional of constraint: mf maps R^n -> R^m */
      nlopt_func f; /* one-dimensional constraint, requires m == 1 */
      nlopt_mfunc mf;
+     nlopt_precond pre; /* preconditioner for f (NULL if none or if mf) */
      void *f_data;
      double *tol;
 } nlopt_constraint;
