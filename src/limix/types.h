@@ -204,7 +204,7 @@ public:
 		}
 	}
 
-
+	
 };
 
 }//end ::namespace limix
