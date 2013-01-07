@@ -40,6 +40,7 @@
 %rename(NLOPT_G_MLSL) nlopt::G_MLSL;
 %rename(NLOPT_G_MLSL_LDS) nlopt::G_MLSL_LDS;
 %rename(NLOPT_LD_SLSQP) nlopt::LD_SLSQP;
+%rename(NLOPT_LD_CCSAQ) nlopt::LD_CCSAQ;
 %rename(NLOPT_NUM_ALGORITHMS) nlopt::NUM_ALGORITHMS;
 %rename(NLOPT_FAILURE) nlopt::FAILURE;
 %rename(NLOPT_INVALID_ARGS) nlopt::INVALID_ARGS;

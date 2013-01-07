@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(nlopt, 2.2.4, stevenj@alum.mit.edu)
+AC_INIT(nlopt, 2.3.0, stevenj@alum.mit.edu)
 AC_CONFIG_SRCDIR(api/nlopt.h)
-SHARED_VERSION_INFO="6:2:6" # CURRENT:REVISION:AGE
+SHARED_VERSION_INFO="7:0:7" # CURRENT:REVISION:AGE
 
 AM_INIT_AUTOMAKE(1.7)
 AM_CONFIG_HEADER(config.h)
@@ -259,22 +259,8 @@ fi
 
 if test x"$OCT_INSTALL_DIR" != "x"; then
 if test "$enable_shared" = no; then
-     AC_MSG_CHECKING([whether mkoctfile can link with static objects])
-     rm -f conftest*
-     echo 'void foo(void) {};' > conftestfoo.c
-     $CC -c conftestfoo.c >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD
-     cat > conftest.cc <<EOF
-#include <octave/oct.h>
-extern "C" void foo(void);
-DEFUN_DLD(foobar, args, nargout, "foo bar") { foo(); }
-EOF
-     if $MKOCTFILE conftest.cc conftestfoo.o >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD; then
-	AC_MSG_RESULT(yes)
-     else
-	AC_MSG_RESULT(no)
         AC_MSG_WARN([mkoctfile requires --enable-shared; won't compile Octave plugin])
 	OCT_INSTALL_DIR=""
-     fi
 fi
 fi
 
@@ -318,24 +304,10 @@ EOF
 
      if test x"$MATLAB" != xecho; then
      if test "$enable_shared" = no; then
-     AC_MSG_CHECKING([whether mex can link with static objects])
-     rm -f conftest*
-     echo 'void foo(void) {};' > conftestfoo.c
-     $CC -c conftestfoo.c >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD
-     cat > conftest.c <<EOF
-#include <mex.h>
-extern void foo(void);
-void mexFunction(int nlhs, mxArray *plhs[[]],
-                 int nrhs, const mxArray *prhs[[]]) { foo(); }
-EOF
-     if $MEX conftest.c conftestfoo.o >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD; then
-	AC_MSG_RESULT(yes)
-     else
 	AC_MSG_RESULT(no)
         AC_MSG_WARN([mex requires --enable-shared; won't compile Matlab plugin])
 	MEX_INSTALL_DIR=""
 	MATLAB=echo
-     fi
      fi
      fi
 

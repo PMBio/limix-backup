@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2011 Massachusetts Institute of Technology
+/* Copyright (c) 2007-2012 Massachusetts Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -642,7 +642,7 @@ static nlopt_result nlopt_optimize_(nlopt_opt opt, double *x, double *minf)
 	      return ret;
 	 }
 
-	 case NLOPT_LD_MMA: {
+	 case NLOPT_LD_MMA: case NLOPT_LD_CCSAQ: {
 	      nlopt_opt dual_opt;
 	      nlopt_result ret;
 #define LO(param, def) (opt->local_opt ? opt->local_opt->param : (def))
@@ -651,13 +651,18 @@ static nlopt_result nlopt_optimize_(nlopt_opt opt, double *x, double *minf)
 				      nlopt_count_constraints(opt->m,
 							      opt->fc));
 	      if (!dual_opt) return NLOPT_FAILURE;
-	      nlopt_set_ftol_rel(dual_opt, LO(ftol_rel, 1e-12));
+	      nlopt_set_ftol_rel(dual_opt, LO(ftol_rel, 1e-14));
 	      nlopt_set_ftol_abs(dual_opt, LO(ftol_abs, 0.0));
 	      nlopt_set_maxeval(dual_opt, LO(maxeval, 100000));
 #undef LO
 
-	      ret = mma_minimize(n, f, f_data, opt->m, opt->fc,
-				 lb, ub, x, minf, &stop, dual_opt);
+	      if (algorithm == NLOPT_LD_MMA)
+		   ret = mma_minimize(n, f, f_data, opt->m, opt->fc,
+				      lb, ub, x, minf, &stop, dual_opt);
+	      else
+		   ret = ccsa_quadratic_minimize(
+			n, f, f_data, opt->m, opt->fc, opt->pre,
+			lb, ub, x, minf, &stop, dual_opt);
 	      nlopt_destroy(dual_opt);
 	      return ret;
 	 }
@@ -791,6 +796,7 @@ static nlopt_result nlopt_optimize_(nlopt_opt opt, double *x, double *minf)
 
 typedef struct {
      nlopt_func f;
+     nlopt_precond pre;
      void *f_data;
 } f_max_data;
 
@@ -807,22 +813,32 @@ static double f_max(unsigned n, const double *x, double *grad, void *data)
      return -val;
 }
 
+static void pre_max(unsigned n, const double *x, const double *v,
+		    double *vpre, void *data)
+{
+     f_max_data *d = (f_max_data *) data;
+     unsigned i;
+     d->pre(n, x, v, vpre, d->f_data);
+     for (i = 0; i < n; ++i) vpre[i] = -vpre[i];
+}
+
 nlopt_result 
 NLOPT_STDCALL nlopt_optimize(nlopt_opt opt, double *x, double *opt_f)
 {
-     nlopt_func f; void *f_data;
+     nlopt_func f; void *f_data; nlopt_precond pre;
      f_max_data fmd;
      int maximize;
      nlopt_result ret;
 
      if (!opt || !opt_f || !opt->f) return NLOPT_INVALID_ARGS;
-     f = opt->f; f_data = opt->f_data;
+     f = opt->f; f_data = opt->f_data; pre = opt->pre;
 
      /* for maximizing, just minimize the f_max wrapper, which 
 	flips the sign of everything */
      if ((maximize = opt->maximize)) {
-	  fmd.f = f; fmd.f_data = f_data;
-	  opt->f = f_max; opt->f_data = &fmd;
+	  fmd.f = f; fmd.f_data = f_data; fmd.pre = pre;
+	  opt->f = f_max; opt->f_data = &fmd; 
+	  if (opt->pre) opt->pre = pre_max;
 	  opt->stopval = -opt->stopval;
 	  opt->maximize = 0;
      }
@@ -847,7 +863,7 @@ done:
      if (maximize) { /* restore original signs */
 	  opt->maximize = maximize;
 	  opt->stopval = -opt->stopval;
-	  opt->f = f; opt->f_data = f_data;
+	  opt->f = f; opt->f_data = f_data; opt->pre = pre;
      	  *opt_f = -*opt_f;
      }
 

@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2011 Massachusetts Institute of Technology
+/* Copyright (c) 2007-2012 Massachusetts Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -67,6 +67,11 @@ typedef void (*nlopt_mfunc)(unsigned m, double *result,
 			    unsigned n, const double *x,
 			     double *gradient, /* NULL if not needed */
 			     void *func_data);
+
+/* A preconditioner, which preconditions v at x to return vpre. 
+   (The meaning of "preconditioning" is algorithm-dependent.) */
+typedef void (*nlopt_precond)(unsigned n, const double *x, const double *v,
+			      double *vpre, void *data);
 
 typedef enum {
      /* Naming conventions:
@@ -143,6 +148,8 @@ typedef enum {
 
      NLOPT_LD_SLSQP,
 
+     NLOPT_LD_CCSAQ,
+
      NLOPT_NUM_ALGORITHMS /* not an algorithm, just the number of them */
 } nlopt_algorithm;
 
@@ -195,6 +202,9 @@ NLOPT_EXTERN(nlopt_result) nlopt_set_min_objective(nlopt_opt opt, nlopt_func f,
 NLOPT_EXTERN(nlopt_result) nlopt_set_max_objective(nlopt_opt opt, nlopt_func f, 
 						  void *f_data);
 
+NLOPT_EXTERN(nlopt_result) nlopt_set_precond_min_objective(nlopt_opt opt, nlopt_func f, nlopt_precond pre, void *f_data);
+NLOPT_EXTERN(nlopt_result) nlopt_set_precond_max_objective(nlopt_opt opt, nlopt_func f, nlopt_precond pre, void *f_data);
+
 NLOPT_EXTERN(nlopt_algorithm) nlopt_get_algorithm(const nlopt_opt opt);
 NLOPT_EXTERN(unsigned) nlopt_get_dimension(const nlopt_opt opt);
 
@@ -216,6 +226,9 @@ NLOPT_EXTERN(nlopt_result) nlopt_add_inequality_constraint(nlopt_opt opt,
 							  nlopt_func fc,
 							  void *fc_data,
 							  double tol);
+NLOPT_EXTERN(nlopt_result) nlopt_add_precond_inequality_constraint(
+     nlopt_opt opt, nlopt_func fc, nlopt_precond pre, void *fc_data,
+     double tol);
 NLOPT_EXTERN(nlopt_result) nlopt_add_inequality_mconstraint(nlopt_opt opt,
 							    unsigned m,
 							    nlopt_mfunc fc,
@@ -227,6 +240,9 @@ NLOPT_EXTERN(nlopt_result) nlopt_add_equality_constraint(nlopt_opt opt,
 							nlopt_func h,
 							void *h_data,
 							double tol);
+NLOPT_EXTERN(nlopt_result) nlopt_add_precond_equality_constraint(
+     nlopt_opt opt, nlopt_func h, nlopt_precond pre, void *h_data,
+     double tol);
 NLOPT_EXTERN(nlopt_result) nlopt_add_equality_mconstraint(nlopt_opt opt,
 							  unsigned m,
 							  nlopt_mfunc h,
