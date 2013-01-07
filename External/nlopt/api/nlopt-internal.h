@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2011 Massachusetts Institute of Technology
+/* Copyright (c) 2007-2012 Massachusetts Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -38,6 +38,7 @@ struct nlopt_opt_s {
      unsigned n; /* the dimension of the problem (immutable) */
 
      nlopt_func f; void *f_data; /* objective function to minimize */
+     nlopt_precond pre; /* optional preconditioner for f (NULL if none) */
      int maximize; /* nonzero if we are maximizing, not minimizing */
 
      double *lb, *ub; /* lower and upper bounds (length n) */

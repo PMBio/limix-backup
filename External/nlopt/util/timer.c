@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2011 Massachusetts Institute of Technology
+/* Copyright (c) 2007-2012 Massachusetts Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -49,7 +49,7 @@ double nlopt_seconds(void)
 	  gettimeofday(&start, NULL);
      }
      gettimeofday(&tv, NULL);
-     return (tv.tv_sec - start.tv_sec) + 1.e-6 * (tv.tv_usec - start.tv_sec);
+     return (tv.tv_sec - start.tv_sec) + 1.e-6 * (tv.tv_usec - start.tv_usec);
 #elif defined(HAVE_TIME)
      return time(NULL);
 #elif defined(_WIN32) || defined(__WIN32__)

@@ -1,5 +1,5 @@
 import sys
-sys.path.append('./../../build_mac/src/interfaces/python')
+sys.path.append('./../../build_test/src/interfaces/python')
 
 import limix
 import scipy as SP

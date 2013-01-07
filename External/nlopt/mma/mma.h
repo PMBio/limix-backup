@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2011 Massachusetts Institute of Technology
+/* Copyright (c) 2007-2012 Massachusetts Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -40,6 +40,18 @@ nlopt_result mma_minimize(unsigned n, nlopt_func f, void *f_data,
 			  double *minf,
 			  nlopt_stopping *stop,
 			  nlopt_opt dual_opt);
+
+nlopt_result ccsa_quadratic_minimize(
+     unsigned n, nlopt_func f, void *f_data,
+     unsigned m, nlopt_constraint *fc,
+
+     nlopt_precond pre,
+
+     const double *lb, const double *ub, /* bounds */
+     double *x, /* in: initial guess, out: minimizer */
+     double *minf,
+     nlopt_stopping *stop,
+     nlopt_opt dual_opt);
 
 #ifdef __cplusplus
 }  /* extern "C" */
