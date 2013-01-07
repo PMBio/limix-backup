@@ -69,7 +69,7 @@ void CSingleTraitVarianceTerm::initCovariance() throw (CGPMixException)
 		hp_mask = MatrixXd::Ones(covariance->getNumberParams(),1);
 	//standard parameter of overall variance
 	mfloat_t l2var;
-	if(!std::isnan(Vinit))
+	if(!isnan(Vinit))
 		l2var = 0.5 * log(Vinit);
 	else
 		l2var = 0;
@@ -135,7 +135,7 @@ void CCategorialTraitVarianceTerm::initCovariance() throw (CGPMixException)
 		logInplace(l2var);
 		l2var*=0.5;
 	}
-	else if(!std::isnan(this->Vinit))
+	else if(!isnan(this->Vinit))
 	{
 		l2var.setConstant(0.5*log(this->Vinit));
 	}
@@ -249,7 +249,7 @@ void CVarianceDecomposition::initGP() throw(CGPMixException) {
 
 	CGPHyperParams params;
 	params["covar"] = hp_covar0;
-	params["data_term"] = fixed_params;
+	params["dataTerm"] = fixed_params;
 	gp->setParams(params);
 	opt = PGPopt(new CGPopt(gp));
 	CGPHyperParams mask;

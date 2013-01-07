@@ -41,8 +41,8 @@ if __name__ == "__main__":
     if 1:
         v.addTerm(K,limix.CVarianceDecomposition.categorial,vm0,True)
         v.addTerm(Kgeno,limix.CVarianceDecomposition.categorial,vm1,False)
-        v0 = v.getTerm(0)
-        v1 = v.getTerm(1)
+        #v0 = v.getTerm(0)
+        #v1 = v.getTerm(1)
     else:
         v0 = limix.CCategorialTraitVarianceTerm(K,T,True)
         v1 = limix.CCategorialTraitVarianceTerm(Kgeno,T,vm1,False)
