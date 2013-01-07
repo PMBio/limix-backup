@@ -241,7 +241,6 @@ protected:
 	PSumCF covar;
 	MatrixXd hp_covar0,hp_covar_mask;
 
-	void initGP() throw (CGPMixException);
 
 public:
 	static const muint_t singletrait = 0;
@@ -251,6 +250,8 @@ public:
 	CVarianceDecomposition();
 	CVarianceDecomposition(const MatrixXd& pheno,const MatrixXd& trait);
 	virtual ~CVarianceDecomposition();
+
+	void initGP() throw (CGPMixException);
 	bool train() throw(CGPMixException);
 
 	void addTerm(PVarianceTerm term);

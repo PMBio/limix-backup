@@ -18,7 +18,7 @@
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.macosx.exe.debug.1443135094" name="Debug" parent="cdt.managedbuild.config.gnu.macosx.exe.debug">
 					<folderInfo id="cdt.managedbuild.config.gnu.macosx.exe.debug.1443135094." name="/" resourcePath="">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.exe.debug.1695643655" name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.exe.debug">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.exe.debug.1695643655" name="MacOSX GCC" resourceTypeBasedDiscovery="true" superClass="cdt.managedbuild.toolchain.gnu.macosx.exe.debug">
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.macosx.exe.debug.1806023971" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.macosx.exe.debug"/>
 							<builder buildPath="${workspace_loc:/limix/Debug}" id="cdt.managedbuild.target.gnu.builder.macosx.exe.debug.389956196" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.macosx.exe.debug"/>
 							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.1148040791" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug"/>
@@ -53,16 +53,6 @@
 								<option id="gnu.c.compiler.macosx.exe.debug.option.debugging.level.618180613" name="Debug Level" superClass="gnu.c.compiler.macosx.exe.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.91720870" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
-						</toolChain>
-					</folderInfo>
-					<folderInfo id="cdt.managedbuild.config.gnu.macosx.exe.debug.1443135094.2033178634" name="/" resourcePath="build_java">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.exe.debug.71305210" name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.exe.debug" unusedChildren="">
-							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.914269311" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.1148040791"/>
-							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.237019744" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.1474778252"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.1590800465" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.885747609"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.macosx.base.818498630" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base.1938357482"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1446451414" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1487791172"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.1098604918" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.1486937375"/>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
