@@ -5,7 +5,7 @@
 
 if (NOT PYTHON_LIBRARIES OR NOT PYTHON_INCLUDE_DIRS)
     exec_program ("${PYTHON_EXECUTABLE}"
-      ARGS "-c 'from distutils import sysconfig; print sysconfig.get_config_var(\"LDLIBRARY\")'"
+      ARGS "-c \"from distutils import sysconfig; print sysconfig.get_config_var(\"LDLIBRARY\")\""
       OUTPUT_VARIABLE PYTHON_LIBRARIES
       RETURN_VALUE PYTHONLIBS_FOUND)
     if (PYTHON_LIBRARIES MATCHES "Traceback")
@@ -17,7 +17,7 @@ if (NOT PYTHON_LIBRARIES OR NOT PYTHON_INCLUDE_DIRS)
     endif ()
 
     exec_program ("${PYTHON_EXECUTABLE}"
-      ARGS "-c 'from distutils import sysconfig; print sysconfig.get_python_inc()'"
+      ARGS "-c \"from distutils import sysconfig; print sysconfig.get_python_inc()\""
       OUTPUT_VARIABLE PYTHON_INCLUDE_DIRS
       RETURN_VALUE PYTHONLIBS_FOUND)
     if (PYTHON_INCLUDE_DIRS MATCHES "Traceback")
