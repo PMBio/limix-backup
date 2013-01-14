@@ -76,7 +76,7 @@ protected:
 	MatrixXd hp_mask;
 	//overall covariance member
 	PCovarianceFunction covariance;
-	bool isInitialized;
+	bool isInitialized,isNoise;
 	mfloat_t Vinit;
 
 public:
@@ -137,12 +137,22 @@ public:
 		return isInitialized;
 	}
 
+	virtual bool hasVinit() const;
+
 	mfloat_t getVinit() const {
 		return Vinit;
 	}
 
 	void setVinit(mfloat_t vinit) {
 		Vinit = vinit;
+	}
+
+	bool isIsNoise() const {
+		return isNoise;
+	}
+
+	void setIsNoise(bool isNoise) {
+		this->isNoise = isNoise;
 	}
 };
 
@@ -159,7 +169,6 @@ public:
 
 	virtual void initCovariance() throw (CGPMixException);
 	virtual void agetFittedVariance(MatrixXd* out) const;
-
 };
 
 
@@ -200,6 +209,7 @@ public:
 	}
 
 	virtual void agetFittedVariance(MatrixXd* out) const;
+	virtual bool hasVinit() const;
 
 	bool isModelCrossCovariance() const {
 		return modelCrossCovariance;
@@ -241,6 +251,7 @@ protected:
 	PSumCF covar;
 	MatrixXd hp_covar0,hp_covar_mask;
 
+	void initVariances_simple();
 
 public:
 	static const muint_t singletrait = 0;
@@ -255,8 +266,10 @@ public:
 	bool train() throw(CGPMixException);
 
 	void addTerm(PVarianceTerm term);
-	void addTerm(const MatrixXd& K,muint_t type,mfloat_t Vinit=NAN, bool fitCrossCovariance=true);
+	void addTerm(const MatrixXd& K,muint_t type, bool isNoise=false, bool fitCrossCovariance=true,mfloat_t Vinit=NAN);
+
 	PVarianceTerm getTerm(muint_t i) const;
+	PVarianceTerm getNoise() const;
 
 	PGPbase getGP(){return gp;};
 	PGPopt  getOpt(){return opt;};

@@ -221,12 +221,19 @@ void CVarianceDecomposition::initGP() throw(CGPMixException) {
 	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
 	{
 		//initialize
-		//TODO: use marginal heritability estimate for initialization
-		iter[0]->initCovariance();
+		PVarianceTerm term = iter[0];
+		//1. check whether there is an initial variance
+		term->initCovariance();
 		//add covariance term
 		covar->addCovariance(iter[0]->getCovariance());
 	}
-	//2. initialize hyperparameters
+
+
+	//2. initialization of varaince parameters (starting point of optimization)
+	initVariances_simple();
+
+
+	//3. initialize hyperparameters
 	hp_covar0 = MatrixXd::Zero(covar->getNumberParams(),1);
 	hp_covar_mask = MatrixXd::Ones(covar->getNumberParams(),1);
 	muint_t ip=0;
@@ -299,9 +306,73 @@ PVarianceTerm CVarianceDecomposition::getTerm(muint_t i) const {
 	return this->terms[i];
 }
 
+PVarianceTerm CVarianceDecomposition::getNoise() const
+{
+	PVarianceTerm rv;
+	//iterate over covariances and return the noise covariance
+	for(PVarianceTermVec::const_iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
+	{
+		/*
+		if (iter[0]->isIsNoise())
+			rv = iter[0];
+			*/
+	}
+	return rv;
+}
+
+
 void CVarianceDecomposition::addTerm(PVarianceTerm term) {
 	terms.push_back(term);
 
+}
+
+void CVarianceDecomposition::initVariances_simple() {
+	/*
+	 * initialize varaince components based on marginal varinace, ignoring multi trait
+	 */
+
+	//varaince for each term ignorign all others:
+	VectorXd variancesK = VectorXd::Zero(this->terms.size());
+	VectorXd variancesN = VectorXd::Zero(this->terms.size());
+	muint_t index = 0;
+
+	//1. loop over all variance components and calculate independent heritability
+	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
+	{
+		PVarianceTerm term = iter[0];
+		//is term a noise or signal covariance?
+		if (term->isIsNoise())
+			continue;
+		//for signal covariances: estimate varaince components ignoring all others
+		VectorXd her;
+		aestimateHeritability(&her,this->pheno,this->fixed,term->getK());
+		//estimate variance for covariance (K) and noise (N)
+		variancesN[index] = her[1];
+		variancesK[index] = her[0];
+		index++;
+	}//end for
+	std::cout << variancesK << "\n";
+	std::cout << variancesN << "\n";
+	//2. sum over marginal variance estimates
+	mfloat_t total_variance = variancesK.sum() + variancesN.sum();
+	std::cout << "estimated total heritability for initialization: " << total_variance << "\n";
+
+	//TODO: figure out noise covariance:
+
+
+	//3. loop over varainces again and assign
+	index =0;
+	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
+	{
+		PVarianceTerm term = iter[0];
+		//override initialization for terms without initival varaince settings:
+		if (!term->hasVinit())
+		{
+			mfloat_t vinit = variancesK[index]/total_variance;
+			term->setVinit(vinit);
+		}
+		index++;
+	}
 }
 
 void CVarianceDecomposition::aestimateHeritability(VectorXd* out, const MatrixXd& Y, const MatrixXd& fixed, const MatrixXd& K)
@@ -334,21 +405,40 @@ void CVarianceDecomposition::aestimateHeritability(VectorXd* out, const MatrixXd
 
 
 void CVarianceDecomposition::addTerm(const MatrixXd& K, muint_t type,
-		mfloat_t Vinit, bool fitCrossCovariance)
+		 bool isNoise, bool fitCrossCovariance,mfloat_t Vinit)
 {
+	PVarianceTerm term;
+
 	if (type==CVarianceDecomposition::singletrait)
 	{
-		PVarianceTerm term = PSingleTraitVarianceTerm(new CSingleTraitVarianceTerm(K,Vinit));
+		term = PSingleTraitVarianceTerm(new CSingleTraitVarianceTerm(K,Vinit));
 	}
 	else if(type==CVarianceDecomposition::categorial)
 	{
-		PVarianceTerm term = PCategorialTraitVarianceTerm(new CCategorialTraitVarianceTerm(K,this->trait,Vinit,fitCrossCovariance));
-		this->addTerm(term);
+		term = PCategorialTraitVarianceTerm(new CCategorialTraitVarianceTerm(K,this->trait,Vinit,fitCrossCovariance));
 	}
 	else if (type==CVarianceDecomposition::continuous)
 	{
 		//TODO
 	}
+	//set noise flag
+	term->setIsNoise(isNoise);
+	//add term
+	this->addTerm(term);
+}
+
+bool AVarianceTerm::hasVinit() const {
+	return !isnan(this->getVinit());
+}
+
+bool CCategorialTraitVarianceTerm::hasVinit() const
+{
+	bool rv;
+	bool rv1 = !isnull(this->getVinitMarginal());
+	bool rv2 = !isnan(this->getVinit());
+	std::cout << rv1 << rv2;
+	rv = (!isnull(this->getVinitMarginal())) || (!isnan(this->getVinit()));
+	return rv;
 }
 
 } //end:: namespace
