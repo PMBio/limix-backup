@@ -500,6 +500,7 @@ mfloat_t CGPbase::LML(const CGPHyperParams& params) throw (CGPMixException)
 	return LML();
 }
 
+
 mfloat_t CGPbase::LML(const VectorXd& params) throw (CGPMixException)
 {
 	setParamArray(params);

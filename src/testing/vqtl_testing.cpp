@@ -79,8 +79,9 @@ int main() {
 	//4. new model
 	PVarianceDecomposition vdc(new CVarianceDecomposition(Y,T));
 	vdc->setFixed(C);
-	vdc->addTerm(K,CVarianceDecomposition::categorial,0.2,true);
-	vdc->addTerm(Kgeno,CVarianceDecomposition::categorial,0.8,false);
+	vdc->addTerm(K,CVarianceDecomposition::categorial,false,true);
+	vdc->addTerm(K,CVarianceDecomposition::categorial,false,true);
+	vdc->addTerm(Kgeno,CVarianceDecomposition::categorial,true,false);
 
 	vdc->initGP();
 

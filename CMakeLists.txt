@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 2.8)
 project(LIMIX)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
+
+#DEBUG?
+#set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_BUILD_TYPE "Release")
+
 #build options
 #PYTHON off by default
 option(BUILD_PYTHON_PACKAGE "Enable Python bindings" ON)
@@ -33,6 +38,7 @@ set(TARGET_ARCHITECTURE "auto")
 #optimization for architecture:
 include (OptimizeForArchitecture)
 include (AddCompilerFlag)
+
 
 ## Documentation for final package
 # manual installation paths
@@ -96,7 +102,7 @@ set(CMAKE_MODULE_PATH "${LIMIX_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 #add_definitions(-g -Wextra -D_BSD_SOURCE)
 
 #optimize automatically for architecture:
-
+if(NOT ${CMAKE_BUILD_TYPE} MATCHES "Debug")
 if (OPTIMIZE_ARCHITECTURE)
 OptimizeForArchitecture()
 else (OPTIMIZE_ARCHITECTURE)
@@ -104,10 +110,9 @@ AddCompilerFlag("-march=i686")
 AddCompilerFlag("-msse")
 AddCompilerFlag("-msse2")
 endif (OPTIMIZE_ARCHITECTURE)
-
 AddCompilerFlag("-fPIC")
 AddCompilerFlag("-O2")
-
+endif(NOT ${CMAKE_BUILD_TYPE} MATCHES "Debug")
 
 
 #includes

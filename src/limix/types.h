@@ -57,7 +57,14 @@ typedef uint64_t muint_t;
 
 //simple definition of isnan
 #ifndef isnan
-	#define isnan(val) val!=val
+	//#define isnan(val) val!=val
+	inline bool isnan(mfloat_t val)
+	{
+		if (val != val)
+		 return true;
+		else
+		 return false;
+	};
 #endif
 
 

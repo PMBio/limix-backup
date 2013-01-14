@@ -1,5 +1,5 @@
 import sys
-sys.path.append('./../../build_test/src/interfaces/python')
+sys.path.append('./../../build_mac/src/interfaces/python')
 
 import limix
 import scipy as SP
@@ -19,6 +19,8 @@ y += 0.2*SP.randn(y.shape[0],y.shape[1])
 #array of X values where we would like to evaluate the prediction
 #test set
 Xs = SP.linspace(X.min()-3,X.max()+3)[:,SP.newaxis]
+
+pdb.set_trace()
 
 #initialize LIMX objet
 #1. determine covariance function:
