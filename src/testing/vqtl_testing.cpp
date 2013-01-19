@@ -79,15 +79,32 @@ int main() {
 	//4. new model
 	PVarianceDecomposition vdc(new CVarianceDecomposition(Y,T));
 	vdc->setFixed(C);
-	vdc->addTerm(K,CVarianceDecomposition::categorial,false,true);
-	vdc->addTerm(K,CVarianceDecomposition::categorial,false,true);
-	vdc->addTerm(Kgeno,CVarianceDecomposition::categorial,true,false);
 
+	//initialize 3 terms
+	PCategorialTraitVarianceTerm term0(new CCategorialTraitVarianceTerm(K,T));
+	term0->setModelCrossCovariance(true);
+	term0->setVarianceInit(0.1);
+	PCategorialTraitVarianceTerm term1(new CCategorialTraitVarianceTerm(K,T));
+	term1->setModelCrossCovariance(false);
+	PCategorialTraitVarianceTerm noise(new CCategorialTraitVarianceTerm(K,T));
+	noise->setModelCrossCovariance(false);
+	term0->setVarianceInit(0.01);
+
+
+	vdc->addTerm(term0);
+	//vdc->addTerm(term1);
+	vdc->addTerm(noise);
+
+	//init GP
 	vdc->initGP();
+
+	std::cout<< vdc->getGP()->getParams();
 
 	PGPbase gp = vdc->getGP();
 
 	vdc->train();
+
+	term0->getVariance();
 
 
 

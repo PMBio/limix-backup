@@ -20,7 +20,6 @@ namespace limix {
 /* CCategorialCovarainceTerm*/
 AVarianceTerm::AVarianceTerm() {
 	this->isInitialized = false;
-	Vinit= NAN;
 }
 
 AVarianceTerm::~AVarianceTerm() {
@@ -34,12 +33,16 @@ void limix::AVarianceTerm::agetK(MatrixXd* out) const {
 
 mfloat_t AVarianceTerm::getVariance() const
 {
-	return getVarianceK(this->covariance->K());
+	MatrixXd K = this->covariance->K();
+	return getVarianceK(K);
 }
 
 AVarianceTerm::AVarianceTerm(const MatrixXd& K,mfloat_t Vinit) {
 	this->K = K;
-	this->Vinit = Vinit;
+	if(!isnan(Vinit))
+	{
+		this->setVarianceInit(Vinit);
+	}
 }
 
 void limix::AVarianceTerm::setK(const MatrixXd& K) {
@@ -63,23 +66,18 @@ void CSingleTraitVarianceTerm::initCovariance() throw (CGPMixException)
 {
 	Kcovariance  = PFixedCF(new CFixedCF(this->K));
 	covariance   = Kcovariance;
-	if((muint_t)hp0.rows()!=covariance->getNumberParams())
-		hp0 = MatrixXd::Zero(covariance->getNumberParams(),1);
+	//if hyperparams are not initialized, just set variance to 1
+	if((muint_t)hp_init.rows()!=covariance->getNumberParams())
+		hp_init = MatrixXd::Zero(covariance->getNumberParams(),1);
 	if((muint_t)hp_mask.rows()!=covariance->getNumberParams())
 		hp_mask = MatrixXd::Ones(covariance->getNumberParams(),1);
-	//standard parameter of overall variance
-	mfloat_t l2var;
-	if(!isnan(Vinit))
-		l2var = 0.5 * log(Vinit);
-	else
-		l2var = 0;
-	hp0(0,0) = l2var;
 	isInitialized = true;
 }
 
-void CSingleTraitVarianceTerm::agetFittedVariance(MatrixXd* out) const {
-	(*out) = MatrixXd::Zero(1,1);
-	(*out)(0,0) = getVariance();
+void CSingleTraitVarianceTerm::setVarianceInit(mfloat_t vinit)
+{
+	//Vinit is log of variance
+	VectorXd hp_init = 0.5*log(vinit) * VectorXd::Ones(covariance->getNumberParams());
 }
 
 
@@ -119,26 +117,27 @@ void CCategorialTraitVarianceTerm::initCovariance() throw (CGPMixException)
 
 	//5. create default parameter settings and constraints for optimizatio procedure
 	//initialization of hyperparameters & constraints
-	if((muint_t)hp0.rows()!=covariance->getNumberParams())
-		hp0 = MatrixXd::Zero(covariance->getNumberParams(),1);
+	if((muint_t)hp_init.rows()!=covariance->getNumberParams())
+		hp_init = MatrixXd::Zero(covariance->getNumberParams(),1);
 	if((muint_t)hp_mask.rows()!=covariance->getNumberParams())
 		hp_mask = MatrixXd::Ones(covariance->getNumberParams(),1);
 
-	//standard parameter of overall variance
-	VectorXd l2var = VectorXd::Zero(this->numtraits);
-	//loop through initialization if valid
-	if(!isnull(this->VinitMarginal))
+
+	/*
+	if(!isnull(this->VarianceInitMarginal))
 	{
-		if((muint_t)VinitMarginal.rows()!=this->numtraits)
+		if((muint_t)VarianceInitMarginal.rows()!=this->numtraits)
 			throw CGPMixException("CCategorialCovarainceTerm::initCovarinace: Variance initializatoin and number of traits incompatible.");
-		l2var = this->VinitMarginal;
+		l2var = this->VarianceInitMarginal;
 		logInplace(l2var);
 		l2var*=0.5;
 	}
-	else if(!isnan(this->Vinit))
+	else if(!isnan(this->VarianceInit))
 	{
-		l2var.setConstant(0.5*log(this->Vinit));
+		l2var.setConstant(0.5*log(this->VarianceInit));
 	}
+	*/
+
 	//fix overall scaling factor
 	hp_mask(0,0) = 0;
 	//identifiy diagonal elements
@@ -149,7 +148,6 @@ void CCategorialTraitVarianceTerm::initCovariance() throw (CGPMixException)
 		//set scaling prameter on diagonal elements
 		if (Idiag(i,0))
 		{
-			hp0(i+1,0) = l2var(i_diag);
 			i_diag+=1;
 		}
 		else if (!this->modelCrossCovariance)
@@ -194,7 +192,26 @@ CCategorialTraitVarianceTerm::CCategorialTraitVarianceTerm(const MatrixXd& K,
 	this->modelCrossCovariance = fitCrossCovariance;
 }
 
-void CCategorialTraitVarianceTerm::agetFittedVariance(MatrixXd* out) const
+
+void CCategorialTraitVarianceTerm::setVarianceInit(mfloat_t vinit)
+{
+	//1. create matrix with initialization
+	MatrixXd CovarInit = MatrixXd::Zero(numtraits,numtraits);
+	CovarInit.diagonal().setConstant(vinit);
+	this->setCovarianceInit(CovarInit);
+}
+
+void CCategorialTraitVarianceTerm::setCovarianceInit(const MatrixXd& K0)
+{
+	//1. convert K0 into hyperparameters for the freeform Covaraince
+	VectorXd hp_init_freeform = CFreeFormCF::K0Covar2Params(K0,this->numtraits);
+	//2. full parameters include a scaling parameter upfront
+	VectorXd hp_init = VectorXd::Ones(hp_init_freeform.rows()+1);
+	hp_init.tail(hp_init_freeform.rows()) = hp_init_freeform;
+	this->setHpInit(hp_init);
+}
+
+void CCategorialTraitVarianceTerm::agetCovarianceFit(MatrixXd* out) const
 {
 	//1. create freeform covaraince
 	CFreeFormCF covar(this->numtraits);
@@ -212,10 +229,19 @@ void CCategorialTraitVarianceTerm::agetFittedVariance(MatrixXd* out) const
 /* CVarianceDecomposition*/
 CVarianceDecomposition::CVarianceDecomposition()
 {
+	initialized = false;
 }
 
-void CVarianceDecomposition::initGP() throw(CGPMixException) {
+CVarianceDecomposition::CVarianceDecomposition(const MatrixXd& pheno,
+		const MatrixXd& trait) {
+	this->trait =trait;
+	this->pheno = pheno;
+	initialized = false;
+}
 
+
+void CVarianceDecomposition::initGP() throw(CGPMixException)
+		{
 	//1. construct covariance function
 	covar = PSumCF(new CSumCF());
 	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
@@ -230,7 +256,7 @@ void CVarianceDecomposition::initGP() throw(CGPMixException) {
 
 
 	//2. initialization of varaince parameters (starting point of optimization)
-	initVariances_simple();
+	//initVariances_simple();
 
 
 	//3. initialize hyperparameters
@@ -239,7 +265,7 @@ void CVarianceDecomposition::initGP() throw(CGPMixException) {
 	muint_t ip=0;
 	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
 	{
-		MatrixXd _hp = iter[0]->getHp0();
+		MatrixXd _hp = iter[0]->getHpInit();
 		MatrixXd _hp_mask = iter[0]->getHpMask();
 		assert(_hp.rows()==_hp_mask.rows());
 		hp_covar0.block(ip,0,_hp.rows(),1) = _hp;
@@ -263,18 +289,14 @@ void CVarianceDecomposition::initGP() throw(CGPMixException) {
 	mask["covar"] = hp_covar_mask;
 	opt->setParamMask(mask);
 
-	if (true)
+	if (false)
 	{
 		std::cout << params << "\n";
 		std::cout << mask << "\n";
 	}
+	this->setInitialized(true);
 }
 
-CVarianceDecomposition::CVarianceDecomposition(const MatrixXd& pheno,
-		const MatrixXd& trait) {
-	this->trait =trait;
-	this->pheno = pheno;
-}
 
 CVarianceDecomposition::~CVarianceDecomposition() {
 }
@@ -284,7 +306,10 @@ bool CVarianceDecomposition::train()  throw (CGPMixException)
 {
 	bool rv = false;
 
-	initGP();
+	if (!isInitialized())
+		{
+			initGP();
+		}
 	rv = this->opt->opt();
 
 	/*
@@ -323,7 +348,7 @@ PVarianceTerm CVarianceDecomposition::getNoise() const
 
 void CVarianceDecomposition::addTerm(PVarianceTerm term) {
 	terms.push_back(term);
-
+	this->setInitialized(false);
 }
 
 void CVarianceDecomposition::initVariances_simple() {
@@ -366,10 +391,10 @@ void CVarianceDecomposition::initVariances_simple() {
 	{
 		PVarianceTerm term = iter[0];
 		//override initialization for terms without initival varaince settings:
-		if (!term->hasVinit())
+		if (!isnull(term->getHpInit()))
 		{
 			mfloat_t vinit = variancesK[index]/total_variance;
-			term->setVinit(vinit);
+			term->setVarianceInit(vinit);
 		}
 		index++;
 	}
@@ -427,18 +452,5 @@ void CVarianceDecomposition::addTerm(const MatrixXd& K, muint_t type,
 	this->addTerm(term);
 }
 
-bool AVarianceTerm::hasVinit() const {
-	return !isnan(this->getVinit());
-}
-
-bool CCategorialTraitVarianceTerm::hasVinit() const
-{
-	bool rv;
-	bool rv1 = !isnull(this->getVinitMarginal());
-	bool rv2 = !isnan(this->getVinit());
-	std::cout << rv1 << rv2;
-	rv = (!isnull(this->getVinitMarginal())) || (!isnan(this->getVinit()));
-	return rv;
-}
 
 } //end:: namespace

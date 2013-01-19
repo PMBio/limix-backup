@@ -18,13 +18,46 @@ CFreeFormCF::CFreeFormCF(muint_t numberGroups)
 	this->numberDimensions = 1;
 	//number of groups and parameters:
 	this->numberGroups= numberGroups;
-	this->numberParams = (0.5*numberGroups*(numberGroups-1) + numberGroups);
+	this->numberParams = calcNumberParams(numberGroups);
+
+}
+
+muint_t CFreeFormCF::calcNumberParams(muint_t numberGroups)
+{
+	return (0.5*numberGroups*(numberGroups-1) + numberGroups);
 }
 
 CFreeFormCF::~CFreeFormCF()
 {
 }
 
+void CFreeFormCF::aK0Covar2Params(VectorXd* out,const MatrixXd& K0,muint_t numberGroups)
+{
+	//0. check that the matrix has the correct size
+	if(((muint_t)K0.rows()!=numberGroups) || ((muint_t)K0.cols()!=numberGroups))
+	{
+		throw CGPMixException("aK0Covar2Params: rows and columns need to be compatiable with the number of groups");
+	}
+
+	//1. calculate cholesky of K0
+	MatrixXdChol chol(K0);
+	//2. get L matrix
+	MatrixXd L = chol.matrixL();
+	//3. create output argument and fill
+	(*out) = VectorXd::Zero(calcNumberParams(numberGroups));
+	//4. loop over groups
+	muint_t pindex=0;
+	for(muint_t ir=0;ir<numberGroups;++ir)
+		for (muint_t ic=0;ic<(ir+1);++ic)
+		{
+			//diagonal is exponentiated
+			if (ic==ir)
+				(*out)(pindex) = log(L(ir,ic));
+			else
+				(*out)(pindex) = L(ir,ic);
+			++pindex;
+		}
+}
 
 
 void CFreeFormCF::agetL0(MatrixXd* out) const
@@ -151,6 +184,12 @@ void CFreeFormCF::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const mu
 
 void CFreeFormCF::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException)
 {
+}
+
+VectorXd CFreeFormCF::K0Covar2Params(const MatrixXd& K0,muint_t numberGroups) {
+	VectorXd RV;
+	aK0Covar2Params(&RV,K0, numberGroups);
+	return RV;
 }
 
 void CFreeFormCF::agetIparamDiag(MatrixXi* out)

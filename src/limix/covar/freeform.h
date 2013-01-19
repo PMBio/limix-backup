@@ -14,7 +14,9 @@ namespace limix {
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 %ignore CFreeFormCF::getIparamDiag;
+%ignore CFreeFormCF::K0Covar2Params;
 %rename(getIparamDiag) CFreeFormCF::agetIparamDiag;
+%rename(K0Covar2Params) CFreeFormCF::aK0Covar2Params;
 #endif
 
 class CFreeFormCF: public ACovarianceFunction {
@@ -23,6 +25,7 @@ protected:
 	void agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
 	void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
 	void projectKcross(MatrixXd* out,const MatrixXd& K0,const CovarInput& Xstar) const throw (CGPMixException);
+	static muint_t calcNumberParams(muint_t numberGroups);
 public:
 	CFreeFormCF(muint_t numberGroups);
 	virtual ~CFreeFormCF();
@@ -40,6 +43,10 @@ public:
 
 	//class information
 	inline std::string getName() const {return "CFreeform";};
+
+	//helper function to convert from matrix to hyperparams
+	static void aK0Covar2Params(VectorXd* out,const MatrixXd& K0,muint_t numberGroups);
+	static VectorXd K0Covar2Params(const MatrixXd& K0,muint_t numberGroups);
 
 	//information on parameter settings
 	void agetIparamDiag(MatrixXi* out);
