@@ -209,16 +209,16 @@ template <typename Derived1>
 inline mfloat_t getVarianceK(const Eigen::MatrixBase<Derived1> & K_) throw(CGPMixException)
 {
 	//cast out arguments
-	Eigen::MatrixBase<Derived1>& K = const_cast< Eigen::MatrixBase<Derived1>& >(K);
+	//Eigen::MatrixBase<Derived1>& K = const_cast< Eigen::MatrixBase<Derived1>& >(K);
 	//ensure that it is a square matrix:
 	if (K_.rows()!=K_.cols())
 		throw CGPMixException("Kernel scaling requires square kernel matrix");
 
 	//diagonal
-	mfloat_t c = K.trace();
-	c -= 1.0/K.rows() * K.sum();
+	mfloat_t c = K_.trace();
+	c -= 1.0/K_.rows() * K_.sum();
 
-	mfloat_t scalar = c/(K.rows()-1);
+	mfloat_t scalar = c/(K_.rows()-1);
 	return scalar;
 }
 
