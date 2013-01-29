@@ -114,7 +114,6 @@ typedef Eigen::Array<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> A
 typedef Eigen::LLT<limix::MatrixXd> MatrixXdChol;
 
 
-
 //SCIPY matrices for python interface: these are row major
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXdscipy;
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, 1> VectorXdscipy;
