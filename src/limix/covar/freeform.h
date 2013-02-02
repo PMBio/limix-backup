@@ -41,18 +41,23 @@ public:
 	void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 
+
+	virtual void agetParamBounds(CovarParams* lower,CovarParams* upper) const;
+
 	//class information
 	inline std::string getName() const {return "CFreeform";};
 
 	//helper function to convert from matrix to hyperparams
 	static void aK0Covar2Params(VectorXd* out,const MatrixXd& K0,muint_t numberGroups);
 	static VectorXd K0Covar2Params(const MatrixXd& K0,muint_t numberGroups);
+	//set the a covariance matrix rather than parameters:
+	void setParamsCovariance(const MatrixXd& K0);
 
 	//information on parameter settings
-	void agetIparamDiag(MatrixXi* out);
-	MatrixXi getIparamDiag()
+	void agetIparamDiag(VectorXi* out) const;
+	VectorXi getIparamDiag() const
 	{
-		MatrixXi rv;
+		VectorXi rv;
 		agetIparamDiag(&rv);
 		return rv;
 	}

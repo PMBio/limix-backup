@@ -33,11 +33,13 @@ namespace limix {
 %ignore CVarianceDecomposition::getPheno;
 %ignore CVarianceDecomposition::getFixed;
 %ignore CCategorialTraitVarianceTerm::getCovarianceFit;
+%ignore CCategorialTraitVarianceTerm::getCovarianceInit;
 
 %rename(getHpInit) AVarianceTerm::agetHpInit;
 %rename(getHpMask) AVarianceTerm::agetHpMask;
 %rename(getK) AVarianceTerm::agetK;
 %rename(getCovarianceFit) CCategorialTraitVarianceTerm::agetCovarianceFit;
+%rename(getCovarianceInit) CCategorialTraitVarianceTerm::agetCovarianceInit;
 
 %rename(getTrait) CVarianceDecomposition::agetTrait;
 %rename(getPheno) CVarianceDecomposition::agetPheno;
@@ -69,9 +71,11 @@ protected:
 	//fixed CF component
 	PFixedCF   Kcovariance;
 	//init parameters
-	MatrixXd hp_init;
+	CovarParams hp_init;
 	//parameter mask
-	MatrixXd hp_mask;
+	CovarParams hp_mask;
+	//initial variance
+	MatrixXd varianceInit;
 	//overall covariance member
 	PCovarianceFunction covariance;
 	bool isInitialized,isNoise;
@@ -97,35 +101,32 @@ public:
 		return out;
 	}
 
-	const MatrixXd& getHpMask() const {
+	const CovarParams& getHpMask() const {
 		return hp_mask;
 	}
-	const void agetHpMask(MatrixXd* out) const {
+	const void agetHpMask(CovarParams* out) const {
 		(*out) = hp_mask;
 	}
 
-	void setHpMask(const MatrixXd& hpMask) {
+	void setHpMask(const CovarParams& hpMask) {
 		hp_mask = hpMask;
 	}
 
-	const MatrixXd& getHpInit() const {
+	const CovarParams& getHpInit() const {
 		return hp_init;
 	}
-	const void agetHpInit(MatrixXd* out) const
+	const void agetHpInit(CovarParams* out) const
 	{
 		(*out) = hp_init;
 	}
 
-	void setHpInit(const MatrixXd& hp0) {
+	void setHpInit(const CovarParams& hp0) {
 		this->hp_init = hp0;
 	}
 
 	bool isIsInitialized() const {
 		return isInitialized;
 	}
-
-	virtual void setVarianceInit(mfloat_t vinit)
-	{};
 
 	/* Note: knowledge whether the term is a noise covariance is not really needed for anything
 	 * else other than initialization and convenience
@@ -137,6 +138,14 @@ public:
 	void setIsNoise(bool isNoise) {
 		this->isNoise = isNoise;
 	}
+
+	mfloat_t getVarianceInit() const {
+		return varianceInit(0,0);
+	}
+
+	void setVarianceInit(mfloat_t varianceInit) {
+		this->varianceInit = varianceInit*MatrixXd::Ones(1,1);
+	}
 };
 
 
@@ -147,13 +156,11 @@ class CSingleTraitVarianceTerm : public AVarianceTerm {
 protected:
 public:
 	CSingleTraitVarianceTerm();
-	CSingleTraitVarianceTerm(const MatrixXd& K,mfloat_t Vinit);
+	CSingleTraitVarianceTerm(const MatrixXd& K,mfloat_t Vinit=NAN);
 	virtual ~CSingleTraitVarianceTerm();
 
 
 	virtual void initCovariance() throw (CGPMixException);
-	virtual void setVarianceInit(mfloat_t vinit);
-
 };
 
 
@@ -170,7 +177,6 @@ protected:
 	muint_t numtraits;
 	//freeform covariance
 	PFreeFormCF trait_covariance;
-	VectorXd VarianceInitMarginal;
 
 public:
 	CCategorialTraitVarianceTerm();
@@ -203,6 +209,13 @@ public:
 	virtual void setVarianceInit(mfloat_t vinit);
 
 	void setCovarianceInit(const MatrixXd& K0);
+	void agetCovarianceInit(MatrixXd* out) const;
+	MatrixXd getCovarianceInit() const
+	{
+		MatrixXd rv;
+		agetCovarianceInit(&rv);
+		return rv;
+	}
 	virtual void agetCovarianceFit(MatrixXd* out) const;
 };
 

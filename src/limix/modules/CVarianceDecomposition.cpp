@@ -67,20 +67,17 @@ void CSingleTraitVarianceTerm::initCovariance() throw (CGPMixException)
 	Kcovariance  = PFixedCF(new CFixedCF(this->K));
 	covariance   = Kcovariance;
 	//if hyperparams are not initialized, just set variance to 1
-	if((muint_t)hp_init.rows()!=covariance->getNumberParams())
-		hp_init = MatrixXd::Zero(covariance->getNumberParams(),1);
-	if((muint_t)hp_mask.rows()!=covariance->getNumberParams())
-		hp_mask = MatrixXd::Ones(covariance->getNumberParams(),1);
+	if((muint_t)hp_init.rows()==covariance->getNumberParams())
+		covariance->setParams(hp_init);
+	else if (!isnull(varianceInit))
+		covariance->setParams(VectorXd::Ones(1)*this->varianceInit(0,0));
+	else
+		covariance->setParams(VectorXd::Zero(1));
+
+	if((muint_t)hp_mask.rows()==covariance->getNumberParams())
+		covariance->setParamMask(hp_mask);
 	isInitialized = true;
 }
-
-void CSingleTraitVarianceTerm::setVarianceInit(mfloat_t vinit)
-{
-	//Vinit is log of variance
-	VectorXd hp_init = 0.5*log(vinit) * VectorXd::Ones(covariance->getNumberParams());
-}
-
-
 
 /* CCategorialCovarainceTerm*/
 CCategorialTraitVarianceTerm::CCategorialTraitVarianceTerm()
@@ -116,45 +113,47 @@ void CCategorialTraitVarianceTerm::initCovariance() throw (CGPMixException)
 	static_pointer_cast<CProductCF>(covariance)->addCovariance(trait_covariance);
 
 	//5. create default parameter settings and constraints for optimizatio procedure
-	//initialization of hyperparameters & constraints
-	if((muint_t)hp_init.rows()!=covariance->getNumberParams())
-		hp_init = MatrixXd::Zero(covariance->getNumberParams(),1);
-	if((muint_t)hp_mask.rows()!=covariance->getNumberParams())
-		hp_mask = MatrixXd::Ones(covariance->getNumberParams(),1);
-
-
-	/*
-	if(!isnull(this->VarianceInitMarginal))
+	if((muint_t)hp_init.rows()==covariance->getNumberParams())
+		this->covariance->setParams(hp_init);
+	else
 	{
-		if((muint_t)VarianceInitMarginal.rows()!=this->numtraits)
-			throw CGPMixException("CCategorialCovarainceTerm::initCovarinace: Variance initializatoin and number of traits incompatible.");
-		l2var = this->VarianceInitMarginal;
-		logInplace(l2var);
-		l2var*=0.5;
-	}
-	else if(!isnan(this->VarianceInit))
-	{
-		l2var.setConstant(0.5*log(this->VarianceInit));
-	}
-	*/
-
-	//fix overall scaling factor
-	hp_mask(0,0) = 0;
-	//identifiy diagonal elements
-	MatrixXi Idiag = trait_covariance->getIparamDiag();
-	muint_t i_diag=0;
-	for (muint_t i=0;i<(muint_t) Idiag.rows();++i)
-	{
-		//set scaling prameter on diagonal elements
-		if (Idiag(i,0))
+		MatrixXd Vinit;
+		if (!isnull(this->varianceInit))
+			Vinit = varianceInit;
+		else
 		{
-			i_diag+=1;
+			Vinit = MatrixXd::Zero(numtraits,numtraits);
+			Vinit.diagonal().setConstant(1.0);
 		}
-		else if (!this->modelCrossCovariance)
+		//use Vinit to initialize the matrix
+		trait_covariance->setParamsCovariance(Vinit);
+		Kcovariance->setParams(VectorXd::Ones(1));
+	}
+	if((muint_t)hp_mask.rows()==covariance->getNumberParams())
+		covariance->setParamMask(hp_mask);
+	else
+	{
+		VectorXd hp_mask = VectorXd::Ones(covariance->getNumberParams());
+		//fix overall scaling factor
+		hp_mask(0) = 0;
+		//identifiy diagonal elements
+		MatrixXi Idiag = trait_covariance->getIparamDiag();
+		muint_t i_diag=0;
+		for (muint_t i=0;i<(muint_t) Idiag.rows();++i)
 		{
-			//if no diagonal disable optimization unlcess modelCrossCovariance is true
-			hp_mask(i+1,0) =0;
+			//set scaling prameter on diagonal elements
+			if (Idiag(i))
+			{
+				i_diag+=1;
+			}
+			else if (!this->modelCrossCovariance)
+			{
+				//if no diagonal disable optimization unlcess modelCrossCovariance is true
+				hp_mask(i+1) =0;
+			}
 		}
+		//set mask
+		covariance->setParamMask(hp_mask);
 	}
 	isInitialized = true;
 } //::end initialize
@@ -203,12 +202,16 @@ void CCategorialTraitVarianceTerm::setVarianceInit(mfloat_t vinit)
 
 void CCategorialTraitVarianceTerm::setCovarianceInit(const MatrixXd& K0)
 {
-	//1. convert K0 into hyperparameters for the freeform Covaraince
-	VectorXd hp_init_freeform = CFreeFormCF::K0Covar2Params(K0,this->numtraits);
-	//2. full parameters include a scaling parameter upfront
-	VectorXd hp_init = VectorXd::Ones(hp_init_freeform.rows()+1);
-	hp_init.tail(hp_init_freeform.rows()) = hp_init_freeform;
-	this->setHpInit(hp_init);
+	if (! ( ((muint_t)K0.rows()==numtraits) && ((muint_t)K0.cols()==numtraits)))
+	{
+		throw CGPMixException("CCategorialTrait: initial trait covariance needs to be N x N");
+	}
+	this->varianceInit = K0;
+}
+
+void CCategorialTraitVarianceTerm::agetCovarianceInit(MatrixXd* out) const
+{
+	(*out) = varianceInit;
 }
 
 void CCategorialTraitVarianceTerm::agetCovarianceFit(MatrixXd* out) const
@@ -260,18 +263,9 @@ void CVarianceDecomposition::initGP() throw(CGPMixException)
 
 
 	//3. initialize hyperparameters
-	hp_covar0 = MatrixXd::Zero(covar->getNumberParams(),1);
-	hp_covar_mask = MatrixXd::Ones(covar->getNumberParams(),1);
-	muint_t ip=0;
-	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
-	{
-		MatrixXd _hp = iter[0]->getHpInit();
-		MatrixXd _hp_mask = iter[0]->getHpMask();
-		assert(_hp.rows()==_hp_mask.rows());
-		hp_covar0.block(ip,0,_hp.rows(),1) = _hp;
-		hp_covar_mask.block(ip,0,_hp_mask.rows(),1) = _hp_mask;
-		ip+=_hp.rows();
-	}
+	hp_covar0 = covar->getParams();
+	hp_covar_mask = covar->getParamMask();
+
 	//3. initialize GP and optimization
 	PLikNormalNULL lik(new CLikNormalNULL());
 	PLinearMean mean(new CLinearMean(this->pheno,this->fixed));

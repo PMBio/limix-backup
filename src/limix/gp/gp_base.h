@@ -82,9 +82,9 @@ public:
 	void agetParamArray(VectorXd* out,const CGPHyperParams& mask) const throw(CGPMixException);
 	void setParamArray(const VectorXd& param,const CGPHyperParams& mask) throw (CGPMixException);
 
-
 	muint_t getNumberParams() const;
 	muint_t getNumberParams(const CGPHyperParams& mask) const;
+
 
 	void set(const std::string& name, const MatrixXd& value);
 	void aget(MatrixXd* out, const std::string& name);
@@ -185,6 +185,8 @@ typedef sptr<CGPCholCache> PGPCholCache;
 //%sptr(gpmix::CGPbase)
 #endif
 
+
+
 class CGPbase : public enable_shared_from_this<CGPbase> {
 	friend class CGPCholCache;
 	friend class CGPKroneckerCache;
@@ -227,6 +229,9 @@ public:
 	virtual void setParamArray(const VectorXd& param,const CGPHyperParams& mask) throw (CGPMixException);
 	virtual void agetParamArray(VectorXd* out) const;
 
+	//getter for parameter bounds and hyperparam Mask
+	virtual CGPHyperParams getParamBounds(bool upper) const;
+	virtual CGPHyperParams getParamMask() const;
 
 	void agetY(MatrixXd* out);
 	void setY(const MatrixXd& Y);
@@ -295,7 +300,9 @@ inline MatrixXd CGPbase::predictMean(const MatrixXd& Xstar) throw (CGPMixExcepti
 		apredictMean(&rv,Xstar);
 		return rv;
 		}
-inline MatrixXd CGPbase::predictVar(const MatrixXd& Xstar) throw (CGPMixException)
+
+inline MatrixXd CGPbase::predictVar(const MatrixXd& Xstar)
+		throw (CGPMixException)
 		{
 		MatrixXd rv;
 		apredictVar(&rv,Xstar);

@@ -235,18 +235,16 @@ bool CMultiTraitVQTL::train() throw(CGPMixException)
 	initGP();
 
 	bool rv =  this->opt->opt();
-	/*
+
+	std::cout << this->opt->gradCheck() << "\n";
+
 	std::cout << this->gp->LML() << "\n";
 	std::cout << this->gp->LMLgrad() << "\n";
 
 	std::cout << this->gp->getParams() << "\n";
 
-	std::cout << this->covar->getParams() << "\n";
-	std::cout << this->covar_terms[0]->getParams() << "\n";
-	std::cout << this->covar_noise->getParams() << "\n";
 
-	//std::cout << this->covar->K() << "\n";
-	*/
+
 	return rv;
 }
 

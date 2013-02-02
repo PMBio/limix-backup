@@ -56,6 +56,28 @@ CovarParams ACovarianceFunction::getParams() const
 }
 
 
+CovarParams ACovarianceFunction::getParamMask() const
+{
+	CovarParams rv;
+	this->agetParamMask(&rv);
+	return rv;
+}
+
+void ACovarianceFunction::agetParamMask(CovarParams* out) const
+{
+	if(!isnull(paramsMask))
+		(*out) = this->paramsMask;
+	else
+		(*out) = VectorXd::Ones(this->getNumberParams());
+}
+
+void ACovarianceFunction::setParamMask(const CovarParams& params)
+{
+	if((muint_t)params.rows()!=this->getNumberParams())
+		throw CGPMixException("ACovarianceFunction::setParamMask has illegal shape");
+	this->paramsMask = params;
+}
+
 
 void ACovarianceFunction::setNumberDimensions(muint_t numberDimensions)
 {
@@ -143,6 +165,14 @@ bool ACovarianceFunction::check_covariance_Kgrad_theta(ACovarianceFunction& cova
 	}
 	return (RV < threshold);
 }
+
+void ACovarianceFunction::agetParamBounds(CovarParams* lower,
+		CovarParams* upper) const
+{
+	(*lower) = -INFINITY*VectorXd::Ones(getNumberParams());
+	(*upper) = +INFINITY*VectorXd::Ones(getNumberParams());
+}
+
 
 bool ACovarianceFunction::check_covariance_Kgrad_x(ACovarianceFunction& covar,mfloat_t relchange,mfloat_t threshold,bool check_diag)
 {
