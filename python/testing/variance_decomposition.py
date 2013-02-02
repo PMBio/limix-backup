@@ -38,21 +38,28 @@ if __name__ == "__main__":
     #estimate approxiamtely the variances
     [vm0,vm1] = limix.CVarianceDecomposition.aestimateHeritability(Y,SP.ones([Y.shape[0],1]),K)
     
-    if 1:
+    if 0:
         v.addTerm(K,limix.CVarianceDecomposition.categorial,vm0,True)
         v.addTerm(Kgeno,limix.CVarianceDecomposition.categorial,vm1,False)
         #v0 = v.getTerm(0)
         #v1 = v.getTerm(1)
     else:
-        v0 = limix.CCategorialTraitVarianceTerm(K,T,True)
-        v1 = limix.CCategorialTraitVarianceTerm(Kgeno,T,vm1,False)
-        v0.setVinitMarginal(vm0*SP.ones([2]))
+        v0 = limix.CCategorialTraitVarianceTerm(K,T)
+        v1 = limix.CSingleTraitVarianceTerm(K)
+        
+        vn = limix.CCategorialTraitVarianceTerm(Kgeno,T)
+        v0.setVarianceInit(0.1)
+        vn.setVarianceInit(0.2)
+        vn.setModelCrossCovariance(False)
+        v0.setModelCrossCovariance(True)  
+        
         v.addTerm(v0)
-        v.addTerm(v1)
+        #v.addTerm(v1)
+        v.addTerm(vn)
     v.train()
     
     o = v.getOpt()
     gp = v.getGP()
     
-    
     print gp.LML()
+    print v.getGP().LMLgrad()

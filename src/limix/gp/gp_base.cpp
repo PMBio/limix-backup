@@ -681,6 +681,37 @@ void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) throw (CGPMixExce
 }
 
 
+CGPHyperParams CGPbase::getParamBounds(bool upper) const
+{
+	CGPHyperParams rv;
+	//query covariance function bounds
+	CovarParams covar_lower,covar_upper;
+	this->covar->agetParamBounds(&covar_lower,&covar_upper);
+	if (upper)
+		rv["covar"] = covar_upper;
+	else
+		rv["covar"] = covar_lower;
+
+	CovarParams lik_lower,lik_upper;
+	this->lik->agetParamBounds(&lik_lower,&lik_upper);
+	if(upper)
+		rv["lik"] = lik_upper;
+	else
+		rv["lik"] = lik_lower;
+
+	return rv;
+}
+
+
+CGPHyperParams CGPbase::getParamMask() const {
+	CGPHyperParams rv;
+	rv["covar"] = this->covar->getParamMask();
+
+	rv["lik"]   = this->lik->getParamMask();
+
+	return rv;
+}
+
 
 
 

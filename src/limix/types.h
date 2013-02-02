@@ -53,6 +53,9 @@ typedef uint64_t muint_t;
     #ifndef NAN
 		#define NAN std::numeric_limits<mfloat_t>::quiet_NaN()
 	#endif
+	#ifndef INFINITY
+		#define INFINITY numeric_limits<mfloat_t>::infinity( )
+	#endif
 #endif
 
 //simple definition of isnan

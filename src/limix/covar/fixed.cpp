@@ -35,31 +35,30 @@ muint_t CFixedCF::Kdim() const throw(CGPMixException)
 
 void CFixedCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CGPMixException)
 {
-	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
+	mfloat_t A = params(0);
 	(*out) = A * this->K0cross;
 }
 
 void CFixedCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
 {
-	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
+	mfloat_t A = params(0);
 	(*out) = A*K0cross_diag;
 }
 
 
 void CFixedCF::aK(MatrixXd *out) const
 {
-	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
+	mfloat_t A = params(0);
 	(*out) = A * this->K0;
 }
 
 
 void CFixedCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMixException)
 {
-	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
-
+	mfloat_t Agrad = 1;
 	if (i==0)
 	{
-		(*out) = 2.0 * A * this->K0;
+		(*out) = Agrad*this->K0;
 	}
 }
 
@@ -111,6 +110,13 @@ void CFixedCF::agetK0cross(MatrixXd *out) const
 void CFixedCF::agetK0cross_diag(VectorXd *out) const
 {
 	(*out) = K0cross_diag;
+}
+
+void CFixedCF::agetParamBounds(CovarParams* lower, CovarParams* upper) const
+{
+	//bounding: [0,inf]
+	*lower = VectorXd::Ones(getNumberParams())*0;;
+	*upper = VectorXd::Ones(getNumberParams())*INFINITY;
 }
 
 VectorXd CFixedCF::getK0cross_diag() const

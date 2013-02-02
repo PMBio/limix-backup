@@ -50,13 +50,23 @@ void CFreeFormCF::aK0Covar2Params(VectorXd* out,const MatrixXd& K0,muint_t numbe
 	for(muint_t ir=0;ir<numberGroups;++ir)
 		for (muint_t ic=0;ic<(ir+1);++ic)
 		{
-			//diagonal is exponentiated
-			if (ic==ir)
-				(*out)(pindex) = log(L(ir,ic));
-			else
-				(*out)(pindex) = L(ir,ic);
+			(*out)(pindex) = L(ir,ic);
 			++pindex;
 		}
+}
+
+VectorXd CFreeFormCF::K0Covar2Params(const MatrixXd& K0,muint_t numberGroups) {
+	VectorXd RV;
+	aK0Covar2Params(&RV,K0, numberGroups);
+	return RV;
+}
+
+
+void CFreeFormCF::setParamsCovariance(const MatrixXd& K0)
+{
+	CovarParams params;
+	aK0Covar2Params(&params,K0,this->numberGroups);
+	this->setParams(params);
 }
 
 
@@ -70,10 +80,7 @@ void CFreeFormCF::agetL0(MatrixXd* out) const
 		for (muint_t ic=0;ic<(ir+1);++ic)
 		{
 			//diagonal is exponentiated
-			if (ic==ir)
-				(*out)(ir,ic) = exp(params(pindex));
-			else
-				(*out)(ir,ic) = params(pindex);
+			(*out)(ir,ic) = params(pindex);
 			++pindex;
 		}
 }
@@ -89,16 +96,28 @@ void CFreeFormCF::agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixEx
 			{
 				if (pindex==i)
 				{
-					//diagonal is exponentiated, so derivative is trivial
-					if (ic==ir)
-						(*out)(ir,ic) = exp(params(pindex));
-					else
-						(*out)(ir,ic) = 1;
+					(*out)(ir,ic) = 1;
 				}
 				++pindex;
 			}
 }
 
+void CFreeFormCF::agetParamBounds(CovarParams* lower,CovarParams* upper) const
+{
+	//all parameters but the diagonal elements are unbounded:
+	*lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
+	*upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
+	//get diagonal elements
+	VectorXi isDiagonal =getIparamDiag();
+	//set diagonal elements to be bounded [0,inf]
+	for (muint_t i=0;i<getNumberParams();++i)
+	{
+		if(isDiagonal(i))
+		{
+			(*lower)(i) = 0;
+		}
+	}
+}
 
 
 void CFreeFormCF::agetK0(MatrixXd* out) const
@@ -186,15 +205,10 @@ void CFreeFormCF::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMi
 {
 }
 
-VectorXd CFreeFormCF::K0Covar2Params(const MatrixXd& K0,muint_t numberGroups) {
-	VectorXd RV;
-	aK0Covar2Params(&RV,K0, numberGroups);
-	return RV;
-}
 
-void CFreeFormCF::agetIparamDiag(MatrixXi* out)
+void CFreeFormCF::agetIparamDiag(VectorXi* out) const
 {
-	(*out) = MatrixXi::Zero(getNumberParams(),1);
+	(*out) = VectorXi::Zero(getNumberParams(),1);
 	//for rows
 	muint_t pindex=0;
 	for(muint_t ir=0;ir<numberGroups;++ir)
@@ -202,7 +216,7 @@ void CFreeFormCF::agetIparamDiag(MatrixXi* out)
 		{
 			//diagonal is exponentiated
 			if (ic==ir)
-				(*out)(pindex,0) = 1;
+				(*out)(pindex) = 1;
 			++pindex;
 		}
 }

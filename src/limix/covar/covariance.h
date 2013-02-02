@@ -47,6 +47,7 @@ typedef VectorXd CovarParams;
 
 %rename(getParams) ACovarianceFunction::agetParams;
 %rename(getX) ACovarianceFunction::agetX;
+%rename(getParamBounds) ACovarianceFunction::agetParamBounds;
 //%sptr(gpmix::ACovarianceFunction)
 #endif
 
@@ -56,6 +57,8 @@ protected:
 	CovarInput X;
 	//the hyperparameters of K
 	CovarParams params;
+	//mask for hyperparameter optimization
+	CovarParams paramsMask;
 	muint_t numberParams;
 	muint_t numberDimensions;
 
@@ -68,6 +71,7 @@ protected:
 	{
 		this->numberParams = numberParams;
 	}
+
 public:
 	//constructors
 	ACovarianceFunction(const muint_t numberParams=0);
@@ -81,6 +85,12 @@ public:
 	//set the parameters to a new value.
 	virtual void setParams(const CovarParams& params);
 	virtual void agetParams(CovarParams* out) const;
+	//upper and lower constraint for hyper parameters
+	virtual void agetParamBounds(CovarParams* lower,CovarParams* upper) const;
+	virtual void agetParamMask(CovarParams* out) const;
+	virtual void setParamMask(const CovarParams& params);
+	virtual CovarParams getParamMask() const;
+
 
 	//set X to a new value
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
@@ -305,10 +315,6 @@ inline void ACovarianceFunction::checkParamDimensions(const CovarParams& params)
 		throw CGPMixException(os.str());
 	}
 }
-
-
-
-//gradcheck tools for covaraince functions:
 
 } /* namespace limix */
 
