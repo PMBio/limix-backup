@@ -63,12 +63,16 @@ CovarParams ACovarianceFunction::getParamMask() const
 	return rv;
 }
 
+void ACovarianceFunction::agetParamMask0(CovarParams* out) const {
+	(*out) = VectorXd::Ones(getNumberParams());
+}
+
+
 void ACovarianceFunction::agetParamMask(CovarParams* out) const
 {
+	agetParamMask0(out);
 	if(!isnull(paramsMask))
-		(*out) = this->paramsMask;
-	else
-		(*out) = VectorXd::Ones(this->getNumberParams());
+		(*out).array() *= this->paramsMask.array();
 }
 
 void ACovarianceFunction::setParamMask(const CovarParams& params)

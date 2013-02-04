@@ -49,6 +49,14 @@ bool CGPopt::opt() throw (CGPMixException)
 	//1. get parameter vector from GP object
 	CGPHyperParams params0 = gp->getParams();
 
+	//do we have a parameter mask?
+	if(optParamMask.size()==0)
+	{
+		//no?
+		//get from GP object
+		optParamMask = gp->getParamMask();
+	}
+
 	//1.2 determine effective number of parameters we optimize over:
 	muint_t numOptParams = params0.getNumberParams(optParamMask);
 
@@ -60,26 +68,37 @@ bool CGPopt::opt() throw (CGPMixException)
 	//4. set constraints
 	VectorXd x_min;
 	VectorXd x_max;
-	//box constraints?
-	if ((optBoundLower.size()>0) || (optBoundUpper.size()>0))
-	{
-		//1. complete constraints
-		CGPHyperParams optBoundLower_(optBoundLower);
-		CGPHyperParams optBoundUpper_(optBoundUpper);
+	CGPHyperParams optBoundLower_;
+	CGPHyperParams optBoundUpper_;
 
-		completeConstraints(optBoundUpper_,params0,+1.0*std::numeric_limits<mfloat_t>::infinity());
-		completeConstraints(optBoundLower_,params0,-1.0*std::numeric_limits<mfloat_t>::infinity());
-		//2. get constraints
-		x_min = optBoundLower_.getParamArray(optParamMask);
-		x_max = optBoundUpper_.getParamArray(optParamMask);
-		//3. check that they have the same shape than X
-		if ((x_min.rows()!=x_max.rows()) || (numOptParams!=(muint_t)x_max.rows()))
-		{
-			throw CGPMixException("Constraints and parameters of gp optimization have incompatible shape.");
-		}
-		nlopt_set_lower_bounds(optimizer, x_min.data());
-		nlopt_set_upper_bounds(optimizer, x_max.data());
+	//are user-defined constraints set?
+	if ((optBoundLower.size()==0) && (optBoundUpper.size()==0))
+	{
+		//no?
+		//query gpbase object
+		optBoundUpper_ = CGPHyperParams(gp->getParamBounds(true));
+		optBoundLower_ = CGPHyperParams(gp->getParamBounds(false));
 	}
+	else
+	{
+		//else: get user constraints and create a copy
+		optBoundLower_ = CGPHyperParams(optBoundLower);
+		optBoundUpper_ = CGPHyperParams(optBoundUpper);
+	}
+	// complete constraints
+	completeConstraints(optBoundUpper_,params0,+1.0*std::numeric_limits<mfloat_t>::infinity());
+	completeConstraints(optBoundLower_,params0,-1.0*std::numeric_limits<mfloat_t>::infinity());
+	// mask out relevant parts
+	x_min = optBoundLower_.getParamArray(optParamMask);
+	x_max = optBoundUpper_.getParamArray(optParamMask);
+	//3. check that they have the same shape than X
+	if ((x_min.rows()!=x_max.rows()) || (numOptParams!=(muint_t)x_max.rows()))
+	{
+			throw CGPMixException("Constraints and parameters of gp optimization have incompatible shape.");
+	}
+	nlopt_set_lower_bounds(optimizer, x_min.data());
+	nlopt_set_upper_bounds(optimizer, x_max.data());
+
 
 	double minf; /* the minimum objective value, upon return */
 	std::vector<CGPHyperParams> opt_start_points;
