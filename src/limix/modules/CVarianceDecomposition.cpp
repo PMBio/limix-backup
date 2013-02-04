@@ -83,7 +83,7 @@ void CSingleTraitVarianceTerm::initCovariance() throw (CGPMixException)
 CCategorialTraitVarianceTerm::CCategorialTraitVarianceTerm()
 {
 	//default: include cross Covariance Term
-	this->modelCrossCovariance = true;
+	this->constraint = freeform;
 }
 
 CCategorialTraitVarianceTerm::~CCategorialTraitVarianceTerm() {
@@ -129,32 +129,17 @@ void CCategorialTraitVarianceTerm::initCovariance() throw (CGPMixException)
 		trait_covariance->setParamsCovariance(Vinit);
 		Kcovariance->setParams(VectorXd::Ones(1));
 	}
+	//have manual mask?
 	if((muint_t)hp_mask.rows()==covariance->getNumberParams())
 		covariance->setParamMask(hp_mask);
+	//else: assume it is all fine but remove the constant covar from opt
 	else
 	{
-		VectorXd hp_mask = VectorXd::Ones(covariance->getNumberParams());
-		//fix overall scaling factor
-		hp_mask(0) = 0;
-		//identifiy diagonal elements
-		MatrixXi Idiag = trait_covariance->getIparamDiag();
-		muint_t i_diag=0;
-		for (muint_t i=0;i<(muint_t) Idiag.rows();++i)
-		{
-			//set scaling prameter on diagonal elements
-			if (Idiag(i))
-			{
-				i_diag+=1;
-			}
-			else if (!this->modelCrossCovariance)
-			{
-				//if no diagonal disable optimization unlcess modelCrossCovariance is true
-				hp_mask(i+1) =0;
-			}
-		}
-		//set mask
-		covariance->setParamMask(hp_mask);
+		Kcovariance->setParamMask(VectorXd::Zero(1));
 	}
+	//set constraint type
+	trait_covariance->setConstraint(constraint);
+
 	isInitialized = true;
 } //::end initialize
 
@@ -186,9 +171,9 @@ void CCategorialTraitVarianceTerm::setTrait(const VectorXd& trait)
 }
 
 CCategorialTraitVarianceTerm::CCategorialTraitVarianceTerm(const MatrixXd& K,
-		const MatrixXd& trait, mfloat_t Vinit,bool fitCrossCovariance) : AVarianceTerm(K,Vinit){
+		const MatrixXd& trait, mfloat_t Vinit,CFreeFromCFConstraitType constraint) : AVarianceTerm(K,Vinit){
 	this->setTrait(trait);
-	this->modelCrossCovariance = fitCrossCovariance;
+	this->constraint = constraint;
 }
 
 
@@ -200,7 +185,7 @@ void CCategorialTraitVarianceTerm::setVarianceInit(mfloat_t vinit)
 	this->setCovarianceInit(CovarInit);
 }
 
-void CCategorialTraitVarianceTerm::setCovarianceInit(const MatrixXd& K0)
+void CCategorialTraitVarianceTerm::setCovarianceInit(const MatrixXd& K0) throw(CGPMixException)
 {
 	if (! ( ((muint_t)K0.rows()==numtraits) && ((muint_t)K0.cols()==numtraits)))
 	{
@@ -218,6 +203,7 @@ void CCategorialTraitVarianceTerm::agetCovarianceFit(MatrixXd* out) const
 {
 	//1. create freeform covaraince
 	CFreeFormCF covar(this->numtraits);
+	covar.setConstraint(this->constraint);
 	//2. set unique env factors
 	covar.setX(this->utrait);
 	//3. set params
@@ -280,8 +266,9 @@ void CVarianceDecomposition::initGP() throw(CGPMixException)
 	gp->setParams(params);
 	opt = PGPopt(new CGPopt(gp));
 	CGPHyperParams mask;
+
 	mask["covar"] = hp_covar_mask;
-	opt->setParamMask(mask);
+	//opt->setParamMask(mask);
 
 	if (false)
 	{
@@ -434,7 +421,10 @@ void CVarianceDecomposition::addTerm(const MatrixXd& K, muint_t type,
 	}
 	else if(type==CVarianceDecomposition::categorial)
 	{
-		term = PCategorialTraitVarianceTerm(new CCategorialTraitVarianceTerm(K,this->trait,Vinit,fitCrossCovariance));
+		CFreeFromCFConstraitType constraint = freeform;
+		if(!fitCrossCovariance)
+			constraint = diagonal;
+		term = PCategorialTraitVarianceTerm(new CCategorialTraitVarianceTerm(K,this->trait,Vinit,constraint));
 	}
 	else if (type==CVarianceDecomposition::continuous)
 	{

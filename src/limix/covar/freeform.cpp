@@ -12,14 +12,14 @@
 
 namespace limix {
 
-CFreeFormCF::CFreeFormCF(muint_t numberGroups)
+CFreeFormCF::CFreeFormCF(muint_t numberGroups,CFreeFromCFConstraitType constraint)
 {
 	//1 input dimension which selects the group:
 	this->numberDimensions = 1;
 	//number of groups and parameters:
 	this->numberGroups= numberGroups;
 	this->numberParams = calcNumberParams(numberGroups);
-
+	this->constraint = constraint;
 }
 
 muint_t CFreeFormCF::calcNumberParams(muint_t numberGroups)
@@ -31,42 +31,46 @@ CFreeFormCF::~CFreeFormCF()
 {
 }
 
-void CFreeFormCF::aK0Covar2Params(VectorXd* out,const MatrixXd& K0,muint_t numberGroups)
+void CFreeFormCF::aK0Covar2Params(VectorXd* out,const MatrixXd& K0)
+{
+}
+
+
+
+void CFreeFormCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
 {
 	//0. check that the matrix has the correct size
 	if(((muint_t)K0.rows()!=numberGroups) || ((muint_t)K0.cols()!=numberGroups))
 	{
 		throw CGPMixException("aK0Covar2Params: rows and columns need to be compatiable with the number of groups");
 	}
-
-	//1. calculate cholesky of K0
-	MatrixXdChol chol(K0);
-	//2. get L matrix
-	MatrixXd L = chol.matrixL();
-	//3. create output argument and fill
-	(*out) = VectorXd::Zero(calcNumberParams(numberGroups));
-	//4. loop over groups
+	MatrixXd L;
+	//1. is this a constraint freeofrm (diagonal matrix or dense?)
+	//if yes, forrce K0 to be diagonal.
+	if((constraint!=freeform))
+	{
+		MatrixXd _K0 = MatrixXd::Zero(K0.rows(),K0.cols());
+		_K0.diagonal() = K0.diagonal();
+		MatrixXdChol chol(_K0);
+		L = chol.matrixL();
+	}
+	else
+	{
+		MatrixXdChol chol(K0);
+		L =chol.matrixL();
+	}
+	//2. create output argument and fill
+	this->params.resize(calcNumberParams(numberGroups));
+	//3. loop over groups
 	muint_t pindex=0;
 	for(muint_t ir=0;ir<numberGroups;++ir)
 		for (muint_t ic=0;ic<(ir+1);++ic)
 		{
-			(*out)(pindex) = L(ir,ic);
+			params(pindex) = L(ir,ic);
+			//constraint?
+			//set offdiagonal parameter values to 0
 			++pindex;
 		}
-}
-
-VectorXd CFreeFormCF::K0Covar2Params(const MatrixXd& K0,muint_t numberGroups) {
-	VectorXd RV;
-	aK0Covar2Params(&RV,K0, numberGroups);
-	return RV;
-}
-
-
-void CFreeFormCF::setParamsCovariance(const MatrixXd& K0)
-{
-	CovarParams params;
-	aK0Covar2Params(&params,K0,this->numberGroups);
-	this->setParams(params);
 }
 
 
@@ -79,8 +83,26 @@ void CFreeFormCF::agetL0(MatrixXd* out) const
 	for(muint_t ir=0;ir<numberGroups;++ir)
 		for (muint_t ic=0;ic<(ir+1);++ic)
 		{
-			//diagonal is exponentiated
 			(*out)(ir,ic) = params(pindex);
+			++pindex;
+		}
+}
+
+void CFreeFormCF::agetL0_dense(MatrixXd* out) const
+{
+	(*out).resize(numberGroups,1);
+	//L = vector of diagonal entries of covariance
+	muint_t pindex=0;
+	muint_t lindex=0;
+	//for rows
+	for(muint_t ir=0;ir<numberGroups;++ir)
+		for (muint_t ic=0;ic<(ir+1);++ic)
+		{
+			if(ir==ic)
+			{
+				(*out)(lindex) = params(pindex);
+				++lindex;
+			}
 			++pindex;
 		}
 }
@@ -100,6 +122,28 @@ void CFreeFormCF::agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixEx
 				}
 				++pindex;
 			}
+}
+
+
+void CFreeFormCF::agetL0grad_param_dense(MatrixXd* out, muint_t i) const throw(CGPMixException)
+{
+	(*out).setConstant(numberGroups,1,0);
+	muint_t pindex=0;
+	muint_t lindex=0;
+	//for rows
+	for(muint_t ir=0;ir<numberGroups;++ir)
+		for (muint_t ic=0;ic<(ir+1);++ic)
+		{
+			mfloat_t deriv =0;
+			if (pindex==i)
+				deriv = 1;
+			if (ir==ic)
+			{
+				(*out)(lindex) = deriv;
+				++lindex;
+			}
+			++pindex;
+		}
 }
 
 void CFreeFormCF::agetParamBounds(CovarParams* lower,CovarParams* upper) const
@@ -124,7 +168,10 @@ void CFreeFormCF::agetK0(MatrixXd* out) const
 {
 	//create template matrix K
 	MatrixXd L;
-	agetL0(&L);
+	if(constraint==dense)
+		agetL0_dense(&L);
+	else
+		agetL0(&L);
 	(*out).noalias() = L*L.transpose();
 }
 
@@ -134,9 +181,16 @@ void CFreeFormCF::agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixEx
 {
 	MatrixXd L;
 	MatrixXd Lgrad_parami;
-
-	agetL0(&L);
-	agetL0grad_param(&Lgrad_parami,i);
+	if(constraint==dense)
+	{
+		agetL0_dense(&L);
+		agetL0grad_param_dense(&Lgrad_parami,i);
+	}
+	else
+	{
+		agetL0(&L);
+		agetL0grad_param(&Lgrad_parami,i);
+	}
 	//use chain rule K = LL^T
 	(*out).noalias() = Lgrad_parami*L.transpose() + L*Lgrad_parami.transpose();
 }
@@ -205,6 +259,23 @@ void CFreeFormCF::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMi
 {
 }
 
+void CFreeFormCF::agetParamMask0(CovarParams* out) const {
+	//default: no mask
+	(*out) = VectorXd::Ones(getNumberParams());
+	//cases for different constraints
+	if((constraint==diagonal) || (constraint==dense))
+	{
+		muint_t pindex=0;
+		for(muint_t ir=0;ir<numberGroups;++ir)
+			for (muint_t ic=0;ic<(ir+1);++ic)
+			{
+				//off diagonal entry is masked out
+				if (ic!=ir)
+					(*out)(pindex) = 0;
+				++pindex;
+			}
+	} //end if constraint == diagonal or constraint==dense
+}
 
 void CFreeFormCF::agetIparamDiag(VectorXi* out) const
 {
@@ -220,5 +291,9 @@ void CFreeFormCF::agetIparamDiag(VectorXi* out) const
 			++pindex;
 		}
 }
+
+
+
+
 
 } /* namespace limix */

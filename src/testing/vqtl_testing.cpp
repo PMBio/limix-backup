@@ -56,6 +56,7 @@ int main() {
 		Kgeno(i+n,i+n) = 1;
 	}
 
+	/*
 
 	//3. construct object and run infernece
 	PMultiTraitVQTL mqtl(new CMultiTraitVQTL());
@@ -74,7 +75,7 @@ int main() {
 
 	std::cout << Vnoise << "\n";
 	std::cout << Vterm << "\n";
-
+	*/
 
 	//4. new model
 	PVarianceDecomposition vdc(new CVarianceDecomposition(Y,T));
@@ -82,12 +83,14 @@ int main() {
 
 	//initialize 3 terms
 	PCategorialTraitVarianceTerm term0(new CCategorialTraitVarianceTerm(K,T));
-	term0->setModelCrossCovariance(true);
+	term0->setConstraint(freeform);
 	term0->setVarianceInit(0.1);
+
 	PCategorialTraitVarianceTerm term1(new CCategorialTraitVarianceTerm(K,T));
-	term1->setModelCrossCovariance(false);
+	term1->setConstraint(freeform);
+
 	PCategorialTraitVarianceTerm noise(new CCategorialTraitVarianceTerm(K,T));
-	noise->setModelCrossCovariance(false);
+	noise->setConstraint(diagonal);
 	term0->setVarianceInit(0.01);
 
 
@@ -95,10 +98,18 @@ int main() {
 	//vdc->addTerm(term1);
 	vdc->addTerm(noise);
 
+
 	//init GP
 	vdc->initGP();
 
-	std::cout<< vdc->getGP()->getParams();
+	std::cout<< term0->getCovariance()->getParamMask() << "\n\n";
+	std::cout << noise->getCovariance()->getParamMask() << "\n\n";
+
+	std::cout << vdc->getGP()->getCovar()->getParamMask() << "\n\n";
+
+	std::cout << vdc->getGP()->getParams() << "\n\n";
+
+
 
 	PGPbase gp = vdc->getGP();
 

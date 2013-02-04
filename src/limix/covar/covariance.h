@@ -33,6 +33,7 @@ typedef VectorXd CovarParams;
 %ignore ACovarianceFunction::Kcross_grad_X;
 
 %ignore ACovarianceFunction::getParams;
+%ignore ACovarianceFunction::getParamMask;
 %ignore ACovarianceFunction::getX;
 
 //rename argout versions for python; this overwrites the C++ convenience functions
@@ -46,6 +47,7 @@ typedef VectorXd CovarParams;
 %rename(Kcross_grad_X) ACovarianceFunction::aKcross_grad_X;
 
 %rename(getParams) ACovarianceFunction::agetParams;
+%rename(getParamMask) ACovarianceFunction::agetParamMask;
 %rename(getX) ACovarianceFunction::agetX;
 %rename(getParamBounds) ACovarianceFunction::agetParamBounds;
 //%sptr(gpmix::ACovarianceFunction)
@@ -71,6 +73,8 @@ protected:
 	{
 		this->numberParams = numberParams;
 	}
+
+	virtual void agetParamMask0(CovarParams* out) const;
 
 public:
 	//constructors
