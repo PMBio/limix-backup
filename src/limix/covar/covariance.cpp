@@ -170,13 +170,35 @@ bool ACovarianceFunction::check_covariance_Kgrad_theta(ACovarianceFunction& cova
 	return (RV < threshold);
 }
 
-void ACovarianceFunction::agetParamBounds(CovarParams* lower,
+void ACovarianceFunction::agetParamBounds0(CovarParams* lower,
 		CovarParams* upper) const
 {
 	(*lower) = -INFINITY*VectorXd::Ones(getNumberParams());
 	(*upper) = +INFINITY*VectorXd::Ones(getNumberParams());
 }
 
+void ACovarianceFunction::agetParamBounds(CovarParams* lower,
+		CovarParams* upper) const {
+
+	//query intrinsic bound
+	agetParamBounds0(lower,upper);
+
+	//override if needed
+	if(!isnull(bound_upper))
+	{
+		//TODO
+	}
+	if(!isnull(bound_lower))
+	{
+		//TODO
+	}
+}
+
+void ACovarianceFunction::setParamBounds(const CovarParams& lower,
+		const CovarParams& upper) {
+	this->bound_lower = lower;
+	this->bound_upper = upper;
+}
 
 bool ACovarianceFunction::check_covariance_Kgrad_x(ACovarianceFunction& covar,mfloat_t relchange,mfloat_t threshold,bool check_diag)
 {

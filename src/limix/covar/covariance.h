@@ -50,6 +50,7 @@ typedef VectorXd CovarParams;
 %rename(getParamMask) ACovarianceFunction::agetParamMask;
 %rename(getX) ACovarianceFunction::agetX;
 %rename(getParamBounds) ACovarianceFunction::agetParamBounds;
+%rename(getParamBounds0) ACovarianceFunction::agetParamBounds0;
 //%sptr(gpmix::ACovarianceFunction)
 #endif
 
@@ -63,6 +64,8 @@ protected:
 	CovarParams paramsMask;
 	muint_t numberParams;
 	muint_t numberDimensions;
+	CovarParams bound_lower;
+	CovarParams bound_upper;
 
 	//helper functions:
 	inline void checkWithinDimensions(muint_t d) const throw (CGPMixException);
@@ -90,7 +93,10 @@ public:
 	virtual void setParams(const CovarParams& params);
 	virtual void agetParams(CovarParams* out) const;
 	//upper and lower constraint for hyper parameters
+	virtual void agetParamBounds0(CovarParams* lower,CovarParams* upper) const;
 	virtual void agetParamBounds(CovarParams* lower,CovarParams* upper) const;
+	virtual void setParamBounds(const CovarParams& lower, const CovarParams& upper);
+
 	virtual void agetParamMask(CovarParams* out) const;
 	virtual void setParamMask(const CovarParams& params);
 	virtual CovarParams getParamMask() const;
