@@ -107,6 +107,8 @@ void CCategorialTraitVarianceTerm::initCovariance() throw (CGPMixException)
 	//3. freeform covariance
 	trait_covariance = PFreeFormCF(new CFreeFormCF(this->numtraits));
 	trait_covariance->setX(this->trait);
+	//set constraint type
+	trait_covariance->setConstraint(constraint);
 
 	//4. add to overall covariance
 	static_pointer_cast<CProductCF>(covariance)->addCovariance(Kcovariance);
@@ -137,8 +139,6 @@ void CCategorialTraitVarianceTerm::initCovariance() throw (CGPMixException)
 	{
 		Kcovariance->setParamMask(VectorXd::Zero(1));
 	}
-	//set constraint type
-	trait_covariance->setConstraint(constraint);
 
 	isInitialized = true;
 } //::end initialize
@@ -201,6 +201,7 @@ void CCategorialTraitVarianceTerm::agetCovarianceInit(MatrixXd* out) const
 
 void CCategorialTraitVarianceTerm::agetCovarianceFit(MatrixXd* out) const
 {
+	/*
 	//1. create freeform covaraince
 	CFreeFormCF covar(this->numtraits);
 	covar.setConstraint(this->constraint);
@@ -211,6 +212,10 @@ void CCategorialTraitVarianceTerm::agetCovarianceFit(MatrixXd* out) const
 	covar.setParams(params);
 	//4.evaluate covariance
 	covar.aK(out);
+	*/
+	this->trait_covariance->agetK0(out);
+	//add a small diagonal component
+	(*out).diagonal()+=1E-8*VectorXd::Ones((*out).rows());
 }
 
 
