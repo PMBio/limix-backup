@@ -129,7 +129,7 @@ ll  = limix.CLikNormalIso()
 
 #startin parmaeters are set random
 covar_params = SP.exp(SP.random.randn(covar.getNumberParams()))
-lik_params = SP.exp(SP.random.randn(ll.getNumberParams()))
+lik_params = SP.exp(SP.random.randn(ll.getNumberParams())
 
 #create hyperparameter object
 hyperparams0 = limix.CGPHyperParams()
@@ -138,7 +138,7 @@ hyperparams0['covar'] = covar_params
 hyperparams0['lik'] = lik_params
 
 #cretae GP object
-gp=limix.CGPbase(covar,ll)
+gp=limix.CGPbase(covar,ll))
 #set data
 #outputs
 gp.setY(y)
