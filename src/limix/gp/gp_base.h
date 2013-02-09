@@ -179,6 +179,12 @@ typedef sptr<CGPCholCache> PGPCholCache;
 %rename(getY) CGPbase::agetY;
 %rename(LMLgrad_covar) CGPbase::aLMLgrad_covar;
 %rename(LMLgrad_lik) CGPbase::aLMLgrad_lik;
+%rename(LMLhess) CGPbase::aLMLhess;
+%rename(LMLhess_covar) CGPbase::aLMLhess_covar;
+%rename(LMLhess_lik) CGPbase::aLMLhess_lik;
+%rename(LMLhess_covarlik) CGPbase::aLMLhess_covarlik;
+%rename(getCov_laplace) CGPbase::agetCov_laplace;
+%rename(getStd_laplace) CGPbase::agetStd_laplace;
 %rename(predictMean) CGPbase::apredictMean;
 %rename(predictVar) CGPbase::apredictVar;
 //
@@ -271,6 +277,19 @@ public:
 	virtual void aLMLgrad_lik(VectorXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_X(MatrixXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);
+    
+    //overall hessian
+	virtual void aLMLhess(MatrixXd* out, stringVec vecLabels) throw (CGPMixException);
+    
+    //hessian components:
+    virtual void aLMLhess_covar(MatrixXd* out) throw (CGPMixException);
+    virtual void aLMLhess_lik(MatrixXd* out) throw (CGPMixException);
+    virtual void aLMLhess_covarlik(MatrixXd* out) throw (CGPMixException);
+    
+    //laplace approximation stuff
+    virtual void agetCov_laplace(MatrixXd* out, stringVec vecLabels) throw (CGPMixException);
+    virtual CGPHyperParams agetStd_laplace() throw (CGPMixException);
+    
 	//interface for optimization:
 
 	//predictions:
@@ -291,15 +310,21 @@ public:
 	inline VectorXd getParamArray() const;
 	inline MatrixXd predictMean(const MatrixXd& Xstar) throw (CGPMixException);
 	inline MatrixXd predictVar(const MatrixXd& Xstar) throw (CGPMixException);
+    
+	/* Static methods*/
+    //numerical gradient and hessian
+    static double LMLgrad_num(CGPbase& gp, const muint_t i) throw(CGPMixException);
+    static double LMLhess_num(CGPbase& gp, const muint_t i, const muint_t j) throw(CGPMixException);
+    
 };
 
 
 inline MatrixXd CGPbase::predictMean(const MatrixXd& Xstar) throw (CGPMixException)
-		{
-		MatrixXd rv;
-		apredictMean(&rv,Xstar);
-		return rv;
-		}
+{
+    MatrixXd rv;
+    apredictMean(&rv,Xstar);
+    return rv;
+}
 
 inline MatrixXd CGPbase::predictVar(const MatrixXd& Xstar)
 		throw (CGPMixException)
