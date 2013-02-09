@@ -44,6 +44,7 @@ public:
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
 	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
 	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 	//other overloads
@@ -76,18 +77,26 @@ class CEyeCF : public ACovarianceFunction
 protected:
 	MatrixXd K0;
 	MatrixXd K0cross;
+    muint_t EyeDimension;
 public:
-	CEyeCF() : ACovarianceFunction(1) {};
+	CEyeCF(muint_t EyeDim=0) : ACovarianceFunction(1) {
+        this->setEyeDimension(EyeDim);
+    };
 	~CEyeCF() {};
 
 	//overloaded pure virtual functions:
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
 	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
 	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 	//other overloads
 	virtual void aK(MatrixXd* out) const;
+    
+    //setter and getters
+	void setEyeDimension(const muint_t);
+	muint_t getEyeDimension();
 
 	//class information
 	inline std::string getName() const{ return "EyeCF";}

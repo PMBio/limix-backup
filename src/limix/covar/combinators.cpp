@@ -421,6 +421,39 @@ void CSumCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMixExce
 		}
 	}
 }
+    
+void CSumCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw (CGPMixException)
+{
+    //1. check that i is within the available range
+    this->checkWithinParams(i);
+    this->checkWithinParams(j);
+    //2. loop through covariances until we found the correct one
+    muint_t i0=0;
+    muint_t j0=0;
+    muint_t params;
+    for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
+    {
+        PCovarianceFunction cp = iter[0];
+        if (cp!=NULL)
+        {
+            params = cp->getNumberParams();
+            //is the parameter in that covariance function?
+            if((i-i0)<params && (j-j0)<params)
+            {
+                cp->aKhess_param(out,i-i0,j-j0);
+                break;
+            }
+            else if(((i-i0)<params) || ((j-j0)<params))
+            {
+                (*out)=MatrixXd::Zero(this->Kdim(),this->Kdim());
+                break;
+            }
+            //move on
+            i0+=params;
+            j0+=params;
+        }
+    }
+}
 
 void CSumCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException)
 {
@@ -630,6 +663,38 @@ void CProductCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMix
 			i0+=params;
 		}
 	}
+}
+    
+void CProductCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw (CGPMixException)
+{
+    //1. check that i and j are within the available range
+    this->checkWithinParams(i);
+    this->checkWithinParams(j);
+    //2. loop through covariances
+    muint_t i0=0;
+    muint_t j0=0;
+    muint_t params;
+    (*out).setConstant(this->Kdim(),this->Kdim(),1.0);
+    for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
+    {
+        PCovarianceFunction cp = iter[0];
+        if (cp!=NULL)
+        {
+            params = cp->getNumberParams();
+            //is the parameter in that covariance function?
+            if((i-i0)<params && (j-j0)<params)
+                (*out).array()*=cp->Khess_param(i-i0,j-j0).array();
+            else if((i-i0)<params)
+                (*out).array()*=cp->Kgrad_param(i-i0).array();
+            else if((j-j0)<params)
+                (*out).array()*=cp->Kgrad_param(j-j0).array();
+            else
+                (*out).array()*=cp->K().array();
+            //move on
+            i0+=params;
+            j0+=params;
+        }
+    }
 }
 
 void CProductCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException)
