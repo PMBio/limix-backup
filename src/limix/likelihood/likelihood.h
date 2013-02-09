@@ -57,6 +57,7 @@ public:
 	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
 	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
 	virtual void aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException);
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
 	//overwrite setX. We merely ignore the number of columns here:
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
 
@@ -81,6 +82,7 @@ public:
 	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
 	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
 	virtual void aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException);
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
 	//overwrite setX. We merely ignore the number of columns here:
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
 
@@ -101,6 +103,7 @@ public:
 	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
 	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
 	virtual void aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException);
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
 	//overwrite setX. We merely ignore the number of columns here:
 	virtual void setX(const CovarInput& X) throw (CGPMixException);
 
