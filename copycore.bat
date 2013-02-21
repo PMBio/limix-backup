@@ -1,0 +1,3 @@
+copy C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\Release\_core.pyd C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\limix\_core.pyd
+copy C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\Release\_core.lib C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\limix\_core.lib
+copy C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\Release\_core.exp C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\limix\_core.exp
