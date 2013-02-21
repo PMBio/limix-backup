@@ -35,21 +35,18 @@ muint_t CFixedCF::Kdim() const throw(CGPMixException)
 
 void CFixedCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CGPMixException)
 {
-	mfloat_t A = params(0);
-	(*out) = A * this->K0cross;
+	(*out) = params(0) * this->K0cross;
 }
 
 void CFixedCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
 {
-	mfloat_t A = params(0);
-	(*out) = A*K0cross_diag;
+	(*out) = params(0)*K0cross_diag;
 }
 
 
 void CFixedCF::aK(MatrixXd *out) const
 {
-	mfloat_t A = params(0);
-	(*out) = A * this->K0;
+	(*out) = params(0) * this->K0;
 }
 
 
@@ -60,6 +57,14 @@ void CFixedCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMixEx
 	{
 		(*out) = Agrad*this->K0;
 	}
+}
+    
+void CFixedCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException)
+{
+    if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
+        throw CGPMixException("Parameter index out of range.");
+    }
+    (*out)=MatrixXd::Zero(this->K0.rows(),this->K0.rows());
 }
 
 void CFixedCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const throw(CGPMixException)
@@ -132,37 +137,53 @@ void CFixedCF::setK0cross_diag(const VectorXd& Kcross_diag)
 
 
 void CEyeCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
-		{
-	(*out).setConstant(Xstar.rows(),X.rows(),0);
-		}
+{
+	(*out).setConstant(Xstar.rows(),this->EyeDimension,0);
+}
 void CEyeCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
-		{
+{
 	(*out).setConstant(Xstar.rows(),0);
-		}
+}
 void CEyeCF::aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException)
-		{
-	aK(out);
-	(*out).diagonal().array()*=2;
-		}
+{
+	(*out)=MatrixXd::Identity(this->EyeDimension,this->EyeDimension);
+}
+void CEyeCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException)
+{
+    if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
+        throw CGPMixException("Parameter index out of range.");
+    }
+    (*out)=MatrixXd::Zero(this->EyeDimension,this->EyeDimension);
+}
 void CEyeCF::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException)
-		{
-	(*out) = MatrixXd::Zero(X.rows(),Xstar.rows());
+{
+	(*out) = MatrixXd::Zero(Xstar.rows(),this->EyeDimension);
 }
 
 void CEyeCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMixException)
 {
-	(*out) = VectorXd::Zero(X.rows());
+	(*out) = VectorXd::Zero(this->EyeDimension);
 }
 
 //other overloads
 void CEyeCF::aK(MatrixXd* out) const
 {
-	mfloat_t A = exp((mfloat_t)((2.0 * params(0))));
-	(*out).setConstant(X.rows(),X.rows(),0.0);
-	(*out).diagonal().setConstant(A);
+	(*out).setConstant(this->EyeDimension,this->EyeDimension,0.0);
+	(*out).diagonal().setConstant(params(0));
+}
+    
+    
+void CEyeCF::setEyeDimension(const muint_t EyeDim)
+{
+    this->EyeDimension=EyeDim;
 }
 
-
+muint_t CEyeCF::getEyeDimension()
+{
+    return this->EyeDimension;
+}
+    
+    
 
 /* namespace limix */
 }
