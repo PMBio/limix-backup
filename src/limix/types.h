@@ -54,7 +54,7 @@ typedef uint64_t muint_t;
 		#define NAN std::numeric_limits<mfloat_t>::quiet_NaN()
 	#endif
 	#ifndef INFINITY
-		#define INFINITY numeric_limits<mfloat_t>::infinity( )
+		#define INFINITY std::numeric_limits<mfloat_t>::infinity( )
 	#endif
 #endif
 
