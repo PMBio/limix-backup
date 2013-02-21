@@ -250,6 +250,11 @@ void CFreeFormCF::aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMix
 	agetK0grad_param(&K0,i);
 	projectKcross(out,K0,X);
 }
+    
+void CFreeFormCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException)
+{
+    throw CGPMixException("Not implemented yet.");
+}
 
 void CFreeFormCF::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException)
 {

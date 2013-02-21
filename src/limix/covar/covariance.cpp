@@ -241,6 +241,26 @@ bool ACovarianceFunction::check_covariance_Kgrad_x(ACovarianceFunction& covar,mf
 	return (RV < threshold);
 }
 
+void ACovarianceFunction::aKhess_param_num(ACovarianceFunction& covar, MatrixXd* out, const muint_t i, const muint_t j) throw (CGPMixException)
+{
+    mfloat_t relchange=1E-5;
+    
+    //copy of parameter vector
+    CovarParams L = covar.getParams();
+    //create copy
+    CovarParams L0 = L;
+    //dimensions
+    mfloat_t change = relchange*L(j);
+    change = std::max(change,1E-5);
+    L(j) = L0(j) + change;
+    covar.setParams(L);
+    covar.aKgrad_param(out,i);
+    L(j) = L0(j) - change;
+    covar.setParams(L);
+    (*out)-=covar.Kgrad_param(i);
+    (*out)/=(2.*change);
+    covar.setParams(L0);
+}
 
 
 /*CCovarainceFunctionCache*/

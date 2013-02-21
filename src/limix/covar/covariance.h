@@ -30,6 +30,7 @@ typedef VectorXd CovarParams;
 %ignore ACovarianceFunction::Kgrad_X;
 %ignore ACovarianceFunction::Kcross;
 %ignore ACovarianceFunction::Kgrad_param;
+%ignore ACovarianceFunction::Khess_param;
 %ignore ACovarianceFunction::Kcross_grad_X;
 
 %ignore ACovarianceFunction::getParams;
@@ -44,6 +45,7 @@ typedef VectorXd CovarParams;
 %rename(Kcross) ACovarianceFunction::aKcross;
 %rename(Kcross_diag) ACovarianceFunction::aKcross_diag;
 %rename(Kgrad_param) ACovarianceFunction::aKgrad_param;
+%rename(Khess_param) ACovarianceFunction::aKhess_param;
 %rename(Kcross_grad_X) ACovarianceFunction::aKcross_grad_X;
 
 %rename(getParams) ACovarianceFunction::agetParams;
@@ -51,6 +53,9 @@ typedef VectorXd CovarParams;
 %rename(getX) ACovarianceFunction::agetX;
 %rename(getParamBounds) ACovarianceFunction::agetParamBounds;
 %rename(getParamBounds0) ACovarianceFunction::agetParamBounds0;
+    
+%rename(Khess_param_num) ACovarianceFunction::aKhess_param_num;
+    
 //%sptr(gpmix::ACovarianceFunction)
 #endif
 
@@ -125,6 +130,7 @@ public:
 	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException) = 0;
 
 	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException) =0;
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException) =0;
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) = 0;
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) = 0;
 
@@ -137,6 +143,7 @@ public:
 	inline VectorXd Kcross_diag(const CovarInput& Xstar) const throw(CGPMixException);
 
 	inline MatrixXd Kgrad_param(const muint_t i) const throw(CGPMixException);
+    inline MatrixXd Khess_param(const muint_t i, const muint_t j) const throw(CGPMixException);
 	inline MatrixXd Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	inline MatrixXd Kgrad_X(const muint_t d) const throw(CGPMixException);
 	inline VectorXd Kdiag_grad_X(const muint_t d) const throw(CGPMixException);
@@ -145,6 +152,8 @@ public:
 	//grad checking functions
 	static bool check_covariance_Kgrad_theta(ACovarianceFunction& covar,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
 	static bool check_covariance_Kgrad_x(ACovarianceFunction& covar,mfloat_t relchange=1E-5,mfloat_t threshold=1E-2,bool check_diag=true);
+    //numerical hessian
+    static void aKhess_param_num(ACovarianceFunction& covar, MatrixXd* out, const muint_t i, const muint_t j) throw(CGPMixException);
 	//covariance normalization
 	//template <typename Derived1, typename Derived2,typename Derived3,typename Derived4,typename Derived5>
 	//inline static void scale_K(const Eigen::MatrixBase<Derived1> & K_);
@@ -262,6 +271,13 @@ inline MatrixXd ACovarianceFunction::Kgrad_param(const muint_t i) const throw(CG
 	MatrixXd RV;
 	aKgrad_param(&RV,i);
 	return RV;
+}
+    
+inline MatrixXd ACovarianceFunction::Khess_param(const muint_t i, const muint_t j) const throw(CGPMixException)
+{
+    MatrixXd RV;
+    aKhess_param(&RV,i,j);
+    return RV;
 }
 
 inline MatrixXd ACovarianceFunction::Kcross_grad_X(const CovarInput & Xstar, const muint_t d) const throw(CGPMixException)
