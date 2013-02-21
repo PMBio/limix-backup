@@ -126,6 +126,7 @@ typedef Eigen::Matrix<mint_t, Eigen::Dynamic, 1> VectorXiscipy;
 
 //convenience wrappers
 typedef std::vector<MatrixXd> MatrixXdVec;
+typedef std::vector<std::string> stringVec;
 
 
 //GpMix Exception Class
