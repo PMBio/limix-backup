@@ -59,7 +59,9 @@ public:
 	virtual void agetParamMask(CovarParams* out) const;
 	virtual void setParamMask(const CovarParams& params);
 	//get parameter bounds
-	virtual void agetParamBounds(CovarParams* lower,CovarParams* upper) const;
+	virtual void agetParamBounds0(CovarParams* lower,CovarParams* upper) const;
+    virtual void agetParamBounds(CovarParams* lower,CovarParams* upper) const;
+	virtual void setParamBounds(const CovarParams& lower, const CovarParams& upper)  throw (CGPMixException);
 };
 
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
