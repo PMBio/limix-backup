@@ -38,7 +38,7 @@ public:
 	virtual muint_t Kdim() const throw(CGPMixException);
 
 	//overload function to get bound information
-	virtual void agetParamBounds(CovarParams* lower,CovarParams* upper) const;
+	virtual void agetParamBounds0(CovarParams* lower,CovarParams* upper) const;
 
 	//overloaded pure virtual functions:
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);

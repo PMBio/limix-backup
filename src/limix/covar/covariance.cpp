@@ -173,7 +173,7 @@ bool ACovarianceFunction::check_covariance_Kgrad_theta(ACovarianceFunction& cova
 void ACovarianceFunction::agetParamBounds0(CovarParams* lower,
 		CovarParams* upper) const
 {
-	(*lower) = -INFINITY*VectorXd::Ones(getNumberParams());
+	(*lower) = 0.*VectorXd::Ones(getNumberParams());
 	(*upper) = +INFINITY*VectorXd::Ones(getNumberParams());
 }
 
@@ -186,16 +186,23 @@ void ACovarianceFunction::agetParamBounds(CovarParams* lower,
 	//override if needed
 	if(!isnull(bound_upper))
 	{
-		//TODO
+        for (int i=0; i<this->numberParams; i++)
+            if ((this->bound_lower)(i)>(*lower)(i)) (*lower)(i)=(this->bound_lower)(i);
 	}
 	if(!isnull(bound_lower))
 	{
-		//TODO
+        for (int i=0; i<this->numberParams; i++)
+            if ((this->bound_upper)(i)<(*upper)(i)) (*upper)(i)=(this->bound_upper)(i);
 	}
 }
 
 void ACovarianceFunction::setParamBounds(const CovarParams& lower,
-		const CovarParams& upper) {
+		const CovarParams& upper) throw (CGPMixException) {
+	if((lower.rows()!=this->numberParams) || (upper.rows()!=this->numberParams)) {
+        throw CGPMixException("Entry lengths do not coincide with the number of parameters.");
+    }
+    for (int i=0; i<this->numberParams; i++)
+        if (upper(i)<lower(i)) throw CGPMixException("Incompatible values.");
 	this->bound_lower = lower;
 	this->bound_upper = upper;
 }
