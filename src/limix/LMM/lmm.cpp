@@ -442,6 +442,7 @@ int ALMM::getTestStatistics() const
         ldeltaAlt.resize(num_pheno,num_snps);
         nLL0.resize(num_pheno,num_snps);
         nLLAlt.resize(num_pheno,num_snps);
+        lsigma.resize(num_pheno,num_snps);
         beta_snp.resize(num_pheno,num_snps);
         beta_snp_ste.resize(num_pheno,num_snps);
 
