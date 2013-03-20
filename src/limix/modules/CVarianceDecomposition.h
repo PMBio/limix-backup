@@ -170,21 +170,23 @@ public:
 class CCategorialTraitVarianceTerm : public AVarianceTerm
 {
 protected:
-	CFreeFromCFConstraitType constraint;
 	//trait covariance:
 	VectorXd trait;
 	VectorXd utrait;
 	//number of traits
 	muint_t numtraits;
 	//freeform covariance
-	PFreeFormCF trait_covariance;
+	PTraitCF trait_covariance;
+    bool trait_covariance_is_init;
 public:
 
 	CCategorialTraitVarianceTerm();
-	CCategorialTraitVarianceTerm(const MatrixXd& K,const MatrixXd& trait,mfloat_t Vinit=NAN, CFreeFromCFConstraitType constraint=freeform);
+	CCategorialTraitVarianceTerm(PTraitCF trait_covariance, const MatrixXd& K,const MatrixXd& trait,mfloat_t Vinit=NAN);
 	virtual ~CCategorialTraitVarianceTerm();
 
-
+    //trait covariance function
+    void setTraitCov(PTraitCF trait_covariance) throw (CGPMixException);
+    
 	//init covariance function
 	virtual void initCovariance() throw (CGPMixException);
 
@@ -212,13 +214,6 @@ public:
 	}
 	virtual void agetCovarianceFit(MatrixXd* out) const;
 
-	CFreeFromCFConstraitType getConstraint() const {
-		return constraint;
-	}
-
-	void setConstraint(CFreeFromCFConstraitType constraint) {
-		this->constraint = constraint;
-	}
 };
 
 class CVarianceDecomposition
@@ -261,7 +256,8 @@ public:
 	bool train() throw(CGPMixException);
 
 	void addTerm(PVarianceTerm term);
-	void addTerm(const MatrixXd& K,muint_t type, bool isNoise=false, bool fitCrossCovariance=true,mfloat_t Vinit=NAN);
+	//void addTerm(const MatrixXd& K,muint_t type, bool isNoise=false, bool fitCrossCovariance=true,mfloat_t Vinit=NAN);
+    void addCVTerm(PTraitCF trait_covariance, const MatrixXd& K);
 
 	PVarianceTerm getTerm(muint_t i) const;
 	PVarianceTerm getNoise() const;
