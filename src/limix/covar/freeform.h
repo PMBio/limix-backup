@@ -265,7 +265,10 @@ public:
         
     CTDiagonalCF(muint_t numberGroups);
     ~CTDiagonalCF();
-        
+
+    //ACovarianceCF functions
+    virtual void agetParams(CovarParams* out);
+    
     //TraitCF pure functions
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
     virtual void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
@@ -301,6 +304,10 @@ public:
     //LowRank functions
     virtual void agetK0dense(MatrixXd* out) const throw(CGPMixException);
     virtual void agetK0diagonal(MatrixXd* out) const throw(CGPMixException);
+    
+    //ACovarianceCF functions
+    virtual void agetParams(CovarParams* out);
+    
     
     //TraitCF pure functions
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
