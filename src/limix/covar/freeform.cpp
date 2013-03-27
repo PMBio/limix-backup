@@ -694,7 +694,13 @@ CTDiagonalCF::CTDiagonalCF(muint_t numberGroups) : CTraitCF(numberGroups)
 CTDiagonalCF::~CTDiagonalCF()
 {
 }
-    
+
+void CTDiagonalCF::agetParams(CovarParams* out) {
+    (*out) = this->params;
+    (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
+}
+
+
 void CTDiagonalCF::agetK0(MatrixXd* out) const throw(CGPMixException)
 {
     (*out) = params.unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).asDiagonal();
@@ -723,7 +729,7 @@ void CTDiagonalCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException
     
 void CTDiagonalCF::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
 {
-    *lower = VectorXd::Zero(this->getNumberParams());
+    *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
     *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
 }
     
@@ -761,7 +767,22 @@ void CTLowRankCF::agetK0diagonal(MatrixXd* out) const throw(CGPMixException)
     else
         (*out) = params.segment(this->numberGroups,this->numberGroups).unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).asDiagonal();
 }
-    
+   
+void CTLowRankCF::agetParams(CovarParams* out) {
+    (*out) = this->params;
+    double sign=1;
+    if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
+    if (this->numberGroups==2) {
+        (*out)(1)=sign*((*out)(1));
+        (*out)(2)=std::abs((*out)(2));
+    }
+    else {
+        (*out).segment(0,this->numberGroups)=sign*(*out).segment(0,this->numberGroups);
+        (*out).segment(this->numberGroups,this->numberGroups)=(*out).segment(this->numberGroups,this->numberGroups).unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
+    }
+}
+
+
 void CTLowRankCF::agetK0(MatrixXd* out) const throw(CGPMixException)
 {
     MatrixXd out1;
@@ -827,12 +848,16 @@ void CTLowRankCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
     
 void CTLowRankCF::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
 {
-    
+
+    *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
+    *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());  
+	
+    /* OLD IMPLEMENTATION
     *lower = VectorXd::Zero(this->getNumberParams());
     *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
     
     (*lower).segment(1,(this->numberGroups)-1) = -INFINITY*VectorXd::Ones((this->numberGroups)-1);
-    
+    */
 }
     
 void CTLowRankCF::agetParamMask0(CovarParams* out) const
