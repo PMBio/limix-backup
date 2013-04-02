@@ -773,6 +773,7 @@ void CTLowRankCF::agetParams(CovarParams* out) {
     double sign=1;
     if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
     if (this->numberGroups==2) {
+        (*out)(0)=sign*((*out)(0));
         (*out)(1)=sign*((*out)(1));
         (*out)(2)=std::abs((*out)(2));
     }
