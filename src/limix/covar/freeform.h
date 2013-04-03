@@ -267,7 +267,7 @@ public:
     ~CTDiagonalCF();
 
     //ACovarianceCF functions
-    virtual void agetParams(CovarParams* out);
+    virtual void agetScales(CovarParams* out);
     
     //TraitCF pure functions
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
@@ -306,7 +306,7 @@ public:
     virtual void agetK0diagonal(MatrixXd* out) const throw(CGPMixException);
     
     //ACovarianceCF functions
-    virtual void agetParams(CovarParams* out);
+    virtual void agetScales(CovarParams* out);
     
     
     //TraitCF pure functions

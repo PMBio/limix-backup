@@ -695,7 +695,7 @@ CTDiagonalCF::~CTDiagonalCF()
 {
 }
 
-void CTDiagonalCF::agetParams(CovarParams* out) {
+void CTDiagonalCF::agetScales(CovarParams* out) {
     (*out) = this->params;
     (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
 }
@@ -768,7 +768,7 @@ void CTLowRankCF::agetK0diagonal(MatrixXd* out) const throw(CGPMixException)
         (*out) = params.segment(this->numberGroups,this->numberGroups).unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).asDiagonal();
 }
    
-void CTLowRankCF::agetParams(CovarParams* out) {
+void CTLowRankCF::agetScales(CovarParams* out) {
     (*out) = this->params;
     double sign=1;
     if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
