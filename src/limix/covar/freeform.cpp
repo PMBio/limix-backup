@@ -586,7 +586,14 @@ CTDenseCF::CTDenseCF(muint_t numberGroups) : CTraitCF(numberGroups)
 CTDenseCF::~CTDenseCF()
 {
 }
-    
+
+void CTDenseCF::agetScales(CovarParams* out) {
+    (*out) = this->params;
+    double sign=1;
+    if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
+    (*out).segment(0,this->numberParams)=sign*(*out).segment(0,this->numberParams);
+}
+
 void CTDenseCF::agetK0(MatrixXd* out) const throw(CGPMixException)
 {
     //create template matrix K
@@ -625,8 +632,6 @@ void CTDenseCF::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
 {
     *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
     *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
-    //set a1 to be 0
-    (*lower)(0) = 0;
 }
     
 void CTDenseCF::agetParamMask0(CovarParams* out) const
@@ -650,7 +655,12 @@ CTFixedCF::CTFixedCF(muint_t numberGroups, const MatrixXd & K0) : CTraitCF(numbe
 CTFixedCF::~CTFixedCF()
 {
 }
-    
+
+void CTFixedCF::agetScales(CovarParams* out) {
+    (*out) = this->params;
+    (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
+}
+
 void CTFixedCF::agetK0(MatrixXd* out) const throw(CGPMixException)
 {
     (*out) = std::pow(params(0),2)*this->K0;
@@ -674,7 +684,7 @@ void CTFixedCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
     
 void CTFixedCF::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
 {
-    *lower = VectorXd::Zero(this->getNumberParams());
+    *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
     *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
 }
 
@@ -748,6 +758,7 @@ CTLowRankCF::CTLowRankCF(muint_t numberGroups) : CTraitCF(numberGroups)
         this->numberParams = 3;
     else
         this->numberParams = 2*numberGroups;
+
 }
     
 CTLowRankCF::~CTLowRankCF()
@@ -865,6 +876,90 @@ void CTLowRankCF::agetParamMask0(CovarParams* out) const
 {
     (*out) = VectorXd::Ones(this->getNumberParams());
 }
+
+
+/* CTNewLowRankCF class */
+    
+CTNewLowRankCF::CTNewLowRankCF(muint_t numberGroups) : CTraitCF(numberGroups)
+{
+    this->numberParams = 2*numberGroups;
+}
+    
+CTNewLowRankCF::~CTNewLowRankCF()
+{
+}
+
+void CTNewLowRankCF::setScales(const CovarParams& scales)
+{
+    checkParamDimensions(scales);
+    this->params=VectorXd::Zero(this->getNumberParams());
+    (this->params).segment(0,this->numberGroups)=0.5*(scales.segment(0,this->numberGroups)+scales.segment(this->numberGroups,this->numberGroups));
+    (this->params).segment(this->numberGroups,this->numberGroups)=0.5*(scales.segment(0,this->numberGroups)-scales.segment(this->numberGroups,this->numberGroups));
+}
+
+void CTNewLowRankCF::agetScales(CovarParams* out) {
+    (*out)=VectorXd::Zero(this->getNumberParams());
+    (*out).segment(0,this->numberGroups)=(this->params).segment(0,this->numberGroups)+(this->params).segment(this->numberGroups,this->numberGroups);
+    (*out).segment(this->numberGroups,this->numberGroups)=(this->params).segment(0,this->numberGroups)-(this->params).segment(this->numberGroups,this->numberGroups);
+}
+
+
+void CTNewLowRankCF::agetK0(MatrixXd* out) const throw(CGPMixException)
+{
+    (*out) = MatrixXd::Zero(this->numberGroups,this->numberGroups);
+    for(muint_t ir=0;ir<numberGroups;++ir) {
+    	(*out)(ir,ir)=2*(std::pow(this->params(ir),2)+std::pow(this->params(this->numberGroups+ir),2));
+    	for (muint_t ic=0;ic<ir;++ic)
+	{
+		(*out)(ir,ic) =(this->params(ir)+this->params(this->numberGroups+ir));
+		(*out)(ir,ic)*=(this->params(ic)+this->params(this->numberGroups+ic));
+		(*out)(ic,ir) =(*out)(ir,ic);
+	}
+    }
+}
+    
+void CTNewLowRankCF::agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+{
+    (*out) = MatrixXd::Zero(this->numberGroups,this->numberGroups);
+    
+    if (i>=this->numberGroups) {
+    	    i-=this->numberGroups;
+    	    (*out)(i,i)=4*this->params(i+this->numberGroups);
+    }
+    else    (*out)(i,i)=4*this->params(i);
+    
+    for (muint_t ir=0;ir<this->numberGroups;++ir)
+    {	
+    	if (ir!=i) {
+    	    (*out)(ir,i) =this->params(ir)+this->params(this->numberGroups+ir);
+    	    (*out)(i,ir) =(*out)(ir,i);
+	}
+    }
+}
+
+void CTNewLowRankCF::agetK0hess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+{
+    //TO DO
+}
+    
+void CTNewLowRankCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+{
+    //TO DO
+}
+    
+void CTNewLowRankCF::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
+{
+
+    *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
+    *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
+
+}
+    
+void CTNewLowRankCF::agetParamMask0(CovarParams* out) const
+{
+    (*out) = VectorXd::Ones(this->getNumberParams());
+}
+
 
 
 } /* namespace limix */

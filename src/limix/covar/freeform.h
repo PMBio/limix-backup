@@ -205,6 +205,9 @@ public:
         
     CTDenseCF(muint_t numberGroups);
     ~CTDenseCF();
+    
+    //ACovarianceCF functions
+    virtual void agetScales(CovarParams* out);
 
     //TraitCF pure functions
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
@@ -237,7 +240,10 @@ public:
     
     CTFixedCF(muint_t numberGroups, const MatrixXd& K0);
     ~CTFixedCF();
-        
+    
+    //ACovarianceCF functions
+    virtual void agetScales(CovarParams* out);
+    
     //TraitCF pure functions
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
     virtual void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
@@ -324,6 +330,37 @@ public:
         
 };
 typedef sptr<CTLowRankCF> PTLowRankCF;
+
+
+class CTNewLowRankCF: public CTraitCF {
+        
+protected:
+        
+public:
+        
+    CTNewLowRankCF(muint_t numberGroups);
+    ~CTNewLowRankCF();
+    
+    //ACovarianceCF functions
+    virtual void setScales(const CovarParams& scales);
+    virtual void agetScales(CovarParams* out);
+    
+    
+    //TraitCF pure functions
+    virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
+    virtual void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
+    virtual void agetK0hess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException);
+    virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+
+    //Covariance pure functions
+    virtual void agetParamBounds0(CovarParams* lower,CovarParams* upper) const;
+    virtual void agetParamMask0(CovarParams* out) const;
+        
+    //class information
+    inline std::string getName() const {return "CTNewLowRankCF";};
+        
+};
+typedef sptr<CTNewLowRankCF> PTNewLowRankCF;
 
 
     
