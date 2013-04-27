@@ -224,7 +224,7 @@ class CVarianceDecomposition:
         Returns the empirical trait covariance matrix
         """
         Y1=(self.Y).reshape((self.P,self.N))
-        RV=SP.cov(Y1)
+        RV=SP.cov(Y1).reshape([self.P,self.P])
         return RV
 
 
