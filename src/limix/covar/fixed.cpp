@@ -44,7 +44,7 @@ void CFixedCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(
 }
 
 
-void CFixedCF::aK(MatrixXd *out) const
+void CFixedCF::aK(MatrixXd *out) const throw (CGPMixException)
 {
 	(*out) = params(0) * this->K0;
 }
@@ -166,7 +166,7 @@ void CEyeCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMixExc
 }
 
 //other overloads
-void CEyeCF::aK(MatrixXd* out) const
+void CEyeCF::aK(MatrixXd* out) const throw (CGPMixException)
 {
 	(*out).setConstant(this->EyeDimension,this->EyeDimension,0.0);
 	(*out).diagonal().setConstant(params(0));

@@ -124,12 +124,12 @@ void ACovarianceFunction::agetX(CovarInput *Xout) const throw(CGPMixException)
 
 
 
-void ACovarianceFunction::aK(MatrixXd* out) const
+void ACovarianceFunction::aK(MatrixXd* out) const throw (CGPMixException)
 {
 	aKcross(out,X);
 }
 
-void ACovarianceFunction::aKdiag(VectorXd *out) const
+void ACovarianceFunction::aKdiag(VectorXd *out) const throw (CGPMixException)
 {
 	MatrixXd Kfull = K();
 	(*out) = Kfull.diagonal();
@@ -186,22 +186,22 @@ void ACovarianceFunction::agetParamBounds(CovarParams* lower,
 	//override if needed
 	if(!isnull(bound_upper))
 	{
-        for (int i=0; i<this->numberParams; i++)
+        for (muint_t i=0; i<this->numberParams; i++)
             if ((this->bound_lower)(i)>(*lower)(i)) (*lower)(i)=(this->bound_lower)(i);
 	}
 	if(!isnull(bound_lower))
 	{
-        for (int i=0; i<this->numberParams; i++)
+        for (muint_t i=0; i<this->numberParams; i++)
             if ((this->bound_upper)(i)<(*upper)(i)) (*upper)(i)=(this->bound_upper)(i);
 	}
 }
 
 void ACovarianceFunction::setParamBounds(const CovarParams& lower,
 		const CovarParams& upper) throw (CGPMixException) {
-	if((lower.rows()!=this->numberParams) || (upper.rows()!=this->numberParams)) {
+	if(((muint_t)lower.rows()!=this->numberParams) || ((muint_t)upper.rows()!=this->numberParams)) {
         throw CGPMixException("Entry lengths do not coincide with the number of parameters.");
     }
-    for (int i=0; i<this->numberParams; i++)
+    for (muint_t i=0; i<this->numberParams; i++)
         if (upper(i)<lower(i)) throw CGPMixException("Incompatible values.");
 	this->bound_lower = lower;
 	this->bound_upper = upper;
