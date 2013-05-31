@@ -361,7 +361,7 @@ std::string CSumCF::getName() const
 
 
 
-void CSumCF::aK(MatrixXd* out) const
+void CSumCF::aK(MatrixXd* out) const throw (CGPMixException)
 {
 	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,trows,0);
@@ -376,7 +376,7 @@ void CSumCF::aK(MatrixXd* out) const
 }
 
 
-void CSumCF::aKdiag(VectorXd* out) const
+void CSumCF::aKdiag(VectorXd* out) const throw (CGPMixException)
 {
 	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,0);
@@ -605,7 +605,7 @@ std::string CProductCF::getName() const
 
 
 
-void CProductCF::aK(MatrixXd* out) const
+void CProductCF::aK(MatrixXd* out) const throw (CGPMixException)
 {
 	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,trows,1);
@@ -620,7 +620,7 @@ void CProductCF::aK(MatrixXd* out) const
 }
 
 
-void CProductCF::aKdiag(VectorXd* out) const
+void CProductCF::aKdiag(VectorXd* out) const throw (CGPMixException)
 {
 	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,1.0);
@@ -821,6 +821,65 @@ void CProductCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const m
 	}
 }
 
-
-
+CKroneckerCF::CKroneckerCF() {
 }
+
+CKroneckerCF::CKroneckerCF(PCovarianceFunction row,
+		PCovarianceFunction col) {
+	setCovariance(0,row);
+	setCovariance(1,col);
+}
+
+CKroneckerCF::~CKroneckerCF() {
+}
+
+void CKroneckerCF::setRowCovariance(PCovarianceFunction cov) {
+}
+
+void CKroneckerCF::setColCovariance(PCovarianceFunction cov) {
+}
+
+std::string CKroneckerCF::getName() const {
+	return "KroneckerCF";
+}
+
+void CKroneckerCF::aKcross(MatrixXd* out, const CovarInput& Xstar) const throw (CGPMixException)
+{
+}
+
+void CKroneckerCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw (CGPMixException)
+{
+}
+
+void CKroneckerCF::aKgrad_param(MatrixXd* out, const muint_t i) const throw (CGPMixException)
+{
+}
+
+void CKroneckerCF::aKhess_param(MatrixXd* out, const muint_t i,
+		const muint_t j) const throw (CGPMixException)
+{
+}
+
+void CKroneckerCF::aKcross_grad_X(MatrixXd* out, const CovarInput& Xstar,
+		const muint_t d) const throw (CGPMixException)
+{
+}
+
+void CKroneckerCF::aKdiag_grad_X(VectorXd* out, const muint_t d) const throw (CGPMixException)
+{
+}
+
+void CKroneckerCF::aK(MatrixXd* out) const throw (CGPMixException)
+{
+}
+
+void CKroneckerCF::aKdiag(VectorXd* out) const throw (CGPMixException)
+{
+}
+
+void CKroneckerCF::aKgrad_X(MatrixXd* out, const muint_t d) const throw (CGPMixException)
+{
+}
+
+} /// end :limix
+
