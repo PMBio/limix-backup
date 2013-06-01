@@ -100,7 +100,7 @@ public:
 	//upper and lower constraint for hyper parameters
 	virtual void agetParamBounds0(CovarParams* lower,CovarParams* upper) const;
 	virtual void agetParamBounds(CovarParams* lower,CovarParams* upper) const;
-	virtual void setParamBounds(const CovarParams& lower, const CovarParams& upper);
+	virtual void setParamBounds(const CovarParams& lower, const CovarParams& upper)  throw (CGPMixException);
 
 	virtual void agetParamMask(CovarParams* out) const;
 	virtual void setParamMask(const CovarParams& params);

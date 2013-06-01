@@ -146,7 +146,7 @@ void CFreeFormCF::agetL0grad_param_dense(MatrixXd* out, muint_t i) const throw(C
 		}
 }
 
-void CFreeFormCF::agetParamBounds(CovarParams* lower,CovarParams* upper) const
+void CFreeFormCF::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
 {
 	//all parameters but the diagonal elements are unbounded:
 	*lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
