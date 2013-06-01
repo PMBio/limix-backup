@@ -266,6 +266,31 @@ void AMultiCF::agetParamMask(CovarParams* out) const
 	}
 }
 
+
+void AMultiCF::agetParamBounds0(CovarParams* lower, CovarParams* upper) const
+{
+    //1. create memory
+    (*lower).resize(getNumberParams());
+    (*upper).resize(getNumberParams());
+    //2. loop through and allocate
+    muint_t i0=0;
+    muint_t nparams;
+    for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
+    {
+        PCovarianceFunction cp = iter[0];
+        if (cp!=NULL)
+        {
+            nparams = cp->getNumberParams();
+            CovarParams _upper,_lower;
+            cp->agetParamBounds0(&_lower,&_upper);
+            (*lower).segment(i0,nparams) = _lower;
+            (*upper).segment(i0,nparams) = _upper;
+            i0+=nparams;
+        }
+    }
+}
+    
+
 void AMultiCF::agetParamBounds(CovarParams* lower, CovarParams* upper) const
 {
 	//1. create memory
@@ -287,6 +312,27 @@ void AMultiCF::agetParamBounds(CovarParams* lower, CovarParams* upper) const
 			i0+=nparams;
 		}
 	}
+}
+
+    
+void AMultiCF::setParamBounds(const CovarParams& lower, const CovarParams& upper) throw (CGPMixException) {
+    //1. check dimensionality
+    checkParamDimensions(lower);
+    checkParamDimensions(upper);
+    //2. loop through covariances
+    muint_t i0=0;
+    muint_t nparams;
+    //loop through covariances and assign
+    for(ACovarVec::iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
+    {
+        PCovarianceFunction cp = iter[0];
+        if (cp!=NULL)
+        {
+            nparams = cp->getNumberParams();
+            cp->setParamBounds(lower.segment(i0,nparams),upper.segment(i0,nparams));
+            i0+=nparams;
+        }
+    }
 }
 
 

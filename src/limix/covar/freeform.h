@@ -53,7 +53,7 @@ public:
 	void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 
-	virtual void agetParamBounds(CovarParams* lower,CovarParams* upper) const;
+	virtual void agetParamBounds0(CovarParams* lower,CovarParams* upper) const;
 	virtual void agetParamMask0(CovarParams* out) const;
 
 	//class information
