@@ -122,6 +122,8 @@ include_directories(./src)
 #add Cmake modules
 #nlopt
 add_subdirectory(./External/nlopt)
+#vcflib
+add_subdirectory(./External/vcflib)
 #LIMIX source
 add_subdirectory(./src)
 

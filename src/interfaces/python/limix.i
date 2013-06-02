@@ -26,6 +26,8 @@
 #include "limix/modules/CVqtl.h"
 #include "limix/modules/CMultiTraitVQTL.h"
 #include "limix/modules/CVarianceDecomposition.h"
+#include "limix/io/dataframe.h"
+#include "limix/io/genotype.h"
 
 
 
@@ -61,6 +63,7 @@ using namespace limix;
 %include "./../mean.i"
 %include "./../lmm.i"
 %include "./../modules.i"
+%include "./../io.i"
 
 
 //generated outodoc:
@@ -88,6 +91,7 @@ using namespace limix;
 %include "limix/modules/CVqtl.h"
 %include "limix/modules/CMultiTraitVQTL.h"
 %include "limix/modules/CVarianceDecomposition.h"
-
+%include "limix/io/dataframe.h"
+%include "limix/io/genotype.h"
 
  
