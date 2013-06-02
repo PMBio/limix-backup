@@ -124,6 +124,8 @@ include_directories(./src)
 add_subdirectory(./External/nlopt)
 #vcflib
 add_subdirectory(./External/vcflib)
+#boost
+add_subdirectory(./External/boost)
 #LIMIX source
 add_subdirectory(./src)
 
