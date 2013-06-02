@@ -14,79 +14,135 @@
 #include <map>
 #include <vector>
 #include <iostream>
+#include "dataframe.h"
+#include <string>
+#include <iostream>
+#include <fstream>
 
 
 namespace limix {
 
-/*
- * Abstract class representing data structures with sample IDs (genotype/phenotype)
- */
-class ASampleData {
+class AGenotypeFilter
+{
+protected:
+	std::string filter_chrom;
+	uint64_t filter_start,filter_stop;
 public:
-
-	ASampleData();
-	virtual ~ASampleData();
-
-	virtual void agetIDs(VectorXs* out) const throw(CGPMixException) = 0;
-	virtual void setIDs(const VectorXs& in) throw (CGPMixException) =0;
-
+	AGenotypeFilter()
+	{
+		filter_start = -1;
+		filter_stop = -1;
+		filter_chrom = "";
+	};
+	virtual ~AGenotypeFilter()
+	{};
+	virtual void setFilter(std::string chrom, uint64_t start,uint64_t stop)
+	{
+		this->filter_chrom = chrom;
+		this->filter_start = start;
+		this->filter_stop = stop;
+	}
 };
-
 
 /*
  * Abstract class representing genotype handling
+ * This is a DataFrame with an internal MatriXd object
+ * rows: individuals
+ * cols: genotypes
  */
-class AGenotype  : public ASampleData {
-
+class AGenotype  : public AGenotypeFilter,public CMemDataFrame<MatrixXd>
+{
 public:
-	AGenotype();
-	virtual ~AGenotype();
+	AGenotype()
+	{};
+	AGenotype(const AGenotype& copy) : CMemDataFrame<MatrixXd>(copy)
+	{};
+	virtual ~AGenotype()
+	{};
 
-	//get genotype data
-	virtual void agetGenotype(MatrixXd* out) const throw(CGPMixException) = 0;
+	//add specific header functions for genotype and position
 	virtual void agetPosition(VectorXi* out) const throw(CGPMixException) = 0;
-	virtual void agetChromosome(VectorXs* out) const throw(CGPMixException) = 0;
+	virtual PVectorXi getPosition() const throw(CGPMixException) = 0;
 
-	//set genotype data
-	virtual void setGenotype(const MatrixXd& in)  throw(CGPMixException) = 0;
-	virtual void setPosition(const VectorXi& in)  throw(CGPMixException) = 0;
-	virtual void setChromosome(const VectorXs& in)  throw(CGPMixException) = 0;
+	virtual void agetChromosome(VectorXs* out) const throw(CGPMixException) = 0;
+	virtual PVectorXs getChromosome() const throw(CGPMixException) = 0;
 };
+
 typedef sptr<AGenotype> PGenotype;
+
+class ARWGenotype  : public AGenotypeFilter, public CMemRWDataFrame<MatrixXd>
+{
+public:
+	ARWGenotype()
+	{};
+	ARWGenotype(const AGenotype& copy) : CMemRWDataFrame<MatrixXd>(copy)
+	{};
+	virtual ~ARWGenotype()
+	{};
+
+	//add specific header functions for genotype and position
+	virtual void agetPosition(VectorXi* out) const throw(CGPMixException) = 0;
+	virtual PVectorXi getPosition() const throw(CGPMixException) = 0;
+
+	virtual void agetChromosome(VectorXs* out) const throw(CGPMixException) = 0;
+	virtual PVectorXs getChromosome() const throw(CGPMixException) = 0;
+
+
+	virtual void setPosition(const VectorXi& in) throw(CGPMixException) = 0;
+	virtual void setPosition(PVectorXi in) throw(CGPMixException) =0;
+
+	virtual void setChromosome(const VectorXs& in) throw(CGPMixException) = 0;
+	virtual void setChromosome(PVectorXs in) throw(CGPMixException) =0;
+};
+typedef sptr<ARWGenotype> PRWGenotype;
+
 
 /*
  * In-memory implementation of genotype handling
  */
 
+//TODO: take filter into account for get operators.
 class CMemGenotype : public AGenotype
 {
 protected:
-	PMatrixXd geno;
 	PVectorXi pos;
 	PVectorXs chrom;
-	PVectorXs ids;
-
 	void initMatrices();
 
 public:
 	CMemGenotype();
-	CMemGenotype(PGenotype geno);
+	CMemGenotype(PMatrixXd geno,PVectorXs chrom,PVectorXi pos,PVectorXs IDs);
+	CMemGenotype(const AGenotype& copy);
 	virtual ~CMemGenotype();
 
+	//override Filter operations
+	virtual void setFilter(std::string chrom, uint64_t start,uint64_t stop)
+	{
+		AGenotypeFilter::setFilter(chrom,start,stop);
+	}
+
 	//virtual functions AGenotype
-	virtual void agetGenotype(MatrixXd* out) const throw(CGPMixException);
+	//R access
 	virtual void agetPosition(VectorXi* out) const throw(CGPMixException);
+	virtual PVectorXi getPosition() const throw(CGPMixException);
+
 	virtual void agetChromosome(VectorXs* out) const throw(CGPMixException);
+	virtual PVectorXs getChromosome() const throw(CGPMixException);
 
-	virtual void setGenotype(const MatrixXd& in)  throw(CGPMixException);
-	virtual void setPosition(const VectorXi& in)  throw(CGPMixException);
-	virtual void setChromosome(const VectorXs& in)  throw(CGPMixException);
 
-	//virtual functions ASampleData
-	virtual void agetIDs(VectorXs* out) const throw(CGPMixException);
-	virtual void setIDs(const VectorXs& in) throw (CGPMixException);
+	/*
+	//W access
+	virtual void setPosition(const VectorXi& in) throw(CGPMixException);
+	virtual void setPosition(PVectorXi in) throw(CGPMixException);
+
+	virtual void setChromosome(const VectorXs& in) throw(CGPMixException);
+	virtual void setChromosome(PVectorXs in) throw(CGPMixException);
+	*/
 };
+
+
 typedef sptr<CMemGenotype> PMemGenotype;
+
 
 
 /* Common class to read from text files.
@@ -94,12 +150,13 @@ typedef sptr<CMemGenotype> PMemGenotype;
  */
 class CTextfileGenotype : public AGenotype
 {
+protected:
+	std::string filename;
 public:
-	CTextfileGenotype();
+	CTextfileGenotype(std::string& filename);
 	virtual ~CTextfileGenotype();
 };
 typedef sptr<CTextfileGenotype> PTextfileGenotype;
-
 
 
 } //end: namespace limix
