@@ -79,6 +79,13 @@ public:
 	};
 	CMemDataFrame(const CMemDataFrame<MatrixType>& copy)
 	{
+		this->M = PMatrixXd(new MatrixXd());
+		this->rowHeader = PVectorXs(new VectorXs());
+		this->colHeader = PVectorXs(new VectorXs());
+		(*this->M) = (*copy.M);
+		(*this->rowHeader) = (*copy.rowHeader);
+		(*this->colHeader) = (*copy.colHeader);
+
 		this->M = copy.getMatrix();
 		this->rowHeader = copy.getRowHeader();
 		this->colHeader = copy.getColHeader();
@@ -183,9 +190,9 @@ public:
 template<class MatrixType>
 inline void limix::CMemDataFrame<MatrixType>::resizeMatrices(
 		muint_t num_rows, muint_t num_columns) {
-this->M->resize(num_rows,num_columns);
-this->rowHeader->resize(num_rows);
-this->colHeader->resize(num_columns);
+this->M->conservativeResize(num_rows,num_columns);
+this->rowHeader->conservativeResize(num_rows);
+this->colHeader->conservativeResize(num_columns);
 }
 
 #endif /* DATAFRAME_H_ */
