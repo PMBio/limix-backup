@@ -1,4 +1,4 @@
-%shared_ptr(enable_shared_from_this<CGPbase>)
+%shared_ptr(bost::enable_shared_from_this<CGPbase>)
 %shared_ptr(std::map<std::string,MatrixXd>)
 %shared_ptr(limix::CCovarianceFunctionCache)
 %shared_ptr(limix::CGPCholCache)

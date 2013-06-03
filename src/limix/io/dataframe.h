@@ -68,6 +68,8 @@ protected:
 	sptr<MatrixType> M;
 	PVectorXs rowHeader,colHeader;
 
+	virtual void resizeMatrices(muint_t num_samples=-1,muint_t num_snps=-1);
+
 public:
 	CMemDataFrame()
 	{
@@ -97,6 +99,7 @@ public:
 	{
 		(*out) = *rowHeader;
 	}
+
 	virtual PVectorXs getRowHeader() const throw(CGPMixException)
 	{
 		return rowHeader;
@@ -123,8 +126,6 @@ public:
 };
 
 //implementation for in-memory handling READ ONLY
-//SWIG specific things
-//SWIG specific things
 template <class MatrixType> class CMemRWDataFrame : public CMemDataFrame<MatrixType>, public ARWDataFrame<MatrixType>
 {
 public:
@@ -171,9 +172,20 @@ public:
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 %template(CMemDataFrameXd) CMemDataFrame<MatrixXd>;
 %template(CMemRWDataFrameXd) CMemRWDataFrame<MatrixXd>;
+%template(ADataFrameXd) ADataFrame< MatrixXd >;
+%template(ARWDataFrameXd) ARWDataFrame< MatrixXd >;
 #endif
 
 
-} //end: namespace limix
+}
+		//end: namespace limix
+
+template<class MatrixType>
+inline void limix::CMemDataFrame<MatrixType>::resizeMatrices(
+		muint_t num_rows, muint_t num_columns) {
+this->M->resize(num_rows,num_columns);
+this->rowHeader->resize(num_rows);
+this->colHeader->resize(num_columns);
+}
 
 #endif /* DATAFRAME_H_ */

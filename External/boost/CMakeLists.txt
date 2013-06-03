@@ -7,6 +7,6 @@ SET(SOURCES libs/iostreams/src/zlib.cpp
 )
 
 include_directories(./)
-ADD_LIBRARY(boostlib STATIC ${SOURCES})
+ADD_LIBRARY(boost STATIC ${SOURCES})
 
 
