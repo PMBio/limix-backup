@@ -904,12 +904,12 @@ double CGPbase::LMLgrad_num(CGPbase& gp, const muint_t i) throw (CGPMixException
     
     if (i<i0) {
         change = relchange*L["covar"](i);
-        change = std::max(change,1E-5);
+        change = max(change,1E-5);
         L["covar"](i) = L0["covar"](i) + change;
     }
     else {
         change = relchange*L["lik"](i-i0);
-        change = std::max(change,1E-5);
+        change = max(change,1E-5);
         L["lik"](i-i0) = L0["lik"](i-i0) + change;
     }
     gp.setParams(L);
@@ -952,12 +952,12 @@ double CGPbase::LMLhess_num(CGPbase& gp, const muint_t i, const muint_t j) throw
     
     if (j<i0) {
         change = relchange*L["covar"](j);
-        change = std::max(change,1E-5);
+        change = max(change,1E-5);
         L["covar"](j) = L0["covar"](j) + change;
     }
     else {
         change = relchange*L["lik"](j-i0);
-        change = std::max(change,1E-5);
+        change = max(change,1E-5);
         L["lik"](j-i0) = L0["lik"](j-i0) + change;
     }
     gp.setParams(L);

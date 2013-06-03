@@ -354,13 +354,13 @@ int ALMM::getTestStatistics() const
                 	mfloat_t DL = nLL0(ip, 0) - nLLAlt(ip, is);
                 	if (DL<0)
                 		DL = 0;
-                    this->pv(ip, is) = Gamma::gammaQ(DL, (double)(((((((0.5))))))) * 1.0);
+                    this->pv(ip, is) = Gamma::gammaQ(DL, (double)0.5 * 1.0);
                 }
                 else if(this->testStatistics == ALMM::TEST_F)
                     {
                     	//store ftest statitics for testing SNP
                     	f_tests(ip,is) = f_tests_(0,0);
-                        this->pv(ip, is) = 1.0 - FisherF::Cdf(f_tests_(0,0), 1.0, (double)((((num_samples - f_tests_.rows())))));
+                        this->pv(ip, is) = 1.0 - FisherF::Cdf(f_tests_(0,0), 1.0, (double)(num_samples - f_tests_.rows()));
                     }
             } //end :: for ip
 
@@ -447,7 +447,7 @@ int ALMM::getTestStatistics() const
         beta_snp_ste.resize(num_pheno,num_snps);
 
 
-        //result matries: think about what to store in the end
+        //result matrices: think about what to store in the end
         //reserve memory for snp-wise foreground model
         //consist of [X*I,X*I0,cov]
         MatrixXd UXps(num_samples, num_inter + num_inter0 + num_covs);
@@ -544,7 +544,7 @@ int ALMM::getTestStatistics() const
         //current delta
         double ldelta = ldeltamin;
         double ldeltaD = (ldeltamax - ldeltamin);
-        ldeltaD /= ((double)(((((((((numintervals))))))))) - 1);
+        ldeltaD /= (double)(numintervals - 1);
         double nllmin = HUGE_VAL;
         double ldeltaopt_glob = 0;
         MatrixXd f_tests;
@@ -563,9 +563,9 @@ int ALMM::getTestStatistics() const
     }
 
     /* internal functions */
-    double nLLeval(MatrixXd *F_tests, double ldelta, const MatrixXd & UY, const MatrixXd & UX, const MatrixXd & S)
+    double nLLeval(MatrixXd *F_tests, double ldelta, const MatrixXd & UY, const MatrixXd & UX, const MatrixXd & S, bool REML)
     {
-        size_t n = UX.rows();
+		size_t n = UX.rows();
         size_t d = UX.cols();
         size_t n_pheno = UY.cols();
         assert(UY.cols() == S.cols());
@@ -582,6 +582,7 @@ int ALMM::getTestStatistics() const
         MatrixXd beta = MatrixXd(d, n_pheno);
         MatrixXd XSdi;
         //replice Sdi
+		double ldetXSX = 0.0;
         for(muint_t phen = 0;phen < n_pheno;++phen){
             VectorXd Sdi_p = Sdi.block(0, phen, n, 1);
             XSdi = (UX.array() * Sdi_p.replicate(1, d).array()).transpose();
@@ -597,6 +598,7 @@ int ALMM::getTestStatistics() const
             for(size_t dim = 0;dim < d;++dim){
                 if(S_X(dim, 0) > 3E-8){
                     beta(dim, phen) /= S_X(dim, 0);
+					ldetXSX += log(S_X(dim, 0));
                     for(size_t dim2 = 0;dim2 < d;++dim2){
                         (*F_tests)(dim2, phen) += U_X(dim2, dim) * U_X(dim2, dim) / S_X(dim, 0);
                     }
@@ -614,11 +616,30 @@ int ALMM::getTestStatistics() const
         //squared residuals
         res.array() *= res.array();
         res.array() *= Sdi.array();
-        double sigg2 = res.array().sum() / (n * n_pheno);
-        //compute the F-statistics
+		double sigg2 = res.array().sum();
+		double nLL;
+		if (REML){
+			MatrixXd XX = UX.transpose() * UX;
+            Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(XX);
+            //MatrixXd U_XX = eigensolver.eigenvectors();
+            MatrixXd S_XX = eigensolver.eigenvalues();
+			double ldetXX  = 0.0;
+			for(size_t dim = 0;dim < d;++dim){
+                if(S_XX(dim, 0) > 3E-8){
+                    ldetXX += log(S_XX(dim, 0));
+                }
+            }
+			ldetXX*=n_pheno;
+			sigg2/= ((n-d) * n_pheno);
+			nLL = 0.5 * ((n-d) * n_pheno * L2pi + ldet + ldetXSX - ldetXX + (n-d) * n_pheno + (n-d) * n_pheno * log(sigg2));
+		}else{
+			sigg2/= (n * n_pheno);
+			nLL = 0.5 * (n * n_pheno * L2pi + ldet + n * n_pheno + n * n_pheno * log(sigg2));
+		}
+
+		//compute the F-statistics
         (*F_tests).array() = beta.array() * beta.array() / (*F_tests).array();
         (*F_tests).array() /= sigg2;
-        double nLL = 0.5 * (n * n_pheno * L2pi + ldet + n * n_pheno + n * n_pheno * log(sigg2));
         return nLL;
     }
 
