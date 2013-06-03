@@ -117,7 +117,7 @@ void CFixedCF::agetK0cross_diag(VectorXd *out) const
 	(*out) = K0cross_diag;
 }
 
-void CFixedCF::agetParamBounds(CovarParams* lower, CovarParams* upper) const
+void CFixedCF::agetParamBounds0(CovarParams* lower, CovarParams* upper) const
 {
 	//bounding: [0,inf]
 	*lower = VectorXd::Ones(getNumberParams())*0;;
