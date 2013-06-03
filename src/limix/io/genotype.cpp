@@ -10,94 +10,78 @@
 //#include "vcflib/split.h"
 #include <string>
 #include <vector>
+#include <numeric>
 
 namespace io = boost::iostreams;
 
 namespace limix {
 
 
-CMemGenotype::CMemGenotype() {
+CGenotypeBlock::CGenotypeBlock() {
 	this->pos = PVectorXi(new VectorXi());
 	this->chrom = PVectorXs(new VectorXs());
 }
 
-CMemGenotype::CMemGenotype(const AGenotype& copy) : AGenotype(copy)
+CGenotypeBlock::CGenotypeBlock(const CGenotypeBlock& copy) : CMemDataFrame<MatrixXd>(copy)
 {
-	this->pos = copy.getPosition();
-	this->chrom = copy.getChromosome();
+	pos = PVectorXi(new VectorXi());
+	chrom = PVectorXs(new VectorXs());
+	*(this->pos) = *(copy.pos);
+	*(this->chrom) = *(copy.chrom);
 }
 
-
-CMemGenotype::CMemGenotype(PMatrixXd geno, PVectorXs chrom, PVectorXi pos,
-		PVectorXs IDs) {
-
+CGenotypeBlock::CGenotypeBlock(PMatrixXd geno, PVectorXs chrom, PVectorXi pos,PVectorXs sampleIDs,PVectorXs snpIDs) {
+	this->M = geno;
+	this->chrom = chrom;
+	this->pos = pos;
+	this->rowHeader = sampleIDs;
+	this->colHeader = snpIDs;
 }
 
-CMemGenotype::~CMemGenotype()
+CGenotypeBlock::~CGenotypeBlock()
 {
 }
 
-void CMemGenotype::agetPosition(VectorXi* out) const throw(CGPMixException)
+void CGenotypeBlock::agetPosition(VectorXi* out) const throw(CGPMixException)
 {
 	(*out) = (*pos);
 }
-
-void CMemGenotype::resizeMatrices(muint_t num_samples, muint_t num_snps)
+void CGenotypeBlock::resizeMatrices(muint_t num_samples, muint_t num_snps)
 {
 	//resize base matrix type
 	CMemDataFrame<MatrixXd>::resizeMatrices(num_samples,num_snps);
 	//resize SNP specific elements
-	this->chrom->resize(num_snps);
-	this->pos->resize(num_snps);
+	this->chrom->conservativeResize(num_snps);
+	this->pos->conservativeResize(num_snps);
 }
 
-PVectorXi CMemGenotype::getPosition() const throw(CGPMixException)
+PVectorXi CGenotypeBlock::getPosition() const throw(CGPMixException)
 {
 	return pos;
 }
 
-PVectorXs CMemGenotype::getChromosome() const throw(CGPMixException)
+PVectorXs CGenotypeBlock::getChromosome() const throw(CGPMixException)
 {
 	return chrom;
 }
 
-void CMemGenotype::agetChromosome(VectorXs* out) const throw(CGPMixException)
+void CGenotypeBlock::agetChromosome(VectorXs* out) const throw(CGPMixException)
 {
 	(*out) = (*chrom);
 }
 
-/*
-void CMemGenotype::setPosition(const VectorXi& in) throw(CGPMixException)
-{
-	(*pos) = in;
-}
-
-void CMemGenotype::setPosition(PVectorXi in) throw(CGPMixException)
-{
-	pos =in;
-}
-
-void CMemGenotype::setChromosome(const VectorXs& in) throw(CGPMixException)
-{
-	(*chrom) =in;
-}
-
-void CMemGenotype::setChromosome(PVectorXs in) throw(CGPMixException)
-{
-	chrom =in;
-}
-*/
-
 
 /* Text File genotype class */
-limix::CTextfileGenotype::CTextfileGenotype(const std::string& filename) {
+limix::CTextfileGenotypeContainer::CTextfileGenotypeContainer(const std::string& filename) {
 	this->in_filename = filename;
+	buffer_size = 100000;
+	is_open = false;
 }
 
-limix::CTextfileGenotype::~CTextfileGenotype() {
+limix::CTextfileGenotypeContainer::~CTextfileGenotypeContainer() {
 }
 
-void CTextfileGenotype::openFile()
+void CTextfileGenotypeContainer::openFile()
 {
 	//take filename apart and check whether ending is .gzip
     vector<string> filenameParts = split(in_filename, ".");
@@ -124,25 +108,42 @@ void CTextfileGenotype::openFile()
 	in_stream.push(io::file_descriptor_source(in_filename));
 	//remember extension to call appropriate reader
 	if(ext=="gen")
+	{
 		this->file_format = GEN;
+		read_header_GEN();
+	}
 	else if(ext=="vcf")
 		this->file_format = VCF;
 	else if(ext=="bed")
 		this->file_format = BED;
 	else
 		throw CGPMixException("unknown file format");
+
+	is_open = true;
 }
 
-void CTextfileGenotype::read(muint_t buffer_size)
+
+PGenotypeBlock CTextfileGenotypeContainer::read(mint_t num_snps) throw (CGPMixException)
 {
 	//open file
-	openFile();
+	if (!is_open)
+		openFile();
 	//which file format?
 	if(this->file_format==GEN)
-		read_GEN(buffer_size);
+		return read_GEN(num_snps);
+	else
+		throw CGPMixException("unsupported file format in read");
 }
 
-void CTextfileGenotype::read_GEN(muint_t block_size) {
+void CTextfileGenotypeContainer::read_header_GEN()
+{
+
+}
+
+PGenotypeBlock CTextfileGenotypeContainer::read_GEN(mint_t num_snps) throw (CGPMixException) {
+
+	//creat result Structure
+	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock());
 
 	//number of read snps, current buffer
 	muint_t i_snp,buffer,num_samples;
@@ -157,6 +158,9 @@ void CTextfileGenotype::read_GEN(muint_t block_size) {
 	muint_t snp_pos;
 	while(std::getline(in_stream,line))
 	{
+		if((i_snp>=(muint_t)num_snps) && (num_snps>-1))
+				break;
+
 		//std::cout << line;
 		//parse line
 		std::vector<string> fields = split(line, ' ');
@@ -184,12 +188,15 @@ void CTextfileGenotype::read_GEN(muint_t block_size) {
 		//2. need to extend buffer?
 		if (i_snp>=buffer)
 		{
-			buffer += block_size;
-			resizeMatrices(num_samples,buffer);
+			if (num_snps>0)
+				buffer += num_snps;
+			else
+				buffer += buffer_size;
+			RV->resizeMatrices(num_samples,buffer);
 		}
 		//3. store position and chromosome
-		(*this->chrom)(i_snp) = chrom;
-		(*this->pos)(i_snp) = snp_pos;
+		(*RV->chrom)(i_snp) = chrom;
+		(*RV->pos)(i_snp) = snp_pos;
 
 		//4. read every individual
 		//loop over individuals
@@ -203,15 +210,20 @@ void CTextfileGenotype::read_GEN(muint_t block_size) {
 			state_1 = atof(fields[i_field+1].c_str());
 			state_2 = atof(fields[i_field+2].c_str());
 			bin_state = -1*state_0 + 0*state_1 + 1*state_2;
-			(*this->M)(i_sample,i_snp) = bin_state;
+			(*RV->M)(i_sample,i_snp) = bin_state;
 		}
 
 		//increase counter
 		i_snp++;
 	}; //end for each line
 	//resize memory again
-	resizeMatrices(num_samples,i_snp);
+	RV->resizeMatrices(num_samples,i_snp);
+
+
+	return RV;
 }
+
+
 
 } //end ::limix
 

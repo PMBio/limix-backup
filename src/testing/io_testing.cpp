@@ -18,6 +18,8 @@
 
 #include "vcflib/Variant.h"
 #include "vcflib/split.h"
+#include "limix/types.h"
+
 
 using namespace vcf;
 using namespace std;
@@ -36,10 +38,30 @@ int main() {
 	MatrixXd pheno = (MatrixXd)randn((muint_t)n,(muint_t)p);
 	MatrixXd covs = MatrixXd::Ones(n,ncov);
 
-	string filename = "/Users/stegle/research/users/stegle/limix/vcf_gen/sample.gen.gz";
+	string filename = "/Users/stegle/research/users/stegle/limix/vcf_gen/sample2.gen.gz";
 
-	PTextfileGenotype geno = PTextfileGenotype(new CTextfileGenotype(filename));
-	geno->read();
+	PTextfileGenotypeContainer genoContainer = PTextfileGenotypeContainer(new CTextfileGenotypeContainer(filename));
+
+	PGenotypeBlock geno = genoContainer->read(4);
+	PVectorXi pos =geno->getPosition();
+	PMatrixXd gen = geno->getMatrix();
+
+	std::cout << pos->rows() << "\n";
+	std::cout << gen->rows() << "\n";
+
+	std::cout << (*gen);
+
+	std::cout << "\n\n";
+
+	std::cout << (*pos);
+
+	PGenotypeBlock geno2 = genoContainer->read(-1);
+	PVectorXi pos2 =geno2->getPosition();
+	PMatrixXd gen2 = geno2->getMatrix();
+
+	std::cout << pos2->rows() << "\n";
+	std::cout << gen2->rows() << "\n";
+
 
 	//CMemGenotype geno;
 
