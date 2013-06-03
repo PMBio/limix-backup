@@ -18,6 +18,14 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
+//#include <boost/iostreams/filter/bzip2.hpp>
+#include <boost/iostreams/device/file_descriptor.hpp>
+
+
+//namespace io = boost::iostreams;
 
 
 namespace limix {
@@ -26,17 +34,25 @@ class AGenotypeFilter
 {
 protected:
 	std::string filter_chrom;
-	uint64_t filter_start,filter_stop;
+	muint_t filter_start,filter_stop;
+	bool inline check_SNP(std::string snp_chrom,muint_t snp_pos)
+	{
+		if (this->filter_chrom=="NAN")
+			return true;
+		if(snp_chrom!=filter_chrom)
+			return false;
+		return (snp_pos>=filter_start) && (snp_pos<filter_stop);
+	}
 public:
 	AGenotypeFilter()
 	{
 		filter_start = -1;
 		filter_stop = -1;
-		filter_chrom = "";
+		filter_chrom = "NAN";
 	};
 	virtual ~AGenotypeFilter()
 	{};
-	virtual void setFilter(std::string chrom, uint64_t start,uint64_t stop)
+	virtual void setFilter(std::string chrom, muint_t start,muint_t stop)
 	{
 		this->filter_chrom = chrom;
 		this->filter_start = start;
@@ -107,7 +123,7 @@ class CMemGenotype : public AGenotype
 protected:
 	PVectorXi pos;
 	PVectorXs chrom;
-	void initMatrices();
+	virtual void resizeMatrices(muint_t num_rows, muint_t num_columns);
 
 public:
 	CMemGenotype();
@@ -148,13 +164,25 @@ typedef sptr<CMemGenotype> PMemGenotype;
 /* Common class to read from text files.
  * supports .gem, .vcf and .plink
  */
-class CTextfileGenotype : public AGenotype
+class CTextfileGenotype : public CMemGenotype
 {
 protected:
-	std::string filename;
+
+	enum { GEN, VCF, BED } file_format;
+	//stream for incoming files using the boost library
+	boost::iostreams::filtering_istream in_stream;
+	//filename
+	std::string in_filename;
+
+	//open files
+	void openFile();
+
 public:
-	CTextfileGenotype(std::string& filename);
+	CTextfileGenotype(const std::string& filename);
 	virtual ~CTextfileGenotype();
+
+	void read(muint_t buffer_size=50000);
+	void read_GEN(muint_t buffer_size);
 };
 typedef sptr<CTextfileGenotype> PTextfileGenotype;
 

@@ -40,11 +40,13 @@ using namespace limix;
 //support for eigen matrix stuff
 %include "eigen.i"
 //support for std libs
-//suport for std_shared pointers in tr1 namespace
 
-#define SWIG_SHARED_PTR_NAMESPACE std
-#define SWIG_SHARED_PTR_SUBNAMESPACE tr1
-%include "std_shared_ptr.i"
+//#define SWIG_SHARED_PTR_NAMESPACE std
+//#define SWIG_SHARED_PTR_SUBNAMESPACE tr1
+//%include "std_shared_ptr.i"
+
+%include <boost_shared_ptr.i>
+
 %include "std_vector.i"
 %include "std_map.i"
 %include "std_string.i"
