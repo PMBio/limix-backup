@@ -82,8 +82,8 @@ void CSingleTraitVarianceTerm::initCovariance() throw (CGPMixException)
 /* CCategorialCovarainceTerm*/
 CCategorialTraitVarianceTerm::CCategorialTraitVarianceTerm()
 {
-	//default: include cross Covariance Term
-	this->constraint = freeform;
+    //Trait covariance is not init
+    this->trait_covariance_is_init=0;
 }
 
 CCategorialTraitVarianceTerm::~CCategorialTraitVarianceTerm() {
@@ -93,6 +93,15 @@ CCategorialTraitVarianceTerm::~CCategorialTraitVarianceTerm() {
 
 void limix::CCategorialTraitVarianceTerm::agetTrait(VectorXd* out) const {
 	(*out) = this->trait;
+}
+    
+void CCategorialTraitVarianceTerm::setTraitCov(PTraitCF trait_covariance) throw (CGPMixException)
+{
+    // If the parameters have not been set, it sets them
+    if ((muint_t)(trait_covariance->getParams().rows()) != (muint_t)(trait_covariance->getNumberParams()))
+        trait_covariance->setParams(VectorXd::Ones(trait_covariance->getNumberParams()));
+    this->trait_covariance = trait_covariance;
+    this->trait_covariance_is_init=1;
 }
 
 void CCategorialTraitVarianceTerm::initCovariance() throw (CGPMixException)
@@ -105,17 +114,20 @@ void CCategorialTraitVarianceTerm::initCovariance() throw (CGPMixException)
 	//2. fixed CF
 	Kcovariance  = PFixedCF(new CFixedCF(this->K));
 	//3. freeform covariance
-	trait_covariance = PFreeFormCF(new CFreeFormCF(this->numtraits));
+    if  (trait_covariance_is_init!=1) {
+        trait_covariance = PTraitCF(new CTFreeFormCF(this->numtraits));
+        trait_covariance->setParams(VectorXd::Ones(trait_covariance->getNumberParams()));
+    }
 	trait_covariance->setX(this->trait);
-	//set constraint type
-	trait_covariance->setConstraint(constraint);
 
 	//4. add to overall covariance
 	static_pointer_cast<CProductCF>(covariance)->addCovariance(Kcovariance);
 	static_pointer_cast<CProductCF>(covariance)->addCovariance(trait_covariance);
 
+    
 	//5. create default parameter settings and constraints for optimizatio procedure
-	if((muint_t)hp_init.rows()==covariance->getNumberParams())
+	/*
+    if((muint_t)hp_init.rows()==covariance->getNumberParams())
 		this->covariance->setParams(hp_init);
 	else
 	{
@@ -131,6 +143,11 @@ void CCategorialTraitVarianceTerm::initCovariance() throw (CGPMixException)
 		trait_covariance->setParamsCovariance(Vinit);
 		Kcovariance->setParams(VectorXd::Ones(1));
 	}
+    */
+    
+    //set Kcovariance.param to one
+    Kcovariance->setParams(VectorXd::Ones(1));
+    
 	//have manual mask?
 	if((muint_t)hp_mask.rows()==covariance->getNumberParams())
 		covariance->setParamMask(hp_mask);
@@ -170,10 +187,9 @@ void CCategorialTraitVarianceTerm::setTrait(const VectorXd& trait)
 	}
 }
 
-CCategorialTraitVarianceTerm::CCategorialTraitVarianceTerm(const MatrixXd& K,
-		const MatrixXd& trait, mfloat_t Vinit,CFreeFromCFConstraitType constraint) : AVarianceTerm(K,Vinit){
+CCategorialTraitVarianceTerm::CCategorialTraitVarianceTerm(PTraitCF trait_covariance, const MatrixXd& K, const MatrixXd& trait, mfloat_t Vinit) : AVarianceTerm(K,Vinit){
+    this->setTraitCov(trait_covariance);
 	this->setTrait(trait);
-	this->constraint = constraint;
 }
 
 
@@ -226,9 +242,8 @@ CVarianceDecomposition::CVarianceDecomposition()
 	initialized = false;
 }
 
-CVarianceDecomposition::CVarianceDecomposition(const MatrixXd& pheno,
-		const MatrixXd& trait) {
-	this->trait =trait;
+CVarianceDecomposition::CVarianceDecomposition(const MatrixXd& pheno) {//, const MatrixXd& trait) {
+	//this->trait =trait;
 	this->pheno = pheno;
 	initialized = false;
 }
@@ -414,7 +429,7 @@ void CVarianceDecomposition::aestimateHeritability(VectorXd* out, const MatrixXd
 }
 
 
-
+/*
 void CVarianceDecomposition::addTerm(const MatrixXd& K, muint_t type,
 		 bool isNoise, bool fitCrossCovariance,mfloat_t Vinit)
 {
@@ -426,10 +441,7 @@ void CVarianceDecomposition::addTerm(const MatrixXd& K, muint_t type,
 	}
 	else if(type==CVarianceDecomposition::categorial)
 	{
-		CFreeFromCFConstraitType constraint = freeform;
-		if(!fitCrossCovariance)
-			constraint = diagonal;
-		term = PCategorialTraitVarianceTerm(new CCategorialTraitVarianceTerm(K,this->trait,Vinit,constraint));
+		term = PCategorialTraitVarianceTerm(new CCategorialTraitVarianceTerm(K,this->trait,Vinit));
 	}
 	else if (type==CVarianceDecomposition::continuous)
 	{
@@ -440,6 +452,12 @@ void CVarianceDecomposition::addTerm(const MatrixXd& K, muint_t type,
 	//add term
 	this->addTerm(term);
 }
+*/
+    
 
+void CVarianceDecomposition::addCVTerm(PTraitCF trait_covariance, const MatrixXd& K, const MatrixXd& trait) {
+    PVarianceTerm term = PCategorialTraitVarianceTerm(new CCategorialTraitVarianceTerm(trait_covariance,K,trait));
+    this->addTerm(term);
+}
 
 } //end:: namespace

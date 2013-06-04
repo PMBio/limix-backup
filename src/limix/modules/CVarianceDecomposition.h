@@ -170,21 +170,23 @@ public:
 class CCategorialTraitVarianceTerm : public AVarianceTerm
 {
 protected:
-	CFreeFromCFConstraitType constraint;
 	//trait covariance:
 	VectorXd trait;
 	VectorXd utrait;
 	//number of traits
 	muint_t numtraits;
 	//freeform covariance
-	PFreeFormCF trait_covariance;
+	PTraitCF trait_covariance;
+    bool trait_covariance_is_init;
 public:
 
 	CCategorialTraitVarianceTerm();
-	CCategorialTraitVarianceTerm(const MatrixXd& K,const MatrixXd& trait,mfloat_t Vinit=NAN, CFreeFromCFConstraitType constraint=freeform);
+	CCategorialTraitVarianceTerm(PTraitCF trait_covariance, const MatrixXd& K,const MatrixXd& trait,mfloat_t Vinit=NAN);
 	virtual ~CCategorialTraitVarianceTerm();
 
-
+    //trait covariance function
+    void setTraitCov(PTraitCF trait_covariance) throw (CGPMixException);
+    
 	//init covariance function
 	virtual void initCovariance() throw (CGPMixException);
 
@@ -212,13 +214,6 @@ public:
 	}
 	virtual void agetCovarianceFit(MatrixXd* out) const;
 
-	CFreeFromCFConstraitType getConstraint() const {
-		return constraint;
-	}
-
-	void setConstraint(CFreeFromCFConstraitType constraint) {
-		this->constraint = constraint;
-	}
 };
 
 class CVarianceDecomposition
@@ -229,7 +224,7 @@ protected:
 	//phenotype Matrix
 	MatrixXd pheno;
 	//trait indicator
-	MatrixXd trait;
+	//MatrixXd trait;
 
 	//fixed effects:
 	MatrixXd fixed;
@@ -254,14 +249,15 @@ public:
 	static const muint_t continuous = 2;
 
 	CVarianceDecomposition();
-	CVarianceDecomposition(const MatrixXd& pheno,const MatrixXd& trait);
+	CVarianceDecomposition(const MatrixXd& pheno);//,const MatrixXd& trait);
 	virtual ~CVarianceDecomposition();
 
 	void initGP() throw (CGPMixException);
 	bool train() throw(CGPMixException);
 
 	void addTerm(PVarianceTerm term);
-	void addTerm(const MatrixXd& K,muint_t type, bool isNoise=false, bool fitCrossCovariance=true,mfloat_t Vinit=NAN);
+	//void addTerm(const MatrixXd& K,muint_t type, bool isNoise=false, bool fitCrossCovariance=true,mfloat_t Vinit=NAN);
+    void addCVTerm(PTraitCF trait_covariance, const MatrixXd& K, const MatrixXd& trait);
 
 	PVarianceTerm getTerm(muint_t i) const;
 	PVarianceTerm getNoise() const;
@@ -299,18 +295,18 @@ public:
 		this->pheno = pheno;
 	}
 
-	const MatrixXd& getTrait() const {
-		return trait;
-	}
+	//const MatrixXd& getTrait() const {
+	//	return trait;
+	//}
 
-	void agetTrait(MatrixXd* out) const
-	{
-		(*out) = trait;
-	}
+	//void agetTrait(MatrixXd* out) const
+	//{
+	//	(*out) = trait;
+	//}
 
-	void setTrait(const MatrixXd& trait) {
-		this->trait = trait;
-	}
+	//void setTrait(const MatrixXd& trait) {
+	//	this->trait = trait;
+	//}
 
 	bool isInitialized() const {
 		return initialized;

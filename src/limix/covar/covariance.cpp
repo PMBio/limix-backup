@@ -124,12 +124,12 @@ void ACovarianceFunction::agetX(CovarInput *Xout) const throw(CGPMixException)
 
 
 
-void ACovarianceFunction::aK(MatrixXd* out) const
+void ACovarianceFunction::aK(MatrixXd* out) const throw (CGPMixException)
 {
 	aKcross(out,X);
 }
 
-void ACovarianceFunction::aKdiag(VectorXd *out) const
+void ACovarianceFunction::aKdiag(VectorXd *out) const throw (CGPMixException)
 {
 	MatrixXd Kfull = K();
 	(*out) = Kfull.diagonal();
