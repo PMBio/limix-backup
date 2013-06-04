@@ -22,7 +22,9 @@
 #include "split.h"
 #include <stdlib.h>
 #include <ctype.h>
-#include <io.h>
+#ifdef _WIN32
+	#include <sys/io.h>
+#endif
 //#include <unistd.h>
 
 using namespace std;
