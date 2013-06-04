@@ -48,7 +48,7 @@ public:
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 	//other overloads
-	virtual void aK(MatrixXd* out) const;
+	virtual void aK(MatrixXd* out) const throw (CGPMixException);
 	//setter and getters
 	void setK0(const MatrixXd& K0);
 	void setK0cross(const MatrixXd& Kcross);
@@ -92,7 +92,7 @@ public:
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 	//other overloads
-	virtual void aK(MatrixXd* out) const;
+	virtual void aK(MatrixXd* out) const throw (CGPMixException);
     
     //setter and getters
 	void setEyeDimension(const muint_t);

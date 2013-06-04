@@ -8,9 +8,12 @@
 #ifndef GP_BASE_H_
 #define GP_BASE_H_
 
-#include "limix/covar/covariance.h"
+//#include "limix/covar/covariance.h"
+#include "limix/covar/freeform.h"
+#include "limix/covar/combinators.h"
 #include "limix/likelihood/likelihood.h"
-#include "limix/mean/ADataTerm.h"
+//#include "limix/mean/ADataTerm.h"
+#include "limix/mean/CLinearMean.h"
 #include "limix/mean/CData.h"
 #include "limix/types.h"
 
@@ -317,6 +320,7 @@ public:
     static double LMLhess_num(CGPbase& gp, const muint_t i, const muint_t j) throw(CGPMixException);
     
 };
+typedef sptr<CGPbase> PGPbase;
 
 
 inline MatrixXd CGPbase::predictMean(const MatrixXd& Xstar) throw (CGPMixException)
@@ -400,6 +404,79 @@ lmmType* CGPbase::getLMMInstance()
 	rv->setPheno(pheno);
 	return rv;
 }
+
+
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//%ignore CGPbase::getX;
+//%rename(predictVar) CGPbase::apredictVar;
+#endif
+
+typedef std::vector<PGPbase> AGPbaseVec;
+typedef std::vector<PLinearMean> ALinearMeanVec;
+
+class CGPvarDecomp : public CGPbase {
+protected:
+	//GP vec
+	AGPbaseVec vecGPs;
+
+	//Dimensions
+	muint_t P;
+	muint_t N;
+	muint_t state;
+
+	//fixed effects
+	//to be implemented
+	//for now I only consider
+	//a trait-specific intercept term
+	MatrixXd fixed;
+	//pheno
+	MatrixXd pheno;
+
+	//update params
+	virtual void updateParams() throw (CGPMixException);
+
+	//covariance stuff
+	VectorXd lambda;
+	ACovarVec C1;
+	PTFixedCF C2;
+	MatrixXd trait;
+	ACovarVec covar;
+
+	//dataterm
+	ALinearMeanVec vecLinearMeans;
+
+	//Initialization
+	bool is_init;
+	CovarParams initParams;
+
+public:
+
+	//CGPvarDecomp();
+	CGPvarDecomp(PCovarianceFunction covar, PLikelihood lik,PDataTerm dataTerm,const VectorXd& lambda, const muint_t P, const MatrixXd& pheno, const VectorXd& initParams);
+	virtual ~CGPvarDecomp();
+
+	//Getters and setters
+	//virtual void setParams(const CGPHyperParams& hyperparams) throw(CGPMixException);
+	//PGPbase getGP(muint_t i){return *(vecGPs[i]);};
+	//PLinearMean getMean(muint_t i){return vecLinearMeans[i];};
+	//PCovarianceFunction getC1(muint_t i){return C1[i];};
+	//PCovarianceFunction getC2(muint_t i){return C2;};
+	muint_t getState(){return this->state;};
+	void addGP(PGPbase gp)  throw (CGPMixException){vecGPs.push_back(gp);};
+	void initializeGP(muint_t i,const CGPHyperParams& hyperparams){vecGPs[i]->setParams(hyperparams);};
+
+	// Initialise vecGPs
+	void initGPs() throw (CGPMixException);
+
+	//LML
+	virtual mfloat_t LML() throw (CGPMixException);
+	//gradient components:
+	virtual void aLMLgrad_covar(VectorXd* out) throw (CGPMixException);
+	virtual void aLMLgrad_lik(VectorXd* out) throw (CGPMixException);
+	virtual void aLMLgrad_X(MatrixXd* out) throw (CGPMixException);
+	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);
+
+};
 
 } /* namespace limix */
 #endif /* GP_BASE_H_ */
