@@ -77,7 +77,7 @@ class CFastVDMM:
             eigen2, U2 = SP.linalg.eig(K2)
             eigen2= SP.array(eigen2,dtype=float)
             S2is = SP.diag(1/SP.sqrt(eigen2))
-            logdet_compl = P*SP.log(eigen2).sum()
+            logdet_compl = self.P*SP.log(eigen2).sum()
             K = SP.dot(S2is,SP.dot(U2.T,SP.dot(K1,SP.dot(U2,S2is))))
                 
         #Diagonalization of Part I
@@ -103,12 +103,12 @@ class CFastVDMM:
         trait = SP.array(range(self.P))[:,SP.newaxis]
         if type(C)!=list:
             Cout=C
-            Cout.setX(trait)
+            if Cout.getName()[0:2]=='CT':    Cout.setX(trait)
         else:
             Cout = limix.CSumCF()
             n_terms = len(C)
             for term_i in range(n_terms):
-                C[term_i].setX(trait)
+                if C[term_i].getName()[0:2]=='CT':    C[term_i].setX(trait)
                 Cout.addCovariance(C[term_i])
         return Cout
 
@@ -138,7 +138,7 @@ class CFastVDMM:
         """
 
     
-    def fit(self,grad_threshold=1e-2):
+    def fit(self,Params0=None,grad_threshold=1e-2):
         """
         fit a variance component model with the predefined design and the initialization and returns all the results
         """
@@ -146,9 +146,10 @@ class CFastVDMM:
         # GPVD initialization
         lik = limix.CLikNormalNULL()
         # Initial Params
-        n_params = self.C1.getNumberParams()
-        n_params+= self.C2.getNumberParams()
-        Params0 = SP.rand(n_params)
+        if Params0==None:
+            n_params = self.C1.getNumberParams()
+            n_params+= self.C2.getNumberParams()
+            Params0 = SP.rand(n_params)
         # MultiGP Framework
         covar = []
         gp    = []

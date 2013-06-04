@@ -91,9 +91,11 @@ public:
 typedef sptr<CSumCF> PSumCF;
 
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
-%rename(getParams) ACovarianceFunction::agetParams;
+%rename(getParams) CLinCombCF::agetParams;
 #endif
-
+/*
+* Kronecker function for pairs of covariances
+*/
 class CLinCombCF : public AMultiCF {
 protected:
 	VectorXd coeff;
@@ -105,8 +107,6 @@ public:
 	//linear coefficients
 	virtual void setCoeff(const VectorXd& coeff);
 	virtual void agetCoeff(VectorXd* out) const;
-
-
 	//overloaded pure virtual members
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
 	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
@@ -115,8 +115,8 @@ public:
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
 	//optional overloadings:
-	virtual void aK(MatrixXd* out) const;
-	virtual void aKdiag(VectorXd* out) const;
+	virtual void aK(MatrixXd* out) const throw (CGPMixException);
+	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
 	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
 	virtual std::string getName() const;
 };
@@ -154,7 +154,12 @@ typedef sptr<CProductCF> PProductCF;
 
 /*
  * Kronecker function for pairs of covariances
- */
+*/
+    
+#if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
+//%sptr(gpmix::CKroneckerCF)
+#endif
+    
 class CKroneckerCF: public AMultiCF
 {
 protected:
@@ -185,7 +190,7 @@ public:
 
 	virtual std::string getName() const;
 };
-
+typedef sptr<CKroneckerCF> PKroneckerCF;
 
 } //end namespace limix
 
