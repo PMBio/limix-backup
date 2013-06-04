@@ -18,11 +18,12 @@
 #include <algorithm>
 #include "LargeFileSupport.h"
 #include <sys/stat.h>
-#include <sys/mman.h>
+//#include <sys/mman.h>
 #include "split.h"
 #include <stdlib.h>
 #include <ctype.h>
-#include <unistd.h>
+#include <io.h>
+//#include <unistd.h>
 
 using namespace std;
 

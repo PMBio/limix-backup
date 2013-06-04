@@ -162,12 +162,12 @@ shannon_H(char* buf,
       token = i;
       freq = ((float)m_token_freqs[token]); 
       m_token_probs[token] = (freq / ((float)num_events));
-      entropy += m_token_probs[token] * log2(m_token_probs[token]);
+      entropy += m_token_probs[token] * (log(m_token_probs[token])/log(2.0));
     }
   }
 
   bits = -1.0 * entropy;
-  m_maxent = log2(m_num_tokens);
+  m_maxent = log((float)m_num_tokens)/log(2.0);
   m_ratio = bits / m_maxent;
 
   return bits;
