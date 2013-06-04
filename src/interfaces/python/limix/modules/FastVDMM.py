@@ -9,8 +9,30 @@ import pdb
 import time
 
 
+def kroneckerApprox(S,K,Gamma):
+    
+    import scipy.optimize
+    
+    def fitKronApprox(a):
+        Sbg = SP.zeros_like(S[0])
+        Kbg = SP.zeros_like(K[0])
+        for i in range(len(S)):  Sbg+= a[i]*S[i]
+        for i in range(len(K)):  Kbg+= a[i+len(S)]*K[i]
+        Gamma1 = SP.kron(Sbg,Kbg)
+        return ((Gamma-Gamma1)**2).sum()
 
-class CVarianceDecomposition:
+    a0 = SP.concatenate((1/float(len(S))*SP.ones(len(S)),1/float(len(K))*SP.ones(len(K))))
+    res = SP.optimize.fmin_l_bfgs_b(fitKronApprox,a0,approx_grad = 1, factr=10., pgtol=1e-08, maxfun=float('Inf'))
+    a = res[0]
+    Sbg = SP.zeros_like(S[0])
+    Kbg = SP.zeros_like(K[0])
+    for i in range(len(S)):  Sbg+= a[i]*S[i]
+    for i in range(len(K)):  Kbg+= a[i+len(S)]*K[i]
+
+    return Sbg, Kbg
+
+
+class CFastVDMM:
     """
     helper function for variance decomposition in limix
     This class mainly takes care of initialization and interpreation of results
@@ -33,56 +55,69 @@ class CVarianceDecomposition:
 
     """
     
-    def __init__(self,Y,T,F,C,K):
+    def __init__(self,Y,C1,C2,K1,K2=None):
         """
-        Y: phenotype matrix
-        T: trait matrix / list of trait matrices
-        F: fixed effect
-        C: list of trait covariances
-        K: list of kronecker matrices
+        Y:  NxP phenotype matrix
+        C:  list of trait covariances
+        K1: kernel matrix 1
+        K2: kernel matrix 2
         """
         
-        # Number of terms
-        self.n_terms = len(C)
+        self.N=Y.shape[0]
+        self.P=Y.shape[1]
         
-        if type(T)!=list:
-            Tl = []
-            for i in range(self.n_terms):
-                Tl.append(T)
-            T = Tl
-        
-        #create column of 1 for fixed if nothing providede
-        self.N       = (T[0]==0).sum()
-        self.P       = int(T[0].max()+1)
-        self.Nt      = self.N*self.P
-        
-        assert len(K)==len(C), 'K and C must have the same length'
-        
-        assert Y.shape[0]==self.Nt, 'outch'
-        assert Y.shape[1]==1, 'outch'
-        
-        for i in range(self.n_terms):
-            assert K[i].shape[0]==self.Nt, 'outch'
-            assert K[i].shape[1]==self.Nt, 'outch'
-            assert T[i].shape[1]==1, 'outch'
-
-        if F==None:
-            F=SP.ones(self.Nt)
+        #Diagonalization of Part II
+        if K2 == None:
+            K2   = SP.eye(self.N)
+            U2   = SP.eye(self.N)
+            S2is = SP.eye(self.N)
+            logdet_compl = 0
+            K = K1
+        else:
+            eigen2, U2 = SP.linalg.eig(K2)
+            eigen2= SP.array(eigen2,dtype=float)
+            S2is = SP.diag(1/SP.sqrt(eigen2))
+            logdet_compl = P*SP.log(eigen2).sum()
+            K = SP.dot(S2is,SP.dot(U2.T,SP.dot(K1,SP.dot(U2,S2is))))
                 
-        #trait and phenotype
-        self.Y = Y
-        self.T = T
-        self.F = F
-        self.K = K
-        self.C = C
+        #Diagonalization of Part I
+        eigen, U = SP.linalg.eig(K)
+        eigen = SP.array(eigen,dtype=float)
+        U= SP.array(U,dtype=float)
+        S   = SP.diag(eigen)
+                
+        # pheno transformation
+        Yt = SP.zeros_like(Y.T)
+        Upheno = SP.dot(U.T,SP.dot(S2is,U2.T))
+        for p in range(self.P):
+            Yt[p,:] = SP.dot(Upheno,Y[:,p])
         
+        self.C1 = self.buildCF(C1)
+        self.C2 = self.buildCF(C2)
+        self.Yt = Yt
+        self.eigen = eigen
         pass
+    
+    def buildCF(self,C):
+        # Initialize CTraitCFs and wrap them in a Sum of matrices
+        trait = SP.array(range(self.P))[:,SP.newaxis]
+        if type(C)!=list:
+            Cout=C
+            Cout.setX(trait)
+        else:
+            Cout = limix.CSumCF()
+            n_terms = len(C)
+            for term_i in range(n_terms):
+                C[term_i].setX(trait)
+                Cout.addCovariance(C[term_i])
+        return Cout
+
     
     
     def initialise(self):
         """
         get random initialization of variances based on the empirical trait variance
-        """
+        
         EmpVarY=self.getEmpTraitVar()
         temp=SP.rand(self.n_terms,self.P)
         N=temp.sum(0)
@@ -100,61 +135,71 @@ class CVarianceDecomposition:
             else:
                 print 'Not implemented for %s' % self.C[term_i].getName()
                 break
+        """
 
     
     def fit(self,grad_threshold=1e-2):
         """
         fit a variance component model with the predefined design and the initialization and returns all the results
         """
-        
-        # Storing some meaning full information
-        Params0 = self.getParams()
-    
-        # LIMIX CVARIANCEDECOMPOSITION INITIALIZATION
-        vt = limix.CVarianceDecomposition()
-        vt.setPheno(self.Y)
-        vt.setFixed(self.F)
-        for term_i in range(self.n_terms):
-            vt.addCVTerm(self.C[term_i],self.K[term_i],self.T[term_i])
-        vt.initGP()
-    
-        # GET GP AND STORE LML0
-        gp=vt.getGP()
-        LML0=-1.0*gp.LML()
-    
-        # LIMIX CVARIANCEDECOMPOSITION FITTING
+
+        # GPVD initialization
+        lik = limix.CLikNormalNULL()
+        # Initial Params
+        n_params = self.C1.getNumberParams()
+        n_params+= self.C2.getNumberParams()
+        Params0 = SP.rand(n_params)
+        # MultiGP Framework
+        covar = []
+        gp    = []
+        mean  = []
+        for i in range(self.N):
+            covar.append(limix.CLinCombCF())
+            covar[i].addCovariance(self.C1)
+            covar[i].addCovariance(self.C2)
+            coeff = SP.array([self.eigen[i],1])
+            covar[i].setCoeff(coeff)
+            mean.append(limix.CLinearMean(self.Yt[:,i],SP.eye(self.P)))
+        gpVD = limix.CGPvarDecomp(covar[0],lik,mean[0],SP.ones(self.N),self.P,self.Yt,Params0)
+        for i in range(self.N):
+            gp.append(limix.CGPbase(covar[i],lik,mean[i]))
+            gp[i].setY(self.Yt[:,i])
+            gpVD.addGP(gp[i])
+                
+        # Optimization
+        gpVD.initGPs()
+        gpopt = limix.CGPopt(gpVD)
+        LML0=-1.0*gpVD.LML()
         start_time = time.time()
-        conv=vt.train()
-        time_train=time.time()-start_time
+        conv = gpopt.opt()
+        time_train = time.time() - start_time
+        LML=-1.0*gpVD.LML()
+        LMLgrad = SP.linalg.norm(gpVD.LMLgrad()['covar'])
+        Params = gpVD.getParams()['covar']
     
-        # Takes the estimated Trait Covariance Matrix
-        TraitCovar=self.getEmpTraitCov()
-        
         # Check whether limix::CVarianceDecomposition.train() has converged
-        ParamMask=gp.getParamMask()['covar']
-        LMLgrad = SP.linalg.norm(gp.LMLgrad()['covar'][ParamMask==1])
-        if conv!=True or LMLgrad>grad_threshold or self.getParams().max()>10*SP.sqrt(self.getEmpTraitVar().max()):
+        if conv!=True or LMLgrad>grad_threshold or Params.max()>10:
             print 'limix::CVarianceDecomposition::train has not converged'
             res=None
         else:
             res = {
                 'Params0':          Params0,
-                'Params':           self.getParams(),
-                'LML':              SP.array([-1.0*gp.LML()]),
+                'Params':           Params,
+                'LML':              SP.array([LML]),
                 'LML0':             SP.array([LML0]),
                 'LMLgrad':          SP.array([LMLgrad]),
                 'time_train':       SP.array([time_train]),
-                'TraitCovar':       TraitCovar,
-                'gp' :              gp
                 }
         return res
         pass
+            
+
     
     
     def fit_ntimes(self,ntimes=10,grad_threshold=1e-2,dist_mins=1e-2):
         """
         fit phenos ntimes with different random initialization and returns the minima order with respect to gp.LML
-        """
+        
 
         optima=[]
         LML=SP.zeros((1,0))
@@ -185,12 +230,13 @@ class CVarianceDecomposition:
             optima1.append(optima[index[i]])
     
         return optima1
+        """
 
     
     def getGP(self):
         """
         Returns the GP of the limix class CVarianceDecomposition
-        """
+        
         vt = limix.CVarianceDecomposition()
         vt.setPheno(self.Y)
         vt.setFixed(self.F)
@@ -199,27 +245,30 @@ class CVarianceDecomposition:
         vt.initGP()
         gp=vt.getGP()
         return gp
+        """
 
     def getParams(self):
         """
         Returns the Parameters
-        """
+        
         params=SP.concatenate([self.C[term_i].agetScales() for term_i in range(self.n_terms)])
         return params
+        """
 
     def getEstTraitCov(self):
         """
         Returns the estimated trait covariance matrix
-        """
+        
         TraitCovar=SP.zeros((self.P,self.P))
         for term_i in range(self.n_terms):
             TraitCovar+=self.C[term_i].getK0()
         return TraitCovar
+        """
 
     def getCovParams(self,min):
         """
         USES LAPLACE APPROXIMATION TO CALCULATE THE COVARIANCE MATRIX OF THE OPTIMIZED PARAMETERS
-        """
+        
         gp=min['gp']
         ParamMask=gp.getParamMask()['covar']
         std=SP.zeros(ParamMask.sum())
@@ -228,11 +277,11 @@ class CVarianceDecomposition:
         H=H[It,:][:,It]
         Sigma = SP.linalg.inv(H)
         return Sigma
+        """
     
     def getModelPosterior(self,min,Sigma=None):
         """
         USES LAPLACE APPROXIMATION TO CALCULATE THE BAYESIAN MODEL POSTERIOR
-        """
         
         if Sigma==None:
             Sigma = self.getCovParams(min)
@@ -246,25 +295,28 @@ class CVarianceDecomposition:
         RV = min['LML']+ModCompl
             
         return RV
+        """
     
 
     def getEmpTraitCov(self):
         """
         Returns the empirical trait covariance matrix
-        """
+        
         Y1=(self.Y).reshape((self.P,self.N))
         RV=SP.cov(Y1)
         return RV
+        """
     
     def getEmpTraitVar(self):
         """
         Returns the vector of empirical trait variances
-        """
+        
         if self.P==1:
             RV = self.getEmpTraitCov()
         else:
             RV = self.getEmpTraitCov().diagonal()
         return RV
+        """
 
 
 
@@ -272,7 +324,7 @@ class CVarianceDecomposition:
     def estimateHeritabilities(self,Kpop):
         """
         It fits the model with 1 fixed effects and covariance matrix h1[p]*K+h2[p] for each trait p and return the vectors h1 and h2
-        """
+        
     
         h1 = SP.zeros(self.P)
         h2 = SP.zeros(self.P)
@@ -287,11 +339,12 @@ class CVarianceDecomposition:
             if h2[p]<1e-6:   h2[p]=1e-6
     
         return h1, h2
+        """
     
     def exportMin(self,min,f,counter=0,laplace=0):
         """
         Export the min in the given h5py file or group    
-        """
+        
         f.create_dataset("Params0",data=min["Params0"])
         f.create_dataset("LML0",data=min["LML0"])
         f.create_dataset("Params",data=min["Params"])
@@ -304,15 +357,17 @@ class CVarianceDecomposition:
             covParams = self.getCovParams(min)
             f.create_dataset("covParams",data=covParams)
             f.create_dataset("modelPosterior",data=self.getModelPosterior(min,Sigma=covParams))
+        """
         
     
     def exportMins(self,mins,f,laplace=0):
         """
         Export all the min in the given h5py file or group  
-        """
+        
         for min_i in range(len(mins)):
             g=f.create_group('min%d'%min_i)
             self.exportMin(mins[min_i],g,counter=1,laplace=laplace)
+        """
 
 
 

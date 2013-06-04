@@ -4,6 +4,7 @@
 %shared_ptr(limix::CGPCholCache)
 %shared_ptr(limix::CGPHyperParams)
 %shared_ptr(limix::CGPbase)
+%shared_ptr(limix::CGPvarDecomp)
 %shared_ptr(limix::CGPkronecker)
 %shared_ptr(limix::CGPopt)
 %shared_ptr(limix::CGPKroneckerCache)

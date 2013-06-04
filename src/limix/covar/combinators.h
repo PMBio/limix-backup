@@ -91,6 +91,41 @@ public:
 typedef sptr<CSumCF> PSumCF;
 
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
+%rename(getParams) ACovarianceFunction::agetParams;
+#endif
+
+class CLinCombCF : public AMultiCF {
+protected:
+	VectorXd coeff;
+public:
+	CLinCombCF(const ACovarVec& covariances);
+	CLinCombCF(const muint_t numCovariances=0);
+	//destructors
+	virtual ~CLinCombCF();
+	//linear coefficients
+	virtual void setCoeff(const VectorXd& coeff);
+	virtual void agetCoeff(VectorXd* out) const;
+
+
+	//overloaded pure virtual members
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
+	//optional overloadings:
+	virtual void aK(MatrixXd* out) const;
+	virtual void aKdiag(VectorXd* out) const;
+	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
+	virtual std::string getName() const;
+};
+typedef sptr<CLinCombCF> PLinCombCF;
+
+
+
+
+#if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
 //%sptr(gpmix::CProductCF)
 #endif
 
