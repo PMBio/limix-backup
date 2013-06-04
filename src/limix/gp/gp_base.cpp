@@ -666,8 +666,8 @@ void CGPbase::aLMLhess(MatrixXd* out, stringVec vecLabels) throw (CGPMixExceptio
         
     //Checks whether there are ripetions
     bool redundancy=0;
-    for(int i=0; i<vecLabels.size(); i++)
-        for(int j=i+1; j<vecLabels.size(); j++)
+    for(muint_t i=0; i<vecLabels.size(); i++)
+        for(muint_t j=i+1; j<vecLabels.size(); j++)
             if (vecLabels.at(i)==vecLabels.at(j)) redundancy=1;
     if (redundancy==1)   throw CGPMixException("Ripetition not allowed");
         
@@ -788,8 +788,6 @@ void CGPbase::aLMLhess_covarlik(MatrixXd* out) throw (CGPMixException)
 {
     //set output dimensions
     (*out).resize(covar->getNumberParams(),lik->getNumberParams());
-    //W:
-    MatrixXd& W = cache->getDKEffInv_KEffInvYYKinv();
     //KyInv:
     MatrixXd& KyInv = cache->rgetKEffInv();
     //KyInvY=alpha e alpha*alpha.T:

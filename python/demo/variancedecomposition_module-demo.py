@@ -58,9 +58,10 @@ X = SP.concatenate([X for i in xrange(P)],axis=0)
 # Set real values for parameters
 mu    = 1.0*SP.ones(P)
 a     = 1.0*SP.ones(P)
-a[1]  = -a[1]
+if P>1:
+    a[1]  = -a[1]
 c     = 0.7*SP.ones(P)
-sigma = 0.8*SP.ones(P)
+sigma = 0.3*SP.ones(P)
     
 # Generate phenotypes
 SP.random.seed(1)
@@ -69,9 +70,15 @@ Y = genPhenotype(X,T,mu,a,c,SP.zeros(P),sigma)
 # Fixed effect
 F  = SP.kron(SP.eye(P),SP.ones((N,1)))
 # Trait Matrices
-C1 = limix.CTDenseCF(P)
-C2 = limix.CTFixedCF(P,SP.eye(P))
-C3 = limix.CTDiagonalCF(P)
+if 1:
+    C1 = limix.CTDenseCF(P)
+    C2 = limix.CTFixedCF(P,SP.eye(P))
+    C3 = limix.CTDiagonalCF(P)
+if 0:
+    C1 = limix.CTFixedCF(P,SP.eye(P))
+    C2 = limix.CTFixedCF(P,SP.eye(P))
+    C3 = limix.CTFixedCF(P,SP.eye(P))
+
 # Kronecker matrix
 K1 = SP.dot(X,X.T)
 K2 = K1
