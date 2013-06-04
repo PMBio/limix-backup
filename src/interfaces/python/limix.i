@@ -26,6 +26,8 @@
 #include "limix/modules/CVqtl.h"
 #include "limix/modules/CMultiTraitVQTL.h"
 #include "limix/modules/CVarianceDecomposition.h"
+#include "limix/io/dataframe.h"
+#include "limix/io/genotype.h"
 
 
 
@@ -38,11 +40,13 @@ using namespace limix;
 //support for eigen matrix stuff
 %include "eigen.i"
 //support for std libs
-//suport for std_shared pointers in tr1 namespace
 
-#define SWIG_SHARED_PTR_NAMESPACE std
-#define SWIG_SHARED_PTR_SUBNAMESPACE tr1
-%include "std_shared_ptr.i"
+//#define SWIG_SHARED_PTR_NAMESPACE std
+//#define SWIG_SHARED_PTR_SUBNAMESPACE tr1
+//%include "std_shared_ptr.i"
+
+%include <boost_shared_ptr.i>
+
 %include "std_vector.i"
 %include "std_map.i"
 %include "std_string.i"
@@ -61,6 +65,7 @@ using namespace limix;
 %include "./../mean.i"
 %include "./../lmm.i"
 %include "./../modules.i"
+%include "./../io.i"
 
 
 //generated outodoc:
@@ -88,6 +93,7 @@ using namespace limix;
 %include "limix/modules/CVqtl.h"
 %include "limix/modules/CMultiTraitVQTL.h"
 %include "limix/modules/CVarianceDecomposition.h"
-
+%include "limix/io/dataframe.h"
+%include "limix/io/genotype.h"
 
  

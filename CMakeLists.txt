@@ -97,6 +97,12 @@ include(${SWIG_USE_FILE})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_SWIG_FLAGS "")
 
+find_package( ZLIB REQUIRED )
+if ( ZLIB_FOUND )
+    include_directories( ${ZLIB_INCLUDE_DIRS} )
+    #target_link_libraries( ${ZLIB_LIBRARIES} )
+endif( ZLIB_FOUND )
+
 set(CMAKE_MODULE_PATH "${LIMIX_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 #add_definitions(-g -Wextra -D_BSD_SOURCE)
@@ -117,13 +123,19 @@ endif(NOT ${CMAKE_BUILD_TYPE} MATCHES "Debug")
 
 #includes
 include_directories(./External)
+include_directories(./External/boost)
 include_directories(./src)
 
 #add Cmake modules
 #nlopt
 add_subdirectory(./External/nlopt)
+#vcflib
+add_subdirectory(./External/vcflib)
+#boost
+add_subdirectory(./External/boost)
 #LIMIX source
 add_subdirectory(./src)
+
 
 #### build external interface (optional) #####
 if (BUILD_PYTHON_PACKAGE)

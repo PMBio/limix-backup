@@ -77,10 +77,12 @@ protected:
 	inline void checkWithinParams(muint_t i) const throw (CGPMixException);
 	inline void checkXDimensions(const CovarInput& X) const throw (CGPMixException);
 	inline void checkParamDimensions(const CovarParams& params) const throw (CGPMixException);
+	/*
 	void setNumberParams()
 	{
 		this->numberParams = numberParams;
 	}
+	*/
 
 	virtual void agetParamMask0(CovarParams* out) const;
 
