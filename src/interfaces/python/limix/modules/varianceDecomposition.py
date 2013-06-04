@@ -207,12 +207,15 @@ class CVarianceDecomposition:
         params=SP.concatenate([self.C[term_i].agetScales() for term_i in range(self.n_terms)])
         return params
 
-    def getEstTraitCov(self):
+    def getEstTraitCov(self,terms=None):
         """
         Returns the estimated trait covariance matrix
+        terms: index of temrs to use for this estimate
         """
+        if terms is None:
+            terms = xrange(self.n_terms)
         TraitCovar=SP.zeros((self.P,self.P))
-        for term_i in range(self.n_terms):
+        for term_i in terms:
             TraitCovar+=self.C[term_i].getK0()
         return TraitCovar
 
@@ -253,7 +256,7 @@ class CVarianceDecomposition:
         Returns the empirical trait covariance matrix
         """
         Y1=(self.Y).reshape((self.P,self.N))
-        RV=SP.cov(Y1)
+        RV=SP.cov(Y1).reshape([self.P,self.P])
         return RV
     
     def getEmpTraitVar(self):
