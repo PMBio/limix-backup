@@ -224,7 +224,7 @@ protected:
 	//phenotype Matrix
 	MatrixXd pheno;
 	//trait indicator
-	MatrixXd trait;
+	//MatrixXd trait;
 
 	//fixed effects:
 	MatrixXd fixed;
@@ -249,7 +249,7 @@ public:
 	static const muint_t continuous = 2;
 
 	CVarianceDecomposition();
-	CVarianceDecomposition(const MatrixXd& pheno,const MatrixXd& trait);
+	CVarianceDecomposition(const MatrixXd& pheno);//,const MatrixXd& trait);
 	virtual ~CVarianceDecomposition();
 
 	void initGP() throw (CGPMixException);
@@ -257,7 +257,7 @@ public:
 
 	void addTerm(PVarianceTerm term);
 	//void addTerm(const MatrixXd& K,muint_t type, bool isNoise=false, bool fitCrossCovariance=true,mfloat_t Vinit=NAN);
-    void addCVTerm(PTraitCF trait_covariance, const MatrixXd& K);
+    void addCVTerm(PTraitCF trait_covariance, const MatrixXd& K, const MatrixXd& trait);
 
 	PVarianceTerm getTerm(muint_t i) const;
 	PVarianceTerm getNoise() const;
@@ -295,18 +295,18 @@ public:
 		this->pheno = pheno;
 	}
 
-	const MatrixXd& getTrait() const {
-		return trait;
-	}
+	//const MatrixXd& getTrait() const {
+	//	return trait;
+	//}
 
-	void agetTrait(MatrixXd* out) const
-	{
-		(*out) = trait;
-	}
+	//void agetTrait(MatrixXd* out) const
+	//{
+	//	(*out) = trait;
+	//}
 
-	void setTrait(const MatrixXd& trait) {
-		this->trait = trait;
-	}
+	//void setTrait(const MatrixXd& trait) {
+	//	this->trait = trait;
+	//}
 
 	bool isInitialized() const {
 		return initialized;

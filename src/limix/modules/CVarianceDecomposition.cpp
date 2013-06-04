@@ -242,8 +242,8 @@ CVarianceDecomposition::CVarianceDecomposition()
 	initialized = false;
 }
 
-CVarianceDecomposition::CVarianceDecomposition(const MatrixXd& pheno, const MatrixXd& trait) {
-	this->trait =trait;
+CVarianceDecomposition::CVarianceDecomposition(const MatrixXd& pheno) {//, const MatrixXd& trait) {
+	//this->trait =trait;
 	this->pheno = pheno;
 	initialized = false;
 }
@@ -455,8 +455,8 @@ void CVarianceDecomposition::addTerm(const MatrixXd& K, muint_t type,
 */
     
 
-void CVarianceDecomposition::addCVTerm(PTraitCF trait_covariance, const MatrixXd& K) {
-    PVarianceTerm term = PCategorialTraitVarianceTerm(new CCategorialTraitVarianceTerm(trait_covariance,K,this->trait));
+void CVarianceDecomposition::addCVTerm(PTraitCF trait_covariance, const MatrixXd& K, const MatrixXd& trait) {
+    PVarianceTerm term = PCategorialTraitVarianceTerm(new CCategorialTraitVarianceTerm(trait_covariance,K,trait));
     this->addTerm(term);
 }
 

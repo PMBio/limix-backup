@@ -28,31 +28,43 @@ class CVarianceDecomposition:
         getEstTraitCov:              Returns the total trait covariance in the GP by summing up the trait covariances C_i
         getCovParams:                Calculates the inverse hessian of the -loglikelihood with respect to the parameters: this constitutes the covariance matrix of the posterior over paramters under laplace approximation
         estimateHeritabilities:      It fits the model with 1 global fixed effects and covariance matrix h1[p]*K+h2[p] for each trait p and returns the vectors h1 and h2
+        exportMin:                   Export information about the min in the given h5py file or group
+        exportMins:                  Export information about all the min in the given h5py file or group
+
     """
     
     def __init__(self,Y,T,F,C,K):
         """
         Y: phenotype matrix
-        T: trait matrix
+        T: trait matrix / list of trait matrices
         F: fixed effect
         C: list of trait covariances
         K: list of kronecker matrices
         """
-        #create column of 1 for fixed if nothing providede
-        self.N       = (T==0).sum()
-        self.P       = int(T.max()+1)
-        self.Nt      = self.N*self.P
+        
+        # Number of terms
         self.n_terms = len(C)
+        
+        if type(T)!=list:
+            Tl = []
+            for i in range(self.n_terms):
+                Tl.append(T)
+            T = Tl
+        
+        #create column of 1 for fixed if nothing providede
+        self.N       = (T[0]==0).sum()
+        self.P       = int(T[0].max()+1)
+        self.Nt      = self.N*self.P
         
         assert len(K)==len(C), 'K and C must have the same length'
         
         assert Y.shape[0]==self.Nt, 'outch'
         assert Y.shape[1]==1, 'outch'
-        assert T.shape[1]==1, 'outch'
         
         for i in range(self.n_terms):
             assert K[i].shape[0]==self.Nt, 'outch'
             assert K[i].shape[1]==self.Nt, 'outch'
+            assert T[i].shape[1]==1, 'outch'
 
         if F==None:
             F=SP.ones(self.Nt)
@@ -63,15 +75,15 @@ class CVarianceDecomposition:
         self.F = F
         self.K = K
         self.C = C
-                
+        
         pass
     
-            
+    
     def initialise(self):
         """
         get random initialization of variances based on the empirical trait variance
         """
-        EmpVarY=SP.diagonal(self.getEmpTraitCov())
+        EmpVarY=self.getEmpTraitVar()
         temp=SP.rand(self.n_terms,self.P)
         N=temp.sum(0)
         temp=temp/N*EmpVarY
@@ -101,10 +113,9 @@ class CVarianceDecomposition:
         # LIMIX CVARIANCEDECOMPOSITION INITIALIZATION
         vt = limix.CVarianceDecomposition()
         vt.setPheno(self.Y)
-        vt.setTrait(self.T)
         vt.setFixed(self.F)
         for term_i in range(self.n_terms):
-            vt.addCVTerm(self.C[term_i],self.K[term_i])
+            vt.addCVTerm(self.C[term_i],self.K[term_i],self.T[term_i])
         vt.initGP()
     
         # GET GP AND STORE LML0
@@ -122,7 +133,7 @@ class CVarianceDecomposition:
         # Check whether limix::CVarianceDecomposition.train() has converged
         ParamMask=gp.getParamMask()['covar']
         LMLgrad = SP.linalg.norm(gp.LMLgrad()['covar'][ParamMask==1])
-        if conv!=True or LMLgrad>grad_threshold:
+        if conv!=True or LMLgrad>grad_threshold or self.getParams().max()>10*SP.sqrt(self.getEmpTraitVar().max()):
             print 'limix::CVarianceDecomposition::train has not converged'
             res=None
         else:
@@ -182,10 +193,9 @@ class CVarianceDecomposition:
         """
         vt = limix.CVarianceDecomposition()
         vt.setPheno(self.Y)
-        vt.setTrait(self.T)
         vt.setFixed(self.F)
         for term_i in range(self.n_terms):
-            vt.addCVTerm(self.C[term_i],self.K[term_i])
+            vt.addCVTerm(self.C[term_i],self.K[term_i],self.T[term_i])
         vt.initGP()
         gp=vt.getGP()
         return gp
@@ -208,7 +218,7 @@ class CVarianceDecomposition:
 
     def getCovParams(self,min):
         """
-        USES LAPLACE APPROXIMATION TO CALCULATE THE MAXIMUM
+        USES LAPLACE APPROXIMATION TO CALCULATE THE COVARIANCE MATRIX OF THE OPTIMIZED PARAMETERS
         """
         gp=min['gp']
         ParamMask=gp.getParamMask()['covar']
@@ -218,6 +228,25 @@ class CVarianceDecomposition:
         H=H[It,:][:,It]
         Sigma = SP.linalg.inv(H)
         return Sigma
+    
+    def getModelPosterior(self,min,Sigma=None):
+        """
+        USES LAPLACE APPROXIMATION TO CALCULATE THE BAYESIAN MODEL POSTERIOR
+        """
+        
+        if Sigma==None:
+            Sigma = self.getCovParams(min)
+        
+        n_params = 0
+        for term_i in range(self.n_terms):
+            n_params += self.C[term_i].getNumberParams()
+        
+        ModCompl = 0.5*n_params*SP.log(2*SP.pi)+0.5*SP.log(SP.linalg.det(Sigma))
+        
+        RV = min['LML']+ModCompl
+            
+        return RV
+    
 
     def getEmpTraitCov(self):
         """
@@ -226,6 +255,18 @@ class CVarianceDecomposition:
         Y1=(self.Y).reshape((self.P,self.N))
         RV=SP.cov(Y1)
         return RV
+    
+    def getEmpTraitVar(self):
+        """
+        Returns the vector of empirical trait variances
+        """
+        if self.P==1:
+            RV = self.getEmpTraitCov()
+        else:
+            RV = self.getEmpTraitCov().diagonal()
+        return RV
+
+
 
 
     def estimateHeritabilities(self,Kpop):
@@ -237,7 +278,7 @@ class CVarianceDecomposition:
         h2 = SP.zeros(self.P)
     
         for p in range(self.P):
-            It = (self.T[:,0]==p)
+            It = (self.T[0][:,0]==p)
             K= Kpop[It,:][:,It]
             N= K.shape[0]
             y=self.Y[It]
@@ -246,3 +287,33 @@ class CVarianceDecomposition:
             if h2[p]<1e-6:   h2[p]=1e-6
     
         return h1, h2
+    
+    def exportMin(self,min,f,counter=0,laplace=0):
+        """
+        Export the min in the given h5py file or group    
+        """
+        f.create_dataset("Params0",data=min["Params0"])
+        f.create_dataset("LML0",data=min["LML0"])
+        f.create_dataset("Params",data=min["Params"])
+        f.create_dataset("LML",data=min["LML"])
+        f.create_dataset("LMLgrad",data=min["LMLgrad"])
+        f.create_dataset("time_train",data=min["time_train"])
+        if counter!=0:
+            f.create_dataset("counter",data=min["counter"])
+        if laplace!=0:
+            covParams = self.getCovParams(min)
+            f.create_dataset("covParams",data=covParams)
+            f.create_dataset("modelPosterior",data=self.getModelPosterior(min,Sigma=covParams))
+        
+    
+    def exportMins(self,mins,f,laplace=0):
+        """
+        Export all the min in the given h5py file or group  
+        """
+        for min_i in range(len(mins)):
+            g=f.create_group('min%d'%min_i)
+            self.exportMin(mins[min_i],g,counter=1,laplace=laplace)
+
+
+
+
