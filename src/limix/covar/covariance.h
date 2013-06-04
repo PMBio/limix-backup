@@ -77,10 +77,12 @@ protected:
 	inline void checkWithinParams(muint_t i) const throw (CGPMixException);
 	inline void checkXDimensions(const CovarInput& X) const throw (CGPMixException);
 	inline void checkParamDimensions(const CovarParams& params) const throw (CGPMixException);
+	/*
 	void setNumberParams()
 	{
 		this->numberParams = numberParams;
 	}
+	*/
 
 	virtual void agetParamMask0(CovarParams* out) const;
 
@@ -121,8 +123,8 @@ public:
 	//virtual functions that have trivial implementations
 	virtual muint_t Kdim() const throw(CGPMixException);
 
-	virtual void aK(MatrixXd* out) const;
-	virtual void aKdiag(VectorXd* out) const;
+	virtual void aK(MatrixXd* out) const throw (CGPMixException);
+	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
 	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
 
 	//pure functions that need to be implemented

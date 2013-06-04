@@ -43,6 +43,8 @@ SET(SOURCES limix/covar/covariance.cpp
 	    limix/modules/CVqtl.cpp
 	    limix/modules/CMultiTraitVQTL.cpp
 	    limix/modules/CVarianceDecomposition.cpp
+	    limix/io/genotype.cpp
+	    limix/io/dataframe.cpp
 )
 
 

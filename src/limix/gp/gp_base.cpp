@@ -6,12 +6,14 @@
  */
 
 #include "gp_base.h"
+#include "limix/mean/CLinearMean.h"
 #include "limix/utils/matrix_helper.h"
 #include "limix/utils/logging.h"
 #include <sstream>
 
 namespace limix {
 
+  using std::max;
 
 /* CGPHyperParmas */
 
@@ -787,8 +789,6 @@ void CGPbase::aLMLhess_covarlik(MatrixXd* out) throw (CGPMixException)
 {
     //set output dimensions
     (*out).resize(covar->getNumberParams(),lik->getNumberParams());
-    //W:
-    //MatrixXd& W = cache->getDKEffInv_KEffInvYYKinv();
     //KyInv:
     MatrixXd& KyInv = cache->rgetKEffInv();
     //KyInvY=alpha e alpha*alpha.T:
@@ -985,7 +985,161 @@ double CGPbase::LMLhess_num(CGPbase& gp, const muint_t i, const muint_t j) throw
     
 }
 
+/*  CGP Variance Decomposition  */
 
+//CGPvarDecomp::CGPvarDecomp(): CGPbase(PTDiagonalCF(),PLikNormalNULL(),PLinearMean())//CGPbase(PTDiagonalCF(1),PLikNormalNULL(),PLinearMean(MatrixXd::Ones(1,1),MatrixXd::Ones(1,1)))
+//{
+//}
+
+CGPvarDecomp::CGPvarDecomp(PCovarianceFunction covar, PLikelihood lik,PDataTerm dataTerm, const VectorXd& lambda, const muint_t P, const MatrixXd& pheno, const VectorXd& initParams): CGPbase(covar,lik,dataTerm)
+{
+    this->P=P;
+	this->lambda=lambda;
+	this->N=pheno.rows();
+	this->pheno=pheno;
+	this->initParams=initParams;
+}
+
+CGPvarDecomp::~CGPvarDecomp()
+{
+}
+
+void CGPvarDecomp::initGPs() throw(CGPMixException)
+{
+	/*
+	// initialize lik
+	lik = PLikNormalNULL(new CLikNormalNULL());
+
+	// initialise C2
+	MatrixXd K0 = MatrixXd::Ones(P,P);
+	C2 = PTFixedCF(new CTFixedCF(this->P,K0));
+	C2->setX(this->trait);
+
+	for (muint_t i=0; i<N; ++i)	C1.push_back(PTFixedCF(new CTFixedCF(this->P,this->lambda(i)*K0)));
+
+	// initialise C1s and GPs and LinearMeans
+
+	for (muint_t i=0; i<N; ++i) {
+		PTFixedCF C1_i(new CTFixedCF(this->P,this->lambda(i)*K0));
+		C1_i->setX(this->trait);
+		PSumCF covar_i(new CSumCF());
+		covar_i->addCovariance(C1_i);
+		covar_i->addCovariance(C2);
+		PLinearMean mean_i(new CLinearMean(this->pheno.block(0,i,P,1),MatrixXd::Identity(P,P)));
+		PGPbase gp_i(new CGPbase(covar_i,lik,mean_i));
+		C1.push_back(C1_i);
+		covar.push_back(covar_i);
+		vecLinearMeans.push_back(mean_i);
+		vecGPs.push_back(*gp_i);
+	}
+	*/
+
+	/*
+	muint_t i = 0;
+	ACovarVec::const_iterator C1it = C1.begin();
+	ACovarVec::const_iterator covarit = covar.begin();
+	ALinearMeanVec::const_iterator vecLinearMeansit = vecLinearMeans.begin();
+	AGPbaseVec::const_iterator vecGPsit = vecGPs.begin();
+	for(; C1it != C1.end() && covarit != covar.end() && vecGPsit != vecGPs.end() && vecLinearMeansit != vecLinearMeans.end(); ++C1it, ++covarit, ++vecGPsit, ++vecLinearMeansit, ++i)
+	{
+		PCovarianceFunction C1_i = C1it[0];
+		PCovarianceFunction covar_i = covarit[0];
+		PLinearMean vecLinearMeans_i = vecLinearMeansit[0];
+		CGPbase vecGPs_i = vecGPsit[0];
+		// Covariance
+		C1_i = PTFixedCF(new CTFixedCF(this->P,this->lambda(i)*K0));
+		C1_i->setX(this->trait);
+		covar_i = PSumCF(new CSumCF());
+		static_pointer_cast<CSumCF>(covar_i)->addCovariance(C1_i);
+		static_pointer_cast<CSumCF>(covar_i)->addCovariance(C2);
+		// LinearMeans
+		vecLinearMeans_i = PLinearMean(new CLinearMean(this->pheno.block(0,i,P,1),MatrixXd::Identity(P,P)));
+		// GPs
+		vecGPs_i.setCovar(covar_i);
+		vecGPs_i.setLik(lik);
+		vecGPs_i.setDataTerm(vecLinearMeans_i);
+		vecGPs_i.setY(pheno.block(0,i,N,1));
+	}
+	*/
+
+	// Initialize Parameters
+	CGPHyperParams params;
+	params["covar"] = initParams;
+	params["dataTerm"] = MatrixXd::Zero(P,1);
+	this->setParams(params);
+}
+
+
+void CGPvarDecomp::updateParams() throw(CGPMixException)
+{
+	AGPbaseVec::const_iterator vecGPsit = vecGPs.begin();
+	for(; vecGPsit != vecGPs.end(); ++vecGPsit)
+	{
+		PGPbase vecGPs_i = vecGPsit[0];
+		vecGPs_i->setParams(this->params);
+		this->state++;
+	}
+}
+
+/*
+void CGPvarDecomp::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException)
+{
+	AGPbaseVec::const_iterator vecGPsit = vecGPs.begin();
+	for(; vecGPsit != vecGPs.end(); ++vecGPsit)
+	{
+		CGPbase vecGPs_i = vecGPsit[0];
+		vecGPs_i.setParams(hyperparams);
+	}
+}
+*/
+
+mfloat_t CGPvarDecomp::LML() throw (CGPMixException)
+{
+	mfloat_t out=0;
+	AGPbaseVec::const_iterator vecGPsit = vecGPs.begin();
+	for(; vecGPsit != vecGPs.end(); ++vecGPsit)
+	{
+		PGPbase vecGPs_i = vecGPsit[0];
+		out+=vecGPs_i->LML();
+	}
+	return out;
+};
+
+void CGPvarDecomp::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
+{
+	VectorXd grad_covar = VectorXd::Zero((this->params["covar"]).rows());
+	(*out) = VectorXd::Zero((this->params["covar"]).rows());
+	AGPbaseVec::const_iterator vecGPsit = vecGPs.begin();
+	for(; vecGPsit != vecGPs.end(); ++vecGPsit)
+	{
+		PGPbase vecGPs_i = vecGPsit[0];
+		vecGPs_i->aLMLgrad_covar(&grad_covar);
+		(*out)+=grad_covar;
+	}
+}
+
+
+void CGPvarDecomp::aLMLgrad_lik(VectorXd* out) throw (CGPMixException)
+{
+}
+
+void CGPvarDecomp::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
+{
+}
+
+
+void CGPvarDecomp::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
+{
+	MatrixXd grad_dataTerm = MatrixXd::Zero((this->params["dataTerm"]).rows(),(this->params["dataTerm"]).cols());
+	(*out) = MatrixXd::Zero((this->params["dataTerm"]).rows(),(this->params["dataTerm"]).cols());
+	AGPbaseVec::const_iterator vecGPsit = vecGPs.begin();
+	for(; vecGPsit != vecGPs.end(); ++vecGPsit)
+	{
+		PGPbase vecGPs_i = vecGPsit[0];
+		vecGPs_i->aLMLgrad_dataTerm(&grad_dataTerm);
+		(*out)+=grad_dataTerm;
+	}
+}
 
 
 } /* namespace limix */
