@@ -181,7 +181,15 @@ public:
 %template(CMemRWDataFrameXd) CMemRWDataFrame<MatrixXd>;
 %template(ADataFrameXd) ADataFrame< MatrixXd >;
 %template(ARWDataFrameXd) ARWDataFrame< MatrixXd >;
+
+%ignore CMemDataFrame::getPosition;
+%ignore CMemDataFrame::getMatrix;
+%rename(getMatrix) CMemDataFrame::agetMatrix;
+%rename(getPosition) CMemDataFrame::agetPosition;
 #endif
+
+
+
 
 
 }
