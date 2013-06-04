@@ -24,9 +24,9 @@
 							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.1148040791" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug"/>
 							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.1474778252" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug">
 								<option id="macosx.cpp.link.option.paths.1038249517" name="Library search path (-L)" superClass="macosx.cpp.link.option.paths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/build/External/nlopt}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/build/External/vcflib}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/build/External/boost}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/build_mac/External/nlopt}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/build_mac/External/vcflib}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/build_mac/External/boost}&quot;"/>
 								</option>
 								<option id="macosx.cpp.link.option.libs.1979272006" name="Libraries (-l)" superClass="macosx.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="nlopt"/>

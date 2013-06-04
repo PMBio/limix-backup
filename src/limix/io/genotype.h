@@ -82,6 +82,12 @@ public:
 /*CGenotypeBlock
  * In-memory representation of a genotype structure, which is also a container
  */
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+%ignore CGenotypeBlock::getPosition;
+%ignore CGenotypeBlock::getMatrix;
+%rename(getMatrix) CGenotypeBlock::agetMatrix;
+%rename(getPosition) CGenotypeBlock::agetPosition;
+#endif
 class CGenotypeBlock : public CMemDataFrame<MatrixXd> //,public AGenotypeContainer
 {
 	friend class AGenotypeContainer;
@@ -148,6 +154,26 @@ public:
 	PGenotypeBlock read(mint_t num_snps=-1) throw (CGPMixException);
 };
 typedef sptr<CTextfileGenotypeContainer> PTextfileGenotypeContainer;
+
+
+
+/* In Memory container
+ *
+ */
+
+class CMemGenotypeContainer : public AGenotypeContainer
+{
+protected:
+	PGenotypeBlock block;
+	muint_t reading_row;
+public:
+	CMemGenotypeContainer(PGenotypeBlock block);
+	virtual ~CMemGenotypeContainer();
+
+	//virtual functions
+	PGenotypeBlock read(mint_t num_snps=-1) throw (CGPMixException);
+};
+typedef sptr<CMemGenotypeContainer> PMemGenotypeContainer;
 
 
 } //end: namespace limix

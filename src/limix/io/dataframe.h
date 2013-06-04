@@ -61,6 +61,16 @@ public:
 
 
 //implementation for in-memory handling READ ONLY
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+%ignore CMemDataFrame::getMatrix;
+%ignore CMemDataFrame::getColHeader;
+%ignore CMemDataFrame::getRowHeader;
+
+%rename(getMatrix) CMemDataFrame::agetMatrix;
+%rename(getRowHeader) CMemDataFrame::aetRowHeader;
+%rename(getColHeader) CMemDataFrame::aetColHeader;
+#endif
+
 template <class MatrixType>
 class CMemDataFrame : public ADataFrame<MatrixType>
 {
@@ -181,11 +191,6 @@ public:
 %template(CMemRWDataFrameXd) CMemRWDataFrame<MatrixXd>;
 %template(ADataFrameXd) ADataFrame< MatrixXd >;
 %template(ARWDataFrameXd) ARWDataFrame< MatrixXd >;
-
-%ignore CMemDataFrame::getPosition;
-%ignore CMemDataFrame::getMatrix;
-%rename(getMatrix) CMemDataFrame::agetMatrix;
-%rename(getPosition) CMemDataFrame::agetPosition;
 #endif
 
 
