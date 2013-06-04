@@ -32,36 +32,9 @@ namespace limix {
 
 class AGenotypeContainer;
 class CTextfileGenotypeContainer;
-
-
-
-/*CGenotypeBlock
- * In-memory representation of a genotype structure, which is also a container
- */
-class CGenotypeBlock : public CMemDataFrame<MatrixXd> //,public AGenotypeContainer
-{
-	friend class AGenotypeContainer;
-	friend class CTextfileGenotypeContainer;
-protected:
-	PVectorXi pos;
-	PVectorXs chrom;
-	virtual void resizeMatrices(muint_t num_rows, muint_t num_columns);
-
-public:
-	CGenotypeBlock();
-	CGenotypeBlock(const CGenotypeBlock& copy);
-	CGenotypeBlock(PMatrixXd geno, PVectorXs chrom, PVectorXi pos,PVectorXs sampleIDs,PVectorXs snpIDs);
-	virtual ~CGenotypeBlock();
-
-	//virtual functions
-	//Read access functions
-	virtual void agetPosition(VectorXi* out) const throw(CGPMixException);
-	virtual PVectorXi getPosition() const throw(CGPMixException);
-	virtual void agetChromosome(VectorXs* out) const throw(CGPMixException);
-	virtual PVectorXs getChromosome() const throw(CGPMixException);
-};
+class CGenotypeBlock;
 typedef sptr<CGenotypeBlock> PGenotypeBlock;
-
+typedef sptr<AGenotypeContainer> PGenotypeContainer;
 
 
 /*
@@ -102,8 +75,48 @@ public:
 	//virtual functions
 	virtual PGenotypeBlock read(mint_t num_snps=-1) throw (CGPMixException) = 0;
 };
-typedef sptr<AGenotypeContainer> PGenotypeContainer;
 
+
+
+
+/*CGenotypeBlock
+ * In-memory representation of a genotype structure, which is also a container
+ */
+class CGenotypeBlock : public CMemDataFrame<MatrixXd> //,public AGenotypeContainer
+{
+	friend class AGenotypeContainer;
+	friend class CTextfileGenotypeContainer;
+protected:
+	PVectorXi pos;
+	PVectorXs chrom;
+	virtual void resizeMatrices(muint_t num_rows, muint_t num_columns);
+	muint_t i_snp_read;
+
+public:
+	CGenotypeBlock();
+	CGenotypeBlock(const CGenotypeBlock& copy);
+	CGenotypeBlock(PMatrixXd geno, PVectorXs chrom, PVectorXi pos,PVectorXs sampleIDs,PVectorXs snpIDs);
+	virtual ~CGenotypeBlock();
+
+	//information about dimensions
+	muint_t numSample(){
+		return this->M->rows();
+	}
+	muint_t numSNPs()
+	{
+		return this->M->cols();
+	}
+
+	//virtual functions: CMemDataFrame
+	virtual void agetPosition(VectorXi* out) const throw(CGPMixException);
+	virtual PVectorXi getPosition() const throw(CGPMixException);
+	virtual void agetChromosome(VectorXs* out) const throw(CGPMixException);
+	virtual PVectorXs getChromosome() const throw(CGPMixException);
+
+	//virtual function: AGenotypeContainer
+	virtual PGenotypeBlock read(mint_t num_snps=-1) throw (CGPMixException);
+
+};
 
 
 
