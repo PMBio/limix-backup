@@ -1,5 +1,12 @@
 #include "Variant.h"
 
+#if defined(_MSC_VER)
+#ifndef strtoll
+#define strtoll _strtoi64
+#endif
+#endif
+
+
 namespace vcf {
 
 void Variant::parse(string& line, bool parseSamples) {

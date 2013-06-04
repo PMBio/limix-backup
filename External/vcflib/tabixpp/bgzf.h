@@ -30,7 +30,14 @@
 #ifdef _USE_KNETFILE
 #include "knetfile.h"
 #endif
+#ifdef _WIN32
+#include <sys/types.h>
 
+#ifndef ftello
+#define ftello _ftelli64
+#endif
+
+#endif //win32
 //typedef int8_t bool;
 
 typedef struct {
@@ -145,7 +152,7 @@ static inline int bgzf_getc(BGZF *fp)
     if (fp->block_offset == fp->block_length) {
 #ifdef _USE_KNETFILE
         fp->block_address = knet_tell(fp->x.fpr);
-#else
+#else	
         fp->block_address = ftello(fp->file);
 #endif
         fp->block_offset = 0;

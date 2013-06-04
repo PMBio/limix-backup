@@ -8,7 +8,9 @@
 #include "freeform.h"
 #include <math.h>
 #include <cmath>
-
+//#ifdef _WIN32
+//#include <tgmath.h>
+//#endif
 
 namespace limix {
 

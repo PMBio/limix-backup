@@ -8,6 +8,12 @@
 
 #include "Fasta.h"
 
+#if defined(_MSC_VER)
+#ifndef strtoll
+#define strtoll _strtoi64
+#endif
+#endif
+
 FastaIndexEntry::FastaIndexEntry(string name, int length, long long offset, int line_blen, int line_len)
     : name(name)
     , length(length)
@@ -87,6 +93,9 @@ ostream& operator<<(ostream& output, FastaIndex& fastaIndex) {
     for( vector<FastaIndexEntry>::iterator fit = sortedIndex.begin(); fit != sortedIndex.end(); ++fit) {
         output << *fit << endl;
     }
+//#ifdef _WIN32
+//	return output;
+//#endif
 }
 
 void FastaIndex::indexReference(string refname) {
