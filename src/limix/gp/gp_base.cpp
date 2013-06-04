@@ -13,6 +13,7 @@
 
 namespace limix {
 
+  using std::max;
 
 /* CGPHyperParmas */
 
