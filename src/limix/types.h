@@ -103,16 +103,27 @@ typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> 
 typedef Eigen::Matrix<mfloat_t, 2, 2,Eigen::ColMajor> MatrixXd2;
 typedef Eigen::Matrix<mfloat_t, 3, 3,Eigen::ColMajor> MatrixXd3;
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXd;
+//smart pointer objects
+typedef sptr<MatrixXd> PMatrixXd;
+typedef sptr<VectorXd> PVectorXd;
 
 //integer
 typedef Eigen::Matrix<mint_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXi;
 typedef Eigen::Matrix<mint_t, 2, 2,Eigen::ColMajor> MatrixXi2;
 typedef Eigen::Matrix<mint_t, 3, 3,Eigen::ColMajor> MatrixXi3;
 typedef Eigen::Matrix<mint_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXi;
+//smart pointer objects
+typedef sptr<MatrixXi> PMatrixXi;
+typedef sptr<VectorXi> PVectorXi;
 
 //string
+typedef Eigen::Matrix<std::string, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXs;
 typedef Eigen::Matrix<std::string, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXs;
-typedef Eigen::Array<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> ArrayXd;
+typedef sptr<MatrixXs> PMatrixXs;
+typedef sptr<VectorXs> PVectorXs;
+
+//typedef Eigen::Array<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> ArrayXd;
+
 //cholesky decomposition object (we use LLT as faster and more stable)
 typedef Eigen::LLT<limix::MatrixXd> MatrixXdChol;
 

@@ -1,7 +1,7 @@
 import scipy as SP
 import scipy.linalg
 import sys
-sys.path.append('/Users/casale/Documents/limix/limix/build_mac/src/interfaces/python/')
+sys.path.append('./../../build/src/interfaces/python')
 import limix
 
 def printhessdiff(C,n_params,s):
@@ -101,6 +101,7 @@ params=SP.exp(SP.randn(n_params))
 C.setParams(params)
 printhessdiff(C,n_params,"PROD COVAR")
 
+
 # LIKELIHOOD ISO
 L=limix.CLikNormalIso()
 n_params=L.getNumberParams()
@@ -108,6 +109,59 @@ params=SP.exp(SP.randn(n_params))
 L.setParams(params)
 L.setX(X)
 printhessdiff(L,n_params,"LIKELIHOOD ISO")
+
+
+# TESTING TRAIT COVARS
+P=4
+N=2
+T = SP.concatenate([i*SP.ones([N,1]) for i in xrange(P)],axis=0)
+# CTFreeForm
+C=limix.CTFreeFormCF(P)
+n_params=C.getNumberParams()
+Params=SP.exp(SP.rand(n_params))
+C.setParams(Params)
+C.setX(T)
+printhessdiff(C,n_params,"CTFreeForm")
+# CTDense
+C=limix.CTDenseCF(P)
+n_params=C.getNumberParams()
+Params=SP.exp(SP.rand(n_params))
+C.setParams(Params)
+C.setX(T)
+printhessdiff(C,n_params,"CTDense")
+# CTFixed
+C=limix.CTFixedCF(P,SP.ones((P,P)))
+n_params=C.getNumberParams()
+Params=SP.exp(SP.rand(n_params))
+C.setParams(Params)
+C.setX(T)
+printhessdiff(C,n_params,"CTFixed")
+# CTDiagonal
+C=limix.CTDiagonalCF(P)
+n_params=C.getNumberParams()
+Params=SP.exp(SP.rand(n_params))
+C.setParams(Params)
+C.setX(T)
+printhessdiff(C,n_params,"CTDiagonal")
+# CTLowRank P=4
+C=limix.CTLowRankCF(P)
+n_params=C.getNumberParams()
+Params=SP.exp(SP.rand(n_params))
+C.setParams(Params)
+C.setX(T)
+printhessdiff(C,n_params,"CTLowRank_P=4")
+# CTLowRank P=2
+P=2
+N=2
+T = SP.concatenate([i*SP.ones([N,1]) for i in xrange(P)],axis=0)
+C=limix.CTLowRankCF(P)
+n_params=C.getNumberParams()
+Params=SP.exp(SP.rand(n_params))
+C.setParams(Params)
+C.setX(T)
+printhessdiff(C,n_params,"CTLowRank_P=2")
+
+
 
 
 
