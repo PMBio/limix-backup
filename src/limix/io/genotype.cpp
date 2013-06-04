@@ -240,6 +240,38 @@ PGenotypeBlock CTextfileGenotypeContainer::read_GEN(mint_t num_snps) throw (CGPM
 	return RV;
 }
 
+CMemGenotypeContainer::CMemGenotypeContainer(PGenotypeBlock block) {
+	this->block = block;
+	reading_row = 0;
+}
+
+CMemGenotypeContainer::~CMemGenotypeContainer() {
+}
+
+PGenotypeBlock CMemGenotypeContainer::read(mint_t num_snps) throw(CGPMixException) {
+
+	//read elements from the in-memory variant and create new block
+	PMatrixXd geno = PMatrixXd(new MatrixXd());
+	PVectorXi pos  = PVectorXi(new VectorXi());
+	PVectorXs chrom = PVectorXs(new VectorXs());
+	PVectorXs colHeader = PVectorXs(new VectorXs());
+	PVectorXs rowHeader = PVectorXs(new VectorXs());
+
+
+	*geno = this->block->getMatrix()->block(0,reading_row,block->numSample(),reading_row+num_snps);
+	*pos = this->block->getPosition()->segment(reading_row,reading_row+num_snps);
+	*chrom = this->block->getChromosome()->segment(reading_row,reading_row+num_snps);
+	*colHeader = this->block->getColHeader()->segment(reading_row,reading_row+num_snps);
+	*rowHeader = *this->block->getRowHeader();
+
+	reading_row += num_snps;
+
+	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock(geno,chrom,pos,rowHeader,colHeader));
+
+	return RV;
+}
 
 } //end ::limix
+
+
 
