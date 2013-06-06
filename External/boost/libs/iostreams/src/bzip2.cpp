@@ -17,11 +17,18 @@
 #include <boost/throw_exception.hpp>
 #include <boost/iostreams/detail/config/dyn_link.hpp>
 #include <boost/iostreams/filter/bzip2.hpp> 
+#ifdef _WIN32
+#include "bzip2-1.0.6/bzlib.h"  // Julian Seward's "bzip.h" header.
+                    // To configure Boost to work with libbz2, see the 
+                    // installation instructions here:
+                    // http://boost.org/libs/iostreams/doc/index.html?path=7
+
+#else
 #include "bzlib.h"  // Julian Seward's "bzip.h" header.
                     // To configure Boost to work with libbz2, see the 
                     // installation instructions here:
                     // http://boost.org/libs/iostreams/doc/index.html?path=7
-                    
+#endif               
 namespace boost { namespace iostreams {
 
 namespace bzip2 {

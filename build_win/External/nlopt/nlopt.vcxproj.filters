@@ -222,10 +222,10 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{542890C1-5BF2-48B7-8B89-157AEC94CB42}</UniqueIdentifier>
+      <UniqueIdentifier>{BDEE314F-F95C-4DFA-9E3A-4016BAEAA755}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{C4B54736-35D6-4A8E-ADD4-A723222FBB03}</UniqueIdentifier>
+      <UniqueIdentifier>{2E712920-D9BC-45D1-BB8C-E9D8D09AC5B5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
