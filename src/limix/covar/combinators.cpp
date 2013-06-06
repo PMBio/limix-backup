@@ -9,6 +9,7 @@
 
 #include "combinators.h"
 #include "limix/types.h"
+#include "limix/utils/matrix_helper.h"
 
 namespace limix {
 
@@ -1078,24 +1079,47 @@ void CProductCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const m
 	}
 }
 
-    
-    
+
+
 CKroneckerCF::CKroneckerCF() {
+	vecCovariances.resize(2);
 }
 
 CKroneckerCF::CKroneckerCF(PCovarianceFunction row,
 		PCovarianceFunction col) {
-	setCovariance(0,row);
-	setCovariance(1,col);
+	vecCovariances.push_back(row);
+	vecCovariances.push_back(col);
 }
 
 CKroneckerCF::~CKroneckerCF() {
 }
 
 void CKroneckerCF::setRowCovariance(PCovarianceFunction cov) {
+	setCovariance(0,cov);
 }
 
 void CKroneckerCF::setColCovariance(PCovarianceFunction cov) {
+	setCovariance(1,cov);
+}
+
+PCovarianceFunction CKroneckerCF::getRowCovariance() throw (CGPMixException)
+{
+	return vecCovariances[0];
+}
+
+PCovarianceFunction CKroneckerCF::getColCovariance() throw (CGPMixException)
+{
+	return vecCovariances[1];
+}
+
+void CKroneckerCF::setXr(const CovarInput& Xr) throw (CGPMixException)
+{
+	vecCovariances[0]->setX(Xr);
+}
+
+void CKroneckerCF::setXc(const CovarInput& Xc) throw (CGPMixException)
+{
+	vecCovariances[1]->setX(Xc);
 }
 
 std::string CKroneckerCF::getName() const {
@@ -1112,11 +1136,35 @@ void CKroneckerCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const th
 
 void CKroneckerCF::aKgrad_param(MatrixXd* out, const muint_t i) const throw (CGPMixException)
 {
+	//1. check that i is within the available range
+	checkWithinParams(i);
+	//2. loop through covariances until we found the correct one
+	muint_t i0 = (muint_t)vecCovariances[0]->getNumberParams();
+	if(i<i0)
+		akron((*out),vecCovariances[0]->Kgrad_param(i),vecCovariances[1]->K());
+	else
+		akron((*out),vecCovariances[0]->K(),vecCovariances[1]->Kgrad_param(i-i0));
 }
 
 void CKroneckerCF::aKhess_param(MatrixXd* out, const muint_t i,
 		const muint_t j) const throw (CGPMixException)
 {
+	//1. check that i is within the available range
+	checkWithinParams(i);
+	checkWithinParams(j);
+	//2. swap if i>j
+	muint_t i1;
+	muint_t j1;
+	if (i<j)	{i1=i; j1=j;}
+	else		{i1=j; j1=i;}
+	//3. loop through covariances until we found the correct one
+	muint_t i0 = (muint_t)vecCovariances[0]->getNumberParams();
+	if(j1<i0)
+		akron((*out),vecCovariances[0]->Khess_param(i1,j1),vecCovariances[1]->K());
+	else if(i1>=i0)
+		akron((*out),vecCovariances[0]->K(),vecCovariances[1]->Khess_param(i1-i0,j1-i0));
+	else
+		akron((*out),vecCovariances[0]->Kgrad_param(i1),vecCovariances[1]->Kgrad_param(j1-i0));
 }
 
 void CKroneckerCF::aKcross_grad_X(MatrixXd* out, const CovarInput& Xstar,
@@ -1130,10 +1178,12 @@ void CKroneckerCF::aKdiag_grad_X(VectorXd* out, const muint_t d) const throw (CG
 
 void CKroneckerCF::aK(MatrixXd* out) const throw (CGPMixException)
 {
+	akron((*out),vecCovariances[0]->K(),vecCovariances[1]->K());
 }
 
 void CKroneckerCF::aKdiag(VectorXd* out) const throw (CGPMixException)
 {
+	akron_diag((*out),vecCovariances[0]->K(),vecCovariances[1]->K());
 }
 
 void CKroneckerCF::aKgrad_X(MatrixXd* out, const muint_t d) const throw (CGPMixException)
