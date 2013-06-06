@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGUID>{9FFEA3E9-2646-4874-8E8B-E85D8CA72C41}</ProjectGUID>
+    <ProjectGUID>{587B0C1D-3CDC-4FFE-B6EC-C77999D73699}</ProjectGUID>
     <Keyword>Win32Proj</Keyword>
     <Platform>x64</Platform>
     <ProjectName>boost</ProjectName>
@@ -53,32 +53,31 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lippert\Projects\limix\build_win\External\boost\Debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">boost.dir\Debug\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">boost</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\lippert\Projects\limix\build_win\External\boost\Release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">boost.dir\Release\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">boost</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\lippert\Projects\limix\build_win\External\boost\MinSizeRel\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">boost.dir\MinSizeRel\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">boost</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\lippert\Projects\limix\build_win\External\boost\RelWithDebInfo\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">boost.dir\RelWithDebInfo\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">boost</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
-  </PropertyGroup>
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lippert\Projects\limix\build_win\External\boost\Debug\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">boost.dir\Debug\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">boost</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\lippert\Projects\limix\build_win\External\boost\Release\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">boost.dir\Release\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">boost</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\lippert\Projects\limix\build_win\External\boost\MinSizeRel\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">boost.dir\MinSizeRel\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">boost</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\lippert\Projects\limix\build_win\External\boost\RelWithDebInfo\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">boost.dir\RelWithDebInfo\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">boost</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
+    </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -96,10 +95,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -110,7 +109,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -119,8 +118,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
+      <DebugInformationFormat></DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>Release</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -128,24 +126,21 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
-    <Lib>
-      <AdditionalLibraryDirectories>C:\Users\lippert\Projects\limix\External\zlib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
@@ -154,8 +149,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
+      <DebugInformationFormat></DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>MinSizeRel</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -163,10 +157,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -177,7 +171,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -194,10 +188,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/boost/.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -258,15 +252,15 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\External\boost\libs\iostreams\src\zlib.cpp" />
-    <ClCompile Include="..\..\..\External\boost\libs\iostreams\src\bzip2.cpp" />
-    <ClCompile Include="..\..\..\External\boost\libs\iostreams\src\gzip.cpp" />
-    <ClCompile Include="..\..\..\External\boost\libs\iostreams\src\mapped_file.cpp" />
-    <ClCompile Include="..\..\..\External\boost\libs\iostreams\src\file_descriptor.cpp" />
+    <ClCompile Include="..\..\..\External\boost\libs\iostreams\src\zlib.cpp"  />
+    <ClCompile Include="..\..\..\External\boost\libs\iostreams\src\bzip2.cpp"  />
+    <ClCompile Include="..\..\..\External\boost\libs\iostreams\src\gzip.cpp"  />
+    <ClCompile Include="..\..\..\External\boost\libs\iostreams\src\mapped_file.cpp"  />
+    <ClCompile Include="..\..\..\External\boost\libs\iostreams\src\file_descriptor.cpp"  />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:/Users/lippert/Projects/limix/build_win/ZERO_CHECK.vcxproj">
-      <Project>7F6199AF-D393-431E-B791-5A4247805C8B</Project>
+      <Project>5A01280A-62F0-49D7-BF9A-3EC65FA04721</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
