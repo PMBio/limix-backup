@@ -18,12 +18,15 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+
+#include "gzstream.h"
+
+/*
 #include <boost/iostreams/filtering_streambuf.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
-//#include <boost/iostreams/filter/bzip2.hpp>
 #include <boost/iostreams/device/file_descriptor.hpp>
-
+*/
 
 //namespace io = boost::iostreams;
 
@@ -138,7 +141,9 @@ protected:
 	//buffersize for unlimitted reading
 	muint_t buffer_size;
 	//stream for incoming files using the boost library
-	boost::iostreams::filtering_istream in_stream;
+	//boost::iostreams::filtering_istream in_stream;
+	//std::istream in_stream;
+	std::istream* in_stream;
 	//filename
 	std::string in_filename;
 	bool is_open;
@@ -146,6 +151,12 @@ protected:
 	void openFile();
 	void read_header_GEN();
 	PGenotypeBlock read_GEN(mint_t num_snps) throw (CGPMixException);
+
+	std::istream& getStream()
+	{
+		return *in_stream;
+	}
+
 public:
 	CTextfileGenotypeContainer(const std::string& filename);
 	virtual ~CTextfileGenotypeContainer();

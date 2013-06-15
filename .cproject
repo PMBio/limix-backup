@@ -25,14 +25,10 @@
 							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.1474778252" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug">
 								<option id="macosx.cpp.link.option.paths.1038249517" name="Library search path (-L)" superClass="macosx.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/build_mac/External/nlopt}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/build_mac/External/vcflib}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/build_mac/External/boost}&quot;"/>
 								</option>
 								<option id="macosx.cpp.link.option.libs.1979272006" name="Libraries (-l)" superClass="macosx.cpp.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="nlopt"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="vcflib"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="z"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="boost"/>
+									<listOptionValue builtIn="false" value="nlopt"/>
+									<listOptionValue builtIn="false" value="z"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.macosx.cpp.linker.input.1279206835" superClass="cdt.managedbuild.tool.macosx.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -49,7 +45,6 @@
 								<option id="gnu.cpp.compiler.option.include.paths.2136057315" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/External}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/limix/External/boost}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.warnings.toerrors.1299617816" name="Warnings as errors (-Werror)" superClass="gnu.cpp.compiler.option.warnings.toerrors" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.612924604" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -61,8 +56,18 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.macosx.exe.debug.1443135094.1197883885" name="/" resourcePath="build_win">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.exe.debug.45559338" name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.exe.debug" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.440240144" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.1148040791"/>
+							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.1255210935" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.1474778252"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.762203476" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.885747609"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.macosx.base.2052049166" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base.1938357482"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1220616118" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1487791172"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.477675871" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.1486937375"/>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
-						<entry excluding="build_java|build_LINUX|python|External|build_mac|build_linux|build|src/interfaces" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="build_win|build_java|build_LINUX|python|External|build_mac|build_linux|build|src/interfaces" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

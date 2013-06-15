@@ -45,6 +45,7 @@ SET(SOURCES limix/covar/covariance.cpp
 	    limix/modules/CVarianceDecomposition.cpp
 	    limix/io/genotype.cpp
 	    limix/io/dataframe.cpp
+	    limix/io/split.cpp
 )
 
 

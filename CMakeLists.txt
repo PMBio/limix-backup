@@ -123,16 +123,16 @@ endif(NOT ${CMAKE_BUILD_TYPE} MATCHES "Debug")
 
 #includes
 include_directories(./External)
-include_directories(./External/boost)
+#include_directories(./External/boost)
 include_directories(./src)
 
 #add Cmake modules
 #nlopt
 add_subdirectory(./External/nlopt)
 #vcflib
-add_subdirectory(./External/vcflib)
+#add_subdirectory(./External/vcflib)
 #boost
-add_subdirectory(./External/boost)
+#add_subdirectory(./External/boost)
 #LIMIX source
 add_subdirectory(./src)
 
