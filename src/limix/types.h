@@ -14,27 +14,30 @@
 #include <string>
 #ifdef _WIN32
     #include <unordered_map>
-    //#include <memory>
+    #include <memory>
 	#include<limits>
 #else
-    //#include <tr1/memory>
+    #include <tr1/memory>
 #endif
+/*
 //we now use shared pointers from boost
 #include "boost/shared_ptr.hpp"
 #include "boost/enable_shared_from_this.hpp"
-
+*/
 
 //define shortcut for shared pointer
-//#define sptr std::tr1::shared_ptr
-//we now use boost shared pointers
-//#define static_pointer_cast std::tr1::static_pointer_cast
-//#define dynamic_pointer_cast std::tr1::dynamic_pointer_cast
-//#define enable_shared_from_this std::tr1::enable_shared_from_this
+#define sptr std::tr1::shared_ptr
+#define static_pointer_cast std::tr1::static_pointer_cast
+#define dynamic_pointer_cast std::tr1::dynamic_pointer_cast
+#define enable_shared_from_this std::tr1::enable_shared_from_this
 
+/*
+//BOOST shared pointer
 #define sptr boost::shared_ptr
 #define enable_shared_from_this boost::enable_shared_from_this
 #define dynamic_pointer_cast boost::dynamic_pointer_cast
 #define static_pointer_cast boost::static_pointer_cast
+*/
 
 namespace limix{
 

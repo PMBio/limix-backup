@@ -38,7 +38,7 @@ int main() {
 	MatrixXd pheno = (MatrixXd)randn((muint_t)n,(muint_t)p);
 	MatrixXd covs = MatrixXd::Ones(n,ncov);
 
-	string filename = "/Users/stegle/research/users/stegle/limix/vcf_gen/sample2.gen.gz";
+	string filename = "/Users/stegle/research/users/stegle/limix/vcf_gen/sample2.gen";
 
 	PTextfileGenotypeContainer genoContainer = PTextfileGenotypeContainer(new CTextfileGenotypeContainer(filename));
 
