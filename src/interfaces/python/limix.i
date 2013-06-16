@@ -41,11 +41,12 @@ using namespace limix;
 %include "eigen.i"
 //support for std libs
 
-//#define SWIG_SHARED_PTR_NAMESPACE std
-//#define SWIG_SHARED_PTR_SUBNAMESPACE tr1
-//%include "std_shared_ptr.i"
+#define SWIG_SHARED_PTR_NAMESPACE std
+#define SWIG_SHARED_PTR_SUBNAMESPACE tr1
+%include "std_shared_ptr.i"
 
-%include <boost_shared_ptr.i>
+//removed boost
+//%include <boost_shared_ptr.i>
 
 %include "std_vector.i"
 %include "std_map.i"

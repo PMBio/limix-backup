@@ -82,7 +82,7 @@ set_source_files_properties(limix.i PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(limix.i PROPERTIES SWIG_FLAGS "-includeall")
 set_source_files_properties(limix.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
 swig_add_module(core python limix.i)
-swig_link_libraries(core limixlib nlopt boost vcflib ${SWIGLINKLIBS} ${ZLIB_LIBRARIES})
+swig_link_libraries(core limixlib nlopt ${SWIGLINKLIBS} ${ZLIB_LIBRARIES})
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")	 
   # Mac OS X specific code

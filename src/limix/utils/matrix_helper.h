@@ -205,6 +205,25 @@ inline MatrixXd kron(const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBa
 }
 
 
+
+template <typename Derived1, typename Derived2,typename Derived3>
+inline void akron_diag(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2,bool addToOut=false)
+{
+	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
+	out.derived().resize(v1.rows()*v2.rows(),1);
+	for (muint_t ir=0;ir<(muint_t)v1.rows();++ir)
+		out.block(ir*v2.rows(),0,v2.rows(),1) = v1(ir,ir)*v2.diagonal();
+}
+
+template <typename Derived1, typename Derived2,typename Derived3>
+inline MatrixXd kron_diag(const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2)
+{
+	MatrixXd out;
+	akron_diag(out,v1,2);
+	return out;
+}
+
+
 template <typename Derived1>
 inline mfloat_t getVarianceK(const Eigen::MatrixBase<Derived1> & K_) throw(CGPMixException)
 {

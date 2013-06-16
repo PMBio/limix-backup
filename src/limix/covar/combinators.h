@@ -163,8 +163,6 @@ typedef sptr<CProductCF> PProductCF;
 class CKroneckerCF: public AMultiCF
 {
 protected:
-	//covariance fucntions for row and columns
-	PCovarianceFunction rowCovar,colCovar;
 	//optional indicator vector to pull together the kronecker structure
 	MatrixXi kroneckerIndicator;
 
@@ -173,8 +171,21 @@ public:
 	CKroneckerCF(PCovarianceFunction row,PCovarianceFunction col);
 	virtual ~CKroneckerCF();
 
+	//block MultiCF addCovariance
+	void addCovariance(PCovarianceFunction covar) throw (CGPMixException) {};
+	//Access to vecCovariances
 	virtual void setRowCovariance(PCovarianceFunction cov);
 	virtual void setColCovariance(PCovarianceFunction cov);
+	PCovarianceFunction getRowCovariance() throw (CGPMixException);
+	PCovarianceFunction getColCovariance() throw (CGPMixException);
+
+	//block MultiCF X handling
+	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
+	virtual void agetX(CovarInput* Xout) const throw (CGPMixException) {};
+	virtual void setXcol(const CovarInput& X,muint_t col) throw (CGPMixException) {};
+	//X handling
+	virtual void setXr(const CovarInput& Xr) throw (CGPMixException);
+	virtual void setXc(const CovarInput& Xc) throw (CGPMixException);
 
 	//overloaded pure virtual members
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);

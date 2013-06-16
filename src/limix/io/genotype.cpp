@@ -6,13 +6,14 @@
  */
 
 #include "genotype.h"
-#include "vcflib/Variant.h"
-//#include "vcflib/split.h"
+
+//#include "vcflib/Variant.h"
+#include "split.h"
 #include <string>
 #include <vector>
 #include <numeric>
 
-namespace io = boost::iostreams;
+//namespace io = boost::iostreams;
 
 namespace limix {
 
@@ -89,7 +90,7 @@ void CGenotypeBlock::agetChromosome(VectorXs* out) const throw(CGPMixException)
 
 
 /* Text File genotype class */
-limix::CTextfileGenotypeContainer::CTextfileGenotypeContainer(const std::string& filename) {
+limix::CTextfileGenotypeContainer::CTextfileGenotypeContainer(const std::string& filename){
 	this->in_filename = filename;
 	buffer_size = 100000;
 	is_open = false;
@@ -101,10 +102,24 @@ limix::CTextfileGenotypeContainer::~CTextfileGenotypeContainer() {
 void CTextfileGenotypeContainer::openFile()
 {
 	//take filename apart and check whether ending is .gzip
-    vector<string> filenameParts = split(in_filename, ".");
+    std::vector<std::string> filenameParts = split(in_filename, ".");
 
-    string ext;
+    std::string ext;
+
     //is the file gzip ?
+    if (filenameParts.back() == "gz")
+    {
+    	in_stream = new igzstream(in_filename.c_str());
+    	ext = filenameParts.at(filenameParts.size()-2);
+    }
+    else
+    {
+    	in_stream = new std::ifstream(in_filename.c_str());
+    	ext = filenameParts.at(filenameParts.size()-1);
+    }
+
+
+    /*
     if (filenameParts.back() == "gz")
     {
     	in_stream.push(boost::iostreams::basic_gzip_decompressor<>());
@@ -123,6 +138,8 @@ void CTextfileGenotypeContainer::openFile()
     }
     //open file
 	in_stream.push(io::file_descriptor_source(in_filename));
+     */
+
 	//remember extension to call appropriate reader
 	if(ext=="gen")
 	{
@@ -137,6 +154,7 @@ void CTextfileGenotypeContainer::openFile()
 		throw CGPMixException("unknown file format");
 
 	is_open = true;
+
 }
 
 
@@ -170,17 +188,17 @@ PGenotypeBlock CTextfileGenotypeContainer::read_GEN(mint_t num_snps) throw (CGPM
 	i_snp         = 0;
 
 	//temporary variables for reading
-	string line;
-	string chrom,snp_id,snp_a,snp_b;
+	std::string line;
+	std::string chrom,snp_id,snp_a,snp_b;
 	muint_t snp_pos;
-	while(std::getline(in_stream,line))
+	while(std::getline(getStream(),line))
 	{
 		if((i_snp>=(muint_t)num_snps) && (num_snps>-1))
 				break;
 
 		//std::cout << line;
 		//parse line
-		std::vector<string> fields = split(line, ' ');
+		std::vector<std::string> fields = split(line, ' ');
 		//parse
 		//fields.
 		//std::cout << fields.size() << "\n";
@@ -235,7 +253,6 @@ PGenotypeBlock CTextfileGenotypeContainer::read_GEN(mint_t num_snps) throw (CGPM
 	}; //end for each line
 	//resize memory again
 	RV->resizeMatrices(num_samples,i_snp);
-
 
 	return RV;
 }
