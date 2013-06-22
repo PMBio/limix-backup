@@ -1,0 +1,19 @@
+import distutils.sysconfig
+import numpy
+#get all the build variables we need
+Import('env','mymode','external_include','limix_include')
+localenv = env.Clone()
+
+print "Python site-packages directory: %s" % distutils.sysconfig.get_python_lib()
+
+#add python path and numpy path
+localenv.Append(CPPPATH = [distutils.sysconfig.get_python_inc(),numpy.get_include()])
+localenv.Append(SWIGFLAGS=['-python','-c++'])
+localenv.Append(SWIGPATH =[limix_include,external_include])
+localenv.Append(LIBS=['liblimix.a','python','z'])
+localenv.Append(LIBPATH=[distutils.sysconfig.get_python_lib(),'#/'+mymode+'/limix'])
+
+#build from .i file
+srclst = ['limix.i']
+lib=localenv.SharedLibrary('_limix.so',srclst)
+Return('lib')

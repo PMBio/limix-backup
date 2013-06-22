@@ -1,11 +1,9 @@
-import glob
 
 #get all the build variables we need
-Import('env', 'project', 'mymode', 'debugcflags', 'releasecflags')
+Import('env')
 localenv = env.Clone()
 
-srclst = Glob('limix/*/*.cpp')
-
+srclst = Glob('*/*.cpp')
 
 lib=localenv.StaticLibrary('limix',srclst)
 Return('lib')
