@@ -105,6 +105,7 @@ public:
     virtual ~CTraitCF();
         
     //pure functions of the TraitCF class that need to be implemented
+    virtual void agetScales(CovarParams* out) = 0;
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException) = 0;
     virtual void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException) = 0;
     virtual void agetK0hess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException) = 0;
@@ -168,6 +169,7 @@ public:
     ~CTFreeFormCF();
     
     //TraitCF pure functions
+    virtual void agetScales(CovarParams* out);
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
     virtual void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
     virtual void agetK0hess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException);
@@ -205,11 +207,9 @@ public:
         
     CTDenseCF(muint_t numberGroups);
     ~CTDenseCF();
-    
-    //ACovarianceCF functions
-    virtual void agetScales(CovarParams* out);
 
     //TraitCF pure functions
+    virtual void agetScales(CovarParams* out);
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
     virtual void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
     virtual void agetK0hess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException);
@@ -241,10 +241,8 @@ public:
     CTFixedCF(muint_t numberGroups, const MatrixXd& K0);
     ~CTFixedCF();
     
-    //ACovarianceCF functions
-    virtual void agetScales(CovarParams* out);
-    
     //TraitCF pure functions
+    virtual void agetScales(CovarParams* out);
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
     virtual void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
     virtual void agetK0hess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException);
@@ -271,11 +269,9 @@ public:
         
     CTDiagonalCF(muint_t numberGroups);
     ~CTDiagonalCF();
-
-    //ACovarianceCF functions
-    virtual void agetScales(CovarParams* out);
     
     //TraitCF pure functions
+    virtual void agetScales(CovarParams* out);
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
     virtual void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
     virtual void agetK0hess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException);
@@ -311,11 +307,8 @@ public:
     virtual void agetK0dense(MatrixXd* out) const throw(CGPMixException);
     virtual void agetK0diagonal(MatrixXd* out) const throw(CGPMixException);
     
-    //ACovarianceCF functions
-    virtual void agetScales(CovarParams* out);
-    
-    
     //TraitCF pure functions
+    virtual void agetScales(CovarParams* out);
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
     virtual void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
     virtual void agetK0hess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException);
@@ -341,12 +334,11 @@ public:
     CTNewLowRankCF(muint_t numberGroups);
     ~CTNewLowRankCF();
     
-    //ACovarianceCF functions
+    //CTNewLowRankCF functions
     virtual void setScales(const CovarParams& scales);
-    virtual void agetScales(CovarParams* out);
-    
     
     //TraitCF pure functions
+    virtual void agetScales(CovarParams* out);
     virtual void agetK0(MatrixXd* out) const throw(CGPMixException);
     virtual void agetK0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
     virtual void agetK0hess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException);
