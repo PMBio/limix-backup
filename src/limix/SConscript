@@ -9,8 +9,8 @@ srclst = Glob('*/*.cpp')
 localenv.Depends(srclst, [nlopt])
 
 if build_options['with_vcf']:
-   srclst.extend(Glob('io/vcf/*.cpp'))
-   srclst.extend(Glob('io/vcf/*/*.cpp'))
+   srclst.extend(Glob('io/vcf/*.c*'))
+   srclst.extend(Glob('io/vcf/*/*.c*'))
 
 lib=localenv.StaticLibrary('limix',srclst)
 Return('lib')
