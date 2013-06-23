@@ -56,18 +56,18 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<folderInfo id="cdt.managedbuild.config.gnu.macosx.exe.debug.1443135094.1197883885" name="/" resourcePath="build_win">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.exe.debug.45559338" name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.exe.debug" unusedChildren="">
-							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.440240144" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.1148040791"/>
-							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.1255210935" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.1474778252"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.762203476" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.885747609"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.macosx.base.2052049166" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base.1938357482"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1220616118" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1487791172"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.477675871" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.1486937375"/>
+					<folderInfo id="cdt.managedbuild.config.gnu.macosx.exe.debug.1443135094.1974554653" name="/" resourcePath="release">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.exe.debug.1361617584" name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.exe.debug" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.552732712" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.exe.debug.1148040791"/>
+							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.256584004" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.exe.debug.1474778252"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.1767704381" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.exe.debug.885747609"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.macosx.base.1366535053" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base.1938357482"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.422542203" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1487791172"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.2108072577" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.1486937375"/>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="build_win|build_java|build_LINUX|python|External|build_mac|build_linux|build|src/interfaces" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="release|build_win|build_java|build_LINUX|python|External|build_mac|build_linux|build|src/interfaces" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
