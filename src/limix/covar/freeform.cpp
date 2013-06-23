@@ -411,6 +411,14 @@ muint_t CTFreeFormCF::calcNumberParams(muint_t numberGroups)
 CTFreeFormCF::~CTFreeFormCF()
 {
 }
+
+void CTFreeFormCF::agetScales(CovarParams* out) {
+    (*out) = this->params;
+    double sign=1;
+    if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
+    (*out)=sign*(*out);
+    (*out)(this->numberParams-1)=std::abs((*out)(this->numberParams-1));
+}
     
 void CTFreeFormCF::aK0Covar2Params(VectorXd* out,const MatrixXd& K0)
 {
