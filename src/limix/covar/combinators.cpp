@@ -133,7 +133,6 @@ void AMultiCF::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
 	}
 }
 
-
 void AMultiCF::agetX(CovarInput* Xout) const throw (CGPMixException)
 {
 	//1. determine size of Xout
@@ -1092,6 +1091,11 @@ CKroneckerCF::CKroneckerCF(PCovarianceFunction row,
 }
 
 CKroneckerCF::~CKroneckerCF() {
+}
+
+muint_t CKroneckerCF::Kdim() const throw(CGPMixException)
+{
+	return vecCovariances.begin()[0]->Kdim()*vecCovariances.begin()[1]->Kdim();
 }
 
 void CKroneckerCF::setRowCovariance(PCovarianceFunction cov) {
