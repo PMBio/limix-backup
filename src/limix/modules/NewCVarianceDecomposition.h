@@ -234,7 +234,7 @@ public:
 	virtual PLinearMean getMean() {return static_pointer_cast<CLinearMean>(this->gp->getDataTerm());};
 	//init and train GP
 	virtual void initGP() throw(CGPMixException);
-	virtual bool trainGP() throw(CGPMixException);
+	virtual bool trainGP(bool bayes=false) throw(CGPMixException);
 	virtual CVDOptimum getOptimum() {return this->optimum;};
 	//access GP
 	virtual void getFixedEffects(VectorXd* out) throw(CGPMixException);
