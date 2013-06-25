@@ -308,7 +308,7 @@ CTFixedNew::~CTFixedNew()
 
 void CTFixedNew::agetScales(CovarParams* out) {
     (*out) = this->params;
-    (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
+    (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
 }
     
 void CTFixedNew::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
@@ -358,7 +358,7 @@ CTDiagonalNew::~CTDiagonalNew()
 
 void CTDiagonalNew::agetScales(CovarParams* out) {
     (*out) = this->params;
-    (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
+    (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
 }
     
 void CTDiagonalNew::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
@@ -372,7 +372,7 @@ void CTDiagonalNew::setParamsCovariance(const MatrixXd& K0) throw(CGPMixExceptio
 
 void CTDiagonalNew::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
 {
-    (*out) = params.unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).asDiagonal();
+  (*out) = params.unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).asDiagonal();
 }
     
 void CTDiagonalNew::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
@@ -424,7 +424,7 @@ void CTLowRankNew::agetK0diagonal(MatrixXd* out) const throw(CGPMixException)
     if (numberGroups==2)
         (*out) = std::pow(params(2),2)*MatrixXd::Identity(2,2);
     else
-        (*out) = params.segment(this->numberGroups,this->numberGroups).unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).asDiagonal();
+      (*out) = params.segment(this->numberGroups,this->numberGroups).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).asDiagonal();
 }
    
 void CTLowRankNew::agetScales(CovarParams* out) {
@@ -438,7 +438,7 @@ void CTLowRankNew::agetScales(CovarParams* out) {
     }
     else {
         (*out).segment(0,this->numberGroups)=sign*(*out).segment(0,this->numberGroups);
-        (*out).segment(this->numberGroups,this->numberGroups)=(*out).segment(this->numberGroups,this->numberGroups).unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
+        (*out).segment(this->numberGroups,this->numberGroups)=(*out).segment(this->numberGroups,this->numberGroups).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
     }
 }
     

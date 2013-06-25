@@ -1,11 +1,16 @@
 #get all the build variables we need
-Import('env','mymode')
+import os
+Import('env','build_prefix')
 localenv = env.Clone()
 
 #add paths for nlopt
 localenv.Append(CPPPATH = ['stogo','util','direct','cdirect','praxis','luksan','crs','mlsl','mma','cobyla','newuoa','neldermead','auglag','bobyqa','isres','slsqp','api'])
 #add variant dir to path
-localenv.Append(CPPPATH = ['#/'+mymode+'/nlopt'])
+
+#figure out target install path
+abs_build_prefix = os.path.join('#',build_prefix)
+
+localenv.Append(CPPPATH = [os.path.join(abs_build_prefix,'nlopt')])
 
 #autoconf checkes
 dict = {}
@@ -25,6 +30,7 @@ dict['HAVE_GETTIMEOFDAY'] = ''
 dict['HAVE_QSORT_R'] = ''
 dict['HAVE_TIME'] = ''
 dict['HAVE_COPYSIGN'] = ''
+dict['HAVE_UINT32_T'] = ''
 #static replacements
 dict['NLOPT_MAJOR_VERSION'] = '1.0'
 dict['NLOPT_MINOR_VERSION'] = '0'
@@ -69,15 +75,15 @@ if conf.CheckFunc('copysign'):
 uint32_t_header = '#include "stdint.h"'
 uint32_t_size = conf.CheckTypeSize('uint32_t',includes=uint32_t_header)
 if uint32_t_size:
-   dict['SIZEOF_UNSINGED_INT'] = str(uint32_t_size)
+   dict['SIZEOF_UNSIGNED_INT'] = str(uint32_t_size)
    dict['HAVE_UINT32_T'] = '#define HAVE_UINT32_T'
    dict['DEFINE_UINT32_T'] = ''
 else:
-   dict['SIZEOF_UNSINGED_INT'] = '4'
+   dict['SIZEOF_UNSIGNED_INT'] = '4'
    dict['DEFINE_UINT32_T'] = "#define uint32_t unsigned int"
+   dict['HAVE_UINT32_T'] = '#define HAVE_UINT32_T'
 #replace 
 config=localenv.SubstInFile('config.h','config.scons.h.in',SUBST_DICT=dict)
-#config,config_in = localenv.SubstEmitter('config.h','config.scons.h.in',SUBST_DICT=dict)
 
 srclst = ['direct/DIRect.c',
        'direct/direct_wrap.c',
@@ -102,7 +108,6 @@ srclst = ['direct/DIRect.c',
 
 #add dependency on generated header
 localenv.Depends(srclst, config)
-
 
 #srclst = Glob('*/*.c')
 #srclst = ['api/f77api.c']
