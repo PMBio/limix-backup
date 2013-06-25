@@ -480,8 +480,9 @@ void CNewVarianceDecomposition::initGP() throw(CGPMixException)
 	this->is_init=1;
 }
 
-bool CNewVarianceDecomposition::trainGP() throw(CGPMixException)
+bool CNewVarianceDecomposition::trainGP(bool bayes) throw(CGPMixException)
 {
+
 	bool conv = false;
 	// initGP if is not init
 	if (this->is_init==0)	this->initGP();
@@ -499,8 +500,30 @@ bool CNewVarianceDecomposition::trainGP() throw(CGPMixException)
 	conv *= (this->getLMLgrad()<(mfloat_t)1e-6);
 	MatrixXd variances;
 	this->agetVariances(&variances);
-	conv *= (variances.maxCoeff()<10);
-	//if (!conv) std::cout << "Failed" << std::endl;
+	conv *= (variances.maxCoeff()<(mfloat_t)10.0);
+
+	MatrixXd SigmaTi;
+	MatrixXd Sigmai = MatrixXd::Zero((muint_t)this->getNumberScales(),(muint_t)this->getNumberScales());
+	MatrixXd Sigma;
+	VectorXd filter = this->gp->getParamMask()["covar"];
+	if (bayes==true) {
+		this->gp->aLMLhess_covar(&SigmaTi);
+		muint_t ir=0;
+		muint_t ic;
+		for (muint_t i=0; i<filter.rows(); i++) {
+			ic=0;
+			if (filter(i)==1) {
+				for (muint_t j=0; j<filter.rows(); j++) {
+					if (filter(j)==1) {
+						Sigmai(ir,ic)=SigmaTi(i,j);
+						ic++;
+					}
+				}
+				ir++;
+			}
+		}
+		Sigma = Sigmai.inverse();
+	}
 
 	//Store optimum
 	MatrixXd convM = MatrixXd::Zero(1,1); if (conv) convM(0,0)=1;
@@ -508,6 +531,7 @@ bool CNewVarianceDecomposition::trainGP() throw(CGPMixException)
 	MatrixXd LMLM(1,1); LMLM(0,0)=this->getLML();
 	MatrixXd LMLgradM(1,1); LMLgradM(0,0)=this->getLMLgrad();
 	MatrixXd time_elapsedM(1,1); time_elapsedM(0,0)=time_elapsed;
+	MatrixXd posteriorM(1,1);
 	VectorXd scales; this->agetScales(&scales);
 	MatrixXd varComponents; this->agetVarComponents(&varComponents);
 	optimum["conv"]=convM;
@@ -519,7 +543,12 @@ bool CNewVarianceDecomposition::trainGP() throw(CGPMixException)
 	optimum["variances"]=variances;
 	optimum["varComponents"]=varComponents;
 	optimum["time_elapsed"]=time_elapsedM;
-
+	if (bayes==true) {
+		optimum["covar_scales"]=Sigma;
+		optimum["std_scales"]=Sigma.diagonal().unaryExpr(std::ptr_fun(sqrt));
+		posteriorM(1,1) = this->getLML()+0.5*this->getNumberScales()*std::log(2*PI)+0.5*std::log(Sigma.determinant());
+		optimum["posterior"]=posteriorM;
+	}
 	return conv;
 }
 
