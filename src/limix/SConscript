@@ -1,9 +1,16 @@
 
 #get all the build variables we need
-Import('env')
+Import('env','nlopt','build_options')
 localenv = env.Clone()
 
 srclst = Glob('*/*.cpp')
+
+#srclst
+localenv.Depends(srclst, [nlopt])
+
+if build_options['with_vcf']:
+   srclst.extend(Glob('io/vcf/*.c*'))
+   srclst.extend(Glob('io/vcf/*/*.c*'))
 
 lib=localenv.StaticLibrary('limix',srclst)
 Return('lib')
