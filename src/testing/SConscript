@@ -1,0 +1,22 @@
+import os
+#get all the build variables we need
+Import('env','libnlopt','liblimix','build_options','build_prefix')
+localenv = env.Clone()
+
+#figure out target install path
+abs_build_prefix = os.path.join('#',build_prefix)
+
+srclst = Glob('*.cpp')
+
+#srclst
+localenv.Depends(srclst, [libnlopt,liblimix])
+#add libraries
+localenv.Append(LIBS=['liblimix.a','libnlopt.a'])
+#add path
+localenv.Append(LIBPATH=[os.path.join(abs_build_prefix,'limix'),os.path.join(abs_build_prefix,'nlopt')])
+
+if build_options['with_zlib']:
+   localenv.Append(LIBS=['libz'])
+
+program=localenv.Program('main',srclst)
+Return('program')

@@ -1,6 +1,6 @@
 #get all the build variables we need
 import os
-Import('env','build_prefix')
+Import('env','conf','build_prefix')
 localenv = env.Clone()
 
 #add paths for nlopt
@@ -35,8 +35,6 @@ dict['HAVE_UINT32_T'] = ''
 dict['NLOPT_MAJOR_VERSION'] = '1.0'
 dict['NLOPT_MINOR_VERSION'] = '0'
 dict['NLOPT_BUGFIX_VERSION'] = '0'
-
-conf = Configure(localenv)
 
 #header checks
 if conf.CheckCHeader('unistd.h'):

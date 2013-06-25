@@ -1,12 +1,13 @@
 
 #get all the build variables we need
-Import('env','nlopt','build_options')
+Import('env','libnlopt','build_options')
 localenv = env.Clone()
+
 
 srclst = Glob('*/*.cpp')
 
 #srclst
-localenv.Depends(srclst, [nlopt])
+localenv.Depends(srclst, [libnlopt])
 
 if build_options['with_vcf']:
    srclst.extend(Glob('io/vcf/*.c*'))
