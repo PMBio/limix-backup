@@ -1,6 +1,6 @@
 #get all the build variables we need
 import os
-Import('env','mymode')
+Import('env','build_prefix')
 localenv = env.Clone()
 
 #add paths for nlopt
@@ -8,9 +8,9 @@ localenv.Append(CPPPATH = ['stogo','util','direct','cdirect','praxis','luksan','
 #add variant dir to path
 
 #figure out target install path
-variant_dir = os.path.join('#',mymode)
+abs_build_prefix = os.path.join('#',build_prefix)
 
-localenv.Append(CPPPATH = [os.path.join(variant_dir,'nlopt')])
+localenv.Append(CPPPATH = [os.path.join(abs_build_prefix,'nlopt')])
 
 #autoconf checkes
 dict = {}
@@ -75,12 +75,13 @@ if conf.CheckFunc('copysign'):
 uint32_t_header = '#include "stdint.h"'
 uint32_t_size = conf.CheckTypeSize('uint32_t',includes=uint32_t_header)
 if uint32_t_size:
-   dict['SIZEOF_UNSINGED_INT'] = str(uint32_t_size)
+   dict['SIZEOF_UNSIGNED_INT'] = str(uint32_t_size)
    dict['HAVE_UINT32_T'] = '#define HAVE_UINT32_T'
    dict['DEFINE_UINT32_T'] = ''
 else:
-   dict['SIZEOF_UNSINGED_INT'] = '4'
+   dict['SIZEOF_UNSIGNED_INT'] = '4'
    dict['DEFINE_UINT32_T'] = "#define uint32_t unsigned int"
+   dict['HAVE_UINT32_T'] = '#define HAVE_UINT32_T'
 #replace 
 config=localenv.SubstInFile('config.h','config.scons.h.in',SUBST_DICT=dict)
 
