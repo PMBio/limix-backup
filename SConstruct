@@ -1,5 +1,6 @@
 #use systems path for building commands, etc.
 import os
+import sys
 
 #import autoconfig like handling
 from ACGenerateFile import *
@@ -27,13 +28,28 @@ if not (mymode in ['debug', 'release']):
    Exit(1)
 
 #tell the user what we're doing
-print '**** Compiling in ' + mymode + ' mode...'
+#create build prefix
+build_prefix = mymode + '.' + sys.platform
+print '**** Compiling in ' + build_prefix + ' mode...'
 
-cflags = ['-fPIC']
+cflags = ['']
 debugcflags   = ['-g', '-Wextra', '-DDEBUG']   #extra compile flags for debug
-releasecflags = ['-O2','-msse','-msse2', '-DRELEASE']         #extra compile flags for release
+releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
 
-env = Environment(SHLIBPREFIX="",ENV = {'PATH' : os.environ['PATH']},tools = ['default', TOOL_SUBST],toolpath='.')
+if sys.platform=='win32':
+   pass
+else:
+   cflags.extend(['-fPIC'])
+   releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
+
+#build environment
+copy_env = ['PATH','INCLUDE','LIB','TMP']
+ENV = {}
+for key in copy_env:
+    if key in os.environ.keys():
+       ENV[key] = os.environ[key]
+
+env = Environment(SHLIBPREFIX="",ENV=ENV,tools = ['default', TOOL_SUBST],toolpath='.')
 env.Append(CCFLAGS=cflags)
 
 if mymode == 'debug':
@@ -48,17 +64,17 @@ env.Append(CPPPATH = limix_include)
 env.Append(CPPPATH = external_include)
 
 #make sure the sconscripts can get to the variables
-Export('env', 'mymode','build_options','limix_include','external_include')
+Export('env', 'mymode','build_prefix','build_options','limix_include','external_include')
 
 #put all .sconsign files in one place
 env.SConsignFile()
 
 #build external libraries
-nlopt=SConscript('External/nlopt/SConscript', variant_dir=os.path.join(mymode,'nlopt'),duplicate=0)
+nlopt=SConscript('External/nlopt/SConscript', variant_dir=os.path.join(build_prefix,'nlopt'),duplicate=0)
 
 Export('nlopt')
-limix=SConscript('src/limix/SConscript',variant_dir=os.path.join(mymode,'limix'),duplicate=0)
+limix=SConscript('src/limix/SConscript',variant_dir=os.path.join(build_prefix,'limix'),duplicate=0)
 
 Export('limix','nlopt')
-python_interface=SConscript('src/interfaces/python/SConscript',variant_dir=os.path.join(mymode,'interfaces','python'),duplicate=0)
+python_interface=SConscript('src/interfaces/python/SConscript',variant_dir=os.path.join(build_prefix,'interfaces','python'),duplicate=0)
 
