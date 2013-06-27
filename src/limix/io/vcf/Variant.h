@@ -145,7 +145,7 @@ VariantCallFile(void) : usingTabix(false), parseSamples(true), justSetRegion(fal
 
     bool parseHeader(string& headerStr);
 
-    bool parseHeader(void);
+    bool parseHeader();
 
     bool getNextVariant(Variant& var);
 

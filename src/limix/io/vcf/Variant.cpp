@@ -943,7 +943,7 @@ void VariantFilter::removeFilteredGenotypes(Variant& var) {
     }
 }
 
-/*
+  /*
 bool VariantCallFile::openVCF(string& filename) {
     file.open(filename.c_str(), ifstream::in);
     if (!file.is_open()) {
@@ -963,7 +963,7 @@ bool VariantCallFile::openVCF(ifstream& stream) {
         return parseHeader();
     }
 }
-*/
+  */
 
 void VariantCallFile::updateSamples(vector<string>& newSamples) {
     sampleNames = newSamples;
@@ -1071,7 +1071,7 @@ void VariantCallFile::removeGenoHeaderLine(string tag) {
     header = join(newHeader, "\n");
 }
 
-bool VariantCallFile::parseHeader(void) {
+bool VariantCallFile::parseHeader() {
 
     string headerStr = "";
 
