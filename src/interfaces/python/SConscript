@@ -1,0 +1,44 @@
+import distutils.sysconfig
+import numpy
+import os
+import sys
+#get all the build variables we need
+Import('env','mymode','build_prefix','external_include','limix_include','limix','nlopt')
+localenv = env.Clone()
+
+print "Python site-packages directory: %s" % distutils.sysconfig.get_python_lib()
+
+#detect python and numpy include directories
+python_lib_path = distutils.sysconfig.get_python_lib()
+python_inc_path = distutils.sysconfig.get_python_inc()
+numpy_inc_path = numpy.get_include()
+
+#figure out target install path
+abs_build_prefix = os.path.join('#',build_prefix)
+
+
+#add python path and numpy path
+localenv.Append(CPPPATH = [python_inc_path,numpy_inc_path])
+localenv.Append(SWIGFLAGS=['-python','-c++'])
+localenv.Append(SWIGPATH =[limix_include,external_include])
+localenv.Append(LIBS=['liblimix.a','libnlopt.a','z'])
+localenv.Append(LIBPATH=[python_lib_path,os.path.join(abs_build_prefix,'limix'),os.path.join(abs_build_prefix,'nlopt')])
+
+#dynamic lookups, needed with MAC at least
+if(localenv['PLATFORM']=='darwin'):
+	localenv.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup'])
+
+#build from .i file
+srclst = ['limix.i']
+localenv.Depends(srclst, [nlopt,limix])
+
+if sys.platform=='win32':
+   lib=localenv.LoadableModule('_core.dll',srclst)
+else:
+   lib=localenv.LoadableModule('_core.so',srclst)
+
+#copy files
+target_dir = os.path.join(abs_build_prefix,"interfaces","python")
+#Command("limix","limix",[Copy(os.path.join(target_dir,"limix"),"limix")])
+
+Return('lib')

@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGUID>{25C204C3-2830-4365-8C6C-9CA5E35D0F63}</ProjectGUID>
+    <ProjectGUID>{25585CA7-7A02-49AD-B1F8-537CB6BA7CA8}</ProjectGUID>
     <Keyword>Win32Proj</Keyword>
     <Platform>x64</Platform>
     <ProjectName>nlopt</ProjectName>
@@ -53,31 +53,32 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />  </ImportGroup>
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-    <PropertyGroup>
-      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\Debug\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">nlopt.dir\Debug\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">nlopt</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\Release\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nlopt.dir\Release\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nlopt</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\MinSizeRel\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">nlopt.dir\MinSizeRel\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">nlopt</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\RelWithDebInfo\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">nlopt.dir\RelWithDebInfo\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">nlopt</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
-    </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">nlopt.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">nlopt</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nlopt.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">nlopt</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">nlopt.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">nlopt</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">nlopt.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">nlopt</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -95,10 +96,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -109,7 +110,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -118,7 +119,8 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat></DebugInformationFormat>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>Release</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -126,21 +128,24 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
       <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
+    <Lib>
+      <AdditionalLibraryDirectories>C:/Python27/libs;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
@@ -149,7 +154,8 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat></DebugInformationFormat>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>MinSizeRel</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -157,10 +163,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -171,7 +177,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -188,10 +194,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8-dll/include;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./External/boost;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;C:/Users/lippert/Projects/limix/External/nlopt;C:/Users/lippert/Projects/limix/build_win/External/nlopt;C:/Users/lippert/Projects/limix/External/nlopt/stogo;C:/Users/lippert/Projects/limix/External/nlopt/util;C:/Users/lippert/Projects/limix/External/nlopt/direct;C:/Users/lippert/Projects/limix/External/nlopt/cdirect;C:/Users/lippert/Projects/limix/External/nlopt/praxis;C:/Users/lippert/Projects/limix/External/nlopt/luksan;C:/Users/lippert/Projects/limix/External/nlopt/crs;C:/Users/lippert/Projects/limix/External/nlopt/mlsl;C:/Users/lippert/Projects/limix/External/nlopt/mma;C:/Users/lippert/Projects/limix/External/nlopt/cobyla;C:/Users/lippert/Projects/limix/External/nlopt/newuoa;C:/Users/lippert/Projects/limix/External/nlopt/neldermead;C:/Users/lippert/Projects/limix/External/nlopt/auglag;C:/Users/lippert/Projects/limix/External/nlopt/bobyqa;C:/Users/lippert/Projects/limix/External/nlopt/isres;C:/Users/lippert/Projects/limix/External/nlopt/slsqp;C:/Users/lippert/Projects/limix/External/nlopt/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -211,7 +217,7 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/lippert/Projects/limix/External/nlopt/CMakeLists.txt;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Users\lippert\Projects\limix\External\nlopt\config.cmake.h.in;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/lippert/Projects/limix/External/nlopt/CMakeLists.txt;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;C:\Users\lippert\Projects\limix\build_win\CMakeFiles\CheckTypeSize\UINT32_T.c;C:\Users\lippert\Projects\limix\External\nlopt\config.cmake.h.in;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\CMakeFiles\generate.stamp</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/lippert/Projects/limix/External/nlopt/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
@@ -223,7 +229,7 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/lippert/Projects/limix/External/nlopt/CMakeLists.txt;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Users\lippert\Projects\limix\External\nlopt\config.cmake.h.in;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/lippert/Projects/limix/External/nlopt/CMakeLists.txt;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;C:\Users\lippert\Projects\limix\build_win\CMakeFiles\CheckTypeSize\UINT32_T.c;C:\Users\lippert\Projects\limix\External\nlopt\config.cmake.h.in;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\CMakeFiles\generate.stamp</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/lippert/Projects/limix/External/nlopt/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
@@ -235,7 +241,7 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/lippert/Projects/limix/External/nlopt/CMakeLists.txt;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Users\lippert\Projects\limix\External\nlopt\config.cmake.h.in;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/lippert/Projects/limix/External/nlopt/CMakeLists.txt;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;C:\Users\lippert\Projects\limix\build_win\CMakeFiles\CheckTypeSize\UINT32_T.c;C:\Users\lippert\Projects\limix\External\nlopt\config.cmake.h.in;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\CMakeFiles\generate.stamp</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/lippert/Projects/limix/External/nlopt/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
@@ -247,7 +253,7 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/lippert/Projects/limix/External/nlopt/CMakeLists.txt;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Users\lippert\Projects\limix\External\nlopt\config.cmake.h.in;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/lippert/Projects/limix/External/nlopt/CMakeLists.txt;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFiles.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeExpandImportedTargets.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeConfigurableFile.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckIncludeFile.c.in;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckTypeSize.c.in;C:\Users\lippert\Projects\limix\build_win\CMakeFiles\CheckTypeSize\UINT32_T.c;C:\Users\lippert\Projects\limix\External\nlopt\config.cmake.h.in;C:\Users\lippert\Projects\limix\External\nlopt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\lippert\Projects\limix\build_win\External\nlopt\CMakeFiles\generate.stamp</Outputs>
     </CustomBuild>
   </ItemGroup>
@@ -282,231 +288,231 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="..\..\..\External\nlopt\stogo\stogo_config.h" />
     <ClInclude Include="..\..\..\External\nlopt\stogo\stogo.h" />
     <ClInclude Include="..\..\..\External\nlopt\stogo\tools.h" />
-    <ClCompile Include="..\..\..\External\nlopt\direct\DIRect.c" >
+    <ClCompile Include="..\..\..\External\nlopt\direct\DIRect.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\direct\direct_wrap.c" >
+    <ClCompile Include="..\..\..\External\nlopt\direct\direct_wrap.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\direct\DIRserial.c" >
+    <ClCompile Include="..\..\..\External\nlopt\direct\DIRserial.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\direct\DIRsubrout.c" >
+    <ClCompile Include="..\..\..\External\nlopt\direct\DIRsubrout.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\cdirect\cdirect.c" >
+    <ClCompile Include="..\..\..\External\nlopt\cdirect\cdirect.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\cdirect\hybrid.c" >
+    <ClCompile Include="..\..\..\External\nlopt\cdirect\hybrid.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\praxis\praxis.c" >
+    <ClCompile Include="..\..\..\External\nlopt\praxis\praxis.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\luksan\plis.c" >
+    <ClCompile Include="..\..\..\External\nlopt\luksan\plis.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\luksan\plip.c" >
+    <ClCompile Include="..\..\..\External\nlopt\luksan\plip.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\luksan\pnet.c" >
+    <ClCompile Include="..\..\..\External\nlopt\luksan\pnet.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\luksan\mssubs.c" >
+    <ClCompile Include="..\..\..\External\nlopt\luksan\mssubs.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\luksan\pssubs.c" >
+    <ClCompile Include="..\..\..\External\nlopt\luksan\pssubs.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\crs\crs.c" >
+    <ClCompile Include="..\..\..\External\nlopt\crs\crs.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\mlsl\mlsl.c" >
+    <ClCompile Include="..\..\..\External\nlopt\mlsl\mlsl.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\mma\mma.c" >
+    <ClCompile Include="..\..\..\External\nlopt\mma\mma.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\mma\ccsa_quadratic.c" >
+    <ClCompile Include="..\..\..\External\nlopt\mma\ccsa_quadratic.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\cobyla\cobyla.c" >
+    <ClCompile Include="..\..\..\External\nlopt\cobyla\cobyla.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\newuoa\newuoa.c" >
+    <ClCompile Include="..\..\..\External\nlopt\newuoa\newuoa.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\neldermead\nldrmd.c" >
+    <ClCompile Include="..\..\..\External\nlopt\neldermead\nldrmd.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\neldermead\sbplx.c" >
+    <ClCompile Include="..\..\..\External\nlopt\neldermead\sbplx.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\auglag\auglag.c" >
+    <ClCompile Include="..\..\..\External\nlopt\auglag\auglag.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\bobyqa\bobyqa.c" >
+    <ClCompile Include="..\..\..\External\nlopt\bobyqa\bobyqa.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\isres\isres.c" >
+    <ClCompile Include="..\..\..\External\nlopt\isres\isres.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\slsqp\slsqp.c" >
+    <ClCompile Include="..\..\..\External\nlopt\slsqp\slsqp.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\api\general.c" >
+    <ClCompile Include="..\..\..\External\nlopt\api\general.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\api\options.c" >
+    <ClCompile Include="..\..\..\External\nlopt\api\options.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\api\optimize.c" >
+    <ClCompile Include="..\..\..\External\nlopt\api\optimize.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\api\deprecated.c" >
+    <ClCompile Include="..\..\..\External\nlopt\api\deprecated.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\api\f77api.c" >
+    <ClCompile Include="..\..\..\External\nlopt\api\f77api.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\util\mt19937ar.c" >
+    <ClCompile Include="..\..\..\External\nlopt\util\mt19937ar.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\util\sobolseq.c" >
+    <ClCompile Include="..\..\..\External\nlopt\util\sobolseq.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\util\timer.c" >
+    <ClCompile Include="..\..\..\External\nlopt\util\timer.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\util\stop.c" >
+    <ClCompile Include="..\..\..\External\nlopt\util\stop.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\util\redblack.c" >
+    <ClCompile Include="..\..\..\External\nlopt\util\redblack.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\util\qsort_r.c" >
+    <ClCompile Include="..\..\..\External\nlopt\util\qsort_r.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\util\rescale.c" >
+    <ClCompile Include="..\..\..\External\nlopt\util\rescale.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\External\nlopt\stogo\global.cc"  />
-    <ClCompile Include="..\..\..\External\nlopt\stogo\linalg.cc"  />
-    <ClCompile Include="..\..\..\External\nlopt\stogo\local.cc"  />
-    <ClCompile Include="..\..\..\External\nlopt\stogo\stogo.cc"  />
-    <ClCompile Include="..\..\..\External\nlopt\stogo\tools.cc"  />
+    <ClCompile Include="..\..\..\External\nlopt\stogo\global.cc" />
+    <ClCompile Include="..\..\..\External\nlopt\stogo\linalg.cc" />
+    <ClCompile Include="..\..\..\External\nlopt\stogo\local.cc" />
+    <ClCompile Include="..\..\..\External\nlopt\stogo\stogo.cc" />
+    <ClCompile Include="..\..\..\External\nlopt\stogo\tools.cc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:/Users/lippert/Projects/limix/build_win/ZERO_CHECK.vcxproj">
-      <Project>5A01280A-62F0-49D7-BF9A-3EC65FA04721</Project>
+      <Project>0ECAAFA6-7BD3-4509-9DF2-24B1CE96D082</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

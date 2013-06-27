@@ -165,11 +165,11 @@ class CKroneckerCF: public AMultiCF
 protected:
 	//optional indicator vector to pull together the kronecker structure
 	MatrixXi kroneckerIndicator;
-
 public:
 	CKroneckerCF();
 	CKroneckerCF(PCovarianceFunction row,PCovarianceFunction col);
 	virtual ~CKroneckerCF();
+	virtual muint_t Kdim() const throw(CGPMixException);
 
 	//block MultiCF addCovariance
 	void addCovariance(PCovarianceFunction covar) throw (CGPMixException) {};
@@ -179,11 +179,10 @@ public:
 	PCovarianceFunction getRowCovariance() throw (CGPMixException);
 	PCovarianceFunction getColCovariance() throw (CGPMixException);
 
-	//block MultiCF X handling
+	//X handling
 	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
 	virtual void agetX(CovarInput* Xout) const throw (CGPMixException) {};
 	virtual void setXcol(const CovarInput& X,muint_t col) throw (CGPMixException) {};
-	//X handling
 	virtual void setXr(const CovarInput& Xr) throw (CGPMixException);
 	virtual void setXc(const CovarInput& Xc) throw (CGPMixException);
 
