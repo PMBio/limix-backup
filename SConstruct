@@ -47,7 +47,7 @@ print '**** Compiling in ' + build_prefix + ' mode...'
 
 cflags = []
 linkflags = []
-debugcflags   = ['-g', '-Wextra', '-DDEBUG']   #extra compile flags for debug
+debugcflags   = ['-DDEBUG']   #extra compile flags for debug
 releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
 
 ### 3. compiler flags & environment
@@ -56,6 +56,7 @@ if sys.platform=='win32':
 else:
    cflags.extend(['-fPIC'])
    releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
+   debugcflags.extend(['-g','-Wextra'])
 
 #build environment
 copy_env = ['PATH','INCLUDE','LIB','TMP']
