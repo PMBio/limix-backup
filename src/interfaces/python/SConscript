@@ -21,11 +21,9 @@ abs_build_prefix = os.path.join('#',build_prefix)
 localenv.Append(CPPPATH = [python_inc_path,numpy_inc_path])
 localenv.Append(SWIGFLAGS=['-python','-c++'])
 localenv.Append(SWIGPATH =[limix_include,external_include,'#/src/interfaces/python'])
-localenv.Append(LIBS=['liblimix.a','libnlopt.a'])
-localenv.Append(LIBPATH=[python_lib_path,os.path.join(abs_build_prefix,'limix'),os.path.join(abs_build_prefix,'nlopt')])
-
-if build_options['with_zlib']:
-   localenv.Append(LIBS=['libz'])
+#localenv.Append(LIBS=['liblimix.a','libnlopt.a'])
+localenv.Append(LIBS=['limix','nlopt','python27'])
+localenv.Append(LIBPATH=[python_lib_path,os.path.join(abs_build_prefix,'limix'),os.path.join(abs_build_prefix,'nlopt'),'c:\\Python-2.7.5-32bit\\python-2.7.5\\libs'])
 
 #dynamic lookups, needed with MAC at least
 if(localenv['PLATFORM']=='darwin'):
@@ -35,16 +33,21 @@ if(localenv['PLATFORM']=='darwin'):
 srclst = ['limix.i']
 localenv.Depends(srclst, [libnlopt,liblimix])
 
-if sys.platform=='win32':
-   lib=localenv.LoadableModule('_core.dll',srclst)
-else:
-   lib=localenv.LoadableModule('_core.so',srclst)
+#if sys.platform=='win32':
+#   #lib=localenv.LoadableModule('_core.dll',srclst)
+#   #lib=localenv.SharedLibrary('_core.dll',srclst)
+#   swigObject = env.SharedObject(srclst)
+#   lib=localenv.SharedLibrary('_core.dll',swigObject)
+#else:
+#   lib=localenv.LoadableModule('_core.so',srclst)
+
+lib=localenv.LoadableModule('_core',srclst)
 
 src_dir    = os.path.join('#','src','interfaces','python','limix')
 #copy files over for limix modules
-copy=Command(target="limix",source=src_dir,action = [Delete("$TARGET"), Copy("$TARGET","$SOURCE")])
+#copy=Command(target="limix",source=src_dir,action = [Delete("$TARGET"), Copy("$TARGET","$SOURCE")])
 #enforce build:
-AlwaysBuild([copy])
+#AlwaysBuild([copy])
 
 #Command("limix.out","limix.in",Copy("$TARGET","#${SOURCE.srcpath}"))
 Return('lib')

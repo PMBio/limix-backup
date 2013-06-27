@@ -45,13 +45,14 @@ if not (mymode in ['debug', 'release']):
 build_prefix = mymode + '.' + sys.platform
 print '**** Compiling in ' + build_prefix + ' mode...'
 
-cflags = ['']
+cflags = []
+linkflags = []
 debugcflags   = ['-g', '-Wextra', '-DDEBUG']   #extra compile flags for debug
 releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
 
 ### 3. compiler flags & environment
 if sys.platform=='win32':
-   pass
+   cflags.extend(['-EHsc'])
 else:
    cflags.extend(['-fPIC'])
    releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
@@ -65,6 +66,7 @@ for key in copy_env:
 
 env = Environment(SHLIBPREFIX="",ENV=ENV,tools = ['default', TOOL_SUBST],toolpath='.')
 env.Append(CCFLAGS=cflags)
+env.Append(LINKFLAGS=linkflags)
 
 if mymode == 'debug':
    env.Append(CCFLAGS=debugcflags)
@@ -80,8 +82,9 @@ env.Append(CPPPATH = external_include)
 ### 4. conf tests
 conf = Configure(env)
 #hader checks
+
 if conf.CheckCHeader('zlib.h') & conf.CheckLib('libz'):
-   build_options['with_zlib'] = True   
+   build_options['with_zlib'] = True
 else:
    build_options['with_zlib'] = False
 

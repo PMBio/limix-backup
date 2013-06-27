@@ -6,8 +6,8 @@
  */
 
 #include "genotype.h"
-#include "vcflib/Variant.h"
-#include "vcflib/split.h"
+#include "limix/io/vcf/Variant.h"
+#include "limix/io/vcf/split.h"
 
 using namespace vcf;
 
