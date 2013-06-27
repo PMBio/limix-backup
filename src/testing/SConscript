@@ -11,7 +11,7 @@ srclst = Glob('*.cpp')
 #srclst
 localenv.Depends(srclst, [libnlopt,liblimix])
 #add libraries
-localenv.Append(LIBS=['liblimix.a','libnlopt.a'])
+localenv.Append(LIBS=['limix','nlopt'])
 #add path
 localenv.Append(LIBPATH=[os.path.join(abs_build_prefix,'limix'),os.path.join(abs_build_prefix,'nlopt')])
 

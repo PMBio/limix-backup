@@ -9,6 +9,7 @@ srclst = Glob('*/*.cpp')
 #srclst
 localenv.Depends(srclst, [libnlopt])
 
+srclst.extend(Glob('io/vcf/*.c*'))
 srclst.extend(Glob('io/vcf/multichoose/.c*'))
 srclst.extend(Glob('io/vcf/smithwaterman/.c*'))
 if build_options['with_zlib']:
