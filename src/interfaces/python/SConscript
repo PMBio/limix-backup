@@ -22,8 +22,12 @@ localenv.Append(CPPPATH = [python_inc_path,numpy_inc_path])
 localenv.Append(SWIGFLAGS=['-python','-c++'])
 localenv.Append(SWIGPATH =[limix_include,external_include,'#/src/interfaces/python'])
 #localenv.Append(LIBS=['liblimix.a','libnlopt.a'])
-localenv.Append(LIBS=['limix','nlopt','python27'])
-localenv.Append(LIBPATH=[python_lib_path,os.path.join(abs_build_prefix,'limix'),os.path.join(abs_build_prefix,'nlopt'),'c:\\Python2.7.5-32bit\\python-2.7.5\\libs'])
+#localenv.Append(LIBS=['limix','nlopt','python27'])
+localenv.Append(LIBS=['limix','nlopt'])
+LIBPATH = [python_lib_path,os.path.join(abs_build_prefix,'limix'),os.path.join(abs_build_prefix,'nlopt')]
+#add python lib path, windows needs this..
+LIBPATH.append(os.path.join(sys.prefix,'libs'))
+localenv.Append(LIBPATH=LIBPATH)
 
 #dynamic lookups, needed with MAC at least
 if(localenv['PLATFORM']=='darwin'):
