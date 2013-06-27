@@ -15,10 +15,13 @@
 #include <set>
 #include "limix/io/vcf/split.h"
 #include "limix/io/vcf/join.h"
-#include "tabixpp/tabix.hpp"
+#ifdef ZLIB
+#include "limix/io/vcf/tabixpp/tabix.hpp"
+#endif
 #include "limix/io/vcf/smithwaterman/SmithWatermanGotoh.h"
 #include "limix/io/vcf/smithwaterman/disorder.h"
-#include "ssw_cpp.h"
+
+//#include "ssw_cpp.h"
 #include "limix/io/vcf/convert.h"
 #include "limix/io/vcf/multichoose/multichoose.h"
 
@@ -51,7 +54,9 @@ class VariantCallFile {
 public:
 
     istream* file;
+    #ifdef ZLIB
     Tabix* tabixFile;
+    #endif
 
     bool usingTabix;
 
@@ -80,7 +85,9 @@ public:
     bool open(string& filename) {
         vector<string> filenameParts = split(filename, ".");
         if (filenameParts.back() == "gz" || filenameParts.back() == "bgz") {
+	  #ifdef ZLIB
             return openTabix(filename);
+	  #endif
         } else {
             return openFile(filename);
         }
@@ -94,10 +101,14 @@ public:
     }
 
     bool openTabix(string& filename) {
+      #ifdef ZLIB
         usingTabix = true;
         tabixFile = new Tabix(filename);
         parsedHeader = parseHeader();
         return parsedHeader;
+      #else
+	return false;
+      #endif
     }
 
     bool open(istream& stream) {
@@ -120,7 +131,9 @@ public:
 VariantCallFile(void) : usingTabix(false), parseSamples(true), justSetRegion(false), parsedHeader(false) { }
     ~VariantCallFile(void) {
         if (usingTabix) {
+	  #ifdef ZLIB
             delete tabixFile;
+	  #endif
         }
     }
 

@@ -96,7 +96,7 @@ void CSingleTraitTerm::agetTraitCovariance(MatrixXd *out) const throw(CGPMixExce
 void CSingleTraitTerm::agetVariances(VectorXd* out) const throw(CGPMixException)
 {
 	this->agetScales(out);
-	(*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun(pow), 2) );
+	(*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) );
 }
 
 

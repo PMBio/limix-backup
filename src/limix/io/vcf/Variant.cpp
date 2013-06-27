@@ -1076,6 +1076,7 @@ bool VariantCallFile::parseHeader(void) {
     string headerStr = "";
 
     if (usingTabix) {
+      #ifdef ZLIB
         tabixFile->getHeader(headerStr);
         if (headerStr.empty()) {
             cerr << "error: no VCF header" << endl;
@@ -1083,6 +1084,7 @@ bool VariantCallFile::parseHeader(void) {
         }
         tabixFile->getNextLine(line);
         firstRecord = true;
+     #endif
     } else {
         while (std::getline(*file, line)) {
             if (line.substr(0,1) == "#") {
@@ -1199,6 +1201,7 @@ bool VariantCallFile::parseHeader(string& hs) {
             }
         }
         if (usingTabix) {
+	  #ifdef ZLIB
             if (justSetRegion && !line.empty()) {
                 if (firstRecord) {
                     firstRecord = false;
@@ -1216,6 +1219,9 @@ bool VariantCallFile::parseHeader(string& hs) {
                 _done = true;
                 return false;
             }
+	  #else
+	    return false;
+          #endif
         } else {
             if (std::getline(*file, line)) {
                 var.parse(line, parseSamples);
@@ -1249,6 +1255,7 @@ bool VariantCallFile::setRegion(string region) {
     if (dots != string::npos) {
         region.replace(dots, 2, "-");
     }
+    #ifdef ZLIB
     if (tabixFile->setRegion(region)) {
         if (tabixFile->getNextLine(line)) {
 	    justSetRegion = true;
@@ -1259,6 +1266,9 @@ bool VariantCallFile::setRegion(string region) {
     } else {
         return false;
     }
+    #else
+    return false;
+    #endif
 }
 
 
@@ -1449,17 +1459,19 @@ map<string, vector<VariantAllele> > Variant::parsedAlternates(bool includePrevio
         }
         //const unsigned int alternateLen = alternate.size();
 
-        if (true) {
+        if (false) {
             CSmithWatermanGotoh sw(matchScore, mismatchScore, gapOpenPenalty, gapExtendPenalty);
             if (useEntropy) sw.EnableEntropyGapPenalty(1);
             if (repeatGapExtendPenalty != 0) sw.EnableRepeatGapExtensionPenalty(repeatGapExtendPenalty);
             sw.Align(referencePos, cigar, reference_M, alternateQuery_M);
         } else {  // disabled for now
+	  /*
             StripedSmithWaterman::Aligner aligner;
             StripedSmithWaterman::Filter sswFilter;
             StripedSmithWaterman::Alignment alignment;
             aligner.Align(alternateQuery_M.c_str(), reference_M.c_str(), reference_M.size(), sswFilter, &alignment);
             cigar = alignment.cigar_string;
+	  */
         }
 
         // left-realign the alignment...

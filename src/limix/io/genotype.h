@@ -19,7 +19,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "gzstream.h"
+
+//#include "gzstream.h"
 
 /*
 #include <boost/iostreams/filtering_streambuf.hpp>
@@ -148,7 +149,7 @@ protected:
 	std::string in_filename;
 	bool is_open;
 	//open files
-	void openFile();
+	void openFile() throw (CGPMixException);
 	void read_header_GEN();
 	PGenotypeBlock read_GEN(mint_t num_snps) throw (CGPMixException);
 

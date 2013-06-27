@@ -13,6 +13,10 @@
 #include <vector>
 #include <numeric>
 
+#ifdef ZLIB
+#include "gzstream.h"
+#endif
+
 //namespace io = boost::iostreams;
 
 namespace limix {
@@ -99,7 +103,7 @@ limix::CTextfileGenotypeContainer::CTextfileGenotypeContainer(const std::string&
 limix::CTextfileGenotypeContainer::~CTextfileGenotypeContainer() {
 }
 
-void CTextfileGenotypeContainer::openFile()
+void CTextfileGenotypeContainer::openFile() throw (CGPMixException)
 {
 	//take filename apart and check whether ending is .gzip
     std::vector<std::string> filenameParts = split(in_filename, ".");
@@ -109,8 +113,12 @@ void CTextfileGenotypeContainer::openFile()
     //is the file gzip ?
     if (filenameParts.back() == "gz")
     {
+      #ifdef ZLIB
     	in_stream = new igzstream(in_filename.c_str());
     	ext = filenameParts.at(filenameParts.size()-2);
+      #else
+	throw CGPMixException("not compiled with zlib");
+      #endif
     }
     else
     {
