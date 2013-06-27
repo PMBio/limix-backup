@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGUID>{D242B968-4A69-41FF-907B-47F70755B27B}</ProjectGUID>
+    <ProjectGUID>{A295C3CD-FFDC-4519-90D2-9D623D12AC61}</ProjectGUID>
     <Keyword>Win32Proj</Keyword>
     <Platform>x64</Platform>
     <ProjectName>_core</ProjectName>
@@ -53,39 +53,40 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />  </ImportGroup>
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-    <PropertyGroup>
-      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\Debug\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_core.dir\Debug\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_core</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.pyd</TargetExt>
-      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
-      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\Release\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_core.dir\Release\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_core</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.pyd</TargetExt>
-      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
-      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\MinSizeRel\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">_core.dir\MinSizeRel\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">_core</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.pyd</TargetExt>
-      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
-      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\RelWithDebInfo\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">_core.dir\RelWithDebInfo\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">_core</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.pyd</TargetExt>
-      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
-      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
-    </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_core.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_core</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.pyd</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_core.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_core</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.pyd</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">_core.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">_core</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.pyd</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">_core.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">_core</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.pyd</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -103,10 +104,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;CMAKE_INTDIR=\"Debug\";_core_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -114,7 +115,8 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PostBuildEvent>
-      <Message>		</Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -E copy_directory C:/Users/lippert/Projects/limix/src/interfaces/python/limix C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limix
 if %errorlevel% neq 0 goto :cmEnd
@@ -145,7 +147,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
     <Link>
       <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\Debug\limixlib.lib;..\..\..\External\nlopt\Debug\nlopt.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\Debug\limixlib.lib;..\..\..\External\nlopt\Debug\nlopt.lib;..\..\..\..\External\zlib-1.2.8\zlib.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/Debug/_core.lib</ImportLibrary>
@@ -153,7 +155,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProgramDataBaseFile>C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/Debug/_core.pdb</ProgramDataBaseFile>
       <StackReserveSize>10000000</StackReserveSize>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <Version>
+      </Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -162,7 +165,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -171,7 +174,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat></DebugInformationFormat>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";_core_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>Release</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -179,10 +183,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";_core_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -190,7 +194,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PostBuildEvent>
-      <Message>		</Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -E copy_directory C:/Users/lippert/Projects/limix/src/interfaces/python/limix C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limix
 if %errorlevel% neq 0 goto :cmEnd
@@ -221,14 +226,15 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\Release\limixlib.lib;..\..\..\External\nlopt\Release\nlopt.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\Release\limixlib.lib;..\..\..\External\nlopt\Release\nlopt.lib;..\..\..\..\External\zlib-1.2.8\zlib.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Python27/libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/Release/_core.lib</ImportLibrary>
       <ProgramDataBaseFile>C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/Release/_core.pdb</ProgramDataBaseFile>
       <StackReserveSize>10000000</StackReserveSize>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <Version>
+      </Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -237,7 +243,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
@@ -246,7 +252,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat></DebugInformationFormat>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";_core_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>MinSizeRel</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -254,10 +261,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";_core_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -265,7 +272,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PostBuildEvent>
-      <Message>		</Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -E copy_directory C:/Users/lippert/Projects/limix/src/interfaces/python/limix C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limix
 if %errorlevel% neq 0 goto :cmEnd
@@ -296,14 +304,15 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
     <Link>
       <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\MinSizeRel\limixlib.lib;..\..\..\External\nlopt\MinSizeRel\nlopt.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\MinSizeRel\limixlib.lib;..\..\..\External\nlopt\MinSizeRel\nlopt.lib;..\..\..\..\External\zlib-1.2.8\zlib.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/MinSizeRel/_core.lib</ImportLibrary>
       <ProgramDataBaseFile>C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/MinSizeRel/_core.pdb</ProgramDataBaseFile>
       <StackReserveSize>10000000</StackReserveSize>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <Version>
+      </Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -312,7 +321,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
       <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -329,10 +338,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";_core_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:/Users/lippert/Projects/limix;C:/Users/lippert/Projects/limix/External/zlib-1.2.8;C:/Users/lippert/Projects/limix/./External;C:/Users/lippert/Projects/limix/./src;c:/Python27/include;c:/Python27/lib/site-packages/numpy/core/include;C:/Users/lippert/Projects/limix/src/interfaces/python/./..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -340,7 +349,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PostBuildEvent>
-      <Message>		</Message>
+      <Message>
+      </Message>
       <Command>setlocal
 "C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -E copy_directory C:/Users/lippert/Projects/limix/src/interfaces/python/limix C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limix
 if %errorlevel% neq 0 goto :cmEnd
@@ -371,7 +381,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
     <Link>
       <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\RelWithDebInfo\limixlib.lib;..\..\..\External\nlopt\RelWithDebInfo\nlopt.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\RelWithDebInfo\limixlib.lib;..\..\..\External\nlopt\RelWithDebInfo\nlopt.lib;..\..\..\..\External\zlib-1.2.8\zlib.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/RelWithDebInfo/_core.lib</ImportLibrary>
@@ -379,7 +389,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProgramDataBaseFile>C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/RelWithDebInfo/_core.pdb</ProgramDataBaseFile>
       <StackReserveSize>10000000</StackReserveSize>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <Version>
+      </Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -397,7 +408,7 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/lippert/Projects/limix/src/interfaces/python/CMakeLists.txt;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindSWIG.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\UseSWIG.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonLibsDist.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonInst.cmake;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/lippert/Projects/limix/src/interfaces/python/CMakeLists.txt;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindSWIG.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\UseSWIG.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonLibsDist.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonInst.cmake;C:\Users\lippert\Projects\limix\cmake\FindNumpy.cmake;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\CMakeFiles\generate.stamp</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/lippert/Projects/limix/src/interfaces/python/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
@@ -409,7 +420,7 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/lippert/Projects/limix/src/interfaces/python/CMakeLists.txt;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindSWIG.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\UseSWIG.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonLibsDist.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonInst.cmake;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/lippert/Projects/limix/src/interfaces/python/CMakeLists.txt;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindSWIG.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\UseSWIG.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonLibsDist.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonInst.cmake;C:\Users\lippert\Projects\limix\cmake\FindNumpy.cmake;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\CMakeFiles\generate.stamp</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/lippert/Projects/limix/src/interfaces/python/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
@@ -421,7 +432,7 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/lippert/Projects/limix/src/interfaces/python/CMakeLists.txt;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindSWIG.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\UseSWIG.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonLibsDist.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonInst.cmake;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/lippert/Projects/limix/src/interfaces/python/CMakeLists.txt;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindSWIG.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\UseSWIG.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonLibsDist.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonInst.cmake;C:\Users\lippert\Projects\limix\cmake\FindNumpy.cmake;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\CMakeFiles\generate.stamp</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/lippert/Projects/limix/src/interfaces/python/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
@@ -433,7 +444,7 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/lippert/Projects/limix/src/interfaces/python/CMakeLists.txt;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindSWIG.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\UseSWIG.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonLibsDist.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonInst.cmake;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/lippert/Projects/limix/src/interfaces/python/CMakeLists.txt;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindSWIG.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\FindPackageMessage.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\UseSWIG.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonLibsDist.cmake;C:\Users\lippert\Projects\limix\cmake\FindPythonInst.cmake;C:\Users\lippert\Projects\limix\cmake\FindNumpy.cmake;C:\Users\lippert\Projects\limix\src\interfaces\python\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\lippert\Projects\limix\build_win\src\interfaces\python\CMakeFiles\generate.stamp</Outputs>
     </CustomBuild>
   </ItemGroup>
@@ -443,7 +454,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
 "C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -E make_directory C:/Users/lippert/Projects/limix/build_win/src/interfaces/python
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files (x86)\swig\swig.exe" -python -cpperraswarn -outdir C:/Users/lippert/Projects/limix/build_win/src/interfaces/python -c++ -IC:/Users/lippert/Projects/limix -IC:/Users/lippert/Projects/limix/./External -IC:/Users/lippert/Projects/limix/./src -Ic:/Python27/include -Ic:/Python27/lib/site-packages/numpy/core/include -IC:/Users/lippert/Projects/limix/src/interfaces/python/./.. -o C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limixPYTHON_wrap.cxx C:/Users/lippert/Projects/limix/src/interfaces/python/limix.i
+C:\Users\lippert\executables\swigwin-2.0.8\swig.exe -python -cpperraswarn -outdir C:/Users/lippert/Projects/limix/build_win/src/interfaces/python -c++ -IC:/Users/lippert/Projects/limix -IC:/Users/lippert/Projects/limix/External/zlib-1.2.8 -IC:/Users/lippert/Projects/limix/./External -IC:/Users/lippert/Projects/limix/./src -Ic:/Python27/include -Ic:/Python27/lib/site-packages/numpy/core/include -IC:/Users/lippert/Projects/limix/src/interfaces/python/./.. -o C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limixPYTHON_wrap.cxx C:/Users/lippert/Projects/limix/src/interfaces/python/limix.i
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -457,7 +468,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
 "C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -E make_directory C:/Users/lippert/Projects/limix/build_win/src/interfaces/python
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files (x86)\swig\swig.exe" -python -cpperraswarn -outdir C:/Users/lippert/Projects/limix/build_win/src/interfaces/python -c++ -IC:/Users/lippert/Projects/limix -IC:/Users/lippert/Projects/limix/./External -IC:/Users/lippert/Projects/limix/./src -Ic:/Python27/include -Ic:/Python27/lib/site-packages/numpy/core/include -IC:/Users/lippert/Projects/limix/src/interfaces/python/./.. -o C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limixPYTHON_wrap.cxx C:/Users/lippert/Projects/limix/src/interfaces/python/limix.i
+C:\Users\lippert\executables\swigwin-2.0.8\swig.exe -python -cpperraswarn -outdir C:/Users/lippert/Projects/limix/build_win/src/interfaces/python -c++ -IC:/Users/lippert/Projects/limix -IC:/Users/lippert/Projects/limix/External/zlib-1.2.8 -IC:/Users/lippert/Projects/limix/./External -IC:/Users/lippert/Projects/limix/./src -Ic:/Python27/include -Ic:/Python27/lib/site-packages/numpy/core/include -IC:/Users/lippert/Projects/limix/src/interfaces/python/./.. -o C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limixPYTHON_wrap.cxx C:/Users/lippert/Projects/limix/src/interfaces/python/limix.i
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -471,7 +482,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
 "C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -E make_directory C:/Users/lippert/Projects/limix/build_win/src/interfaces/python
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files (x86)\swig\swig.exe" -python -cpperraswarn -outdir C:/Users/lippert/Projects/limix/build_win/src/interfaces/python -c++ -IC:/Users/lippert/Projects/limix -IC:/Users/lippert/Projects/limix/./External -IC:/Users/lippert/Projects/limix/./src -Ic:/Python27/include -Ic:/Python27/lib/site-packages/numpy/core/include -IC:/Users/lippert/Projects/limix/src/interfaces/python/./.. -o C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limixPYTHON_wrap.cxx C:/Users/lippert/Projects/limix/src/interfaces/python/limix.i
+C:\Users\lippert\executables\swigwin-2.0.8\swig.exe -python -cpperraswarn -outdir C:/Users/lippert/Projects/limix/build_win/src/interfaces/python -c++ -IC:/Users/lippert/Projects/limix -IC:/Users/lippert/Projects/limix/External/zlib-1.2.8 -IC:/Users/lippert/Projects/limix/./External -IC:/Users/lippert/Projects/limix/./src -Ic:/Python27/include -Ic:/Python27/lib/site-packages/numpy/core/include -IC:/Users/lippert/Projects/limix/src/interfaces/python/./.. -o C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limixPYTHON_wrap.cxx C:/Users/lippert/Projects/limix/src/interfaces/python/limix.i
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -485,7 +496,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
 "C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -E make_directory C:/Users/lippert/Projects/limix/build_win/src/interfaces/python
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files (x86)\swig\swig.exe" -python -cpperraswarn -outdir C:/Users/lippert/Projects/limix/build_win/src/interfaces/python -c++ -IC:/Users/lippert/Projects/limix -IC:/Users/lippert/Projects/limix/./External -IC:/Users/lippert/Projects/limix/./src -Ic:/Python27/include -Ic:/Python27/lib/site-packages/numpy/core/include -IC:/Users/lippert/Projects/limix/src/interfaces/python/./.. -o C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limixPYTHON_wrap.cxx C:/Users/lippert/Projects/limix/src/interfaces/python/limix.i
+C:\Users\lippert\executables\swigwin-2.0.8\swig.exe -python -cpperraswarn -outdir C:/Users/lippert/Projects/limix/build_win/src/interfaces/python -c++ -IC:/Users/lippert/Projects/limix -IC:/Users/lippert/Projects/limix/External/zlib-1.2.8 -IC:/Users/lippert/Projects/limix/./External -IC:/Users/lippert/Projects/limix/./src -Ic:/Python27/include -Ic:/Python27/lib/site-packages/numpy/core/include -IC:/Users/lippert/Projects/limix/src/interfaces/python/./.. -o C:/Users/lippert/Projects/limix/build_win/src/interfaces/python/limixPYTHON_wrap.cxx C:/Users/lippert/Projects/limix/src/interfaces/python/limix.i
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -498,18 +509,18 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="limixPYTHON_wrap.cxx"  />
+    <ClCompile Include="limixPYTHON_wrap.cxx" />
     <None Include="limix.py" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:/Users/lippert/Projects/limix/build_win/ZERO_CHECK.vcxproj">
-      <Project>7F6199AF-D393-431E-B791-5A4247805C8B</Project>
+      <Project>0ECAAFA6-7BD3-4509-9DF2-24B1CE96D082</Project>
     </ProjectReference>
     <ProjectReference Include="C:/Users/lippert/Projects/limix/build_win/src/limixlib.vcxproj">
-      <Project>43C8995A-BFC3-4217-883F-08AE43E77789</Project>
+      <Project>E16316A5-77CD-4280-A11F-E35D2013F0C3</Project>
     </ProjectReference>
     <ProjectReference Include="C:/Users/lippert/Projects/limix/build_win/External/nlopt/nlopt.vcxproj">
-      <Project>ABA4E37D-C0BA-4825-83D0-7B0EC713422D</Project>
+      <Project>25585CA7-7A02-49AD-B1F8-537CB6BA7CA8</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
