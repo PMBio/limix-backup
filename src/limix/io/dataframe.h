@@ -87,7 +87,7 @@ public:
 		rowHeader = PVectorXs(new VectorXs());
 		colHeader = PVectorXs(new VectorXs());
 	};
-	CMemDataFrame(const CMemDataFrame<MatrixType>& copy)
+	CMemDataFrame(const CMemDataFrame<MatrixType>& copy) : ADataFrame<MatrixType>()
 	{
 		this->M = PMatrixXd(new MatrixXd());
 		this->rowHeader = PVectorXs(new VectorXs());

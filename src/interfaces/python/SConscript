@@ -39,6 +39,9 @@ if sys.platform=='win32':
    #rename modules
    module_in = "_core.dll"
    module_out = "_core.pyd"
+elif sys.platform=='darwin':
+   module_in = "_core"
+   module_out = "_core.so"  
 else:
    module_in = "_core.so"
    module_out = "_core.so"

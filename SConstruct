@@ -19,9 +19,9 @@ help='Build VCFlib?', default=True)
 AddOption('--without-python', dest='with_python', action='store_false',
 help='Disable python interface', default=True)
 
-#build command line tools (currently only for debugging)
-AddOption('--with-commandline', dest='with_commandline', action='store_true',
-help='Build Command line tools?', default=False)
+#build development tools for c++ (standalone snipsets)
+AddOption('--with-developcpp', dest='with_developcpp', action='store_true',
+help='Build development only commandline tools?', default=False)
 
 
 
@@ -29,7 +29,7 @@ help='Build Command line tools?', default=False)
 build_options= {}
 build_options['with_vcf'] = GetOption('with_vcf')
 build_options['with_python'] = GetOption('with_python')
-build_options['with_commandline'] = GetOption('with_commandline')
+build_options['with_developcpp'] = GetOption('with_developcpp')
 
 
 ### 2. build mode
@@ -112,8 +112,8 @@ if build_options['with_python']:
    Export('liblimix','libnlopt')
    python_interface=SConscript('src/interfaces/python/SConscript',variant_dir=os.path.join(build_prefix,'interfaces','python'),duplicate=0)
 
-#build command line?
-if build_options['with_commandline']:
+#build development cpp scripts
+if build_options['with_developcpp']:
    Export('liblimix','libnlopt')
    command_line=SConscript('src/testing/SConscript',variant_dir=os.path.join(build_prefix,'testing'),duplicate=0)
    

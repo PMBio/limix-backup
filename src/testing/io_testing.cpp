@@ -38,7 +38,7 @@ int main() {
 	MatrixXd pheno = (MatrixXd)randn((muint_t)n,(muint_t)p);
 	MatrixXd covs = MatrixXd::Ones(n,ncov);
 
-	/*
+
 	string filename = "/Users/stegle/research/users/stegle/limix/vcf_gen/sample2.gen";
 
 	PTextfileGenotypeContainer genoContainer = PTextfileGenotypeContainer(new CTextfileGenotypeContainer(filename));
@@ -62,7 +62,9 @@ int main() {
 
 	std::cout << pos2->rows() << "\n";
 	std::cout << gen2->rows() << "\n";
-	*/
+
+
+
 
 	//CMemGenotype geno;
 
@@ -74,14 +76,14 @@ int main() {
 	//class to read .gen files
 
 
-
-
-
+	/*
 
 	//class to read VCF files
-	string filename = "/Users/stegle/research/users/stegle/limix/vcf_gen/sample.vcf";
+	std::string filename = "/Users/stegle/research/users/stegle/limix/vcf_gen/sample.vcf";
 	VariantCallFile variantFile;
 	variantFile.open(filename);
+	/*
+
 
 	/*
 	if (!variantFile.is_open()) {

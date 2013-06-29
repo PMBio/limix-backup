@@ -151,7 +151,8 @@ protected:
 	//open files
 	void openFile() throw (CGPMixException);
 	void read_header_GEN();
-	PGenotypeBlock read_GEN(mint_t num_snps) throw (CGPMixException);
+	PGenotypeBlock read_GEN(muint_t num_snps) throw (CGPMixException);
+	PGenotypeBlock read_BED(muint_t num_snps) throw (CGPMixException);
 
 	std::istream& getStream()
 	{
