@@ -174,6 +174,8 @@ PGenotypeBlock CTextfileGenotypeContainer::read(mint_t num_snps) throw (CGPMixEx
 	//which file format?
 	if(this->file_format==GEN)
 		return read_GEN(num_snps);
+	else if (this->file_format==BED)
+		return read_BED(num_snps);
 	else
 		throw CGPMixException("unsupported file format in read");
 }
@@ -183,7 +185,18 @@ void CTextfileGenotypeContainer::read_header_GEN()
 
 }
 
-PGenotypeBlock CTextfileGenotypeContainer::read_GEN(mint_t num_snps) throw (CGPMixException) {
+/*
+ * read num_snps lines from .bed file
+ */
+PGenotypeBlock CTextfileGenotypeContainer::read_BED(muint_t num_snps) throw (CGPMixException)
+{
+	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock());
+	throw CGPMixException("BED readder not implemented");
+	return RV;
+}
+
+
+PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) throw (CGPMixException) {
 
 	//creat result Structure
 	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock());
