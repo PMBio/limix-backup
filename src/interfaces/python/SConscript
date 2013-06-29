@@ -35,21 +35,28 @@ if(localenv['PLATFORM']=='darwin'):
 srclst = ['limix.i']
 localenv.Depends(srclst, [libnlopt,liblimix])
 
-#if sys.platform=='win32':
-#   #lib=localenv.LoadableModule('_core.dll',srclst)
-#   #lib=localenv.SharedLibrary('_core.dll',srclst)
-#   swigObject = env.SharedObject(srclst)
-#   lib=localenv.SharedLibrary('_core.dll',swigObject)
-#else:
-#   lib=localenv.LoadableModule('_core.so',srclst)
+if sys.platform=='win32':
+   #rename modules
+   module_in = "_core.dll"
+   module_out = "_core.pyd"
+else:
+   module_in = "_core.so"
+   module_out = "_core.so"
 
-lib=localenv.LoadableModule('_core',srclst)
+
+
+limixlib_swig=localenv.LoadableModule('_core',srclst)
 
 src_dir    = os.path.join('#','src','interfaces','python','limix')
 #copy files over for limix modules
-#copy=Command(target="limix",source=src_dir,action = [Delete("$TARGET"), Copy("$TARGET","$SOURCE")])
-#enforce build:
-#AlwaysBuild([copy])
 
-#Command("limix.out","limix.in",Copy("$TARGET","#${SOURCE.srcpath}"))
-Return('lib')
+localenv.Depends(src_dir, [limixlib_swig])
+copy=Command(target="limix",source=src_dir,action = [Delete("$TARGET"), 
+	Copy("$TARGET","$SOURCE"),
+	Move("$TARGET",os.path.join(build_prefix,"interfaces","python","core.py")),
+	Move(os.path.join("$TARGET",module_out),os.path.join(build_prefix,"interfaces","python",module_in))
+	])
+
+#enforce build:
+AlwaysBuild([copy])
+Return('limixlib_swig')
