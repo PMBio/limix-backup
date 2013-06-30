@@ -1,4 +1,5 @@
 %module core
+%feature("autodoc", "3");
 
 %{
 #define SWIG_FILE_WITH_INIT
@@ -72,7 +73,6 @@ using namespace limix;
 
 
 //generated outodoc:
-//%feature("autodoc", "1")
 %include "limix/types.h"
 %include "limix/lasso/lasso.h"
 %include "limix/covar/covariance.h"

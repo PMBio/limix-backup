@@ -50,16 +50,16 @@ else:
 
 limixlib_swig=localenv.LoadableModule('_core',srclst)
 
-src_dir    = os.path.join('#','src','interfaces','python','limix')
+limix_in    = os.path.join('src','interfaces','python','limix')
 #copy files over for limix modules
 
-localenv.Depends(src_dir, [limixlib_swig])
-copy=Command(target="limix",source=src_dir,action = [Delete("$TARGET"), 
-	Copy("$TARGET","$SOURCE"),
-	Move("$TARGET",os.path.join(build_prefix,"interfaces","python","core.py")),
-	Move(os.path.join("$TARGET",module_out),os.path.join(build_prefix,"interfaces","python",module_in))
+#note: we can also use "Move" instead of copy but this results in permanent rebuilds of the limix
+#library as the output files will be "missing"
+copy=Command(target="limix",source=limixlib_swig,action = [Delete("$TARGET"), 
+	Copy("$TARGET",limix_in),
+	Copy("$TARGET",os.path.join(build_prefix,"interfaces","python","core.py")),
+	Copy(os.path.join("$TARGET",module_out),os.path.join(build_prefix,"interfaces","python",module_in))
 	])
 
-#enforce build:
-AlwaysBuild([copy])
+#AlwaysBuild([copy])
 Return('limixlib_swig')

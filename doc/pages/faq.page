@@ -1,0 +1,8 @@
+/*! \page faq Frequently Asked Questions
+
+\li Q: can I build new methods that and algorithms not available in Limix?
+A: Yes, LIMIX is fully modular and provides extensive documentaiton for the underlying C++ library.
+
+\li Q: can I use programming languages other than PYTHON to access LIMIX?
+
+*/
