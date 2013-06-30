@@ -19,6 +19,10 @@ help='Build VCFlib?', default=True)
 AddOption('--without-python', dest='with_python', action='store_false',
 help='Disable python interface', default=True)
 
+#build doxygen documentation?
+AddOption('--with-documentation', dest='with_documentation', action='store_true',
+help='Build doxygen documenation', default=False)
+
 #build development tools for c++ (standalone snipsets)
 AddOption('--with-developcpp', dest='with_developcpp', action='store_true',
 help='Build development only commandline tools?', default=False)
@@ -30,6 +34,7 @@ build_options= {}
 build_options['with_vcf'] = GetOption('with_vcf')
 build_options['with_python'] = GetOption('with_python')
 build_options['with_developcpp'] = GetOption('with_developcpp')
+build_options['with_documentation'] = GetOption('with_documentation')
 
 
 ### 2. build mode
@@ -65,7 +70,8 @@ for key in copy_env:
     if key in os.environ.keys():
        ENV[key] = os.environ[key]
 
-env = Environment(SHLIBPREFIX="",ENV=ENV,tools = ['default', TOOL_SUBST],toolpath='.')
+#TOOL_SUST
+env = Environment(SHLIBPREFIX="",ENV=ENV,tools = ['default','doxygen',TOOL_SUBST])
 env.Append(CCFLAGS=cflags)
 env.Append(LINKFLAGS=linkflags)
 
@@ -117,3 +123,8 @@ if build_options['with_developcpp']:
    Export('liblimix','libnlopt')
    command_line=SConscript('src/testing/SConscript',variant_dir=os.path.join(build_prefix,'testing'),duplicate=0)
    
+#build documentation?
+if build_options['with_documentation']:	
+   env.Doxygen("./doc/doxy.cfg")
+   pass
+
