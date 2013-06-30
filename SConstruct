@@ -125,6 +125,7 @@ if build_options['with_developcpp']:
    
 #build documentation?
 if build_options['with_documentation']:	
-   env.Doxygen("./doc/doxy.cfg")
+   doxy=env.Doxygen("./doc/doxy.cfg")
+   AlwaysBuild([doxy])
    pass
 
