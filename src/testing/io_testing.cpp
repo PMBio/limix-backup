@@ -45,11 +45,30 @@ int main() {
 
 	PGenotypeBlock geno = genoContainer->read(4);
 	PVectorXi pos =geno->getPosition();
+	PHeaderMap rowh = geno->getRowHeader();
+	PHeaderMap colh = geno->getColHeader();
 	PMatrixXd gen = geno->getMatrix();
 
 	std::cout << pos->rows() << "\n";
 	std::cout << gen->rows() << "\n";
 
+	//std::cout << *rowh << "\n";
+	//std::cout << *colh << "\n";
+
+
+
+	std::string test = (*(*colh)["snp_id"])[0];
+
+	//std::cout << (*colh)["snp_id"] << "\n";
+
+	//std::cout << (*(*colh)["snp_id"])[0] <<"\n";
+
+	std::cout << (*(*colh)["snp_id"]) <<"\n";
+
+	//std::cout << *colh << "\n";
+	//std::cout << *rowh << "\n";
+
+	/*
 	std::cout << (*gen);
 
 	std::cout << "\n\n";
@@ -62,7 +81,7 @@ int main() {
 
 	std::cout << pos2->rows() << "\n";
 	std::cout << gen2->rows() << "\n";
-
+	*/
 
 
 

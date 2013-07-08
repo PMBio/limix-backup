@@ -18,42 +18,94 @@
 
 namespace limix {
 
-/*
- * Abstract class representing a data frame with row and columns covariance
+/*!
+ *  Flexible object containing header objects
+ *
  */
+class CHeaderMap;
+typedef sptr<CHeaderMap> PHeaderMap;
 
+/*! \brief Map of keys for usage as a hader
+ *
+ *	CHeaderMap is based on a map of pointers to vectors of strings
+ *	Each element consists of a vector with header elemnts which are used as columns or rows
+ */
+class CHeaderMap : public std::map<std::string,PstringVec>
+{
+public:
+	/*!
+	 * resize the internal vectors for all elements
+	 */
+	void resize(muint_t n);
+	/*!
+	 * directly set the value of a header vectors
+	 * \param name: header key
+	 * \param n: index
+	 * \param value: string value
+	 */
+	void set(std::string name, muint_t n, std::string value);
+	/*!
+	 * directly retrieve the value of a particular header element
+	 * \param name: header key
+	 * \param n: index
+	 */
+	std::string get(std::string name,muint_t n);
+
+	/*!
+	 * Copy a certain number of elements form the header map
+	 * \param i_start: start index
+	 * \param n_elements: number of elements to copy
+	 */
+	PHeaderMap copy(muint_t i_start,muint_t n_elements);
+
+	/*!
+	* Copy a certain number of elements form the header map
+	* \param n_elements: number of elements to copy
+	*/
+	PHeaderMap copy(muint_t n_elements)
+	{
+		return copy(0,n_elements);
+	}
+};
+
+
+
+/*!
+ * Abstract base class for read only data frame
+ */
 template <class MatrixType>
-class ADataFrame {
+class ARDataFrame {
 public:
 
-	ADataFrame()
+	ARDataFrame()
 	{};
-	virtual ~ADataFrame()
+	virtual ~ARDataFrame()
 	{};
 
-	virtual void agetRowHeader(VectorXs* out) const throw(CGPMixException) = 0;
-	virtual PVectorXs getRowHeader() const throw(CGPMixException) = 0;
+	//virtual void agetRowHeader(VectorXs* out) const throw(CGPMixException) = 0;
+	virtual PHeaderMap getRowHeader() const throw(CGPMixException) = 0;
 
-	virtual void agetColHeader(VectorXs* out) const throw(CGPMixException) = 0;
-	virtual PVectorXs getColHeader() const throw(CGPMixException) = 0;
+	//virtual void agetColHeader(VectorXs* out) const throw(CGPMixException) = 0;
+	virtual PHeaderMap getColHeader() const throw(CGPMixException) = 0;
 
 	virtual void agetMatrix(MatrixType* out) const throw (CGPMixException) = 0;
 	virtual sptr<MatrixType> getMatrix() const throw (CGPMixException) =0;
+
 };
 
+/*!
+ * Abstract base class for write only data frame
+ */
 template <class MatrixType>
-class ARWDataFrame {
+class AWDataFrame {
 public:
-	ARWDataFrame()
+	AWDataFrame()
 	{};
-	virtual ~ARWDataFrame()
+	virtual ~AWDataFrame()
 	{};
 
-	virtual void setRowHeader(const VectorXs& in) throw (CGPMixException) = 0;
-	virtual void setRowHeader(PVectorXs in) throw (CGPMixException) = 0;
-
-	virtual void setColHeader(const VectorXs& in) throw (CGPMixException) = 0;
-	virtual void setColHeader(PVectorXs in) throw (CGPMixException) = 0;
+	virtual void setRowHeader(PHeaderMap in) throw (CGPMixException) = 0;
+	virtual void setColHeader(PHeaderMap in) throw (CGPMixException) = 0;
 
 	virtual void setMatrix(const MatrixType& in) throw (CGPMixException) = 0;
 	virtual void setMatrix(sptr<MatrixType> in) throw (CGPMixException) = 0;
@@ -71,65 +123,50 @@ public:
 %rename(getColHeader) CMemDataFrame::aetColHeader;
 #endif
 
+/*!
+ * In memory implementation of read only dataframe
+ */
 template <class MatrixType>
-class CMemDataFrame : public ADataFrame<MatrixType>
+class CRMemDataFrame : public ARDataFrame<MatrixType>
 {
 protected:
 	sptr<MatrixType> M;
-	PVectorXs rowHeader,colHeader;
+	//StringVec
+	PHeaderMap rowHeader,colHeader;
 
 	virtual void resizeMatrices(muint_t num_samples=-1,muint_t num_snps=-1);
 
 public:
-	CMemDataFrame()
+	CRMemDataFrame()
 	{
 		M = sptr<MatrixType>(new MatrixType());
-		rowHeader = PVectorXs(new VectorXs());
-		colHeader = PVectorXs(new VectorXs());
+		rowHeader = PHeaderMap(new CHeaderMap());
+		colHeader = PHeaderMap(new CHeaderMap());
 	};
-	CMemDataFrame(const CMemDataFrame<MatrixType>& copy) : ADataFrame<MatrixType>()
+	CRMemDataFrame(const CRMemDataFrame<MatrixType>& copy) : ARDataFrame<MatrixType>()
 	{
-		this->M = PMatrixXd(new MatrixXd());
-		this->rowHeader = PVectorXs(new VectorXs());
-		this->colHeader = PVectorXs(new VectorXs());
-		(*this->M) = (*copy.M);
-		(*this->rowHeader) = (*copy.rowHeader);
-		(*this->colHeader) = (*copy.colHeader);
-
-		this->M = copy.getMatrix();
-		this->rowHeader = copy.getRowHeader();
-		this->colHeader = copy.getColHeader();
+		this->M = PMatrixXd(new MatrixXd(*copy.M));
+		this->rowHeader = PHeaderMap(new CHeaderMap(*copy.rowHeader));
+		this->colHeader = PHeaderMap(new CHeaderMap(*copy.colHeader));
 	};
 
 
-	CMemDataFrame(sptr<MatrixType> M,PVectorXs rowHeader,PVectorXs colHeader)
+	CRMemDataFrame(sptr<MatrixType> M,PHeaderMap rowHeader,PHeaderMap colHeader)
 	{
-	this->M = M;
-	this->colHeader = colHeader;
-	this->rowHeader = rowHeader;
+		this->M = M;
+		this->colHeader = colHeader;
+		this->rowHeader = rowHeader;
 	};
 
-	virtual ~CMemDataFrame()
+	virtual ~CRMemDataFrame()
 	{};
-
-	virtual void agetRowHeader(VectorXs* out) const throw(CGPMixException)
-	{
-		(*out) = *rowHeader;
-	}
-
-	virtual PVectorXs getRowHeader() const throw(CGPMixException)
+	virtual PHeaderMap getRowHeader() const throw(CGPMixException)
 	{
 		return rowHeader;
 	}
-
-	virtual void agetColHeader(VectorXs* out) const throw(CGPMixException)
+	virtual PHeaderMap getColHeader() const throw(CGPMixException)
 	{
-		(*out) = *colHeader;
-	}
-
-	virtual PVectorXs getColHeader() const throw(CGPMixException)
-	{
-			return rowHeader;
+			return colHeader;
 	}
 
 	virtual void agetMatrix(MatrixType* out) const throw (CGPMixException)
@@ -143,35 +180,24 @@ public:
 };
 
 //implementation for in-memory handling READ ONLY
-template <class MatrixType> class CMemRWDataFrame : public CMemDataFrame<MatrixType>, public ARWDataFrame<MatrixType>
+template <class MatrixType> class CRWMemDataFrame : public CRMemDataFrame<MatrixType>, public AWDataFrame<MatrixType>
 {
 public:
-	CMemRWDataFrame()
+	CRWMemDataFrame()
 	{};
-	CMemRWDataFrame(const CMemDataFrame<MatrixType>& copy) : CMemDataFrame<MatrixType>(copy)
-	{};
-
-
-	virtual ~CMemRWDataFrame()
+	CRWMemDataFrame(const CRMemDataFrame<MatrixType>& copy) : CRMemDataFrame<MatrixType>(copy)
 	{};
 
-	virtual void setRowHeader(const VectorXs& in) throw (CGPMixException)
-		{
-		(*this->rowHeader) = in;
-		}
-	virtual void setRowHeader(PVectorXs in) throw (CGPMixException)
-		{
-		this->rowHeader = in;
-		}
+	virtual ~CRWMemDataFrame()
+	{};
 
-
-	virtual void setColHeader(const VectorXs& in) throw (CGPMixException)
+	virtual void setRowHeader(PHeaderMap in) throw (CGPMixException)
 		{
-		(*this->colHeader) = in;
+		(this->rowHeader) = in;
 		}
-	virtual void setColHeader(PVectorXs in) throw (CGPMixException)
+	virtual void setColHeader(PHeaderMap in) throw (CGPMixException)
 		{
-		this->colHeader = in;
+		(this->colHeader) = in;
 		}
 
 	virtual void setMatrix(const MatrixType& in) throw (CGPMixException)
@@ -187,25 +213,24 @@ public:
 
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%template(CMemDataFrameXd) CMemDataFrame<MatrixXd>;
-%template(CMemRWDataFrameXd) CMemRWDataFrame<MatrixXd>;
-%template(ADataFrameXd) ADataFrame< MatrixXd >;
-%template(ARWDataFrameXd) ARWDataFrame< MatrixXd >;
+%template(CRMemDataFrameXd) CRMemDataFrame<MatrixXd>;
+%template(CRWMemDataFrameXd) CRWMemDataFrame<MatrixXd>;
+%template(ARDataFrameXd) ARDataFrame< MatrixXd >;
+%template(AWDataFrameXd) AWDataFrame< MatrixXd >;
 #endif
-
-
-
 
 
 }
 		//end: namespace limix
 
 template<class MatrixType>
-inline void limix::CMemDataFrame<MatrixType>::resizeMatrices(
+inline void limix::CRMemDataFrame<MatrixType>::resizeMatrices(
 		muint_t num_rows, muint_t num_columns) {
-this->M->conservativeResize(num_rows,num_columns);
-this->rowHeader->conservativeResize(num_rows);
-this->colHeader->conservativeResize(num_columns);
+	this->M->conservativeResize(num_rows,num_columns);
+	this->rowHeader->resize(num_rows);
+	this->colHeader->resize(num_columns);
+	this->rowHeader->resize(num_rows);
+	this->colHeader->resize(num_columns);
 }
 
 #endif /* DATAFRAME_H_ */

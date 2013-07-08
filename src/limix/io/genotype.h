@@ -34,6 +34,10 @@
 
 namespace limix {
 
+
+//typedef std::map<std::string,std::vector<std::string>> stringMap;
+
+
 class AGenotypeContainer;
 class CTextfileGenotypeContainer;
 class CGenotypeBlock;
@@ -41,39 +45,41 @@ typedef sptr<CGenotypeBlock> PGenotypeBlock;
 typedef sptr<AGenotypeContainer> PGenotypeContainer;
 
 
-/*
+/*!
  * Abstract container of genotype data
  */
 class AGenotypeContainer
 {
 protected:
-	std::string filter_chrom;
-	muint_t filter_start,filter_stop;
+	std::string filterSNPchrom;
+	muint_t filterSNPstart,filterSNPstop;
+
+	//test whether a particular snp obays the filter
 	bool inline check_SNP(std::string snp_chrom,muint_t snp_pos)
 	{
-		if (this->filter_chrom=="NAN")
+		if (this->filterSNPchrom=="NAN")
 			return true;
-		if(snp_chrom!=filter_chrom)
+		if(snp_chrom!=filterSNPchrom)
 			return false;
-		return (snp_pos>=filter_start) && (snp_pos<filter_stop);
+		return (snp_pos>=filterSNPstart) && (snp_pos<filterSNPstop);
 	}
 
 public:
 	AGenotypeContainer()
 	{
-		filter_start = -1;
-		filter_stop = -1;
-		filter_chrom = "NAN";
+		filterSNPstart = -1;
+		filterSNPstop = -1;
+		filterSNPchrom = "NAN";
 	};
 
 	virtual ~AGenotypeContainer()
 	{};
 	//set filter of genotype class
-	virtual void setFilter(std::string chrom, muint_t start,muint_t stop)
+	virtual void setSNPFilter(std::string chrom, muint_t start,muint_t stop)
 	{
-		this->filter_chrom = chrom;
-		this->filter_start = start;
-		this->filter_stop = stop;
+		this->filterSNPchrom = chrom;
+		this->filterSNPstart = start;
+		this->filterSNPstop = stop;
 	}
 
 	//virtual functions
@@ -92,20 +98,22 @@ public:
 %rename(getMatrix) CGenotypeBlock::agetMatrix;
 %rename(getPosition) CGenotypeBlock::agetPosition;
 #endif
-class CGenotypeBlock : public CMemDataFrame<MatrixXd> //,public AGenotypeContainer
+class CGenotypeBlock : public CRMemDataFrame<MatrixXd> //,public AGenotypeContainer
 {
 	friend class AGenotypeContainer;
 	friend class CTextfileGenotypeContainer;
 protected:
 	PVectorXi pos;
-	PVectorXs chrom;
 	virtual void resizeMatrices(muint_t num_rows, muint_t num_columns);
 	muint_t i_snp_read;
 
+	void init(const stringVec& row_header_names,const stringVec& col_haeder_names);
+
 public:
 	CGenotypeBlock();
+	CGenotypeBlock(const stringVec& row_header_names, const stringVec& col_header_names);
 	CGenotypeBlock(const CGenotypeBlock& copy);
-	CGenotypeBlock(PMatrixXd geno, PVectorXs chrom, PVectorXi pos,PVectorXs sampleIDs,PVectorXs snpIDs);
+	CGenotypeBlock(PMatrixXd geno, PVectorXi pos,PHeaderMap row_header,PHeaderMap col_header);
 	virtual ~CGenotypeBlock();
 
 	//information about dimensions
@@ -120,8 +128,6 @@ public:
 	//virtual functions: CMemDataFrame
 	virtual void agetPosition(VectorXi* out) const throw(CGPMixException);
 	virtual PVectorXi getPosition() const throw(CGPMixException);
-	virtual void agetChromosome(VectorXs* out) const throw(CGPMixException);
-	virtual PVectorXs getChromosome() const throw(CGPMixException);
 
 	//virtual function: AGenotypeContainer
 	virtual PGenotypeBlock read(mint_t num_snps=-1) throw (CGPMixException);

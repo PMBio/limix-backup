@@ -21,28 +21,46 @@
 
 namespace limix {
 
+void CGenotypeBlock::init(const stringVec& row_header_names,const stringVec& col_header_names)
+{
+	for(stringVec::const_iterator iter = row_header_names.begin(); iter!=row_header_names.end();iter++)
+	{
+		std::string name = (*iter);
+		(*this->rowHeader)[name] = PstringVec(new stringVec());
+	}
+	for(stringVec::const_iterator iter = col_header_names.begin(); iter!=col_header_names.end();iter++)
+	{
+		std::string name = (*iter);
+		(*this->colHeader)[name] = PstringVec(new stringVec());
+	}
+
+	this->pos = PVectorXi(new VectorXi());
+	i_snp_read = 0;
+}
+
+
+CGenotypeBlock::CGenotypeBlock(const stringVec& row_header_names,const stringVec& col_haeder_names)
+{
+	init(row_header_names,col_haeder_names);
+}
 
 CGenotypeBlock::CGenotypeBlock() {
-	this->pos = PVectorXi(new VectorXi());
-	this->chrom = PVectorXs(new VectorXs());
-	i_snp_read = 0;
+	stringVec row_header_names,col_haeder_names;
+	init(row_header_names,col_haeder_names);
 }
 
-CGenotypeBlock::CGenotypeBlock(const CGenotypeBlock& copy) : CMemDataFrame<MatrixXd>(copy)
+CGenotypeBlock::CGenotypeBlock(const CGenotypeBlock& copy) : CRMemDataFrame<MatrixXd>(copy)
 {
 	pos = PVectorXi(new VectorXi());
-	chrom = PVectorXs(new VectorXs());
 	*(this->pos) = *(copy.pos);
-	*(this->chrom) = *(copy.chrom);
 	i_snp_read = 0;
 }
 
-CGenotypeBlock::CGenotypeBlock(PMatrixXd geno, PVectorXs chrom, PVectorXi pos,PVectorXs sampleIDs,PVectorXs snpIDs) {
+CGenotypeBlock::CGenotypeBlock(PMatrixXd geno, PVectorXi pos,PHeaderMap row_header,PHeaderMap col_header) {
 	this->M = geno;
-	this->chrom = chrom;
 	this->pos = pos;
-	this->rowHeader = sampleIDs;
-	this->colHeader = snpIDs;
+	this->rowHeader = row_header;
+	this->colHeader = col_header;
 	i_snp_read = 0;
 }
 
@@ -57,22 +75,19 @@ void CGenotypeBlock::agetPosition(VectorXi* out) const throw(CGPMixException)
 void CGenotypeBlock::resizeMatrices(muint_t num_samples, muint_t num_snps)
 {
 	//resize base matrix type
-	CMemDataFrame<MatrixXd>::resizeMatrices(num_samples,num_snps);
+	CRMemDataFrame<MatrixXd>::resizeMatrices(num_samples,num_snps);
 	//resize SNP specific elements
-	this->chrom->conservativeResize(num_snps);
 	this->pos->conservativeResize(num_snps);
 }
 
 PGenotypeBlock CGenotypeBlock::read(mint_t num_snps) throw(CGPMixException)
 {
 	//build sub matrices:
-	PMatrixXd geno = PMatrixXd(new MatrixXd(this->M->block(0,i_snp_read,this->numSample(),i_snp_read+num_snps)));
-	PVectorXs chrom = PVectorXs(new VectorXs(this->chrom->segment(i_snp_read,i_snp_read+num_snps)));
-	PVectorXi pos = PVectorXi(new VectorXi(this->pos->segment(i_snp_read,i_snp_read+num_snps)));
-	PVectorXs colHeader = PVectorXs(new VectorXs(this->colHeader->segment(i_snp_read,i_snp_read+num_snps)));
-	PVectorXs rowHeader = PVectorXs(new VectorXs(this->rowHeader->segment(i_snp_read,i_snp_read+num_snps)));
-
-	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock(geno,chrom,pos,rowHeader,colHeader));
+	PMatrixXd new_geno = PMatrixXd(new MatrixXd(this->M->block(0,i_snp_read,this->numSample(),i_snp_read+num_snps)));
+	PVectorXi new_pos = PVectorXi(new VectorXi(this->pos->segment(i_snp_read,i_snp_read+num_snps)));
+	PHeaderMap new_rowHeader = this->rowHeader->copy(i_snp_read,num_snps);
+	PHeaderMap new_colHeader = PHeaderMap(new CHeaderMap(*(this->colHeader)));
+	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock(new_geno,new_pos,new_rowHeader,new_colHeader));
 	return RV;
 }
 
@@ -81,17 +96,6 @@ PVectorXi CGenotypeBlock::getPosition() const throw(CGPMixException)
 {
 	return pos;
 }
-
-PVectorXs CGenotypeBlock::getChromosome() const throw(CGPMixException)
-{
-	return chrom;
-}
-
-void CGenotypeBlock::agetChromosome(VectorXs* out) const throw(CGPMixException)
-{
-	(*out) = (*chrom);
-}
-
 
 /* Text File genotype class */
 limix::CTextfileGenotypeContainer::CTextfileGenotypeContainer(const std::string& filename){
@@ -196,10 +200,18 @@ PGenotypeBlock CTextfileGenotypeContainer::read_BED(muint_t num_snps) throw (CGP
 }
 
 
-PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) throw (CGPMixException) {
+PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) throw (CGPMixException)
+{
 
 	//creat result Structure
-	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock());
+	const char* Scol_header_names[] = {"snp_id","chrom"};
+	const char* Srow_header_names[] = {"sample_id"};
+
+	PstringVec col_header_names = PstringVec(new stringVec(Scol_header_names,Scol_header_names+sizeof(Scol_header_names)/sizeof(Scol_header_names[0])));
+	PstringVec row_header_names = PstringVec(new stringVec(Srow_header_names,Srow_header_names+sizeof(Srow_header_names)/sizeof(Srow_header_names[0])));
+
+
+	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock(*row_header_names,*col_header_names));
 
 	//number of read snps, current buffer
 	muint_t i_snp,buffer,num_samples;
@@ -251,7 +263,10 @@ PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) throw (CGP
 			RV->resizeMatrices(num_samples,buffer);
 		}
 		//3. store position and chromosome
-		(*RV->chrom)(i_snp) = chrom;
+		RV->colHeader->set("chrom",i_snp,chrom);
+		RV->colHeader->set("snp_id",i_snp,snp_id);
+
+
 		(*RV->pos)(i_snp) = snp_pos;
 
 		//4. read every individual
@@ -273,7 +288,16 @@ PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) throw (CGP
 		i_snp++;
 	}; //end for each line
 	//resize memory again
+
 	RV->resizeMatrices(num_samples,i_snp);
+
+	//add rowHeader, which correspond to individual IDs
+	std::stringstream out_str;
+	for(muint_t i=0;i<RV->numSample();++i)
+	{
+		out_str << i;
+		RV->rowHeader->set("sample_id",i,out_str.str());
+	}
 
 	return RV;
 }
@@ -286,25 +310,12 @@ CMemGenotypeContainer::CMemGenotypeContainer(PGenotypeBlock block) {
 CMemGenotypeContainer::~CMemGenotypeContainer() {
 }
 
-PGenotypeBlock CMemGenotypeContainer::read(mint_t num_snps) throw(CGPMixException) {
+PGenotypeBlock CMemGenotypeContainer::read(mint_t num_snps) throw(CGPMixException)
+	{
 
-	//read elements from the in-memory variant and create new block
-	PMatrixXd geno = PMatrixXd(new MatrixXd());
-	PVectorXi pos  = PVectorXi(new VectorXi());
-	PVectorXs chrom = PVectorXs(new VectorXs());
-	PVectorXs colHeader = PVectorXs(new VectorXs());
-	PVectorXs rowHeader = PVectorXs(new VectorXs());
-
-
-	*geno = this->block->getMatrix()->block(0,reading_row,block->numSample(),reading_row+num_snps);
-	*pos = this->block->getPosition()->segment(reading_row,reading_row+num_snps);
-	*chrom = this->block->getChromosome()->segment(reading_row,reading_row+num_snps);
-	*colHeader = this->block->getColHeader()->segment(reading_row,reading_row+num_snps);
-	*rowHeader = *this->block->getRowHeader();
-
+	throw CGPMixException("fix block to allow reading from a position");
+	PGenotypeBlock RV = this->block->read(num_snps);
 	reading_row += num_snps;
-
-	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock(geno,chrom,pos,rowHeader,colHeader));
 
 	return RV;
 }
