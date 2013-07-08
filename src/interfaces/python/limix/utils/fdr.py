@@ -1,3 +1,8 @@
+"""@package fdr
+FDR estimation using Benjamini Hochberg and Stories method
+
+"""
+
 try:
     import rpy2.robjects.numpy2ri
     from rpy2.robjects import r as r
@@ -28,6 +33,9 @@ def qvalues1(PV,m=None,pi=1.0):
     """estimate q vlaues from a list of Pvalues
     this algorihm is taken from Storey, significance testing for genomic ...
     m: number of tests, (if not len(PV)), pi: fraction of expected true null (1.0 is a conservative estimate)
+    @param PV: pvalues
+    @param m:  total number of tests if PV is not the entire array.
+    @param pi: fraction of true null 
     """
           
     S = PV.shape
