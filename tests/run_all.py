@@ -7,7 +7,7 @@ import os
 
 
 if __name__ == '__main__':
-    if 0:
+    if 1:
         #1. add LIMIX path to environment
         limix_path = sys.argv[1]
         #is PYTHONPATH defined?

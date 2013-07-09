@@ -68,7 +68,8 @@ protected:
 	int testStatistics;
 
 	virtual void clearCache();
-	void applyPermutation(MatrixXd& V) throw(CGPMixException);
+	template <typename Derived1>
+	inline void applyPermutation(const Eigen::MatrixBase<Derived1> & M_) throw (CGPMixException);
 public:
 	ALMM();
 	virtual ~ALMM();
@@ -388,6 +389,28 @@ void nLLevalAllY(MatrixXd* out, double ldelta,const MatrixXd& UY,const MatrixXd&
 
 
 /* Inline functions */
+template <typename Derived1>
+inline void ALMM::applyPermutation(const Eigen::MatrixBase<Derived1>& M_) throw (CGPMixException)
+{
+	//cast out arguments
+	Eigen::MatrixBase<Derived1>& M = const_cast< Eigen::MatrixBase<Derived1>& >(M_);
+
+    if(isnull(perm))
+        return;
+
+    if(perm.rows() != M.rows()){
+        throw CGPMixException("ALMM:Permutation vector has incompatible length");
+    }
+    //create temporary copy
+    MatrixXd Mc = M;
+    //apply permutation;
+    for(muint_t i = 0;i < (muint_t)((((Mc.rows()))));++i){
+        M.row(i) = Mc.row(perm(i));
+    }
+}
+
+
+
 
 template <typename Derived, typename OtherDerived>
 inline void CLMMCore::SelfAdjointEigenSolver(const Eigen::MatrixBase<Derived>& U, const Eigen::MatrixBase<Derived>& S, const Eigen::MatrixBase<OtherDerived>& M)
