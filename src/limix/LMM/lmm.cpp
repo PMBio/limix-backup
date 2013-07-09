@@ -213,6 +213,7 @@ int ALMM::getTestStatistics() const
         (*out) = perm;
     }
 
+    /*
     void ALMM::applyPermutation(MatrixXd & M) throw (CGPMixException)
     {
         if(isnull(perm))
@@ -228,6 +229,7 @@ int ALMM::getTestStatistics() const
             M.row(i) = Mc.row(perm(i));
         }
     }
+    */
 
     /*CLMMCore*/
 
@@ -487,7 +489,7 @@ int ALMM::getTestStatistics() const
         	Xi.array().colwise()*=snps.array().col(is);
         	UXi.noalias() = U.transpose()*Xi;
         	//permute if needed:
-        	applyPermutation(UXi);
+        	applyPermutation(UXi.block(0, 0, num_samples, num_inter));
 
         	//construct full foreground SNP set
         	UXps.block(0,0,num_samples,num_inter+num_inter0) = UXi;
