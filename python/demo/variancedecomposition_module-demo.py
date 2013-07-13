@@ -1,124 +1,79 @@
 import sys
-sys.path.append('./../../build_mac/src/interfaces/python')
-
-import h5py
+sys.path.append('./../../build_mac/src/interfaces/python/')
 import scipy as SP
-import scipy.linalg
-import pylab as PL
 import scipy.stats
+import pdb
+import h5py
+
 import limix
 import limix.modules.varianceDecomposition as VAR
 
-def genPhenotype(X,T,mu,a_g,c_g,a_n,c_n):
-    
-    P = T.max() + 1
-    N = (T==0).sum()
-    S = X.shape[1]
-    
-    if P==2:    c[1] = c[0]
-    
-    Y = SP.array([])
-    beta0_g = SP.randn(S)
-    beta0_n = SP.randn(N)
-    for p in range(P):
-        
-        gamma_g = SP.randn(S)
-        beta_g  = a_g[p]*beta0_g+c_g[p]*gamma_g
-        
-        gamma_n = SP.randn(N)
-        beta_n  = a_n[p]*beta0_n+c_n[p]*gamma_n
-        
-        Tb= (T[:,0]==p)
-        x = X[Tb,:]
-        y =mu[p]
-        y+=SP.dot(x,beta_g)
-        y+=beta_n
-        Y =SP.concatenate((Y,y),0)
-    
-    Y=Y[:,SP.newaxis]
-    
-    return Y
-
-
-# Import genotype data
-N = 193
-S = 1000
-f = h5py.File("data/demo.h5py",'r')
-X = f['geno'][:][0:N,0:S]
+# Import data
+fin  = "./data/realdata.h5py"
+f    = h5py.File(fin,'r')
+X    = f['X'][:]
+Y    = f['Y'][:]
+T    = f['T'][:]
 f.close()
 
-# Normalize genotype data
-X = X*SP.sqrt(N/((X**2).sum()))
+# Dimensions
+N = (T==0).sum()
+P = int(T.max()+1)
+# Transform Geno and Pheno
+X = SP.array(X[0:N,:],dtype=float)
+Y=Y.reshape(P,N).T
+Y = SP.stats.zscore(Y,0)
+# Set Kronecker matrices
+Kg = SP.dot(X,X.T)
+Kn = SP.eye(N)
 
-# Set multitrait structure
-P = 3
-T = SP.concatenate([i*SP.ones([N,1],dtype=int) for i in xrange(P)],axis=0)
-X = SP.concatenate([X for i in xrange(P)],axis=0)
-    
-# Set real values for parameters
-mu    = 1.0*SP.ones(P)
-a     = 1.0*SP.ones(P)
-if P>1:
-    a[1]  = -a[1]
-c     = 0.7*SP.ones(P)
-sigma = 0.3*SP.ones(P)
-    
-# Generate phenotypes
-SP.random.seed(1)
-Y = genPhenotype(X,T,mu,a,c,SP.zeros(P),sigma)
+# CVarianceDecomposition initializaiton
+vc = VAR.CVarianceDecomposition(Y)
+vc.addMultiTraitTerm(Kg)
+vc.addMultiTraitTerm(Kn)
+fixed1 = SP.kron(SP.array([1,0]),SP.ones((N,1)))
+fixed2 = SP.kron(SP.array([0,1]),SP.ones((N,1)))
+vc.addFixedTerm(fixed1)
+vc.addFixedTerm(fixed2)
 
-# Fixed effect
-F  = SP.kron(SP.eye(P),SP.ones((N,1)))
-# Trait Matrices
-if 1:
-    C1 = limix.CTDenseCF(P)
-    C2 = limix.CTFixedCF(P,SP.eye(P))
-    C3 = limix.CTDiagonalCF(P)
-if 0:
-    C1 = limix.CTFixedCF(P,SP.eye(P))
-    C2 = limix.CTFixedCF(P,SP.eye(P))
-    C3 = limix.CTFixedCF(P,SP.eye(P))
-
-# Kronecker matrix
-K1 = SP.dot(X,X.T)
-K2 = K1
-K3 = SP.kron(SP.ones((P,P)),SP.eye(N))
-# Variance Decomposition Design
-C = [C1,C2,C3]
-K = [K1,K2,K3]
-
-# CVarianceDecomposition fit
-vc = VAR.CVarianceDecomposition(Y,T,F,C,K)
-
-# Random initialisation
+# Random initialisation and Fitting
 vc.initialise()
-
-# Fitting
 min=vc.fit()
+print "\n\nMinimum Found:"
+print min
+print "\n\nParameters Found:"
+print min['Params']
 # Taking parameters covariance matrix through Laplace Approximation
 CovParams=vc.getCovParams(min)
+stderr = SP.sqrt(CovParams.diagonal())
+print "\n\nParams Covariance:"
+print CovParams
+print "\n\nStd errors over params:"
+print stderr
 # Minimizing multiple times
 mins=vc.fit_ntimes()
+print "\n\nList of Minima found in 10 minimizations:"
+print mins
+# Empirical and Estimated Matrices
+print "\n\nEmpirical matrix:"
+print vc.getEmpTraitCovar()
+print "\n\nEstimated genetic matrix:"
+print vc.getEstTraitCovar(0)
+print "\n\nEstimated noise matrix:"
+print vc.getEstTraitCovar(1)
+print "\n\nOverall estimated matrix:"
+print vc.getEstTraitCovar()
 
-# Test heritabilities
-print "\nTest Estimate Heritabilities"
-print vc.estimateHeritabilities(K1)
-
-print "\nResults Single Minimization"
-print "Params0"
-print min["Params0"]
-print "LML0"
-print min["LML0"]
-print "Params"
-print min["Params"]
-print "LML"
-print min["LML"]
-print "LMLgrad"
-print min["LMLgrad"]
-print "TraitCovar"
-print min["TraitCovar"]
-print "EmpiricalTraitCovar"
-print vc.getEmpTraitCov()
-print "CovParams"
-print CovParams
-
+# Univariate Case
+y = Y[:,0:1]
+vc1 = VAR.CVarianceDecomposition(y)
+vc1.addSingleTraitTerm(Kg)
+vc1.addSingleTraitTerm(Kn)
+fixed = SP.ones((N,1))
+vc1.addFixedTerm(fixed)
+vc1.initialise()
+min1=vc1.fit()
+print "\n\nMinimum Found:"
+print min1
+print "\n\nParameters Found:"
+print min1['Params']
