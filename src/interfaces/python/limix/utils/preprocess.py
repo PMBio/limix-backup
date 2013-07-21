@@ -6,6 +6,13 @@ import scipy.stats as st
 import pdb
 
 
+def variance_K(K, verbose=False):
+    """estimate the variance explained by K"""
+    c = SP.sum((SP.eye(len(K)) - (1.0 / len(K)) * SP.ones(K.shape)) * SP.array(K))
+    scalar = (len(K) - 1) / c
+    return 1.0/scalar
+
+
 def scale_K(K, verbose=False):
     """scale covariance K such that it explains unit variance"""
     c = SP.sum((SP.eye(len(K)) - (1.0 / len(K)) * SP.ones(K.shape)) * SP.array(K))
