@@ -52,18 +52,12 @@ int main() {
 	std::cout << pos->rows() << "\n";
 	std::cout << gen->rows() << "\n";
 
-	//std::cout << *rowh << "\n";
-	//std::cout << *colh << "\n";
 
 
+	//std::string test = (*(*colh)["snp_id"])[0];
+	//std::cout << (*(*colh)["snp_id"]) <<"\n";
 
-	std::string test = (*(*colh)["snp_id"])[0];
 
-	//std::cout << (*colh)["snp_id"] << "\n";
-
-	//std::cout << (*(*colh)["snp_id"])[0] <<"\n";
-
-	std::cout << (*(*colh)["snp_id"]) <<"\n";
 
 	//std::cout << *colh << "\n";
 	//std::cout << *rowh << "\n";

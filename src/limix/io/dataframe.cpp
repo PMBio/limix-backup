@@ -46,6 +46,7 @@ PHeaderMap CHeaderMap::copy(muint_t i_start, muint_t n_elements)
 		PstringVec value = (*iter).second;
 		(*RV)[key] = PstringVec(new stringVec((*this)[key]->begin(),(*this)[key]->begin()+n_elements));
 	}
+	return RV;
 }
 
 } //end ::limix
