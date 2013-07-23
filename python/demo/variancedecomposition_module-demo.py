@@ -1,5 +1,5 @@
 import sys
-sys.path.append('./../../build_mac/src/interfaces/python/')
+sys.path.append('./../../release.darwin/interfaces/python/')
 import scipy as SP
 import scipy.stats
 import pdb
