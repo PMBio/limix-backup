@@ -132,15 +132,15 @@ void CTFreeFormNew::agetParamBounds0(CovarParams* lower,CovarParams* upper) cons
     *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
     *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
     //get diagonal elements
-    VectorXi isDiagonal =getIparamDiag();
+    //VectorXi isDiagonal =getIparamDiag();
     //set diagonal elements to be bounded [0,inf]
-    for (muint_t i=0;i<getNumberParams();++i)
-    {
-        if(isDiagonal(i))
-        {
-            (*lower)(i) = 0;
-        }
-    }
+    //for (muint_t i=0;i<getNumberParams();++i)
+    //{
+    //    if(isDiagonal(i))
+    //    {
+    //        (*lower)(i) = 0;
+    //    }
+    //}
 }
     
 void CTFreeFormNew::agetParamMask0(CovarParams* out) const {

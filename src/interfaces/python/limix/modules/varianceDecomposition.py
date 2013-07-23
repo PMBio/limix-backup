@@ -88,7 +88,7 @@ class CVarianceDecomposition:
         assert K.shape[1]==self.N, 'Incompatible shape'
         
         self.n_terms+=1
-        self.vd.addTerm('Diagonal',K)
+        self.vd.addTerm('FreeForm',K)
     
     def addFixedTerm(self,F):
         """
@@ -234,7 +234,7 @@ class CVarianceDecomposition:
         gp=min['gp']
         ParamMask=gp.getParamMask()['covar']
         std=SP.zeros(ParamMask.sum())
-        H=gp.LMLhess(["covar"])
+        H=gp.LMLhess_covar()
         It= (ParamMask[:,0]==1)
         H=H[It,:][:,It]
         Sigma = SP.linalg.inv(H)
