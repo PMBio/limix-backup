@@ -4,6 +4,8 @@ import pdb
 import sys
 import limix
 
+sys.path.append('./../helper/')
+from helper import message
 
 class CLMM_test:
     """test class for CLMM"""
@@ -35,7 +37,7 @@ class CLMM_test:
         pv = lmm.getPv().ravel()
         D2= ((SP.log10(pv)-SP.log10(self.pv_true))**2)
         RV = SP.sqrt(D2.mean())<1E-6
-        return RV
+        print '   ...pvalue %s' % message(RV)
 
 
     def test_permutation(self):
@@ -60,15 +62,15 @@ class CLMM_test:
         lmm.process()
         pv_perm2 = lmm.getPv().ravel()
         D2 = (SP.log10(pv_perm1)-SP.log10(pv_perm2))**2
-        return SP.sqrt(D2.mean())<1E-6
+        RV = SP.sqrt(D2.mean())<1E-6
+        print '   ...permutation %s' % message(RV)
     
     def test_all(self):
-        RV = True
+        print '... testing CLMM'
         #test basic LMM
-        RV = RV & self.test_lmm1()
+        self.test_lmm1()
         #test permutation
-        RV = RV & self.test_permutation()
-        return RV
+        self.test_permutation()
 
 
 class CInteractLMM_test:
@@ -77,21 +79,13 @@ class CInteractLMM_test:
         pass
 
     def test_all(self):
-        return True
-
-def run_all_tests():
-    RV = True
-    testlmm = CLMM_test();
-    RV = RV & testlmm.test_all()
-    
-    testilmm = CInteractLMM_test()
-    RV = RV & testilmm.test_all()
-    return RV
+        RV = False
+        print 'CInteractLMM IMPLEMENTED %s' % message(RV)
 
 
 if __name__ == '__main__':
-    RV= run_all_tests()
-    if RV:
-        sys.exit(0)
-    else:
-        sys.exit(99)
+    RV = True
+    testlmm = CLMM_test();
+    testlmm.test_all()
+    testilmm = CInteractLMM_test()
+    testilmm.test_all()

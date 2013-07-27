@@ -4,7 +4,8 @@ import scipy as SP
 import glob
 import sys
 import os
-
+sys.path.append('covar')
+sys.path.append('helper')
 
 if __name__ == '__main__':
     if 1:
@@ -26,10 +27,6 @@ if __name__ == '__main__':
     for fn in FL:
         print "running test %s"  % (os.path.basename(fn))
         rr = execfile(fn)
-        if RV:
-            print "passed"
-        else:
-            print "failed"
         pass
 
         
