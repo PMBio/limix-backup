@@ -10,7 +10,6 @@
 #include "limix/covar/linear.h"
 #include "limix/covar/se.h"
 #include "limix/covar/fixed.h"	
-#include "limix/covar/freeform.h"
 #include "limix/covar/trait.h"
 #include "limix/covar/combinators.h"	
 #include "limix/likelihood/likelihood.h"
@@ -28,7 +27,6 @@
 #include "limix/modules/CVqtl.h"
 #include "limix/modules/CMultiTraitVQTL.h"
 #include "limix/modules/CVarianceDecomposition.h"
-#include "limix/modules/NewCVarianceDecomposition.h"
 #include "limix/io/dataframe.h"
 #include "limix/io/genotype.h"
 
@@ -79,7 +77,6 @@ using namespace limix;
 %include "limix/covar/linear.h"
 %include "limix/covar/se.h"
 %include "limix/covar/fixed.h"
-%include "limix/covar/freeform.h"
 %include "limix/covar/trait.h"
 %include "limix/covar/combinators.h"	
 %include "limix/likelihood/likelihood.h"
@@ -97,7 +94,6 @@ using namespace limix;
 %include "limix/modules/CVqtl.h"
 %include "limix/modules/CMultiTraitVQTL.h"
 %include "limix/modules/CVarianceDecomposition.h"
-%include "limix/modules/NewCVarianceDecomposition.h"
 %include "limix/io/dataframe.h"
 %include "limix/io/genotype.h"
 

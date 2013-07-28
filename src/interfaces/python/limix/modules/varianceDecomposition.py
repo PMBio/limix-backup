@@ -50,7 +50,7 @@ class CVarianceDecomposition:
             Y = SP.stats.zscore(Y)
         
         self.Y       = Y
-        self.vd      = limix.CNewVarianceDecomposition(Y)
+        self.vd      = limix.CVarianceDecomposition(Y)
         self.n_terms = 0
         self.gp      = None
         

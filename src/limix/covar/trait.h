@@ -14,20 +14,20 @@ namespace limix {
     
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //ignore C++ versions
-%ignore CTraitNew::getK0;
-%ignore CTraitNew::getK0grad_param;
+%ignore CTrait::getK0;
+%ignore CTrait::getK0grad_param;
 //rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getK0) CTraitNew::agetK0;
-%rename(getK0grad_param) CTraitNew::agetK0grad_param;
-%rename(getK0hess_param) CTraitNew::agetK0hess_param;
+%rename(getK0) CTrait::agetK0;
+%rename(getK0grad_param) CTrait::agetK0grad_param;
+%rename(getK0hess_param) CTrait::agetK0hess_param;
 #endif
     
-class CTraitNew: public ACovarianceFunction {
+class CTrait: public ACovarianceFunction {
 protected:
     muint_t numberGroups;
 public:
-    CTraitNew(muint_t numberGroups);
-    virtual ~CTraitNew();
+    CTrait(muint_t numberGroups);
+    virtual ~CTrait();
 
 	//Block X functions: X is fixed and set in the constructor
 	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
@@ -39,22 +39,22 @@ public:
     //pure functions of the TraitNew class that need to be implemented
     virtual void agetScales(CovarParams* out) = 0;
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException) = 0;
-        
+
     //implemented functions
     virtual muint_t getNumberGroups() const;
 };
-typedef sptr<CTraitNew> PTraitNew;
+typedef sptr<CTrait> PTrait;
     
     
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //ignore C++ versions
-%ignore CTFreeFormNew::getIparamDiag;
-%ignore CTFreeFormNew::K0Covar2Params;
+%ignore CTFreeForm::getIparamDiag;
+%ignore CTFreeForm::K0Covar2Params;
 //rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getIparamDiag) CTFreeFormNew::agetIparamDiag;
+%rename(getIparamDiag) CTFreeForm::agetIparamDiag;
 #endif
     
-class CTFreeFormNew: public CTraitNew {
+class CTFreeForm: public CTrait {
         
 protected:
     //Calculate the number of parameter: should not it be virtual?
@@ -63,13 +63,13 @@ protected:
     void aK0Covar2Params(VectorXd* out,const MatrixXd& K0);
 public:
     
-    CTFreeFormNew(muint_t numberGroups);
-    ~CTFreeFormNew();
+    CTFreeForm(muint_t numberGroups);
+    ~CTFreeForm();
     
     //TraitNew pure functions
     virtual void agetScales(CovarParams* out);
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
-    
+
     //Covariance pure functions
 	//pure functions that need to be implemented
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
@@ -79,7 +79,7 @@ public:
     virtual void agetParamMask0(CovarParams* out) const;
     
     //class information
-    inline std::string getName() const {return "CTFreeFormNew";};
+    inline std::string getName() const {return "CTFreeForm";};
     
     //FreeForm-specific functions
     virtual void setParamsVarCorr(const CovarParams& paramsVC) throw(CGPMixException);
@@ -95,17 +95,17 @@ public:
     }
 
 };
-typedef sptr<CTFreeFormNew> PTFreeFormNew;
+typedef sptr<CTFreeForm> PTFreeForm;
     
 
-class CTDenseNew: public CTraitNew {
+class CTDense: public CTrait {
         
 protected:
         
 public:
         
-    CTDenseNew(muint_t numberGroups);
-    ~CTDenseNew();
+    CTDense(muint_t numberGroups);
+    ~CTDense();
 
     //TraitNew pure functions
     virtual void agetScales(CovarParams* out);
@@ -119,27 +119,27 @@ public:
     virtual void agetParamMask0(CovarParams* out) const;
         
     //class information
-    inline std::string getName() const {return "CTDenseNew";};
+    inline std::string getName() const {return "CTDense";};
         
 };
-typedef sptr<CTDenseNew> PTDenseNew;
+typedef sptr<CTDense> PTDense;
     
     
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%rename(getK0) CTFixedNew::agetK0;
+%rename(getK0) CTFixed::agetK0;
 #endif
     
 
 
-class CTFixedNew: public CTraitNew {
+class CTFixed: public CTrait {
         
 protected:
     MatrixXd K0;
         
 public:
     
-    CTFixedNew(muint_t numberGroups, const MatrixXd& K0);
-    ~CTFixedNew();
+    CTFixed(muint_t numberGroups, const MatrixXd& K0);
+    ~CTFixed();
     
     //TraitNew pure functions
     virtual void agetScales(CovarParams* out);
@@ -153,20 +153,20 @@ public:
     virtual void agetParamMask0(CovarParams* out) const;
         
     //class information
-    inline std::string getName() const {return "CTFixedNew";};
+    inline std::string getName() const {return "CTFixed";};
         
 };
-typedef sptr<CTFixedNew> PTFixedNew;
+typedef sptr<CTFixed> PTFixed;
     
     
-class CTDiagonalNew: public CTraitNew {
+class CTDiagonal: public CTrait {
         
 protected:
         
 public:
         
-    CTDiagonalNew(muint_t numberGroups);
-    ~CTDiagonalNew();
+    CTDiagonal(muint_t numberGroups);
+    ~CTDiagonal();
     
     //TraitNew pure functions
     virtual void agetScales(CovarParams* out);
@@ -180,26 +180,26 @@ public:
     virtual void agetParamMask0(CovarParams* out) const;
     
     //class information
-    inline std::string getName() const {return "CTDiagonalNew";};
+    inline std::string getName() const {return "CTDiagonal";};
         
 };
-typedef sptr<CTDiagonalNew> PTDiagonalNew;
+typedef sptr<CTDiagonal> PTDiagonal;
     
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%rename(getK0dense)    CTLowRankNew::agetK0dense;
-%rename(getK0diagonal) CTLowRankNew::agetK0diagonal;
+%rename(getK0dense)    CTLowRank::agetK0dense;
+%rename(getK0diagonal) CTLowRank::agetK0diagonal;
 #endif
     
     
-class CTLowRankNew: public CTraitNew {
+class CTLowRank: public CTrait {
         
 protected:
 
 public:
         
-    CTLowRankNew(muint_t numberGroups);
-    ~CTLowRankNew();
+    CTLowRank(muint_t numberGroups);
+    ~CTLowRank();
     
     //LowRank functions
     virtual void agetK0dense(MatrixXd* out) const throw(CGPMixException);
@@ -217,10 +217,10 @@ public:
     virtual void agetParamMask0(CovarParams* out) const;
         
     //class information
-    inline std::string getName() const {return "CTLowRankNew";};
+    inline std::string getName() const {return "CTLowRank";};
         
 };
-typedef sptr<CTLowRankNew> PTLowRankNew;
+typedef sptr<CTLowRank> PTLowRank;
 
 } /* namespace limix */
 #endif /* TRAIT_H_ */
