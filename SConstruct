@@ -139,6 +139,6 @@ if build_options['with_documentation']:
 
 #run unit tests?
 if build_options['with_tests']:		
-   args = ['python', 'run_all.py',os.path.join('./..',build_prefix,'interfaces','python')]
+   args = [sys.executable, 'run_all.py',os.path.join('./..',build_prefix,'interfaces','python')]
    subprocess.call(args,cwd='tests')
    pass 
