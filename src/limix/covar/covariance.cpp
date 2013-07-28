@@ -173,7 +173,7 @@ bool ACovarianceFunction::check_covariance_Kgrad_theta(ACovarianceFunction& cova
 void ACovarianceFunction::agetParamBounds0(CovarParams* lower,
 		CovarParams* upper) const
 {
-	(*lower) = 0.*VectorXd::Ones(getNumberParams());
+	(*lower) = -INFINITY*VectorXd::Ones(getNumberParams());
 	(*upper) = +INFINITY*VectorXd::Ones(getNumberParams());
 }
 

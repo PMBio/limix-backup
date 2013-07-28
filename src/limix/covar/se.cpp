@@ -36,7 +36,7 @@ void CCovSqexpARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw 
 	MatrixXd RV;
 	sq_dist(&RV,x1l,x2l);
 	RV*= -0.5;
-	(*out) = params(0)*RV.unaryExpr(std::ptr_fun(exp));
+	(*out) = std::pow(params(0),2)*RV.unaryExpr(std::ptr_fun(exp));
 } // end :: K
 
 void CCovSqexpARD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
@@ -57,17 +57,20 @@ void CCovSqexpARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGPM
 	RV*= -0.5;
 	(*out) = RV.unaryExpr(std::ptr_fun(exp));
 
-	if ((i>0) && (i<getNumberParams()))
+	if (i==0) {
+		(*out)*=2.*params(0);
+	}
+	else if (i<getNumberParams())
 	{
 		//lengthscale derivative:
 		//1. get col (i-1) from X:
 		MatrixXd sq;
 		sq_dist(&sq,X.col(i-1),X.col(i-1));
 		//3. elementwise product
-        (*out)*=params(0)*pow(params(i),-3);
+        (*out)*=std::pow(params(0),2)*pow(params(i),-3);
 		(*out).array()*=sq.array();
 	}
-	else if (i!=0)
+	else
 	{
 		throw CGPMixException("Parameter outside range");
 	}
@@ -82,8 +85,14 @@ void CCovSqexpARD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j)
     if (i>j)    {i0=i; j0=j;}
     else        {muint_t temp=i; i0=j; j0=temp;}
     
-    if ((i0==0) && (j0==0))
-        (*out)=MatrixXd::Zero(this->X.rows(),this->X.rows());
+    if ((i0==0) && (j0==0)) {
+    	MatrixXd L = params.block(1,0,params.rows()-1,1);
+    	MatrixXd x1l = X * L.asDiagonal().inverse();
+    	MatrixXd RV;
+    	sq_dist(&RV,x1l,x1l);
+    	RV*= -0.5;
+    	(*out) = 2*RV.unaryExpr(std::ptr_fun(exp));
+    }
     else if ((j0==0) && (i0<getNumberParams()))
     {
         this->aKgrad_param(out,0);
