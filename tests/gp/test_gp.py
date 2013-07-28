@@ -19,13 +19,13 @@ class gpbase_test:
     
     def generate(self):
         SP.random.seed(1)
-        self.n_dimensions=3
-        self.n_samples = 20
+        self.n_dimensions=2
+        self.n_samples = 100
         X = SP.rand(self.n_samples,self.n_dimensions)
         covar  = limix.CCovSqexpARD(self.n_dimensions)
         ll  = limix.CLikNormalIso()
-        covar_params = SP.random.randn(covar.getNumberParams())
-        lik_params   = SP.random.randn(ll.getNumberParams())
+        covar_params = SP.array([1,1,1])
+        lik_params   = SP.array([0.5])
         hyperparams0 = limix.CGPHyperParams()
         hyperparams0['covar'] = covar_params
         hyperparams0['lik'] = lik_params
@@ -41,7 +41,7 @@ class gpbase_test:
         #run
         self.gpopt.opt()
         params = SP.concatenate((self.gp.getParams()['covar'],self.gp.getParams()['lik']))[:,0]
-        params_true = SP.array([-2.56127666e-01,-6.14535024e-01,-7.25347130e+01,3.44517381e+01,2.47966500e-02])
+        params_true = SP.array([0.28822188,  0.35271548,  0.13709146,  0.49447424])
         RV = (params-params_true).max()<1e-6
         print '   ...fit %s' % message(RV)
     
