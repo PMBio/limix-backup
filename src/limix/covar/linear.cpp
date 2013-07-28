@@ -30,14 +30,14 @@ void CCovLinearISO::aKcross(MatrixXd* out,const CovarInput& Xstar) const throw(C
 		throw CGPMixException(os.str());
 	}
 	//kernel matrix is constant hyperparmeter and dot product
-	(*out).noalias() = params(0)* Xstar*this->X.transpose();
+	(*out).noalias() = std::pow(params(0),2)* Xstar*this->X.transpose();
 }
 
 
 void CCovLinearISO::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
 {
 	out->resize(Xstar.rows());
-	(*out) = params(0)* (Xstar*Xstar.transpose()).diagonal();
+	(*out) = std::pow(params(0),2)* (Xstar*Xstar.transpose()).diagonal();
 }
 
 
@@ -46,7 +46,7 @@ void CCovLinearISO::aKgrad_param(MatrixXd* out, const muint_t i ) const throw(CG
 	if (i==0)
 	{
 		out->resize(this->X.rows(),this->X.rows());
-		(*out).noalias() = this->X*this->X.transpose();
+		(*out).noalias() = 2*params(0)*this->X*this->X.transpose();
 	}
 	else
 	{
@@ -61,7 +61,7 @@ void CCovLinearISO::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j
     if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
 		throw CGPMixException("Parameter index out of range.");
     }
-    (*out)=MatrixXd::Zero(this->X.rows(),this->X.rows());
+    (*out).noalias()=2*this->X*this->X.transpose();
 }
 
 void CCovLinearISO::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException)
@@ -76,7 +76,7 @@ void CCovLinearISO::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const 
 	//create empty matrix
 	(*out) = MatrixXd::Zero(Xstar.rows(),this->X.rows());
 	//otherwise update computation:
-	(*out).rowwise() = params(0)*Xstar.col(d).transpose();
+	(*out).rowwise() = std::pow(params(0),2)*Xstar.col(d).transpose();
 
 }
 
@@ -89,7 +89,7 @@ void CCovLinearISO::aKdiag_grad_X(VectorXd* out, const muint_t d ) const throw (
 		throw CGPMixException(os.str());
 	}
 	(*out) = VectorXd::Zero(this->X.rows());
-	(*out) = 2.0*params(0)*this->X.col(d);
+	(*out) = 2.0*std::pow(params(0),2)*this->X.col(d);
 }
 
 
@@ -117,7 +117,7 @@ void CCovLinearISODelta::aKcross(MatrixXd* out,const CovarInput& Xstar) const th
 		{
 			//kernel value is number of coinciding elements in that row
 			muint_t count = (X.row(ir).array()==Xstar.row(ic).array()).sum();
-			(*out)(ir,ic) = params(0)*count;
+			(*out)(ir,ic) = std::pow(params(0),2)*count;
 		}
 	}
 }
@@ -126,7 +126,7 @@ void CCovLinearISODelta::aKcross(MatrixXd* out,const CovarInput& Xstar) const th
 void CCovLinearISODelta::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
 {
 	out->resize(Xstar.rows());
-	out->setConstant(params(0)* Xstar.cols());
+	out->setConstant(std::pow(params(0),2)* Xstar.cols());
 }
 
 
@@ -181,16 +181,15 @@ void CCovLinearARD::setNumberDimensions(muint_t numberDimensions)
 void CCovLinearARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw (CGPMixException)
 {
 	//get all amplitude parameters, one per dimension
-	VectorXd L = params;
+	VectorXd L = params.unaryExpr(std::bind2nd(std::ptr_fun<double,double,double>(pow),2));
 	(*out).noalias() = Xstar*L.asDiagonal()*this->X.transpose();
 }
 
 void CCovLinearARD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
 {
-    VectorXd L = params;
+    VectorXd L = params.unaryExpr(std::bind2nd(std::ptr_fun<double,double,double>(pow),2));
     (*out).noalias() = (Xstar*L.asDiagonal()*Xstar.transpose()).diagonal();
 }
-
 
 void CCovLinearARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGPMixException)
 {
@@ -201,7 +200,7 @@ void CCovLinearARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGP
 	//1. get row i from x1:
 	MatrixXd x1i = X.col(i);
 	//outer product of the corresponding dimension.
-	(*out).noalias() =  x1i*x1i.transpose();
+	(*out).noalias() =  2*params(i)*x1i*x1i.transpose();
 }
     
 void CCovLinearARD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException)
@@ -209,7 +208,11 @@ void CCovLinearARD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j
     if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
         throw CGPMixException("Parameter index out of range.");
     }
-    (*out)=MatrixXd::Zero(this->X.rows(),this->X.rows());
+    if (i==j) {
+    	MatrixXd x1i = X.col(i);
+    	(*out).noalias()=2*x1i*x1i.transpose();
+    }
+    else		(*out)=MatrixXd::Zero(this->X.rows(),this->X.rows());
 }
 
 void CCovLinearARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw (CGPMixException)
@@ -219,13 +222,13 @@ void CCovLinearARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const 
 		throw CGPMixException("derivative for gradient outside specification requested.");
 	}
 	(*out) = MatrixXd::Zero(Xstar.rows(),this->X.rows());
-	(*out).rowwise() = params(d)*Xstar.col(d).transpose();
+	(*out).rowwise() = std::pow(params(d),2)*Xstar.col(d).transpose();
 }
 
 void CCovLinearARD::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw (CGPMixException)
 {
 	(*out) = VectorXd::Zero(X.rows());
-	(*out).noalias() = 2.0*params(d)*X.col(d);
+	(*out).noalias() = 2.0*std::pow(params(d),2)*X.col(d);
 }
 
 
