@@ -113,3 +113,5 @@ PL.plot(Xs,Xmean)
 PL.plot(Xs,Xmean+SP.sqrt(Xstd))
 PL.plot(Xs,Xmean-SP.sqrt(Xstd))
 PL.show()
+
+pdb.set_trace()
