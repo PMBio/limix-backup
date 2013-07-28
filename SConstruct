@@ -139,6 +139,6 @@ if build_options['with_documentation']:
 
 #run unit tests?
 if build_options['with_tests']:		
-   args = ['/nfs/research/stegle/software/bin/python', 'run_all.py',os.path.join('./..',build_prefix,'interfaces','python')]
+   args = ['python', 'run_all.py',os.path.join('./..',build_prefix,'interfaces','python')]
    subprocess.call(args,cwd='tests')
    pass 
