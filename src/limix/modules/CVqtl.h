@@ -12,7 +12,7 @@
 #include "limix/gp/gp_base.h"
 #include "limix/covar/linear.h"
 #include "limix/covar/combinators.h"
-#include "limix/covar/fixed.h"
+#include "limix/covar/freeform.h"
 
 
 

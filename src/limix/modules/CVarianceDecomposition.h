@@ -9,8 +9,9 @@
 #define CVARIANCEDECOMPOSITION_H_
 
 #include "limix/types.h"
-#include "limix/covar/trait.h"
+#include "limix/covar/freeform.h"
 #include "limix/covar/combinators.h"
+#include "limix/mean/CLinearMean.h"
 #include "limix/gp/gp_base.h"
 #include "limix/gp/gp_opt.h"
 
@@ -120,7 +121,7 @@ class CMultiTraitTerm : public AVarianceTerm
 {
 protected:
 	muint_t P;
-	PTrait traitCovariance;
+	PTraitCF traitCovariance;
 	std::string TCtype;
 	// TOTAL COVARIANCE
 	PKroneckerCF covariance;
