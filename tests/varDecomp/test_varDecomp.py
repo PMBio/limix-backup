@@ -1,0 +1,65 @@
+"""Variance Decomposition testing code"""
+import scipy as SP
+import scipy.stats
+import pdb
+import sys
+import limix
+
+sys.path.append('./../helper/')
+from helper import message
+
+class CVarianceDecomposition_test:
+    """test class for CVarianceDecomposition"""
+    
+    def __init__(self):
+        self.generate()
+
+    def genGeno(self):
+        self.X  = (SP.rand(self.N,self.S)<0.2)*1.
+        self.Kg = SP.dot(self.X,self.X.T)
+    
+    def genPheno(self):
+        dp = SP.ones(self.P); dp[1]=-1
+        Y = SP.zeros((self.N,self.P))
+        gamma0_g = SP.randn(self.S)
+        gamma0_n = SP.randn(self.N)
+        for p in range(self.P):
+            gamma_g = SP.randn(self.S)
+            gamma_n = SP.randn(self.N)
+            beta_g  = dp[p]*gamma0_g+gamma_g
+            beta_n  = gamma0_n+gamma_n
+            y=SP.dot(self.X,beta_g)
+            y+=beta_n
+            Y[:,p]=y
+        self.Y=SP.stats.zscore(Y,0)
+    
+    def generate(self):
+        self.N = 200
+        self.S = 1000
+        self.P = 2
+        self.genGeno()
+        self.genPheno()
+        self.vd = limix.CVarianceDecomposition(self.Y)
+        self.vd.addFixedEffTerm("specific")
+        self.vd.addTerm("Dense",self.Kg)
+        self.vd.addTerm("Block",self.Kg)
+        self.vd.addTerm("Dense",SP.eye(self.N))
+        self.vd.addTerm("Identity",SP.eye(self.N))
+        self.vd.initGP()
+        
+    def test_fit(self):
+        self.vd.trainGP()
+        params = self.vd.getOptimum()['scales'][:,0]
+        params_true = SP.array([1.10717353,-0.36956933,2.61841604e-10,0.10351569,-0.94327865,1.13850094e-11])
+        if (params-params_true).max()<1e-6:
+            print '   ...fit %s' % message(RV)
+        
+    def test_all(self):
+        print '... testing CVarianceDecomposition'
+        self.test_fit()
+
+
+if __name__ == '__main__':
+    testvarDecomp = CVarianceDecomposition_test()
+    testvarDecomp.test_all()
+
