@@ -2,8 +2,6 @@
 import unittest
 import scipy as SP
 import pdb
-import sys
-sys.path.append('./../release.darwin/interfaces/python/')
 import limix
 
 class CGPbase_test(unittest.TestCase):
