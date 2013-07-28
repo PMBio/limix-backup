@@ -7,457 +7,581 @@
 
 #include "CVarianceDecomposition.h"
 #include "limix/utils/matrix_helper.h"
-#include "limix/gp/gp_opt.h"
-#include "limix/covar/se.h"
-#include "limix/covar/combinators.h"
-#include "limix/mean/CLinearMean.h"
-#include "limix/LMM/lmm.h"
-#include <cmath>
+#include <ctime>
 
 namespace limix {
 
-
-/* CCategorialCovarainceTerm*/
+/* AVarianceTerm */
 AVarianceTerm::AVarianceTerm() {
-	this->isInitialized = false;
+	this->K_mode=-1;
+	this->fitted=(bool)0;
+	this->is_init=(bool)0;
 }
 
 AVarianceTerm::~AVarianceTerm() {
-	// TODO Auto-generated destructor stub
 }
 
-
-void limix::AVarianceTerm::agetK(MatrixXd* out) const {
-(*out) = this->K;
-}
-
-mfloat_t AVarianceTerm::getVariance() const
+muint_t AVarianceTerm::getNumberIndividuals() const throw(CGPMixException)
 {
-	MatrixXd K = this->covariance->K();
-	return getVarianceK(K);
+	if (K_mode==-1)
+		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
+	return (muint_t)this->K.cols();
 }
 
-AVarianceTerm::AVarianceTerm(const MatrixXd& K,mfloat_t Vinit) {
-	this->K = K;
-	if(!isnan(Vinit))
-	{
-		this->setVarianceInit(Vinit);
+void AVarianceTerm::setK(const MatrixXd& K) throw(CGPMixException)
+{
+	if(K.rows()!=K.cols())
+		throw CGPMixException("AVarianceTerm: K needs to be a squared matrix!");
+	this->K = K/K.diagonal().mean();
+	Kcf = PTFixed(new CTFixed(K.rows(),this->K));
+	this->K_mode = 0;
+}
+
+void AVarianceTerm::setX(const MatrixXd& X) throw(CGPMixException)
+{
+	this->X = X;
+	MatrixXd K = X*X.transpose();
+	this->setK(K);
+	this->K_mode = 1;
+}
+
+void AVarianceTerm::agetK(MatrixXd *out) const throw(CGPMixException)
+{
+	(*out) = this->K;
+}
+
+void AVarianceTerm::agetX(MatrixXd *out) const throw(CGPMixException)
+{
+	(*out) = this->X;
+}
+
+/* CSingleTraitTerm */
+
+CSingleTraitTerm::CSingleTraitTerm():AVarianceTerm() {
+}
+
+CSingleTraitTerm::CSingleTraitTerm(const MatrixXd& K):AVarianceTerm() {
+	this->setK(K);
+}
+
+CSingleTraitTerm::~CSingleTraitTerm() {
+}
+
+void CSingleTraitTerm::setScales(const VectorXd& scales) throw(CGPMixException)
+{
+	if (K_mode==-1)
+		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
+	this->Kcf->setParams(scales);
+}
+
+void CSingleTraitTerm::agetScales(VectorXd* out) const throw(CGPMixException)
+{
+	if (K_mode==-1)
+		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
+	static_pointer_cast<CTrait>(this->Kcf)->agetScales(out);
+}
+
+muint_t CSingleTraitTerm::getNumberScales() const throw(CGPMixException)
+{
+	if (K_mode==-1)
+		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
+	return this->Kcf->getNumberParams();
+}
+
+void CSingleTraitTerm::agetTraitCovariance(MatrixXd *out) const throw(CGPMixException)
+{
+	throw CGPMixException("CSingleTraitTerm: TraitCovariance is not defined");
+}
+
+void CSingleTraitTerm::agetVariances(VectorXd* out) const throw(CGPMixException)
+{
+	this->agetScales(out);
+	(*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) );
+}
+
+
+void CSingleTraitTerm::initTerm() throw(CGPMixException)
+{
+	if (K_mode==-1)
+		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
+	if (this->Kcf->getParams().rows()!=this->Kcf->getNumberParams())
+		this->setScales(randn(Kcf->getNumberParams(),(muint_t)1));
+		//TODO: set the seed
+	this->is_init=(bool)1;
+}
+
+PCovarianceFunction CSingleTraitTerm::getCovariance() const throw(CGPMixException)
+{
+	if (!is_init)	throw CGPMixException("CSingleTraitTerm: the term is not initialised!");
+	return this->Kcf;
+}
+
+/* CMultiTraitTerm */
+
+CMultiTraitTerm::CMultiTraitTerm(muint_t P):AVarianceTerm()
+{
+	this->P=P;
+	this->TCtype="Null";
+}
+
+CMultiTraitTerm::CMultiTraitTerm(muint_t P, std::string TCtype, const MatrixXd& K):AVarianceTerm()
+{
+	this->P=P;
+	this->setTraitCovarianceType(TCtype);
+	this->setK(K);
+}
+
+CMultiTraitTerm::CMultiTraitTerm(muint_t P, std::string TCtype, muint_t p, const MatrixXd& K):AVarianceTerm()
+{
+	this->P=P;
+	this->setTraitCovarianceType(TCtype,p);
+	this->setK(K);
+}
+
+CMultiTraitTerm::~CMultiTraitTerm()
+{
+}
+
+void CMultiTraitTerm::setTraitCovarianceType(std::string TCtype, muint_t p) throw(CGPMixException)
+{
+	if(TCtype=="FreeForm")			traitCovariance = PTFreeForm(new CTFreeForm(this->P));
+	else if (TCtype=="Block")		traitCovariance = PTFixed(new CTFixed(this->P,MatrixXd::Ones(P,P)));
+	else if (TCtype=="Identity")	traitCovariance = PTFixed(new CTFixed(this->P,MatrixXd::Identity(P,P)));
+	else if (TCtype=="Dense")		traitCovariance = PTDense(new CTDense(this->P));
+	else if (TCtype=="Diagonal")	traitCovariance = PTDiagonal(new CTDiagonal(this->P));
+	else if (TCtype=="Full")		traitCovariance = PTLowRank(new CTLowRank(this->P));
+	else if (TCtype=="Specific") {
+		if (p>=this->P)		throw CGPMixException("CMultiTraitTerm: specify a valid phenotype number");
+		MatrixXd K0 = MatrixXd::Zero(P,P);
+		K0(p,p) = 1;
+		traitCovariance = PTFixed(new CTFixed(this->P,K0));
+		std::ostringstream temp;
+		temp<<"Specific:pheno"<<p;
+		TCtype=temp.str();
 	}
+	else throw CGPMixException("CMultiTraitTerm: Non valid type!");
+	this->TCtype=TCtype;
 }
 
-void limix::AVarianceTerm::setK(const MatrixXd& K) {
-	this->K = K;
-}
-
-
-/* CSingleTraitVarainceTerm*/
-CSingleTraitVarianceTerm::CSingleTraitVarianceTerm()
+std::string CMultiTraitTerm::getTraitCovarianceType() const throw(CGPMixException)
 {
+	if (TCtype=="Null")
+		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
+	return this->TCtype;
 }
 
-CSingleTraitVarianceTerm::CSingleTraitVarianceTerm(const MatrixXd& K,mfloat_t Vinit) : AVarianceTerm(K,Vinit)
+void CMultiTraitTerm::setScales(const VectorXd& scales) throw(CGPMixException)
 {
+	if (TCtype=="Null")
+		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
+	this->traitCovariance->setParams(scales);
 }
 
-CSingleTraitVarianceTerm::~CSingleTraitVarianceTerm() {
-}
-
-void CSingleTraitVarianceTerm::initCovariance() throw (CGPMixException)
+void CMultiTraitTerm::agetScales(VectorXd* out) const throw(CGPMixException)
 {
-	Kcovariance  = PFixedCF(new CFixedCF(this->K));
-	covariance   = Kcovariance;
-	//if hyperparams are not initialized, just set variance to 1
-	if((muint_t)hp_init.rows()==covariance->getNumberParams())
-		covariance->setParams(hp_init);
-	else if (!isnull(varianceInit))
-		covariance->setParams(VectorXd::Ones(1)*this->varianceInit(0,0));
-	else
-		covariance->setParams(VectorXd::Zero(1));
-
-	if((muint_t)hp_mask.rows()==covariance->getNumberParams())
-		covariance->setParamMask(hp_mask);
-	isInitialized = true;
+	if (TCtype=="Null")
+		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
+	this->traitCovariance->agetScales(out);
 }
 
-/* CCategorialCovarainceTerm*/
-CCategorialTraitVarianceTerm::CCategorialTraitVarianceTerm()
+muint_t CMultiTraitTerm::getNumberScales() const throw(CGPMixException)
 {
-    //Trait covariance is not init
-    this->trait_covariance_is_init=0;
+	if (TCtype=="Null")
+		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
+	return this->traitCovariance->getNumberParams();
 }
 
-CCategorialTraitVarianceTerm::~CCategorialTraitVarianceTerm() {
-	// TODO Auto-generated destructor stub
-}
-
-
-void limix::CCategorialTraitVarianceTerm::agetTrait(VectorXd* out) const {
-	(*out) = this->trait;
-}
-    
-void CCategorialTraitVarianceTerm::setTraitCov(PTraitCF trait_covariance) throw (CGPMixException)
+void CMultiTraitTerm::agetTraitCovariance(MatrixXd *out) const throw(CGPMixException)
 {
-    // If the parameters have not been set, it sets them
-    if ((muint_t)(trait_covariance->getParams().rows()) != (muint_t)(trait_covariance->getNumberParams()))
-        trait_covariance->setParams(VectorXd::Ones(trait_covariance->getNumberParams()));
-    this->trait_covariance = trait_covariance;
-    this->trait_covariance_is_init=1;
+	if (TCtype=="Null")
+		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
+	if (this->traitCovariance->getParams().rows()!=this->traitCovariance->getNumberParams())
+		throw CGPMixException("CMultiTraitTerm: parameters need to be set!");
+	this->traitCovariance->aK(out);
 }
 
-void CCategorialTraitVarianceTerm::initCovariance() throw (CGPMixException)
+void CMultiTraitTerm::agetVariances(VectorXd* out) const throw(CGPMixException)
 {
-	//0. check consistency
-	if(this->trait.rows()!=this->K.rows())
-		throw CGPMixException("CCategorialCovarainceTerm: trait information and K covariance have incompatible shapes");
-	//1. total term covar is a product
-	covariance = PProductCF(new CProductCF());
-	//2. fixed CF
-	Kcovariance  = PFixedCF(new CFixedCF(this->K));
-	//3. freeform covariance
-    if  (trait_covariance_is_init!=1) {
-        trait_covariance = PTraitCF(new CTFreeFormCF(this->numtraits));
-        trait_covariance->setParams(VectorXd::Ones(trait_covariance->getNumberParams()));
-    }
-	trait_covariance->setX(this->trait);
+	MatrixXd traitCov;
+	this->agetTraitCovariance(&traitCov);
+	(*out) = traitCov.diagonal();
+}
 
-	//4. add to overall covariance
-	static_pointer_cast<CProductCF>(covariance)->addCovariance(Kcovariance);
-	static_pointer_cast<CProductCF>(covariance)->addCovariance(trait_covariance);
+void CMultiTraitTerm::initTerm() throw(CGPMixException)
+{
+	if (K_mode==-1)
+		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
+	if (TCtype=="Null")
+		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
+	// IntraTrait Covariance Matrix
+	if (K_mode==-1)
+		throw CGPMixException("CMultiTraitTerm: K needs to be set!");
+	Kcf->setParams(VectorXd::Ones(1));
+	Kcf->setParamMask(VectorXd::Zero(1));
+	// InterTrait Covariance Matrix
+	if (this->traitCovariance->getParams().rows()!=this->traitCovariance->getNumberParams())
+		this->setScales(randn(traitCovariance->getNumberParams(),(muint_t)1));
+	covariance = PKroneckerCF(new CKroneckerCF(traitCovariance,Kcf));
+	this->is_init=(bool)1;
+}
 
-    
-	//5. create default parameter settings and constraints for optimizatio procedure
-	/*
-    if((muint_t)hp_init.rows()==covariance->getNumberParams())
-		this->covariance->setParams(hp_init);
-	else
-	{
-		MatrixXd Vinit;
-		if (!isnull(this->varianceInit))
-			Vinit = varianceInit;
-		else
-		{
-			Vinit = MatrixXd::Zero(numtraits,numtraits);
-			Vinit.diagonal().setConstant(1.0);
+PCovarianceFunction CMultiTraitTerm::getCovariance() const throw(CGPMixException)
+{
+	if (!is_init)	throw CGPMixException("CMultiTraitTerm: the term is not initialised!");
+	return this->covariance;
+}
+
+
+/* CMultiTraitTerm */
+
+CVarianceDecomposition::CVarianceDecomposition(const MatrixXd& pheno){
+	this->setPheno(pheno);
+}
+
+CVarianceDecomposition::~CVarianceDecomposition(){
+}
+
+void CVarianceDecomposition::clear()
+{
+	this->fixedEffs.clear();
+	this->terms.clear();
+	this->is_init=(bool)0;
+}
+
+void CVarianceDecomposition::addFixedEffTerm(const std::string fixedType) throw(CGPMixException)
+{
+	MatrixXd singleTraitFixed = MatrixXd::Ones(this->N,1);
+	this->addFixedEffTerm(fixedType,singleTraitFixed);
+}
+
+void CVarianceDecomposition::addFixedEffTerm(const std::string fixedType, const MatrixXd& singleTraitFixed) throw(CGPMixException)
+{
+	if ((muint_t)singleTraitFixed.cols()!=(muint_t)1 || (muint_t)singleTraitFixed.rows()!=this->N)
+		throw CGPMixException("CVarianceDecomposition: the single trait fixed effect has incompatible shape");
+	if (fixedType=="common") {
+		MatrixXd fixed=MatrixXd::Zero(this->N,this->P);
+		for (muint_t p=0; p<this->P; p++)
+			fixed.block(0,p,N,1)=singleTraitFixed;
+		fixedEffs.push_back(fixed);
+	}
+	else if (fixedType=="specific") {
+		for (muint_t p=0; p<this->P; p++) {
+			MatrixXd fixed=MatrixXd::Zero(this->N,this->P);
+			fixed.block(0,p,N,1)=singleTraitFixed;
+			fixedEffs.push_back(fixed);
 		}
-		//use Vinit to initialize the matrix
-		trait_covariance->setParamsCovariance(Vinit);
-		Kcovariance->setParams(VectorXd::Ones(1));
 	}
-    */
-    
-    //set Kcovariance.param to one
-    Kcovariance->setParams(VectorXd::Ones(1));
-    
-	//have manual mask?
-	if((muint_t)hp_mask.rows()==covariance->getNumberParams())
-		covariance->setParamMask(hp_mask);
-	//else: assume it is all fine but remove the constant covar from opt
 	else
-	{
-		Kcovariance->setParamMask(VectorXd::Zero(1));
-	}
+		throw CGPMixException("CVarianceDecomposition: non valid fixed effect type");
+}
 
-	isInitialized = true;
-} //::end initialize
-
-
-
-void CCategorialTraitVarianceTerm::setTrait(const VectorXd& trait)
+void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& fixed) throw(CGPMixException)
 {
-	this->trait = trait;
-	mfloat_set utrait;
-	//add unique elements
-	for (muint_t it=0;it<(muint_t) trait.rows(); ++it)
-	{
-		muint_t el = trait(it);
-		if(utrait.find(el)==utrait.end())
-		{
-			utrait.insert(el);
-		}
-	}
-	//number of traits
-	this->numtraits = utrait.size();
-	//convert to array
-	this->utrait = VectorXd::Zero(numtraits);
-	muint_t index=0;
-	for(mfloat_set::iterator iter = utrait.begin(); iter!=utrait.end();iter++)
-	{
-		this->utrait(index) = iter.operator *();
-		index++;
-	}
+	if (fixed.cols()!=this->P || fixed.rows()!=this->N)
+		throw CGPMixException("CVarianceDecomposition: the fixed effect has incompatible shape");
+	fixedEffs.push_back(fixed);
 }
 
-CCategorialTraitVarianceTerm::CCategorialTraitVarianceTerm(PTraitCF trait_covariance, const MatrixXd& K, const MatrixXd& trait, mfloat_t Vinit) : AVarianceTerm(K,Vinit){
-    this->setTraitCov(trait_covariance);
-	this->setTrait(trait);
-}
-
-
-void CCategorialTraitVarianceTerm::setVarianceInit(mfloat_t vinit)
+void CVarianceDecomposition::getFixedEffTerm(MatrixXd *out, const muint_t i) const throw(CGPMixException)
 {
-	//1. create matrix with initialization
-	MatrixXd CovarInit = MatrixXd::Zero(numtraits,numtraits);
-	CovarInit.diagonal().setConstant(vinit);
-	this->setCovarianceInit(CovarInit);
+	if (i>=this->getNumberFixedEffs())
+		throw CGPMixException("CVarianceDecomposition: value out of range");
+	(*out)=this->fixedEffs[i];
 }
 
-void CCategorialTraitVarianceTerm::setCovarianceInit(const MatrixXd& K0) throw(CGPMixException)
+void CVarianceDecomposition::clearFixedEffs()
 {
-	if (! ( ((muint_t)K0.rows()==numtraits) && ((muint_t)K0.cols()==numtraits)))
-	{
-		throw CGPMixException("CCategorialTrait: initial trait covariance needs to be N x N");
-	}
-	this->varianceInit = K0;
+	this->fixedEffs.clear();
 }
 
-void CCategorialTraitVarianceTerm::agetCovarianceInit(MatrixXd* out) const
+muint_t CVarianceDecomposition::getNumberFixedEffs() const
 {
-	(*out) = varianceInit;
+	return (muint_t)(this->fixedEffs.size());
 }
 
-void CCategorialTraitVarianceTerm::agetCovarianceFit(MatrixXd* out) const
+void CVarianceDecomposition::setPheno(const MatrixXd& pheno) throw(CGPMixException)
 {
-	/*
-	//1. create freeform covaraince
-	CFreeFormCF covar(this->numtraits);
-	covar.setConstraint(this->constraint);
-	//2. set unique env factors
-	covar.setX(this->utrait);
-	//3. set params
-	CovarParams params = this->trait_covariance->getParams();
-	covar.setParams(params);
-	//4.evaluate covariance
-	covar.aK(out);
-	*/
-	this->trait_covariance->agetK0(out);
-	//add a small diagonal component
-	(*out).diagonal()+=1E-8*VectorXd::Ones((*out).rows());
-}
-
-
-
-/* CVarianceDecomposition*/
-CVarianceDecomposition::CVarianceDecomposition()
-{
-	initialized = false;
-}
-
-CVarianceDecomposition::CVarianceDecomposition(const MatrixXd& pheno) {//, const MatrixXd& trait) {
-	//this->trait =trait;
+	// Set Phenoa and dimensions
 	this->pheno = pheno;
-	initialized = false;
+	this->N = (muint_t)pheno.rows();
+	this->P = (muint_t)pheno.cols();
+	// Set all other values to default
+	this->clear();
+}
+
+void CVarianceDecomposition::getPheno(MatrixXd *out) const throw(CGPMixException)
+{
+	(*out)=this->pheno;
+}
+
+void CVarianceDecomposition::addTerm(PVarianceTerm term) throw(CGPMixException)
+{
+
+	if (term->getName()=="CMultiTraitTerm")
+		if (term->getNumberTraits()!=this->P)
+			throw CGPMixException("CVarianceDecomposition: the term has incompatible number of traits");
+		if (term->getNumberIndividuals()!=this->N)
+			throw CGPMixException("CVarianceDecomposition: the term has incompatible number of individual");
+	else if (term->getName()=="CSingleTraitTerm")
+		if (term->getNumberIndividuals()!=this->N*this->P)
+			throw CGPMixException("CVarianceDecomposition: the single trait term must have dimensions NP");
+	terms.push_back(term);
+}
+
+void CVarianceDecomposition::addTerm(const MatrixXd& K) throw(CGPMixException)
+{
+//TODO
+}
+
+void CVarianceDecomposition::addTerm(std::string TCtype, const MatrixXd& K) throw(CGPMixException)
+{
+	this->addTerm(TCtype,(muint_t)0,K);
+}
+
+void CVarianceDecomposition::addTerm(std::string TCtype, muint_t p, const MatrixXd& K) throw(CGPMixException)
+{
+	if (TCtype=="SingleTrait")
+		this->addTerm(K);
+	else {
+		this->addTerm(PMultiTraitTerm(new CMultiTraitTerm(this->P,TCtype,p,K)));
+	}
+}
+
+PVarianceTerm CVarianceDecomposition::getTerm(muint_t i) const throw(CGPMixException)
+{
+	if (i>=this->getNumberTerms())
+		throw CGPMixException("CVarianceDecomposition: value out of range");
+	return this->terms[i];
+}
+
+void CVarianceDecomposition::clearTerms()
+{
+	this->terms.clear();
+}
+
+muint_t CVarianceDecomposition::getNumberTerms() const
+{
+	return (muint_t)(terms.size());
+}
+
+void CVarianceDecomposition::setScales(const VectorXd& scales) const throw(CGPMixException)
+{
+	if (this->is_init==0)
+		throw CGPMixException("CVarianceDecomposition: CVarianceDecomposition needs to be initialised");
+	this->covar->setParams(scales);
+}
+
+void CVarianceDecomposition::setScales(muint_t i,const VectorXd& scales) const throw(CGPMixException)
+{
+	if (i>=this->getNumberTerms())
+		throw CGPMixException("CVarianceDecomposition: value out of range");
+	this->terms[i]->setScales(scales);
+}
+
+void CVarianceDecomposition::agetScales(muint_t i, VectorXd* out) const throw(CGPMixException)
+{
+	if (i>=this->getNumberTerms())
+		throw CGPMixException("CVarianceDecomposition: value out of range");
+	this->terms[i]->agetScales(out);
+}
+
+void CVarianceDecomposition::agetScales(VectorXd* out) throw(CGPMixException)
+{
+	(*out).resize(this->getNumberScales(),1);
+	muint_t row=0;
+	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
+	{
+		PVarianceTerm term = iter[0];
+		VectorXd scales;
+		term->agetScales(&scales);
+		(*out).block(row,0,term->getNumberScales(),1)=scales;
+		row+=term->getNumberScales();
+	}
+}
+
+muint_t CVarianceDecomposition::getNumberScales() throw(CGPMixException)
+{
+	muint_t out=0;
+	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
+	{
+		PVarianceTerm term = iter[0];
+		out+=term->getNumberScales();
+	}
+	return out;
+}
+
+void CVarianceDecomposition::agetTraitCovariance(muint_t i, MatrixXd *out) const throw(CGPMixException)
+{
+	if (i>=this->getNumberTerms())
+		throw CGPMixException("CVarianceDecomposition: value out of range");
+	this->terms[i]->agetTraitCovariance(out);
+}
+
+void CVarianceDecomposition::agetVariances(muint_t i, VectorXd* out) const throw(CGPMixException)
+{
+	if (i>=this->getNumberTerms())
+		throw CGPMixException("CVarianceDecomposition: value out of range");
+	if (this->terms[i]->getName()=="CSingleTraitTerm") {
+		this->terms[i]->agetVariances(out);
+		(*out)=(*out)(1,1)*(MatrixXd::Ones(this->P,1));
+	}
+	else this->terms[i]->agetVariances(out);
+}
+
+void CVarianceDecomposition::agetVariances(MatrixXd* out) throw(CGPMixException)
+{
+	(*out).resize(this->getNumberTerms(),this->P);
+	muint_t row=0;
+	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
+	{
+		PVarianceTerm term = iter[0];
+		VectorXd var_i;
+		term->agetVariances(&var_i);
+		(*out).block(row,0,1,this->P)=var_i.transpose();
+		row++;
+	}
+}
+
+void CVarianceDecomposition::agetVarComponents(MatrixXd* out) throw(CGPMixException)
+{
+	agetVariances(out);
+	for (muint_t p=0; p<this->P; p++)	(*out).block(0,p,this->getNumberTerms(),1)=(*out).block(0,p,this->getNumberTerms(),1)/(*out).block(0,p,this->getNumberTerms(),1).sum();
 }
 
 
 void CVarianceDecomposition::initGP() throw(CGPMixException)
-		{
-	//1. construct covariance function
+{
 	covar = PSumCF(new CSumCF());
+	// Init Covariances and sum them
 	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
 	{
-		//initialize
 		PVarianceTerm term = iter[0];
-		//1. check whether there is an initial variance
-		term->initCovariance();
-		//add covariance term
+		term->initTerm();
 		covar->addCovariance(iter[0]->getCovariance());
 	}
-
-
-	//2. initialization of varaince parameters (starting point of optimization)
-	//initVariances_simple();
-
-
-	//3. initialize hyperparameters
-	hp_covar0 = covar->getParams();
-	hp_covar_mask = covar->getParamMask();
-
-	//3. initialize GP and optimization
+	//Transform pheno and fixedEffs
+	MatrixXd y = MatrixXd::Zero(this->N*this->P,1);
+	for (muint_t p=0; p<this->P; p++)	y.block(p*N,0,N,1) = this->pheno.block(0,p,N,1);
+	MatrixXd fixed = MatrixXd::Zero(this->N*this->P,this->getNumberFixedEffs());
+	muint_t fixedEff_i=0;
+	for(MatrixXdVec::const_iterator iter = fixedEffs.begin(); iter!=fixedEffs.end();iter++,fixedEff_i++)
+		for (muint_t p=0; p<this->P; p++)	fixed.block(p*N,fixedEff_i,N,1) = iter[0].block(0,p,N,1);
+	//Define Likelihood, LinearMean and GP
 	PLikNormalNULL lik(new CLikNormalNULL());
-	PLinearMean mean(new CLinearMean(this->pheno,this->fixed));
+	PLinearMean mean(new CLinearMean(y,fixed));
 	gp = PGPbase(new CGPbase(covar,lik,mean));
-	gp->setY(pheno);
-
-	MatrixXd fixed_params = MatrixXd::Zero(fixed.cols(),1);
-
+	gp->setY(y);
+	//Initialize Params
 	CGPHyperParams params;
-	params["covar"] = hp_covar0;
-	params["dataTerm"] = fixed_params;
+	params["covar"] = covar->getParams();
+	params["dataTerm"] = MatrixXd::Zero(fixed.cols(),1);
 	gp->setParams(params);
 	opt = PGPopt(new CGPopt(gp));
-	CGPHyperParams mask;
-
-	mask["covar"] = hp_covar_mask;
-	//opt->setParamMask(mask);
-
-	if (false)
-	{
-		std::cout << params << "\n";
-		std::cout << mask << "\n";
-	}
-	this->setInitialized(true);
+	this->is_init=1;
 }
 
-
-CVarianceDecomposition::~CVarianceDecomposition() {
-}
-
-
-bool CVarianceDecomposition::train()  throw (CGPMixException)
+bool CVarianceDecomposition::trainGP(bool bayes) throw(CGPMixException)
 {
-	bool rv = false;
 
-	if (!isInitialized())
-		{
-			initGP();
+	bool conv = false;
+	// initGP if is not init
+	if (this->is_init==0)	this->initGP();
+
+	// store LML0, scales0
+	mfloat_t LML0 = this->getLML();
+	VectorXd scales0; this->agetScales(&scales0);
+
+	//train GP
+	double time_elapsed=clock();
+	conv = this->opt->opt();
+	time_elapsed=(clock()-time_elapsed)/ CLOCKS_PER_SEC;
+
+	//check convergence
+	conv *= (this->getLMLgrad()<(mfloat_t)1e-6);
+	MatrixXd variances;
+	this->agetVariances(&variances);
+	conv *= (variances.maxCoeff()<(mfloat_t)10.0);
+
+	MatrixXd SigmaTi;
+	MatrixXd Sigmai = MatrixXd::Zero((muint_t)this->getNumberScales(),(muint_t)this->getNumberScales());
+	MatrixXd Sigma;
+	VectorXd filter = this->gp->getParamMask()["covar"];
+	if (bayes==true) {
+		this->gp->aLMLhess_covar(&SigmaTi);
+		muint_t ir=0;
+		muint_t ic;
+		for (muint_t i=0; i<filter.rows(); i++) {
+			ic=0;
+			if (filter(i)==1) {
+				for (muint_t j=0; j<filter.rows(); j++) {
+					if (filter(j)==1) {
+						Sigmai(ir,ic)=SigmaTi(i,j);
+						ic++;
+					}
+				}
+				ir++;
+			}
 		}
-	rv = this->opt->opt();
+		Sigma = Sigmai.inverse();
+	}
 
-	/*
-	std::cout << this->covar->K() << "\n";
-
-	std::cout << this->gp->LML() << "\n";
-	std::cout << this->gp->LMLgrad() << "\n";
-
-	std::cout << this->gp->getParams() << "\n";
-
-	std::cout << this->covar->getParams() << "\n";
-	//std::cout << this->covar->K() << "\n";
-	*/
-
-	return rv;
+	//Store optimum
+	MatrixXd convM = MatrixXd::Zero(1,1); if (conv) convM(0,0)=1;
+	MatrixXd LML0M(1,1); LML0M(0,0)=LML0;
+	MatrixXd LMLM(1,1); LMLM(0,0)=this->getLML();
+	MatrixXd LMLgradM(1,1); LMLgradM(0,0)=this->getLMLgrad();
+	MatrixXd time_elapsedM(1,1); time_elapsedM(0,0)=time_elapsed;
+	MatrixXd posteriorM(1,1);
+	VectorXd scales; this->agetScales(&scales);
+	MatrixXd varComponents; this->agetVarComponents(&varComponents);
+	optimum["conv"]=convM;
+	optimum["LML0"]=LML0M;
+	optimum["scales0"]=scales0;
+	optimum["LML"]=LMLM;
+	optimum["LMLgrad"]=LMLgradM;
+	optimum["scales"]=scales;
+	optimum["variances"]=variances;
+	optimum["varComponents"]=varComponents;
+	optimum["time_elapsed"]=time_elapsedM;
+	if (bayes==true) {
+		optimum["covar_scales"]=Sigma;
+		optimum["std_scales"]=Sigma.diagonal().unaryExpr(std::ptr_fun(sqrt));
+		posteriorM(1,1) = this->getLML()+0.5*this->getNumberScales()*std::log(2*PI)+0.5*std::log(Sigma.determinant());
+		optimum["posterior"]=posteriorM;
+	}
+	return conv;
 }
 
-PVarianceTerm CVarianceDecomposition::getTerm(muint_t i) const {
-	return this->terms[i];
-}
-
-PVarianceTerm CVarianceDecomposition::getNoise() const
+void CVarianceDecomposition::getFixedEffects(VectorXd* out) throw(CGPMixException)
 {
-	PVarianceTerm rv;
-	//iterate over covariances and return the noise covariance
-	for(PVarianceTermVec::const_iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
-	{
-		/*
-		if (iter[0]->isIsNoise())
-			rv = iter[0];
-			*/
-	}
-	return rv;
+	(*out)=this->gp->getParams()["dataTerm"];
 }
 
-
-void CVarianceDecomposition::addTerm(PVarianceTerm term) {
-	terms.push_back(term);
-	this->setInitialized(false);
-}
-
-void CVarianceDecomposition::initVariances_simple() {
-	/*
-	 * initialize varaince components based on marginal varinace, ignoring multi trait
-	 */
-
-	//varaince for each term ignorign all others:
-	VectorXd variancesK = VectorXd::Zero(this->terms.size());
-	VectorXd variancesN = VectorXd::Zero(this->terms.size());
-	muint_t index = 0;
-
-	//1. loop over all variance components and calculate independent heritability
-	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
-	{
-		PVarianceTerm term = iter[0];
-		//is term a noise or signal covariance?
-		if (term->isIsNoise())
-			continue;
-		//for signal covariances: estimate varaince components ignoring all others
-		VectorXd her;
-		aestimateHeritability(&her,this->pheno,this->fixed,term->getK());
-		//estimate variance for covariance (K) and noise (N)
-		variancesN[index] = her[1];
-		variancesK[index] = her[0];
-		index++;
-	}//end for
-	std::cout << variancesK << "\n";
-	std::cout << variancesN << "\n";
-	//2. sum over marginal variance estimates
-	mfloat_t total_variance = variancesK.sum() + variancesN.sum();
-	std::cout << "estimated total heritability for initialization: " << total_variance << "\n";
-
-	//TODO: figure out noise covariance:
-
-
-	//3. loop over varainces again and assign
-	index =0;
-	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
-	{
-		PVarianceTerm term = iter[0];
-		//override initialization for terms without initival varaince settings:
-		if (!isnull(term->getHpInit()))
-		{
-			mfloat_t vinit = variancesK[index]/total_variance;
-			term->setVarianceInit(vinit);
-		}
-		index++;
-	}
-}
-
-void CVarianceDecomposition::aestimateHeritability(VectorXd* out, const MatrixXd& Y, const MatrixXd& fixed, const MatrixXd& K)
+mfloat_t CVarianceDecomposition::getLML() throw(CGPMixException)
 {
-	/*
-	 * estimates the genetic and the noise variance and creates a matrirx object to return them
-	 */
-
-	MatrixXd covs;
-	if(isnull(fixed))
-		covs = MatrixXd::Ones(Y.rows(),1);
-	else
-		covs = fixed;
-	//use mixed model code to estimate heritabiltiy
-	CLMM lmm;
-	lmm.setK(K);
-	lmm.setSNPs(MatrixXd::Zero(K.rows(),1));
-	lmm.setPheno(Y);
-	lmm.setCovs(covs);
-	lmm.setVarcompApprox0(-20, 20, 1000);
-    lmm.process();
-    mfloat_t delta0 = exp(lmm.getLdelta0()(0,0));
-    mfloat_t Vtotal = exp(lmm.getLSigma()(0,0));
-    VectorXd rv = VectorXd(2);
-    rv(0) = Vtotal;
-    rv(1) = Vtotal*delta0;
-    (*out) =rv;
+	if (!this->is_init)
+		throw CGPMixException("CVarianceDecomposition: the term is not initialised!");
+	return -1.*this->gp->LML();
 }
 
-
-/*
-void CVarianceDecomposition::addTerm(const MatrixXd& K, muint_t type,
-		 bool isNoise, bool fitCrossCovariance,mfloat_t Vinit)
+mfloat_t CVarianceDecomposition::getLMLgrad() throw(CGPMixException)
 {
-	PVarianceTerm term;
-
-	if (type==CVarianceDecomposition::singletrait)
-	{
-		term = PSingleTraitVarianceTerm(new CSingleTraitVarianceTerm(K,Vinit));
-	}
-	else if(type==CVarianceDecomposition::categorial)
-	{
-		term = PCategorialTraitVarianceTerm(new CCategorialTraitVarianceTerm(K,this->trait,Vinit));
-	}
-	else if (type==CVarianceDecomposition::continuous)
-	{
-		//TODO
-	}
-	//set noise flag
-	term->setIsNoise(isNoise);
-	//add term
-	this->addTerm(term);
+	if (!this->is_init)
+		throw CGPMixException("CVarianceDecomposition: the term is not initialised!");
+	mfloat_t out = 0;
+	// Squared Norm of LMLgrad["covar"]
+	VectorXd grad = this->gp->LMLgrad()["covar"];
+	VectorXd filter = this->gp->getParamMask()["covar"];
+	for (muint_t i=0; i<grad.rows(); i++)
+		if (filter(i)==1)	out +=std::pow(grad(i),2);
+	// Squared Norm of LMLgrad["dataTerm"]
+	grad = this->gp->LMLgrad()["dataTerm"];
+	for (muint_t i=0; i<grad.rows(); i++)	out +=std::pow(grad(i),2);
+	// Square Root
+	out = std::sqrt(out);
+	return out;
 }
-*/
-    
 
-void CVarianceDecomposition::addCVTerm(PTraitCF trait_covariance, const MatrixXd& K, const MatrixXd& trait) {
-    PVarianceTerm term = PCategorialTraitVarianceTerm(new CCategorialTraitVarianceTerm(trait_covariance,K,trait));
-    this->addTerm(term);
-}
+
 
 } //end:: namespace

@@ -15,9 +15,9 @@
 namespace limix {
 
     
-/* CTraitNew */
+/* CTrait */
     
-CTraitNew::CTraitNew(muint_t numberGroups)
+CTrait::CTrait(muint_t numberGroups)
 {
     //1 input dimension which selects the group:
     this->numberDimensions = 1;
@@ -26,14 +26,14 @@ CTraitNew::CTraitNew(muint_t numberGroups)
     this->X=MatrixXd::Zero(numberGroups,1);
 }
     
-CTraitNew::~CTraitNew()
+CTrait::~CTrait()
 {
 }
     
-muint_t CTraitNew::getNumberGroups() const
+muint_t CTrait::getNumberGroups() const
 {return numberGroups;}
 
-void CTraitNew::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CTrait::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
 {
 	MatrixXd K;
 	aKcross(&K,Xstar);
@@ -43,22 +43,22 @@ void CTraitNew::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw
 /* FREE FORM */
     
     
-CTFreeFormNew::CTFreeFormNew(muint_t numberGroups) : CTraitNew(numberGroups)
+CTFreeForm::CTFreeForm(muint_t numberGroups) : CTrait(numberGroups)
 {
     //number of parameters:
     this->numberParams = calcNumberParams(numberGroups);
 }
     
-muint_t CTFreeFormNew::calcNumberParams(muint_t numberGroups)
+muint_t CTFreeForm::calcNumberParams(muint_t numberGroups)
 {
     return (0.5*numberGroups*(numberGroups+1));
 }
     
-CTFreeFormNew::~CTFreeFormNew()
+CTFreeForm::~CTFreeForm()
 {
 }
 
-void CTFreeFormNew::agetScales(CovarParams* out) {
+void CTFreeForm::agetScales(CovarParams* out) {
     (*out) = this->params;
     double sign=1;
     if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
@@ -66,11 +66,11 @@ void CTFreeFormNew::agetScales(CovarParams* out) {
     (*out)(this->numberParams-1)=std::abs((*out)(this->numberParams-1));
 }
     
-void CTFreeFormNew::aK0Covar2Params(VectorXd* out,const MatrixXd& K0)
+void CTFreeForm::aK0Covar2Params(VectorXd* out,const MatrixXd& K0)
 {
 }
 
-void CTFreeFormNew::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CTFreeForm::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
 {
     //0. check that the matrix has the correct size
     if(((muint_t)K0.rows()!=numberGroups) || ((muint_t)K0.cols()!=numberGroups))
@@ -92,7 +92,7 @@ void CTFreeFormNew::setParamsCovariance(const MatrixXd& K0) throw(CGPMixExceptio
         }
 }
 
-void CTFreeFormNew::aKcross(MatrixXd* out, const CovarInput& Xstar ) const  throw(CGPMixException)
+void CTFreeForm::aKcross(MatrixXd* out, const CovarInput& Xstar ) const  throw(CGPMixException)
 {
     //create template matrix K
     MatrixXd L;
@@ -100,7 +100,7 @@ void CTFreeFormNew::aKcross(MatrixXd* out, const CovarInput& Xstar ) const  thro
     (*out).noalias() = L*L.transpose();
 }
     
-void CTFreeFormNew::aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException)
+void CTFreeForm::aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException)
 {
     MatrixXd L;
     MatrixXd Lgrad_parami;
@@ -113,7 +113,7 @@ void CTFreeFormNew::aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPM
 }
 
 
-void CTFreeFormNew::aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException)
+void CTFreeForm::aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException)
 {
 
     MatrixXd Lgrad_parami;
@@ -126,7 +126,7 @@ void CTFreeFormNew::aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) 
     (*out).noalias() = Lgrad_parami*Lgrad_paramj.transpose() + Lgrad_paramj*Lgrad_parami.transpose();
 }
 
-void CTFreeFormNew::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
+void CTFreeForm::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
 {
     //all parameters but the diagonal elements are unbounded:
     *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
@@ -143,12 +143,12 @@ void CTFreeFormNew::agetParamBounds0(CovarParams* lower,CovarParams* upper) cons
     //}
 }
     
-void CTFreeFormNew::agetParamMask0(CovarParams* out) const {
+void CTFreeForm::agetParamMask0(CovarParams* out) const {
     (*out) = VectorXd::Ones(getNumberParams());
 }
     
     
-void CTFreeFormNew::setParamsVarCorr(const CovarParams& paramsVC) throw(CGPMixException)
+void CTFreeForm::setParamsVarCorr(const CovarParams& paramsVC) throw(CGPMixException)
 {
     
     // No correlation must be <1 && >-1 or otherwise the initialization would fail
@@ -177,7 +177,7 @@ void CTFreeFormNew::setParamsVarCorr(const CovarParams& paramsVC) throw(CGPMixEx
     this->setParamsCovariance(K0);
 }
     
-void CTFreeFormNew::agetL0(MatrixXd* out) const
+void CTFreeForm::agetL0(MatrixXd* out) const
 {
     /*contruct cholesky factor from hyperparameters*/
     (*out).setConstant(numberGroups,numberGroups,0);
@@ -191,7 +191,7 @@ void CTFreeFormNew::agetL0(MatrixXd* out) const
         }
 }
     
-void CTFreeFormNew::agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CTFreeForm::agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
 {
     /*construct cholesky factors from hyperparameters*/
     (*out).setConstant(numberGroups,numberGroups,0);
@@ -209,7 +209,7 @@ void CTFreeFormNew::agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMix
 }
 
     
-void CTFreeFormNew::agetIparamDiag(VectorXi* out) const
+void CTFreeForm::agetIparamDiag(VectorXi* out) const
 {
     (*out) = VectorXi::Zero(getNumberParams(),1);
     //for rows
@@ -225,26 +225,26 @@ void CTFreeFormNew::agetIparamDiag(VectorXi* out) const
 }
     
     
-/* CTDenseNew class */
+/* CTDense class */
 
-CTDenseNew::CTDenseNew(muint_t numberGroups) : CTraitNew(numberGroups)
+CTDense::CTDense(muint_t numberGroups) : CTrait(numberGroups)
 {
     //number of parameters:
     this->numberParams = numberGroups;
 }
     
-CTDenseNew::~CTDenseNew()
+CTDense::~CTDense()
 {
 }
 
-void CTDenseNew::agetScales(CovarParams* out) {
+void CTDense::agetScales(CovarParams* out) {
     (*out) = this->params;
     double sign=1;
     if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
     (*out).segment(0,this->numberParams)=sign*(*out).segment(0,this->numberParams);
 }
 
-void CTDenseNew::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CTDense::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
 {
     this->params.resize(this->numberParams);
     //loop over groups
@@ -254,14 +254,14 @@ void CTDenseNew::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
     }
 }
 
-void CTDenseNew::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CTDense::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
 {
     //create template matrix K
     MatrixXd L = this->params;
     (*out).noalias() = L*L.transpose();
 }
     
-void CTDenseNew::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CTDense::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
 {
     MatrixXd L = this->params;
     MatrixXd Lgrad_parami = MatrixXd::Zero(this->numberParams,1);
@@ -269,7 +269,7 @@ void CTDenseNew::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixExcepti
     (*out).noalias() = Lgrad_parami*L.transpose()+L*Lgrad_parami.transpose();
 }
     
-void CTDenseNew::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+void CTDense::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
 {
     MatrixXd Lgrad_parami = MatrixXd::Zero(this->numberParams,1);
     MatrixXd Lgrad_paramj = MatrixXd::Zero(this->numberParams,1);
@@ -278,21 +278,21 @@ void CTDenseNew::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGP
     (*out).noalias() = Lgrad_parami*Lgrad_paramj.transpose()+Lgrad_paramj*Lgrad_parami.transpose();
 }
 
-void CTDenseNew::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
+void CTDense::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
 {
     *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
     *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
 }
     
-void CTDenseNew::agetParamMask0(CovarParams* out) const
+void CTDense::agetParamMask0(CovarParams* out) const
 {
     (*out) = VectorXd::Ones(getNumberParams());
 }
 
     
-/* CTFixedNew class */
+/* CTFixed class */
 
-CTFixedNew::CTFixedNew(muint_t numberGroups, const MatrixXd & K0) : CTraitNew(numberGroups)
+CTFixed::CTFixed(muint_t numberGroups, const MatrixXd & K0) : CTrait(numberGroups)
 {
     this->numberParams = 1;
     if(((muint_t)K0.rows()!=numberGroups) || ((muint_t)K0.cols()!=numberGroups))
@@ -302,66 +302,66 @@ CTFixedNew::CTFixedNew(muint_t numberGroups, const MatrixXd & K0) : CTraitNew(nu
     this->K0 = K0;
 }
     
-CTFixedNew::~CTFixedNew()
+CTFixed::~CTFixed()
 {
 }
 
-void CTFixedNew::agetScales(CovarParams* out) {
+void CTFixed::agetScales(CovarParams* out) {
     (*out) = this->params;
     (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
 }
     
-void CTFixedNew::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CTFixed::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
 {
     this->params.resize(this->numberParams);
     params(0) = std::sqrt(K0.maxCoeff());
 }
 
-void CTFixedNew::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CTFixed::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
 {
     (*out) = std::pow(params(0),2)*this->K0;
 }
     
-void CTFixedNew::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CTFixed::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
 {
     (*out) = 2*params(0)*this->K0;
 }
 
-void CTFixedNew::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+void CTFixed::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
 {
     (*out) = 2*this->K0;
 }
 
-void CTFixedNew::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
+void CTFixed::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
 {
     *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
     *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
 }
 
-void CTFixedNew::agetParamMask0(CovarParams* out) const
+void CTFixed::agetParamMask0(CovarParams* out) const
 {
     (*out) = VectorXd::Ones(getNumberParams());
 }
 
     
-/* CTDiagonalNew class */
+/* CTDiagonal class */
 
 
-CTDiagonalNew::CTDiagonalNew(muint_t numberGroups) : CTraitNew(numberGroups)
+CTDiagonal::CTDiagonal(muint_t numberGroups) : CTrait(numberGroups)
 {
     this->numberParams = numberGroups;
 }
     
-CTDiagonalNew::~CTDiagonalNew()
+CTDiagonal::~CTDiagonal()
 {
 }
 
-void CTDiagonalNew::agetScales(CovarParams* out) {
+void CTDiagonal::agetScales(CovarParams* out) {
     (*out) = this->params;
     (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
 }
     
-void CTDiagonalNew::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CTDiagonal::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
 {
     this->params.resize(this->numberParams);
     //loop over groups
@@ -370,38 +370,38 @@ void CTDiagonalNew::setParamsCovariance(const MatrixXd& K0) throw(CGPMixExceptio
     }
 }
 
-void CTDiagonalNew::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CTDiagonal::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
 {
   (*out) = params.unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).asDiagonal();
 }
     
-void CTDiagonalNew::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CTDiagonal::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
 {
     (*out)=MatrixXd::Zero(numberGroups,numberGroups);
     (*out)(i,i)=2*params(i);
 }
 
-void CTDiagonalNew::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+void CTDiagonal::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
 {
     (*out)=MatrixXd::Zero(numberGroups,numberGroups);
     if (i==j)   (*out)(i,i)=2;
 }
 
-void CTDiagonalNew::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
+void CTDiagonal::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
 {
     *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
     *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
 }
     
-void CTDiagonalNew::agetParamMask0(CovarParams* out) const
+void CTDiagonal::agetParamMask0(CovarParams* out) const
 {
     (*out) = VectorXd::Ones(getNumberParams());
 }
 
     
-/* CTLowRankNew class */
+/* CTLowRank class */
 
-CTLowRankNew::CTLowRankNew(muint_t numberGroups) : CTraitNew(numberGroups)
+CTLowRank::CTLowRank(muint_t numberGroups) : CTrait(numberGroups)
 {
     if (numberGroups==2)
         this->numberParams = 3;
@@ -409,17 +409,17 @@ CTLowRankNew::CTLowRankNew(muint_t numberGroups) : CTraitNew(numberGroups)
         this->numberParams = 2*numberGroups;
 }
 
-CTLowRankNew::~CTLowRankNew()
+CTLowRank::~CTLowRank()
 {
 }
 
-void CTLowRankNew::agetK0dense(MatrixXd* out) const throw(CGPMixException)
+void CTLowRank::agetK0dense(MatrixXd* out) const throw(CGPMixException)
 {
     MatrixXd L = this->params.segment(0,this->numberGroups);
     (*out).noalias() = L*L.transpose();
 }
     
-void CTLowRankNew::agetK0diagonal(MatrixXd* out) const throw(CGPMixException)
+void CTLowRank::agetK0diagonal(MatrixXd* out) const throw(CGPMixException)
 {
     if (numberGroups==2)
         (*out) = std::pow(params(2),2)*MatrixXd::Identity(2,2);
@@ -427,7 +427,7 @@ void CTLowRankNew::agetK0diagonal(MatrixXd* out) const throw(CGPMixException)
       (*out) = params.segment(this->numberGroups,this->numberGroups).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).asDiagonal();
 }
    
-void CTLowRankNew::agetScales(CovarParams* out) {
+void CTLowRank::agetScales(CovarParams* out) {
     (*out) = this->params;
     double sign=1;
     if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
@@ -442,12 +442,12 @@ void CTLowRankNew::agetScales(CovarParams* out) {
     }
 }
     
-void CTLowRankNew::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CTLowRank::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
 {
     //TO DO
 }
 
-void CTLowRankNew::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CTLowRank::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
 {
     MatrixXd out1;
 
@@ -457,7 +457,7 @@ void CTLowRankNew::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(
     (*out)+=out1;
 }
 
-void CTLowRankNew::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CTLowRank::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
 {
     if (i>=this->numberParams)
         throw CGPMixException("Index exceeds the number of parameters");
@@ -479,7 +479,7 @@ void CTLowRankNew::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixExcep
     }
 }
 
-void CTLowRankNew::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+void CTLowRank::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
 {
     if (j>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)
         throw CGPMixException("Index exceeds the number of parameters");
@@ -505,14 +505,14 @@ void CTLowRankNew::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(C
     }
 }
 
-void CTLowRankNew::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
+void CTLowRank::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
 {
 
     *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
     *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());  
 }
     
-void CTLowRankNew::agetParamMask0(CovarParams* out) const
+void CTLowRank::agetParamMask0(CovarParams* out) const
 {
     (*out) = VectorXd::Ones(this->getNumberParams());
 }

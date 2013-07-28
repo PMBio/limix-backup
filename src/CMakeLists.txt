@@ -18,8 +18,7 @@ SET(SOURCES limix/covar/covariance.cpp
 	    limix/covar/se.cpp
 	    limix/covar/combinators.cpp
 	    limix/covar/linear.cpp
-	    limix/covar/freeform.cpp
-        limix/covar/trait.cpp
+	    limix/covar/trait.cpp
 	    limix/covar/dist.cpp
 	    limix/utils/matrix_helper.cpp
 	    limix/utils/beta.cpp
@@ -44,7 +43,6 @@ SET(SOURCES limix/covar/covariance.cpp
 	    limix/modules/CVqtl.cpp
 	    limix/modules/CMultiTraitVQTL.cpp
 	    limix/modules/CVarianceDecomposition.cpp
-	    limix/modules/NewCVarianceDecomposition.cpp
 	    limix/io/genotype.cpp
 	    limix/io/dataframe.cpp
 	    limix/io/split.cpp
