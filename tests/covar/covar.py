@@ -1,29 +1,19 @@
 """LMM testing code"""
+import unittest
 import scipy as SP
 import pdb
 import sys
+sys.path.append('./../release.darwin/interfaces/python/')
 import limix
 
-from helper.helper import message
 
-
-class Acovar_test:
-    """test class for SEcovar"""
-    
-    def __init__(self):
-        self.generate()
-
-    def generate(self):
-        SP.random.seed(1)
-        self.covar()
-        self.n_params=self.C.getNumberParams()
-        params=SP.exp(SP.randn(self.n_params))
-        self.C.setParams(params)
+class Acovar_test(object):
+    """abstract test class for covars"""
 
     def test_grad(self):
         """test analytical gradient"""
         RV = self.C.check_covariance_Kgrad_theta(self.C)
-        print '   ...gradient %s' % message(RV)
+        self.assertTrue(RV)
 
     def test_hess(self):
         """test analytical hessian"""
@@ -32,10 +22,6 @@ class Acovar_test:
             for j in range(self.n_params):
                 D2[i,j]=((self.C.Khess_param(i,j)-self.C.Khess_param_num(self.C,i,j))**2).max()
         RV=D2.max()<1E-6
-        print '   ...hessian %s' % message(RV)
-        
-    def test_all(self):
-        print '...testing %s' % self.name
-        self.test_grad()
-        self.test_hess()
+        self.assertTrue(RV)
+
 

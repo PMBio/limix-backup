@@ -1,13 +1,16 @@
 """LMM testing code"""
+import unittest
 import scipy as SP
 import pdb
 import sys
+sys.path.append('./../release.darwin/interfaces/python/')
 import limix
 from covar import Acovar_test
 
-class sum_test(Acovar_test):
-    """test class for SEcovar"""
-    def covar(self):
+class CSumCF_test(unittest.TestCase,Acovar_test):
+    """test class for CSumCF"""
+    def setUp(self):
+        SP.random.seed(1)
         self.n=10
         n_dim1=8
         n_dim2=12
@@ -18,10 +21,14 @@ class sum_test(Acovar_test):
         X=SP.rand(self.n,self.n_dim)
         self.C.setX(X)
         self.name = 'CSumCF'
+        self.n_params=self.C.getNumberParams()
+        params=SP.exp(SP.randn(self.n_params))
+        self.C.setParams(params)
 
-class prod_test(Acovar_test):
-    """test class for SEcovar"""
-    def covar(self):
+class CProductCF_test(unittest.TestCase,Acovar_test):
+    """test class for CProductCF"""
+    def setUp(self):
+        SP.random.seed(1)
         self.n=10
         n_dim1=8
         n_dim2=12
@@ -32,10 +39,14 @@ class prod_test(Acovar_test):
         X=SP.rand(self.n,self.n_dim)
         self.C.setX(X)
         self.name = 'CProductCF'
+        self.n_params=self.C.getNumberParams()
+        params=SP.exp(SP.randn(self.n_params))
+        self.C.setParams(params)
 
-class kron_test(Acovar_test):
-    """test class for SEcovar"""
-    def covar(self):
+class CKroneckerCF_test(unittest.TestCase,Acovar_test):
+    """test class for CKroneckerCF"""
+    def setUp(self):
+        SP.random.seed(1)
         n1=3
         n2=5
         n_dim1=8
@@ -50,11 +61,9 @@ class kron_test(Acovar_test):
         self.n = self.C.Kdim()
         self.n_dim=self.C.getNumberDimensions()
         self.name = 'CKroneckerCF'
+        self.n_params=self.C.getNumberParams()
+        params=SP.exp(SP.randn(self.n_params))
+        self.C.setParams(params)
 
 if __name__ == '__main__':
-    testsum = sum_test()
-    testprod= prod_test()
-    testkron= kron_test()
-    testsum.test_all()
-    testprod.test_all()
-    testkron.test_all()
+    unittest.main()

@@ -1,53 +1,48 @@
 """LMM testing code"""
+import unittest
 import scipy as SP
 import pdb
 import sys
+sys.path.append('./../release.darwin/interfaces/python/')
 import limix
 from covar import Acovar_test
 
-class FreeForm_test(Acovar_test):
-    """test class for SEcovar"""
-    def covar(self):
+class CTFreeForm_test(unittest.TestCase,Acovar_test):
+    """test class for CTFreeForm"""
+    def setUp(self):
+        SP.random.seed(1)
         self.n=4
         self.C = limix.CTFreeForm(self.n)
         self.name = 'CTFreeForm'
+        self.n_params=self.C.getNumberParams()
+        params=SP.exp(SP.randn(self.n_params))
+        self.C.setParams(params)
 
-class Dense_test(Acovar_test):
-    """test class for SEcovar"""
+"""
+class Dense_test(unittest.TestCase,Acovar_test):
     def covar(self):
         self.n=4
         self.C = limix.CTDense(self.n)
         self.name = 'CTDense'
 
-class Diagonal_test(Acovar_test):
-    """test class for SEcovar"""
+class Diagonal_test(unittest.TestCase,Acovar_test):
     def covar(self):
         self.n=4
         self.C = limix.CTDiagonal(self.n)
         self.name = 'CTDiagonal'
 
-class Fixed_test(Acovar_test):
-    """test class for SEcovar"""
+class Fixed_test(unittest.TestCase,Acovar_test):
     def covar(self):
         self.n=4
         self.C = limix.CTFixed(self.n,SP.ones((self.n,self.n)))
         self.name = 'CTFixed'
 
-class LowRank_test(Acovar_test):
-    """test class for SEcovar"""
+class LowRank_test(unittest.TestCase,Acovar_test):
     def covar(self):
         self.n=4
         self.C = limix.CTLowRank(self.n)
         self.name = 'CTLowRank'
+"""
 
 if __name__ == '__main__':
-    testFreeForm = FreeForm_test()
-    #testDense = Dense_test()
-    #testDiagonal = Diagonal_test()
-    #testFixed = Fixed_test()
-    #testLowRank = LowRank_test()
-    testFreeForm.test_all()
-    #testDense.test_all()
-    #testDiagonal.test_all()
-    #testFixed.test_all()
-    #testLowRank.test_all()
+    unittest.main()

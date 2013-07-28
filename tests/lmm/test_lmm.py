@@ -1,18 +1,15 @@
 """LMM testing code"""
+import unittest
 import scipy as SP
 import pdb
 import sys
+sys.path.append('./../release.darwin/interfaces/python/')
 import limix
 
-from helper.helper import message
-
-class CLMM_test:
+class CLMM_test(unittest.TestCase):
     """test class for CLMM"""
     
-    def __init__(self):
-        self.generate()
-
-    def generate(self):
+    def setUp(self):
         SP.random.seed(1)
         self.N = 100
         self.S = 10
@@ -36,7 +33,7 @@ class CLMM_test:
         pv = lmm.getPv().ravel()
         D2= ((SP.log10(pv)-SP.log10(self.pv_true))**2)
         RV = SP.sqrt(D2.mean())<1E-6
-        print '   ...pvalue %s' % message(RV)
+        self.assertTrue(RV)
 
 
     def test_permutation(self):
@@ -62,14 +59,7 @@ class CLMM_test:
         pv_perm2 = lmm.getPv().ravel()
         D2 = (SP.log10(pv_perm1)-SP.log10(pv_perm2))**2
         RV = SP.sqrt(D2.mean())<1E-6
-        print '   ...permutation %s' % message(RV)
-    
-    def test_all(self):
-        print '... testing CLMM'
-        #test basic LMM
-        self.test_lmm1()
-        #test permutation
-        self.test_permutation()
+        self.assertTrue(RV)
 
 
 class CInteractLMM_test:
@@ -79,12 +69,8 @@ class CInteractLMM_test:
 
     def test_all(self):
         RV = False
-        print 'CInteractLMM IMPLEMENTED %s' % message(RV)
+        #print 'CInteractLMM IMPLEMENTED %s' % message(RV)
 
 
 if __name__ == '__main__':
-    RV = True
-    testlmm = CLMM_test();
-    testlmm.test_all()
-    testilmm = CInteractLMM_test()
-    testilmm.test_all()
+    unittest.main()
