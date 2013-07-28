@@ -5,8 +5,7 @@ import pdb
 import sys
 import limix
 
-sys.path.append('./../helper/')
-from helper import message
+from helper.helper import message
 
 class gpbase_test:
     """test class for CVarianceDecomposition"""

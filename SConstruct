@@ -1,9 +1,11 @@
 #use systems path for building commands, etc.
 import os
 import sys
+import subprocess
 
 #import autoconfig like handling
 from ACGenerateFile import *
+
 
 ### 1. Command line handling
 #command line handling
@@ -23,6 +25,10 @@ help='Disable python interface', default=True)
 AddOption('--with-documentation', dest='with_documentation', action='store_true',
 help='Build doxygen documenation', default=False)
 
+#run unit tests?
+AddOption('--with-tests', dest='with_tests', action='store_true',
+help='Run unit tests after build', default=False)
+
 #build development tools for c++ (standalone snipsets)
 AddOption('--with-developcpp', dest='with_developcpp', action='store_true',
 help='Build development only commandline tools?', default=False)
@@ -34,7 +40,9 @@ build_options= {}
 build_options['with_vcf'] = GetOption('with_vcf')
 build_options['with_python'] = GetOption('with_python')
 build_options['with_developcpp'] = GetOption('with_developcpp')
+build_options['with_tests'] = GetOption('with_tests')
 build_options['with_documentation'] = GetOption('with_documentation')
+
 
 
 ### 2. build mode
@@ -129,3 +137,8 @@ if build_options['with_documentation']:
    AlwaysBuild([doxy])
    pass
 
+#run unit tests?
+if build_options['with_tests']:		
+   args = ['/nfs/research/stegle/software/bin/python', 'run_all.py',os.path.join('./..',build_prefix,'interfaces','python')]
+   subprocess.call(args,cwd='tests')
+   pass 

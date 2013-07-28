@@ -21,6 +21,7 @@ if __name__ == '__main__':
 
     # get tests to run:
     FL=glob.glob('./*/test_*.py')
+    FL.extend(glob.glob('./tests/*/test_*.py'))
 
     #run them
 
