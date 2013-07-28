@@ -2,8 +2,13 @@
 
 import unittest
 import glob
+import sys
 
 if __name__ == '__main__':
+    if len(sys.argv)>1:
+        #1. add LIMIX path to environment
+        limix_path = sys.argv[1]
+        sys.path.append(limix_path)
 
     # list of folders containing tests
     folders = set(glob.glob('*'))-set(glob.glob('*.*'))

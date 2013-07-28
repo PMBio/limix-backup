@@ -3,8 +3,6 @@ import unittest
 import scipy as SP
 import scipy.stats
 import pdb
-import sys
-sys.path.append('./../release.darwin/interfaces/python/')
 import limix
 
 class CVarianceDecomposition_test(unittest.TestCase):
