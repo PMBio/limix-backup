@@ -51,9 +51,9 @@ class CVarianceDecomposition_test:
     def test_fit(self):
         self.vd.trainGP()
         params = self.vd.getOptimum()['scales'][:,0]
-        params_true = SP.array([1.10717353,-0.36956933,2.61841604e-10,0.10351569,-0.94327865,1.13850094e-11])
-        if (params-params_true).max()<1e-6:
-            print '   ...fit %s' % message(RV)
+        params_true = SP.array([9.44207121e-01,-9.37361082e-01,5.35657525e-01,1.42134130e-08,-1.65923192e-08,3.09197580e-09])
+        RV = (params-params_true).max()<1e-6
+        print '   ...fit %s' % message(RV)
         
     def test_all(self):
         print '... testing CVarianceDecomposition'
