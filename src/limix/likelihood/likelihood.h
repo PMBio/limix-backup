@@ -10,8 +10,6 @@
 
 #include "limix/covar/covariance.h"
 
-
-
 namespace limix {
 
 

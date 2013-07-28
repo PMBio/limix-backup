@@ -106,19 +106,19 @@ void CLikNormalIso::setX(const CovarInput& X) throw (CGPMixException)
 void CLikNormalIso::aK(MatrixXd* out) const throw (CGPMixException)
 {
 	(*out) = MatrixXd::Zero(numRows,numRows);
-	(*out).diagonal().setConstant((mfloat_t)this->getParams()(0));//WARNING: mfloat_t conversion
+	(*out).diagonal().setConstant(std::pow((mfloat_t)this->getParams()(0),2));//WARNING: mfloat_t conversion
 }
 
 void CLikNormalIso::aKdiag(VectorXd* out) const throw (CGPMixException)
 {
 	(*out).resize(numRows);
-	(*out).setConstant(this->getParams()(0));
+	(*out).setConstant(std::pow(this->getParams()(0),2));
 }
 
 void CLikNormalIso::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
 {
     (*out).resize(Xstar.rows());
-    (*out).setConstant(this->getParams()(0));
+    (*out).setConstant(std::pow(this->getParams()(0),2));
 }
 
 
@@ -126,7 +126,7 @@ void CLikNormalIso::aKgrad_param(MatrixXd* out, const muint_t row) const throw (
 {
 	(*out).setConstant(numRows,numRows,0.0);
     //(*out) = MatrixXd::Identity(numRows,numRows);
-	(*out).diagonal().setConstant(1.0);
+	(*out).diagonal().setConstant(2*this->getParams()(0));
 }
     
 void CLikNormalIso::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException)
@@ -134,7 +134,8 @@ void CLikNormalIso::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j
     if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
         throw CGPMixException("Parameter index out of range.");
     }
-    (*out)=MatrixXd::Zero(numRows,numRows);
+    (*out).setConstant(numRows,numRows,0.0);
+    (*out).diagonal().setConstant(2.);
 }
 
 /*CLikNormalSVD*/
