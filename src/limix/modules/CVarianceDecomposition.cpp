@@ -33,7 +33,7 @@ void AVarianceTerm::setK(const MatrixXd& K) throw(CGPMixException)
 	if(K.rows()!=K.cols())
 		throw CGPMixException("AVarianceTerm: K needs to be a squared matrix!");
 	this->K = K/K.diagonal().mean();
-	Kcf = PTFixed(new CTFixed(K.rows(),this->K));
+	Kcf = PFixedCF(new CFixedCF(this->K));
 	this->K_mode = 0;
 }
 
@@ -78,7 +78,7 @@ void CSingleTraitTerm::agetScales(VectorXd* out) const throw(CGPMixException)
 {
 	if (K_mode==-1)
 		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
-	static_pointer_cast<CTrait>(this->Kcf)->agetScales(out);
+	static_pointer_cast<CTraitCF>(this->Kcf)->agetScales(out);
 }
 
 muint_t CSingleTraitTerm::getNumberScales() const throw(CGPMixException)
@@ -144,17 +144,17 @@ CMultiTraitTerm::~CMultiTraitTerm()
 
 void CMultiTraitTerm::setTraitCovarianceType(std::string TCtype, muint_t p) throw(CGPMixException)
 {
-	if(TCtype=="FreeForm")			traitCovariance = PTFreeForm(new CTFreeForm(this->P));
-	else if (TCtype=="Block")		traitCovariance = PTFixed(new CTFixed(this->P,MatrixXd::Ones(P,P)));
-	else if (TCtype=="Identity")	traitCovariance = PTFixed(new CTFixed(this->P,MatrixXd::Identity(P,P)));
-	else if (TCtype=="Dense")		traitCovariance = PTDense(new CTDense(this->P));
-	else if (TCtype=="Diagonal")	traitCovariance = PTDiagonal(new CTDiagonal(this->P));
-	else if (TCtype=="Full")		traitCovariance = PTLowRank(new CTLowRank(this->P));
+	if(TCtype=="FreeForm")			traitCovariance = PFreeFormCF(new CFreeFormCF(this->P));
+	else if (TCtype=="Block")		traitCovariance = PFixedCF(new CFixedCF(MatrixXd::Ones(P,P)));
+	else if (TCtype=="Identity")	traitCovariance = PFixedCF(new CFixedCF(MatrixXd::Identity(P,P)));
+	else if (TCtype=="Dense")		traitCovariance = PRankOneCF(new CRankOneCF(this->P));
+	else if (TCtype=="Diagonal")	traitCovariance = PDiagonalCF(new CDiagonalCF(this->P));
+	else if (TCtype=="Full")		traitCovariance = PLowRankCF(new CLowRankCF(this->P));
 	else if (TCtype=="Specific") {
 		if (p>=this->P)		throw CGPMixException("CMultiTraitTerm: specify a valid phenotype number");
 		MatrixXd K0 = MatrixXd::Zero(P,P);
 		K0(p,p) = 1;
-		traitCovariance = PTFixed(new CTFixed(this->P,K0));
+		traitCovariance = PFixedCF(new CFixedCF(K0));
 		std::ostringstream temp;
 		temp<<"Specific:pheno"<<p;
 		TCtype=temp.str();

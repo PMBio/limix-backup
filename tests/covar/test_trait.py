@@ -10,8 +10,8 @@ class CTFreeForm_test(unittest.TestCase,Acovar_test):
     def setUp(self):
         SP.random.seed(1)
         self.n=4
-        self.C = limix.CTFreeForm(self.n)
-        self.name = 'CTFreeForm'
+        self.C = limix.CFreeFormCF(self.n)
+        self.name = 'CFreeFormCF'
         self.n_params=self.C.getNumberParams()
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
