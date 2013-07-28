@@ -1,17 +1,14 @@
 """Variance Decomposition testing code"""
+import unittest
 import scipy as SP
 import scipy.stats
 import pdb
 import sys
+sys.path.append('./../release.darwin/interfaces/python/')
 import limix
 
-from helper.helper import message
-
-class CVarianceDecomposition_test:
+class CVarianceDecomposition_test(unittest.TestCase):
     """test class for CVarianceDecomposition"""
-    
-    def __init__(self):
-        self.generate()
 
     def genGeno(self):
         self.X  = (SP.rand(self.N,self.S)<0.2)*1.
@@ -32,7 +29,7 @@ class CVarianceDecomposition_test:
             Y[:,p]=y
         self.Y=SP.stats.zscore(Y,0)
     
-    def generate(self):
+    def setUp(self):
         SP.random.seed(1)
         self.N = 200
         self.S = 1000
@@ -48,18 +45,14 @@ class CVarianceDecomposition_test:
         self.vd.initGP()
         
     def test_fit(self):
+        """ optimization test """
         self.vd.trainGP()
         params = self.vd.getOptimum()['scales'][:,0]
         params_true = SP.array([9.44207121e-01,-9.37361082e-01,5.35657525e-01,1.42134130e-08,-1.65923192e-08,3.09197580e-09])
         RV = (params-params_true).max()<1e-6
-        print '   ...fit %s' % message(RV)
-        
-    def test_all(self):
-        print '... testing CVarianceDecomposition'
-        self.test_fit()
+        self.assertTrue(RV)
 
 
 if __name__ == '__main__':
-    testvarDecomp = CVarianceDecomposition_test()
-    testvarDecomp.test_all()
+    unittest.main()
 
