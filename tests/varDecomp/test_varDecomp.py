@@ -34,6 +34,7 @@ class CVarianceDecomposition_test:
         self.Y=SP.stats.zscore(Y,0)
     
     def generate(self):
+        SP.random.seed(1)
         self.N = 200
         self.S = 1000
         self.P = 2
