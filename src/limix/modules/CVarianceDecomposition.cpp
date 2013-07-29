@@ -78,7 +78,7 @@ void CSingleTraitTerm::agetScales(VectorXd* out) const throw(CGPMixException)
 {
 	if (K_mode==-1)
 		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
-	(this->Kcf)->agetParams(out);
+	static_pointer_cast<CTraitCF>(this->Kcf)->agetScales(out);
 }
 
 muint_t CSingleTraitTerm::getNumberScales() const throw(CGPMixException)
@@ -181,7 +181,7 @@ void CMultiTraitTerm::agetScales(VectorXd* out) const throw(CGPMixException)
 {
 	if (TCtype=="Null")
 		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
-	this->traitCovariance->agetParams(out);
+	this->traitCovariance->agetScales(out);
 }
 
 muint_t CMultiTraitTerm::getNumberScales() const throw(CGPMixException)
