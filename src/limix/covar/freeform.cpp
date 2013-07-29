@@ -192,8 +192,9 @@ void CFreeFormCF::agetIparamDiag(VectorXi* out) const
             ++pindex;
         }
 }
-    
-    
+
+
+
 /* CRankOneCF class */
 
 CRankOneCF::CRankOneCF(muint_t numberGroups)

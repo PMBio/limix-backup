@@ -13,12 +13,10 @@ endif(DEBUG_LIMIX)
 
 SET(SOURCES limix/covar/covariance.cpp
 	    limix/covar/covariance.cpp
-	    limix/covar/fixed.cpp	
-	    limix/covar/fixed.cpp	
+	    limix/covar/freeform.cpp	
 	    limix/covar/se.cpp
 	    limix/covar/combinators.cpp
 	    limix/covar/linear.cpp
-	    limix/covar/trait.cpp
 	    limix/covar/dist.cpp
 	    limix/utils/matrix_helper.cpp
 	    limix/utils/beta.cpp
