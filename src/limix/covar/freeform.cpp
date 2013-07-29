@@ -15,36 +15,14 @@
 namespace limix {
 
     
-/* CTraitCF */
-    
-CTraitCF::CTraitCF(muint_t numberGroups)
-{
-    //1 input dimension which selects the group:
-    this->numberDimensions = 1;
-    //number of groups:
-    this->numberGroups= numberGroups;
-    this->X=MatrixXd::Zero(numberGroups,1);
-}
-    
-CTraitCF::~CTraitCF()
-{
-}
-    
-muint_t CTraitCF::getNumberGroups() const
-{return numberGroups;}
-
-void CTraitCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
-{
-	MatrixXd K;
-	aKcross(&K,Xstar);
-	(*out)=K.diagonal();
-}
-    
 /* FREE FORM */
     
     
-CFreeFormCF::CFreeFormCF(muint_t numberGroups) : CTraitCF(numberGroups)
+CFreeFormCF::CFreeFormCF(muint_t numberGroups)
 {
+    this->numberDimensions = 1;
+    this->numberGroups=numberGroups;
+    this->X=MatrixXd::Zero(numberGroups,1);
     //number of parameters:
     this->numberParams = calcNumberParams(numberGroups);
 }
@@ -56,6 +34,13 @@ muint_t CFreeFormCF::calcNumberParams(muint_t numberGroups)
     
 CFreeFormCF::~CFreeFormCF()
 {
+}
+
+void CFreeFormCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+	MatrixXd K;
+	aKcross(&K,Xstar);
+	(*out)=K.diagonal();
 }
 
 void CFreeFormCF::agetScales(CovarParams* out) {
@@ -126,23 +111,7 @@ void CFreeFormCF::aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) co
     (*out).noalias() = Lgrad_parami*Lgrad_paramj.transpose() + Lgrad_paramj*Lgrad_parami.transpose();
 }
 
-void CFreeFormCF::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
-{
-    //all parameters but the diagonal elements are unbounded:
-    *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
-    *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
-    //get diagonal elements
-    //VectorXi isDiagonal =getIparamDiag();
-    //set diagonal elements to be bounded [0,inf]
-    //for (muint_t i=0;i<getNumberParams();++i)
-    //{
-    //    if(isDiagonal(i))
-    //    {
-    //        (*lower)(i) = 0;
-    //    }
-    //}
-}
-    
+
 void CFreeFormCF::agetParamMask0(CovarParams* out) const {
     (*out) = VectorXd::Ones(getNumberParams());
 }
@@ -227,14 +196,24 @@ void CFreeFormCF::agetIparamDiag(VectorXi* out) const
     
 /* CRankOneCF class */
 
-CRankOneCF::CRankOneCF(muint_t numberGroups) : CTraitCF(numberGroups)
+CRankOneCF::CRankOneCF(muint_t numberGroups)
 {
+    this->numberDimensions = 1;
+    this->numberGroups=numberGroups;
+    this->X=MatrixXd::Zero(numberGroups,1);
     //number of parameters:
     this->numberParams = numberGroups;
 }
     
 CRankOneCF::~CRankOneCF()
 {
+}
+
+void CRankOneCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+	MatrixXd K;
+	aKcross(&K,Xstar);
+	(*out)=K.diagonal();
 }
 
 void CRankOneCF::agetScales(CovarParams* out) {
@@ -277,12 +256,6 @@ void CRankOneCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGP
     Lgrad_paramj(j) = 1;
     (*out).noalias() = Lgrad_parami*Lgrad_paramj.transpose()+Lgrad_paramj*Lgrad_parami.transpose();
 }
-
-void CRankOneCF::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
-{
-    *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
-    *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
-}
     
 void CRankOneCF::agetParamMask0(CovarParams* out) const
 {
@@ -292,18 +265,28 @@ void CRankOneCF::agetParamMask0(CovarParams* out) const
     
 /* CFixedCF class */
 
-CFixedCF::CFixedCF(const MatrixXd & K0) : CTraitCF(K0.cols())
+CFixedCF::CFixedCF(const MatrixXd & K0)
 {
-    this->numberParams = 1;
     if((muint_t)K0.rows()!=((muint_t)K0.cols()))
     {
         throw CGPMixException("K0 must be a square Matrix");
     }
+    this->numberGroups=K0.cols();
+    this->numberDimensions = 1;
+    this->X=MatrixXd::Zero(K0.cols(),1);
+    this->numberParams = 1;
     this->K0 = K0;
 }
     
 CFixedCF::~CFixedCF()
 {
+}
+
+void CFixedCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+	MatrixXd K;
+	aKcross(&K,Xstar);
+	(*out)=K.diagonal();
 }
 
 void CFixedCF::agetScales(CovarParams* out) {
@@ -332,12 +315,6 @@ void CFixedCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMi
     (*out) = 2*this->K0;
 }
 
-void CFixedCF::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
-{
-    *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
-    *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
-}
-
 void CFixedCF::agetParamMask0(CovarParams* out) const
 {
     (*out) = VectorXd::Ones(getNumberParams());
@@ -347,13 +324,23 @@ void CFixedCF::agetParamMask0(CovarParams* out) const
 /* CDiagonalCF class */
 
 
-CDiagonalCF::CDiagonalCF(muint_t numberGroups) : CTraitCF(numberGroups)
+CDiagonalCF::CDiagonalCF(muint_t numberGroups)
 {
+    this->numberGroups=numberGroups;
+    this->numberDimensions = 1;
+    this->X=MatrixXd::Zero(numberGroups,1);
     this->numberParams = numberGroups;
 }
     
 CDiagonalCF::~CDiagonalCF()
 {
+}
+
+void CDiagonalCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+	MatrixXd K;
+	aKcross(&K,Xstar);
+	(*out)=K.diagonal();
 }
 
 void CDiagonalCF::agetScales(CovarParams* out) {
@@ -386,12 +373,6 @@ void CDiagonalCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CG
     (*out)=MatrixXd::Zero(numberGroups,numberGroups);
     if (i==j)   (*out)(i,i)=2;
 }
-
-void CDiagonalCF::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
-{
-    *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
-    *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());
-}
     
 void CDiagonalCF::agetParamMask0(CovarParams* out) const
 {
@@ -401,8 +382,11 @@ void CDiagonalCF::agetParamMask0(CovarParams* out) const
     
 /* CLowRankCF class */
 
-CLowRankCF::CLowRankCF(muint_t numberGroups) : CTraitCF(numberGroups)
+CLowRankCF::CLowRankCF(muint_t numberGroups)
 {
+	this->numberGroups = numberGroups;
+    this->numberDimensions = 1;
+    this->X=MatrixXd::Zero(numberGroups,1);
     if (numberGroups==2)
         this->numberParams = 3;
     else
@@ -411,6 +395,13 @@ CLowRankCF::CLowRankCF(muint_t numberGroups) : CTraitCF(numberGroups)
 
 CLowRankCF::~CLowRankCF()
 {
+}
+
+void CLowRankCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+	MatrixXd K;
+	aKcross(&K,Xstar);
+	(*out)=K.diagonal();
 }
 
 void CLowRankCF::agetK0dense(MatrixXd* out) const throw(CGPMixException)
@@ -503,13 +494,6 @@ void CLowRankCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGP
     else {
         (*out)=MatrixXd::Zero(numberGroups,numberGroups);
     }
-}
-
-void CLowRankCF::agetParamBounds0(CovarParams* lower,CovarParams* upper) const
-{
-
-    *lower = -INFINITY*VectorXd::Ones(this->getNumberParams());
-    *upper = +INFINITY*VectorXd::Ones(this->getNumberParams());  
 }
     
 void CLowRankCF::agetParamMask0(CovarParams* out) const

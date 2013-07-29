@@ -46,7 +46,7 @@ class CVarianceDecomposition_test(unittest.TestCase):
         """ optimization test """
         self.vd.trainGP()
         params = self.vd.getOptimum()['scales'][:,0]
-        params_true = SP.array([9.44207121e-01,-9.37361082e-01,5.35657525e-01,1.42134130e-08,-1.65923192e-08,3.09197580e-09])
+        params_true = SP.array([-9.44207121e-01,+9.37361082e-01,5.35657525e-01,1.42134130e-08,-1.65923192e-08,3.09197580e-09])
         RV = (params-params_true).max()<1e-6
         self.assertTrue(RV)
 

@@ -6,7 +6,6 @@
 %shared_ptr(limix::CLinCombCF)
 %shared_ptr(limix::CProductCF)
 %shared_ptr(limix::CKroneckerCF)
-%shared_ptr(limix::CTraitCF)
 %shared_ptr(limix::CFreeFormCF)
 %shared_ptr(limix::CRankOneCF)
 %shared_ptr(limix::CFixedCF)

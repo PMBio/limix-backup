@@ -121,7 +121,7 @@ class CMultiTraitTerm : public AVarianceTerm
 {
 protected:
 	muint_t P;
-	PTraitCF traitCovariance;
+	PCovarianceFunction traitCovariance;
 	std::string TCtype;
 	// TOTAL COVARIANCE
 	PKroneckerCF covariance;
