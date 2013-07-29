@@ -73,11 +73,11 @@ typedef sptr<CFreeFormCF> PFreeFormCF;
 
 
 class CRankOneCF: public ACovarianceFunction {
-        
+
 protected:
-    muint_t numberGroups;
+	muint_t numberGroups;
 public:
-        
+
     CRankOneCF(muint_t numberGroups);
     ~CRankOneCF();
 
@@ -90,36 +90,32 @@ public:
 
     virtual void agetScales(CovarParams* out);
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
-        
+
     //Covariance pure functions
-    virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-    virtual void aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException);
+	//pure functions that need to be implemented
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException);
     virtual void agetParamMask0(CovarParams* out) const;
-        
+
     //class information
     inline std::string getName() const {return "CRankOneCF";};
-        
+
 };
 typedef sptr<CRankOneCF> PRankOneCF;
-    
-    
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%rename(getK0) CFixedCF::agetK0;
-#endif
-    
+
 
 
 class CFixedCF: public ACovarianceFunction {
-        
+
 protected:
 	muint_t numberGroups;
     MatrixXd K0;
-        
 public:
+
     CFixedCF(const MatrixXd& K0);
     ~CFixedCF();
-    
+
 	//Block X functions: X is fixed and set in the constructor
 	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
 	virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException) {};
@@ -131,27 +127,28 @@ public:
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
 
     //Covariance pure functions
-    virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-    virtual void aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException);
+	//pure functions that need to be implemented
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException);
     virtual void agetParamMask0(CovarParams* out) const;
-        
+
     //class information
     inline std::string getName() const {return "CFixedCF";};
-        
+
 };
 typedef sptr<CFixedCF> PFixedCF;
     
     
 class CDiagonalCF: public ACovarianceFunction {
-        
+
 protected:
 	muint_t numberGroups;
 public:
-        
+
     CDiagonalCF(muint_t numberGroups);
     ~CDiagonalCF();
-    
+
 	//Block X functions: X is fixed and set in the constructor
 	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
 	virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException) {};
@@ -160,17 +157,18 @@ public:
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
 
     virtual void agetScales(CovarParams* out);
-    virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-    virtual void aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException);
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
-        
+
     //Covariance pure functions
+	//pure functions that need to be implemented
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException);
     virtual void agetParamMask0(CovarParams* out) const;
-    
+
     //class information
     inline std::string getName() const {return "CDiagonalCF";};
-        
+
 };
 typedef sptr<CDiagonalCF> PDiagonalCF;
     
@@ -179,17 +177,17 @@ typedef sptr<CDiagonalCF> PDiagonalCF;
 %rename(getK0dense)    CLowRankCF::agetK0dense;
 %rename(getK0diagonal) CLowRankCF::agetK0diagonal;
 #endif
-    
-    
+
+
 class CLowRankCF: public ACovarianceFunction {
-        
+
 protected:
 	muint_t numberGroups;
 public:
-        
+
     CLowRankCF(muint_t numberGroups);
     ~CLowRankCF();
-    
+
 	//Block X functions: X is fixed and set in the constructor
 	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
 	virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException) {};
@@ -197,24 +195,26 @@ public:
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) {};
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
 
+    virtual void agetScales(CovarParams* out);
+    virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+
     //LowRank functions
     virtual void agetK0dense(MatrixXd* out) const throw(CGPMixException);
     virtual void agetK0diagonal(MatrixXd* out) const throw(CGPMixException);
     
-    virtual void agetScales(CovarParams* out);
-    virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
-
     //Covariance pure functions
-    virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-    virtual void aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException);
+	//pure functions that need to be implemented
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException);
     virtual void agetParamMask0(CovarParams* out) const;
-        
+
     //class information
     inline std::string getName() const {return "CLowRankCF";};
-        
+
 };
 typedef sptr<CLowRankCF> PLowRankCF;
 
+
 } /* namespace limix */
-#endif /* TRAIT_H_ */
+#endif /* FREEFORM_H_ */
