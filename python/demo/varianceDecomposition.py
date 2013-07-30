@@ -1,5 +1,6 @@
 import sys
-sys.path.append('./../../release.darwin/interfaces/python/')
+sys.path.append('./../../release.linux2/interfaces/python/')
+#sys.path.append('./../../release.darwin/interfaces/python/')
 import scipy as SP
 import scipy.stats
 import pdb
@@ -35,6 +36,7 @@ fixed1 = SP.kron(SP.array([1,0]),SP.ones((N,1)))
 fixed2 = SP.kron(SP.array([0,1]),SP.ones((N,1)))
 vc.addFixedTerm(fixed1)
 vc.addFixedTerm(fixed2)
+pdb.set_trace()
 
 # Random initialisation and Fitting
 vc.initialise()
