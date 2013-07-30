@@ -72,7 +72,7 @@ class CVarianceDecomposition_test(unittest.TestCase):
             params_true = SP.zeros_like(params)
         else:
             params_true = SP.loadtxt(param_file)
-        RV = (params-params_true).max()<1e-6
+        RV = ((params-params_true)**2).max()<1e-6
         self.assertTrue(RV)
 
 
