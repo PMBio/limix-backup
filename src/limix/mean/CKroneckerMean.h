@@ -22,6 +22,7 @@ protected:
 	MatrixXd A;
 public:
 	CKroneckerMean();
+	CKroneckerMean(MatrixXd& Y, MatrixXd& fixedEffects, MatrixXd& A);
 	CKroneckerMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects, MatrixXd& A);
 	virtual ~CKroneckerMean();
 
