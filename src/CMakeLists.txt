@@ -32,6 +32,8 @@ SET(SOURCES limix/covar/covariance.cpp
 	    limix/likelihood/likelihood.cpp
 	    limix/gp/gp_base.cpp
 	    limix/gp/gp_kronecker.cpp
+	    limix/gp/gp_kronSum.cpp
+	    limix/gp/gp_Sum.cpp
 	    limix/gp/gp_opt.cpp
 	    limix/mean/ADataTerm.cpp
 	    limix/mean/CLinearMean.cpp

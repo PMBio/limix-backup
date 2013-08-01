@@ -176,6 +176,34 @@ inline MatrixXd krondiag(const Eigen::MatrixBase<Derived2>& v1,const Eigen::Matr
 }
 
 
+
+template <typename Derived1, typename Derived2,typename Derived3>
+/* Considers U*S^(alpha) */
+inline void aUS2alpha(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2,mfloat_t alpha)
+{
+	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
+	out.derived().resize(v1.rows(),v1.cols());
+	for (muint_t ir=0;ir<(muint_t)v1.rows();++ir)
+		for (muint_t ic=0;ic<(muint_t)v1.cols();++ic)
+		{
+			out(ir,ic)=v1(ir,ic)*std::pow(v2(ic,0),alpha);
+		}
+}
+
+template <typename Derived1, typename Derived2,typename Derived3>
+/* Considers S^(alpha)*U */
+inline void aS2alphaU(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2,mfloat_t alpha)
+{
+	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
+	out.derived().resize(v2.rows(),v2.cols());
+	for (muint_t ir=0;ir<(muint_t)v1.rows();++ir)
+		for (muint_t ic=0;ic<(muint_t)v1.cols();++ic)
+		{
+			out(ir,ic)=std::pow(v1(ir,0),alpha)*v2(ir,ic);
+		}
+}
+
+
 template <typename Derived1, typename Derived2,typename Derived3>
 /* Kronecker product
  * out = A kron B

@@ -6,8 +6,12 @@
 %shared_ptr(limix::CGPbase)
 %shared_ptr(limix::CGPvarDecomp)
 %shared_ptr(limix::CGPkronecker)
+%shared_ptr(limix::CGPkronSum)
+%shared_ptr(limix::CGPSum)
 %shared_ptr(limix::CGPopt)
 %shared_ptr(limix::CGPKroneckerCache)
+%shared_ptr(limix::CGPkronSumCache)
+%shared_ptr(limix::CGPSumCache)
 
 //vector template definitions
 namespace std {
