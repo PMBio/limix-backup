@@ -24,6 +24,11 @@ CKroneckerMean::CKroneckerMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEf
 	this->A=A;
 }
 
+CKroneckerMean::CKroneckerMean(MatrixXd& Y, MatrixXd& fixedEffects, MatrixXd& A) : CLinearMean(Y,fixedEffects)
+{
+	this->A=A;
+}
+
 void CKroneckerMean::aPredictY(MatrixXd* outY) const
 {
 	*outY = this->fixedEffects * this->weights * this->A;
