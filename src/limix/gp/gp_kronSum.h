@@ -23,9 +23,11 @@ class CGPkronSumCache : public CParamObject
 {
 	friend class CGPkronSum;
 protected:
+	MatrixXd SsigmaCache;
 	MatrixXd ScstarCache;
 	MatrixXd UcstarCache;
 	MatrixXd LambdacCache;
+	MatrixXd SomegaCache;
 	MatrixXd SrstarCache;
 	MatrixXd UrstarCache;
 	MatrixXd LambdarCache;
@@ -55,9 +57,11 @@ public:
 	CGPkronSumCache(CGPkronSum* gp);
 	virtual ~CGPkronSumCache()	{};
 
+	MatrixXd& rgetSsigma();
 	MatrixXd& rgetScstar();
 	MatrixXd& rgetUcstar();
 	MatrixXd& rgetLambdac();
+	MatrixXd& rgetSomega();
 	MatrixXd& rgetSrstar();
 	MatrixXd& rgetUrstar();
 	MatrixXd& rgetLambdar();
@@ -67,6 +71,10 @@ public:
 	MatrixXd& rgetRrot();
 	MatrixXd& rgetOmegaRot();
 
+	void argetSsigma(MatrixXd* out)
+	{
+		(*out) = rgetSsigma();
+	}
 	void argetScstar(MatrixXd* out)
 	{
 		(*out) = rgetScstar();
@@ -78,6 +86,10 @@ public:
 	void argetLambdac(MatrixXd* out)
 	{
 		(*out) = rgetLambdac();
+	}
+	void argetSomega(MatrixXd* out)
+	{
+		(*out) = rgetSomega();
 	}
 	void argetSrstar(MatrixXd* out)
 	{
@@ -138,6 +150,49 @@ protected:
 	//cache:
 	PGPkronSumCache cache;
 
+	//dimensions
+	muint_t N;
+	muint_t P;
+
+	//running times
+	mfloat_t rtSVDcols;
+	mfloat_t rtSVDrows;
+	mfloat_t rtLambdac;
+	mfloat_t rtLambdar;
+	mfloat_t rtYrotPart;
+	mfloat_t rtYrot;
+	mfloat_t rtYtilde;
+	mfloat_t rtRrot;
+	mfloat_t rtOmegaRot;
+	mfloat_t rtCC1part1a;
+	mfloat_t rtCC1part1b;
+	mfloat_t rtCC1part1c;
+	mfloat_t rtCC1part1d;
+	mfloat_t rtCC1part1e;
+	mfloat_t rtCC1part1f;
+	mfloat_t rtCC1part2;
+	mfloat_t rtCC2part1;
+	mfloat_t rtCC2part2;
+	mfloat_t rtCR1part1a;
+	mfloat_t rtCR1part1b;
+	mfloat_t rtCR1part2;
+	mfloat_t rtCR2part1a;
+	mfloat_t rtCR2part1b;
+	mfloat_t rtCR2part2;
+	mfloat_t rtLMLgradCovar;
+	mfloat_t rtLMLgradDataTerm;
+	mfloat_t is_it;
+	mfloat_t rtGrad;
+	mfloat_t rtLML1a;
+	mfloat_t rtLML1b;
+	mfloat_t rtLML1c;
+	mfloat_t rtLML1d;
+	mfloat_t rtLML1e;
+	mfloat_t rtLML2;
+	mfloat_t rtLML3;
+	mfloat_t rtLML4;
+
+
 public:
 	CGPkronSum(const MatrixXd& Y,PCovarianceFunction covarr1, PCovarianceFunction covarc1,PCovarianceFunction covarr2, PCovarianceFunction covarc2, PLikelihood lik, PDataTerm dataTerm);
 	virtual ~CGPkronSum();
@@ -145,6 +200,19 @@ public:
 	//getter for parameter bounds and hyperparam Mask
 	virtual CGPHyperParams getParamBounds(bool upper) const;
 	virtual CGPHyperParams getParamMask() const;
+
+	mfloat_t LML() throw (CGPMixException);
+
+	// Gradient
+	CGPHyperParams LMLgrad() throw (CGPMixException);
+	virtual void aLMLgrad_covarc1(VectorXd* out) throw (CGPMixException);
+	virtual void aLMLgrad_covarc2(VectorXd* out) throw (CGPMixException);
+	virtual void aLMLgrad_covarr1(VectorXd* out) throw (CGPMixException);
+	virtual void aLMLgrad_covarr2(VectorXd* out) throw (CGPMixException);
+	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);
+
+
+	/* DEBUGGING */
 
 	//cache stuff
 	void agetSc(MatrixXd *out) {(*out)=cache->covarc1->rgetSK();}
@@ -170,15 +238,53 @@ public:
 		(*out) = USisqrt.transpose()*cache->covarc1->rgetK()*USisqrt;
 	}
 
-	mfloat_t LML() throw (CGPMixException);
+	//dimensions
+	muint_t getN() 	{return N;}
+	muint_t getP() 	{return P;}
 
-	// Gradient
-	CGPHyperParams LMLgrad() throw (CGPMixException);
-	virtual void aLMLgrad_covarc1(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_covarc2(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_covarr1(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_covarr2(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);
+
+	//running times
+	mfloat_t getRtSVDcols() 	{return rtSVDcols;}
+	mfloat_t getRtSVDrows() 	{return rtSVDrows;}
+	mfloat_t getRtLambdac() 	{return rtLambdac;}
+	mfloat_t getRtLambdar() 	{return rtLambdar;}
+	mfloat_t getRtYrotPart() 	{return rtYrotPart;}
+	mfloat_t getRtYrot() 		{return rtYrot;}
+	mfloat_t getRtYtilde() 		{return rtYtilde;}
+	mfloat_t getRtRrot() 		{return rtRrot;}
+	mfloat_t getRtOmegaRot() 	{return rtOmegaRot;}
+	mfloat_t getRtCC1part1a() 	{return rtCC1part1a;}
+	mfloat_t getRtCC1part1b() 	{return rtCC1part1b;}
+	mfloat_t getRtCC1part1c() 	{return rtCC1part1c;}
+	mfloat_t getRtCC1part1d() 	{return rtCC1part1d;}
+	mfloat_t getRtCC1part1e() 	{return rtCC1part1e;}
+	mfloat_t getRtCC1part1f() 	{return rtCC1part1f;}
+	mfloat_t getRtCC1part2() 	{return rtCC1part2;}
+	mfloat_t getRtCC2part1() 	{return rtCC2part1;}
+	mfloat_t getRtCC2part2() 	{return rtCC2part2;}
+	mfloat_t getRtCR1part1a() 	{return rtCR1part1a;}
+	mfloat_t getRtCR1part1b() 	{return rtCR1part1b;}
+	mfloat_t getRtCR1part2() 	{return rtCR1part2;}
+	mfloat_t getRtCR2part1a() 	{return rtCR2part1a;}
+	mfloat_t getRtCR2part1b() 	{return rtCR2part1b;}
+	mfloat_t getRtCR2part2() 	{return rtCR2part2;}
+	mfloat_t getRtLMLgradCovar() 	{return rtLMLgradCovar;}
+	mfloat_t getRtLMLgradDataTerm() 	{return rtLMLgradDataTerm;}
+	mfloat_t getIs_it() 	{return is_it;}
+	mfloat_t getRtGrad() 	{return rtGrad;}
+	mfloat_t getRtLML1a() 	{return rtLML1a;}
+	mfloat_t getRtLML1b() 	{return rtLML1b;}
+	mfloat_t getRtLML1c() 	{return rtLML1c;}
+	mfloat_t getRtLML1d() 	{return rtLML1d;}
+	mfloat_t getRtLML1e() 	{return rtLML1e;}
+	mfloat_t getRtLML2() 	{return rtLML2;}
+	mfloat_t getRtLML3() 	{return rtLML3;}
+	mfloat_t getRtLML4() 	{return rtLML4;}
+
+
+
+
+
 
 	/*
 	void setX1(const CovarInput& X) throw (CGPMixException);
