@@ -7,9 +7,15 @@
 
 #include "gp_kronSum.h"
 #include "limix/utils/matrix_helper.h"
-
+#include <ctime>
 
 namespace limix {
+
+mfloat_t te1(clock_t beg){
+	clock_t end = clock();
+	mfloat_t TE = mfloat_t(end - beg) / CLOCKS_PER_SEC;
+	return TE;
+}
 
 /* CGPkronSumCache */
 
@@ -57,6 +63,7 @@ CGPkronSumCache::CGPkronSumCache(CGPkronSum* gp)
 
 void CGPkronSumCache::validateCache()
 {
+	muint_t maskRR = this->gp->covarr1->getParamMask().sum()+this->gp->covarr2->getParamMask().sum();
 	if((!*syncCovarc1) || (!*syncCovarc2))
 	{
 		SVDcstarCacheNull=true;
@@ -64,9 +71,9 @@ void CGPkronSumCache::validateCache()
 		YrotCacheNull=true;
 		YtildeCacheNull=true;
 	}
-	if((!*syncCovarr1) || (!*syncCovarr2))
+	if(((!*syncCovarr1) || (!*syncCovarr2)) && maskRR>0)
 	{
-		SVDcstarCacheNull=true;
+		SVDrstarCacheNull=true;
 		LambdarCacheNull=true;
 		YrotPartCacheNull=true;
 		YrotCacheNull=true;
@@ -75,7 +82,9 @@ void CGPkronSumCache::validateCache()
 		OmegaRotCacheNull=true;
 	}
 	if((!*syncData)) {
+		YrotPartCacheNull=true;
 		YrotCacheNull=true;
+		YtildeCacheNull=true;
 	}
 	//set all sync
 	setSync();
@@ -84,7 +93,8 @@ void CGPkronSumCache::validateCache()
 void CGPkronSumCache::updateSVDcstar()
 {
 	MatrixXd USisqrt;
-	aUS2alpha(USisqrt,this->covarc2->rgetUK(),this->covarc2->rgetSK(),-0.5);
+	SsigmaCache=this->covarc2->rgetSK();
+	aUS2alpha(USisqrt,this->covarc2->rgetUK(),SsigmaCache,-0.5);
 	MatrixXd Cstar = USisqrt.transpose()*this->covarc1->rgetK()*USisqrt;
 	// ADD SOME DIAGONAL STUFF?
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(Cstar);
@@ -92,13 +102,25 @@ void CGPkronSumCache::updateSVDcstar()
 	ScstarCache = eigensolver.eigenvalues();
 }
 
-MatrixXd& CGPkronSumCache::rgetScstar()
+MatrixXd& CGPkronSumCache::rgetSsigma()
 {
 	validateCache();
 	if (SVDcstarCacheNull) {
 		updateSVDcstar();
 		SVDcstarCacheNull=false;
 	}
+	return SsigmaCache;
+}
+
+MatrixXd& CGPkronSumCache::rgetScstar()
+{
+	validateCache();
+	clock_t beg = clock();
+	if (SVDcstarCacheNull) {
+		updateSVDcstar();
+		SVDcstarCacheNull=false;
+	}
+    this->gp->rtSVDcols=te1(beg);
 	return ScstarCache;
 }
 
@@ -115,32 +137,49 @@ MatrixXd& CGPkronSumCache::rgetUcstar()
 MatrixXd& CGPkronSumCache::rgetLambdac()
 {
 	validateCache();
+	clock_t beg = clock();
 	if (LambdacCacheNull) {
 		aUS2alpha(LambdacCache,rgetUcstar().transpose(),this->covarc2->rgetSK(),-0.5);
 		LambdacCache*=this->covarc2->rgetUK().transpose();
 		LambdacCacheNull=false;
 	}
+    this->gp->rtLambdac=te1(beg);
 	return LambdacCache;
 }
 
 void CGPkronSumCache::updateSVDrstar()
 {
+	clock_t beg = clock();
 	MatrixXd USisqrt;
-	aUS2alpha(USisqrt,this->covarr2->rgetUK(),this->covarr2->rgetSK(),-0.5);
+	SomegaCache=this->covarr2->rgetSK();
+	aUS2alpha(USisqrt,this->covarr2->rgetUK(),SomegaCache,-0.5);
 	MatrixXd Rstar = USisqrt.transpose()*this->covarr1->rgetK()*USisqrt;
 	// ADD SOME DIAGONAL STUFF?
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(Rstar);
 	UrstarCache = eigensolver.eigenvectors();
 	SrstarCache = eigensolver.eigenvalues();
+	std::cout<<"SVD rows:   "<<te1(beg)<<std::endl;
 }
 
-MatrixXd& CGPkronSumCache::rgetSrstar()
+MatrixXd& CGPkronSumCache::rgetSomega()
 {
 	validateCache();
 	if (SVDrstarCacheNull) {
 		updateSVDrstar();
 		SVDrstarCacheNull=false;
 	}
+	return SomegaCache;
+}
+
+MatrixXd& CGPkronSumCache::rgetSrstar()
+{
+	validateCache();
+	clock_t beg = clock();
+	if (SVDrstarCacheNull) {
+		updateSVDrstar();
+		SVDrstarCacheNull=false;
+	}
+    this->gp->rtSVDrows=te1(beg);
 	return SrstarCache;
 }
 
@@ -157,73 +196,90 @@ MatrixXd& CGPkronSumCache::rgetUrstar()
 MatrixXd& CGPkronSumCache::rgetLambdar()
 {
 	validateCache();
+	clock_t beg = clock();
 	if (LambdarCacheNull) {
 		aUS2alpha(LambdarCache,rgetUrstar().transpose(),this->covarr2->rgetSK(),-0.5);
 		LambdarCache*=this->covarr2->rgetUK().transpose();
 		LambdarCacheNull=false;
 	}
+    this->gp->rtLambdar=te1(beg);
 	return LambdarCache;
 }
 
 MatrixXd& CGPkronSumCache::rgetYrotPart()
 {
 	validateCache();
+	clock_t beg = clock();
 	if (YrotPartCacheNull) {
 		//Rotate columns of Y
 		YrotPartCache.resize(gp->getY().rows(),gp->getY().cols());
+		MatrixXd& Lambdar = rgetLambdar();
 		for (muint_t p=0; p<this->gp->getY().cols(); p++)
-			YrotPartCache.block(0,p,gp->getY().rows(),1).noalias()=rgetLambdar()*gp->dataTerm->evaluate().block(0,p,gp->getY().rows(),1);
+			YrotPartCache.block(0,p,gp->getY().rows(),1).noalias()=Lambdar*gp->dataTerm->evaluate().block(0,p,gp->getY().rows(),1);
 		YrotPartCacheNull=false;
 	}
+    this->gp->rtYrotPart=te1(beg);
 	return YrotPartCache;
 }
 
 MatrixXd& CGPkronSumCache::rgetYrot()
 {
 	validateCache();
+	clock_t beg = clock();
 	if (YrotCacheNull) {
 		//Rotate rows of Y
 		YrotCache.resize(gp->getY().rows(),gp->getY().cols());
+		MatrixXd& Lambdac = rgetLambdac();
 		for (muint_t n=0; n<this->gp->getY().rows(); n++)
-			YrotCache.block(n,0,1,gp->getY().cols()).noalias()=rgetYrotPart().block(n,0,1,gp->getY().cols())*rgetLambdac().transpose();
+			YrotCache.block(n,0,1,gp->getY().cols()).noalias()=rgetYrotPart().block(n,0,1,gp->getY().cols())*Lambdac.transpose();
 		YrotCacheNull=false;
 	}
+    this->gp->rtYrot=te1(beg);
 	return YrotCache;
 }
 
 MatrixXd& CGPkronSumCache::rgetYtilde()
 {
 	validateCache();
+	clock_t beg = clock();
 	if (YtildeCacheNull) {
-	    YtildeCache.resize(gp->getY().rows(),gp->getY().cols());
-	    for (muint_t n=0; n<this->gp->getY().rows(); n++)	{
-	        for (muint_t p=0; p<this->gp->getY().cols(); p++)	{
-	        	YtildeCache(n,p)=rgetYrot()(n,p)/(rgetScstar()(p,0)*rgetSrstar()(n,0)+1);
+	    YtildeCache.resize(gp->getN(),gp->getP());
+	    MatrixXd& Yrot = rgetYrot();
+	    MatrixXd& Scstar = rgetScstar();
+	    MatrixXd& Srstar = rgetSrstar();
+	    for (muint_t n=0; n<this->gp->getN(); n++)	{
+	        for (muint_t p=0; p<this->gp->getP(); p++)	{
+	        	YtildeCache(n,p)=Yrot(n,p)/(Scstar(p,0)*Srstar(n,0)+1);
 	    	}
 	    }
 	    YtildeCacheNull=false;
 	}
+    this->gp->rtYtilde=te1(beg);
 	return YtildeCache;
 }
 
 MatrixXd& CGPkronSumCache::rgetRrot()
 {
 	validateCache();
+	clock_t beg = clock();
 	if (RrotCacheNull) {
 		Rrot=rgetLambdar()*this->covarr1->rgetK()*rgetLambdar().transpose();
 		RrotCacheNull=false;
 	}
+    this->gp->rtRrot=te1(beg);
 	return Rrot;
 }
 
 MatrixXd& CGPkronSumCache::rgetOmegaRot()
 {
 	validateCache();
+	clock_t beg = clock();
 	if (OmegaRotCacheNull) {
 		//Rotate rows of Y
 		OmegaRot=rgetLambdar()*this->covarr2->rgetK()*rgetLambdar().transpose();
 		OmegaRotCacheNull=false;
 	}
+    this->gp->rtOmegaRot=te1(beg);
 	return OmegaRot;
 }
 
@@ -241,6 +297,26 @@ CGPkronSum::CGPkronSum(const MatrixXd& Y,
 	this->covarr2=covarr2;
 	this->cache = PGPkronSumCache(new CGPkronSumCache(this));
 	this->setY(Y);
+	this->N=Y.rows();
+	this->P=Y.cols();
+	rtLML1a=0;
+	rtLML1b=0;
+	rtLML1c=0;
+	rtLML1d=0;
+	rtLML1e=0;
+	rtLML2=0;
+	rtLML3=0;
+	rtLML4=0;
+	rtGrad=0;
+	rtCC1part1a=0;
+	rtCC1part1b=0;
+	rtCC1part1c=0;
+	rtCC1part1d=0;
+	rtCC1part1e=0;
+	rtCC1part1f=0;
+	rtCC1part2=0;
+	rtCC2part1=0;
+	rtCC2part2=0;
 }
 
 
@@ -252,7 +328,7 @@ void CGPkronSum::updateParams() throw (CGPMixException)
 {
 
 	//is this needed?
-	CGPbase::updateParams();
+	//CGPbase::updateParams();
 	if(this->params.exists("covarc1"))
 		this->covarc1->setParams(this->params["covarc1"]);
 
@@ -308,13 +384,27 @@ CGPHyperParams CGPkronSum::getParamMask() const {
 
 mfloat_t CGPkronSum::LML() throw (CGPMixException)
 {
+	clock_t beg = clock();
     //get stuff from cache
-    MatrixXd Ssigma = this->cache->covarc2->rgetSK();
-    MatrixXd Somega = this->cache->covarr2->rgetSK();
+    MatrixXd Ssigma = cache->rgetSsigma();
+    rtLML1a+=te1(beg);
+    beg = clock();
+    MatrixXd Somega = cache->rgetSomega();
+    rtLML1b+=te1(beg);
+    beg = clock();
     MatrixXd& Scstar = cache->rgetScstar();
+    rtLML1c+=te1(beg);
+    beg = clock();
     MatrixXd& Srstar = cache->rgetSrstar();
+    rtLML1d+=te1(beg);
+    beg = clock();
     MatrixXd& Yrot = cache->rgetYrot();
+    if (rtLML1e==0) {
+    	rtLML1e+=te1(beg);
+    }
+    else	rtLML1e+=te1(beg);
 
+    beg = clock();
     //1. logdet:
     mfloat_t lml_det = 0;
     mfloat_t temp = 0;
@@ -331,7 +421,9 @@ mfloat_t CGPkronSum::LML() throw (CGPMixException)
         	temp+=std::log(Scstar(p,0)*Srstar(n,0)+1);
     lml_det += temp;
     lml_det *= 0.5;
+    rtLML2+=te1(beg);
 
+    beg = clock();
     //2. quadratic term
     mfloat_t lml_quad = 0;
     for (muint_t n=0; n<Yrot.rows(); n++)	{
@@ -340,9 +432,12 @@ mfloat_t CGPkronSum::LML() throw (CGPMixException)
     	}
     }
     lml_quad *= 0.5;
+    rtLML3+=te1(beg);
 
+    beg = clock();
     //3. constants
     mfloat_t lml_const = 0.5*Yrot.cols()*Yrot.rows() * limix::log((2.0 * PI));
+    rtLML4+=te1(beg);
 
     return lml_quad + lml_det + lml_const;
 };
@@ -352,6 +447,7 @@ CGPHyperParams CGPkronSum::LMLgrad() throw (CGPMixException)
 {
     CGPHyperParams rv;
     //calculate gradients for parameter components in params:
+	clock_t beg = clock();
     if(params.exists("covarc1")){
         VectorXd grad_covar;
         aLMLgrad_covarc1(&grad_covar);
@@ -364,34 +460,57 @@ CGPHyperParams CGPkronSum::LMLgrad() throw (CGPMixException)
     }
     if(params.exists("covarr1")){
         VectorXd grad_covar;
-        aLMLgrad_covarr1(&grad_covar);
+        if (covarr1->getParamMask().sum()==0)
+        	grad_covar=VectorXd::Zero(covarr1->getNumberParams(),1);
+        else
+        	aLMLgrad_covarr1(&grad_covar);
         rv.set("covarr1", grad_covar);
     }
     if(params.exists("covarr2")){
         VectorXd grad_covar;
+        if (covarr1->getParamMask().sum()==0)
+        	grad_covar=VectorXd::Zero(covarr2->getNumberParams(),1);
+        else
         aLMLgrad_covarr2(&grad_covar);
         rv.set("covarr2", grad_covar);
     }
+    this->rtLMLgradCovar=te1(beg);
+	beg = clock();
     if (params.exists("dataTerm"))
     {
     	MatrixXd grad_dataTerm;
     	aLMLgrad_dataTerm(&grad_dataTerm);
     	rv.set("dataTerm",grad_dataTerm);
     }
+    this->rtLMLgradDataTerm=te1(beg);
+    rtGrad+=rtLMLgradCovar+rtLMLgradDataTerm;
     return rv;
 }
 
 void CGPkronSum::aLMLgrad_covarc1(VectorXd *out) throw (CGPMixException)
 {
+	clock_t beg = clock();
     //get stuff from cache
     MatrixXd& Scstar = cache->rgetScstar();
+    this->rtCC1part1a+=te1(beg);
+	beg = clock();
     MatrixXd& Srstar = cache->rgetSrstar();
+    this->rtCC1part1b+=te1(beg);
+	beg = clock();
     MatrixXd& Yrot = cache->rgetYrot();
+    this->rtCC1part1c+=te1(beg);
+	beg = clock();
 	MatrixXd& Lambdac = cache->rgetLambdac();
+    this->rtCC1part1d+=te1(beg);
+	beg = clock();
 	MatrixXd& Ytilde = cache->rgetYtilde();
+    this->rtCC1part1e+=te1(beg);
+	beg = clock();
 	//covar
 	MatrixXd& Rrot = cache->rgetRrot();
+    this->rtCC1part1f+=te1(beg);
 
+	beg = clock();
     //start loop trough covariance paramenters
     (*out).resize(covarc1->getNumberParams(),1);
     MatrixXd CgradRot(this->getY().rows(),this->getY().rows());
@@ -416,10 +535,12 @@ void CGPkronSum::aLMLgrad_covarc1(VectorXd *out) throw (CGPMixException)
 		mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
 		(*out)(i,0)=grad_det+grad_quad;
     }
+    this->rtCC1part2+=te1(beg);
 }
 
 void CGPkronSum::aLMLgrad_covarc2(VectorXd *out) throw (CGPMixException)
 {
+	clock_t beg = clock();
     //get stuff from cache
     MatrixXd& Scstar = cache->rgetScstar();
     MatrixXd& Srstar = cache->rgetSrstar();
@@ -428,7 +549,9 @@ void CGPkronSum::aLMLgrad_covarc2(VectorXd *out) throw (CGPMixException)
 	MatrixXd& Ytilde = cache->rgetYtilde();
 	//covar
 	MatrixXd& OmegaRot = cache->rgetOmegaRot();
+    this->rtCC2part1+=te1(beg);
 
+	beg = clock();
     //start loop trough covariance paramenters
     (*out).resize(covarc2->getNumberParams(),1);
     MatrixXd SigmaGradRot(this->getY().rows(),this->getY().rows());
@@ -453,10 +576,12 @@ void CGPkronSum::aLMLgrad_covarc2(VectorXd *out) throw (CGPMixException)
 		mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
 		(*out)(i,0)=grad_det+grad_quad;
     }
+    this->rtCC2part2+=te1(beg);
 }
 
 void CGPkronSum::aLMLgrad_covarr1(VectorXd *out) throw (CGPMixException)
 {
+	clock_t beg = clock();
     //get stuff from cache
     MatrixXd& Scstar = cache->rgetScstar();
     MatrixXd& Srstar = cache->rgetSrstar();
@@ -464,14 +589,20 @@ void CGPkronSum::aLMLgrad_covarr1(VectorXd *out) throw (CGPMixException)
 	MatrixXd& Lambdac = cache->rgetLambdac();
 	MatrixXd& Lambdar = cache->rgetLambdar();
 	MatrixXd& Ytilde = cache->rgetYtilde();
+    this->rtCR1part1a+=te1(beg);
+	beg = clock();
 	//covar
 	MatrixXd Crot = Lambdac*cache->covarc1->rgetK()*Lambdac.transpose();
+    this->rtCR1part1b+=te1(beg);
 
+	beg = clock();
     //start loop trough covariance paramenters
     (*out).resize(covarr1->getNumberParams(),1);
     MatrixXd RgradRot(this->getY().rows(),this->getY().rows());
 	for (muint_t i=0; i<covarr1->getNumberParams(); i++) {
+		beg = clock();
 		RgradRot=Lambdar*covarr1->Kgrad_param(i)*Lambdar.transpose();
+		this->is_it+=te1(beg);
 		//1. grad logdet
 		mfloat_t grad_det = 0;
 	    for (muint_t n=0; n<Yrot.rows(); n++)	{
@@ -491,10 +622,12 @@ void CGPkronSum::aLMLgrad_covarr1(VectorXd *out) throw (CGPMixException)
 		mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
 		(*out)(i,0)=grad_det+grad_quad;
     }
+    this->rtCR1part2+=te1(beg);
 }
 
 void CGPkronSum::aLMLgrad_covarr2(VectorXd *out) throw (CGPMixException)
 {
+	clock_t beg = clock();
     //get stuff from cache
     MatrixXd& Scstar = cache->rgetScstar();
     MatrixXd& Srstar = cache->rgetSrstar();
@@ -502,9 +635,13 @@ void CGPkronSum::aLMLgrad_covarr2(VectorXd *out) throw (CGPMixException)
 	MatrixXd& Lambdac = cache->rgetLambdac();
 	MatrixXd& Lambdar = cache->rgetLambdar();
 	MatrixXd& Ytilde = cache->rgetYtilde();
+    this->rtCR2part1a+=te1(beg);
+	beg = clock();
 	//covar
 	MatrixXd SigmaRot = Lambdac*cache->covarc2->rgetK()*Lambdac.transpose();
+    this->rtCR2part1b+=te1(beg);
 
+	beg = clock();
     //start loop trough covariance paramenters
     (*out).resize(covarr2->getNumberParams(),1);
     MatrixXd OmgaGradRot(this->getY().rows(),this->getY().rows());
@@ -529,6 +666,7 @@ void CGPkronSum::aLMLgrad_covarr2(VectorXd *out) throw (CGPMixException)
 		mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
 		(*out)(i,0)=grad_det+grad_quad;
     }
+    this->rtCR2part2+=te1(beg);
 }
 
 void CGPkronSum::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
