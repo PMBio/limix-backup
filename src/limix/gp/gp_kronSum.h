@@ -154,6 +154,9 @@ protected:
 	muint_t N;
 	muint_t P;
 
+	//debug bool
+	bool debug;
+
 	//running times
 	mfloat_t rtSVDcols;
 	mfloat_t rtSVDrows;
@@ -242,6 +245,8 @@ public:
 	muint_t getN() 	{return N;}
 	muint_t getP() 	{return P;}
 
+	//debug mode
+	void setDebugMode(bool debug) {this->debug=debug;}
 
 	//running times
 	mfloat_t getRtSVDcols() 	{return rtSVDcols;}
