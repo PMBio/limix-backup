@@ -26,7 +26,7 @@ void CSumLinear::aGetParams(MatrixXd* outParams)
 	for(VecLinearMean::const_iterator iter = terms.begin(); iter!=terms.end();iter++)
 	{
 		MatrixXd currentParams = iter[0]->getParams();
-		outParams->block(sumParams,0,iter[0]->getRowsParams() * iter[0]->getColsParams(),1).array() = currentParams.array();
+		outParams->block(sumParams,0,iter[0]->getRowsParams() * iter[0]->getColsParams(),1).array() = currentParams.array().transpose();
 		sumParams += iter[0]->getRowsParams() * iter[0]->getColsParams();
 	}
 }
@@ -50,7 +50,7 @@ muint_t CSumLinear::getRowsParams()
 	muint_t sumParams = 0;
 	for(VecLinearMean::const_iterator iter = terms.begin(); iter!=terms.end();iter++)
 	{
-		sumParams+=iter[0]->getRowsParams();
+		sumParams+=iter[0]->getRowsParams()*iter[0]->getColsParams();
 	}
 	return sumParams;
 }
