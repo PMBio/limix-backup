@@ -158,7 +158,7 @@ void CGPkronSumCache::updateSVDrstar()
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(Rstar);
 	UrstarCache = eigensolver.eigenvectors();
 	SrstarCache = eigensolver.eigenvalues();
-	std::cout<<"SVD rows:   "<<te1(beg)<<std::endl;
+	if (this->gp->debug)	std::cout<<"SVD rows:   "<<te1(beg)<<std::endl;
 }
 
 MatrixXd& CGPkronSumCache::rgetSomega()
@@ -317,6 +317,8 @@ CGPkronSum::CGPkronSum(const MatrixXd& Y,
 	rtCC1part2=0;
 	rtCC2part1=0;
 	rtCC2part2=0;
+
+	debug=false;
 }
 
 
