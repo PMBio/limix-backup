@@ -1,6 +1,6 @@
 import sys
-sys.path.append('./../../release.linux2/interfaces/python/')
-#sys.path.append('./../../release.darwin/interfaces/python/')
+#sys.path.append('./../../release.linux2/interfaces/python/')
+sys.path.append('./../../release.darwin/interfaces/python/')
 import scipy as SP
 import scipy.stats
 import pdb
@@ -17,6 +17,8 @@ Y    = f['Y'][:]
 T    = f['T'][:]
 f.close()
 
+SP.random.seed(1)
+
 # Dimensions
 N = (T==0).sum()
 P = int(T.max()+1)
@@ -26,36 +28,39 @@ Y=Y.reshape(P,N).T
 Y = SP.stats.zscore(Y,0)
 # Set Kronecker matrices
 Kg = SP.dot(X,X.T)
+Kg = Kg/Kg.diagonal().mean()
 Kn = SP.eye(N)
 
-# CVarianceDecomposition initializaiton
+# CVarianceDecomposition initializaiton and fitting
 vc = VAR.CVarianceDecomposition(Y)
 vc.addMultiTraitTerm(Kg)
 vc.addMultiTraitTerm(Kn)
-fixed1 = SP.kron(SP.array([1,0]),SP.ones((N,1)))
-fixed2 = SP.kron(SP.array([0,1]),SP.ones((N,1)))
-vc.addFixedTerm(fixed1)
-vc.addFixedTerm(fixed2)
-pdb.set_trace()
+vc.addFixedTerm(SP.ones((N,1)))
+vc.setScales()
+params0=vc.getScales()
+print vc.fit()
+print vc.getOptimum()['time_train']
 
-# Random initialisation and Fitting
-vc.initialise()
-min=vc.fit()
+"""
 print "\n\nMinimum Found:"
-print min
-print "\n\nParameters Found:"
-print min['Params']
-# Taking parameters covariance matrix through Laplace Approximation
-CovParams=vc.getCovParams(min)
-stderr = SP.sqrt(CovParams.diagonal())
-print "\n\nParams Covariance:"
-print CovParams
-print "\n\nStd errors over params:"
-print stderr
-# Minimizing multiple times
-mins=vc.fit_ntimes()
-print "\n\nList of Minima found in 10 minimizations:"
-print mins
+print vc.getOptimum()
+"""
+
+print "\n\nMULTI TRAIT ANALYSIS WITH GPbase"
+print "\nCovar Params:"
+print vc.getScales()
+print "Std errors over params:"
+print SP.sqrt(vc.getLaplaceCovar().diagonal())
+print "DataTerm Params:"
+print vc.getFixed()
+print "Variances:"
+print vc.getVariances()
+print "Variance Components:"
+print vc.getVarComponents()
+print "LML:"
+print vc.getLML()
+print "LMLgrad:"
+print vc.getLMLgrad()
 # Empirical and Estimated Matrices
 print "\n\nEmpirical matrix:"
 print vc.getEmpTraitCovar()
@@ -66,16 +71,36 @@ print vc.getEstTraitCovar(1)
 print "\n\nOverall estimated matrix:"
 print vc.getEstTraitCovar()
 
+
+# Fast Impementation
+print "\n\nMULTI TRAIT ANALYSIS WITH GPkronSum"
+vc.setScales(scales=params0)
+print ""
+print vc.fit(fast=True)
+print vc.getOptimum()['time_train']
+print "\nCovar Params:"
+print vc.getScales()
+print "DataTerm Params:"
+print vc.getFixed()
+print "LML:"
+print vc.getLML()
+print "LMLgrad:"
+print vc.getLMLgrad()
+
 # Univariate Case
+print "\n\nSINGLE TRAIT ANALYSIS"
 y = Y[:,0:1]
 vc1 = VAR.CVarianceDecomposition(y)
 vc1.addSingleTraitTerm(Kg)
 vc1.addSingleTraitTerm(Kn)
 fixed = SP.ones((N,1))
 vc1.addFixedTerm(fixed)
-vc1.initialise()
-min1=vc1.fit()
-print "\n\nMinimum Found:"
-print min1
-print "\n\nParameters Found:"
-print min1['Params']
+vc1.setScales()
+print "Parameters Found:"
+print vc1.fit()
+print vc1.getScales()
+print "Variances:"
+print vc1.getVariances()
+print "Variance Components:"
+print vc1.getVarComponents()
+

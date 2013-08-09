@@ -23,13 +23,13 @@ class CVarianceDecomposition:
         addSingleTraitTerm:          Add Single Trait Term
         addMultiTraitTerm:           Add Multi Trait Term (inter-trait Covariance Matrix is FreeForm)
         addFixedTerm:                Add Fixed Effect Term
-        initialise:                  Initialise parameters randomly
         fit:                         Fit phenos and returns the minimum with some info
-        fit_ntimes:                  Fit phenos ntimes with different random initialization and returns the list of minima found in the order of LML
-        getParams:                   Returns the stack vector of the parameters of the trait covariances C_i
-        getEmpTraitCovar:            Returns the empirical trait covariance
-        getEstTraitCovar:            Returns the total trait covariance in the GP by summing up the trait covariances C_i
-        getCovParams:                Calculates the inverse hessian of the -loglikelihood with respect to the parameters (covariance matrix of the posterior over params under laplace approximation)
+        setScales:                   Set the vector of covar parameterss
+        getScales:                   Return the vector of the covar parameters
+        getFixed:                    Return the vector of the dataTerm parameters
+        getEmpTraitCovar:            Return the empirical trait covariance
+        getEstTraitCovar:            Return the total trait covariance in the GP by summing up the trait covariances C_i
+        getLaplaceCovar:             Calculate the inverse hessian of the -loglikelihood with respect to the parameters (covariance matrix of the posterior over params under laplace approximation)
         estimateHeritabilities:      Given K, it fits the model with 1 global fixed effects and covariance matrix hg[p]*K+hn[p] for each trait p and returns the vectors hg and hn
     """
     
@@ -37,8 +37,6 @@ class CVarianceDecomposition:
     def __init__(self,Y,standardize=True):
         """
         Y: phenotype matrix [N, P ]
-        F: fixed effect
-        K: list of intra-trait covariance matrix
         """
         
         #create column of 1 for fixed if nothing providede
@@ -53,6 +51,9 @@ class CVarianceDecomposition:
         self.vd      = limix.CVarianceDecomposition(Y)
         self.n_terms = 0
         self.gp      = None
+        self.init    = False
+        self.fast    = False
+        self.optimum = None
         
         pass
 
@@ -88,59 +89,43 @@ class CVarianceDecomposition:
         assert K.shape[1]==self.N, 'Incompatible shape'
         
         self.n_terms+=1
-        self.vd.addTerm('FreeForm',K)
+        self.vd.addTerm(limix.CFreeFormCF(self.P),K)
     
-    def addFixedTerm(self,F):
+    def addFixedTerm(self,F,A=None):
         """
         set the fixed effect term
-        F: fixed effect matrix [N,P]
+        A: design matrix [K,P] (e.g. SP.ones((1,P)) common effect; SP.eye(P) specific effect))
+        F: fixed effect matrix [N,1]
         """
-        assert F.shape[0]==self.N, 'Incompatible shape'
-        assert F.shape[1]==self.P, 'Incompatible shape'
+        if A==None:
+            A = SP.eye(self.P)
         
-        self.vd.addFixedEffTerm(F)
+        assert A.shape[0]==self.P, 'Incompatible shape'
+        assert F.shape[0]==self.N, 'Incompatible shape'
+        assert F.shape[1]==1,      'Incompatible shape'
+        
+        self.vd.addFixedEffTerm(A,F)
     
-    def initialise(self):
-        """
-        get random initialization of variances based on the empirical trait variance
-        """
-        for term_i in range(self.n_terms):
-            n_params = self.vd.getTerm(term_i).getNumberScales()
-            self.vd.getTerm(term_i).setScales(SP.array(SP.randn(n_params)))
-        """
-        I HAVE TO FIGURE THIS OUT
-        """
-        """
-        EmpVarY=self.getEmpTraitVar()
-        if self.P==1:
-            temp=SP.rand(self.n_terms)
-            N=temp.sum()
-            temp=temp/N*EmpVarY
-            self.vd.setScales(temp)
-        else:
-            temp=SP.rand(2*self.n_terms,self.P)
-            N=temp.sum(0)
-            temp=temp/N*EmpVarY
-            for term_i in range(self.n_terms):
-                a=(2*SP.rand(self.P)-1)*SP.sqrt(temp[term_i,:])
-                c=SP.sqrt(temp[term_i,:])
-                C0 = SP.dot(a[:,SP.newaxis],a[:,SP.newaxis].T)+SP.diag(c**2)
-        """
-    
-    def fit(self):
+    def fit(self,fast=False):
         """
         fit a variance component model with the predefined design and the initialization and returns all the results
+        if fast=True, use GPkronSum (valid only if P>1 and n_terms=1) 
         """
         
         assert self.n_terms>0, 'No variance component terms'
         
-        Params0 = self.getParams()
+        params0 = self.getScales()
         
         # GP initialisation
-        self.vd.initGP()
-        gp =self.vd.getGP()
-        LML0=-1.0*gp.LML()
-    
+        if fast:
+            assert self.n_terms==2, 'error: number of terms must be 2'
+            assert self.P>1,        'error: number of traits must be > 1'
+            self.vd.initGPkronSum()
+        else:
+            self.vd.initGP()
+        self.gp =self.vd.getGP()
+        LML0=-1.0*self.gp.LML()
+            
         # LIMIX CVARIANCEDECOMPOSITION FITTING
         start_time = time.time()
         conv =self.vd.trainGP()
@@ -148,65 +133,70 @@ class CVarianceDecomposition:
         
         # Check whether limix::CVarianceDecomposition.train() has converged
         LMLgrad = self.vd.getLMLgrad()
-        if conv!=True:
-            print 'limix::CVarianceDecomposition::train has not converged'
-            res=None
-        else:
-            res = {
-                'Params0':          Params0,
-                'Params':           self.getParams(),
-                'LML':              SP.array([-1.0*gp.LML()]),
+        if conv:
+            self.optimum = {
+                'params0':          params0,
+                'params':           self.getScales(),
+                'LML':              SP.array([-1.0*self.gp.LML()]),
                 'LML0':             SP.array([LML0]),
                 'LMLgrad':          SP.array([LMLgrad]),
                 'time_train':       SP.array([time_train]),
-                'gp' :              gp
-                }
-        return res
+            }
+        
+        else:   print 'limix::CVarianceDecomposition::train has not converged'
+            
+        self.init = True
+        self.fast = fast
+            
+        return conv
         pass
-    
-    
-    def fit_ntimes(self,ntimes=10,dist_mins=1e-2):
-        """
-        fit phenos ntimes with different random initialization and returns the minima order with respect to gp.LML
-        """
 
-        optima=[]
-        LML=SP.zeros((1,0))
-        
-        for i in range(ntimes):
-            
-            print ".. Minimization %d" % i
-            
-            self.initialise()
-            min=self.fit()
-        
-            if min!=None:
-                temp=1
-                for j in range(len(optima)):
-                    if SP.linalg.norm(min['Params']-optima[j]['Params'])<dist_mins:
-                        temp=0
-                        optima[j]['counter']+=1
-                        break
-                if temp==1:
-                    min['counter']=1
-                    optima.append(min)
-                    LML=SP.concatenate((LML,min['LML'][:,SP.newaxis]),1)
-    
-         # Order the list optima with respect to LML; the first optimum has highest LML
-        optima1=[]
-        index = LML.argsort(axis = 1)[0,:][::-1]
-        for i in range(len(optima)):
-            optima1.append(optima[index[i]])
-    
-        return optima1
 
-    def getParams(self,term_i=None):
+    def getOptimum(self):
+        return self.optimum
+
+    def getLML(self):
+        """
+        Return LML
+        """
+        assert self.init, 'GP not initialised'
+        return self.vd.getLML()
+    
+    def getLMLgrad(self):
+        """
+        Return LMLgrad
+        """
+        assert self.init, 'GP not initialised'
+        return self.vd.getLMLgrad()
+
+    def setScales(self,scales=None,term_num=None):
+        """
+        get random initialization of variances based on the empirical trait variance
+        if scales==None:    set them randomly
+        else:               set scales to term_i (if term_i==None: set to all terms)
+        """
+        if scales==None:
+            for term_i in range(self.n_terms):
+                n_scales = self.vd.getTerm(term_i).getNumberScales()
+                self.vd.getTerm(term_i).setScales(SP.array(SP.randn(n_scales)))
+        elif term_num==None:
+            assert scales.shape[0]==self.vd.getNumberScales(), 'incompatible shape'
+            index = 0
+            for term_i in range(self.n_terms):
+                index1 = index+self.vd.getTerm(term_i).getNumberScales()
+                self.vd.getTerm(term_i).setScales(scales[index:index1])
+                index = index1
+        else:
+            assert scales.shape[0]==self.vd.getTerm(term_num).getNumberScales(), 'incompatible shape'
+            self.vd.getTerm(term_num).setScales(scales)
+
+    
+    def getScales(self,term_i=None):
         """
         Returns the Parameters
         term_i: index of the term we are interested in
         if term_i==None returns the whole vector of parameters
         """
-        
         if term_i==None:
             RV = self.vd.getScales()
         else:
@@ -214,27 +204,60 @@ class CVarianceDecomposition:
             RV = self.vd.getScales(term_i)
         return RV
 
+    def getFixed(self):
+        """
+        Return dataTerm params
+        """
+        assert self.init, 'GP not initialised'
+        return self.gp.getParams()['dataTerm']
+
     def getEstTraitCovar(self,term_i=None):
         """
         Returns the estimated trait covariance matrix
         term_i: index of the term we are interested in
         """
+        assert self.P>1, 'Trait covars not defined for single trait analysis'
+        
         if term_i==None:
             RV=SP.zeros((self.P,self.P))
-            for term_i in range(self.n_terms): RV+=self.vd.getTraitCovariance(term_i)
+            for term_i in range(self.n_terms): RV+=self.vd.getTerm(term_i).getTraitCovar().K()
         else:
             assert term_i<self.n_terms, 'Term index non valid'
-            RV = self.vd.getTraitCovariance(term_i)
+            RV = self.vd.getTerm(term_i).getTraitCovar().K()
+        return RV
+    
+    def getVariances(self):
+        """
+        Returns the estimated variances as a n_terms x P matrix
+        each row of the output represents a term and its P values represent the variance corresponding variance in each trait
+        """
+        if self.P>1:
+            RV=SP.zeros((self.n_terms,self.P))
+            for term_i in range(self.n_terms):
+                RV[term_i,:]=self.vd.getTerm(term_i).getTraitCovar().K().diagonal()
+        else:
+            RV=self.getScales()**2
+        return RV
+    
+    def getVarComponents(self):
+        """
+            Returns the estimated variance components as a n_terms x P matrix
+            each row of the output represents a term and its P values represent the variance component corresponding variance in each trait
+        """
+        RV = self.getVariances()
+        RV /= RV.sum(0)
         return RV
 
-    def getCovParams(self,min):
+    def getLaplaceCovar(self):
         """
         USES LAPLACE APPROXIMATION TO CALCULATE THE COVARIANCE MATRIX OF THE OPTIMIZED PARAMETERS
         """
-        gp=min['gp']
-        ParamMask=gp.getParamMask()['covar']
+        assert self.init,        'GP not initialised'
+        assert self.fast==False, 'Not supported for fast implementation'
+        
+        ParamMask=self.gp.getParamMask()['covar']
         std=SP.zeros(ParamMask.sum())
-        H=gp.LMLhess_covar()
+        H=self.gp.LMLhess_covar()
         It= (ParamMask[:,0]==1)
         H=H[It,:][:,It]
         Sigma = SP.linalg.inv(H)
@@ -244,18 +267,11 @@ class CVarianceDecomposition:
         """
         USES LAPLACE APPROXIMATION TO CALCULATE THE BAYESIAN MODEL POSTERIOR
         """
-        
         if Sigma==None:
-            Sigma = self.getCovParams(min)
-        
-        n_params = 0
-        for term_i in range(self.n_terms):
-            n_params += self.C[term_i].getNumberParams()
-        
+            Sigma = self.getLaplaceCovar(min)
+        n_params = self.vd.getNumberScales()
         ModCompl = 0.5*n_params*SP.log(2*SP.pi)+0.5*SP.log(SP.linalg.det(Sigma))
-        
         RV = min['LML']+ModCompl
-            
         return RV
 
     def getEmpTraitCovar(self):
@@ -263,16 +279,6 @@ class CVarianceDecomposition:
         Returns the empirical trait covariance matrix
         """
         return SP.cov(self.Y.T)
-    
-    def getEmpTraitVar(self):
-        """
-        Returns the vector of empirical trait variances
-        """
-        if self.P==1:
-            RV = self.getEmpTraitCovar()
-        else:
-            RV = self.getEmpTraitCovar().diagonal()
-        return RV
 
     def estimateHeritabilities(self,K):
         """
