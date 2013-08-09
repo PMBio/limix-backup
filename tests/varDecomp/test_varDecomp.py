@@ -6,6 +6,7 @@ import pdb
 import os
 import sys
 import limix
+import limix.modules.varianceDecomposition as VAR
 
 geno_file = './varDecomp/genotype.csv'
 pheno_file = './varDecomp/phenotype.csv'
@@ -54,19 +55,33 @@ class CVarianceDecomposition_test(unittest.TestCase):
             self.P = self.Y.shape[1]
 
         self.Kg = SP.dot(self.X,self.X.T)
+        self.Kg = self.Kg/self.Kg.diagonal().mean()
 
-        self.vd = limix.CVarianceDecomposition(self.Y)
-        self.vd.addFixedEffTerm("specific")
-        self.vd.addTerm("Dense",self.Kg)
-        self.vd.addTerm("Block",self.Kg)
-        self.vd.addTerm("Dense",SP.eye(self.N))
-        self.vd.addTerm("Identity",SP.eye(self.N))
-        self.vd.initGP()
+        self.vc = VAR.CVarianceDecomposition(self.Y)
+        self.vc.addMultiTraitTerm(self.Kg)
+        self.vc.addMultiTraitTerm(SP.eye(self.N))
+        self.vc.addFixedTerm(SP.ones((self.N,1)))
+        self.vc.setScales()
+        self.params0=self.vc.getScales()
         
     def test_fit(self):
         """ optimization test """
-        self.vd.trainGP()
-        params = self.vd.getOptimum()['scales'][:,0]
+        self.vc.setScales(self.params0)
+        self.vc.fit()
+        params = self.vc.getScales()
+        if self.generate:
+            SP.savetxt(param_file,params)
+            params_true = SP.zeros_like(params)
+        else:
+            params_true = SP.loadtxt(param_file)
+        RV = ((params-params_true)**2).max()<1e-6
+        self.assertTrue(RV)
+
+    def test_fitFast(self):
+        """ optimization test """
+        self.vc.setScales(self.params0)
+        self.vc.fit(fast=True)
+        params = self.vc.getScales()
         if self.generate:
             SP.savetxt(param_file,params)
             params_true = SP.zeros_like(params)
