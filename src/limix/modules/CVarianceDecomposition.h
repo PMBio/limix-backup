@@ -30,8 +30,6 @@ namespace limix {
 %rename(getK) AVarianceTerm::agetK;
 %rename(getX) AVarianceTerm::agetX;
 %rename(getScales) AVarianceTerm::agetScales;
-%rename(getTraitCovariance) AVarianceTerm::agetTraitCovariance;
-%rename(getVariances) AVarianceTerm::agetVariances;
 #endif
 
 class AVarianceTerm {
@@ -39,7 +37,7 @@ protected:
 	//Covariance Functions
 	PCovarianceFunction Kcf;
 	//Kinship matrix and SNP data
-	muint_t K_mode;
+	bool Knull;
 	MatrixXd K;
 	MatrixXd X;
 	//boold
@@ -56,17 +54,15 @@ public:
 
 	//Kinship and SNP data
 	virtual void setK(const MatrixXd& K) throw(CGPMixException);
-	virtual void setX(const MatrixXd& X) throw(CGPMixException);
 	virtual void agetK(MatrixXd *out) const throw(CGPMixException);
-	virtual void agetX(MatrixXd *out) const throw(CGPMixException);
+	virtual PCovarianceFunction getKcf() {return Kcf;};
+
+	virtual PCovarianceFunction getTraitCovar() const throw(CGPMixException) =0;
 
 	//Params Handling
 	virtual void setScales(const VectorXd& scales) throw(CGPMixException) =0;
 	virtual void agetScales(VectorXd* scales) const throw(CGPMixException) =0;
 	virtual muint_t getNumberScales() const throw(CGPMixException) = 0;
-	//Covariance, Variance, Correlations? and Variance Components
-	virtual void agetTraitCovariance(MatrixXd *out) const throw(CGPMixException) =0;
-	virtual void agetVariances(VectorXd* out) const throw(CGPMixException) =0;
 
 	//initTerm and getCovariance
 	virtual void initTerm() throw(CGPMixException) = 0;
@@ -96,13 +92,13 @@ public:
 
 	virtual muint_t getNumberTraits() {return (muint_t)1;};
 
+
+	virtual PCovarianceFunction getTraitCovar() const throw(CGPMixException);
+
 	// Params Handling
 	virtual void setScales(const VectorXd& scales) throw(CGPMixException);
 	virtual void agetScales(VectorXd* out) const throw(CGPMixException);
 	virtual muint_t getNumberScales() const throw(CGPMixException);
-	//Covariance, Variance, Correlations? and Variance Components
-	virtual void agetTraitCovariance(MatrixXd *out) const throw(CGPMixException);
-	virtual void agetVariances(VectorXd* out) const throw(CGPMixException);
 
 	//initTerm and get covariance
 	virtual void initTerm() throw(CGPMixException);
@@ -122,13 +118,12 @@ class CMultiTraitTerm : public AVarianceTerm
 protected:
 	muint_t P;
 	PCovarianceFunction traitCovariance;
-	std::string TCtype;
+	bool isNull;
 	// TOTAL COVARIANCE
 	PKroneckerCF covariance;
 public:
 	CMultiTraitTerm(muint_t P);
-	CMultiTraitTerm(muint_t P, std::string TCtype, const MatrixXd& K);
-	CMultiTraitTerm(muint_t P, std::string TCtype, muint_t p, const MatrixXd& K);
+	CMultiTraitTerm(muint_t P, PCovarianceFunction traitCovar, const MatrixXd& K);
 	virtual ~CMultiTraitTerm();
 
 	virtual std::string getName() {return "CMultiTraitTerm";};
@@ -137,16 +132,13 @@ public:
 	virtual muint_t getNumberTraits() {return (muint_t)this->P;};
 
 	//MultiPhenoFramework
-	void setTraitCovarianceType(std::string TCtype, muint_t p=0) throw(CGPMixException);
-	std::string getTraitCovarianceType() const throw(CGPMixException);
+	void setTraitCovar(PCovarianceFunction traitCovar) throw(CGPMixException);
+	virtual PCovarianceFunction getTraitCovar() const throw(CGPMixException);
 
 	// Params Handling
 	virtual void setScales(const VectorXd& scales) throw(CGPMixException);
 	virtual void agetScales(VectorXd* out) const throw(CGPMixException);
 	virtual muint_t getNumberScales() const throw(CGPMixException);
-	//Covariance, Variance, Correlations? and Variance Components
-	virtual void agetTraitCovariance(MatrixXd *out) const throw(CGPMixException);
-	virtual void agetVariances(VectorXd* out) const throw(CGPMixException);
 
 	//initTerm and get covariance
 	virtual void initTerm() throw(CGPMixException);
@@ -161,13 +153,9 @@ typedef sptr<CMultiTraitTerm> PMultiTraitTerm;
 
 typedef std::vector<PVarianceTerm> PVarianceTermVec;
 typedef std::vector<MatrixXd> MatrixXdVec;
-typedef CGPHyperParams CVDOptimum;
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 %rename(getScales) CVarianceDecomposition::agetScales;
-%rename(getVariances) CVarianceDecomposition::agetVariances;
-%rename(getTraitCovariance) CVarianceDecomposition::agetTraitCovariance;
-%rename(getVarComponents) CVarianceDecomposition::agetVarComponents;
 #endif
 
 class CVarianceDecomposition
@@ -177,6 +165,7 @@ protected:
 	muint_t N,P;
 	//Fixed effects
 	MatrixXdVec fixedEffs;
+	MatrixXdVec designs;
 	//terms
 	PVarianceTermVec terms;
 	//Gaussian Process
@@ -186,10 +175,9 @@ protected:
 	PSumCF covar;
 	//pheno
 	MatrixXd pheno;
-	//Optimum
-	CVDOptimum optimum;
 	//bool
 	bool is_init;
+	bool fast;
 public:
 	CVarianceDecomposition(const MatrixXd& pheno);
 	~CVarianceDecomposition();
@@ -203,18 +191,18 @@ public:
 	virtual muint_t getNumberIndividuals() const throw(CGPMixException) {return this->N;};
 
 	// Fixed Effect Terms
-	virtual void addFixedEffTerm(const std::string fixedType) throw(CGPMixException);
-	virtual void addFixedEffTerm(const std::string fixedType, const MatrixXd& singleTraitFixed) throw(CGPMixException);
-	virtual void addFixedEffTerm(const MatrixXd& fixed) throw(CGPMixException);
-	virtual void getFixedEffTerm(MatrixXd *out, const muint_t i) const throw(CGPMixException);
+	virtual void addFixedEffTerm(const MatrixXd& design, const MatrixXd& fixed) throw(CGPMixException);
+	virtual void addFixedEffTerm(const MatrixXd& F) throw(CGPMixException);
+	virtual void getFixed(MatrixXd *out, const muint_t i) const throw(CGPMixException);
+	virtual void getDesign(MatrixXd *out, const muint_t i) const throw(CGPMixException);
 	virtual void clearFixedEffs();
 	virtual muint_t getNumberFixedEffs() const;
+	// access fixed
 
 	// Variance Term
 	virtual void addTerm(PVarianceTerm term) throw(CGPMixException);
 	virtual void addTerm(const MatrixXd& K) throw(CGPMixException);	//add Single Trait Term
-	virtual void addTerm(std::string TCtype, const MatrixXd& K) throw(CGPMixException);	//add Multi Trait Term
-	virtual void addTerm(std::string TCtype, muint_t p, const MatrixXd& K) throw(CGPMixException);	//add Multi Trait Term
+	virtual void addTerm(PCovarianceFunction traitCovar, const MatrixXd& K) throw(CGPMixException);	//add Multi Trait Term
 	virtual PVarianceTerm getTerm(muint_t i) const throw(CGPMixException);
 	virtual void clearTerms();
 	virtual muint_t getNumberTerms() const;
@@ -224,23 +212,22 @@ public:
 	virtual void agetScales(muint_t i, VectorXd* out) const throw(CGPMixException);
 	virtual void agetScales(VectorXd* out) throw(CGPMixException);
 	virtual muint_t getNumberScales() throw(CGPMixException);
-	virtual void agetTraitCovariance(muint_t i, MatrixXd *out) const throw(CGPMixException);
-	virtual void agetVariances(muint_t i, VectorXd* out) const throw(CGPMixException);
-	virtual void agetVariances(MatrixXd* out) throw(CGPMixException);
-	virtual void agetVarComponents(MatrixXd* out) throw(CGPMixException);
 
 	//get gp, Covar and mean
 	virtual PGPbase getGP() {return this->gp;};
 	virtual PSumCF getCovar() {return this->covar;};
 	virtual PLinearMean getMean() {return static_pointer_cast<CLinearMean>(this->gp->getDataTerm());};
 	//init and train GP
-	virtual void initGP() throw(CGPMixException);
-	virtual bool trainGP(bool bayes=false) throw(CGPMixException);
-	virtual CVDOptimum getOptimum() {return this->optimum;};
+	virtual void initGP(bool fast=false) throw(CGPMixException);
+	virtual void initGPbase() throw(CGPMixException);
+	virtual void initGPkronSum() throw(CGPMixException);
+	virtual bool trainGP() throw(CGPMixException);
 	//access GP
 	virtual void getFixedEffects(VectorXd* out) throw(CGPMixException);
 	virtual mfloat_t getLML() throw(CGPMixException);
 	virtual mfloat_t getLMLgrad() throw(CGPMixException);
+	virtual mfloat_t getLMLgradGPbase() throw(CGPMixException);
+	virtual mfloat_t getLMLgradGPkronSum() throw(CGPMixException);
 };
 typedef sptr<CVarianceDecomposition> PVarianceDecomposition;
 
