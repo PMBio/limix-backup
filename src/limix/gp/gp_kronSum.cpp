@@ -214,7 +214,7 @@ MatrixXd& CGPkronSumCache::rgetYrotPart()
 		//Rotate columns of Y
 		YrotPartCache.resize(gp->getY().rows(),gp->getY().cols());
 		MatrixXd& Lambdar = rgetLambdar();
-		for (muint_t p=0; p<this->gp->getY().cols(); p++)
+		for (muint_t p=0; p<(muint_t)this->gp->getY().cols(); p++)
 			YrotPartCache.block(0,p,gp->getY().rows(),1).noalias()=Lambdar*gp->dataTerm->evaluate().block(0,p,gp->getY().rows(),1);
 		YrotPartCacheNull=false;
 	}
@@ -230,7 +230,7 @@ MatrixXd& CGPkronSumCache::rgetYrot()
 		//Rotate rows of Y
 		YrotCache.resize(gp->getY().rows(),gp->getY().cols());
 		MatrixXd& Lambdac = rgetLambdac();
-		for (muint_t n=0; n<this->gp->getY().rows(); n++)
+		for (muint_t n=0; n<(muint_t)this->gp->getY().rows(); n++)
 			YrotCache.block(n,0,1,gp->getY().cols()).noalias()=rgetYrotPart().block(n,0,1,gp->getY().cols())*Lambdac.transpose();
 		YrotCacheNull=false;
 	}
@@ -410,16 +410,16 @@ mfloat_t CGPkronSum::LML() throw (CGPMixException)
     //1. logdet:
     mfloat_t lml_det = 0;
     mfloat_t temp = 0;
-    for (muint_t p=0; p<Yrot.cols(); p++)
+    for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
     	temp+=std::log(Ssigma(p,0));
     lml_det += Yrot.rows()*temp;
     temp = 0;
-    for (muint_t n=0; n<Yrot.rows(); n++)
+    for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
     	temp+=std::log(Somega(n,0));
     lml_det += Yrot.cols()*temp;
     temp = 0;
-    for (muint_t n=0; n<Yrot.rows(); n++)
-        for (muint_t p=0; p<Yrot.cols(); p++)
+    for (muint_t n=0; n<(muint_t) Yrot.rows(); n++)
+        for (muint_t p=0; p<(muint_t) Yrot.cols(); p++)
         	temp+=std::log(Scstar(p,0)*Srstar(n,0)+1);
     lml_det += temp;
     lml_det *= 0.5;
@@ -428,8 +428,8 @@ mfloat_t CGPkronSum::LML() throw (CGPMixException)
     beg = clock();
     //2. quadratic term
     mfloat_t lml_quad = 0;
-    for (muint_t n=0; n<Yrot.rows(); n++)	{
-        for (muint_t p=0; p<Yrot.cols(); p++)	{
+    for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
+        for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
     		lml_quad+=std::pow(Yrot(n,p),2)/(Scstar(p,0)*Srstar(n,0)+1);
     	}
     }
@@ -520,8 +520,8 @@ void CGPkronSum::aLMLgrad_covarc1(VectorXd *out) throw (CGPMixException)
 		CgradRot=Lambdac*covarc1->Kgrad_param(i)*Lambdac.transpose();
 		//1. grad logdet
 		mfloat_t grad_det = 0;
-	    for (muint_t n=0; n<Yrot.rows(); n++)	{
-	        for (muint_t p=0; p<Yrot.cols(); p++)	{
+	    for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
+	        for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
 	        	grad_det+=CgradRot(p,p)*Rrot(n,n)/(Scstar(p,0)*Srstar(n,0)+1);
 	    	}
 	    }
@@ -530,9 +530,9 @@ void CGPkronSum::aLMLgrad_covarc1(VectorXd *out) throw (CGPMixException)
 	    // Decomposition in columns and row
 	    MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
 	    MatrixXd YtildeR(Yrot.rows(),Yrot.cols());
-		for (muint_t p=0; p<Yrot.cols(); p++)
+		for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
 			_Ytilde.block(0,p,Yrot.rows(),1).noalias()=Rrot*Ytilde.block(0,p,Yrot.rows(),1);
-		for (muint_t n=0; n<Yrot.rows(); n++)
+		for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
 			YtildeR.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*CgradRot.transpose();
 		mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
 		(*out)(i,0)=grad_det+grad_quad;
@@ -561,8 +561,8 @@ void CGPkronSum::aLMLgrad_covarc2(VectorXd *out) throw (CGPMixException)
 		SigmaGradRot=Lambdac*covarc2->Kgrad_param(i)*Lambdac.transpose();
 		//1. grad logdet
 		mfloat_t grad_det = 0;
-	    for (muint_t n=0; n<Yrot.rows(); n++)	{
-	        for (muint_t p=0; p<Yrot.cols(); p++)	{
+	    for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
+	        for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
 	        	grad_det+=SigmaGradRot(p,p)*OmegaRot(n,n)/(Scstar(p,0)*Srstar(n,0)+1);
 	    	}
 	    }
@@ -571,9 +571,9 @@ void CGPkronSum::aLMLgrad_covarc2(VectorXd *out) throw (CGPMixException)
 	    // Decomposition in columns and row
 	    MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
 	    MatrixXd YtildeR(Yrot.rows(),Yrot.cols());
-		for (muint_t p=0; p<Yrot.cols(); p++)
+		for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
 			_Ytilde.block(0,p,Yrot.rows(),1).noalias()=OmegaRot*Ytilde.block(0,p,Yrot.rows(),1);
-		for (muint_t n=0; n<Yrot.rows(); n++)
+		for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
 			YtildeR.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*SigmaGradRot.transpose();
 		mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
 		(*out)(i,0)=grad_det+grad_quad;
@@ -607,8 +607,8 @@ void CGPkronSum::aLMLgrad_covarr1(VectorXd *out) throw (CGPMixException)
 		this->is_it+=te1(beg);
 		//1. grad logdet
 		mfloat_t grad_det = 0;
-	    for (muint_t n=0; n<Yrot.rows(); n++)	{
-	        for (muint_t p=0; p<Yrot.cols(); p++)	{
+	    for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
+	        for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
 	        	grad_det+=Crot(p,p)*RgradRot(n,n)/(Scstar(p,0)*Srstar(n,0)+1);
 	    	}
 	    }
@@ -617,9 +617,9 @@ void CGPkronSum::aLMLgrad_covarr1(VectorXd *out) throw (CGPMixException)
 	    // Decomposition in columns and row
 	    MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
 	    MatrixXd YtildeR(Yrot.rows(),Yrot.cols());
-		for (muint_t p=0; p<Yrot.cols(); p++)
+		for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
 			_Ytilde.block(0,p,Yrot.rows(),1).noalias()=RgradRot*Ytilde.block(0,p,Yrot.rows(),1);
-		for (muint_t n=0; n<Yrot.rows(); n++)
+		for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
 			YtildeR.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*Crot.transpose();
 		mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
 		(*out)(i,0)=grad_det+grad_quad;
@@ -651,8 +651,8 @@ void CGPkronSum::aLMLgrad_covarr2(VectorXd *out) throw (CGPMixException)
 		OmgaGradRot=Lambdar*covarr2->Kgrad_param(i)*Lambdar.transpose();
 		//1. grad logdet
 		mfloat_t grad_det = 0;
-	    for (muint_t n=0; n<Yrot.rows(); n++)	{
-	        for (muint_t p=0; p<Yrot.cols(); p++)	{
+	    for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
+	        for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
 	        	grad_det+=SigmaRot(p,p)*OmgaGradRot(n,n)/(Scstar(p,0)*Srstar(n,0)+1);
 	    	}
 	    }
@@ -661,9 +661,9 @@ void CGPkronSum::aLMLgrad_covarr2(VectorXd *out) throw (CGPMixException)
 	    // Decomposition in columns and row
 	    MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
 	    MatrixXd YtildeR(Yrot.rows(),Yrot.cols());
-		for (muint_t p=0; p<Yrot.cols(); p++)
+		for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
 			_Ytilde.block(0,p,Yrot.rows(),1).noalias()=OmgaGradRot*Ytilde.block(0,p,Yrot.rows(),1);
-		for (muint_t n=0; n<Yrot.rows(); n++)
+		for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
 			YtildeR.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*SigmaRot.transpose();
 		mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
 		(*out)(i,0)=grad_det+grad_quad;
@@ -682,9 +682,9 @@ void CGPkronSum::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 	MatrixXd& Ytilde = cache->rgetYtilde();
 	MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
 	MatrixXd KinvY(Yrot.rows(),Yrot.cols());
-	for (muint_t p=0; p<Yrot.cols(); p++)
+	for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
 		_Ytilde.block(0,p,Yrot.rows(),1).noalias()=Lambdar.transpose()*Ytilde.block(0,p,Yrot.rows(),1);
-	for (muint_t n=0; n<Yrot.rows(); n++)
+	for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
 		KinvY.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*Lambdac;
 	(*out) = this->dataTerm->gradParams(KinvY);
 }

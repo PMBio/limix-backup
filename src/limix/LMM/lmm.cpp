@@ -273,6 +273,7 @@ int ALMM::getTestStatistics() const
             Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(K);
             U = eigensolver.eigenvectors();
             S = eigensolver.eigenvalues();
+            this->UK_cached = true;
         }
         if(!Usnps_cached){
             Usnps.noalias() = U.transpose() * snps;
