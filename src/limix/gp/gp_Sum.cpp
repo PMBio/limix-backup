@@ -224,14 +224,14 @@ void CGPSum::updateParams() throw (CGPMixException)
 
         //1. logdet:
         mfloat_t lml_det = 0;
-        for (muint_t i=0; i<Ssigma.rows(); i++) {
+        for (muint_t i=0; i<(muint_t) Ssigma.rows(); i++) {
         	lml_det+=std::log(Ssigma(i,0));
         	lml_det+=std::log(Scstar(i,0)+1);
         }
         lml_det *= 0.5;
         //2. quadratic term
         mfloat_t lml_quad = 0;
-        for (muint_t i=0; i<Ssigma.rows(); i++) {
+        for (muint_t i=0; i<(muint_t) Ssigma.rows(); i++) {
         	lml_quad+=std::pow(Yrot(i,0),2)/(Scstar(i,0)+1);
         }
         lml_quad *= 0.5;
@@ -282,8 +282,8 @@ void CGPSum::updateParams() throw (CGPMixException)
         MatrixXd ScstarP1i = cache->rgetScstar();
         ScstarP1i+=MatrixXd::Ones(this->getY().rows(),1);
         //in place inversion
-        for (muint_t i=0;i<ScstarP1i.rows();i++){
-            for (muint_t j=0;j<ScstarP1i.cols();j++){
+        for (muint_t i=0;i<(muint_t)ScstarP1i.rows();i++){
+            for (muint_t j=0;j<(muint_t)ScstarP1i.cols();j++){
             	ScstarP1i(i,j)=std::pow(ScstarP1i(i,j),-1);
             }
         }

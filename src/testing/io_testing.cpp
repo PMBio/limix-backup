@@ -1,4 +1,4 @@
-#if 1
+#if 0
 //============================================================================
 // Name        : GPmix.cpp
 // C++ testig file for variance component QTL
@@ -9,7 +9,6 @@
 #include "limix/covar/covariance.h"
 #include "limix/covar/linear.h"
 #include "limix/utils/matrix_helper.h"
-#include "limix/modules/CMultiTraitVQTL.h"
 #include "limix/modules/CVarianceDecomposition.h"
 #include "limix/io/genotype.h"
 #include <string>

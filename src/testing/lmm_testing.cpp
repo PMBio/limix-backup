@@ -1,4 +1,4 @@
-#if 0
+#if 1
 //============================================================================
 // Name        : GPmix.cpp
 // Author      :
@@ -58,15 +58,13 @@ int main() {
 		lmm.setSNPs(snps);
 		lmm.setPheno(pheno);
 		lmm.setCovs(covs);
-		//lmm.setNumIntervals0(10);
-		//lmm.setTestStatistics(lmm.TEST_F);
-
 		lmm.process();
-		//std::cout << lmm.getLdelta0() << "\n\n\n\n";
-		//std::cout << lmm.getLdeltaAlt() << "\n";
 
-		//std::cout << lmm.getNLL0() << "\n\n\n\n";
-		//std::cout << lmm.getNLLAlt() << "\n";
+
+		lmm.setSNPs(snps);
+		lmm.process();
+
+
 
 		MatrixXd pv = lmm.getPv();
 		cout <<"pv:\n"<< scientific <<pv<<endl;
