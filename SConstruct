@@ -66,6 +66,7 @@ releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
 ### 3. compiler flags & environment
 if sys.platform=='win32':
    cflags.extend(['-EHsc'])
+   debugcflags.extend(['-Zi'])
 else:
    cflags.extend(['-fPIC'])
    releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
