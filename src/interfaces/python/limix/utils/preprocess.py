@@ -13,13 +13,18 @@ def variance_K(K, verbose=False):
     return 1.0/scalar
 
 
-def scale_K(K, verbose=False):
-    """scale covariance K such that it explains unit variance"""
-    c = SP.sum((SP.eye(len(K)) - (1.0 / len(K)) * SP.ones(K.shape)) * SP.array(K))
-    scalar = (len(K) - 1) / c
+def scale_K(K, verbose=False,trace_method=True):
+    """scale covariance K such that it explains unit variance
+    trace_method: standardize to unit trace (deafault: True)
+    """
+    if trace_method:
+        scalar=1.0/(K.diagonal().mean())
+    else:
+        c = SP.sum((SP.eye(len(K)) - (1.0 / len(K)) * SP.ones(K.shape)) * SP.array(K))
+        scalar = (len(K) - 1) / c
     if verbose:
         print 'Kinship scaled by: %0.4f' % scalar
-    K = scalar * K
+    K = K * scalar
     return K
 
 
