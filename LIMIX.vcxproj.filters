@@ -244,12 +244,6 @@
     <ClInclude Include="src\limix\mean\CSumLinear.h">
       <Filter>limix\mean</Filter>
     </ClInclude>
-    <ClInclude Include="src\limix\mean\CKroneckerMean.h">
-      <Filter>limix\mean</Filter>
-    </ClInclude>
-    <ClInclude Include="src\limix\mean\CKroneckerSumMean.h">
-      <Filter>limix\mean</Filter>
-    </ClInclude>
     <ClInclude Include="src\limix\mean\CLinearMean.h">
       <Filter>limix\mean</Filter>
     </ClInclude>
@@ -411,6 +405,12 @@
     </ClInclude>
     <ClInclude Include="src\limix\io\split.h">
       <Filter>limix\io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\mean\CKroneckerSumMean.h">
+      <Filter>limix\mean</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\mean\CKroneckerMean.h">
+      <Filter>limix\mean</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
