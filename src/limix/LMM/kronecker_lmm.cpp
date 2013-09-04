@@ -64,9 +64,9 @@ namespace limix {
             this->U2c = eigensolver2c.eigenvectors();
             this->S2c = eigensolver2c.eigenvalues();
 
-			Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver1r(S1U1K2r);
-            this->U2r = eigensolver1r.eigenvectors();
-            this->S2r = eigensolver1r.eigenvalues();
+			Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver2r(S1U1K2r);
+            this->U2r = eigensolver2r.eigenvectors();
+            this->S2r = eigensolver2r.eigenvalues();
             
 			this->UK_cached = true;
         }
