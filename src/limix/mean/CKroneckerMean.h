@@ -1,12 +1,12 @@
 /*
- * CKroneckerMean.h
+ * CKroneckerSumMean.h
  *
  *  Created on: Jan 19, 2012
  *      Author: clippert
  */
 
-#ifndef CKRONECKERMEAN_H_
-#define CKRONECKERMEAN_H_
+#ifndef CKRONECKERSUMMEAN_H_
+#define CKRONECKERSUMMEAN_H_
 
 #include "ADataTerm.h"
 #include "CLinearMean.h"
@@ -14,23 +14,23 @@
 namespace limix {
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CKroneckerMean)
+//%sptr(gpmix::CKroneckerSumMean)
 #endif
 
-class CKroneckerMean : public CLinearMean {
+class CKroneckerSumMean : public CLinearMean {
 protected:
 	MatrixXd A;
 public:
-	CKroneckerMean();
-	CKroneckerMean(MatrixXd& Y, MatrixXd& fixedEffects, MatrixXd& A);
-	CKroneckerMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects, MatrixXd& A);
-	virtual ~CKroneckerMean();
+	CKroneckerSumMean();
+	CKroneckerSumMean(MatrixXd& Y, MatrixXd& fixedEffects, MatrixXd& A);
+	CKroneckerSumMean(MatrixXd& Y, MatrixXd& weights, MatrixXd& fixedEffects, MatrixXd& A);
+	virtual ~CKroneckerSumMean();
 
 	virtual void setA(const MatrixXd& A);
 	virtual void agetA(MatrixXd* out)
 	{
-		//generate the pseudo Design matrix that is equivalent ot the one used by CKroneckerMean
-		//TODO: think about implementing CLinearMean as a special case of CKroneckerMean?!
+		//generate the pseudo Design matrix that is equivalent ot the one used by CKroneckerSumMean
+		//TODO: think about implementing CLinearMean as a special case of CKroneckerSumMean?!
 		(*out) = A;
 	}
 	virtual void setWeightsOLS(const MatrixXd& Y);
@@ -47,9 +47,9 @@ public:
 		return (muint_t) this->A.rows();
 	}
 };
-typedef sptr<CKroneckerMean> PKroneckerMean;
+typedef sptr<CKroneckerSumMean> PKroneckerMean;
 
-inline void CKroneckerMean::checkDimensions(const MatrixXd& Y, const bool checkStrictWeights = true) const throw (CGPMixException)
+inline void CKroneckerSumMean::checkDimensions(const MatrixXd& Y, const bool checkStrictWeights = true) const throw (CGPMixException)
 {
 	if (Y.rows() != this->fixedEffects.rows() && (muint_t)Y.cols() != this->getNTargets())
 	{
@@ -61,4 +61,4 @@ inline void CKroneckerMean::checkDimensions(const MatrixXd& Y, const bool checkS
 }
 
 } /* namespace limix */
-#endif /* CKRONECKERMEAN_H_ */
+#endif /* CKroneckerSumMean_H_ */

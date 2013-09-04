@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="limix">
+      <UniqueIdentifier>{9bcc6406-63b5-49a8-a6d2-420f804d6560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testing">
+      <UniqueIdentifier>{8a3ff3be-9970-41ce-b600-076de4979d4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\mean">
+      <UniqueIdentifier>{fe9ff3f6-106a-4409-b83d-b22a88348aba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\LMM">
+      <UniqueIdentifier>{fa15d95d-8d9a-41f0-967c-f278e0b1bb34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\gp">
+      <UniqueIdentifier>{770ceb89-3fc2-4e94-8ca6-69c6a72784ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\modules">
+      <UniqueIdentifier>{db2763aa-98de-453d-be1f-9a82566f3afd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\utils">
+      <UniqueIdentifier>{552ae7f2-92b7-4518-a080-d16a8b4a954a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\likelihood">
+      <UniqueIdentifier>{17ed219d-546e-4adb-b768-f6197159c869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\io">
+      <UniqueIdentifier>{20cbfdab-4990-491d-88f7-e5219fcb700e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\lasso">
+      <UniqueIdentifier>{a8488994-ce99-44ef-ad78-aa38ded4153d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\covar">
+      <UniqueIdentifier>{5260f52a-a159-49aa-a39a-507fd2560293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\io\vcf">
+      <UniqueIdentifier>{c80e31a1-626d-42be-9916-909d0d023619}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\io\vcf\multichoose">
+      <UniqueIdentifier>{bf955187-aaec-4617-9583-a00bfd7ec9e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\io\vcf\smithwaterman">
+      <UniqueIdentifier>{aaa527fc-1cb8-40de-9230-f7fe03b859a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="limix\io\vcf\tabixpp">
+      <UniqueIdentifier>{80ef43ed-d9c1-41d6-85a0-59af8a2926f5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\limix\mean\ADataTerm.cpp">
+      <Filter>limix\mean</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\mean\CData.cpp">
+      <Filter>limix\mean</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\mean\CKroneckerMean.cpp">
+      <Filter>limix\mean</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\mean\CKroneckerSumMean.cpp">
+      <Filter>limix\mean</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\mean\CLinearMean.cpp">
+      <Filter>limix\mean</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\mean\CSumLinear.cpp">
+      <Filter>limix\mean</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\lmm\CGPLMM.cpp">
+      <Filter>limix\LMM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\lmm\kronecker_lmm.cpp">
+      <Filter>limix\LMM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\lmm\lmm.cpp">
+      <Filter>limix\LMM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\lmm\lmm_old.cpp">
+      <Filter>limix\LMM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\lasso\lasso.cpp">
+      <Filter>limix\lasso</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\SmithWatermanGotoh.cpp">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\Repeats.cpp">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\LeftAlign.cpp">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\IndelAllele.cpp">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\disorder.cpp">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\BandedSmithWaterman.cpp">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\tabixpp\bedidx.c">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\tabixpp\bgzf.c">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\tabixpp\index.c">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\tabixpp\knetfile.c">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\tabixpp\kstring.c">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\tabixpp\tabix.cpp">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\vcf\Variant.cpp">
+      <Filter>limix\io\vcf</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\utils\beta.cpp">
+      <Filter>limix\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\utils\brentc.cpp">
+      <Filter>limix\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\utils\fisherf.cpp">
+      <Filter>limix\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\utils\gamma.cpp">
+      <Filter>limix\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\utils\logging.cpp">
+      <Filter>limix\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\utils\mathfunctions.cpp">
+      <Filter>limix\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\utils\matrix_helper.cpp">
+      <Filter>limix\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\modules\CVarianceDecomposition.cpp">
+      <Filter>limix\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\modules\CVqtl.cpp">
+      <Filter>limix\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\covar\combinators.cpp">
+      <Filter>limix\covar</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\covar\covariance.cpp">
+      <Filter>limix\covar</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\covar\dist.cpp">
+      <Filter>limix\covar</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\covar\freeform.cpp">
+      <Filter>limix\covar</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\covar\linear.cpp">
+      <Filter>limix\covar</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\covar\se.cpp">
+      <Filter>limix\covar</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\gp\gp_kronecker.cpp">
+      <Filter>limix\gp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\gp\gp_base.cpp">
+      <Filter>limix\gp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\gp\gp_kronSum.cpp">
+      <Filter>limix\gp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\gp\gp_opt.cpp">
+      <Filter>limix\gp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\gp\gp_Sum.cpp">
+      <Filter>limix\gp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\likelihood\likelihood.cpp">
+      <Filter>limix\likelihood</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\dataframe.cpp">
+      <Filter>limix\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\genotype.cpp">
+      <Filter>limix\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\split.cpp">
+      <Filter>limix\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\covar_tests.cpp">
+      <Filter>testing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\gp_testing.cpp">
+      <Filter>testing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\gp_testing_opt.cpp">
+      <Filter>testing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\gplvm_testing.cpp">
+      <Filter>testing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\io_testing.cpp">
+      <Filter>testing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\kronecker_lmm_testing.cpp">
+      <Filter>testing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\kronecker_testing.cpp">
+      <Filter>testing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\lasso_testing.cpp">
+      <Filter>testing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\lmm_testing.cpp">
+      <Filter>testing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testing\vqtl_testing.cpp">
+      <Filter>testing</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\limix\types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\mean\ADataTerm.h">
+      <Filter>limix\mean</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\mean\CData.h">
+      <Filter>limix\mean</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\mean\CSumLinear.h">
+      <Filter>limix\mean</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\mean\CKroneckerMean.h">
+      <Filter>limix\mean</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\mean\CKroneckerSumMean.h">
+      <Filter>limix\mean</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\mean\CLinearMean.h">
+      <Filter>limix\mean</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\covar\combinators.h">
+      <Filter>limix\covar</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\covar\covariance.h">
+      <Filter>limix\covar</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\covar\dist.h">
+      <Filter>limix\covar</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\covar\freeform.h">
+      <Filter>limix\covar</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\covar\linear.h">
+      <Filter>limix\covar</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\covar\se.h">
+      <Filter>limix\covar</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\lmm\CGPLMM.h">
+      <Filter>limix\LMM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\lmm\kronecker_lmm.h">
+      <Filter>limix\LMM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\lmm\lmm.h">
+      <Filter>limix\LMM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\lmm\lmm_old.h">
+      <Filter>limix\LMM</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\lasso\lasso.h">
+      <Filter>limix\lasso</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\convert.h">
+      <Filter>limix\io\vcf</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\convert.h">
+      <Filter>limix\io\vcf</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\join.h">
+      <Filter>limix\io\vcf</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\split.h">
+      <Filter>limix\io\vcf</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\Variant.h">
+      <Filter>limix\io\vcf</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\tabixpp\tabix.h">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\tabixpp\tabix.hpp">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\tabixpp\bam_endian.h">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\tabixpp\bgzf.h">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\tabixpp\khash.h">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\tabixpp\knetfile.h">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\tabixpp\kseq.h">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\tabixpp\ksort.h">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\tabixpp\kstring.h">
+      <Filter>limix\io\vcf\tabixpp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\multichoose\multichoose.h">
+      <Filter>limix\io\vcf\multichoose</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\multichoose\multipermute.h">
+      <Filter>limix\io\vcf\multichoose</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\SmithWatermanGotoh.h">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\BandedSmithWaterman.h">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\disorder.h">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\IndelAllele.h">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\LeftAlign.h">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\gp\gp_base.h">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\Mosaik.h">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\Repeats.h">
+      <Filter>limix\io\vcf\smithwaterman</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\utils\beta.h">
+      <Filter>limix\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\utils\brentc.h">
+      <Filter>limix\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\utils\fisherf.h">
+      <Filter>limix\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\utils\gamma.h">
+      <Filter>limix\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\utils\logging.h">
+      <Filter>limix\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\utils\mathfunctions.h">
+      <Filter>limix\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\utils\matrix_helper.h">
+      <Filter>limix\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\modules\CVqtl.h">
+      <Filter>limix\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\modules\CVarianceDecomposition.h">
+      <Filter>limix\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\gp\gp_kronecker.h">
+      <Filter>limix\gp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\gp\gp_kronSum.h">
+      <Filter>limix\gp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\gp\gp_opt.h">
+      <Filter>limix\gp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\gp\gp_Sum.h">
+      <Filter>limix\gp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\likelihood\likelihood.h">
+      <Filter>limix\likelihood</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\dataframe.h">
+      <Filter>limix\io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\genotype.h">
+      <Filter>limix\io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\gzstream.h">
+      <Filter>limix\io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\split.h">
+      <Filter>limix\io</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
