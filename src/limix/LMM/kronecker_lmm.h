@@ -35,8 +35,8 @@ protected:
 	MatrixXd K1c;
 	MatrixXd K2r;
 	MatrixXd K2c;
-	MatrixXd S1U1K2r;	//(K1r^{-1/2} K2r K1r^{-1/2})
-	MatrixXd S1U1K2c;	//(K1c^{-1/2} K2c K1c^{-1/2})
+	MatrixXd S2U2K1r;	//(K1r^{-1/2} K2r K1r^{-1/2})
+	MatrixXd S2U2K1c;	//(K1c^{-1/2} K2c K1c^{-1/2})
 	//decompositions
 	MatrixXd U1r;
 	VectorXd S1r;
@@ -48,7 +48,9 @@ protected:
 	MatrixXd coldesign;
 	MatrixXd Ucoldesign;
 	bool Ucoldesign_cached;
-	
+	MatrixXd snpcoldesign;
+	MatrixXd Usnpcoldesign;
+	bool Usnpcoldesign_cached;	
 public:
 	CKroneckerLMM();
 	virtual ~CKroneckerLMM();
