@@ -158,8 +158,8 @@
     <ClInclude Include="src\limix\lmm\lmm_old.h" />
     <ClInclude Include="src\limix\mean\ADataTerm.h" />
     <ClInclude Include="src\limix\mean\CData.h" />
-    <ClInclude Include="src\limix\mean\CKroneckerMean.h" />
     <ClInclude Include="src\limix\mean\CKroneckerSumMean.h" />
+    <ClInclude Include="src\limix\mean\CKroneckerMean.h" />
     <ClInclude Include="src\limix\mean\CLinearMean.h" />
     <ClInclude Include="src\limix\mean\CSumLinear.h" />
     <ClInclude Include="src\limix\modules\CVarianceDecomposition.h" />
