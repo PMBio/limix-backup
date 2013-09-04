@@ -63,6 +63,20 @@ CGPkronSumCache::CGPkronSumCache(CGPkronSum* gp)
 
 void CGPkronSumCache::validateCache()
 {
+    /*
+     This is optimised for the case where rows are fixed and colomns vary
+        (because of the partial rotation on Y, Rrot and OmegaRot)
+
+     if R1 or Omega change
+        - row rotations (inner rotation performed only if Omega changes)
+        - Lambdar
+        - YrotPart, Yrot, Ytilde
+        - Rrot, OmegaRot
+     if C1 or Sigma change
+        - col rotations (inner rotation performed only if Sigma changes)
+        - Lambdac
+        - Yrot, Ytilde
+    */
 	muint_t maskRR = this->gp->covarr1->getParamMask().sum()+this->gp->covarr2->getParamMask().sum();
 	if((!*syncCovarc1) || (!*syncCovarc2))
 	{
