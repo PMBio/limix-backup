@@ -2,6 +2,7 @@
 #define KRONECKER_LMM_H_
 
 #include "limix/LMM/lmm.h"
+#include "limix/gp/gp_kronSum.h"
 
 namespace limix {
 
@@ -34,12 +35,20 @@ protected:
 	MatrixXd K1c;
 	MatrixXd K2r;
 	MatrixXd K2c;
+	MatrixXd S1U1K2r;	//(K1r^{-1/2} K2r K1r^{-1/2})
+	MatrixXd S1U1K2c;	//(K1c^{-1/2} K2c K1c^{-1/2})
 	//decompositions
-	MatrixXd K1rU,K1rS;
-	MatrixXd K1cU,K1cS;
-	MatrixXd K2rU,K2rS;
-	MatrixXd K2cU,K2cS;
+	MatrixXd U1r;
+	VectorXd S1r;
+	MatrixXd U1c;
+	VectorXd S1c;
+	MatrixXd U2r,S2r;//These are actually decompositions of S1U1K2r (K1r^{-1/2} K2r K1r^{-1/2})
+	MatrixXd U2c,S2c;//These are actually decompositions of S1U1K2c (K1c^{-1/2} K2c K1c^{-1/2})
 
+	MatrixXd coldesign;
+	MatrixXd Ucoldesign;
+	bool Ucoldesign_cached;
+	
 public:
 	CKroneckerLMM();
 	virtual ~CKroneckerLMM();
