@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8B7D0401-46D3-4CF8-827D-AB969C044FF7}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeBuildCommandLine>scons --without-python --mode=debug --with-developcpp -j 4</NMakeBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <SourcePath>$(VCInstallDir)atlmfc\src\mfc;$(VCInstallDir)atlmfc\src\mfcm;$(VCInstallDir)atlmfc\src\atl;$(VCInstallDir)crt\src;</SourcePath>
+    <NMakeCleanCommandLine>scons --clean</NMakeCleanCommandLine>
+    <NMakeOutput>$(SolutionDir)/debug.win32/testing/main.exe</NMakeOutput>
+    <NMakeIncludeSearchPath>$(SoltionDir)/src/</NMakeIncludeSearchPath>
+    <IncludePath>$(SoltionDir)External;$(SoltionDir)src;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);</IncludePath>
+    <ReferencePath>$(VCInstallDir)atlmfc\lib;$(VCInstallDir)lib</ReferencePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeBuildCommandLine>scons --without-python --mode=debug --with-developcpp -j 4</NMakeBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\limix\covar\combinators.cpp" />
+    <ClCompile Include="src\limix\covar\covariance.cpp" />
+    <ClCompile Include="src\limix\covar\dist.cpp" />
+    <ClCompile Include="src\limix\covar\freeform.cpp" />
+    <ClCompile Include="src\limix\covar\linear.cpp" />
+    <ClCompile Include="src\limix\covar\se.cpp" />
+    <ClCompile Include="src\limix\gp\gp_base.cpp" />
+    <ClCompile Include="src\limix\gp\gp_kronecker.cpp" />
+    <ClCompile Include="src\limix\gp\gp_kronSum.cpp" />
+    <ClCompile Include="src\limix\gp\gp_opt.cpp" />
+    <ClCompile Include="src\limix\gp\gp_Sum.cpp" />
+    <ClCompile Include="src\limix\io\dataframe.cpp" />
+    <ClCompile Include="src\limix\io\genotype.cpp" />
+    <ClCompile Include="src\limix\io\split.cpp" />
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\BandedSmithWaterman.cpp" />
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\disorder.cpp" />
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\IndelAllele.cpp" />
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\LeftAlign.cpp" />
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\Repeats.cpp" />
+    <ClCompile Include="src\limix\io\vcf\smithwaterman\SmithWatermanGotoh.cpp" />
+    <ClCompile Include="src\limix\io\vcf\tabixpp\bedidx.c" />
+    <ClCompile Include="src\limix\io\vcf\tabixpp\bgzf.c" />
+    <ClCompile Include="src\limix\io\vcf\tabixpp\index.c" />
+    <ClCompile Include="src\limix\io\vcf\tabixpp\knetfile.c" />
+    <ClCompile Include="src\limix\io\vcf\tabixpp\kstring.c" />
+    <ClCompile Include="src\limix\io\vcf\tabixpp\tabix.cpp" />
+    <ClCompile Include="src\limix\io\vcf\Variant.cpp" />
+    <ClCompile Include="src\limix\lasso\lasso.cpp" />
+    <ClCompile Include="src\limix\likelihood\likelihood.cpp" />
+    <ClCompile Include="src\limix\lmm\CGPLMM.cpp" />
+    <ClCompile Include="src\limix\lmm\kronecker_lmm.cpp" />
+    <ClCompile Include="src\limix\lmm\lmm.cpp" />
+    <ClCompile Include="src\limix\lmm\lmm_old.cpp" />
+    <ClCompile Include="src\limix\mean\ADataTerm.cpp" />
+    <ClCompile Include="src\limix\mean\CData.cpp" />
+    <ClCompile Include="src\limix\mean\CKroneckerMean.cpp" />
+    <ClCompile Include="src\limix\mean\CKroneckerSumMean.cpp" />
+    <ClCompile Include="src\limix\mean\CLinearMean.cpp" />
+    <ClCompile Include="src\limix\mean\CSumLinear.cpp" />
+    <ClCompile Include="src\limix\modules\CVarianceDecomposition.cpp" />
+    <ClCompile Include="src\limix\modules\CVqtl.cpp" />
+    <ClCompile Include="src\limix\utils\beta.cpp" />
+    <ClCompile Include="src\limix\utils\brentc.cpp" />
+    <ClCompile Include="src\limix\utils\fisherf.cpp" />
+    <ClCompile Include="src\limix\utils\gamma.cpp" />
+    <ClCompile Include="src\limix\utils\logging.cpp" />
+    <ClCompile Include="src\limix\utils\mathfunctions.cpp" />
+    <ClCompile Include="src\limix\utils\matrix_helper.cpp" />
+    <ClCompile Include="src\testing\covar_tests.cpp" />
+    <ClCompile Include="src\testing\gplvm_testing.cpp" />
+    <ClCompile Include="src\testing\gp_testing.cpp" />
+    <ClCompile Include="src\testing\gp_testing_opt.cpp" />
+    <ClCompile Include="src\testing\io_testing.cpp" />
+    <ClCompile Include="src\testing\kronecker_lmm_testing.cpp" />
+    <ClCompile Include="src\testing\kronecker_testing.cpp" />
+    <ClCompile Include="src\testing\lasso_testing.cpp" />
+    <ClCompile Include="src\testing\lmm_testing.cpp" />
+    <ClCompile Include="src\testing\vqtl_testing.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\limix\covar\combinators.h" />
+    <ClInclude Include="src\limix\covar\covariance.h" />
+    <ClInclude Include="src\limix\covar\dist.h" />
+    <ClInclude Include="src\limix\covar\freeform.h" />
+    <ClInclude Include="src\limix\covar\linear.h" />
+    <ClInclude Include="src\limix\covar\se.h" />
+    <ClInclude Include="src\limix\gp\gp_base.h" />
+    <ClInclude Include="src\limix\gp\gp_kronecker.h" />
+    <ClInclude Include="src\limix\gp\gp_kronSum.h" />
+    <ClInclude Include="src\limix\gp\gp_opt.h" />
+    <ClInclude Include="src\limix\gp\gp_Sum.h" />
+    <ClInclude Include="src\limix\io\dataframe.h" />
+    <ClInclude Include="src\limix\io\genotype.h" />
+    <ClInclude Include="src\limix\io\gzstream.h" />
+    <ClInclude Include="src\limix\io\split.h" />
+    <ClInclude Include="src\limix\io\vcf\convert.h" />
+    <ClInclude Include="src\limix\io\vcf\join.h" />
+    <ClInclude Include="src\limix\io\vcf\multichoose\multichoose.h" />
+    <ClInclude Include="src\limix\io\vcf\multichoose\multipermute.h" />
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\BandedSmithWaterman.h" />
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\convert.h" />
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\disorder.h" />
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\IndelAllele.h" />
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\LeftAlign.h" />
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\Mosaik.h" />
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\Repeats.h" />
+    <ClInclude Include="src\limix\io\vcf\smithwaterman\SmithWatermanGotoh.h" />
+    <ClInclude Include="src\limix\io\vcf\split.h" />
+    <ClInclude Include="src\limix\io\vcf\tabixpp\bam_endian.h" />
+    <ClInclude Include="src\limix\io\vcf\tabixpp\bgzf.h" />
+    <ClInclude Include="src\limix\io\vcf\tabixpp\khash.h" />
+    <ClInclude Include="src\limix\io\vcf\tabixpp\knetfile.h" />
+    <ClInclude Include="src\limix\io\vcf\tabixpp\kseq.h" />
+    <ClInclude Include="src\limix\io\vcf\tabixpp\ksort.h" />
+    <ClInclude Include="src\limix\io\vcf\tabixpp\kstring.h" />
+    <ClInclude Include="src\limix\io\vcf\tabixpp\tabix.h" />
+    <ClInclude Include="src\limix\io\vcf\tabixpp\tabix.hpp" />
+    <ClInclude Include="src\limix\io\vcf\Variant.h" />
+    <ClInclude Include="src\limix\lasso\lasso.h" />
+    <ClInclude Include="src\limix\likelihood\likelihood.h" />
+    <ClInclude Include="src\limix\lmm\CGPLMM.h" />
+    <ClInclude Include="src\limix\lmm\kronecker_lmm.h" />
+    <ClInclude Include="src\limix\lmm\lmm.h" />
+    <ClInclude Include="src\limix\lmm\lmm_old.h" />
+    <ClInclude Include="src\limix\mean\ADataTerm.h" />
+    <ClInclude Include="src\limix\mean\CData.h" />
+    <ClInclude Include="src\limix\mean\CKroneckerSumMean.h" />
+    <ClInclude Include="src\limix\mean\CKroneckerMean.h" />
+    <ClInclude Include="src\limix\mean\CLinearMean.h" />
+    <ClInclude Include="src\limix\mean\CSumLinear.h" />
+    <ClInclude Include="src\limix\modules\CVarianceDecomposition.h" />
+    <ClInclude Include="src\limix\modules\CVqtl.h" />
+    <ClInclude Include="src\limix\types.h" />
+    <ClInclude Include="src\limix\utils\beta.h" />
+    <ClInclude Include="src\limix\utils\brentc.h" />
+    <ClInclude Include="src\limix\utils\fisherf.h" />
+    <ClInclude Include="src\limix\utils\gamma.h" />
+    <ClInclude Include="src\limix\utils\logging.h" />
+    <ClInclude Include="src\limix\utils\mathfunctions.h" />
+    <ClInclude Include="src\limix\utils\matrix_helper.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
