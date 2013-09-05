@@ -226,7 +226,7 @@ PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) throw (CGP
 	muint_t snp_pos;
 	while(std::getline(getStream(),line))
 	{
-		if((i_snp>=(muint_t)num_snps) && (num_snps>-1))
+		if((i_snp>=(muint_t)num_snps) && ((muint_t)num_snps>-1))
 				break;
 
 		//std::cout << line;

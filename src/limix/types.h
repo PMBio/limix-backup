@@ -117,6 +117,11 @@ typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXd;
 //smart pointer objects
 typedef sptr<MatrixXd> PMatrixXd;
 typedef sptr<VectorXd> PVectorXd;
+typedef sptr<const MatrixXd> PConstMatrixXd;
+typedef sptr<const VectorXd> PConstVectorXd;
+typedef sptr<void> PVoid;
+typedef sptr<const void> PCVoid;
+
 
 //integer
 typedef Eigen::Matrix<mint_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXi;
@@ -137,7 +142,8 @@ typedef sptr<VectorXs> PVectorXs;
 
 //cholesky decomposition object (we use LLT as faster and more stable)
 typedef Eigen::LLT<limix::MatrixXd> MatrixXdChol;
-
+//eigen decomposition
+typedef Eigen::SelfAdjointEigenSolver<MatrixXd> MatrixXdEIgenSolver;
 
 //SCIPY matrices for python interface: these are row major
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXdscipy;

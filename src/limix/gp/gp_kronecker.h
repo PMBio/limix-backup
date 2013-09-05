@@ -35,8 +35,8 @@ protected:
 	//validate & clear cache
 	void validateCache();
 public:
-	PCovarianceFunctionCache covar_r;
-	PCovarianceFunctionCache covar_c;
+	PCovarianceFunctionCacheOld covar_r;
+	PCovarianceFunctionCacheOld covar_c;
 
 	CGPKroneckerCache(CGPkronecker* gp);
 	virtual ~CGPKroneckerCache()

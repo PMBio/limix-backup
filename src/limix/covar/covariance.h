@@ -255,6 +255,14 @@ public:
 	 */
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) = 0;
 
+	/*!
+	 * get Choleksy decompositions of K
+	 */
+	 virtual void agetCholK(MatrixXdChol* out) const throw (CGPMixException);
+	 /*! get eigenvalue decomposition of K
+	  */
+	 virtual void agetEigHK(MatrixXdEIgenSolver* out) const throw(CGPMixException);
+
 	//Inline convenience functions:
 	/*!
 	 * \see aK
@@ -334,12 +342,13 @@ typedef sptr<ACovarianceFunction> PCovarianceFunction;
 
 
 /*!
- * \brief Cache object which inherits all the interface functions from Covar
+ * \brief Depricated: Cache object which inherits all the interface functions from Covar
  *
+ * DEPRICATED. OLD CACHE FUNCTIONS FOR COVARIANCES CACHES
  * The main purpose of this function is to precompute K and suitable decomposition.
  * Support is provided for both, cholesky-based decompositions (\sa rgetCholK) and symmetric eigen decompositions (\sa rgetUK, \sa rgetUS)
  */
-class CCovarianceFunctionCache : public CParamObject
+class CCovarianceFunctionCacheOld : public CParamObject
 {
 protected:
 	//wrapper covariance Function
@@ -354,16 +363,16 @@ protected:
 	void updateSVD();
 	void validateCache();
 public:
-	CCovarianceFunctionCache()
+	CCovarianceFunctionCacheOld()
 	{
 	}
 
-	CCovarianceFunctionCache(PCovarianceFunction covar)
+	CCovarianceFunctionCacheOld(PCovarianceFunction covar)
 	{
 		setCovar(covar);
 	}
 
-	virtual ~CCovarianceFunctionCache()
+	virtual ~CCovarianceFunctionCacheOld()
 	{
 	};
 
@@ -387,7 +396,10 @@ public:
 	virtual VectorXd& rgetSK();
 	virtual MatrixXdChol& rgetCholK();
 };
-typedef sptr<CCovarianceFunctionCache> PCovarianceFunctionCache;
+typedef sptr<CCovarianceFunctionCacheOld> PCovarianceFunctionCacheOld;
+
+
+
 
 
 

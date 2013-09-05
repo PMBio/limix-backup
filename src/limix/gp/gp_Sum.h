@@ -34,8 +34,8 @@ protected:
 	void validateCache();
 	void updateSVDcstar();
 public:
-	PCovarianceFunctionCache covar1;
-	PCovarianceFunctionCache covar2;
+	PCovarianceFunctionCacheOld covar1;
+	PCovarianceFunctionCacheOld covar2;
 
 	CGPSumCache(CGPSum* gp);
 	virtual ~CGPSumCache()	{};

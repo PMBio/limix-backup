@@ -41,6 +41,9 @@ class CGPbase_test(unittest.TestCase):
         params = SP.concatenate((self.gp.getParams()['covar'],self.gp.getParams()['lik']))[:,0]
         params_true = SP.array([0.28822188,  0.35271548,  0.13709146,  0.49447424])
         RV = ((params-params_true)**2).max()<1e-6
+        RV = RV & (SP.absolute(self.gp.LMLgrad()['lik']).max()<1E-5)
+        RV = RV & (SP.absolute(self.gp.LMLgrad()['covar']).max()<1E-5)
+
         self.assertTrue(RV)
 
 if __name__ == '__main__':

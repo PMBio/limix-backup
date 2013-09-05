@@ -10,8 +10,10 @@ if __name__ == '__main__':
         limix_path = sys.argv[1]
         sys.path.append(limix_path)
 
-    # list of folders containing tests
-    folders = set(glob.glob('*'))-set(glob.glob('*.*'))
+    if len(sys.argv)>2:
+	folders = [sys.argv[2]]
+    else:
+    	folders = set(glob.glob('*'))-set(glob.glob('*.*'))
 
     # Gather all tests in suite
     suite = unittest.TestSuite()

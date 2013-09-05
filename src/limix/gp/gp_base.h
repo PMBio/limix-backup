@@ -14,6 +14,7 @@
 #include "limix/mean/ADataTerm.h"
 #include "limix/mean/CData.h"
 #include "limix/types.h"
+#include "limix/utils/cache.h"
 
 #include <string>
 #include <map>
@@ -143,14 +144,14 @@ protected:
 	Pbool syncLik,syncCovar,syncData;
 	//TODO change this to shared pointer
 	CGPbase* gp;
-	PCovarianceFunctionCache covar;
+	PCovarianceFunctionCacheOld covar;
 	//validate & clear cache
 	void validateCache();
 public:
 	CGPCholCache(CGPbase* gp);
 	virtual ~CGPCholCache()
 	{};
-	PCovarianceFunctionCache getCovar()
+	PCovarianceFunctionCacheOld getCovar()
 	{
 		return covar;
 	}

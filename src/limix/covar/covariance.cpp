@@ -269,10 +269,24 @@ void ACovarianceFunction::aKhess_param_num(ACovarianceFunction& covar, MatrixXd*
     covar.setParams(L0);
 }
 
+void ACovarianceFunction::agetCholK(MatrixXdChol* out) const throw (CGPMixException)
+		{
+		MatrixXd K;
+		this->aK(&K);
+		(*out) = MatrixXdChol(K);
+		}
 
+void ACovarianceFunction::agetEigHK(MatrixXdEIgenSolver* out) const throw(CGPMixException)
+		{
+		MatrixXd K;
+		this->aK(&K);
+		(*out) = MatrixXdEIgenSolver(K);
+		}
+
+
+//COVAR cache
 /*CCovarainceFunctionCache*/
-
-void CCovarianceFunctionCache::setCovar(PCovarianceFunction covar)
+void CCovarianceFunctionCacheOld::setCovar(PCovarianceFunction covar)
 	{
 		//delete sync child of old covar
 		if(this->covar)
@@ -286,7 +300,7 @@ void CCovarianceFunctionCache::setCovar(PCovarianceFunction covar)
 	}
 
 
-void CCovarianceFunctionCache::updateSVD()
+void CCovarianceFunctionCacheOld::updateSVD()
 {
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(rgetK());
 	UCache = eigensolver.eigenvectors();
@@ -294,7 +308,7 @@ void CCovarianceFunctionCache::updateSVD()
 	SVDCacheNull=false;
 }
 
-void CCovarianceFunctionCache::validateCache()
+void CCovarianceFunctionCacheOld::validateCache()
 {
 	if (!isInSync())
 	{
@@ -306,7 +320,7 @@ void CCovarianceFunctionCache::validateCache()
 	setSync();
 }
 // caching functions
-MatrixXd& CCovarianceFunctionCache::rgetK()
+MatrixXd& CCovarianceFunctionCacheOld::rgetK()
 {
 	validateCache();
 	if (KCacheNull)
@@ -317,14 +331,14 @@ MatrixXd& CCovarianceFunctionCache::rgetK()
 	return KCache;
 
 }
-MatrixXd& CCovarianceFunctionCache::rgetUK()
+MatrixXd& CCovarianceFunctionCacheOld::rgetUK()
 {
 	validateCache();
 	if (SVDCacheNull)
 		updateSVD();
 	return UCache;
 }
-VectorXd& CCovarianceFunctionCache::rgetSK()
+VectorXd& CCovarianceFunctionCacheOld::rgetSK()
 {
 	validateCache();
 	if (SVDCacheNull)
@@ -332,7 +346,7 @@ VectorXd& CCovarianceFunctionCache::rgetSK()
 	return SCache;
 }
 
-MatrixXdChol& CCovarianceFunctionCache::rgetCholK()
+MatrixXdChol& CCovarianceFunctionCacheOld::rgetCholK()
 {
 	validateCache();
 	if(cholKCacheNull)
@@ -342,6 +356,7 @@ MatrixXdChol& CCovarianceFunctionCache::rgetCholK()
 	}
 	return cholKCache;
 }
+
 
 
 
