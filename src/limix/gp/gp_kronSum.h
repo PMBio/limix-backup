@@ -49,10 +49,10 @@ protected:
 	void updateSVDcstar();
 	void updateSVDrstar();
 public:
-	PCovarianceFunctionCache covarc1;
-	PCovarianceFunctionCache covarc2;
-	PCovarianceFunctionCache covarr1;
-	PCovarianceFunctionCache covarr2;
+	PCovarianceFunctionCacheOld covarc1;
+	PCovarianceFunctionCacheOld covarc2;
+	PCovarianceFunctionCacheOld covarr1;
+	PCovarianceFunctionCacheOld covarr2;
 
 	CGPkronSumCache(CGPkronSum* gp);
 	virtual ~CGPkronSumCache()	{};

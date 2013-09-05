@@ -214,7 +214,7 @@ CGPCholCache::CGPCholCache(CGPbase* gp)
 	syncCovar = Pbool(new bool);
 
 
-	this->covar = PCovarianceFunctionCache(new CCovarianceFunctionCache(gp->covar));
+	this->covar = PCovarianceFunctionCacheOld(new CCovarianceFunctionCacheOld(gp->covar));
 	gp->lik->addSyncChild(syncLik);
 	covar->addSyncChild(syncCovar);
 	gp->dataTerm->addSyncChild(syncData);

@@ -15,7 +15,7 @@
 namespace limix{
 
 //create random matrix:
-mfloat_t randn(mfloat_t mu=0.0, mfloat_t sigma=1.0);
+mfloat_t randNormal(mfloat_t mu=0.0, mfloat_t sigma=1.0);
 //helper functions for eigen matrices
 
 template <typename Derived>

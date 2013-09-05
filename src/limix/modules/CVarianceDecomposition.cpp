@@ -477,11 +477,11 @@ mfloat_t CVarianceDecomposition::getLMLgradGPbase() throw(CGPMixException)
 	// Squared Norm of LMLgrad["covar"]
 	VectorXd grad = this->gp->LMLgrad()["covar"];
 	VectorXd filter = this->gp->getParamMask()["covar"];
-	for (muint_t i=0; i<grad.rows(); i++)
+	for (muint_t i=0; i<(muint_t)grad.rows(); i++)
 		if (filter(i)==1)	out +=std::pow(grad(i),2);
 	// Squared Norm of LMLgrad["dataTerm"]
 	grad = this->gp->LMLgrad()["dataTerm"];
-	for (muint_t i=0; i<grad.rows(); i++)	out +=std::pow(grad(i),2);
+	for (muint_t i=0; i<(muint_t)grad.rows(); i++)	out +=std::pow(grad(i),2);
 	// Square Root
 	out = std::sqrt(out);
 	return out;
@@ -492,9 +492,9 @@ mfloat_t CVarianceDecomposition::getLMLgradGPkronSum() throw(CGPMixException)
 	mfloat_t out = 0;
 
 	VectorXd grad = this->gp->LMLgrad()["covarc1"];
-	for (muint_t i=0; i<grad.rows(); i++)	out +=std::pow(grad(i),2);
+	for (muint_t i=0; i<(muint_t)grad.rows(); i++)	out +=std::pow(grad(i),2);
 	grad = this->gp->LMLgrad()["covarc2"];
-		for (muint_t i=0; i<grad.rows(); i++)	out +=std::pow(grad(i),2);
+		for (muint_t i=0; i<(muint_t)grad.rows(); i++)	out +=std::pow(grad(i),2);
 	// Square Root
 	out = std::sqrt(out);
 

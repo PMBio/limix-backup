@@ -32,8 +32,8 @@ CGPSumCache::CGPSumCache(CGPSum* gp)
 	this->addSyncParent(syncData);
 
 	this->gp = gp;
-	this->covar1 = PCovarianceFunctionCache(new CCovarianceFunctionCache(this->gp->covar1));
-	this->covar2 = PCovarianceFunctionCache(new CCovarianceFunctionCache(this->gp->covar2));
+	this->covar1 = PCovarianceFunctionCacheOld(new CCovarianceFunctionCacheOld(this->gp->covar1));
+	this->covar2 = PCovarianceFunctionCacheOld(new CCovarianceFunctionCacheOld(this->gp->covar2));
 	//add sync liestener
 	covar1->addSyncChild(this->syncCovar1);
 	covar2->addSyncChild(this->syncCovar2);

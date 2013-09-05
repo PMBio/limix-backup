@@ -36,10 +36,10 @@ CGPkronSumCache::CGPkronSumCache(CGPkronSum* gp)
 	this->addSyncParent(syncData);
 
 	this->gp = gp;
-	this->covarc1 = PCovarianceFunctionCache(new CCovarianceFunctionCache(this->gp->covarc1));
-	this->covarc2 = PCovarianceFunctionCache(new CCovarianceFunctionCache(this->gp->covarc2));
-	this->covarr1 = PCovarianceFunctionCache(new CCovarianceFunctionCache(this->gp->covarr1));
-	this->covarr2 = PCovarianceFunctionCache(new CCovarianceFunctionCache(this->gp->covarr2));
+	this->covarc1 = PCovarianceFunctionCacheOld(new CCovarianceFunctionCacheOld(this->gp->covarc1));
+	this->covarc2 = PCovarianceFunctionCacheOld(new CCovarianceFunctionCacheOld(this->gp->covarc2));
+	this->covarr1 = PCovarianceFunctionCacheOld(new CCovarianceFunctionCacheOld(this->gp->covarr1));
+	this->covarr2 = PCovarianceFunctionCacheOld(new CCovarianceFunctionCacheOld(this->gp->covarr2));
 	//add sync liestener
 	covarc1->addSyncChild(this->syncCovarc1);
 	covarc2->addSyncChild(this->syncCovarc2);

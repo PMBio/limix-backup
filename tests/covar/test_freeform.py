@@ -31,7 +31,7 @@ class CDiagonalCF_test(unittest.TestCase,Acovar_test):
     """test class for CDiagonalCF"""
     def setUp(self):
         SP.random.seed(1)
-        self.n=4
+        self.n=2
         self.C = limix.CDiagonalCF(self.n)
         self.name = 'CDiagonalCF'
         self.n_params=self.C.getNumberParams()

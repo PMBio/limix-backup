@@ -26,8 +26,8 @@ CGPKroneckerCache::CGPKroneckerCache(CGPkronecker* gp)
 
 
 	this->gp = gp;
-	this->covar_r = PCovarianceFunctionCache(new CCovarianceFunctionCache(this->gp->covar_r));
-	this->covar_c = PCovarianceFunctionCache(new CCovarianceFunctionCache(this->gp->covar_c));
+	this->covar_r = PCovarianceFunctionCacheOld(new CCovarianceFunctionCacheOld(this->gp->covar_r));
+	this->covar_c = PCovarianceFunctionCacheOld(new CCovarianceFunctionCacheOld(this->gp->covar_c));
 	//add sync liestener
 	covar_r->addSyncChild(this->syncCovar_r);
 	covar_c->addSyncChild(this->syncCovar_c);
