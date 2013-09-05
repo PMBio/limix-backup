@@ -7,16 +7,15 @@ import os
 import sys
 import limix
 import limix.modules.varianceDecomposition as VAR
+import data
 
-geno_file = './varDecomp/genotype.csv'
-pheno_file = './varDecomp/phenotype.csv'
-param_file = './varDecomp/params_true.csv'
 
 class CVarianceDecomposition_test(unittest.TestCase):
     """test class for CVarianceDecomposition"""
 
     def genGeno(self):
-        self.X  = (SP.rand(self.N,self.S)<0.2)*1.
+        X  = (SP.rand(self.N,self.S)<0.2)*1.
+        self.D['X'] = X
 
     
     def genPheno(self):
@@ -29,35 +28,40 @@ class CVarianceDecomposition_test(unittest.TestCase):
             gamma_n = SP.randn(self.N)
             beta_g  = dp[p]*gamma0_g+gamma_g
             beta_n  = gamma0_n+gamma_n
-            y=SP.dot(self.X,beta_g)
+            y=SP.dot(self.D['X'],beta_g)
             y+=beta_n
             Y[:,p]=y
-        self.Y=SP.stats.zscore(Y,0)
+        Y=SP.stats.zscore(Y,0)
+        self.D['Y']= Y
+        
     
     def setUp(self):
         #check: do we have a csv File?
-        if ((not os.path.exists(geno_file)) | (not os.path.exists(pheno_file))) or 'recalc' in sys.argv:
+        self.dir_name = os.path.dirname(__file__)
+        self.dataset = os.path.join(self.dir_name,'varDecomp')
+
+        if (not os.path.exists(self.dataset)) or 'recalc' in sys.argv:
+            if not os.path.exists(self.dataset):
+                os.makedirs(self.dataset)
             SP.random.seed(1)
             self.N = 200
             self.S = 1000
             self.P = 2
-            self.genGeno()
+            self.D = {}
+            self.genGeno()        
             self.genPheno()
             self.generate = True
-            SP.savetxt(geno_file,self.X)
-            SP.savetxt(pheno_file,self.Y)
         else:
             self.generate=False
-            self.X = SP.loadtxt(geno_file)
-            self.Y = SP.loadtxt(pheno_file)
-            self.N = self.X.shape[0]
-            self.S = self.X.shape[1]
-            self.P = self.Y.shape[1]
+            self.D = data.load(os.path.join(self.dir_name,self.dataset))
+            self.N = self.D['X'].shape[0]
+            self.S = self.D['X'].shape[1]
+            self.P = self.D['Y'].shape[1]
 
-        self.Kg = SP.dot(self.X,self.X.T)
+        self.Kg = SP.dot(self.D['X'],self.D['X'].T)
         self.Kg = self.Kg/self.Kg.diagonal().mean()
 
-        self.vc = VAR.CVarianceDecomposition(self.Y)
+        self.vc = VAR.CVarianceDecomposition(self.D['Y'])
         self.vc.addMultiTraitTerm(self.Kg)
         self.vc.addMultiTraitTerm(SP.eye(self.N))
         self.vc.addFixedTerm(SP.ones((self.N,1)))
@@ -70,11 +74,11 @@ class CVarianceDecomposition_test(unittest.TestCase):
         self.vc.fit()
         params = self.vc.getScales()
         if self.generate:
-            SP.savetxt(param_file,params)
-            params_true = SP.zeros_like(params)
-        else:
-            params_true = SP.loadtxt(param_file)
-        RV = ((params-params_true)**2).max()<1e-6
+            self.D['params_true'] = params
+            data.dump(self.D,self.dataset)
+            self.generate=False
+        params_true = self.D['params_true']
+        RV = ((SP.absolute(params)-SP.absolute(params_true))**2).max()<1e-6
         self.assertTrue(RV)
 
     def test_fitFast(self):
@@ -83,11 +87,13 @@ class CVarianceDecomposition_test(unittest.TestCase):
         self.vc.fit(fast=True)
         params = self.vc.getScales()
         if self.generate:
-            SP.savetxt(param_file,params)
-            params_true = SP.zeros_like(params)
-        else:
-            params_true = SP.loadtxt(param_file)
-        RV = ((params-params_true)**2).max()<1e-6
+            self.D['params_true'] = params
+            data.dump(self.D,self.dataset)
+            self.generate=False
+
+        params_true = self.D['params_true']
+        #make sign invariant
+        RV = ((SP.absolute(params)-SP.absolute(params_true))**2).max()<1e-6
         self.assertTrue(RV)
 
 
