@@ -62,11 +62,14 @@ cflags = []
 linkflags = []
 debugcflags   = ['-DDEBUG']   #extra compile flags for debug
 releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
+debuglinkflags = []
+releaselinkflags = []
 
 ### 3. compiler flags & environment
 if sys.platform=='win32':
    cflags.extend(['-EHsc'])
    debugcflags.extend(['-Zi'])
+   debuglinkflags.extend(['/debug'])
 else:
    cflags.extend(['-fPIC'])
    releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
@@ -86,8 +89,10 @@ env.Append(LINKFLAGS=linkflags)
 
 if mymode == 'debug':
    env.Append(CCFLAGS=debugcflags)
+   env.Append(LINKFLAGS=debuglinkflags)
 else:
    env.Append(CCFLAGS=releasecflags)
+   env.Append(LINKFLAGS=releaselinkflags)
 
 limix_include = ['#/src']
 external_include = ['#/External']
