@@ -14,12 +14,13 @@ class CIntearctLMM_test(unittest.TestCase):
     
     def setUp(self):
         self.datasets = ['lmm_data1']
+        self.dir_name = os.path.dirname(__file__)
 
     def test_lmm(self):
         """basic main effec tests"""
 
         for dn in self.datasets:
-            D = data.load(dn)
+            D = data.load(os.path.join(self.dir_name,dn))
 
             N = D['X'].shape[0]
             inter0 = SP.zeros([N,1])
@@ -41,10 +42,8 @@ class CIntearctLMM_test(unittest.TestCase):
     def test_permutation(self):
         #test permutation function
         for dn in self.datasets:
-            D = data.load(dn)
+            D = data.load(os.path.join(self.dir_name,dn))
             perm = SP.random.permutation(D['X'].shape[0])
-
-            D = data.load(dn)
             N = D['X'].shape[0]
             inter0 = SP.zeros([N,1])
             inter1 = SP.ones([N,1])

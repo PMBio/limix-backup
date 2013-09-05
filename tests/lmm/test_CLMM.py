@@ -12,11 +12,12 @@ class CLMM_test(unittest.TestCase):
     
     def setUp(self):
         self.datasets = ['lmm_data1']
+        self.dir_name = os.path.dirname(__file__)
 
     def test_lmm1(self):
         """basic test, comapring pv"""
         for dn in self.datasets:
-            D = data.load(dn)
+            D = data.load(os.path.join(self.dir_name,dn))
             lmm = limix.CLMM()
             lmm.setK(D['K'])
             lmm.setSNPs(D['X'])
@@ -32,7 +33,7 @@ class CLMM_test(unittest.TestCase):
     def test_permutation(self):
         #test permutation function
         for dn in self.datasets:
-            D = data.load(dn)
+            D = data.load(os.path.join(self.dir_name,dn))
             perm = SP.random.permutation(D['X'].shape[0])
             #1. set permuattion
             lmm = limix.CLMM()
