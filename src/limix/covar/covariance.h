@@ -255,14 +255,6 @@ public:
 	 */
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) = 0;
 
-	/*!
-	 * get Choleksy decompositions of K
-	 */
-	 virtual void agetCholK(MatrixXdChol* out) const throw (CGPMixException);
-	 /*! get eigenvalue decomposition of K
-	  */
-	 virtual void agetEigHK(MatrixXdEIgenSolver* out) const throw(CGPMixException);
-
 	//Inline convenience functions:
 	/*!
 	 * \see aK

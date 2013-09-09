@@ -269,19 +269,6 @@ void ACovarianceFunction::aKhess_param_num(ACovarianceFunction& covar, MatrixXd*
     covar.setParams(L0);
 }
 
-void ACovarianceFunction::agetCholK(MatrixXdChol* out) const throw (CGPMixException)
-		{
-		MatrixXd K;
-		this->aK(&K);
-		(*out) = MatrixXdChol(K);
-		}
-
-void ACovarianceFunction::agetEigHK(MatrixXdEIgenSolver* out) const throw(CGPMixException)
-		{
-		MatrixXd K;
-		this->aK(&K);
-		(*out) = MatrixXdEIgenSolver(K);
-		}
 
 
 //COVAR cache
