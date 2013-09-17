@@ -35,8 +35,8 @@ protected:
 	MatrixXd K1c;
 	MatrixXd K2r;
 	MatrixXd K2c;
-	MatrixXd S2U2K1r;	//(K1r^{-1/2} K2r K1r^{-1/2})
-	MatrixXd S2U2K1c;	//(K1c^{-1/2} K2c K1c^{-1/2})
+	MatrixXd Rrot;	//(K1r^{-1/2} K2r K1r^{-1/2})
+	MatrixXd Crot;	//(K1c^{-1/2} K2c K1c^{-1/2})
 	//decompositions
 	MatrixXd U1r;
 	VectorXd S1r;
@@ -45,12 +45,20 @@ protected:
 	MatrixXd U2r,S2r;//These are actually decompositions of S1U1K2r (K1r^{-1/2} K2r K1r^{-1/2})
 	MatrixXd U2c,S2c;//These are actually decompositions of S1U1K2c (K1c^{-1/2} K2c K1c^{-1/2})
 
-	MatrixXd coldesign;
-	MatrixXd Ucoldesign;
-	bool Ucoldesign_cached;
+	
+	MatrixXdVec rowdesign0;
+	MatrixXdVec Urowdesign0;
+	MatrixXdVec coldesign0;
+	MatrixXdVec coldesignU0;
+	MatrixXd snps;
+	MatrixXd Usnps;
 	MatrixXd snpcoldesign;
-	MatrixXd Usnpcoldesign;
-	bool Usnpcoldesign_cached;	
+	MatrixXd snpcoldesignU;
+	MatrixXd nLL0;
+	MatrixXd nLLAlt;
+	MatrixXd ldelta0;
+	MatrixXd ldeltaAlt;
+	MatrixXd pv;
 public:
 	CKroneckerLMM();
 	virtual ~CKroneckerLMM();
@@ -72,6 +80,22 @@ public:
 	/*! set col covarince term2 */
 	void setK2c(const MatrixXd& K2c)
 	{this->K2c = K2c;}
+	/*! set phenotype */
+	void setPheno(const MatrixXd& Y)
+	{this->pheno = Y;}
+	/*! set SNPs */
+	void setSNPs(const MatrixXd& snps)
+	{this->snps = snps;}
+	void setSNPcoldesign(const MatrixXd& design)
+	{this->snpcoldesign = design;}
+	/*! set SNPs */
+	void setCovariates(const MatrixXdVec& covsR, const MatrixXdVec& covsCol)
+	{
+		this->coldesign0 = covsCol;
+		this->rowdesign0 = covsR;
+	}
+
+	mfloat_t nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2);
 	//set precompute decompositions
 	//void setMatrices(const MatrixXd)
 	//getters: TODO
@@ -89,6 +113,7 @@ inline void CLMMKroneckerCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AObe
 	Eigen::MatrixBase<Derived3>& AOsigma = const_cast< Eigen::MatrixBase<Derived3>& >(AOsigma_);
 	Eigen::MatrixBase<Derived4>& AOF_tests = const_cast< Eigen::MatrixBase<Derived4>& >(AOF_tests_);
 	Eigen::MatrixBase<Derived5>& AOnLL = const_cast< Eigen::MatrixBase<Derived5>& >(AOnLL_);
+
 
 } //end ::nLLevalEx
 

@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 1
+#if 0
 
 #include <iostream>
 #include "limix/gp/gp_base.h"
@@ -68,7 +68,7 @@ int main() {
 		PCVoid test = pm;
 
 		PConstMatrixXd pm3 = static_pointer_cast<const MatrixXd>(value);
-
+		CCovLinearISO cov = CCovLinearISO(4);
 		std::cout << *pm3;
 
 	}

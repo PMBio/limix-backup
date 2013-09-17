@@ -69,7 +69,7 @@ releaselinkflags = []
 if sys.platform=='win32':
    cflags.extend(['-EHsc'])
    debugcflags.extend(['-Zi'])
-   debuglinkflags.extend(['/debug'])
+   debuglinkflags.extend(['/debug','/ASSEMBLYDEBUG'])
 else:
    cflags.extend(['-fPIC'])
    releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release

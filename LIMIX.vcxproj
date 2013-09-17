@@ -40,8 +40,8 @@
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <SourcePath>$(VCInstallDir)atlmfc\src\mfc;$(VCInstallDir)atlmfc\src\mfcm;$(VCInstallDir)atlmfc\src\atl;$(VCInstallDir)crt\src;</SourcePath>
     <NMakeCleanCommandLine>scons --clean</NMakeCleanCommandLine>
-    <NMakeOutput>$(SolutionDir)/debug.win32/testing/main.exe</NMakeOutput>
-    <NMakeIncludeSearchPath>$(SoltionDir)/src/</NMakeIncludeSearchPath>
+    <NMakeOutput>$(SolutionDir)debug.win32\testing\main.exe</NMakeOutput>
+    <NMakeIncludeSearchPath>$(SoltionDir)src/</NMakeIncludeSearchPath>
     <IncludePath>$(SoltionDir)External;$(SoltionDir)src;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);</IncludePath>
     <ReferencePath>$(VCInstallDir)atlmfc\lib;$(VCInstallDir)lib</ReferencePath>
   </PropertyGroup>
@@ -83,6 +83,7 @@
     <ClCompile Include="src\limix\likelihood\likelihood.cpp" />
     <ClCompile Include="src\limix\lmm\CGPLMM.cpp" />
     <ClCompile Include="src\limix\lmm\kronecker_lmm.cpp" />
+    <ClCompile Include="src\limix\LMM\kronecker_lmm_old.cpp" />
     <ClCompile Include="src\limix\lmm\lmm.cpp" />
     <ClCompile Include="src\limix\lmm\lmm_old.cpp" />
     <ClCompile Include="src\limix\mean\ADataTerm.cpp" />
@@ -112,6 +113,7 @@
     <ClCompile Include="src\testing\vqtl_testing.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\limix\covar\combinators.h" />
     <ClInclude Include="src\limix\covar\covariance.h" />
     <ClInclude Include="src\limix\covar\dist.h" />
@@ -154,6 +156,7 @@
     <ClInclude Include="src\limix\likelihood\likelihood.h" />
     <ClInclude Include="src\limix\lmm\CGPLMM.h" />
     <ClInclude Include="src\limix\lmm\kronecker_lmm.h" />
+    <ClInclude Include="src\limix\LMM\kronecker_lmm_old.h" />
     <ClInclude Include="src\limix\lmm\lmm.h" />
     <ClInclude Include="src\limix\lmm\lmm_old.h" />
     <ClInclude Include="src\limix\mean\ADataTerm.h" />
@@ -172,6 +175,58 @@
     <ClInclude Include="src\limix\utils\logging.h" />
     <ClInclude Include="src\limix\utils\mathfunctions.h" />
     <ClInclude Include="src\limix\utils\matrix_helper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LIMIX.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="python\demo\data\demo.h5py" />
+    <None Include="python\demo\data\realdata.h5py" />
+    <None Include="python\demo\gpKronSum.py" />
+    <None Include="python\demo\gp_regression_demo.py" />
+    <None Include="python\demo\multiTraitDemo.py" />
+    <None Include="python\demo\varianceDecomposition.py" />
+    <None Include="python\gp\kronecker_gplvm.py" />
+    <None Include="python\gp\__init__.py" />
+    <None Include="python\testing\bounds_test.py" />
+    <None Include="python\testing\covariance_test.py" />
+    <None Include="python\testing\data\demo.h5py" />
+    <None Include="python\testing\gplvm_test.py" />
+    <None Include="python\testing\gp_test.py" />
+    <None Include="python\testing\kronecker_lmm_test.py" />
+    <None Include="python\testing\kronecker_test.py" />
+    <None Include="python\testing\multitrait.py" />
+    <None Include="python\testing\profiling.sh" />
+    <None Include="python\testing\test_lmm.py" />
+    <None Include="SConstruct" />
+    <None Include="site_scons\ACGenerateFile.py" />
+    <None Include="site_scons\site_tools\doxygen\__init__.py" />
+    <None Include="src\interfaces\covar.i" />
+    <None Include="src\interfaces\doxy2swig.py" />
+    <None Include="src\interfaces\gp.i" />
+    <None Include="src\interfaces\io.i" />
+    <None Include="src\interfaces\lik.i" />
+    <None Include="src\interfaces\lmm.i" />
+    <None Include="src\interfaces\mean.i" />
+    <None Include="src\interfaces\modules.i" />
+    <None Include="src\interfaces\python\eigen.i" />
+    <None Include="src\interfaces\python\limix.i" />
+    <None Include="src\interfaces\python\limix\modules\FastVDMM.py" />
+    <None Include="src\interfaces\python\limix\modules\multiTraitQTL.py" />
+    <None Include="src\interfaces\python\limix\modules\qtl.py" />
+    <None Include="src\interfaces\python\limix\modules\varianceDecomposition.py" />
+    <None Include="src\interfaces\python\limix\modules\__init__.py" />
+    <None Include="src\interfaces\python\limix\utils\fastlmm.py" />
+    <None Include="src\interfaces\python\limix\utils\fdr.py" />
+    <None Include="src\interfaces\python\limix\utils\preprocess.py" />
+    <None Include="src\interfaces\python\limix\utils\util.py" />
+    <None Include="src\interfaces\python\limix\utils\__init__.py" />
+    <None Include="src\interfaces\python\limix\__init__.py" />
+    <None Include="src\interfaces\python\numpy.i" />
+    <None Include="src\interfaces\python\SConscript" />
+    <None Include="src\interfaces\README" />
+    <None Include="src\interfaces\types.i" />
+    <None Include="src\limix\SConscript" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
