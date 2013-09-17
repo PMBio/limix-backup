@@ -29,7 +29,7 @@ int main() {
 		muint_t Wr=1;
 		muint_t Wr_covar = 2;
 		muint_t Wc_covar = 1;
-		muint_t P=20;
+		muint_t P=2;
 		muint_t N=200;
 		muint_t Wc=P;
 		
@@ -61,13 +61,12 @@ int main() {
 		MatrixXd Y = X*w*A + Xcovar*wcovar*A_covar + noise1 + noise2;
 		//SNPS: all random except for one true causal guy
 
-		MatrixXd S = MatrixXd::Zero((muint_t)N,20);
-		S.block(0,5,N,10) = randn((muint_t)N,10);
-		S.block(0,4,N,Wr) = X;
-		std::cout<<"SNPS: "<< S<<std::endl;
+		muint_t Nsnp0=50;
+		MatrixXd S = MatrixXd::Zero((muint_t)N,(Nsnp0+1)*Wr);
+		S.block(0,0,N,Nsnp0) = randn((muint_t)N,Nsnp0*Wr);
+		S.block(0,Nsnp0*Wr,N,Wr) = X;
+		//std::cout<<"SNPS: "<< S<<std::endl;
 		//2. construction of GP object
-		muint_t Kr=3;
-		muint_t Kc=4;
 
 		MatrixXdVec Acov=MatrixXdVec();
 		Acov.push_back(A_covar);
@@ -83,7 +82,14 @@ int main() {
 		lmm.setSNPcoldesign(A);
 		lmm.setCovariates(Xcov,Acov);
 		lmm.setPheno(Y);
+		lmm.setNumIntervalsAlt(0);//TODO: nLLeval with delta unequal to 1 does not work properly yet
+		lmm.setNumIntervals0(0);//TODO: nLLeval with delta unequal to 1 does not work properly yet 
 		lmm.process();
+		MatrixXd pv = MatrixXd();
+		lmm.agetPv(&pv);
+		std::cout << "pv:\n" << pv << "\n";
+		std::cout << "done.\n" ;
+		
 		}
 		catch(CGPMixException& e) {
 			cout <<"Exception : "<< e.what() << endl;

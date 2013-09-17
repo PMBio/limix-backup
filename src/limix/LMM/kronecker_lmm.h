@@ -58,7 +58,6 @@ protected:
 	MatrixXd nLLAlt;
 	MatrixXd ldelta0;
 	MatrixXd ldeltaAlt;
-	MatrixXd pv;
 public:
 	CKroneckerLMM();
 	virtual ~CKroneckerLMM();
@@ -96,6 +95,7 @@ public:
 	}
 
 	mfloat_t nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2);
+	mfloat_t optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2, mfloat_t ldeltamin, mfloat_t ldeltamax, muint_t numintervals);
 	//set precompute decompositions
 	//void setMatrices(const MatrixXd)
 	//getters: TODO
