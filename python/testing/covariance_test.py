@@ -1,6 +1,7 @@
 import sys
-sys.path.append('./..')
-sys.path.append('./../../../pygp')
+sys.path.append(r'./..')
+sys.path.append(r'./../../../pygp')
+#sys.path.append(r'./../../debug.win32/interfaces/python')
 
 
 import limix
@@ -59,7 +60,7 @@ if 0:
 if 1:
     params = SP.random.randn(n_dimensions+2)
 
-    pdb.set_trace()
+    #pdb.set_trace()
     c1 = limix.CCovLinearISO(n_dimensions)
     c2 = limix.CCovSqexpARD(n_dimensions)
 
