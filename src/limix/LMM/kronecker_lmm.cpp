@@ -38,15 +38,23 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	nLLAlt.resize(1,num_snps);
 	ldelta0.resize(1,num_snps);
 	ldeltaAlt.resize(1,num_snps);
-	pv.resize(1,num_snps);
+	this->pv.resize(1,num_snps);
 
 	//3. update the decompositions
 	this->updateDecomposition();
 
 	//evaluate null model
 	mfloat_t ldelta0_ = 0.0;//TODO: optionally fix to given value
-	//TODO: mfloat_t nLL0_ = CKroneckerLMM_old::optdelta(ldelta0_,A0Rot,X0Rot, Yrot, Sc, Sr, ldeltamin0, ldeltamax0, num_intervals0);
-	mfloat_t nLL0_ = CKroneckerLMM::nLLeval(ldelta0_,this->coldesignU0,this->Urowdesign0,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r);
+	mfloat_t nLL0_ = 0.0;
+	if (num_intervals0>0)
+	{
+		std::cout << "ouch, this is still buggy. Most likely it is the determinant term, that is messed up.\n";
+		nLL0_ = CKroneckerLMM::optdelta(ldelta0_,this->coldesignU0,this->Urowdesign0,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r, ldeltamin0, ldeltamax0, num_intervals0);
+	}
+	else
+	{
+		nLL0_ = CKroneckerLMM::nLLeval(ldelta0_,this->coldesignU0,this->Urowdesign0,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r);
+	}
 	//store delta0
 	ldelta0.setConstant(ldelta0_);
 	nLL0.setConstant(nLL0_);
@@ -69,8 +77,9 @@ void CKroneckerLMM::process() throw (CGPMixException){
 		mfloat_t nLL;
 		if (num_intervalsAlt>0)
 		{
-			nLL = 0.0;//TODO:CKroneckerLMM_old::optdelta(ldelta,AAltRot,XAltRot, Yrot, Sc, Sr, ldeltaminAlt, ldeltamaxAlt, num_intervalsAlt);
-			nLL = CKroneckerLMM::nLLeval(ldelta,coldesignUAlt,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r);
+			std::cout << "ouch, this is still buggy.\n";
+			nLL = CKroneckerLMM::optdelta(ldelta,coldesignUAlt,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r, ldeltaminAlt, ldeltamaxAlt, num_intervalsAlt);
+			//nLL = CKroneckerLMM::nLLeval(ldelta,coldesignUAlt,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r);
 		}
 		else
 		{
@@ -80,17 +89,46 @@ void CKroneckerLMM::process() throw (CGPMixException){
 		nLLAlt(0,is) = nLL;
 		ldeltaAlt(0,is) = ldelta;
 		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
-		std::cout<< "nLL0(0,is)"<< nLL0(0,is)<< "nLLAlt(0,is)" << nLLAlt(0,is)<< "\n";
+		//std::cout<< "nLL0(0,is)"<< nLL0(0,is)<< "nLLAlt(0,is)" << nLLAlt(0,is)<< "\n";
 		if (deltaNLL<0.0)
 		{
 			std::cout << "outch" << "\n";
-			deltaNLL = 1E-10;
+			deltaNLL = 0.0;
 		}
 		//3. pvalues
 		this->pv(0, is) = Gamma::gammaQ(deltaNLL, (double)(0.5) * dof);
 	}
-	std::cout << "pv:\n" << pv << "\n";
 
+}
+
+mfloat_t CKroneckerLMM::optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2, mfloat_t ldeltamin, mfloat_t ldeltamax, muint_t numintervals)
+{
+    //grid variable with the current likelihood evaluations
+    MatrixXd nllgrid    = MatrixXd::Ones(numintervals,1).array()*HUGE_VAL;
+    MatrixXd ldeltagrid = MatrixXd::Zero(numintervals, 1);
+    //current delta
+    mfloat_t ldelta = ldeltamin;
+    mfloat_t ldeltaD = (ldeltamax - ldeltamin);
+    ldeltaD /= ((mfloat_t)(numintervals) - 1.0);
+    mfloat_t nllmin = HUGE_VAL;
+    mfloat_t ldeltaopt_glob = 0.0;
+    MatrixXd f_tests;
+    for(muint_t i = 0;i < numintervals;i++){
+    	nllgrid(i, 0) = CKroneckerLMM::nLLeval(ldelta, A, X, Y, S_C1, S_R1, S_C1, S_R1);
+        ldeltagrid(i, 0) = ldelta;
+        //std::cout<< "nnl( " << ldelta << ") = " << nllgrid(i,0) <<  "VS" << nllmin << ")\n\n";
+        if(nllgrid(i, 0) < nllmin){
+            //		std::cout << "new min (" << nllmin << ") -> " <<  nllgrid(i,0) << "\n\n";
+            nllmin = nllgrid(i, 0);
+            ldeltaopt_glob = ldelta;
+        }
+        //move on delta
+        ldelta += ldeltaD;
+    } //end for all intervals
+
+    //std::cout << "\n\n nLL_i:\n" << nllgrid;
+    ldelta_opt = ldeltaopt_glob;
+    return nllmin;
 }
 
 mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2)
@@ -110,7 +148,7 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 		nWeights+=(muint_t)(A[term].rows()) * (muint_t)(X[term].cols());
 	}
 	mfloat_t delta = exp(ldelta);
-	mfloat_t ldet = 0.0;
+	mfloat_t ldet = R * C * ldelta;
 
 	//build D and compute the logDet of D
 	MatrixXd D = MatrixXd(R,C);
@@ -120,7 +158,7 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 	}
 	for (muint_t c=0; c<C;++c)
 	{
-		ldet += R * log(S_R2(c));//ldet
+		ldet += R * log(S_C2(c));//ldet
 	}
 	for (muint_t r=0; r<R;++r)
 	{
