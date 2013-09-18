@@ -39,6 +39,18 @@ std::string printDim(const Eigen::EigenBase<Derived>& m)
 mfloat_t logdet(Eigen::LLT<MatrixXd>& chol);
 mfloat_t logdet(Eigen::LDLT<MatrixXd>& chol);
 
+inline mfloat_t randu()
+{
+	mfloat_t sample = ((mfloat_t)rand()+0.5);
+	mfloat_t max = RAND_MAX+1.0;
+	mfloat_t min = 0.0;
+	if (sample!=sample || isinf(sample)||sample<=min||sample >=max)
+	{
+		std::cout <<"nan sample from randn: "<< sample<<"\n";
+	}
+	sample /= max;
+	return sample;
+};
 
 template <typename Derived>
 inline void arrayInverseInplace(const Eigen::EigenBase<Derived>& m_)

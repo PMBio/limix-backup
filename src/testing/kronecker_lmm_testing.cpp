@@ -69,6 +69,7 @@ int main() {
 		}
 		MatrixXd Xc2=randn(2*P,P);
 		Xc2/=limix::sqrt((mfloat_t)(2.0*P));
+		//Xc2 = MatrixXd::Identity(P,P);
 		MatrixXd Kc2 = Xc2.transpose()*Xc2;//+MatrixXd::Identity(P,P);
 		if (Kc2.hasNaN()){
 			std::cout << Kc2;
@@ -83,8 +84,11 @@ int main() {
 
 		MatrixXd A = MatrixXd::Identity((muint_t)Wc,(muint_t)P);
 		MatrixXd A_covar = MatrixXd::Ones((muint_t)Wc_covar,(muint_t)P);
-		MatrixXd noise1 = Xr1*1.0*eps1*randn((muint_t)NsnpK,(muint_t)2*P)*Xc1;
-		MatrixXd noise2 = Xr2*1.0*eps2*randn((muint_t)2*N,(muint_t)2*P)*Xc2;
+		MatrixXd wnoise1 = randn((muint_t)Xr1.cols(),(muint_t)Xc1.rows());
+		MatrixXd wnoise2 = randn((muint_t)Xr2.cols(),(muint_t)Xc2.rows());
+		std::cout<<"n1.sum()= "<<wnoise1.sum()<<"   n2.sum()= "<<wnoise2.sum()<<"\n";
+		MatrixXd noise1 = Xr1*1.0*eps1*wnoise1*Xc1;
+		MatrixXd noise2 = Xr2*1.0*eps2*wnoise2*Xc2;
 		MatrixXd Y = X*w*A + Xcovar*wcovar*A_covar + noise1 + noise2;
 		//SNPS: all random except for one true causal guy
 
@@ -109,7 +113,7 @@ int main() {
 		lmm.setCovariates(Xcov,Acov);
 		lmm.setPheno(Y);
 		lmm.setNumIntervalsAlt(0);//TODO: nLLeval with delta unequal to 1 does not work properly yet
-		lmm.setNumIntervals0(0);//TODO: nLLeval with delta unequal to 1 does not work properly yet 
+		lmm.setNumIntervals0(100);//TODO: nLLeval with delta unequal to 1 does not work properly yet 
 		lmm.process();
 		MatrixXd pv = MatrixXd();
 		lmm.agetPv(&pv);

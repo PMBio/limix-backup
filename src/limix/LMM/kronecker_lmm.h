@@ -3,6 +3,7 @@
 
 #include "limix/LMM/lmm.h"
 #include "limix/gp/gp_kronSum.h"
+#include "limix/utils/brentc.h"
 
 namespace limix {
 
@@ -94,12 +95,12 @@ public:
 		this->rowdesign0 = covsR;
 	}
 
-	mfloat_t nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2);
-	mfloat_t optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2, mfloat_t ldeltamin, mfloat_t ldeltamax, muint_t numintervals);
+	static mfloat_t nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2);
+	static mfloat_t optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2, mfloat_t ldeltamin, mfloat_t ldeltamax, muint_t numintervals);
 	//set precompute decompositions
 	//void setMatrices(const MatrixXd)
 	//getters: TODO
-
+	
 };
 
 
@@ -117,6 +118,27 @@ inline void CLMMKroneckerCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AObe
 
 } //end ::nLLevalEx
 
+
+class nLLevalKronFunctor: public BrentFunctor{
+	MatrixXd Y;
+	MatrixXdVec X;
+	MatrixXdVec A;
+	MatrixXd S_C1;
+	MatrixXd S_C2;
+	MatrixXd S_R1;
+	MatrixXd S_R2;
+public:
+   nLLevalKronFunctor(	
+		const MatrixXdVec A,
+		const MatrixXdVec X,
+		const MatrixXd Y,
+		const MatrixXd S_C1,
+		const MatrixXd S_R1,
+		const MatrixXd S_C2,
+		const MatrixXd S_R2);
+   ~nLLevalKronFunctor();
+   virtual mfloat_t operator()(const mfloat_t logdelta);
+};
 
 } //end namespace LIMIX
 

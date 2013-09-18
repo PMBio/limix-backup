@@ -44,11 +44,10 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	this->updateDecomposition();
 
 	//evaluate null model
-	mfloat_t ldelta0_ = log(2.0);//0.0;//TODO: optionally fix to given value
+	mfloat_t ldelta0_ = 0.050505050505;//TODO: optionally fix to given value
 	mfloat_t nLL0_ = 0.0;
 	if (num_intervals0>0)
 	{
-		std::cout << "ouch, this is still buggy. Most likely it is the determinant term, that is messed up.\n";
 		nLL0_ = CKroneckerLMM::optdelta(ldelta0_,this->coldesignU0,this->Urowdesign0,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r, ldeltamin0, ldeltamax0, num_intervals0);
 	}
 	else
@@ -77,13 +76,10 @@ void CKroneckerLMM::process() throw (CGPMixException){
 		mfloat_t nLL;
 		if (num_intervalsAlt>0)
 		{
-			std::cout << "ouch, this is still buggy.\n";
 			nLL = CKroneckerLMM::optdelta(ldelta,coldesignUAlt,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r, ldeltaminAlt, ldeltamaxAlt, num_intervalsAlt);
-			//nLL = CKroneckerLMM::nLLeval(ldelta,coldesignUAlt,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r);
 		}
 		else
 		{
-			ldelta = ldelta0(0,is);
 			nLL = CKroneckerLMM::nLLeval(ldelta,coldesignUAlt,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r);
 		}
 		nLLAlt(0,is) = nLL;
@@ -112,10 +108,11 @@ mfloat_t CKroneckerLMM::optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,cons
     ldeltaD /= ((mfloat_t)(numintervals) - 1.0);
     mfloat_t nllmin = HUGE_VAL;
     mfloat_t ldeltaopt_glob = 0.0;
-    MatrixXd f_tests;
+    muint_t nevals = 0;
     for(muint_t i = 0;i < numintervals;i++){
-    	nllgrid(i, 0) = CKroneckerLMM::nLLeval(ldelta, A, X, Y, S_C1, S_R1, S_C1, S_R1);
-        ldeltagrid(i, 0) = ldelta;
+    	nllgrid(i, 0) = CKroneckerLMM::nLLeval(ldelta, A, X, Y, S_C1, S_R1, S_C2, S_R2);
+        ++nevals;
+		ldeltagrid(i, 0) = ldelta;
         //std::cout<< "nnl( " << ldelta << ") = " << nllgrid(i,0) <<  "VS" << nllmin << ")\n\n";
         if(nllgrid(i, 0) < nllmin){
             //		std::cout << "new min (" << nllmin << ") -> " <<  nllgrid(i,0) << "\n\n";
@@ -125,14 +122,32 @@ mfloat_t CKroneckerLMM::optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,cons
         //move on delta
         ldelta += ldeltaD;
     } //end for all intervals
-
+	nLLevalKronFunctor func(A, X, Y, S_C1, S_R1, S_C2, S_R2);
+	for(int i=1;i<(numintervals-1);i++){
+      if (nllgrid(i,0)<nllgrid(i+1,0) && nllgrid(i,0)<nllgrid(i-1,0)){
+		  //check wether a local optimum exists in this triplet
+         mfloat_t current_nLL=std::numeric_limits<mfloat_t>::infinity();
+         size_t nevals_Int=0;
+         //If there is a local optimum, optimize over the current triplet:
+		 mfloat_t brentTol=0.00000001;
+		 muint_t brentMaxIter = 10000;
+		 mfloat_t current_log_delta=BrentC::minimize(func,ldeltagrid(i-1,0),ldeltagrid(i+1,0),brentTol,current_nLL,nevals_Int,brentMaxIter,true);
+         nevals+=nevals_Int;
+         if (current_nLL<=nllmin){
+            nllmin=current_nLL;
+            ldeltaopt_glob=(current_log_delta);
+         }
+      }
+   }
     //std::cout << "\n\n nLL_i:\n" << nllgrid;
+	//std::cout <<"\n\n delta_i:\n" << ldeltagrid;
     ldelta_opt = ldeltaopt_glob;
     return nllmin;
 }
 
 mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2)
 {
+//#define debugll
 	muint_t R = (muint_t)Y.rows();
 	muint_t C = (muint_t)Y.cols();
 	assert(A.size() == X.size());
@@ -163,7 +178,7 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 			std::cout << "S_R2(" << r << ")="<< S_R2(r)<<"\n";
 		}
 	}
-#ifdef debugkron
+#ifdef debugll
 	std::cout << ldet;
 	std::cout << "\n";
 #endif
@@ -178,7 +193,7 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 			std::cout << "S_C2(" << c << ")="<< S_C2(c)<<"\n";
 		}
 	}
-#ifdef debugkron
+#ifdef debugll
 	std::cout << ldet;
 	std::cout << "\n";
 #endif
@@ -191,7 +206,7 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 			D(r,c) = 1.0/SSd;
 		}
 	}
-#ifdef debugkron
+#ifdef debugll
 	std::cout << ldet;
 	std::cout << "\n";
 #endif
@@ -448,6 +463,27 @@ void CKroneckerLMM::updateDecomposition() throw(CGPMixException) {
 }
 
 
-
+//the operator evaluates nLLeval
+mfloat_t nLLevalKronFunctor::operator()(const mfloat_t logdelta)
+   {   
+	   return CKroneckerLMM::nLLeval(logdelta,A,X,Y,S_C1,S_R1,S_C2,S_R2);
+   }
+nLLevalKronFunctor::nLLevalKronFunctor(
+		const MatrixXdVec A,
+		const MatrixXdVec X,
+		const MatrixXd Y,
+		const MatrixXd S_C1,
+		const MatrixXd S_R1,
+		const MatrixXd S_C2,
+		const MatrixXd S_R2){
+	this->A=A;
+	this->X=X;
+	this->Y=Y;
+	this->S_C1=S_C1;
+	this->S_C2=S_C2;
+	this->S_R1=S_R1;
+	this->S_R2=S_R2;
+}
+nLLevalKronFunctor::~nLLevalKronFunctor(){}
 } // end namespace
 
