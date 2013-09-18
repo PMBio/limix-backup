@@ -81,6 +81,14 @@ typedef uint64_t muint_t;
 	};
 #endif
 
+#ifndef isinf
+	//template<typename T>
+	inline bool isinf(mfloat_t value)
+	{
+		return (value == std::numeric_limits<mfloat_t>::infinity());
+	};
+#endif
+
 
 //inline casts of exp and log
 inline mfloat_t exp (mfloat_t x)

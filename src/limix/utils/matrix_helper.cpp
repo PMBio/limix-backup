@@ -86,7 +86,7 @@ mfloat_t logdet(Eigen::LDLT<MatrixXd>& chol)
 mfloat_t randn(mfloat_t mu, mfloat_t sigma) {
 	static bool deviateAvailable=false;	//	flag
 	static mfloat_t storedDeviate;			//	deviate from previous calculation
-	double dist, angle;
+	mfloat_t dist, angle,ret;
 
 	//	If no deviate has been stored, the standard Box-Muller transformation is
 	//	performed, producing two independent normally-distributed random
@@ -95,27 +95,30 @@ mfloat_t randn(mfloat_t mu, mfloat_t sigma) {
 
 		//	choose a pair of uniformly distributed deviates, one for the
 		//	distance and one for the angle, and perform transformations
-		dist=sqrt( -2.0 * log(double(rand()) / double(RAND_MAX)) );
-		angle= 2.0 * PI * (double(rand()) / double(RAND_MAX));
+		dist=sqrt( -2.0 * log(randu()) );
+		angle= 2.0 * PI * randu();
 
 		//	calculate and store first deviate and set flag
 		storedDeviate=dist*cos(angle);
 		deviateAvailable=true;
 
 		//	calcaulate return second deviate
-		return (mfloat_t)(dist * sin(angle) * sigma + mu);
+		ret = (dist * sin(angle) * sigma + mu);
 	}
 
 	//	If a deviate is available from a previous call to this function, it is
 	//	returned, and the flag is set to false.
 	else {
 		deviateAvailable=false;
-		return storedDeviate*sigma + mu;
+		ret = storedDeviate*sigma + mu;
+		return ret;
 	}
+	if (ret!=ret || isinf(ret))
+	{
+		std::cout <<"nan sample from randn: "<< ret<<"\n";
+	}
+	return ret;
 }
-
-
-
 
 
 
@@ -123,10 +126,20 @@ MatrixXd randn(const muint_t n, const muint_t m)
 /* create a randn matrix, i.e. matrix of Gaussian distributed random numbers*/
 {
 	MatrixXd rv(n,m);
+	mfloat_t sum = 0.0;
 	for (muint_t i=0; i<n; i++)
 		for (muint_t j=0; j<m; j++) {
-			double r = randn(0.0,1.0);
+			mfloat_t r = randn(0.0,1.0);
+			if (r!=r)
+			{
+				std::cout <<"nan sample from randn: "<< r<<"\n";
+			}
 			rv(i,j) = r;
+			sum+=r;
+			if(sum!=sum)
+			{
+				std::cout<<"sum(r)= "<<sum<<"\n";
+			}
 		}
 	return rv;
 }
@@ -138,7 +151,7 @@ MatrixXd Mrand(const muint_t n,const muint_t m)
 	for (muint_t i=0;i<n;i++)
 		for(muint_t j=0;j<m;j++)
 		{
-			rv(i,j) = ((double)rand())/((double)RAND_MAX);
+			rv(i,j) = randu();
 		}
 	return rv;
 }
@@ -151,12 +164,12 @@ double randbeta(mfloat_t a, mfloat_t b)
   max = (a-1.0)*log(alpha) + (b-1.0)*log(1.0-alpha); max = exp(max);
   while(1)
   {
-    sample = ((mfloat_t)rand())/((mfloat_t)RAND_MAX);
+    sample = randu();
     density = (a-1.0)*log(sample) + (b-1.0)*log(1.0-sample); 
 	density = exp(density);
     density = density/max;
     if(density > 1) { exit(1); }
-    if(density >= ((mfloat_t)rand())/((mfloat_t)RAND_MAX)) return sample;
+    if(density >= randu()) return sample;
   }
 }
 
@@ -176,7 +189,7 @@ MatrixXd BaldingNichols(muint_t N, muint_t M, mfloat_t mafmin=0.1, mfloat_t FST=
 	MatrixXd res = MatrixXd(N,M);
 	for (muint_t m = 0; m<M;++m)
 	{
-		mfloat_t maf = mafmin + (1.0-2.0*mafmin)*((mfloat_t)rand())/((mfloat_t)RAND_MAX);			
+		mfloat_t maf = mafmin + (1.0-2.0*mafmin)*randu();			
 		mfloat_t a = maf*(1.0-FST)/FST; 
 		mfloat_t b = (1.0-maf)*(1.0-FST)/FST;
 		mfloat_t maf1 = randbeta(a,b);
@@ -188,8 +201,8 @@ MatrixXd BaldingNichols(muint_t N, muint_t M, mfloat_t mafmin=0.1, mfloat_t FST=
 			if(n<N/2) mafthis = maf1;
 			else mafthis = maf2;
 			muint_t geno = 0;
-			if(((mfloat_t)rand())/((mfloat_t)RAND_MAX) < mafthis) geno += 1;
-			if(((mfloat_t)rand())/((mfloat_t)RAND_MAX) < mafthis) geno += 1;
+			if(randu() < mafthis) geno += 1;
+			if(randu() < mafthis) geno += 1;
 			if(standardize){
 				res(n,m)=(((mfloat_t)geno) - 2.0*MAF)/sqrt(2.0*MAF*(1.0-MAF));
 			}
