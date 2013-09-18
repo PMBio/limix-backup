@@ -44,7 +44,7 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	this->updateDecomposition();
 
 	//evaluate null model
-	mfloat_t ldelta0_ = 0.0;//TODO: optionally fix to given value
+	mfloat_t ldelta0_ = log(2.0);//0.0;//TODO: optionally fix to given value
 	mfloat_t nLL0_ = 0.0;
 	if (num_intervals0>0)
 	{
@@ -148,18 +148,40 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 		nWeights+=(muint_t)(A[term].rows()) * (muint_t)(X[term].cols());
 	}
 	mfloat_t delta = exp(ldelta);
-	mfloat_t ldet = R * C * ldelta;
+	mfloat_t ldet = 0.0;//R * C * ldelta;
 
 	//build D and compute the logDet of D
 	MatrixXd D = MatrixXd(R,C);
 	for (muint_t r=0; r<R;++r)
 	{
-		ldet += C * log(S_R2(r));//ldet
+		if(S_R2(r)>1e-10)
+		{
+			ldet += (mfloat_t)C * log(S_R2(r));//ldet
+		}
+		else
+		{
+			std::cout << "S_R2(" << r << ")="<< S_R2(r)<<"\n";
+		}
 	}
+#ifdef debugkron
+	std::cout << ldet;
+	std::cout << "\n";
+#endif
 	for (muint_t c=0; c<C;++c)
 	{
-		ldet += R * log(S_C2(c));//ldet
+		if(S_C2(c)>1e-10)
+		{
+			ldet += (mfloat_t)R * log(S_C2(c));//ldet
+		}
+		else
+		{
+			std::cout << "S_C2(" << c << ")="<< S_C2(c)<<"\n";
+		}
 	}
+#ifdef debugkron
+	std::cout << ldet;
+	std::cout << "\n";
+#endif
 	for (muint_t r=0; r<R;++r)
 	{
 		for (muint_t c=0; c<C;++c)
@@ -169,7 +191,10 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 			D(r,c) = 1.0/SSd;
 		}
 	}
-
+#ifdef debugkron
+	std::cout << ldet;
+	std::cout << "\n";
+#endif
 	MatrixXd DY = Y.array() * D.array();
 
 	VectorXd XYA = VectorXd(nWeights);
@@ -272,14 +297,14 @@ void CKroneckerLMM::updateDecomposition() throw(CGPMixException) {
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver2c(K2c);
     this->U2c = eigensolver2c.eigenvectors();
     this->S2c = eigensolver2c.eigenvalues();
-	if (this->S2c(0)<=1e-12){
+	if (!(this->S2c(0)>1e-12)){
 		throw new CGPMixException("The column covariance of the second covariance term has to be full rank, but is not.");
 	}
 
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver2r(K2r);
     this->U2r = eigensolver2r.eigenvectors();
     this->S2r = eigensolver2r.eigenvalues();
-	if (this->S2r(0)<=1e-12){
+	if (!(this->S2r(0)>1e-12)){
 		throw new CGPMixException("The row covariance of the second covariance term has to be full rank, but is not.");
 	}
         
@@ -337,7 +362,7 @@ void CKroneckerLMM::updateDecomposition() throw(CGPMixException) {
 	std::cout << "K2ri : \n"<<  K2r.inverse() << "\n";
 	std::cout << "K2ci : \n"<<  K2c.inverse() << "\n";
 		
-	mfloat_t delta = 0.5;
+	mfloat_t delta = 0.01;
 		
 	MatrixXd kronK1;
 	akron(kronK1,K1c,K1r,false);
