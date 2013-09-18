@@ -132,19 +132,74 @@ MatrixXd randn(const muint_t n, const muint_t m)
 }
 
 
-MatrixXd Mrandrand(const muint_t n,const muint_t m)
+MatrixXd Mrand(const muint_t n,const muint_t m)
 {
 	MatrixXd rv(n,m);
 	for (muint_t i=0;i<n;i++)
 		for(muint_t j=0;j<m;j++)
 		{
-			rv(i,j) = ((double)rand())/RAND_MAX;
+			rv(i,j) = ((double)rand())/((double)RAND_MAX);
 		}
 	return rv;
 }
 
+double randbeta(mfloat_t a, mfloat_t b)
+{
+  double alpha, max, sample, density;
 
+  alpha = (a-1.0)/(a+b-2.0);
+  max = (a-1.0)*log(alpha) + (b-1.0)*log(1.0-alpha); max = exp(max);
+  while(1)
+  {
+    sample = ((mfloat_t)rand())/((mfloat_t)RAND_MAX);
+    density = (a-1.0)*log(sample) + (b-1.0)*log(1.0-sample); 
+	density = exp(density);
+    density = density/max;
+    if(density > 1) { exit(1); }
+    if(density >= ((mfloat_t)rand())/((mfloat_t)RAND_MAX)) return sample;
+  }
+}
 
+MatrixXd randbeta(const muint_t n, const muint_t m, mfloat_t a, mfloat_t b)
+{
+	MatrixXd rv(n,m);
+	for (muint_t i=0;i<n;i++)
+		for(muint_t j=0;j<m;j++)
+		{
+			rv(i,j) = randbeta(a,b);
+		}
+	return rv;
+}
 
+MatrixXd BaldingNichols(muint_t N, muint_t M, mfloat_t mafmin=0.1, mfloat_t FST=0.005, bool standardize=true)
+{
+	MatrixXd res = MatrixXd(N,M);
+	for (muint_t m = 0; m<M;++m)
+	{
+		mfloat_t maf = mafmin + (1.0-2.0*mafmin)*((mfloat_t)rand())/((mfloat_t)RAND_MAX);			
+		mfloat_t a = maf*(1.0-FST)/FST; 
+		mfloat_t b = (1.0-maf)*(1.0-FST)/FST;
+		mfloat_t maf1 = randbeta(a,b);
+		mfloat_t maf2 = randbeta(a,b);
+		mfloat_t MAF = 0.5*maf1 + 0.5*maf2;
+		for(muint_t n=0; n<N; ++n)
+		{
+			mfloat_t mafthis;
+			if(n<N/2) mafthis = maf1;
+			else mafthis = maf2;
+			muint_t geno = 0;
+			if(((mfloat_t)rand())/((mfloat_t)RAND_MAX) < mafthis) geno += 1;
+			if(((mfloat_t)rand())/((mfloat_t)RAND_MAX) < mafthis) geno += 1;
+			if(standardize){
+				res(n,m)=(((mfloat_t)geno) - 2.0*MAF)/sqrt(2.0*MAF*(1.0-MAF));
+			}
+			else
+			{
+				res(n,m)=(muint_t)geno;
+			}
+		}
+	}
+	return res;
+}
 
 }

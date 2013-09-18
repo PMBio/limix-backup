@@ -137,10 +137,12 @@ inline void AfilterMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::Mat
 }
 
 
-
+mfloat_t randbeta(mfloat_t a, mfloat_t b);
+MatrixXd randbeta(const muint_t n, const muint_t m, mfloat_t a, mfloat_t b);
 
 MatrixXd randn(const muint_t n, const muint_t m);
 MatrixXd Mrand(const muint_t n,const muint_t m);
+MatrixXd BaldingNichols(muint_t N, muint_t M, mfloat_t mafmin, mfloat_t FST, bool standardize);
 
 /*Inline math functions*/
 template <typename Derived1, typename Derived2,typename Derived3,typename Derived4>

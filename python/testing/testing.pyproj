@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>a6c792d0-050c-494b-8b93-c01c0c2e9c45</ProjectGuid>
+    <ProjectHome>
+    </ProjectHome>
+    <StartupFile>covariance_test.py</StartupFile>
+    <SearchPath>..\..\debug.win32\interfaces\python\limix\</SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <InterpreterId>00000000-0000-0000-0000-000000000000</InterpreterId>
+    <InterpreterVersion>
+    </InterpreterVersion>
+    <Name>testing</Name>
+    <RootNamespace>testing</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="bounds_test.py" />
+    <Compile Include="covariance_test.py" />
+    <Compile Include="gplvm_test.py" />
+    <Compile Include="gp_test.py" />
+    <Compile Include="kronecker_lmm_test.py" />
+    <Compile Include="kronecker_test.py" />
+    <Compile Include="limix\core.py" />
+    <Compile Include="limix\modules\FastVDMM.py" />
+    <Compile Include="limix\modules\multiTraitQTL.py" />
+    <Compile Include="limix\modules\qtl.py" />
+    <Compile Include="limix\modules\varianceDecomposition.py" />
+    <Compile Include="limix\modules\__init__.py" />
+    <Compile Include="limix\utils\fastlmm.py" />
+    <Compile Include="limix\utils\fdr.py" />
+    <Compile Include="limix\utils\preprocess.py" />
+    <Compile Include="limix\utils\util.py" />
+    <Compile Include="limix\utils\__init__.py" />
+    <Compile Include="limix\__init__.py" />
+    <Compile Include="multitrait.py" />
+    <Compile Include="test_lmm.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="limix\" />
+    <Folder Include="limix\modules\" />
+    <Folder Include="limix\utils\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>
