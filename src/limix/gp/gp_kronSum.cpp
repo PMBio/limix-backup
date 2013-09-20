@@ -703,6 +703,59 @@ void CGPkronSum::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 	(*out) = this->dataTerm->gradParams(KinvY);
 }
 
+void CGPkronSum::aLMLhess_c1c1(MatrixXd *out) throw (CGPMixException)
+{
+	/* TO DO
+
+	//get stuff from cache
+    MatrixXd& Scstar = cache->rgetScstar();
+    MatrixXd& Srstar = cache->rgetSrstar();
+	MatrixXd& Lambdac = cache->rgetLambdac();
+	MatrixXd& Ytilde = cache->rgetYtilde();
+	//covar
+	MatrixXd& Rrot = cache->rgetRrot();
+
+    //start loop trough covariance paramenters
+    (*out).resize(covarc1->getNumberParams(),1);
+    MatrixXd CgradRot_i(this->getY().rows(),this->getY().rows());
+    MatrixXd CgradRot_j(this->getY().rows(),this->getY().rows());
+    MatrixXd ChessRot(this->getY().rows(),this->getY().rows());
+	for (muint_t i=0; i<covarc1->getNumberParams(); i++) {
+		for (muint_t j=i; j<covarc1->getNumberParams(); j++) {
+			CgradRot_i=Lambdac*covarc1->Kgrad_param(i)*Lambdac.transpose();
+			CgradRot_j=Lambdac*covarc1->Kgrad_param(j)*Lambdac.transpose();
+			ChessRot=Lambdac*covarc1->Khess_param(i,j)*Lambdac.transpose();
+			//1. grad logdet
+			mfloat_t grad_det = 0;
+			for (muint_t n=0; n<(muint_t)Ytilde.rows(); n++)	{
+				for (muint_t p=0; p<(muint_t)Ytilde.cols(); p++)	{
+					grad_det+=CgradRot(p,p)*Rrot(n,n)/(Scstar(p,0)*Srstar(n,0)+1);
+				}
+			}
+			grad_det*=0.5;
+			//2. grad quadratic term
+			// Decomposition in columns and row
+			MatrixXd Ytilde0(Ytilde.rows(),Ytilde.cols());
+			MatrixXd Ytilde1a(Ytilde.rows(),Ytilde.cols());
+			MatrixXd Ytilde1b(Ytilde.rows(),Ytilde.cols());
+			MatrixXd Ytilde2b(Ytilde.rows(),Ytilde.cols());
+			for (muint_t p=0; p<(muint_t)Ytilde.cols(); p++)
+				Ytilde0.block(0,p,Ytilde.rows(),1).noalias()=Rrot*Ytilde.block(0,p,Ytilde.rows(),1);
+			for (muint_t n=0; n<(muint_t)Ytilde.rows(); n++) {
+				Ytilde1a.block(n,0,1,Ytilde.cols()).noalias()=Ytilde0.block(n,0,1,Ytilde.cols())*CgradRot_i.transpose();
+				Ytilde1b.block(n,0,1,Ytilde.cols()).noalias()=Ytilde0.block(n,0,1,Ytilde.cols())*CgradRot_j.transpose();
+				Ytilde2b.block(n,0,1,Ytilde.cols()).noalias()=Ytilde0.block(n,0,1,Ytilde.cols())*ChessRot.transpose();
+			}
+			for (muint_t n=0; n<(muint_t)Ytilde.rows(); n++)
+				for (muint_t p=0; p<(muint_t)Ytilde.cols(); p++)
+					Ytilde1b(n,p)=Ytilde1b(n,p)/(Scstar(p,0)*Srstar(n,0)+1);
+			mfloat_t grad_quad = -(Ytilde1a.array()*Ytilde1b.array()).sum();
+			grad_quad += 0.5*(Ytilde.array()*Ytilde2b.array()).sum();
+			(*out)(i,0)=grad_det+grad_quad;
+    }
+    */
+}
+
 
 
 } /* namespace limix */

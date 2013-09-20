@@ -230,6 +230,18 @@ public:
 	virtual void aLMLgrad_covarr2(VectorXd* out) throw (CGPMixException);
 	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);
 
+	// Hessian
+	virtual void aLMLhess_c1c1(MatrixXd* out) throw (CGPMixException);
+	//virtual void aLMLhess_c1r1(MatrixXd* out) throw (CGPMixException);
+	//virtual void aLMLhess_c1c2(MatrixXd* out) throw (CGPMixException);
+	//virtual void aLMLhess_c1r2(MatrixXd* out) throw (CGPMixException);
+	//virtual void aLMLhess_r1r1(MatrixXd* out) throw (CGPMixException);
+	//virtual void aLMLhess_r1c2(MatrixXd* out) throw (CGPMixException);
+	//virtual void aLMLhess_r1r2(MatrixXd* out) throw (CGPMixException);
+	//virtual void aLMLhess_c2c2(MatrixXd* out) throw (CGPMixException);
+	//virtual void aLMLhess_c2r2(MatrixXd* out) throw (CGPMixException);
+	//virtual void aLMLhess_r2r2(MatrixXd* out) throw (CGPMixException);
+
 
 	/* DEBUGGING */
 
