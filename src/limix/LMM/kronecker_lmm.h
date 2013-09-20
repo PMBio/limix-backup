@@ -25,9 +25,11 @@ class CLMMKroneckerCore : public CLMMCore
  *
  * Class is derived from CLMM, however provides special functions for Kronecker phenotypes
  *
- * y ~ N(fixed(X), s2(K1c \kron K1r + K2c \kron K2r))
+ * y ~ N(fixed(X), s2(K1c \kron K1r + \delta K2c \kron K2r))
  *
- * TODO: explain the model a little more
+ * fixed effects are decomposed of kronecke terms that involve a predefined set of covariates and a linear set of SNPs
+ *
+ *
  */
 class CKroneckerLMM : public CLMMKroneckerCore, public ALMM
 {
@@ -88,12 +90,30 @@ public:
 	{this->snps = snps;}
 	void setSNPcoldesign(const MatrixXd& design)
 	{this->snpcoldesign = design;}
-	/*! set SNPs */
+
+	/*! set Vecotr of covariates
+	 * \param covsR: vector of row covariate terms
+	 * \param covsCol: vector of column covariate terms
+	 * */
 	void setCovariates(const MatrixXdVec& covsR, const MatrixXdVec& covsCol)
 	{
 		this->coldesign0 = covsCol;
 		this->rowdesign0 = covsR;
 	}
+
+	/*! add term to the backgroudn covaraite
+	 * \param covR: row covariance design
+	 * \param covC: column covariance design
+	 * */
+	void addCovariates(const MatrixXd& covR, const MatrixXd& covCol);
+
+	/* set a particular covariate element
+	\param index: index of the covarite vector be set
+	\param covarR: covariate row design
+	\param covC: covariate column design
+	  */
+	void setCovariates(muint_t index,const MatrixXd& covR, const MatrixXd& covC);
+
 
 	static mfloat_t nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2);
 	static mfloat_t optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2, mfloat_t ldeltamin, mfloat_t ldeltamax, muint_t numintervals);

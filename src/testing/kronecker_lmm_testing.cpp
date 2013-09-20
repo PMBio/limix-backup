@@ -103,6 +103,8 @@ int main() {
 		MatrixXdVec Xcov=MatrixXdVec();
 		Xcov.push_back(Xcovar);
 
+		std::cout << A_covar.rows() << "," << A_covar.cols() << "," << Xcovar.rows() << "," << Xcovar.cols() << "\n";
+
 		CKroneckerLMM lmm = CKroneckerLMM();
 		lmm.setK1c(Kc1);
 		lmm.setK1r(Kr1);
