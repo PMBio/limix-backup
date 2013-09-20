@@ -228,6 +228,10 @@ public:
 	virtual mfloat_t getLMLgrad() throw(CGPMixException);
 	virtual mfloat_t getLMLgradGPbase() throw(CGPMixException);
 	virtual mfloat_t getLMLgradGPkronSum() throw(CGPMixException);
+
+	// estimate single trait heritability
+	virtual void aestimateHeritability(VectorXd* out, const MatrixXd& Y, const MatrixXd& fixed, const MatrixXd& K);
+
 };
 typedef sptr<CVarianceDecomposition> PVarianceDecomposition;
 
