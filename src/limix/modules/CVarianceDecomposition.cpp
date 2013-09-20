@@ -229,8 +229,6 @@ void CVarianceDecomposition::setPheno(const MatrixXd& pheno) throw(CGPMixExcepti
 	this->pheno = pheno;
 	this->N = (muint_t)pheno.rows();
 	this->P = (muint_t)pheno.cols();
-	// Set all other values to default
-	this->clear();
 }
 
 void CVarianceDecomposition::getPheno(MatrixXd *out) const throw(CGPMixException)

@@ -27,7 +27,7 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	for(muint_t c=0;c<rowdesign0.size();++c)
 	{
 		//if (P!=coldesign0[c].cols() || P!=coldesignU0[P].cols() || N!=rowdesign0[c].rows() || N!=Urowdesign0[c].rows())
-		if (P!=coldesign0[c].cols() || N!=rowdesign0[c].rows() )
+		if (P!=(muint_t)coldesign0[c].cols() || N!=(muint_t)rowdesign0[c].rows() )
 		{
 			throw new CGPMixException("dimensions in background model inconsistent");
 		}
@@ -97,6 +97,19 @@ void CKroneckerLMM::process() throw (CGPMixException){
 
 }
 
+void CKroneckerLMM::addCovariates(const MatrixXd& covsR, const MatrixXd& covsCol)
+{
+	this->coldesign0.push_back(covsCol);
+	this->rowdesign0.push_back(covsR);
+}
+
+void CKroneckerLMM::setCovariates(muint_t index,const MatrixXd& covsR, const MatrixXd& covsCol)
+{
+	this->coldesign0[index] = covsCol;
+	this->rowdesign0[index] = covsR;
+}
+
+
 mfloat_t CKroneckerLMM::optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2, mfloat_t ldeltamin, mfloat_t ldeltamax, muint_t numintervals)
 {
     //grid variable with the current likelihood evaluations
@@ -123,7 +136,7 @@ mfloat_t CKroneckerLMM::optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,cons
         ldelta += ldeltaD;
     } //end for all intervals
 	nLLevalKronFunctor func(A, X, Y, S_C1, S_R1, S_C2, S_R2);
-	for(int i=1;i<(numintervals-1);i++){
+	for(muint_t i=1;i<(numintervals-1);i++){
       if (nllgrid(i,0)<nllgrid(i+1,0) && nllgrid(i,0)<nllgrid(i-1,0)){
 		  //check wether a local optimum exists in this triplet
          mfloat_t current_nLL=std::numeric_limits<mfloat_t>::infinity();
@@ -329,16 +342,16 @@ void CKroneckerLMM::updateDecomposition() throw(CGPMixException) {
 	std::cout << "Crot: \n"<< Crot << "\n";
 	std::cout << "Rrot: \n"<< Rrot << "\n";
 #endif		
-	for (size_t r1=0;r1<this->pheno.rows();++r1)
+	for (size_t r1=0;r1<(muint_t)this->pheno.rows();++r1)
 	{
-		for (size_t r2=0;r2<this->pheno.rows();++r2)
+		for (size_t r2=0;r2<(muint_t)this->pheno.rows();++r2)
 		{
 			Rrot(r1,r2)/=sqrt(this->S2r(r2));
 		}
 	}
-	for (size_t c1=0;c1<this->pheno.cols();++c1)
+	for (size_t c1=0;c1<(muint_t)this->pheno.cols();++c1)
 	{
-		for (size_t c2=0;c2<this->pheno.cols();++c2)
+		for (size_t c2=0;c2<(muint_t)this->pheno.cols();++c2)
 		{
 			Crot(c1,c2)/=sqrt(this->S2c(c2));
 		}
