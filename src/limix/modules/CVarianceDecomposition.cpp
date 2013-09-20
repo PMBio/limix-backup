@@ -10,6 +10,7 @@
 #include "limix/mean/CSumLinear.h"
 #include "limix/mean/CKroneckerMean.h"
 #include "limix/gp/gp_kronSum.h"
+#include "limix/LMM/lmm.h"
 
 namespace limix {
 
@@ -499,6 +500,32 @@ mfloat_t CVarianceDecomposition::getLMLgradGPkronSum() throw(CGPMixException)
 	out = std::sqrt(out);
 
 	return out;
+}
+
+void CVarianceDecomposition::aestimateHeritability(VectorXd* out, const MatrixXd& Y, const MatrixXd& fixed, const MatrixXd& K)
+{
+	/*
+	 * estimates the genetic and the noise variance and creates a matrirx object to return them
+	 */
+	MatrixXd covs;
+	if(isnull(fixed))
+		covs = MatrixXd::Ones(Y.rows(),1);
+	else
+		covs = fixed;
+	//use mixed model code to estimate heritabiltiy
+	CLMM lmm;
+	lmm.setK(K);
+	lmm.setSNPs(MatrixXd::Zero(K.rows(),1));
+	lmm.setPheno(Y);
+	lmm.setCovs(covs);
+	lmm.setVarcompApprox0(-20, 20, 1000);
+    lmm.process();
+    mfloat_t delta0 = exp(lmm.getLdelta0()(0,0));
+    mfloat_t Vtotal = exp(lmm.getLSigma()(0,0));
+    VectorXd rv = VectorXd(2);
+    rv(0) = Vtotal;
+    rv(1) = Vtotal*delta0;
+    (*out) =rv;
 }
 
 
