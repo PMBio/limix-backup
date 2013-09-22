@@ -381,45 +381,55 @@ void CVarianceDecomposition::initGPbase() throw(CGPMixException)
 void CVarianceDecomposition::initGPkronSum() throw(CGPMixException)
 {
 
-	if (getNumberTerms()!=2)
-		throw CGPMixException("CVarianceDecomposition: fastGP only works for two terms");
-	if (getNumberTraits()<2)
-		throw CGPMixException("CVarianceDecomposition: supported only for multiple traits");
+    if (getNumberTerms()!=2)
+        throw CGPMixException("CVarianceDecomposition: fastGP only works for two terms");
+    if (getNumberTraits()<2)
+        throw CGPMixException("CVarianceDecomposition: supported only for multiple traits");
 
-	//init covars
-	terms[0]->initTerm();
-	terms[1]->initTerm();
-	PCovarianceFunction covarr1 = terms[0]->getKcf();
-	PCovarianceFunction covarr2 = terms[1]->getKcf();
-	PCovarianceFunction covarc1 = terms[0]->getTraitCovar();
-	PCovarianceFunction covarc2 = terms[1]->getTraitCovar();
-	//init dataTerm
-	MatrixXdVec::const_iterator fixed_iter   = fixedEffs.begin();
-	MatrixXdVec::const_iterator design_iter  = designs.begin();
-	PSumLinear mean(new CSumLinear());
-	for(; design_iter!=designs.end(); design_iter++, fixed_iter++) {
-		MatrixXd A = design_iter[0];
-		MatrixXd F = fixed_iter[0];
-		MatrixXd W = MatrixXd::Zero(F.cols(),A.rows());
-		mean->appendTerm(PKroneckerMean(new CKroneckerMean(pheno,W,F,A)));
-	}
-	// init lik
-	PLikNormalNULL lik(new CLikNormalNULL());
-	//define gpKronSum
-	gp = PGPkronSum(new CGPkronSum(pheno,covarr1,covarc1,covarr2,covarc2,lik,mean));
-	//Initialize Params
-	CGPHyperParams params;
-	params["covarr1"] = covarr1->getParams();
-	params["covarc1"] = covarc1->getParams();
-	params["covarr2"] = covarr2->getParams();
-	params["covarc2"] = covarc2->getParams();
-	params["dataTerm"] = mean->getParams();
-	gp->setParams(params);
-	opt = PGPopt(new CGPopt(gp));
-
-	this->fast=true;
-
-	this->is_init=1;
+    if (is_init && fast) {
+        gp->setY(pheno);
+        CGPHyperParams params = this->gp->getParams();
+        VectorXd covarParams;
+        agetScales(0,&covarParams); params["covarc1"]=covarParams;
+        agetScales(1,&covarParams); params["covarc2"]=covarParams;
+        params["dataTerm"] = MatrixXd::Zero(params["dataTerm"].rows(),params["dataTerm"].cols());
+        gp->setParams(params);
+    }
+    else
+    {
+        //init covars
+        terms[0]->initTerm();
+        terms[1]->initTerm();
+        PCovarianceFunction covarr1 = terms[0]->getKcf();
+        PCovarianceFunction covarr2 = terms[1]->getKcf();
+        PCovarianceFunction covarc1 = terms[0]->getTraitCovar();
+        PCovarianceFunction covarc2 = terms[1]->getTraitCovar();
+        //init dataTerm
+        MatrixXdVec::const_iterator fixed_iter   = fixedEffs.begin();
+        MatrixXdVec::const_iterator design_iter  = designs.begin();
+        PSumLinear mean(new CSumLinear());
+        for(; design_iter!=designs.end(); design_iter++, fixed_iter++) {
+            MatrixXd A = design_iter[0];
+            MatrixXd F = fixed_iter[0];
+            MatrixXd W = MatrixXd::Zero(F.cols(),A.rows());
+            mean->appendTerm(PKroneckerMean(new CKroneckerMean(pheno,W,F,A)));
+        }
+        // init lik
+        PLikNormalNULL lik(new CLikNormalNULL());
+        //define gpKronSum
+        gp = PGPkronSum(new CGPkronSum(pheno,covarr1,covarc1,covarr2,covarc2,lik,mean));
+        //Initialize Params
+        CGPHyperParams params;
+        params["covarr1"] = covarr1->getParams();
+        params["covarc1"] = covarc1->getParams();
+        params["covarr2"] = covarr2->getParams();
+        params["covarc2"] = covarc2->getParams();
+        params["dataTerm"] = mean->getParams();
+        gp->setParams(params);
+        opt = PGPopt(new CGPopt(gp));
+        this->fast=true;
+        this->is_init=1;
+    }
 }
 
 
