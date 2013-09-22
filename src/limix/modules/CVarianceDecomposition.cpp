@@ -165,10 +165,12 @@ PCovarianceFunction CMultiTraitTerm::getCovariance() const throw(CGPMixException
 }
 
 
-/* CMultiTraitTerm */
+/* CVarianceDecomposition */
 
 CVarianceDecomposition::CVarianceDecomposition(const MatrixXd& pheno){
 	this->setPheno(pheno);
+    this->is_init=false;
+    this->fast=false;
 }
 
 CVarianceDecomposition::~CVarianceDecomposition(){
