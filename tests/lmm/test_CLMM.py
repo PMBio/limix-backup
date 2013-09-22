@@ -41,6 +41,9 @@ class CLMM_test(unittest.TestCase):
             lmm.setSNPs(D['X'])
             lmm.setCovs(D['Cov'])
             lmm.setPheno(D['Y'])
+            if 1:
+                #pdb.set_trace()
+                perm = SP.array(perm,dtype='int32')#Windows needs int32 as long -> fix interface to accept int64 types
             lmm.setPermutation(perm)
             lmm.process()
             pv_perm1 = lmm.getPv().ravel()
@@ -53,8 +56,8 @@ class CLMM_test(unittest.TestCase):
             lmm.process()
             pv_perm2 = lmm.getPv().ravel()
             D2 = (SP.log10(pv_perm1)-SP.log10(pv_perm2))**2
-            RV = SP.sqrt(D2.mean())<1E-6
-            self.assertTrue(RV)
+            RV = SP.sqrt(D2.mean())
+            self.assertTrue(RV<1E-6)
 
 
 

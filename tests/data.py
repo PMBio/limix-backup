@@ -4,18 +4,23 @@ import glob
 import re
 import os
 
-def load(dir):
-    pattern=re.compile('.*/(.*).txt.gz')
-    FL = glob.glob(os.path.join(dir,'*.txt.gz'))
+filetype = ".txt"
+#filetype = ".txt.gz"
+
+def load(directory):
+    stringpattern = "(.*)"+filetype
+    pattern=re.compile(stringpattern)
+    FL = glob.glob(os.path.join(directory,'*'+filetype))
     RV = {}
     for fn in FL:
-        name = pattern.match(fn).group(1)
+        fn_ = os.path.split(fn)[-1] #only keep the filename
+        name = pattern.match(fn_).group(1)
         RV[name] = SP.loadtxt(fn)
     return RV
 
-def dump(R,dir):
+def dump(R,directory):
     for r in R.keys():
-        fn = os.path.join(dir,r+'.txt.gz')
+        fn = os.path.join(directory,r+filetype)
         SP.savetxt(fn,R[r])
     
     
