@@ -53,7 +53,8 @@ class CVarianceDecomposition_test(unittest.TestCase):
             self.generate = True
         else:
             self.generate=False
-            self.D = data.load(os.path.join(self.dir_name,self.dataset))
+            #self.D = data.load(os.path.join(self.dir_name,self.dataset))
+            self.D = data.load(self.dataset)
             self.N = self.D['X'].shape[0]
             self.S = self.D['X'].shape[1]
             self.P = self.D['Y'].shape[1]
@@ -78,8 +79,8 @@ class CVarianceDecomposition_test(unittest.TestCase):
             data.dump(self.D,self.dataset)
             self.generate=False
         params_true = self.D['params_true']
-        RV = ((SP.absolute(params)-SP.absolute(params_true))**2).max()<1e-6
-        self.assertTrue(RV)
+        RV = ((SP.absolute(params)-SP.absolute(params_true))**2).max()
+        self.assertTrue(RV<1e-6)
 
     def test_fitFast(self):
         """ optimization test """
