@@ -59,6 +59,16 @@ void ALMM::setLdeltamin0(mfloat_t ldeltamin0)
 	this->ldeltamin0 = ldeltamin0;
 }
 
+void ALMM::setLdeltaInit(mfloat_t logdelta)
+{
+	this->ldeltaInit = logdelta;
+}
+
+mfloat_t ALMM::getLdeltaInit() const
+{
+	return this->ldeltaInit;
+}
+
 void ALMM::setNumIntervalsAlt(muint_t num_intervalsAlt)
 {
 	this->num_intervalsAlt = num_intervalsAlt;
