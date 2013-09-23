@@ -11,6 +11,7 @@
 #include "limix/types.h"
 #include "limix/utils/matrix_helper.h"
 #include <cmath>
+#include "limix/utils/brentc.h"
 
 
 namespace limix {
@@ -56,6 +57,7 @@ protected:
 	muint_t num_intervals0;
 	mfloat_t ldeltamin0;
 	mfloat_t ldeltamax0;
+	mfloat_t ldeltaInit;
 	mfloat_t ldeltaminAlt;
 	mfloat_t ldeltamaxAlt;
 	//results:
@@ -89,7 +91,8 @@ public:
     void setLdeltamaxAlt(mfloat_t ldeltamaxAlt);
     mfloat_t getLdeltamax0() const;
     void setLdeltamax0(mfloat_t ldeltamax0);
-
+	void setLdeltaInit(mfloat_t logdelta);
+	mfloat_t getLdeltaInit() const;
 
     //setter fors data:
     muint_t getNumSamples() const;
@@ -311,8 +314,14 @@ public:
 	{
 		return ldeltaAlt;
 	}
-
-
+	void setLdeltaInit(mfloat_t logdelta)
+	{
+		this->ldeltaInit=logdelta;
+	}
+	mfloat_t getLdeltaInit()
+	{
+		return this->ldeltaInit;
+	}
 };
 typedef sptr<CLMM> PLMM;
 
@@ -381,7 +390,7 @@ void train_associations_SingleSNP(MatrixXd* PV, MatrixXd* LL, MatrixXd* ldelta,
 		const MatrixXd& X, const MatrixXd& Y, const MatrixXd& U,
 		const MatrixXd& S, const MatrixXd& C, int numintervals,
 		double ldeltamin, double ldeltamax);
-double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals,double ldeltamin,double ldeltamax);
+double optdelta(const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S,int numintervals,double ldeltamin,double ldeltamax, bool REML = false);
 void optdeltaAllY(MatrixXd* out, const MatrixXd& UY, const MatrixXd& UX, const MatrixXd& S, const MatrixXd& ldeltagrid);
 double nLLeval(MatrixXd* F_tests, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const MatrixXd& S, bool REML=false);
 void nLLevalAllY(MatrixXd* out, double ldelta,const MatrixXd& UY,const MatrixXd& UX,const VectorXd& S);
@@ -661,6 +670,21 @@ inline void CLMMCore::optdeltaEx(const Eigen::MatrixBase<Derived1> & AO_delta_,c
 
 }
 
+class nLLevalFunctor: public BrentFunctor{
+	MatrixXd f_tests;
+	MatrixXd X;
+	MatrixXd Y;
+	MatrixXd S;
+	bool REML;
+public:
+	nLLevalFunctor(	
+		const MatrixXd Y,
+		const MatrixXd X,
+		const MatrixXd S,
+		const bool REML);
+   ~nLLevalFunctor();
+   virtual mfloat_t operator()(const mfloat_t logdelta);
+};
 
 
 } /* namespace limix */

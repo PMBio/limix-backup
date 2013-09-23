@@ -22,10 +22,11 @@ ALMM::ALMM()
 	//Default settings:
 	num_intervals0 = 100;
 	num_intervalsAlt = 0;
-	ldeltamin0 = -5;
-	ldeltamax0 = 5;
-	ldeltaminAlt = -5;
-	ldeltamaxAlt = 5;
+	ldeltaInit = 0.0;
+	ldeltamin0 = -5.0;
+	ldeltamax0 = 5.0;
+	ldeltaminAlt = -5.0;
+	ldeltamaxAlt = 5.0;
 	UK_cached = false;
 	Usnps_cached = false;
 	Upheno_cached = false;
@@ -302,7 +303,7 @@ int ALMM::getTestStatistics() const
         this->pv.resize(this->num_pheno, this->num_snps);
         //result matrices: think about what to store in the end
         ldelta0.resize(num_pheno,1);
-        ldelta0.setConstant(0.0);
+		ldelta0.setConstant(this->ldeltaInit);
         ldeltaAlt.resize(num_pheno,num_snps);
         nLL0.resize(num_pheno,1);
         nLLAlt.resize(num_pheno,num_snps);
@@ -539,7 +540,28 @@ int ALMM::getTestStatistics() const
         CLMM::updateDecomposition();
     }
 
-    double optdelta(const MatrixXd & UY, const MatrixXd & UX, const MatrixXd & S, int numintervals, double ldeltamin, double ldeltamax)
+	mfloat_t nLLevalFunctor::operator()(const mfloat_t logdelta)
+	{
+		return nLLeval(&f_tests, (double)logdelta, Y, X, S, REML);
+	}
+
+	nLLevalFunctor::nLLevalFunctor(
+		const MatrixXd Y,
+		const MatrixXd X,
+		const MatrixXd S,
+		const bool REML
+		)
+	{
+		this->f_tests=MatrixXd();
+		this->X=X;
+		this->REML=REML;
+		this->Y=Y;
+		this->S=S;
+	}
+
+	nLLevalFunctor::~nLLevalFunctor(){}
+
+    double optdelta(const MatrixXd & UY, const MatrixXd & UX, const MatrixXd & S, int numintervals, double ldeltamin, double ldeltamax, bool REML)
     {
         //grid variable with the current likelihood evaluations
         MatrixXd nllgrid     = MatrixXd::Ones(numintervals,1).array()*HUGE_VAL;
@@ -551,9 +573,11 @@ int ALMM::getTestStatistics() const
         double nllmin = HUGE_VAL;
         double ldeltaopt_glob = 0;
         MatrixXd f_tests;
+		muint_t nevals = 0;
         for(int i = 0;i < (numintervals);i++){
-            nllgrid(i, 0) = nLLeval(&f_tests, ldelta, UY, UX, S);
-            ldeltagrid(i, 0) = ldelta;
+            nllgrid(i, 0) = nLLeval(&f_tests, ldelta, UY, UX, S, REML);
+            ++nevals;
+			ldeltagrid(i, 0) = ldelta;
             if(nllgrid(i, 0) < nllmin){
                 nllmin = nllgrid(i, 0);
                 ldeltaopt_glob = ldelta;
@@ -561,7 +585,25 @@ int ALMM::getTestStatistics() const
             //move on delta
             ldelta += ldeltaD;
         } //end for all intervals
-
+		nLLevalFunctor func(UY, UX, S, REML);
+		for(muint_t i=1;i<(numintervals-1);i++){
+		  if (nllgrid(i,0)<nllgrid(i+1,0) && nllgrid(i,0)<nllgrid(i-1,0)){
+			  //check wether a local optimum exists in this triplet
+			 mfloat_t current_nLL=std::numeric_limits<mfloat_t>::infinity();
+			 size_t nevals_Int=0;
+			 //If there is a local optimum, optimize over the current triplet:
+			 mfloat_t brentTol=0.00000001;
+			 muint_t brentMaxIter = 10000;
+			 mfloat_t current_log_delta=BrentC::minimize(func,ldeltagrid(i-1,0),ldeltagrid(i+1,0),brentTol,current_nLL,nevals_Int,brentMaxIter,true);
+			 nevals+=nevals_Int;
+			 if (current_nLL<=nllmin){
+				nllmin=current_nLL;
+				ldeltaopt_glob=(current_log_delta);
+			 }
+		  }
+	   }
+		//std::cout << "\n\n nLL_i:\n" << nllgrid;
+		//std::cout <<"\n\n delta_i:\n" << ldeltagrid;
         return ldeltaopt_glob;
     }
 
