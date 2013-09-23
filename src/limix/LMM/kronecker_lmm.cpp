@@ -44,7 +44,7 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	this->updateDecomposition();
 
 	//evaluate null model
-	mfloat_t ldelta0_ = 0.050505050505;//TODO: optionally fix to given value
+	mfloat_t ldelta0_ = this->ldeltaInit;//TODO: optionally fix to given value
 	mfloat_t nLL0_ = 0.0;
 	if (num_intervals0>0)
 	{
@@ -120,7 +120,7 @@ mfloat_t CKroneckerLMM::optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,cons
     mfloat_t ldeltaD = (ldeltamax - ldeltamin);
     ldeltaD /= ((mfloat_t)(numintervals) - 1.0);
     mfloat_t nllmin = HUGE_VAL;
-    mfloat_t ldeltaopt_glob = 0.0;
+    mfloat_t ldeltaopt_glob = ldelta_opt;
     muint_t nevals = 0;
     for(muint_t i = 0;i < numintervals;i++){
     	nllgrid(i, 0) = CKroneckerLMM::nLLeval(ldelta, A, X, Y, S_C1, S_R1, S_C2, S_R2);
