@@ -44,7 +44,7 @@
          const MatrixXd & (MatrixXd temp) {
 
     // create array from input
-    int newObject;
+    int newObject=0;
     PyArrayObject * in_array;
     
     switch ( array_type($input) ) {
@@ -105,6 +105,12 @@
                       "array must be of type int, float, long or double");
       return NULL;
     }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+      {
+	Py_DECREF(in_array);
+      }
+
 }
 
 %typemap(in, numinputs = 0) 
@@ -143,7 +149,7 @@ MatrixXd* (MatrixXd temp) {
 const MatrixXi & (MatrixXi temp) {
 	
     // create array from input
-    int newObject;
+    int newObject=0;
     PyArrayObject * in_array;
     
     switch ( array_type($input) ) {
@@ -205,6 +211,11 @@ const MatrixXi & (MatrixXi temp) {
 							"array must be of type int, float, long or double");
 			return NULL;
     }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+      {
+	Py_DECREF(in_array);
+      }
 }
 
 
@@ -247,7 +258,7 @@ MatrixXi* {
          const VectorXd & (VectorXd temp) {
 
     // create array from input
-    int newObject;
+    int newObject=0;
     PyArrayObject * in_array;
     
     switch ( array_type($input) ) {
@@ -310,6 +321,11 @@ MatrixXi* {
                       "array must be of type int, float, long or double");
       return NULL;
     }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+      {
+	Py_DECREF(in_array);
+      }
 }
 
 
@@ -371,7 +387,7 @@ MatrixXi* {
 const VectorXi& (VectorXi temp) {
 	
     // create array from input
-    int newObject;
+    int newObject=0;
     PyArrayObject * in_array;
     
     switch ( array_type($input) ) {
@@ -433,6 +449,12 @@ const VectorXi& (VectorXi temp) {
 							"array must be of type int, float, long or double");
 			return NULL;
     }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+      {
+	Py_DECREF(in_array);
+      }
+
 }
 
 
