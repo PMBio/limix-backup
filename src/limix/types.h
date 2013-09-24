@@ -55,6 +55,10 @@ typedef float float32_t;
 //get integer definitions from stdint or define manuall for MSVC
 
 
+typedef long int int64_t;
+typedef unsigned long int uint64_t;
+
+/*
 #ifdef _MSC_VER
  typedef __int32 int32_t;
  typedef unsigned __int32 uint32_t;
@@ -65,7 +69,7 @@ typedef float float32_t;
 typedef long int int64_t;
 typedef unsigned long int uint64_t;
 #endif
-
+*/
 
 
 
