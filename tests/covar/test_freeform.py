@@ -49,13 +49,13 @@ class CFixedCF_test(unittest.TestCase,Acovar_test):
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
 
-class CLowRankCF_test(unittest.TestCase,Acovar_test):
-    """test class for CLowRankCF"""
+class CRank1diagCF_test(unittest.TestCase,Acovar_test):
+    """test class for CRank1diagCF"""
     def setUp(self):
         SP.random.seed(1)
         self.n=4
-        self.C = limix.CLowRankCF(self.n)
-        self.name = 'CLowRankCF'
+        self.C = limix.CRank1diagCF(self.n)
+        self.name = 'CRank1diagCF'
         self.n_params=self.C.getNumberParams()
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
