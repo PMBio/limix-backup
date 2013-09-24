@@ -12,6 +12,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+
 #ifdef _WIN32
     #include <unordered_map>
     #include <memory>
@@ -51,8 +52,22 @@ const double L2pi = 1.8378770664093453;
 //note: for swig it is important that everyhing is typed def and not merely "defined"
 typedef double float64_t;
 typedef float float32_t;
+//get integer definitions from stdint or define manuall for MSVC
+
+
+#ifdef _MSC_VER
+ typedef __int32 int32_t;
+ typedef unsigned __int32 uint32_t;
+ typedef __int64 int64_t;
+ typedef unsigned __int64 uint64_t;
+#else
+//#include <stdint.h>
 typedef long int int64_t;
 typedef unsigned long int uint64_t;
+#endif
+
+
+
 
 //default types for usage in GPmix:
 typedef float64_t mfloat_t;
