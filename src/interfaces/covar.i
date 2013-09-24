@@ -10,7 +10,7 @@
 %shared_ptr(limix::CRankOneCF)
 %shared_ptr(limix::CFixedCF)
 %shared_ptr(limix::CDiagonalCF)
-%shared_ptr(limix::CLowRankCF)
+%shared_ptr(limix::CRank1diagCF)
 %shared_ptr(limix::CCovLinearARD)
 %shared_ptr(limix::CCovLinearISO)
 %shared_ptr(limix::CCovLinearISODelta)
