@@ -174,19 +174,19 @@ typedef sptr<CDiagonalCF> PDiagonalCF;
     
 
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%rename(getK0dense)    CLowRankCF::agetK0dense;
-%rename(getK0diagonal) CLowRankCF::agetK0diagonal;
+%rename(getRank1)    CRank1diagCF::agetRank1;
+%rename(getDiag) CRank1diagCF::agetDiag;
 #endif
 
 
-class CLowRankCF: public ACovarianceFunction {
+class CRank1diagCF: public ACovarianceFunction {
 
 protected:
 	muint_t numberGroups;
 public:
 
-    CLowRankCF(muint_t numberGroups);
-    ~CLowRankCF();
+    CRank1diagCF(muint_t numberGroups);
+    ~CRank1diagCF();
 
 	//Block X functions: X is fixed and set in the constructor
 	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
@@ -198,9 +198,8 @@ public:
     virtual void agetScales(CovarParams* out);
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
 
-    //LowRank functions
-    virtual void agetK0dense(MatrixXd* out) const throw(CGPMixException);
-    virtual void agetK0diagonal(MatrixXd* out) const throw(CGPMixException);
+    virtual void agetRank1(MatrixXd* out) const throw(CGPMixException);
+    virtual void agetDiag(MatrixXd* out) const throw(CGPMixException);
     
     //Covariance pure functions
 	//pure functions that need to be implemented
@@ -210,10 +209,10 @@ public:
     virtual void agetParamMask0(CovarParams* out) const;
 
     //class information
-    inline std::string getName() const {return "CLowRankCF";};
+    inline std::string getName() const {return "CRank1diagCF";};
 
 };
-typedef sptr<CLowRankCF> PLowRankCF;
+typedef sptr<CRank1diagCF> PRank1diagCF;
 
 
 } /* namespace limix */

@@ -381,9 +381,9 @@ void CDiagonalCF::agetParamMask0(CovarParams* out) const
 }
 
     
-/* CLowRankCF class */
+/* CRank1diagCF class */
 
-CLowRankCF::CLowRankCF(muint_t numberGroups)
+CRank1diagCF::CRank1diagCF(muint_t numberGroups)
 {
 	this->numberGroups = numberGroups;
     this->numberDimensions = 1;
@@ -394,24 +394,24 @@ CLowRankCF::CLowRankCF(muint_t numberGroups)
         this->numberParams = 2*numberGroups;
 }
 
-CLowRankCF::~CLowRankCF()
+CRank1diagCF::~CRank1diagCF()
 {
 }
 
-void CLowRankCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CRank1diagCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
 {
 	MatrixXd K;
 	aKcross(&K,Xstar);
 	(*out)=K.diagonal();
 }
 
-void CLowRankCF::agetK0dense(MatrixXd* out) const throw(CGPMixException)
+void CRank1diagCF::agetRank1(MatrixXd* out) const throw(CGPMixException)
 {
     MatrixXd L = this->params.segment(0,this->numberGroups);
     (*out).noalias() = L*L.transpose();
 }
     
-void CLowRankCF::agetK0diagonal(MatrixXd* out) const throw(CGPMixException)
+void CRank1diagCF::agetDiag(MatrixXd* out) const throw(CGPMixException)
 {
     if (numberGroups==2)
         (*out) = std::pow(params(2),2)*MatrixXd::Identity(2,2);
@@ -419,7 +419,7 @@ void CLowRankCF::agetK0diagonal(MatrixXd* out) const throw(CGPMixException)
       (*out) = params.segment(this->numberGroups,this->numberGroups).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).asDiagonal();
 }
    
-void CLowRankCF::agetScales(CovarParams* out) {
+void CRank1diagCF::agetScales(CovarParams* out) {
     (*out) = this->params;
     double sign=1;
     if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
@@ -434,22 +434,22 @@ void CLowRankCF::agetScales(CovarParams* out) {
     }
 }
     
-void CLowRankCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CRank1diagCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
 {
     //TO DO
 }
 
-void CLowRankCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CRank1diagCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
 {
     MatrixXd out1;
 
-    agetK0dense(out);
-    agetK0diagonal(&out1);
+    agetRank1(out);
+    agetDiag(&out1);
 
     (*out)+=out1;
 }
 
-void CLowRankCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CRank1diagCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
 {
     if (i>=this->numberParams)
         throw CGPMixException("Index exceeds the number of parameters");
@@ -471,7 +471,7 @@ void CLowRankCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixExcepti
     }
 }
 
-void CLowRankCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+void CRank1diagCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
 {
     if (j>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)
         throw CGPMixException("Index exceeds the number of parameters");
@@ -497,7 +497,7 @@ void CLowRankCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGP
     }
 }
     
-void CLowRankCF::agetParamMask0(CovarParams* out) const
+void CRank1diagCF::agetParamMask0(CovarParams* out) const
 {
     (*out) = VectorXd::Ones(this->getNumberParams());
 }
