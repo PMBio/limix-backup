@@ -35,7 +35,6 @@ void AVarianceTerm::setK(const MatrixXd& K) throw(CGPMixException)
 {
 	if(K.rows()!=K.cols())
 		throw CGPMixException("AVarianceTerm: K needs to be a squared matrix!");
-	this->K = K/K.diagonal().mean();
 	Kcf = PFixedCF(new CFixedCF(this->K));
 	this->Knull = false;
 }
