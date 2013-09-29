@@ -5,8 +5,79 @@ qtl.py contains wrappers around C++ Limix objects to streamline common tasks in 
 import scipy as SP
 import limix
 import limix.utils.preprocess as preprocess
+import limix_modules.modules.varianceDecomposition as VAR
 import time
 import pdb
+
+
+
+## KroneckerLMM functions
+
+def kronecker_lmm(snps,phenos,Asnps=None,K1r=None,K2r=None,K1c=None,K2c=None,covs=None,Acovs=None):
+    """
+    simple wrapepr for kroneckerLMM code
+    """
+    #0. checks dimensions
+    N  = phenos.shape[0]
+    P  = phenos.shape[1]
+    
+    if K1r==None:
+        K1r = SP.dot(snps,snps.T)
+    else:
+        assert K1r.shape[0]==N, 'K1r: dimensions dismatch'
+        assert K1r.shape[1]==N, 'K1r: dimensions dismatch'
+
+    if K2r==None:
+        K2r = SP.eye(N)
+    else:
+        assert K2r.shape[0]==N, 'K2r: dimensions dismatch'
+        assert K2r.shape[1]==N, 'K2r: dimensions dismatch'
+
+    #1. run GP model to infer suitable covariance structure
+    if K1c==None or K2c==None:
+        print ".. Training the backgrond covariance with a GP model"
+        vc = VAR.CVarianceDecomposition(phenos)
+        vc.addMultiTraitTerm(XX,covar_type='rank1_diag')
+        vc.addMultiTraitTerm(Kn,covar_type='rank1_diag')
+        fixed = SP.ones([N,1])
+        vc.addFixedTerm(fixed)
+        vc.setScales()
+        pdb.set_trace()
+        start = time.time()
+        conv = vc.fit(fast=True)
+        K1c = vc.getEstTraitCovar(0)
+        K2c = vc.getEstTraitCovar(1)
+        time_el = time.time()-start
+        print "Bg model trained in %.2f s" % time_el
+    else:
+        assert K1c.shape[0]==P, 'K1c: dimensions dismatch'
+        assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
+        assert K2c.shape[0]==P, 'K2c: dimensions dismatch'
+        assert K2c.shape[1]==P, 'K2c: dimensions dismatch'
+    
+    #2. run kroneckerLMM
+    if covs==None:
+        covs = SP.ones([N,1])#was covs = SP.zeros([N,1])
+    Xcov = covs
+    if Acovs is None:
+        Acovs = SP.eye(P)
+    if Asnps is None:
+        Asnps = SP.ones([1,P])
+    lmm = limix.CKroneckerLMM()
+    lmm.setK1r(K1r)
+    lmm.setK1c(K1c)
+    lmm.setK2r(K2r)
+    lmm.setK2c(K2c)
+    lmm.setSNPs(snps)
+    #add covariates
+    lmm.addCovariates(Xcov,Acovs)
+    #add SNP design
+    lmm.setSNPcoldesign(Asnps)
+    lmm.setPheno(phenos)
+    lmm.setNumIntervalsAlt(0)
+    lmm.setNumIntervals0(100)
+    lmm.process()
+    return lmm
 
 
 def simple_lmm(snps,pheno,K=None,covs=None):
@@ -170,6 +241,61 @@ def simple_interaction(snps,pheno,Inter,covs = None,K=None,Inter0=None):
     lmi.process()
     return lmi
 
+
+def forward_lmm_kronecker(snps,phenos,Asnps = None,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,threshold = 5e-8, maxiter = 2):
+    """
+    kronecker fixed effects test with forward selection
+    ----------------------------------------------------------------------------
+    Input:
+    snps   [N x S] SP.array of S SNPs for N individuals (test SNPs)
+    pheno  [N x P] SP.array of 1 phenotype for N individuals
+    K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                   If not provided, then linear regression analysis is performed
+    covs   [N x D] SP.array of D covariates for N individuals
+    threshold      (float) P-value thrashold for inclusion in forward selection
+                   (default 5e-8)
+    maxiter        (int) maximum number of interaction scans. First scan is
+                   without inclusion, so maxiter-1 inclusions can be performed.
+                   (default 2)
+    -----------------------------------------------------------------------------
+    Output:
+    lm             lmix LMM object
+    iadded         array of indices of SNPs included in order of inclusion
+    pvadded        array of Pvalues obtained by the included SNPs in iteration
+                   before inclusion
+    pvall   [maxiter x S] SP.array of Pvalues for all iterations
+    """
+    P=phenos.shape[1]
+    t0=time.time()
+    if Asnps is None:
+        Asnps = SP.ones((1,P))
+    lm = kronecker_lmm(snps=snps,phenos=phenos,Asnps=Asnps,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covs=covs,Acovs=Acovs)
+    #get pv
+    #start stuff
+    iadded = []
+    pvadded = []
+    pvall = SP.zeros((maxiter,snps.shape[1]))
+    t1=time.time()
+    print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+    pv = lm.getPv()
+    pvall[0:1,:]=pv
+    imin= pv.argmin()
+    niter = 1
+    while (pv[0,imin]<threshold) and niter<maxiter:
+        t0=time.time()
+        pvadded.append(pv[0,imin])
+        iadded.append(imin)
+        #covs=SP.concatenate((covs,snps[:,imin:(imin+1)]),1)
+        lm.addCovariates(snps[:,imin:(imin+1)],Asnps)
+        lm.process()
+        pv = lm.getPv()
+        pvall[niter:niter+1,:]=pv
+        imin= pv.argmin()
+        t1=time.time()
+        print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+        niter=niter+1
+    return lm,iadded,pvadded,pvall
+
 def forward_lmm(snps,pheno,K=None,covs=None,threshold = 5e-8, maxiter = 2):
     """
     univariate fixed effects test with forward selection
@@ -193,19 +319,8 @@ def forward_lmm(snps,pheno,K=None,covs=None,threshold = 5e-8, maxiter = 2):
                    before inclusion
     pvall   [maxiter x S] SP.array of Pvalues for all iterations
     """
-    t0=time.time()
-    if K is None:
-        K=SP.eye(N)
-    lm = limix.CLMM()
-    lm.setK(K)
-    lm.setSNPs(snps)
-    lm.setPheno(pheno)
-    iadded = []
-    pvadded = []
-    if covs is None:
-        covs = SP.ones([snps.shape[0],1])
-    lm.setCovs(covs)
-    lm.process()
+
+
     pvall = SP.zeros((maxiter,snps.shape[1]))
     t1=time.time()
     print ("finished GWAS testing in %.2f seconds" %(t1-t0))
@@ -216,13 +331,13 @@ def forward_lmm(snps,pheno,K=None,covs=None,threshold = 5e-8, maxiter = 2):
     while (pv[0,imin]<threshold) and niter<maxiter:
         t0=time.time()
         iadded.append(imin)
+        pvadded.append(pv[0,imin])
         covs=SP.concatenate((covs,snps[:,imin:(imin+1)]),1)
         lm.setCovs(covs)
         lm.process()
         pv = lm.getPv()
         pvall[niter:niter+1,:]=pv
         imin= pv.argmin()
-        pvadded.append(pv[0,imin])
         t1=time.time()
         print ("finished GWAS testing in %.2f seconds" %(t1-t0))
         niter=niter+1
