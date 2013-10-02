@@ -64,15 +64,12 @@ class CVarianceDecomposition_test(unittest.TestCase):
 
         self.vc = VAR.CVarianceDecomposition(self.D['Y'])
         self.vc.addMultiTraitTerm(self.Kg)
-        self.vc.addMultiTraitTerm(SP.eye(self.N))
+        self.vc.addMultiTraitTerm(is_noise=True)
         self.vc.addFixedTerm(SP.ones((self.N,1)))
-        self.vc.setScales()
-        self.params0=self.vc.getScales()
         
     def test_fit(self):
         """ optimization test """
-        self.vc.setScales(self.params0)
-        self.vc.fit()
+        self.vc.findLocalOptimum(init_method='empCov')
         params = self.vc.getScales()
         if self.generate:
             self.D['params_true'] = params
@@ -84,8 +81,7 @@ class CVarianceDecomposition_test(unittest.TestCase):
 
     def test_fitFast(self):
         """ optimization test """
-        self.vc.setScales(self.params0)
-        self.vc.fit(fast=True)
+        self.vc.findLocalOptimum(fast=True,init_method='empCov')
         params = self.vc.getScales()
         if self.generate:
             self.D['params_true'] = params
