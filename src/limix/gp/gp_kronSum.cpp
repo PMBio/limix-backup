@@ -398,6 +398,24 @@ CGPHyperParams CGPkronSum::getParamMask() const {
 	return rv;
 }
 
+void CGPkronSum::agetKEffInvYCache(MatrixXd* out) throw (CGPMixException)
+{
+	//Computing Kinv
+	MatrixXd& Yrot = cache->rgetYrot();
+    MatrixXd& Scstar = cache->rgetScstar();
+    MatrixXd& Srstar = cache->rgetSrstar();
+	MatrixXd& Lambdar = cache->rgetLambdar();
+	MatrixXd& Lambdac = cache->rgetLambdac();
+	MatrixXd& Ytilde = cache->rgetYtilde();
+	MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
+	out->resize(Yrot.rows(),Yrot.cols());
+	for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
+		_Ytilde.block(0,p,Yrot.rows(),1).noalias()=Lambdar.transpose()*Ytilde.block(0,p,Yrot.rows(),1);
+	for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
+		out->block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*Lambdac;
+}
+
+
 mfloat_t CGPkronSum::LML() throw (CGPMixException)
 {
 	clock_t beg = clock();
