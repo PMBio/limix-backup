@@ -283,13 +283,6 @@ CFixedCF::~CFixedCF()
 {
 }
 
-void CFixedCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
-{
-	MatrixXd K;
-	aKcross(&K,Xstar);
-	(*out)=K.diagonal();
-}
-
 void CFixedCF::agetScales(CovarParams* out) {
     (*out) = this->params;
     (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
@@ -303,7 +296,12 @@ void CFixedCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
 
 void CFixedCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
 {
-    (*out) = std::pow(params(0),2)*this->K0;
+	(*out) = std::pow(params(0),2)*K0cross;
+}
+
+void CFixedCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+	(*out) = std::pow(params(0),2)*K0cross_diag;
 }
     
 void CFixedCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
@@ -316,9 +314,54 @@ void CFixedCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMi
     (*out) = 2*this->K0;
 }
 
+void CFixedCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const throw(CGPMixException)
+{
+	(*out) = MatrixXd::Zero(X.rows(),Xstar.rows());
+}
+
+void CFixedCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMixException)
+{
+	(*out) = VectorXd::Zero(X.rows());
+}
+
+void CFixedCF::aK(MatrixXd* out) const throw(CGPMixException)
+{
+    (*out) = std::pow(params(0),2)*this->K0;
+}
+
 void CFixedCF::agetParamMask0(CovarParams* out) const
 {
     (*out) = VectorXd::Ones(getNumberParams());
+}
+
+void CFixedCF::setK0(const MatrixXd& K0)
+{
+	this->K0 = K0;
+}
+
+void CFixedCF::setK0cross(const MatrixXd& Kcross)
+{
+	this->K0cross = Kcross;
+}
+
+void CFixedCF::agetK0(MatrixXd *out) const
+{
+	(*out) = K0;
+}
+
+void CFixedCF::agetK0cross(MatrixXd *out) const
+{
+	(*out) = K0cross;
+}
+
+void CFixedCF::setK0cross_diag(const VectorXd& Kcross_diag)
+{
+	this->K0cross_diag = Kcross_diag;
+}
+
+void CFixedCF::agetK0cross_diag(VectorXd *out) const
+{
+	(*out) = K0cross_diag;
 }
 
     
@@ -501,6 +544,8 @@ void CRank1diagCF::agetParamMask0(CovarParams* out) const
 {
     (*out) = VectorXd::Ones(this->getNumberParams());
 }
+
+
 
 } /* namespace limix */
 
