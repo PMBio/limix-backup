@@ -69,7 +69,7 @@ class CVarianceDecomposition_test(unittest.TestCase):
         
     def test_fit(self):
         """ optimization test """
-        self.vc.findLocalOptimum(init_method='empCov')
+        self.vc.findLocalOptimum(init_method='empCov',verbose=False)
         params = self.vc.getScales()
         if self.generate:
             self.D['params_true'] = params
@@ -81,7 +81,7 @@ class CVarianceDecomposition_test(unittest.TestCase):
 
     def test_fitFast(self):
         """ optimization test """
-        self.vc.findLocalOptimum(fast=True,init_method='empCov')
+        self.vc.findLocalOptimum(fast=True,init_method='empCov',verbose=False)
         params = self.vc.getScales()
         if self.generate:
             self.D['params_true'] = params
