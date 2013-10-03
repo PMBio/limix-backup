@@ -220,6 +220,10 @@ public:
 	virtual CGPHyperParams getParamBounds(bool upper) const;
 	virtual CGPHyperParams getParamMask() const;
 
+	//get from cache
+	virtual void agetKEffInvYCache(MatrixXd* out) throw (CGPMixException);
+
+	// LML
 	mfloat_t LML() throw (CGPMixException);
 
 	// Gradient

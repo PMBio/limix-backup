@@ -35,7 +35,7 @@ namespace limix {
 class AVarianceTerm {
 protected:
 	//Covariance Functions
-	PCovarianceFunction Kcf;
+	PFixedCF Kcf;
 	//Kinship matrix and SNP data
 	bool Knull;
 	MatrixXd K;
@@ -55,7 +55,7 @@ public:
 	//Kinship and SNP data
 	virtual void setK(const MatrixXd& K) throw(CGPMixException);
 	virtual void agetK(MatrixXd *out) const throw(CGPMixException);
-	virtual PCovarianceFunction getKcf() {return Kcf;};
+	virtual PFixedCF getKcf() {return Kcf;};
 
 	virtual PCovarianceFunction getTraitCovar() const throw(CGPMixException) =0;
 

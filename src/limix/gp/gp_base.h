@@ -257,6 +257,8 @@ public:
 	PLikelihood getLik(){return lik;}
 	PDataTerm getDataTerm() {return dataTerm;}
 
+	//get from cache
+	virtual void agetKEffInvYCache(MatrixXd* out) throw (CGPMixException);
 
 	//likelihood evaluation of current object
 	virtual mfloat_t LML() throw (CGPMixException);

@@ -492,6 +492,10 @@ void CGPbase::setX(const CovarInput& X) throw (CGPMixException)
 	}
 }
 
+void CGPbase::agetKEffInvYCache(MatrixXd* out) throw (CGPMixException)
+{
+	(*out) = this->cache->rgetKEffInvY();
+}
 
 /* Marginal likelihood */
 
