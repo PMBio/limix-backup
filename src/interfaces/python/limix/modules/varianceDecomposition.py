@@ -85,7 +85,7 @@ class CVarianceDecomposition:
         self.cache['paramsST']= None
 
     
-    def addSingleTraitTerm(self,K=None,is_noise=False):
+    def addSingleTraitTerm(self,K=None,is_noise=False,normalize=True,Ks=None):
         """
         add single trait term
         is_noise:   if is_noise: I->K
@@ -104,9 +104,18 @@ class CVarianceDecomposition:
         else:
             assert K.shape[0]==self.Nt, 'Incompatible shape'
             assert K.shape[1]==self.Nt, 'Incompatible shape'
+    
+        if Ks!=None:
+            assert Ks.shape[0]==self.N, 'Incompatible shape'
 
-        self.n_terms+=1
+        if normalize:
+            Norm = 1/K.diagonal().mean()
+            K *= Norm
+            if Ks!=None: Ks *= Norm
+    
         self.vd.addTerm(limix.CSingleTraitTerm(K))
+        if Ks!=None: self.setKstar(self.n_terms,Ks)
+        self.n_terms+=1
     
         self.gp      = None
         self.init    = False
@@ -120,7 +129,7 @@ class CVarianceDecomposition:
 
     
     
-    def addMultiTraitTerm(self,K=None,covar_type='freeform',covar_K0=None,is_noise=False):
+    def addMultiTraitTerm(self,K=None,covar_type='freeform',covar_K0=None,is_noise=False,normalize=True,Ks=None):
         """
         add multi trait term (inter-trait covariance matrix is consiered freeform)
         K:  Intra-Trait Covariance Matrix [N, N]
@@ -140,6 +149,14 @@ class CVarianceDecomposition:
             assert K.shape[0]==self.N, 'Incompatible shape'
             assert K.shape[1]==self.N, 'Incompatible shape'
 
+        if Ks!=None:
+            assert Ks.shape[0]==self.N, 'Incompatible shape'
+
+        if normalize:
+            Norm = 1/K.diagonal().mean()
+            K *= Norm
+            if Ks!=None: Ks *= Norm
+
         if covar_type=='freeform':
             cov = limix.CFreeFormCF(self.P)
         elif covar_type=='fixed':
@@ -155,10 +172,11 @@ class CVarianceDecomposition:
                 cov.addCovariance(limix.CFixedCF(SP.eye(self.P)))
             else:
                 cov.addCovariance(limix.CDiagonalCF(self.P))
-        #TODO: add other types of covariances, diagonal and rank one?
-        self.n_terms+=1
+
         self.vd.addTerm(cov,K)
-    
+        if Ks!=None: self.setKstar(self.n_terms,Ks)
+        self.n_terms+=1
+
         self.gp      = None
         self.init    = False
         self.fast    = False
@@ -691,6 +709,49 @@ class CVarianceDecomposition:
         params+= std*SP.randn(params.shape[0])
         self.setScales(params)
 
+    """
+    CODE FOR PREDICTIONS
+    """
+    
+    def setKstar(self,term_i,Ks):
+    
+        assert Ks.shape[0]==self.N
+    
+        #if Kss!=None:
+            #assert Kss.shape[0]==Ks.shape[1]
+            #assert Kss.shape[1]==Ks.shape[1]
+
+        self.vd.getTerm(term_i).getKcf().setK0cross(Ks)
+    
+    
+    
+    def predictMean(self,term_i=None):
+        
+        assert self.noisPos!=None,      'No noise element'
+        assert self.init,               'GP not initialised'
+        assert term_i!=self.noisPos,    'Noise term predictions have mean 0'
+        
+        KiY = self.gp.agetKEffInvYCache()
+        
+        if self.fast==False:
+            KiY = KiY.reshape(self.P,self.N).T
+        
+        if term_i!=None:
+        
+            Rs = self.vd.getTerm(term_i).getKcf().Kcross(SP.zeros(1))
+            Ymean = SP.dot(Rs.T,KiY)
+            if self.P>1:
+                C = self.vd.getTerm(term_i).getTraitCovar().K()
+                temp = SP.dot(Ymean,C)
+        else:
+            Ymean = None
+            for term_i in range(self.n_terms):
+                if term_i!=self.noisPos:
+                    if Ymean==None:      Ymean  = self.predictMean(term_i)
+                    else:               Ymean += self.predictMean(term_i)
+            Ymean+=self.getFixed()[:,0]
+
+        return Ymean
         
 
         
