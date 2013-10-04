@@ -20,6 +20,7 @@ public:
 	CCovLinearISO(muint_t numberDimensions=1) : ACovarianceFunction(1)
 	{
 		this->setNumberDimensions(numberDimensions);
+		initParams();
 	}
 
 	~CCovLinearISO();
@@ -47,6 +48,7 @@ public:
 	CCovLinearARD(muint_t numberDimensions=1) : ACovarianceFunction(1)
 	{
 		this->setNumberDimensions(numberDimensions);
+		initParams();
 	}
 
 	~CCovLinearARD();
@@ -74,6 +76,7 @@ public:
 	CCovLinearISODelta(muint_t numberDimensions=1) : ACovarianceFunction(1)
 	{
 		this->setNumberDimensions(numberDimensions);
+		initParams();
 	}
 
 	~CCovLinearISODelta();

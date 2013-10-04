@@ -8,7 +8,7 @@ if __name__ == '__main__':
     if len(sys.argv)>1:
         #1. add LIMIX path to environment
         limix_path = sys.argv[1]
-        sys.path.append(limix_path)
+        sys.path.insert(0,limix_path)
 
     if len(sys.argv)>2:
 	folders = [sys.argv[2]]

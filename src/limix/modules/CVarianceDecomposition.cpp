@@ -166,7 +166,6 @@ PCovarianceFunction CMultiTraitTerm::getCovariance() const throw(CGPMixException
 
 
 /* CVarianceDecomposition */
-
 CVarianceDecomposition::CVarianceDecomposition(const MatrixXd& pheno){
 	this->setPheno(pheno);
     this->is_init=false;
@@ -231,6 +230,10 @@ void CVarianceDecomposition::setPheno(const MatrixXd& pheno) throw(CGPMixExcepti
 	this->pheno = pheno;
 	this->N = (muint_t)pheno.rows();
 	this->P = (muint_t)pheno.cols();
+	//check whether phenotype has NANs?
+	phenoNAN = isnan(this->pheno);
+	//TODO: fix me
+	//bool phenoNANany = (phenoNANany.count()>0);
 }
 
 void CVarianceDecomposition::getPheno(MatrixXd *out) const throw(CGPMixException)
@@ -360,9 +363,11 @@ void CVarianceDecomposition::initGPbase() throw(CGPMixException)
 		fixed.block(0,ncols,this->N*this->P,design_iter[0].rows())=part;
 		ncols+=design_iter[0].rows();
 	}
-	//Transform pheno and fixedEffs
-	MatrixXd y = MatrixXd::Zero(this->N*this->P,1);
-	for (muint_t p=0; p<this->P; p++)	y.block(p*N,0,N,1) = this->pheno.block(0,p,N,1);
+
+	//vectorize phenotype
+	MatrixXd y = this->pheno;
+	y.resize(this->N*this->P,1);
+
 	//Define Likelihood, LinearMean and GP
 	PLikNormalNULL lik(new CLikNormalNULL());
 	PLinearMean mean(new CLinearMean(y,fixed));

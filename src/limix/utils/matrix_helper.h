@@ -24,6 +24,11 @@ bool isnull(const Eigen::EigenBase<Derived>& m)
 	return (m.size()==0);
 }
 
+/*! check individual elements of an eigen matrix for NAN and return a boolean array
+ *
+ */
+MatrixXb isnan(const MatrixXd& m);
+
 bool isnull(const Eigen::LLT<MatrixXd>& m);
 bool isnull(const Eigen::LDLT<MatrixXd>& m);
 
@@ -219,7 +224,8 @@ inline void aS2alphaU(const Eigen::MatrixBase<Derived1> & out_, const Eigen::Mat
 
 
 template <typename Derived1, typename Derived2,typename Derived3>
-/* Kronecker product
+
+/*! Kronecker product between two matrices A and B
  * out = A kron B
  * if addToOut:
  * out += A kron B
@@ -237,6 +243,111 @@ inline void akron(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixB
 				out.block(ir*v2.rows(),ic*v2.cols(),v2.rows(),v2.cols()) = v1(ir,ic)*v2;
 		}
 }
+
+
+
+/*! Matrix index product
+ * out_{i,j} = A_{col(i),col(j)} * B_{row(i),row(j)} where row/col indices as provided in a separate list kroneckerIndicator
+ * if addToOut:
+ * out += A kron B
+ *
+ * note: if kroneckerIndicator is null, we will revert to a standard kroneckerproduct!
+ */
+template <typename Derived1, typename Derived2,typename Derived3,typename Derived4>
+inline void aMatrixIndexProduct(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2,const Eigen::MatrixBase<Derived4>& kroneckerIndicator ,bool addToOut=false)
+{
+	if(isnull(kroneckerIndicator))
+	{
+		akron(out_,v1,v2);
+		return;
+	}
+	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
+	//kroneckerIndicator determines the sizes of the resulting matrix
+	out.derived().resize(kroneckerIndicator.rows(),kroneckerIndicator.rows());
+	//loop over it
+	for (muint_t ir=0;ir<(muint_t)kroneckerIndicator.rows();++ir)
+		for (muint_t ic=0;ic<(muint_t)kroneckerIndicator.rows();++ic)
+		{
+			if (addToOut)
+			{
+				out(ir,ic) += v1(kroneckerIndicator(ir,0),kroneckerIndicator(ic,0))*v2(kroneckerIndicator(ir,0),kroneckerIndicator(ic,1));
+			}
+			else
+			{
+				out(ir,ic) = v1(kroneckerIndicator(ir,0),kroneckerIndicator(ic,0))*v2(kroneckerIndicator(ir,0),kroneckerIndicator(ic,1));
+			}
+		}//end for
+}
+
+/*! Matrix index product diagonal
+ * out_{i} = A_{col(i),col(i)} * B_{row(i),row(i)} where row/col indices as provided in a separate list kroneckerIndicator
+ * if addToOut:
+ * out += A kron B
+ *
+ * note: if kroneckerIndicator is null, we will revert to a standard kroneckerproduct!
+ */
+template <typename Derived1, typename Derived2,typename Derived3,typename Derived4>
+inline void aMatrixIndexProduct_diag(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2,const Eigen::MatrixBase<Derived4>& kroneckerIndicator ,bool addToOut=false)
+{
+	if(isnull(kroneckerIndicator))
+	{
+		akron_diag(out_,v1,v2);
+		return;
+	}
+	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
+	//kroneckerIndicator determines the sizes of the resulting matrix
+	out.derived().resize(kroneckerIndicator.rows(),1);
+	//loop over it
+	for (muint_t ir=0;ir<(muint_t)kroneckerIndicator.rows();++ir)
+	{
+		if (addToOut)
+		{
+			out(ir,0) += v1(kroneckerIndicator(ir,0),kroneckerIndicator(ir,0))*v2(kroneckerIndicator(ir,1),kroneckerIndicator(ir,1));
+		}
+		else
+		{
+			out(ir,0) = v1(kroneckerIndicator(ir,0),kroneckerIndicator(ir,0))*v2(kroneckerIndicator(ir,1),kroneckerIndicator(ir,1));
+		}
+	}//end for
+}
+
+
+/*
+template <typename Derived1, typename Derived2,typename Derived3>
+inline Matrixd MatrixIndexProduct_diag(const Eigen::MatrixBase<Derived1>& v1,const Eigen::MatrixBase<Derived2>& v2,const Eigen::MatrixBase<Derived2>& kroneckerIndicator, bool addToOut=false)
+{
+	MatrixXd out;
+	aMatrixIndexProduct_diag(out,v1,v2,kroneckerIndicator,addToOut);
+	return out;
+}
+
+
+template <typename Derived1, typename Derived2,typename Derived3>
+inline Matrixd MatrixIndexProduct(const Eigen::MatrixBase<Derived1>& v1,const Eigen::MatrixBase<Derived2>& v2,const Eigen::MatrixBase<Derived3>& kroneckerIndicator, bool addToOut=false)
+{
+	MatrixXd out;
+	aMatrixIndexProduct(out,v1,v2,kroneckerIndicator,addToOut);
+	return out;
+}
+*/
+
+template <typename Derived1, typename Derived2,typename Derived3,typename Derived4>
+inline MatrixXd MatrixIndexProduct(const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2,const Eigen::MatrixBase<Derived4>& kroneckerIndicator)
+{
+	MatrixXd out;
+	aMatrixIndexProduct(out,v1,2,kroneckerIndicator);
+	return out;
+}
+
+template <typename Derived1, typename Derived2,typename Derived3,typename Derived4>
+inline MatrixXd MatrixIndexProduct_diag(const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2,const Eigen::MatrixBase<Derived4>& kroneckerIndicator)
+{
+	MatrixXd out;
+	aMatrixIndexProduct_diag(out,v1,2,kroneckerIndicator);
+	return out;
+}
+
+
 
 template <typename Derived1, typename Derived2,typename Derived3>
 inline MatrixXd kron(const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2)

@@ -1082,12 +1082,14 @@ void CProductCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const m
 
 CKroneckerCF::CKroneckerCF() {
 	vecCovariances.resize(2);
+	kroneckerIndicator = MatrixXi(0,0);
 }
 
 CKroneckerCF::CKroneckerCF(PCovarianceFunction row,
 		PCovarianceFunction col) {
 	vecCovariances.push_back(row);
 	vecCovariances.push_back(col);
+	kroneckerIndicator = MatrixXi(0,0);
 }
 
 CKroneckerCF::~CKroneckerCF() {
@@ -1126,8 +1128,24 @@ void CKroneckerCF::setXc(const CovarInput& Xc) throw (CGPMixException)
 	vecCovariances[1]->setX(Xc);
 }
 
+void CKroneckerCF::setKroneckerIndicator(const MatrixXi& kroneckerIndicator)
+{
+	this->kroneckerIndicator = kroneckerIndicator;
+};
+void CKroneckerCF::getKroneckerIndicator(MatrixXi* out) const
+{
+	(*out) = this->kroneckerIndicator;
+};
+
+
 std::string CKroneckerCF::getName() const {
 	return "KroneckerCF";
+}
+
+
+bool CKroneckerCF::isKronecker() const
+{
+	return isnull(this->kroneckerIndicator);
 }
 
 void CKroneckerCF::aKcross(MatrixXd* out, const CovarInput& Xstar) const throw (CGPMixException)
@@ -1144,10 +1162,11 @@ void CKroneckerCF::aKgrad_param(MatrixXd* out, const muint_t i) const throw (CGP
 	checkWithinParams(i);
 	//2. loop through covariances until we found the correct one
 	muint_t i0 = (muint_t)vecCovariances[0]->getNumberParams();
+
 	if(i<i0)
-		akron((*out),vecCovariances[0]->Kgrad_param(i),vecCovariances[1]->K());
+		aMatrixIndexProduct((*out),vecCovariances[0]->Kgrad_param(i),vecCovariances[1]->K(),kroneckerIndicator);
 	else
-		akron((*out),vecCovariances[0]->K(),vecCovariances[1]->Kgrad_param(i-i0));
+		aMatrixIndexProduct((*out),vecCovariances[0]->K(),vecCovariances[1]->Kgrad_param(i-i0),kroneckerIndicator);
 }
 
 void CKroneckerCF::aKhess_param(MatrixXd* out, const muint_t i,
@@ -1164,12 +1183,13 @@ void CKroneckerCF::aKhess_param(MatrixXd* out, const muint_t i,
 	//3. loop through covariances until we found the correct one
 	muint_t i0 = (muint_t)vecCovariances[0]->getNumberParams();
 	if(j1<i0)
-		akron((*out),vecCovariances[0]->Khess_param(i1,j1),vecCovariances[1]->K());
+		aMatrixIndexProduct((*out),vecCovariances[0]->Khess_param(i1,j1),vecCovariances[1]->K(),kroneckerIndicator);
 	else if(i1>=i0)
-		akron((*out),vecCovariances[0]->K(),vecCovariances[1]->Khess_param(i1-i0,j1-i0));
+		aMatrixIndexProduct((*out),vecCovariances[0]->K(),vecCovariances[1]->Khess_param(i1-i0,j1-i0),kroneckerIndicator);
 	else
-		akron((*out),vecCovariances[0]->Kgrad_param(i1),vecCovariances[1]->Kgrad_param(j1-i0));
+		aMatrixIndexProduct((*out),vecCovariances[0]->Kgrad_param(i1),vecCovariances[1]->Kgrad_param(j1-i0),kroneckerIndicator);
 }
+
 
 void CKroneckerCF::aKcross_grad_X(MatrixXd* out, const CovarInput& Xstar,
 		const muint_t d) const throw (CGPMixException)
@@ -1182,12 +1202,12 @@ void CKroneckerCF::aKdiag_grad_X(VectorXd* out, const muint_t d) const throw (CG
 
 void CKroneckerCF::aK(MatrixXd* out) const throw (CGPMixException)
 {
-	akron((*out),vecCovariances[0]->K(),vecCovariances[1]->K());
+	aMatrixIndexProduct((*out),vecCovariances[0]->K(),vecCovariances[1]->K(),kroneckerIndicator);
 }
 
 void CKroneckerCF::aKdiag(VectorXd* out) const throw (CGPMixException)
 {
-	akron_diag((*out),vecCovariances[0]->K(),vecCovariances[1]->K());
+	aMatrixIndexProduct_diag((*out),vecCovariances[0]->K(),vecCovariances[1]->K(),kroneckerIndicator);
 }
 
 void CKroneckerCF::aKgrad_X(MatrixXd* out, const muint_t d) const throw (CGPMixException)

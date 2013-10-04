@@ -13,6 +13,8 @@ class CFreeFormCF_test(unittest.TestCase,Acovar_test):
         self.C = limix.CFreeFormCF(self.n)
         self.name = 'CFreeFormCF'
         self.n_params=self.C.getNumberParams()
+        pdb.set_trace()
+        K = self.C.K()
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
 
@@ -24,6 +26,7 @@ class CRankOneCF_test(unittest.TestCase,Acovar_test):
         self.C = limix.CRankOneCF(self.n)
         self.name = 'CRankOneCF'
         self.n_params=self.C.getNumberParams()
+        K = self.C.K()
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
 
@@ -46,6 +49,7 @@ class CFixedCF_test(unittest.TestCase,Acovar_test):
         self.C = limix.CFixedCF(SP.ones((self.n,self.n)))
         self.name = 'CFixedCF'
         self.n_params=self.C.getNumberParams()
+        K = self.C.K()        
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
 

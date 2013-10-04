@@ -16,6 +16,7 @@ class CCovLinearISO_test(unittest.TestCase,Acovar_test):
         self.name = 'CCovLinearISO'
         self.C.setX(X)
         self.n_params=self.C.getNumberParams()
+        K = self.C.K()
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
 
@@ -30,6 +31,7 @@ class CCovLinearARD_test(unittest.TestCase,Acovar_test):
         self.name = 'CCovLinearARD'
         self.C.setX(X)
         self.n_params=self.C.getNumberParams()
+        K = self.C.K()
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
 
