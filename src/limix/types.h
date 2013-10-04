@@ -159,6 +159,14 @@ typedef Eigen::Matrix<mint_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXi;
 typedef sptr<MatrixXi> PMatrixXi;
 typedef sptr<VectorXi> PVectorXi;
 
+//boolean
+typedef Eigen::Matrix<bool,Eigen::Dynamic,Eigen::Dynamic,Eigen::ColMajor> MatrixXb;
+typedef Eigen::Matrix<bool,Eigen::Dynamic,1,Eigen::ColMajor> VectorXb;
+
+typedef sptr<MatrixXb> PMatrixXb;
+typedef sptr<VectorXb> PVectorXb;
+
+
 //string
 typedef Eigen::Matrix<std::string, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXs;
 typedef Eigen::Matrix<std::string, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXs;

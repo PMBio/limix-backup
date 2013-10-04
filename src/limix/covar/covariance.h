@@ -101,6 +101,11 @@ protected:
 	 */
 	virtual void agetParamMask0(CovarParams* out) const;
 
+	/*!
+	 * initialize parameter vector
+	 */
+	virtual void initParams();
+
 public:
 	/*! Covariance functions require knowledge on the number of parameters which is constant thorough their lifetie
 	 *
@@ -460,6 +465,7 @@ inline MatrixXd ACovarianceFunction::Kgrad_X(const muint_t d) const throw(CGPMix
 	aKgrad_X(&RV,d);
 	return RV;
 }
+
 
 inline VectorXd ACovarianceFunction::Kdiag_grad_X(const muint_t d) const throw(CGPMixException)
 {

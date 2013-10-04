@@ -20,6 +20,7 @@ public:
 	CCovSqexpARD(muint_t numberDimensions=1): ACovarianceFunction(1)
 	{
 		this->setNumberDimensions(numberDimensions);
+		initParams();
 	}
 
 	~CCovSqexpARD();

@@ -160,11 +160,17 @@ typedef sptr<CProductCF> PProductCF;
 //%sptr(gpmix::CKroneckerCF)
 #endif
     
+/*!
+ * \brief Kronecker structure combinator for two covariances
+ *
+ * Combines two covarianes Kc \kron Kr. The class supports both propper Kronecker structures
+ * as well as "soft Kronecker, where
+ */
 class CKroneckerCF: public AMultiCF
 {
 protected:
 	//optional indicator vector to pull together the kronecker structure
-	MatrixXi kroneckerIndicator;
+	MatrixXi kroneckerIndicator; //!< indicator with kronecker structure N row (total samples), with indexes for [row,col] to create sof Kronecker structures
 public:
 	CKroneckerCF();
 	CKroneckerCF(PCovarianceFunction row,PCovarianceFunction col);
@@ -178,6 +184,22 @@ public:
 	virtual void setColCovariance(PCovarianceFunction cov);
 	PCovarianceFunction getRowCovariance() throw (CGPMixException);
 	PCovarianceFunction getColCovariance() throw (CGPMixException);
+
+	/*!
+	 * set KronecekerIndicator, which needs to be N x 2 with indicse for row & column of individual elements
+	 */
+	void setKroneckerIndicator(const MatrixXi& kroneckerIndicator);
+
+	/*!
+	 * getKroneckerIndicator.
+	 */
+	void getKroneckerIndicator(MatrixXi* out) const;
+
+
+	/*!
+	 * is a kronecker covariance? if a KroneckerIndicator is set this object is not a propper Kronecker.
+	 */
+	bool isKronecker() const;
 
 	//X handling
 	virtual void setX(const CovarInput& X) throw (CGPMixException) {};

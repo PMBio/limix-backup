@@ -6,7 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#if 0
+#if 1
 
 #include <iostream>
 #include "limix/gp/gp_base.h"
@@ -53,29 +53,20 @@ void gradcheck(ACovarianceFunction& covar,CovarInput X)
 int main() {
 
 
-	try {
+	MatrixXd K1 = randn(10,10);
+	MatrixXd K2 = randn(20,20);
+	PFixedCF f1 = PFixedCF(new CFixedCF(K1));
+	PFixedCF f2 = PFixedCF(new CFixedCF(K2));
 
-		//test the cache
-		PNamedCache cache (new CNamedCache());
-		MatrixXd m =randn(10,10);
+	PKroneckerCF C = PKroneckerCF(new CKroneckerCF());
+	C->setRowCovariance(f1);
+	C->setColCovariance(f2);
 
+	std::cout << f1->K();
 
-		PMatrixXd pm = PMatrixXd(new MatrixXd(m));
-		cache->set("m",pm);
-		PCVoid value = cache->get("m");
-		//PMatrixXd pm2 = static_pointer_cast<const MatrixXd>(value);
+	MatrixXd K = C->K();
 
-		PCVoid test = pm;
-
-		PConstMatrixXd pm3 = static_pointer_cast<const MatrixXd>(value);
-		CCovLinearISO cov = CCovLinearISO(4);
-		std::cout << *pm3;
-
-	}
-	catch(CGPMixException& e) {
-		cout << e.what() << endl;
-	}
-
+	std::cout << K.rows() << "," << K.cols() << "\n";
 
 }
 

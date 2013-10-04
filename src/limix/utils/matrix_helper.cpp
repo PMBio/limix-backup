@@ -35,6 +35,17 @@ bool isnull(const VectorXi& m)
 }
 */
 
+MatrixXb isnan(const MatrixXd& m)
+{
+	MatrixXb RV = MatrixXb::Zero(m.rows(),m.cols());
+	for(muint_t ir=0;ir<(muint_t)m.rows();++ir)
+		for(muint_t ic=0;ic<(muint_t)m.cols();++ic)
+		{
+			RV(ir,ic) = isnan((mfloat_t) m(ir,ic));
+		}
+	return RV;
+}
+
 
 bool isnull(const Eigen::LLT<MatrixXd>& m)
 {

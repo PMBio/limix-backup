@@ -25,6 +25,7 @@ CFreeFormCF::CFreeFormCF(muint_t numberGroups)
     this->X=MatrixXd::Zero(numberGroups,1);
     //number of parameters:
     this->numberParams = calcNumberParams(numberGroups);
+    initParams();
 }
     
 muint_t CFreeFormCF::calcNumberParams(muint_t numberGroups)
@@ -204,6 +205,7 @@ CRankOneCF::CRankOneCF(muint_t numberGroups)
     this->X=MatrixXd::Zero(numberGroups,1);
     //number of parameters:
     this->numberParams = numberGroups;
+    initParams();
 }
     
 CRankOneCF::~CRankOneCF()
@@ -266,7 +268,7 @@ void CRankOneCF::agetParamMask0(CovarParams* out) const
     
 /* CFixedCF class */
 
-CFixedCF::CFixedCF(const MatrixXd & K0)
+CFixedCF::CFixedCF(const MatrixXd & K0) : ACovarianceFunction(1)
 {
     if((muint_t)K0.rows()!=((muint_t)K0.cols()))
     {
@@ -275,8 +277,8 @@ CFixedCF::CFixedCF(const MatrixXd & K0)
     this->numberGroups=K0.cols();
     this->numberDimensions = 1;
     this->X=MatrixXd::Zero(K0.cols(),1);
-    this->numberParams = 1;
     this->K0 = K0;
+    initParams();
 }
     
 CFixedCF::~CFixedCF()
@@ -374,6 +376,7 @@ CDiagonalCF::CDiagonalCF(muint_t numberGroups)
     this->numberDimensions = 1;
     this->X=MatrixXd::Zero(numberGroups,1);
     this->numberParams = numberGroups;
+    initParams();
 }
     
 CDiagonalCF::~CDiagonalCF()
@@ -435,6 +438,7 @@ CRank1diagCF::CRank1diagCF(muint_t numberGroups)
         this->numberParams = 3;
     else
         this->numberParams = 2*numberGroups;
+    initParams();
 }
 
 CRank1diagCF::~CRank1diagCF()

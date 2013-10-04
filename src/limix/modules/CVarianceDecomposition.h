@@ -175,6 +175,9 @@ protected:
 	PSumCF covar;
 	//pheno
 	MatrixXd pheno;
+	//missing values in pheno
+	MatrixXb phenoNAN; //<<! indicator with possible missing values in pheno
+	bool phenoNANany; //<<! any phenotype entry missing?
 	//bool
 	bool is_init;
 	bool fast;

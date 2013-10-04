@@ -6,7 +6,7 @@
 // Test file for kronecker LMM test
 //============================================================================
 
-#if 1
+#if 0
 
 //#define debugkron 1
 

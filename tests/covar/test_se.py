@@ -15,6 +15,7 @@ class CCovSqexpARD_test(unittest.TestCase,Acovar_test):
         self.C = limix.CCovSqexpARD(self.n_dim)
         self.name = 'CCovSqexpARD'
         self.C.setX(X)
+        K = self.C.K()
         self.n_params=self.C.getNumberParams()
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)

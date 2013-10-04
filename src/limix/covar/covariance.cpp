@@ -196,6 +196,13 @@ void ACovarianceFunction::agetParamBounds(CovarParams* lower,
 	}
 }
 
+void ACovarianceFunction::initParams()
+{
+	VectorXd params = MatrixXd::Zero(this->getNumberParams(),1);
+	this->setParams(params);
+}
+
+
 void ACovarianceFunction::setParamBounds(const CovarParams& lower,
 		const CovarParams& upper) throw (CGPMixException) {
 	if(((muint_t)lower.rows()!=this->numberParams) || ((muint_t)upper.rows()!=this->numberParams)) {

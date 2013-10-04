@@ -64,5 +64,50 @@ class CKroneckerCF_test(unittest.TestCase,Acovar_test):
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
 
+class CKroneckerCFsoft_test(unittest.TestCase,Acovar_test):
+    """test class for CKroneckerCF, when using soft indexes"""
+    def setUp(self):
+        SP.random.seed(1)
+        n1=3
+        n2=5
+        n_dim1=8
+        n_dim2=12
+        #truncation of soft kronecker
+        self.n_trunk = 10
+        X1 = SP.rand(n1,n_dim1)
+        X2 = SP.rand(n2,n_dim2)
+        C1 = limix.CCovSqexpARD(n_dim1); C1.setX(X1)
+        C2 = limix.CCovLinearARD(n_dim2);  C2.setX(X2)
+        self.C = limix.CKroneckerCF()
+        self.C.setRowCovariance(C1)
+        self.C.setColCovariance(C2)
+        #set kronecker index
+        self.kronecker_index = SP.zeros([n1*n2,2],dtype='int')
+        for i1 in xrange(n1):
+            for i2 in xrange(n2):
+                self.kronecker_index[i1+i2,0] = i1
+                self.kronecker_index[i1+i2,1] = i2        
+        self.n = self.C.Kdim()
+        self.n_dim=self.C.getNumberDimensions()
+        self.name = 'CKroneckerCF'
+        self.n_params=self.C.getNumberParams()
+        params=SP.exp(SP.randn(self.n_params))
+        self.C.setParams(params)
+     
+    def test_kron(self):
+        """test that this is a valid Kronecker"""
+        self.C.setKroneckerIndicator(SP.zeros([0,0],dtype='int'))
+        K1 = self.C.K()
+        self.C.setKroneckerIndicator(self.kronecker_index)
+        K2 = self.C.K()
+        return (K1==K2).all()
+    
+    def test_trunk(self):
+        """test whether resulting covariance function is truncated"""
+        self.C.setKroneckerIndicator(self.kronecker_index[0:self.n_trunk])
+        K =self.C.K()
+        return (K.shape[0]==self.n_trunk)
+
+
 if __name__ == '__main__':
     unittest.main()
