@@ -1101,11 +1101,11 @@ muint_t CKroneckerCF::Kdim() const throw(CGPMixException)
 }
 
 void CKroneckerCF::setRowCovariance(PCovarianceFunction cov) {
-	setCovariance(0,cov);
+	setCovariance(1,cov);
 }
 
 void CKroneckerCF::setColCovariance(PCovarianceFunction cov) {
-	setCovariance(1,cov);
+	setCovariance(0,cov);
 }
 
 PCovarianceFunction CKroneckerCF::getRowCovariance() throw (CGPMixException)
@@ -1214,5 +1214,24 @@ void CKroneckerCF::aKgrad_X(MatrixXd* out, const muint_t d) const throw (CGPMixE
 {
 }
  
+/*!
+ * create Kronecker index, assuming: first coumn in out rows, second, columns for Kc \kron Kr
+ */
+void CKroneckerCF::createKroneckerIndex(MatrixXi* out, muint_t Ncols, muint_t Nrows)
+{
+	//resize result structure
+	out->resize(Nrows*Ncols,2);
+	//double loop over rows and columns
+	for (muint_t c=0;c<Ncols;++c)
+	{
+		for (muint_t r=0;r<Nrows;++r)
+		{
+			(*out)(c*Nrows+r,0) = c;
+			(*out)(c*Nrows+r,1) = r;
+		}
+	}
+} //end ::getKroneckerIndex
+
 } /// end :limix
+
 

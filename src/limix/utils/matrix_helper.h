@@ -24,6 +24,62 @@ bool isnull(const Eigen::EigenBase<Derived>& m)
 	return (m.size()==0);
 }
 
+bool negate(bool in);
+
+
+template <typename Derived1,typename Derived2,typename Derived3>
+/*!
+ * slice matirx m1 according index Iselect and return to out
+ */
+void slice(const Eigen::DenseBase<Derived1>& m1,const Eigen::DenseBase<Derived2>& Iselect,const Eigen::DenseBase<Derived3>& out_) throw(CGPMixException)
+{
+
+	Eigen::DenseBase<Derived3>& out = const_cast< Eigen::DenseBase<Derived3>& >(out_);
+
+	//create large enough output
+	out.derived().resize(m1.rows(),m1.cols());
+
+	//check dimensions of slicing operator
+	if (Iselect.cols()==1)
+	{
+		if (Iselect.rows()!=m1.rows())
+			throw CGPMixException("Slicing operator needs to be N x 1 or 1 x M if m1 is an N x M matrix");
+		//slice along the row dimension
+		muint_t rc = 0;
+		bool v;
+		for(muint_t ir=0;ir<(muint_t)Iselect.rows();++ir)
+		{
+			v = Iselect(ir,0);
+			if(v)
+			{
+				out.row(rc) = m1.row(ir);
+				rc+=1;
+			}
+		}
+		//shrink
+		out.derived().resize(rc,m1.cols());
+	}
+	else if (Iselect.rows()==1)
+	{
+		if (Iselect.cols()!=m1.cols())
+			throw CGPMixException("Slicing operator needs to be N x 1 or 1 x M if m1 is an N x M matrix");
+		muint_t cc = 0;
+		for (muint_t ic=0;ic<(muint_t)Iselect.cols();++ic)
+			if(Iselect(0,ic)>0)
+			{
+				out.col(cc) = m1.col(ic);
+				cc+=1;
+			}
+		//shrink
+		out.derived().resize(m1.rows(),cc);
+	}else
+	{
+		throw CGPMixException("Slicing operator needs to be N x 1 or 1 x M if m1 is an N x M matrix");
+	}
+}
+
+
+
 /*! check individual elements of an eigen matrix for NAN and return a boolean array
  *
  */
@@ -252,6 +308,8 @@ inline void akron(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixB
  * out += A kron B
  *
  * note: if kroneckerIndicator is null, we will revert to a standard kroneckerproduct!
+ * \param v1: column covariance
+ * \param v2: row covariance
  */
 template <typename Derived1, typename Derived2,typename Derived3,typename Derived4>
 inline void aMatrixIndexProduct(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2,const Eigen::MatrixBase<Derived4>& kroneckerIndicator ,bool addToOut=false)
@@ -270,11 +328,11 @@ inline void aMatrixIndexProduct(const Eigen::MatrixBase<Derived1> & out_, const 
 		{
 			if (addToOut)
 			{
-				out(ir,ic) += v1(kroneckerIndicator(ir,0),kroneckerIndicator(ic,0))*v2(kroneckerIndicator(ir,0),kroneckerIndicator(ic,1));
+				out(ir,ic) += v1(kroneckerIndicator(ir,0),kroneckerIndicator(ic,0))*v2(kroneckerIndicator(ir,1),kroneckerIndicator(ic,1));
 			}
 			else
 			{
-				out(ir,ic) = v1(kroneckerIndicator(ir,0),kroneckerIndicator(ic,0))*v2(kroneckerIndicator(ir,0),kroneckerIndicator(ic,1));
+				out(ir,ic) = v1(kroneckerIndicator(ir,0),kroneckerIndicator(ic,0))*v2(kroneckerIndicator(ir,1),kroneckerIndicator(ic,1));
 			}
 		}//end for
 }
@@ -285,6 +343,9 @@ inline void aMatrixIndexProduct(const Eigen::MatrixBase<Derived1> & out_, const 
  * out += A kron B
  *
  * note: if kroneckerIndicator is null, we will revert to a standard kroneckerproduct!
+ * \param v1: column covariance
+ * \param v2: row covariance
+ * \param kroneckerIndicator: [Nrows*Ncos,2], with {index_col,index_row}^N
  */
 template <typename Derived1, typename Derived2,typename Derived3,typename Derived4>
 inline void aMatrixIndexProduct_diag(const Eigen::MatrixBase<Derived1> & out_, const Eigen::MatrixBase<Derived2>& v1,const Eigen::MatrixBase<Derived3>& v2,const Eigen::MatrixBase<Derived4>& kroneckerIndicator ,bool addToOut=false)

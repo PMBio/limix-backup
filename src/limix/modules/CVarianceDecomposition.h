@@ -49,6 +49,12 @@ public:
 	virtual std::string getName() = 0;
 	virtual std::string getInfo() = 0;
 
+	/*!
+	 * set a filter with individuals
+	 * This functionality is typically used to filter out non-observed individuals
+	 */
+	virtual void setSampleFilter(const MatrixXb& filter) throw (CGPMixException) = 0;
+
 	virtual muint_t getNumberTraits()=0;
 	virtual muint_t getNumberIndividuals() const throw(CGPMixException);
 
@@ -90,6 +96,10 @@ public:
 	virtual std::string getName() {return "CSingleTraitTerm";};
 	virtual std::string getInfo() {return "POPPY";};
 
+	virtual void setSampleFilter(const MatrixXb& filter) throw (CGPMixException);
+
+
+
 	virtual muint_t getNumberTraits() {return (muint_t)1;};
 
 
@@ -128,6 +138,13 @@ public:
 
 	virtual std::string getName() {return "CMultiTraitTerm";};
 	virtual std::string getInfo() {return "POPPY";};
+
+	/*!
+	 * sets a filtr of observed individuals.
+	 * Note, this filter breaks the Kronecker strucutre and is only applicable in a non-Kronecker settings
+	 */
+	virtual void setSampleFilter(const MatrixXb& filter) throw (CGPMixException);
+
 
 	virtual muint_t getNumberTraits() {return (muint_t)this->P;};
 

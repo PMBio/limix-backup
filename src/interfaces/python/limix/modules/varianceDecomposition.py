@@ -42,6 +42,7 @@ class CVarianceDecomposition:
         self.N       = Y.shape[0]
         self.P       = Y.shape[1]
         self.Nt      = self.N*self.P
+        self.Iok     = ~(SP.isnan(Y).any(axis=1))
         
         if standardize:
             Y -= Y.mean(0)
@@ -541,9 +542,9 @@ class CVarianceDecomposition:
         Returns the empirical trait covariance matrix
         """
         if self.P==1:
-            out=self.Y.var()
+            out=self.Y[self.Iok].var()
         else:
-            out=SP.cov(self.Y.T)
+            out=SP.cov(self.Y[self.Iok].T)
         return out
 
 
