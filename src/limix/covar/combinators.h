@@ -173,7 +173,7 @@ protected:
 	MatrixXi kroneckerIndicator; //!< indicator with kronecker structure N row (total samples), with indexes for [row,col] to create sof Kronecker structures
 public:
 	CKroneckerCF();
-	CKroneckerCF(PCovarianceFunction row,PCovarianceFunction col);
+	CKroneckerCF(PCovarianceFunction col,PCovarianceFunction row);
 	virtual ~CKroneckerCF();
 	virtual muint_t Kdim() const throw(CGPMixException);
 
@@ -221,6 +221,15 @@ public:
 	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
 
 	virtual std::string getName() const;
+
+	/*!
+	 * Convenience functin to generator a a Kronecker Indicator matrix ([N*P,2])
+	 * which is fully kroneckerized. This function is used to perform missing value imputations, etc.
+	 * \see CVarianceDecomposition
+	 * \param Ncols: number of samples (row covariance)
+	 * \param Nrow: number of individuals (col covariance)
+	 */
+	static void createKroneckerIndex (MatrixXi* out,muint_t Ncols, muint_t Nrows);
 };
 typedef sptr<CKroneckerCF> PKroneckerCF;
 

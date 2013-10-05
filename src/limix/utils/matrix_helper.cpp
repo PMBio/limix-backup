@@ -12,6 +12,11 @@
 
 namespace limix{
 
+bool negate(bool in)
+{
+	return !in;
+}
+
 
 /*
 template <typename Derived>

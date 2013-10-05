@@ -54,6 +54,12 @@ CSingleTraitTerm::CSingleTraitTerm(const MatrixXd& K):AVarianceTerm() {
 	this->setK(K);
 }
 
+void CSingleTraitTerm::setSampleFilter(const MatrixXb& filter) throw (CGPMixException)
+{
+	throw CGPMixException("not implementation error: setSampleFilter");
+}
+
+
 CSingleTraitTerm::~CSingleTraitTerm() {
 }
 
@@ -158,6 +164,29 @@ void CMultiTraitTerm::initTerm() throw(CGPMixException)
 	this->is_init=(bool)1;
 }
 
+void CMultiTraitTerm::setSampleFilter(const MatrixXb& filter) throw (CGPMixException)
+{
+	if (!is_init)
+		throw CGPMixException("sample Filter can only be aplied after the term is initialized");
+	if (filter.rows()!=this->getNumberIndividuals()*this->P)
+		throw CGPMixException("filter dimensions do not match sample covariance");
+
+	//linearize filter
+	MatrixXb filter_ = filter;
+	filter_.resize(filter.rows()*filter.cols(),1);
+	//get full kronecker index and subset
+	MatrixXi kroneckerindex;
+	CKroneckerCF::createKroneckerIndex(&kroneckerindex,this->P,this->getNumberIndividuals());
+	//subset
+	MatrixXi kroneckerindex_;
+	slice(kroneckerindex,filter_,kroneckerindex_);
+	//set as Kroneckerindex
+	this->covariance->setKroneckerIndicator(kroneckerindex_);
+	std::cout << "kroneckerIndex" << "\n";
+	std::cout << kroneckerindex_ << "\n";
+}
+
+
 PCovarianceFunction CMultiTraitTerm::getCovariance() const throw(CGPMixException)
 {
 	if (!is_init)	throw CGPMixException("CMultiTraitTerm: the term is not initialised!");
@@ -232,8 +261,7 @@ void CVarianceDecomposition::setPheno(const MatrixXd& pheno) throw(CGPMixExcepti
 	this->P = (muint_t)pheno.cols();
 	//check whether phenotype has NANs?
 	phenoNAN = isnan(this->pheno);
-	//TODO: fix me
-	//bool phenoNANany = (phenoNANany.count()>0);
+	this->phenoNANany = phenoNAN.any();
 }
 
 void CVarianceDecomposition::getPheno(MatrixXd *out) const throw(CGPMixException)
@@ -368,6 +396,32 @@ void CVarianceDecomposition::initGPbase() throw(CGPMixException)
 	MatrixXd y = this->pheno;
 	y.resize(this->N*this->P,1);
 
+	//do we have to deal with missing values
+	phenoNANany = true;
+	if(this->phenoNANany)
+	{
+		//1. vectorize missing values
+		MatrixXb Iselect = this->phenoNAN;
+		Iselect.resize(this->N*this->P,1);
+		//invert
+		Iselect = Iselect.unaryExpr(std::ptr_fun(negate));
+		std::cout << Iselect << "\n";
+		//2. select on y
+		MatrixXd _y;
+		slice(y,Iselect,_y);
+		y  = _y;
+		//3 fixzed effecfs
+		MatrixXd _fixed;
+		slice(fixed,Iselect,_fixed);
+		fixed = _fixed;
+		//4. set filter in terms
+		for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
+		{
+			PVarianceTerm term = iter[0];
+			term->setSampleFilter(Iselect);
+		}
+	}
+
 	//Define Likelihood, LinearMean and GP
 	PLikNormalNULL lik(new CLikNormalNULL());
 	PLinearMean mean(new CLinearMean(y,fixed));
@@ -387,6 +441,9 @@ void CVarianceDecomposition::initGPbase() throw(CGPMixException)
 
 void CVarianceDecomposition::initGPkronSum() throw(CGPMixException)
 {
+	//check whether exact Kronecker structure?
+	if (phenoNANany)
+			throw CGPMixException("GPKronSum (fast inference) can only be used for full kronecker structured data");
 
     if (getNumberTerms()!=2)
         throw CGPMixException("CVarianceDecomposition: fastGP only works for two terms");

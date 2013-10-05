@@ -13,7 +13,6 @@ class CFreeFormCF_test(unittest.TestCase,Acovar_test):
         self.C = limix.CFreeFormCF(self.n)
         self.name = 'CFreeFormCF'
         self.n_params=self.C.getNumberParams()
-        pdb.set_trace()
         K = self.C.K()
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
