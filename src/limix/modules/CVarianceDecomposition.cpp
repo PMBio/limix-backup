@@ -400,7 +400,7 @@ void CVarianceDecomposition::initGPbase() throw(CGPMixException)
 	y.resize(this->N*this->P,1);
 
 	//do we have to deal with missing values
-	phenoNANany = true;
+	//phenoNANany = true;
 	if(this->phenoNANany)
 	{
 		//1. vectorize missing values
