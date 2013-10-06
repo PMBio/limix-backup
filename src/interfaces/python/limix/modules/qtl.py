@@ -5,7 +5,7 @@ qtl.py contains wrappers around C++ Limix objects to streamline common tasks in 
 import scipy as SP
 import limix
 import limix.utils.preprocess as preprocess
-import limix_modules.modules.varianceDecomposition as VAR
+import limix.modules.varianceDecomposition as VAR
 import time
 import pdb
 
