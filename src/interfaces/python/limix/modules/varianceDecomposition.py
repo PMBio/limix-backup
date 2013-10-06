@@ -6,6 +6,7 @@ import scipy as SP
 import scipy.linalg
 import scipy.stats
 import limix
+import limix.utils.preprocess as preprocess
 import pdb
 import time
 import copy
@@ -43,10 +44,10 @@ class CVarianceDecomposition:
         self.P       = Y.shape[1]
         self.Nt      = self.N*self.P
         self.Iok     = ~(SP.isnan(Y).any(axis=1))
-        
+
+        #outsourced to handle missing values:
         if standardize:
-            Y -= Y.mean(0)
-            Y /= Y.std(0)
+            preprocess.standardize(Y,in_place=True)
 
         self.Y       = Y
         self.vd      = limix.CVarianceDecomposition(Y)
@@ -72,9 +73,11 @@ class CVarianceDecomposition:
         assert Y.shape[1]==self.P, 'Incompatible shape'
         
         if standardize:
-            Y -= Y.mean(0)
-            Y /= Y.std(0)
-        
+            preprocess.standardize(Y,in_place=True)
+
+        #check that missing values match the current structure
+        assert (~(SP.isnan(Y).any(axis=1))==self.Iok).all(), 'pattern of missing values needs to match Y given at initialization'
+
         self.Y = Y
         self.vd.setPheno(Y)
 
