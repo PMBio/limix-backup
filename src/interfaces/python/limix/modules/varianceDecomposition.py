@@ -47,7 +47,7 @@ class CVarianceDecomposition:
 
         #outsourced to handle missing values:
         if standardize:
-            preprocess.standardize(Y,in_place=True)
+            Y=preprocess.standardize(Y)
 
         self.Y       = Y
         self.vd      = limix.CVarianceDecomposition(Y)
@@ -73,7 +73,7 @@ class CVarianceDecomposition:
         assert Y.shape[1]==self.P, 'Incompatible shape'
         
         if standardize:
-            preprocess.standardize(Y,in_place=True)
+            Y=preprocess.standardize(Y)
 
         #check that missing values match the current structure
         assert (~(SP.isnan(Y).any(axis=1))==self.Iok).all(), 'pattern of missing values needs to match Y given at initialization'
