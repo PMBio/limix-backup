@@ -18,26 +18,24 @@ namespace limix{
 mfloat_t randNormal(mfloat_t mu=0.0, mfloat_t sigma=1.0);
 //helper functions for eigen matrices
 
-template <typename Derived>
-bool isnull(const Eigen::EigenBase<Derived>& m)
-{
-	return (m.size()==0);
-}
-
 bool negate(bool in);
 
 
-template <typename Derived1,typename Derived2,typename Derived3>
+
+template <typename DerivedX>
 /*!
  * slice matirx m1 according index Iselect and return to out
  */
-void slice(const Eigen::DenseBase<Derived1>& m1,const Eigen::DenseBase<Derived2>& Iselect,const Eigen::DenseBase<Derived3>& out_) throw(CGPMixException)
+void slice(const Eigen::PlainObjectBase<DerivedX> & m1,const MatrixXb& Iselect, Eigen::PlainObjectBase<DerivedX> & out) throw(CGPMixException)
 {
 
-	Eigen::DenseBase<Derived3>& out = const_cast< Eigen::DenseBase<Derived3>& >(out_);
+	//Eigen::DenseBase<DerivedX>& out = const_cast< Eigen::DenseBase<DerivedX>& >(out_);
 
-	//create large enough output
-	out.derived().resize(m1.rows(),m1.cols());
+	//create large enough temporrary memory
+	//Eigen::Matrix<DerivedX,Eigen::Dynamic,Eigen::Dynamic> TMP;
+	//TMP.resize(m1.rows(),m1.cols());
+
+	out.resize(m1.rows(),m1.cols());
 
 	//check dimensions of slicing operator
 	if (Iselect.cols()==1)
@@ -57,7 +55,7 @@ void slice(const Eigen::DenseBase<Derived1>& m1,const Eigen::DenseBase<Derived2>
 			}
 		}
 		//shrink
-		out.derived().resize(rc,m1.cols());
+		out.conservativeResize(rc,m1.cols());
 	}
 	else if (Iselect.rows()==1)
 	{
@@ -71,12 +69,13 @@ void slice(const Eigen::DenseBase<Derived1>& m1,const Eigen::DenseBase<Derived2>
 				cc+=1;
 			}
 		//shrink
-		out.derived().resize(m1.rows(),cc);
+		out.conservativeResize(m1.rows(),cc);
 	}else
 	{
 		throw CGPMixException("Slicing operator needs to be N x 1 or 1 x M if m1 is an N x M matrix");
 	}
 }
+
 
 
 
@@ -87,6 +86,12 @@ MatrixXb isnan(const MatrixXd& m);
 
 bool isnull(const Eigen::LLT<MatrixXd>& m);
 bool isnull(const Eigen::LDLT<MatrixXd>& m);
+template <typename Derived>
+bool isnull(const Eigen::EigenBase<Derived>& m)
+{
+	return (m.size()==0);
+}
+
 
 template <typename Derived>
 std::string printDim(const Eigen::EigenBase<Derived>& m)
@@ -141,6 +146,16 @@ inline void expInplace(const Eigen::MatrixBase<Derived>& m_)
 	for (muint_t r=0;r<(muint_t)m.rows();++r)
 		for(muint_t c=0;c<(muint_t)m.cols();++c)
 			m(r,c) = exp(m(r,c));
+}
+
+template <typename Derived>
+inline void pow2InPlace(const Eigen::MatrixBase<Derived>& m_)
+{
+	Eigen::MatrixBase<Derived>& m = const_cast< Eigen::MatrixBase<Derived>& >(m_);
+
+	for (muint_t r=0;r<(muint_t)m.rows();++r)
+		for(muint_t c=0;c<(muint_t)m.cols();++c)
+			m(r,c) = m(r,c)*m(r,c);
 }
 
 

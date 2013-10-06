@@ -18,27 +18,6 @@ bool negate(bool in)
 }
 
 
-/*
-template <typename Derived>
-bool isnull(const Eigen::EigenBase<Derived>& m)
-{
-	return ((m.cols()==0) && (m.rows()==0));
-}
-*/
-
-
-/*
-bool isnull(const MatrixXd& m)
-{
-	return ((m.cols()==0) && (m.rows()==0));
-}
-
-
-bool isnull(const VectorXi& m)
-{
-	return (m.rows()==0);
-}
-*/
 
 MatrixXb isnan(const MatrixXd& m)
 {

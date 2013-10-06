@@ -103,6 +103,7 @@ class CKroneckerCFsoft_test(unittest.TestCase,Acovar_test):
         """test whether resulting covariance function is truncated"""
         self.C.setKroneckerIndicator(self.kronecker_index[0:self.n_trunk])
         K =self.C.K()
+        self.assertTrue(self.C.Kdim()==self.n_trunk)        
         self.assertTrue(K.shape[0]==self.n_trunk)
 
 

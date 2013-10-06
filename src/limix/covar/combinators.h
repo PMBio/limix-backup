@@ -27,9 +27,22 @@ class AMultiCF : public ACovarianceFunction
 {
 protected:
 	ACovarVec vecCovariances;
+	muint_t numMaxCovariances; //!< internal varaince, controlling the maximum number of cavariances in a combinators, this may depend on the CF (default -1) - no limi
 public:
-	AMultiCF(const ACovarVec& covariances);
-	AMultiCF(const muint_t numCovariances=0);
+	/*!
+	 * Constructor for abstract type of MultiPleCovariances
+	 * \param covariances: pre-initialized vector with sub covarinaces
+	 * \param numMaxCovariances: maximum number of covariances to permit
+	 */
+	AMultiCF(const ACovarVec& covariances,muint_t numMaxCovariances=999);
+
+	/*!
+	 * Constructor for abstract type of MultiPleCovariances
+	 * \param numCovariancesInit: number of covarinaces to expect during init
+	 * \param numMaxCovariances: maximum number of covariances to permit
+	 */
+	AMultiCF(muint_t numCovariancesInit=0,muint_t numMaxCovariances=999);
+
 	//destructors
 	virtual ~AMultiCF();
 	virtual muint_t Kdim() const throw(CGPMixException);
@@ -177,8 +190,6 @@ public:
 	virtual ~CKroneckerCF();
 	virtual muint_t Kdim() const throw(CGPMixException);
 
-	//block MultiCF addCovariance
-	void addCovariance(PCovarianceFunction covar) throw (CGPMixException) {};
 	//Access to vecCovariances
 	virtual void setRowCovariance(PCovarianceFunction cov);
 	virtual void setColCovariance(PCovarianceFunction cov);
