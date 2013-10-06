@@ -14,14 +14,17 @@
 namespace limix {
 
 
-AMultiCF::AMultiCF(const ACovarVec& covariances)
+AMultiCF::AMultiCF(const ACovarVec& covariances,muint_t numMaxCovariances)
 {
 	vecCovariances = covariances;
+	this->numMaxCovariances = numMaxCovariances;
 }
 
-AMultiCF::AMultiCF(const muint_t numCovariances) : vecCovariances(numCovariances)
+AMultiCF::AMultiCF(muint_t numCovariancesInit,muint_t numMaxCovariances) : vecCovariances(numCovariancesInit)
 {
+	this->numMaxCovariances = numMaxCovariances;
 }
+
 
 AMultiCF::~AMultiCF()
 {
@@ -35,6 +38,11 @@ muint_t AMultiCF::Kdim() const throw(CGPMixException)
 
 void AMultiCF::setCovariance(muint_t i, PCovarianceFunction covar) throw (CGPMixException)
 {
+	//check this is witin ther permitted range:
+	if(i>numMaxCovariances)
+	{
+		throw CGPMixException("AMultiCF: number of covariances limited.");
+	}
 	vecCovariances[i] = covar;
 }
 
@@ -45,6 +53,10 @@ PCovarianceFunction AMultiCF::getCovariance(muint_t i) throw (CGPMixException)
 
 void AMultiCF::addCovariance(PCovarianceFunction covar) throw (CGPMixException)
 {
+	if(vecCovariances.size()+1>numMaxCovariances)
+	{
+		throw CGPMixException("AMultiCF: number of covariances limited.");
+	}
 	vecCovariances.push_back(covar);
 }
 
@@ -1080,16 +1092,16 @@ void CProductCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const m
 
 
 
-CKroneckerCF::CKroneckerCF() {
+CKroneckerCF::CKroneckerCF() : AMultiCF(2,2) {
 	vecCovariances.resize(2);
 	kroneckerIndicator = MatrixXi(0,0);
 }
 
-CKroneckerCF::CKroneckerCF(PCovarianceFunction row,
-		PCovarianceFunction col) {
-	vecCovariances.push_back(row);
-	vecCovariances.push_back(col);
+CKroneckerCF::CKroneckerCF(PCovarianceFunction col,
+		PCovarianceFunction row): AMultiCF(2,2) {
 	kroneckerIndicator = MatrixXi(0,0);
+	setRowCovariance(row);
+	setColCovariance(col);
 }
 
 CKroneckerCF::~CKroneckerCF() {
@@ -1097,7 +1109,15 @@ CKroneckerCF::~CKroneckerCF() {
 
 muint_t CKroneckerCF::Kdim() const throw(CGPMixException)
 {
-	return vecCovariances.begin()[0]->Kdim()*vecCovariances.begin()[1]->Kdim();
+	//do we have a Kronecker index?
+	if(!isnull(kroneckerIndicator))
+	{
+		return kroneckerIndicator.rows();
+	}
+	else
+	{
+		return vecCovariances.begin()[0]->Kdim()*vecCovariances.begin()[1]->Kdim();
+	}
 }
 
 void CKroneckerCF::setRowCovariance(PCovarianceFunction cov) {
@@ -1202,7 +1222,11 @@ void CKroneckerCF::aKdiag_grad_X(VectorXd* out, const muint_t d) const throw (CG
 
 void CKroneckerCF::aK(MatrixXd* out) const throw (CGPMixException)
 {
-	aMatrixIndexProduct((*out),vecCovariances[0]->K(),vecCovariances[1]->K(),kroneckerIndicator);
+	MatrixXd Kc;
+	vecCovariances[0]->aK(&Kc);
+	MatrixXd Kr;
+	vecCovariances[1]->aK(&Kr);
+	aMatrixIndexProduct((*out),Kc,Kr,kroneckerIndicator);
 }
 
 void CKroneckerCF::aKdiag(VectorXd* out) const throw (CGPMixException)

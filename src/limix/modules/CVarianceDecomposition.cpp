@@ -179,11 +179,14 @@ void CMultiTraitTerm::setSampleFilter(const MatrixXb& filter) throw (CGPMixExcep
 	CKroneckerCF::createKroneckerIndex(&kroneckerindex,this->P,this->getNumberIndividuals());
 	//subset
 	MatrixXi kroneckerindex_;
+	//std::cout << kroneckerindex;
+	//std::cout << "\n" << "-----------------" << "\n";
+	//kroneckerindex_.resize(kroneckerindex.rows(),kroneckerindex.cols());
 	slice(kroneckerindex,filter_,kroneckerindex_);
+	//std::cout << kroneckerindex_;
+	//std::cout << "\n" << "-----------------" << "\n";
 	//set as Kroneckerindex
 	this->covariance->setKroneckerIndicator(kroneckerindex_);
-	std::cout << "kroneckerIndex" << "\n";
-	std::cout << kroneckerindex_ << "\n";
 }
 
 
@@ -405,7 +408,6 @@ void CVarianceDecomposition::initGPbase() throw(CGPMixException)
 		Iselect.resize(this->N*this->P,1);
 		//invert
 		Iselect = Iselect.unaryExpr(std::ptr_fun(negate));
-		std::cout << Iselect << "\n";
 		//2. select on y
 		MatrixXd _y;
 		slice(y,Iselect,_y);

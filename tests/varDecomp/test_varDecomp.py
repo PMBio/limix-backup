@@ -150,7 +150,7 @@ class CVarianceDecompositionSoftKronecker_test(unittest.TestCase):
         self.Kg = self.Kg/self.Kg.diagonal().mean()
 
         #add missing values to Y
-        if 0:
+        if 1:
             self.D['Y'][0,0] = SP.nan
             self.D['Y'][1,1] = SP.nan
             self.D['Y'][10,0] = SP.nan
@@ -170,21 +170,8 @@ class CVarianceDecompositionSoftKronecker_test(unittest.TestCase):
             self.generate=False
         params_true = self.D['params_true']
         RV = ((SP.absolute(params)-SP.absolute(params_true))**2).max()
-        self.assertTrue(RV<1e-6)
-
-    def test_fitFast(self):
-        """ optimization test """
-        self.vc.findLocalOptimum(fast=True,init_method='empCov',verbose=False)
-        params = self.vc.getScales()
-        if self.generate:
-            self.D['params_true'] = params
-            data.dump(self.D,self.dataset)
-            self.generate=False
-
-        params_true = self.D['params_true']
-        #make sign invariant
-        RV = ((SP.absolute(params)-SP.absolute(params_true))**2).max()<1e-6
-        self.assertTrue(RV)
+        #permit more flexibility, as we set a few values to NAN
+        self.assertTrue(RV<1e-4)
 
 
 if __name__ == '__main__':
