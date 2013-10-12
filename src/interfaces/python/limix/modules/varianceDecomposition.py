@@ -176,6 +176,10 @@ class CVarianceDecomposition:
                 cov.addCovariance(limix.CFixedCF(SP.eye(self.P)))
             else:
                 cov.addCovariance(limix.CDiagonalCF(self.P))
+        elif covar_type=='rank1_id':
+            cov=limix.CSumCF()
+            cov.addCovariance(limix.CRankOneCF(self.P))
+            cov.addCovariance(limix.CFixedCF(SP.eye(self.P)))
 
         self.vd.addTerm(cov,K)
         if Ks!=None: self.setKstar(self.n_terms,Ks)
@@ -218,13 +222,17 @@ class CVarianceDecomposition:
         self.cache['paramsST']= None
     
             
-    def fit(self,fast=False,init_method='empCov'):
+    def fit(self,fast=False,init_scales=None,init_method='random'):
         """
         fit a variance component model with the predefined design and the initialization and returns all the results
         if fast=True, use GPkronSum (valid only if P>1 and n_terms==2) 
         """
         
         assert self.n_terms>0, 'No variance component terms'
+        
+        if init_scales!=None:
+            init_method = 'manual'
+            self.setScales(init_scales)
         
         # Parameter initialisation
         assert init_method in ['manual','empCov','singleTrait','random','mixed'], 'method %s not known' % init_method
@@ -291,14 +299,16 @@ class CVarianceDecomposition:
         pass
 
     
-    def findLocalOptimum(self,fast=False,init_method='empCov',verbose=True,n_times=10):
+    def findLocalOptimum(self,fast=False,init_scales=None,init_method='random',verbose=True,n_times=10):
         """
         Train the model up to n_times using the random method initilisation method init_method
         and stop as soon as a local optimum is found
         """
         
+        if init_scales!=None:   n_times=1
+        
         for i in range(n_times):
-            conv = self.fit(fast=fast,init_method=init_method)
+            conv = self.fit(fast=fast,init_scales=init_scales,init_method=init_method)
             if conv:    break
     
         if verbose:
@@ -729,33 +739,32 @@ class CVarianceDecomposition:
     
     
     
-    def predictMean(self,term_i=None):
-        
+    def predictMean(self):
+                
         assert self.noisPos!=None,      'No noise element'
         assert self.init,               'GP not initialised'
-        assert term_i!=self.noisPos,    'Noise term predictions have mean 0'
-        
+                
         KiY = self.gp.agetKEffInvYCache()
-        
+                
         if self.fast==False:
             KiY = KiY.reshape(self.P,self.N).T
-        
-        if term_i!=None:
-        
-            Rs = self.vd.getTerm(term_i).getKcf().Kcross(SP.zeros(1))
-            Ymean = SP.dot(Rs.T,KiY)
-            if self.P>1:
-                C = self.vd.getTerm(term_i).getTraitCovar().K()
-                temp = SP.dot(Ymean,C)
-        else:
-            Ymean = None
-            for term_i in range(self.n_terms):
-                if term_i!=self.noisPos:
-                    if Ymean==None:      Ymean  = self.predictMean(term_i)
-                    else:               Ymean += self.predictMean(term_i)
-            Ymean+=self.getFixed()[:,0]
-
+                
+        Ymean = None
+        for term_i in range(self.n_terms):
+            if term_i!=self.noisPos:
+                Kstar = self.vd.getTerm(term_i).getKcf().Kcross(SP.zeros(1))
+                term  = SP.dot(Kstar.T,KiY)
+                if self.P>1:
+                    C    = self.getEstTraitCovar(term_i)
+                    term = SP.dot(term,C)
+                if Ymean==None:     Ymean  = term
+                else:               Ymean += term
+            
+        # to generalise
+        Ymean+=self.getFixed()[:,0]
+                
         return Ymean
+
         
 
         

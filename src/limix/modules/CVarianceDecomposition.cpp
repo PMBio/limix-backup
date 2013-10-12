@@ -35,7 +35,7 @@ void AVarianceTerm::setK(const MatrixXd& K) throw(CGPMixException)
 {
 	if(K.rows()!=K.cols())
 		throw CGPMixException("AVarianceTerm: K needs to be a squared matrix!");
-	this->K = K/K.diagonal().mean();
+	this->K=K;
 	Kcf = PFixedCF(new CFixedCF(this->K));
 	this->Knull = false;
 }
@@ -514,7 +514,7 @@ bool CVarianceDecomposition::trainGP() throw(CGPMixException)
 	conv = this->opt->opt();
 
 	//check convergence
-	conv *= (this->getLMLgrad()<(mfloat_t)1e-4);
+	conv *= (this->getLMLgrad()<(mfloat_t)1e-3);
 	VectorXd scales;
 	this->agetScales(&scales);
 	conv *= (scales.unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).maxCoeff()<(mfloat_t)10.0);
