@@ -265,7 +265,82 @@ void CRankOneCF::agetParamMask0(CovarParams* out) const
     (*out) = VectorXd::Ones(getNumberParams());
 }
 
+
+/* CLowRankCF class */
+
+CLowRankCF::CLowRankCF(muint_t numberGroups, muint_t rank)
+{
+    this->numberDimensions = 1;
+    this->numberGroups=numberGroups;
+    this->X=MatrixXd::Zero(numberGroups,1);
+    //number of parameters:
+    this->numberParams = rank*numberGroups;
+    this->rank = rank;
+}
+
+CLowRankCF::~CLowRankCF()
+{
+}
+
+void CLowRankCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+    MatrixXd K;
+    aKcross(&K,Xstar);
+    (*out)=K.diagonal();
+}
+
+void CLowRankCF::agetScales(CovarParams* out) {
+    //to implement properly
+    (*out) = this->params;
+    double sign=1;
+    if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
+    (*out)*=sign;
+}
+
+void CLowRankCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+{
+    //IMPLEMENT ME
+    //1. U, S = eigh(K0)
+    //2. a_i = U[:,i]*SP.sqrt(S[i])
+    //2. params = (a_1,a_2,...)
+}
+
+void CLowRankCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+{
+    //create template matrix K
+    MatrixXd L = this->params;
+    L.resize(numberGroups,rank);
+    (*out).noalias() = L*L.transpose();
+}
+
+void CLowRankCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+{
+    MatrixXd L = this->params;
+    MatrixXd Lgrad_parami = MatrixXd::Zero(this->numberParams,1);
+    Lgrad_parami(i) = 1;
+    L.resize(numberGroups,rank);
+    Lgrad_parami.resize(numberGroups,rank);
+    (*out).noalias() = Lgrad_parami*L.transpose()+L*Lgrad_parami.transpose();
+}
+
+void CLowRankCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+{
+    MatrixXd Lgrad_parami = MatrixXd::Zero(this->numberParams,1);
+    MatrixXd Lgrad_paramj = MatrixXd::Zero(this->numberParams,1);
+    Lgrad_parami(i) = 1;
+    Lgrad_paramj(j) = 1;
+    Lgrad_parami.resize(numberGroups,rank);
+    Lgrad_paramj.resize(numberGroups,rank);
+    (*out).noalias() = Lgrad_parami*Lgrad_paramj.transpose()+Lgrad_paramj*Lgrad_parami.transpose();
+}
+
+void CLowRankCF::agetParamMask0(CovarParams* out) const
+{
+    (*out) = VectorXd::Ones(getNumberParams());
+}
+
     
+
 /* CFixedCF class */
 
 CFixedCF::CFixedCF(const MatrixXd & K0) : ACovarianceFunction(1)

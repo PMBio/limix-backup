@@ -105,6 +105,40 @@ public:
 typedef sptr<CRankOneCF> PRankOneCF;
 
 
+class CLowRankCF: public ACovarianceFunction {
+
+protected:
+    muint_t numberGroups;
+    muint_t rank;
+public:
+
+    CLowRankCF(muint_t numberGroups, muint_t rank);
+    ~CLowRankCF();
+
+    //Block X functions: X is fixed and set in the constructor
+    virtual void setX(const CovarInput& X) throw (CGPMixException) {};
+    virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException) {};
+    virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
+    virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) {};
+    virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
+
+    virtual void agetScales(CovarParams* out);
+    virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+
+    //Covariance pure functions
+    //pure functions that need to be implemented
+    virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
+    virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException);
+    virtual void agetParamMask0(CovarParams* out) const;
+
+    //class information
+    inline std::string getName() const {return "CLowRankCF";};
+
+};
+typedef sptr<CLowRankCF> PLowRankCF;
+
+
 //rename argout operators for swig interface
 #if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
 //rename functions and select the visible component for SWIG
