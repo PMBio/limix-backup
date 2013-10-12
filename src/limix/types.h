@@ -168,10 +168,10 @@ typedef sptr<VectorXb> PVectorXb;
 
 
 //string
-typedef Eigen::Matrix<std::string, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXs;
-typedef Eigen::Matrix<std::string, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXs;
-typedef sptr<MatrixXs> PMatrixXs;
-typedef sptr<VectorXs> PVectorXs;
+typedef Eigen::Array<std::string, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> ArrayXs;
+typedef Eigen::Array<std::string, Eigen::Dynamic, 1,Eigen::ColMajor> Array1DXs;
+typedef sptr<ArrayXs> PArrayXs;
+typedef sptr<Array1DXs> PArray1DXs;
 
 //typedef Eigen::Array<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> ArrayXd;
 

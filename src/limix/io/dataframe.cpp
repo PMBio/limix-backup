@@ -20,9 +20,9 @@ void CHeaderMap::resize(muint_t n)
 	for(CHeaderMap::iterator iter = this->begin(); iter!=this->end();iter++)
 	{
 		std::string name = (*iter).first;
-		PstringVec value = (*iter).second;
+		PArray1DXs value = (*iter).second;
 		//resize
-		value->resize(n);
+		value->conservativeResize(n);
 	}
 }
 
@@ -43,8 +43,8 @@ PHeaderMap CHeaderMap::copy(muint_t i_start, muint_t n_elements)
 	for(CHeaderMap::iterator iter = this->begin(); iter!=this->end();iter++)
 	{
 		std::string key = (*iter).first;
-		PstringVec value = (*iter).second;
-		(*RV)[key] = PstringVec(new stringVec((*this)[key]->begin(),(*this)[key]->begin()+n_elements));
+		PArray1DXs value = (*iter).second;
+		(*RV)[key] = PArray1DXs(new Array1DXs(*value));
 	}
 	return RV;
 }

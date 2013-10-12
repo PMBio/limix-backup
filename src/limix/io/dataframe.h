@@ -18,6 +18,238 @@
 
 namespace limix {
 
+
+template <int rows,int cols>
+/*!
+ * Wrapper to handle Eigen arrays of flexible type.
+ *
+ * This is particularly used for row and header handling, which have unknown data types,
+ * See \ref CHeaderMap for details.
+ */
+class FlexEigenMatrix
+{
+public:
+	//<! Currently, this class supports either INT, DOUBLE or STRING types
+	enum FlexType { INT, FLOAT, STRING, NONE };
+	//definitions of the corresponding Eigen types for convenience
+	typedef Eigen::Matrix<mint_t,rows,cols> IntMatrix;
+	typedef sptr<IntMatrix> PIntMatrix;
+	typedef Eigen::Matrix<mfloat_t,rows,cols> FloatMatrix;
+	typedef sptr<FloatMatrix> PFloatMatrix;
+	typedef Eigen::Matrix<std::string,rows,cols> StringMatrix;
+	typedef sptr<StringMatrix> PStringMatrix;
+
+protected:
+	/*!
+	 * typeCheck operates in two modes. By defatul we assume we access the dataset (set=False)
+	 * If data access (setting) is requested, set =true.
+	 */
+	void typeCheck(FlexType type,bool set=false) throw (CGPMixException)
+	{
+		if(set)
+		{
+			if((this->type!=type) && (this->type!=NONE))
+				throw CGPMixException("Type check, flexible EigenArrays need to have a predetermined type which is constant across their lifetime");
+			this->type = type;
+		}
+		else
+		{
+			if((this->type!=type))
+				throw CGPMixException("Type check failed, attempted to convert a flexible array into an incompatible type");
+		}
+	}
+	PVoid array;    //<! The underlying pointer to the unknown Eigen Type
+	FlexType type; 	//<! The type of the underlying array
+public:
+
+	FlexEigenMatrix()
+	{
+		this->type = NONE;
+	};
+
+	FlexEigenMatrix(FlexType type)
+	{
+		this->type = type;
+		switch(type)
+		{
+			case(INT):
+				this->array = PIntMatrix(new IntMatrix());
+				break;
+			case(FLOAT):
+				this->array = PFloatMatrix(new FloatMatrix());
+				break;
+			case(STRING):
+				this->array = PStringMatrix(new StringMatrix());
+				//this->array = PStringMatrix(new StringMatrix()));
+				break;
+		}
+	};
+
+	FlexEigenMatrix(PIntMatrix array)
+	{
+		this->array = array;
+		this->type = INT;
+	};
+
+	FlexEigenMatrix(const IntMatrix& array)
+	{
+		this->array = PIntMatrix(new IntMatrix(array));
+		this->type = INT;
+	}
+
+	FlexEigenMatrix(PFloatMatrix array)
+	{
+		this->array = array;
+		this->type = FLOAT;
+	};
+
+	FlexEigenMatrix(const FloatMatrix& array)
+	{
+		this->array = PFloatMatrix(new FloatMatrix(array));
+		this->type = FLOAT;
+	}
+
+	FlexEigenMatrix(PStringMatrix array)
+	{
+		this->array = array;
+		this->type = STRING;
+	};
+
+	FlexEigenMatrix(const StringMatrix& array)
+	{
+		this->array = PStringMatrix(new StringMatrix(array));
+		this->type = STRING;
+	}
+
+	//getter and setter
+	FlexType getType()
+	{ return this->type;};
+	bool isType(FlexType type)
+	{ return this->type==type;}
+
+	void AgetM(IntMatrix* out) throw (CGPMixException)
+	{
+		typeCheck(INT);
+		(*out) =(*static_pointer_cast<IntMatrix>(this->array));
+	}
+	void AgetM(FloatMatrix* out) throw (CGPMixException)
+	{
+		typeCheck(FLOAT);
+		(*out) =(*static_pointer_cast<FloatMatrix>(this->array));
+	}
+	void AgetM(StringMatrix* out) throw (CGPMixException)
+	{
+		typeCheck(STRING);
+		(*out) =(*static_pointer_cast<StringMatrix>(this->array));
+	}
+
+	operator PIntMatrix() throw (CGPMixException)
+	{
+		typeCheck(INT);
+		return static_pointer_cast<IntMatrix>(this->array);
+	}
+
+	operator IntMatrix() throw (CGPMixException)
+	{
+		typeCheck(INT);
+		return *static_pointer_cast<IntMatrix>(this->array);
+	}
+
+
+	operator FloatMatrix() throw (CGPMixException)
+	{
+		typeCheck(FLOAT);
+		return *static_pointer_cast<FloatMatrix>(this->array);
+	}
+
+
+	operator PFloatMatrix() throw (CGPMixException)
+	{
+		typeCheck(FLOAT);
+		return static_pointer_cast<FloatMatrix>(this->array);
+	}
+
+
+
+	operator PStringMatrix() throw (CGPMixException)
+	{
+		typeCheck(STRING);
+		return static_pointer_cast<StringMatrix>(this->array);
+	}
+
+	operator StringMatrix() throw (CGPMixException)
+	{
+		typeCheck(STRING);
+		return *static_pointer_cast<StringMatrix>(this->array);
+	}
+
+	void operator= (PIntMatrix array) throw (CGPMixException)
+	{
+		setM(array);
+	}
+	void operator= (const IntMatrix& array) throw (CGPMixException)
+	{
+		setM(array);
+	}
+
+	void operator= (PFloatMatrix array) throw (CGPMixException)
+	{
+		setM(array);
+	}
+	void operator= (const FloatMatrix& array) throw (CGPMixException)
+	{
+		setM(array);
+	}
+
+	void operator= (PStringMatrix array) throw (CGPMixException)
+	{
+		setM(array);
+	}
+	void operator= (const StringMatrix& array) throw (CGPMixException)
+	{
+		setM(array);
+	}
+
+	void setM(PIntMatrix array) throw (CGPMixException)
+	{
+		typeCheck(INT,true);
+		this->array =array;
+	}
+	void setM(PFloatMatrix array) throw (CGPMixException)
+	{
+		typeCheck(FLOAT,true);
+		this->array =array;
+	}
+	void setM(PStringMatrix array) throw (CGPMixException)
+	{
+		typeCheck(STRING,true);
+		this->array =array;
+	}
+	void setM(const FloatMatrix& array) throw (CGPMixException)
+	{
+		typeCheck(FLOAT,true);
+		this->array = new PFloatMatrix(new FloatMatrix(array));
+	}
+	void setM(const IntMatrix& array) throw (CGPMixException)
+	{
+		typeCheck(INT,true);
+		this->array = new PIntMatrix(new IntMatrix(array));
+	}
+	void setM(const StringMatrix& array) throw (CGPMixException)
+	{
+		typeCheck(STRING,true);
+		this->array = new PStringMatrix(new StringMatrix(array));
+	}
+
+	//modification operators
+
+};
+typedef FlexEigenMatrix<Eigen::Dynamic, 1> CFlexVector;
+typedef FlexEigenMatrix<Eigen::Dynamic, Eigen::Dynamic> CFlexMatrix;
+typedef sptr<CFlexVector> PFlexVector;
+typedef sptr<CFlexMatrix> PFlexMatrix;
+
+
 /*!
  *  Flexible object containing header objects
  *
@@ -30,7 +262,7 @@ typedef sptr<CHeaderMap> PHeaderMap;
  *	CHeaderMap is based on a map of pointers to vectors of strings
  *	Each element consists of a vector with header elemnts which are used as columns or rows
  */
-class CHeaderMap : public std::map<std::string,PstringVec>
+class CHeaderMap : public std::map<std::string,PArray1DXs>
 {
 public:
 	/*!

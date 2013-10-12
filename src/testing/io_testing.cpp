@@ -1,4 +1,4 @@
-#if 0
+#if 1
 //============================================================================
 // Name        : GPmix.cpp
 // C++ testig file for variance component QTL
@@ -26,6 +26,40 @@ using namespace limix;
 
 
 int main() {
+
+
+	//Eigen::Array<mint_t,Eigen::Dynamic,1> TT(100);
+	//VectorXd TT = VectorXd::Ones(100);
+
+	//test->setArray((VectorXd)test_array);
+	//Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic> TT;
+	//TT = Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic>::Ones(100,100);
+	PMatrixXd TTf = PMatrixXd(new MatrixXd());
+	(*TTf) = MatrixXd::Ones(100,100);
+
+	PMatrixXi TTi = PMatrixXi(new MatrixXi());
+	(*TTi) = MatrixXi::Ones(100,100);
+
+
+	PFlexMatrix testf = PFlexMatrix(new CFlexMatrix(TTf));
+	PFlexMatrix testi = PFlexMatrix(new CFlexMatrix());
+	*testi = TTi;
+
+
+	PMatrixXd TTf2 = *testf;
+	MatrixXd TTf3 = *(PMatrixXd)(*testf);
+
+	CFlexMatrix::PIntMatrix TTi2 = *testi;
+	MatrixXi TTi3 = *testi;
+
+	//assignment operators
+	std::cout << TTi3;
+
+
+	//std:: cout <<
+
+
+	//pp =  test.getFloatArray();
 
 	//1. simulate
 	muint_t n  = 20;
