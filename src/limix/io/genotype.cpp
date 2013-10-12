@@ -21,17 +21,17 @@
 
 namespace limix {
 
-void CGenotypeBlock::init(const stringVec& row_header_names,const stringVec& col_header_names)
+void CGenotypeBlock::init(const stringVec& row_header_names,const stringVec& col_header_names,muint_t rows, muint_t cols)
 {
 	for(stringVec::const_iterator iter = row_header_names.begin(); iter!=row_header_names.end();iter++)
 	{
 		std::string name = (*iter);
-		(*this->rowHeader)[name] = PstringVec(new stringVec());
+		(*this->rowHeader)[name] = PArray1DXs(new Array1DXs(rows));
 	}
 	for(stringVec::const_iterator iter = col_header_names.begin(); iter!=col_header_names.end();iter++)
 	{
 		std::string name = (*iter);
-		(*this->colHeader)[name] = PstringVec(new stringVec());
+		(*this->colHeader)[name] = PArray1DXs(new Array1DXs(cols));
 	}
 
 	this->pos = PVectorXi(new VectorXi());
@@ -39,14 +39,14 @@ void CGenotypeBlock::init(const stringVec& row_header_names,const stringVec& col
 }
 
 
-CGenotypeBlock::CGenotypeBlock(const stringVec& row_header_names,const stringVec& col_haeder_names)
+CGenotypeBlock::CGenotypeBlock(const stringVec& row_header_names,const stringVec& col_haeder_names,muint_t rows,muint_t cols)
 {
-	init(row_header_names,col_haeder_names);
+	init(row_header_names,col_haeder_names,rows,cols);
 }
 
 CGenotypeBlock::CGenotypeBlock() {
 	stringVec row_header_names,col_haeder_names;
-	init(row_header_names,col_haeder_names);
+	init(row_header_names,col_haeder_names,0,0);
 }
 
 CGenotypeBlock::CGenotypeBlock(const CGenotypeBlock& copy) : CRMemDataFrame<MatrixXd>(copy)
@@ -211,7 +211,7 @@ PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) throw (CGP
 	PstringVec row_header_names = PstringVec(new stringVec(Srow_header_names,Srow_header_names+sizeof(Srow_header_names)/sizeof(Srow_header_names[0])));
 
 
-	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock(*row_header_names,*col_header_names));
+	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock(*row_header_names,*col_header_names,0,0));
 
 	//number of read snps, current buffer
 	muint_t i_snp,buffer,num_samples;

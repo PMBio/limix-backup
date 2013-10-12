@@ -35,9 +35,6 @@
 namespace limix {
 
 
-//typedef std::map<std::string,std::vector<std::string>> stringMap;
-
-
 class AGenotypeContainer;
 class CTextfileGenotypeContainer;
 class CGenotypeBlock;
@@ -107,11 +104,11 @@ protected:
 	virtual void resizeMatrices(muint_t num_rows, muint_t num_columns);
 	muint_t i_snp_read;
 
-	void init(const stringVec& row_header_names,const stringVec& col_haeder_names);
+	void init(const stringVec& row_header_names,const stringVec& col_haeder_names,muint_t rows,muint_t cols);
 
 public:
 	CGenotypeBlock();
-	CGenotypeBlock(const stringVec& row_header_names, const stringVec& col_header_names);
+	CGenotypeBlock(const stringVec& row_header_names, const stringVec& col_header_names,muint_t rows, muint_t cols);
 	CGenotypeBlock(const CGenotypeBlock& copy);
 	CGenotypeBlock(PMatrixXd geno, PVectorXi pos,PHeaderMap row_header,PHeaderMap col_header);
 	virtual ~CGenotypeBlock();
