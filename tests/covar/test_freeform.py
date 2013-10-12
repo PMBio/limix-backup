@@ -29,6 +29,18 @@ class CRankOneCF_test(unittest.TestCase,Acovar_test):
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
 
+class CLowRankCF_test(unittest.TestCase,Acovar_test):
+    """test class for CLowRankCF"""
+    def setUp(self):
+        SP.random.seed(1)
+        self.n=4
+        self.rank=2
+        self.C = limix.CLowRankCF(self.n,self.rank)
+        self.name = 'CLowRankCF'
+        self.n_params=self.C.getNumberParams()
+        params=SP.exp(SP.randn(self.n_params))
+        self.C.setParams(params)
+
 class CDiagonalCF_test(unittest.TestCase,Acovar_test):
     """test class for CDiagonalCF"""
     def setUp(self):
