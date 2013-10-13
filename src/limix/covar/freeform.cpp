@@ -8,6 +8,7 @@
 #include "freeform.h"
 #include <math.h>
 #include <cmath>
+#include "dist.h"
 //#ifdef _WIN32
 //#include <tgmath.h>
 //#endif
@@ -622,6 +623,113 @@ void CRank1diagCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(C
 void CRank1diagCF::agetParamMask0(CovarParams* out) const
 {
     (*out) = VectorXd::Ones(this->getNumberParams());
+}
+
+
+/* CSqExpCF class */
+
+CSqExpCF::CSqExpCF(muint_t numberGroups, muint_t dim)
+{
+    this->numberDimensions = 1;
+    this->numberGroups=numberGroups;
+    this->X=MatrixXd::Zero(numberGroups,1);
+    //number of parameters:
+    this->numberParams = (dim+1)*numberGroups;
+    this->dim = dim;
+}
+
+CSqExpCF::~CSqExpCF()
+{
+}
+
+void CSqExpCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+{
+    MatrixXd K;
+    aKcross(&K,Xstar);
+    (*out)=K.diagonal();
+}
+
+void CSqExpCF::agetScales(CovarParams* out) {
+    //to implement properly
+    (*out) = this->params;
+    double sign=1;
+    if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
+    (*out)*=sign;
+}
+
+void CSqExpCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+{
+    //IMPLEMENT ME
+}
+
+void CSqExpCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+{
+    //create template matrix K
+    MatrixXd X = this->params.block(numberGroups,0,dim*numberGroups,1);
+    X.resize(numberGroups,dim);
+    MatrixXd l = X.block(0,0,1,dim);
+    X.block(0,0,1,dim) = MatrixXd::Ones(1,dim);
+    MatrixXd Xl = X * l.asDiagonal();
+	//squared exponential distance
+	MatrixXd RV;
+	sq_dist(&RV,Xl,Xl);
+	RV*= -1;
+	(*out) = RV.unaryExpr(std::ptr_fun(exp));
+	MatrixXd A = this->params.block(0,0,numberGroups,1)*this->params.block(0,0,numberGroups,1).transpose();
+	(*out).array()*=A.array();
+}
+
+void CSqExpCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+{
+    //exponential part
+    MatrixXd X = this->params.block(numberGroups,0,dim*numberGroups,1);
+    X.resize(numberGroups,dim);
+    MatrixXd l = X.block(0,0,1,dim);
+    X.block(0,0,1,dim) = MatrixXd::Ones(1,dim);
+    MatrixXd Xl = X * l.asDiagonal();
+	MatrixXd RV;
+	sq_dist(&RV,Xl,Xl);
+	RV*= -1;
+	(*out) = RV.unaryExpr(std::ptr_fun(exp));
+
+	// Derivative
+	MatrixXd A;
+	if (i>=numberGroups){
+		A = this->params.block(0,0,numberGroups,1)*this->params.block(0,0,numberGroups,1).transpose();
+		muint_t d = muint_t(i/numberGroups)-1;
+		muint_t p = i%numberGroups;
+		if (p==0) {
+			std::cout<<"here"<<std::endl;
+			MatrixXd x = X.block(0,d,numberGroups,1);
+			sq_dist(&RV,x,x);
+			RV*=-2*l(0,d);
+		}
+		else {
+			RV = MatrixXd::Zero(numberGroups,numberGroups);
+			for (muint_t pp=0; pp<numberGroups; pp++) {
+				RV(p,pp) = -2*(X(p,d)-X(pp,d))*l(0,d);
+				RV(pp,p) = RV(p,pp);
+			}
+		}
+		(*out).array()*=RV.array();
+	}
+	else {
+		MatrixXd a = MatrixXd::Zero(numberGroups,1);
+		a(i) = 1;
+		A = a*this->params.block(0,0,numberGroups,1).transpose()+this->params.block(0,0,numberGroups,1)*a.transpose();
+	}
+	(*out).array()*=A.array();
+}
+
+void CSqExpCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+{
+    //TODO
+	(*out)=MatrixXd::Zero(numberGroups,numberGroups);
+}
+
+void CSqExpCF::agetParamMask0(CovarParams* out) const
+{
+    (*out) = VectorXd::Ones(getNumberParams());
 }
 
 
