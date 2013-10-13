@@ -699,7 +699,6 @@ void CSqExpCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException
 		muint_t d = muint_t(i/numberGroups)-1;
 		muint_t p = i%numberGroups;
 		if (p==0) {
-			std::cout<<"here"<<std::endl;
 			MatrixXd x = X.block(0,d,numberGroups,1);
 			sq_dist(&RV,x,x);
 			RV*=-2*l(0,d);
