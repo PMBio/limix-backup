@@ -1231,7 +1231,13 @@ void CKroneckerCF::aK(MatrixXd* out) const throw (CGPMixException)
 
 void CKroneckerCF::aKdiag(VectorXd* out) const throw (CGPMixException)
 {
-	aMatrixIndexProduct_diag((*out),vecCovariances[0]->K(),vecCovariances[1]->K(),kroneckerIndicator);
+  MatrixXd Kc;
+  vecCovariances[0]->aK(&Kc);
+  MatrixXd Kr;
+  vecCovariances[1]->aK(&Kr);
+
+  //aMatrixIndexProduct_diag((*out),Kc,Kr,kroneckerIndicator);
+  akron_diag(*out,Kc,Kr);
 }
 
 void CKroneckerCF::aKgrad_X(MatrixXd* out, const muint_t d) const throw (CGPMixException)
