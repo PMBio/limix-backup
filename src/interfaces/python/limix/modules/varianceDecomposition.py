@@ -58,6 +58,8 @@ class CVarianceDecomposition:
         self.noisPos = None
         self.optimum = None
         
+        self.covar_type = []
+        
         self.cache = {}
         self.cache['Sigma']   = None
         self.cache['Hessian'] = None
@@ -121,10 +123,10 @@ class CVarianceDecomposition:
         if Ks!=None: self.setKstar(self.n_terms,Ks)
         self.n_terms+=1
     
-        self.gp      = None
-        self.init    = False
-        self.fast    = False
-        self.optimum = None
+        self.gp         = None
+        self.init       = False
+        self.fast       = False
+        self.optimum    = None
 
         self.cache['Sigma']   = None
         self.cache['Hessian'] = None
@@ -133,7 +135,7 @@ class CVarianceDecomposition:
 
     
     
-    def addMultiTraitTerm(self,K=None,covar_type='freeform',covar_K0=None,is_noise=False,normalize=True,Ks=None):
+    def addMultiTraitTerm(self,K=None,covar_type='freeform',rank=1,dim=1,covar_K0=None,is_noise=False,normalize=True,Ks=None):
         """
         add multi trait term (inter-trait covariance matrix is consiered freeform)
         K:  Intra-Trait Covariance Matrix [N, N]
@@ -172,14 +174,28 @@ class CVarianceDecomposition:
         elif covar_type=='rank1_diag':
             cov=limix.CSumCF()
             cov.addCovariance(limix.CRankOneCF(self.P))
-            if self.P==2:
-                cov.addCovariance(limix.CFixedCF(SP.eye(self.P)))
-            else:
-                cov.addCovariance(limix.CDiagonalCF(self.P))
+            cov.addCovariance(limix.CDiagonalCF(self.P))
         elif covar_type=='rank1_id':
             cov=limix.CSumCF()
             cov.addCovariance(limix.CRankOneCF(self.P))
             cov.addCovariance(limix.CFixedCF(SP.eye(self.P)))
+        elif covar_type=='lowrank_diag':
+            self.rank = rank
+            cov=limix.CSumCF()
+            cov.addCovariance(limix.CLowRankCF(self.P,self.rank))
+            cov.addCovariance(limix.CDiagonalCF(self.P))
+        elif covar_type=='lowrank_id':
+            self.rank = rank
+            cov=limix.CSumCF()
+            cov.addCovariance(limix.CLowRankCF(self.P,self.rank))
+            cov.addCovariance(limix.CFixedCF(SP.eye(self.P)))
+        elif covar_type=='sqexp':
+            self.dim = dim
+            cov = limix.CSqExpCF(self.P,self.dim)
+        else:
+            assert True==False, 'covar_type not valid'
+                
+        self.covar_type.append(covar_type)
 
         self.vd.addTerm(cov,K)
         if Ks!=None: self.setKstar(self.n_terms,Ks)
@@ -222,7 +238,7 @@ class CVarianceDecomposition:
         self.cache['paramsST']= None
     
             
-    def fit(self,fast=False,init_scales=None,init_method='random'):
+    def fit(self,fast=False,init_scales=None,init_fixed=None,init_method='random'):
         """
         fit a variance component model with the predefined design and the initialization and returns all the results
         if fast=True, use GPkronSum (valid only if P>1 and n_terms==2) 
@@ -269,8 +285,12 @@ class CVarianceDecomposition:
 
         # set Fixed effect randomly
         params = self.gp.getParams()
-        params['dataTerm'] = 1e-2*SP.randn(params['dataTerm'].shape[0],params['dataTerm'].shape[1])
-
+        if init_fixed!=None:
+            params['dataTerm'] = init_fixed
+        else:
+            params['dataTerm'] = 1e-3*SP.randn(params['dataTerm'].shape[0],params['dataTerm'].shape[1])
+        self.gp.setParams(params)
+        
         # LIMIX CVARIANCEDECOMPOSITION FITTING
         start_time = time.time()
         conv =self.vd.trainGP()
@@ -299,7 +319,7 @@ class CVarianceDecomposition:
         pass
 
     
-    def findLocalOptimum(self,fast=False,init_scales=None,init_method='random',verbose=True,n_times=10):
+    def findLocalOptimum(self,fast=False,init_scales=None,init_fixed=None,init_method='random',verbose=True,n_times=10):
         """
         Train the model up to n_times using the random method initilisation method init_method
         and stop as soon as a local optimum is found
@@ -308,7 +328,7 @@ class CVarianceDecomposition:
         if init_scales!=None:   n_times=1
         
         for i in range(n_times):
-            conv = self.fit(fast=fast,init_scales=init_scales,init_method=init_method)
+            conv = self.fit(fast=fast,init_scales=init_scales,init_fixed=init_fixed,init_method=init_method)
             if conv:    break
     
         if verbose:
