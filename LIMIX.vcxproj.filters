@@ -101,6 +101,9 @@
     <Filter Include="python\demo\data">
       <UniqueIdentifier>{1b2c9640-5076-496c-a8ed-9b1850cd6913}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\limix\io\plink">
+      <UniqueIdentifier>{a3fd334d-9612-4208-aeba-ecf04b611118}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\limix\mean\ADataTerm.cpp">
@@ -279,6 +282,45 @@
     </ClCompile>
     <ClCompile Include="src\limix\LMM\kronecker_lmm_old.cpp">
       <Filter>src\limix\LMM</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CPlinkBedFile.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CPlinkFile.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CPlinkMapFile.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CCovariatesData.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CPlinkAlternatePhenotypeFile.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CPlinkDatFile.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CPlinkLexer.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CPhenData.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CLexer.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CKernelData.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\TsvLexer.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\Utils.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CSnpFilterOptions.cpp">
+      <Filter>src\limix\io\plink</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -465,6 +507,51 @@
     </ClInclude>
     <ClInclude Include="src\limix\gp\gp_base.h">
       <Filter>src\limix\gp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CPlinkBedFile.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CPlinkFile.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CPlinkMapFile.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CCovariatesData.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\Cplink.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CPlinkAlternatePhenotypeFile.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CPlinkDatFile.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CPlinkLexer.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CPhenData.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CLexer.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CKernelData.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\TsvLexer.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\Utils.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CSnpInfo.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CSnpFilterOptions.h">
+      <Filter>src\limix\io\plink</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
