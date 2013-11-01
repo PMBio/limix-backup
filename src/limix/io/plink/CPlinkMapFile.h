@@ -53,7 +53,7 @@ public:
    CPlinkMapFile();
    CPlinkMapFile( const std::string& filename_ );
 #if 0
-   CPlinkMapFile( const string& filename_, size_t cIndividuals_, size_t cSnps_ );
+   CPlinkMapFile( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ );
 #endif
    ~CPlinkMapFile();
 
