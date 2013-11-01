@@ -31,6 +31,7 @@
  * Include Files
  */
 #include "CPlinkLexer.h"
+
 #if !defined( __GNUC__ )         // gcc doesn't yet support <regex>
 #include <regex>
 
@@ -41,7 +42,7 @@ static std::tr1::regex rxChromosome( "[0-9]+" );
 
 int maxChromosomeValue = 26;
 
-CPlinkLexer::CPlinkLexer( const string& file ) : CLexer( file )
+CPlinkLexer::CPlinkLexer( const std::string& file ) : CLexer( file )
    {
    // CLexer does all the initialization
    }
@@ -99,7 +100,7 @@ RetryAfterSkip:
    return( tok.type );
    }
 
-void CPlinkLexer::ExpectId( CToken& tok, string& output, const char *description )
+void CPlinkLexer::ExpectId( CToken& tok, std::string& output, const char *description )
    {
    if ( tok.type != tokSymbol )     // get ID
       {
@@ -131,7 +132,7 @@ void CPlinkLexer::ExpectInt( CToken& tok, int& output, const char *description )
    NextToken( tok );
    }
 
-void CPlinkLexer::ExpectReal( CToken& tok, real& output, const char *description )
+void CPlinkLexer::ExpectReal( CToken& tok, limix::mfloat_t& output, const char *description )
    {
    if ( tok.type != tokSymbol )     // get string representation
       {
@@ -144,7 +145,7 @@ void CPlinkLexer::ExpectReal( CToken& tok, real& output, const char *description
       Fatal( "Expected a floating point number in file [%s] near line: %d:%d.  Found [%s]", Filename().c_str(), tok.line, tok.column, tok.text.c_str() );
       }
 #endif
-   output = (real)atof( tok.text.c_str() );
+   output = (limix::mfloat_t)atof( tok.text.c_str() );
    NextToken( tok );
    }
 
@@ -166,7 +167,7 @@ void CPlinkLexer::ExpectSex( CToken& tok, int& output )
    NextToken( tok );
    }
 
-void CPlinkLexer::ExpectPhenotype( CToken& tok, real& output, int& outputType )
+void CPlinkLexer::ExpectPhenotype( CToken& tok, limix::mfloat_t& output, int& outputType )
    {
    if ( tok.type != tokSymbol )     //   this is trickier as it can be 0, 1, 2, -9, or an FP number
       {
@@ -176,7 +177,7 @@ void CPlinkLexer::ExpectPhenotype( CToken& tok, real& output, int& outputType )
    outputType = PHENOTYPE_AFFECTION;            
    if ( _strcmpi( tok.text.c_str(), "0" ) == 0 ) output = 0.0;
    else if ( _strcmpi( tok.text.c_str(), "1" ) == 0 ) output = 1.0;
-   else if ( _strcmpi( tok.text.c_str(), missingPhenotypeString.c_str() ) == 0 ) output = std::numeric_limits<real>::quiet_NaN();
+   else if ( _strcmpi( tok.text.c_str(), missingPhenotypeString.c_str() ) == 0 ) output = std::numeric_limits<limix::mfloat_t>::quiet_NaN();
    else 
       {
       // must be an FP number
@@ -188,10 +189,10 @@ void CPlinkLexer::ExpectPhenotype( CToken& tok, real& output, int& outputType )
             Filename().c_str(), tok.line, tok.column, tok.text.c_str() );
          }
 #endif
-      output = (real)atof( tok.text.c_str() );
+      output = (limix::mfloat_t)atof( tok.text.c_str() );
       if ( output == missingPhenotypeValue )
          {
-         output = std::numeric_limits<real>::quiet_NaN();
+         output = std::numeric_limits<limix::mfloat_t>::quiet_NaN();
          }
       outputType = PHENOTYPE_QUANTITATIVE;
       }
@@ -254,7 +255,7 @@ void CPlinkLexer::ExpectSnpAlleles( CToken& tok, char& majorAllele, char& minorA
    return;
    }
 
-void CPlinkLexer::ExpectProbability( CToken& tok, real& output, const char *description )
+void CPlinkLexer::ExpectProbability( CToken& tok, limix::mfloat_t& output, const char *description )
    {
    size_t tokenLine = tok.line;
    size_t tokenColumn = tok.column;
@@ -283,12 +284,12 @@ void CPlinkLexer::ExpectSnpProbabilities( CToken& tok, SnpProbabilities& output 
       Warn( "Inconsistent missing genotype information found in file [%s] near line %d:%d."
           "\n  found [%f] [%f]", Filename().c_str(), tokenLine, tokenColumn, output.probabilityOfHomozygousMinor, output.probabilityOfHeterozygous );
       Warn( "    Genotype information treated as missing" );
-      output.probabilityOfHomozygousMinor = -9.0;
-      output.probabilityOfHeterozygous = -9.0;
+      output.probabilityOfHomozygousMinor = -9.0;//TODO value hardcoded
+      output.probabilityOfHeterozygous = -9.0;//TODO value hardcoded
       }
    else
       {
-      real sum = output.probabilityOfHomozygousMinor + output.probabilityOfHeterozygous;
+      limix::mfloat_t sum = output.probabilityOfHomozygousMinor + output.probabilityOfHeterozygous;
       if ( sum > 1.0 )
          {
          Fatal( "Expected sum of SNP probabilities to be no less than 0.0 and no greater than 1.0."
@@ -302,7 +303,7 @@ void CPlinkLexer::ExpectSnpProbabilities( CToken& tok, SnpProbabilities& output 
       }
    }
 
-void CPlinkLexer::ExpectChromosome( CToken& tok, string& output, int& intOutput )
+void CPlinkLexer::ExpectChromosome( CToken& tok, std::string& output, int& intOutput )
    {
    if ( tok.type != tokSymbol )     //   this is trickier as it can be and integer 0-26 or 'X', 'Y', 'XY', or 'MT'
       {

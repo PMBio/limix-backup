@@ -36,7 +36,7 @@
  */
 #include "CPlinkBedFile.h"
 
-CBedFile::CBedFile( const string& filename_, size_t cIndividuals_, size_t cSnps_ )
+CBedFile::CBedFile( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ )
    {
    filename = FullPath( filename_ );         // save class local copy of expanded filename
    cIndividuals = cIndividuals_;

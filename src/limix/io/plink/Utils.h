@@ -27,7 +27,7 @@
  *
  * Test Files: 
  */
-
+#include "Cplink.h"
 /*
  * 'Publish' our class declarations / function prototypes
  */
@@ -42,14 +42,14 @@ void Verbose( const char *szFmt, ... );
 void Warn( const char *szFmt, ... );
 
 // File / File system Utility Routines
-int    FFileExists( const string& name );
-int    FDirExists( const string& name );
-bool   FIsFilenameWritable( const string& filename );
-string FullPath( const string& filename );
-void   MakeDirectory( const string& dirname );
-string MakePath( const string& drive, const string& dir, const string& fname, const string& ext );
-void   SplitPath( const string& filename, string& drive, string& dir, string& fname, string& ext );
-bool   FIsCsvFile( const string& fname );    // does the filename end in '.csv'
+int    FFileExists( const std::string& name );
+int    FDirExists( const std::string& name );
+bool   FIsFilenameWritable( const std::string& filename );
+std::string FullPath( const std::string& filename );
+void   MakeDirectory( const std::string& dirname );
+std::string MakePath( const std::string& drive, const std::string& dir, const std::string& fname, const std::string& ext );
+void   SplitPath( const std::string& filename, std::string& drive, std::string& dir, std::string& fname, std::string& ext );
+bool   FIsCsvFile( const std::string& fname );    // does the filename end in '.csv'
 
 /*
  * 'Publish' the globals we define
@@ -68,9 +68,9 @@ const int NewLine = '\n';
 #if !defined( _MSC_VER )
 #include <linux/limits.h>
 
-inline real abs( real x ) { return( fabs(x) ); }
+inline limix::mfloat_t abs( limix::mfloat_t x ) { return( fabs(x) ); }
 inline int min( int m1, int m2 ) { return( ( m1 < m2 ) ? m1 : m2 ); }
-inline real min( real m1, real m2 ) { return( (m1 < m2 ) ? m1 : m2 ); }
+inline limix::mfloat_t min( real m1, real m2 ) { return( (m1 < m2 ) ? m1 : m2 ); }
 inline int max( int m1, int m2 ) { return( ( m1 > m2 ) ? m1 : m2 ); }
 inline int _strcmpi( const char *s1, const char *s2 ) { return( strcasecmp( s1, s2 ) ); }
 inline int _access( const char *path, int mode ) { return( access( path, mode ) ); }
@@ -120,7 +120,7 @@ inline size_t RowMajorIndex( size_t cRows, size_t cColumns, size_t iRow, size_t 
    return( index );
    }
 
-inline void ZeroRealArray( real *pReal, size_t cReals )
+inline void ZeroRealArray( limix::mfloat_t *pReal, size_t cReals )
    {
    for ( size_t i=0; i<cReals; ++i )
       {
@@ -142,10 +142,10 @@ public:
    double Elapsedms();  // elapsed time in milliseconds
    double Elapsedus();  // elapsed time in microseconds
    double Resolution() { return(1.0/(double)m_frequency); } // timer resolution in seconds.
-   string ToString();                                    // returns a formatted string with the elapsed time
-   string ToString( const string& formatString );        // returns formated string
-   void   Report( const string& formatString );          // print the time interval
-   void   Report( int lvl, const string& formatString ); // conditionally prints the time interval
+   std::string ToString();                                    // returns a formatted string with the elapsed time
+   std::string ToString( const std::string& formatString );        // returns formated string
+   void   Report( const std::string& formatString );          // print the time interval
+   void   Report( int lvl, const std::string& formatString ); // conditionally prints the time interval
 
    const CTimer& operator=(const CTimer& src);  // Assignment
    const CTimer& operator-(const CTimer& src);  // subtraction
@@ -237,5 +237,26 @@ inline double CTimer::Elapsedus()
    double retVal = ((-t.m_start)*1000000.0)/(double)m_frequency; 
    return( retVal );
    }
+
+
+// define our debug flags too
+bool   fCreateReadValidationFiles = false;
+bool   fWriteLogFile = false;
+std::string logDir=".\\Logs";
+
+/*
+ *  Debug Dump routines
+ */
+//void DumpLmmGwasInputs( StudyData *pStudyData, EigenSym *pEigenSym, ResultsLMM *pResultsLmm, bool fOpenAppend=false );
+//void DumpStudyData( StudyData *pStudyData, const std::string& comment, bool fOpenAppend=false );
+//void DumpEigenSymState( EigenSym *pEigenSym, const std::string& comment, bool fOpenAppend=false );
+void DumpKernelArray( limix::mfloat_t *pReal, size_t cRows, size_t cColumns, const std::string& comment, bool fOpenAppend=false );
+
+void DumpStringVector( FILE* pf, int indent, const std::vector<std::string>& v, const std::string& name );
+void DumpSnpInfoVector( FILE *pf, int indent, const std::vector<SnpInfo>& v, const std::string& name );
+void DumpRealArray( FILE *pf, int indent, limix::mfloat_t *p, const std::string& name, size_t rows, size_t columns );
+void Dumpreals( FILE *pf, limix::mfloat_t *pdbl, size_t count );
+//void DumpGroupSim( FILE *pf, int indent, GroupSim* p, const std::string& name );
+
 
 #endif   // Utils_h

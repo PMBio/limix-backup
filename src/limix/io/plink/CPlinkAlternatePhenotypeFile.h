@@ -67,7 +67,7 @@ public:
    limix::mfloat_t    PhenotypeValue( const std::string& idFamily, const std::string& idIndividual, size_t phenotypeIndex );
    limix::mfloat_t    PhenotypeValue( const std::string& individualKey, size_t phenotypeIndex );
    limix::mfloat_t    PhenotypeValue( size_t individualIndex, size_t phenotypeIndex );
-   limix::mfloat    PhenotypeValue( const std::string& individualKey );
+   limix::mfloat_t    PhenotypeValue( const std::string& individualKey );
 
    size_t  IndexFromPhenotypeLabel( const std::string& phenotypeLabel );
    size_t  IndexFromIdFamilyAndIdIndividual( const std::string& idFamily, const std::string& idIndividual );

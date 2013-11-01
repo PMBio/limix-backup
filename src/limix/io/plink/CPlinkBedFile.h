@@ -32,12 +32,7 @@
  *
  * Test Files: 
  */
-#include <stdlib.h>
-#include <math.h>
-#include <iostream>
-#include <stdio.h>
-#include <cmath>
-#include "limix/types.h"
+#include "Cplink.h"
 
 const BYTE bedFileMagic1 = 0x6C;       // 0b01101100 or 'l' (lowercase 'L')
 const BYTE bedFileMagic2 = 0x1B;       // 0b00011011 or <esc>
@@ -54,7 +49,7 @@ class CBedFile
    {
 public:
    //CBedFile( const string& filename_ );
-   CBedFile( const string& filename_, size_t cIndividuals_, size_t cSnps_ );
+   CBedFile( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ );
    ~CBedFile();
    int      NextChar();
    size_t   Read( BYTE *pb, size_t cbToRead );
@@ -62,7 +57,7 @@ public:
 
 //private:
    static const size_t   cbHeader = 3;         // 
-   string   filename;
+   std::string   filename;
    FILE     *pFile;
    
    LayoutMode  layout;        // 0=RowMajor(all snps per individual together);
@@ -71,7 +66,7 @@ public:
    size_t   cSnps;
    size_t   cbStride;
 
-   void     Init( const string& filename_, size_t cIndividuals_, size_t cSnps_ );
+   void     Init( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ );
    };
 
 #endif      // CPlinkBedFile_h
