@@ -36,7 +36,7 @@ class CVarianceDecomposition:
     
     def __init__(self,Y,standardize=False):
         """
-        Y: phenotype matrix [N, P ]
+        Y: phenotype matrix [N, P]
         """
         
         #create column of 1 for fixed if nothing providede
@@ -221,7 +221,7 @@ class CVarianceDecomposition:
         if A==None:
             A = SP.eye(self.P)
         
-        assert A.shape[0]==self.P, 'Incompatible shape'
+        assert A.shape[1]==self.P, 'Incompatible shape'
         assert F.shape[0]==self.N, 'Incompatible shape'
         assert F.shape[1]==1,      'Incompatible shape'
         
