@@ -28,14 +28,8 @@
  *
  */
 
-#include <stdlib.h>
-#include <math.h>
-#include <iostream>
-#include <stdio.h>
-#include <cmath>
-#include "limix/types.h"
-#include "limix/utils/Utils.h"
-#include "CCovariatesData.h"
+#include "Cplink.h"
+
 
 /*
  * 'Publish' our defines
@@ -161,11 +155,11 @@ private:
 
    std::vector< std::vector<limix::mfloat_t> > rgBinaryGenotype;
 
-   map< std::string, size_t > indexOfFamilyIdAndIndividualId;
+   std::map< std::string, size_t > indexOfFamilyIdAndIndividualId;
    size_t   IndexFromIdFamilyAndIdIndividual( const std::string& idFamily, const std::string& idIndividual );
    void     AddToFamilyIdAndIndividualIdIndex( const std::string& idFamily, const std::string& idIndividual, size_t idx );
 
-   map< std::string, size_t > indexOfSnpIds;
+   std::map< std::string, size_t > indexOfSnpIds;
    size_t   IndexFromSnpId( const std::string& snpId );
    void     AddSnpIdToIndex( const std::string& snpId, size_t idx );
 
@@ -249,8 +243,8 @@ private:
    void     ExtractSnpsFromDosage( CPlinkDatFile& datFile, CPlinkMapFile& mapFile );
 
    void     DoInit( const std::string* basefilename, const AlternatePhenotypeParameters *alternatePhenoptypeParameters, const SnpFilterOptions *snpFilerOptions );
-   limix::mfloat_t     limix::mfloat_tFromSnpNuculeotides( char& majorAllele_, SnpNucleotides& snp );
-   limix::mfloat_t     limix::mfloat_tFromSnpProbabilities( SnpProbabilities& snpP );
+   limix::mfloat_t     mfloat_tFromSnpNuculeotides( char& majorAllele_, SnpNucleotides& snp );
+   limix::mfloat_t     mfloat_tFromSnpProbabilities( SnpProbabilities& snpP );
    void     FreePrivateMemory();
 
    void     WriteDatFile( const std::string& datFilename );

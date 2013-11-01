@@ -30,13 +30,13 @@
 
 #include "CPlinkDatFile.h"
 
-CPlinkDatFile::CPlinkDatFile( const string& filename_ )
+CPlinkDatFile::CPlinkDatFile( const std::string& filename_ )
    {
    filename = filename_;
    pFile = nullptr;
    }
 
-//CPlinkDatFile::CPlinkDatFile( const string& filename_, size_t cIndividuals_, size_t cSnps_ ) {}
+//CPlinkDatFile::CPlinkDatFile( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ ) {}
 
 CPlinkDatFile::~CPlinkDatFile()
    {
@@ -52,10 +52,10 @@ void CPlinkDatFile::Load()
    Load( nullptr );
    }
 
-void CPlinkDatFile::Load( vector<FamRecord>* prgFam_ )
+void CPlinkDatFile::Load( std::vector<FamRecord>* prgFam_ )
    {
    SnpProbabilities         snpP;
-   vector<SnpProbabilities> rgSnpP;
+   std::vector<SnpProbabilities> rgSnpP;
    DatRecord                dr;
    IndividualId             individualId;
    size_t                   cIndividualsExpected = prgFam_ ? prgFam_->size() : 0;
@@ -71,8 +71,8 @@ void CPlinkDatFile::Load( vector<FamRecord>* prgFam_ )
    if ( (tok.type == tokSymbol) && (tok.text == "SNP") )
       {
       // Header row in file
-      string allele1Header;
-      string allele2Header;
+      std::string allele1Header;
+      std::string allele2Header;
 
       lex.NextToken( tok );      // advance past "SNP" and throw away
       lex.ExpectId( tok, allele1Header, "Allele1_Header" );    // advance past "A1" and throw away
@@ -84,7 +84,7 @@ void CPlinkDatFile::Load( vector<FamRecord>* prgFam_ )
          lex.ExpectId( tok, individualId.idIndividual, "IndividualID" );
 
          // Validate we have a unique key for this individual
-         string key = KeyFromIdFamilyAndIdIndividual( individualId.idFamily, individualId.idIndividual );
+         std::string key = KeyFromIdFamilyAndIdIndividual( individualId.idFamily, individualId.idIndividual );
          if ( FKeyIndividualInDatFile( key ) )
             {
             Fatal( "Duplicate FamilyId:IndividualId [%s:%s] found in header elements %d and %d", 
@@ -152,7 +152,7 @@ void CPlinkDatFile::Load( vector<FamRecord>* prgFam_ )
          FamRecord* pfr = &(prgFam_->at( iIndividual ));
          individualId.idFamily = pfr->idFamily;
          individualId.idIndividual = pfr->idIndividual;
-         string key = KeyFromIdFamilyAndIdIndividual( individualId.idFamily, individualId.idIndividual );
+         std::string key = KeyFromIdFamilyAndIdIndividual( individualId.idFamily, individualId.idIndividual );
          keyIndividualToDatRecordIndividualIndex[ key ] = rgIndividualIds.size();
          rgIndividualIds.push_back( individualId );
          }
@@ -161,7 +161,7 @@ void CPlinkDatFile::Load( vector<FamRecord>* prgFam_ )
    timer.Report( 0x02, "     Loading .DAT file elapsed time: %s" );
    }
 
-bool CPlinkDatFile::FGetSnpInfo( const string& idSnp, SnpInfo& snpInfo_ )
+bool CPlinkDatFile::FGetSnpInfo( const std::string& idSnp, SnpInfo& snpInfo_ )
    {
    snpInfo_.Clear();
 
@@ -192,7 +192,7 @@ bool CPlinkDatFile::FGetSnpInfo( size_t idx, SnpInfo& snpInfo_ )
    return( true );
    }
 
-bool CPlinkDatFile::FSnpHasVariation( const string& idSnp )
+bool CPlinkDatFile::FSnpHasVariation( const std::string& idSnp )
    {
    size_t idxSnp = IdxFromIdSnp( idSnp );
    return( FSnpHasVariation( idxSnp ) );
@@ -221,14 +221,14 @@ bool CPlinkDatFile::FSnpHasVariation( size_t idxSnp )
    return( false );
    }
 
-SnpProbabilities CPlinkDatFile::GetSnpProbabilities( const string& idSnp, const string& idIndividual, const string& idFamily )
+SnpProbabilities CPlinkDatFile::GetSnpProbabilities( const std::string& idSnp, const std::string& idIndividual, const std::string& idFamily )
    {
    size_t idxSnp = IdxFromIdSnp( idSnp );
    size_t idxIndividual = IdxFromIdFamilyAndIdIndividual( idFamily, idIndividual );
    return( rgDat[ idxSnp ].rgSnpProbabilities[ idxIndividual ] );
    }
 
-SnpProbabilities CPlinkDatFile::GetSnpProbabilities( const string& idSnp, const string& keyIndividual )
+SnpProbabilities CPlinkDatFile::GetSnpProbabilities( const std::string& idSnp, const std::string& keyIndividual )
    {
    size_t idxSnp = IdxFromIdSnp( idSnp );
    size_t idxIndividual = IdxFromKeyIndividual( keyIndividual );
@@ -240,7 +240,7 @@ SnpProbabilities CPlinkDatFile::GetSnpProbabilities( size_t idxSnp, size_t idxIn
    return( rgDat[ idxSnp ].rgSnpProbabilities[ idxIndividual ] );
    }
 
-size_t CPlinkDatFile::IdxFromIdSnp( const string& idSnp )
+size_t CPlinkDatFile::IdxFromIdSnp( const std::string& idSnp )
    {
    if ( idSnpToDatRecordIndex.count( idSnp ) == 0 )
       {
@@ -250,7 +250,7 @@ size_t CPlinkDatFile::IdxFromIdSnp( const string& idSnp )
    return( idx );
    }
 
-size_t CPlinkDatFile::IdxFromKeyIndividual( const string& keyIndividual )
+size_t CPlinkDatFile::IdxFromKeyIndividual( const std::string& keyIndividual )
    {
    if ( keyIndividualToDatRecordIndividualIndex.count( keyIndividual ) == 0 )
       {
@@ -260,24 +260,24 @@ size_t CPlinkDatFile::IdxFromKeyIndividual( const string& keyIndividual )
    return( idx );
    }
 
-size_t CPlinkDatFile::IdxFromIdFamilyAndIdIndividual( const string& idFamily, const string& idIndividual )
+size_t CPlinkDatFile::IdxFromIdFamilyAndIdIndividual( const std::string& idFamily, const std::string& idIndividual )
    {
-   string key = KeyFromIdFamilyAndIdIndividual( idFamily, idIndividual );
+   std::string key = KeyFromIdFamilyAndIdIndividual( idFamily, idIndividual );
    size_t idx = IdxFromKeyIndividual( key );
    return( idx );
    }
 
-bool CPlinkDatFile::FKeyIndividualInDatFile( const string& keyIndividual )
+bool CPlinkDatFile::FKeyIndividualInDatFile( const std::string& keyIndividual )
    {
    return( keyIndividualToDatRecordIndividualIndex.count( keyIndividual ) != 0 );
    }
 
-bool CPlinkDatFile::FIdSnpInDatFile( const string& idSnp )
+bool CPlinkDatFile::FIdSnpInDatFile( const std::string& idSnp )
    {
    return( idSnpToDatRecordIndex.count( idSnp ) != 0 );
    }
 
-DatRecord* CPlinkDatFile::DatRecordPointer( const string& idSnp )
+DatRecord* CPlinkDatFile::DatRecordPointer( const std::string& idSnp )
    {
    if ( idSnpToDatRecordIndex.count( idSnp ) == 0 )
       {

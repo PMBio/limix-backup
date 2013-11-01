@@ -77,7 +77,7 @@ void CPlinkAlternatePhenotypeFile::KeyFromIndividualIndex( size_t idx, std::stri
    keyOut = KeyFromIdFamilyAndIdIndividual( records[idx].idFamily, records[idx].idIndividual );
    }
 
-limix::mfloat_ CPlinkAlternatePhenotypeFile::PhenotypeValue( const std::string& idFamily, const std::string& idIndividual, const std::string& phenotypeLabel )
+limix::mfloat_t CPlinkAlternatePhenotypeFile::PhenotypeValue( const std::string& idFamily, const std::string& idIndividual, const std::string& phenotypeLabel )
    {
    size_t phenotypeIndex = IndexFromPhenotypeLabel( phenotypeLabel );
    return( PhenotypeValue( idFamily, idIndividual, phenotypeIndex ) );
@@ -259,9 +259,9 @@ size_t CPlinkAlternatePhenotypeFile::IndexFromPhenotypeLabel( const std::string&
 /*
  *  Return a vector of keys for Individuals that have valid phenotype values in this column
  */
-vector< std::string > CPlinkAlternatePhenotypeFile::KeysForIndividualsWithValidPhenotypes( const size_t idx )
+std::vector< std::string > CPlinkAlternatePhenotypeFile::KeysForIndividualsWithValidPhenotypes( const size_t idx )
    {
-   vector< std::string > keys;
+   std::vector< std::string > keys;
    for ( size_t iIndividual = 0; iIndividual < cIndividuals; ++iIndividual )
       {
       limix::mfloat_t val = PhenotypeValue( iIndividual, idx );
@@ -278,7 +278,7 @@ vector< std::string > CPlinkAlternatePhenotypeFile::KeysForIndividualsWithValidP
 /*
  *  Return a vector of keys for Individuals that have valid phenotype values under this Phenotype Id
  */
-vector< std::string > CPlinkAlternatePhenotypeFile::KeysForIndividualsWithValidPhenotypes( const std::string& idPhenotype )
+std::vector< std::string > CPlinkAlternatePhenotypeFile::KeysForIndividualsWithValidPhenotypes( const std::string& idPhenotype )
    {
    return( KeysForIndividualsWithValidPhenotypes( IndexFromPhenotypeLabel( idPhenotype ) ) );
    }

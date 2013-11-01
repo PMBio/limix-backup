@@ -116,7 +116,7 @@ void CPlinkMapFile::Load()
 /*
  *  Get SnpInfo associated with idSnp 
  */
-SnpInfo* CPlinkMapFile::PSnpInfo( const string& idSnp )
+SnpInfo* CPlinkMapFile::PSnpInfo( const std::string& idSnp )
    {
    SnpInfo *pSnpInfo = nullptr;
 

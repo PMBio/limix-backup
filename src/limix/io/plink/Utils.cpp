@@ -30,7 +30,7 @@
 /*
  * Include Files
  */
-#include "FastLmmC.h"
+#include "Utils.h"
 
 /*
  * Globals we define
@@ -204,7 +204,7 @@ int GetComputerName( char *pchName, unsigned long* pcchMax )
  *  Return 1 (true) if file exists
  *  return 0 (false) if no file or it is a directory
  */
-static int FCheckFile( const string& name, int mask )
+static int FCheckFile( const std::string& name, int mask )
    {
    struct stat status;
    int rc = stat( name.c_str(), &status );
@@ -225,7 +225,7 @@ static int FCheckFile( const string& name, int mask )
    return( false );
    }
 
-bool FIsFilenameWritable( const string& filename )
+bool FIsFilenameWritable( const std::string& filename )
    {
    bool result = false;
    if ( filename.size() == 0 )
@@ -265,28 +265,28 @@ bool FIsFilenameWritable( const string& filename )
    }
 
 #if 0
-int FWriteableFile( const string& name )
+int FWriteableFile( const std::string& name )
    {
    return( FCheckFile( name, S_IFREG | S_IWRITE ) );
    }
 
-int FWriteableDir( const string& name )
+int FWriteableDir( const std::string& name )
    {
    return( FCheckFile( name, S_IFDIR | S_IWRITE ) );
    }
 #endif
 
-int FFileExists( const string& name )
+int FFileExists( const std::string& name )
    {
    return( FCheckFile( name, S_IFREG ) );
    }
 
-int FDirExists( const string& name )
+int FDirExists( const std::string& name )
    {
    return( FCheckFile( name, S_IFDIR ) );
    }
 
-void MakeDirectory( const string& dirname )
+void MakeDirectory( const std::string& dirname )
    {
    if ( _access( dirname.c_str(), 0 ) == 0 )
       {
@@ -309,7 +309,7 @@ void MakeDirectory( const string& dirname )
       }
    }
 
-string FullPath( const string& filename )
+std::string FullPath( const std::string& filename )
    {
 #if defined ( _MSC_VER )       // using Visual C compiler
    // Use Windows _fullpath() to expand the name
@@ -333,14 +333,14 @@ string FullPath( const string& filename )
 #endif
    }
 
-string MakePath( const string& drive, const string& dir, const string& fname, const string& ext )
+std::string MakePath( const std::string& drive, const std::string& dir, const std::string& fname, const std::string& ext )
    {
 #if defined ( _MSC_VER )         // using Visual C compiler
    char szFullPath[ _MAX_PATH ];
    _makepath( szFullPath, drive.c_str(), dir.c_str(), fname.c_str(), ext.c_str() );
    return( szFullPath );
 #else
-   string t;
+   std::string t;
    if ( drive.size() > 0 )
       {
       if ( drive[0] != '/' )
@@ -373,7 +373,7 @@ string MakePath( const string& drive, const string& dir, const string& fname, co
 #endif
    }
 
-void SplitPath( const string& filename, string& drive, string& dir, string& fname, string& ext )
+void SplitPath( const std::string& filename, std::string& drive, std::string& dir, std::string& fname, std::string& ext )
    {
 #if defined ( _MSC_VER )         // using Visual C compiler
    char szDrive[ _MAX_DRIVE ];
@@ -423,7 +423,7 @@ void SplitPath( const string& filename, string& drive, string& dir, string& fnam
 #endif
    }
 
-bool FIsCsvFile( const string& fname )
+bool FIsCsvFile( const std::string& fname )
    {
    static char szCsvFileType[] = ".csv";
    size_t cchFileType = strlen( szCsvFileType );
@@ -455,16 +455,16 @@ void CTimer::Configure()
    //  it is too jittery
    }
 
-string CTimer::ToString( const string& formatString )
+std::string CTimer::ToString( const std::string& formatString )
    {
    char rgch[256];
 
    sprintf( rgch, formatString.c_str(), ToString().c_str() );
-   string val( rgch );
+   std::string val( rgch );
    return( val );
    }
 
-string CTimer::ToString()
+std::string CTimer::ToString()
    {
    char rgch[ 64 ];
 
@@ -496,16 +496,16 @@ string CTimer::ToString()
       {
       sprintf( rgch, "%3d us", usec );
       }
-   string s(rgch);
+   std::string s(rgch);
    return( s );
    }
 
-void CTimer::Report( const string& formatString )
+void CTimer::Report( const std::string& formatString )
    {
    ProgressNL( formatString.c_str(), ToString().c_str() );
    }
 
-void CTimer::Report( int rptLevel, const string& formatString )
+void CTimer::Report( int rptLevel, const std::string& formatString )
    {
    if ( (fReportTimes & rptLevel) || (rptLevel == -1) )
       {
@@ -521,7 +521,7 @@ void CTimer::Report( int rptLevel, const string& formatString )
 /*
  *  Debug Dump routines
  */
-void BinaryWrite( string fname, void* pv, size_t cb )
+void BinaryWrite( std::string fname, void* pv, size_t cb )
    {
    FILE *ofile = fopen( fname.c_str(), "wb");
    if ( ofile == nullptr )
@@ -538,6 +538,7 @@ void BinaryWrite( string fname, void* pv, size_t cb )
 static const char *openModeWrite = "w";
 static const char *openModeWriteAppend = "a";
 
+#if 0
 void DumpLmmGwasInputs( StudyData *pStudyData, EigenSym *pEigenSym, ResultsLMM *pResultsLmm, bool fOpenAppend )
    {
    if ( !fWriteLogFile )
@@ -561,14 +562,14 @@ void DumpLmmGwasInputs( StudyData *pStudyData, EigenSym *pEigenSym, ResultsLMM *
    fclose( pf );
    }
 
-void DumpStudyData( StudyData *pStudyData, const string& comment, bool fOpenAppend )
+void DumpStudyData( StudyData *pStudyData, const std::string& comment, bool fOpenAppend )
    {
    if ( !fWriteLogFile )
       {
       return;
       }
 
-   string logFile = MakePath( "", logDir, "FastLmm.StudyData", "Log" );
+   std::string logFile = MakePath( "", logDir, "FastLmm.StudyData", "Log" );
    const char *openMode = fOpenAppend ? openModeWriteAppend : openModeWrite;
    FILE *pf = fopen( logFile.c_str(), openMode );
    if ( pf == nullptr )
@@ -581,14 +582,14 @@ void DumpStudyData( StudyData *pStudyData, const string& comment, bool fOpenAppe
    fclose( pf );
    }
 
-void DumpEigenSymState( EigenSym *pEigenSym, const string& comment, bool fOpenAppend )
+void DumpEigenSymState( EigenSym *pEigenSym, const std::string& comment, bool fOpenAppend )
    {
    if ( !fWriteLogFile )
       {
       return;
       }
 
-   string logFile = MakePath( "", logDir, "FastLmm.EigenState", "Log" );
+   std::string logFile = MakePath( "", logDir, "FastLmm.EigenState", "Log" );
    const char *openMode = fOpenAppend ? openModeWriteAppend : openModeWrite;
    FILE *pf = fopen( logFile.c_str(), openMode );
    if ( pf == nullptr )
@@ -600,15 +601,16 @@ void DumpEigenSymState( EigenSym *pEigenSym, const string& comment, bool fOpenAp
    pEigenSym->Dump( pf, comment );
    fclose( pf );
    }
+#endif
 
-void DumpKernelArray( real *pReal, size_t cRows, size_t cColumns, const string& comment, bool fOpenAppend )
+void DumpKernelArray( limix::mfloat_t *pReal, size_t cRows, size_t cColumns, const std::string& comment, bool fOpenAppend )
    {
    if ( !fWriteLogFile )
       {
       return;
       }
 
-   string logFile = MakePath( "", logDir, "FastLmm.KernelArray", "Log" );
+   std::string logFile = MakePath( "", logDir, "FastLmm.KernelArray", "Log" );
    const char *openMode = fOpenAppend ? openModeWriteAppend : openModeWrite;
    FILE *pf = fopen( logFile.c_str(), openMode );
    if ( pf == nullptr )
@@ -622,7 +624,7 @@ void DumpKernelArray( real *pReal, size_t cRows, size_t cColumns, const string& 
    fclose( pf );
    }
 
-void DumpStringVector( FILE* pf, int indent, const vector<string>& v, const string& name )
+void DumpStringVector( FILE* pf, int indent, const std::vector<std::string>& v, const std::string& name )
    {
 #if defined( _MSC_VER )    // Windows/VC uses a %Iu specifier for size_t
    const char *szFmt1 = "\n%*svector<string> %s: [%Iu]";
@@ -640,7 +642,7 @@ void DumpStringVector( FILE* pf, int indent, const vector<string>& v, const stri
       }
    }
 
-void DumpSnpInfoVector( FILE *pf, int indent, const vector<SnpInfo>& v, const string& name )
+void DumpSnpInfoVector( FILE *pf, int indent, const std::vector<SnpInfo>& v, const std::string& name )
    {
 #if defined( _MSC_VER )    // Windows/VC uses a %Iu specifier for size_t
    const char *szFmt1 = "\n%*svector<SnpInfo> %s: [%Iu]";
@@ -662,7 +664,7 @@ void DumpSnpInfoVector( FILE *pf, int indent, const vector<SnpInfo>& v, const st
       }
    }
 
-void DumpRealArray( FILE *pf, int indent, real *p, const string& name, size_t cRows, size_t cColumns )
+void DumpRealArray( FILE *pf, int indent, limix::mfloat_t *p, const std::string& name, size_t cRows, size_t cColumns )
    {
 #if defined( _MSC_VER )    // Windows/VC uses a %Iu specifier for size_t
    const char *szFmt1 = "\n%*sreal* %s: [cRows: %Iu cColumns: %Iu]";
@@ -690,7 +692,7 @@ void DumpRealArray( FILE *pf, int indent, real *p, const string& name, size_t cR
       }
    }
 
-void Dumpreals( FILE *pf, real *pdbl, size_t count )
+void Dumpreals( FILE *pf, limix::mfloat_t *pdbl, size_t count )
    {
 #if defined( _MSC_VER )    // Windows will zero fill w/ 0x%016p
    const char *szFmt1 = "\n 0x%016p: ";
@@ -712,7 +714,8 @@ void Dumpreals( FILE *pf, real *pdbl, size_t count )
    fprintf( pf, "\n" );
    }
 
-void DumpGroupSim( FILE *pf, int indent, GroupSim* p, const string& name )
+#if 0
+void DumpGroupSim( FILE *pf, int indent, GroupSim* p, const std::string& name )
    {
    fprintf( pf, "\n%*sGroupSim* %s: ", indent, "", name.c_str() );
    if ( p == nullptr )
@@ -725,3 +728,4 @@ void DumpGroupSim( FILE *pf, int indent, GroupSim* p, const string& name )
       fprintf( pf, "\n%*s%s", indent+2, "", " *** NYI DumpGroupSim ***" );
       }
    }
+#endif

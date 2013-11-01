@@ -1306,7 +1306,7 @@ void CPlinkFile::CreateNaturalColumnMajorSnpArray()
       for ( size_t iSnp=0; iSnp<cSnps; ++iSnp )
          {
          size_t selectedSnp = selectedSnps[ iSnp ];
-         limix::mfloat_t genotype = limix::mfloat_tFromSnpNuculeotides( rgMap[ selectedSnp ].snpInfo.majorAllele, rgPed[ selectedIndividual ].rgSnps[ selectedSnp ] );
+         limix::mfloat_t genotype = mfloat_tFromSnpNuculeotides( rgMap[ selectedSnp ].snpInfo.majorAllele, rgPed[ selectedIndividual ].rgSnps[ selectedSnp ] );
          size_t index = ColumnMajorIndex( cIndividuals, cSnps, iIndividual, iSnp );
          snpArray[ index ] = genotype;
          }
@@ -1594,7 +1594,7 @@ void CPlinkFile::CreateTransposedColumnMajorSnpArray()
       for ( size_t iSnp=0; iSnp<cSnps; ++iSnp )
          {
          size_t selectedSnp = selectedSnps[ iSnp ];
-         limix::mfloat_t genotype = limix::mfloat_tFromSnpNuculeotides( rgTPed[ selectedSnp ].snpInfo.majorAllele, rgTPed[selectedSnp].rgSnps[ selectedIndividual ] );
+         limix::mfloat_t genotype = mfloat_tFromSnpNuculeotides( rgTPed[ selectedSnp ].snpInfo.majorAllele, rgTPed[selectedSnp].rgSnps[ selectedIndividual ] );
          size_t index = ColumnMajorIndex( cIndividuals, cSnps, iIndividual, iSnp );
          snpArray[ index ] = genotype;
          }
@@ -1653,14 +1653,14 @@ void CPlinkFile::CreateDosageColumnMajorSnpArray( CPlinkDatFile& datFile )
       for ( size_t iSnp=0; iSnp<cSnps; ++iSnp )
          {
          size_t selectedSnp = selectedSnps[ iSnp ];
-         limix::mfloat_t genotype = limix::mfloat_tFromSnpProbabilities( datFile.rgDat[ selectedSnp ].rgSnpProbabilities[ selectedIndividual ] );
+         limix::mfloat_t genotype = mfloat_tFromSnpProbabilities( datFile.rgDat[ selectedSnp ].rgSnpProbabilities[ selectedIndividual ] );
          size_t index = ColumnMajorIndex( cIndividuals, cSnps, iIndividual, iSnp );
          snpArray[ index ] = genotype;
          }
       }
    }
 
-limix::mfloat_t CPlinkFile::limix::mfloat_tFromSnpNuculeotides( char& majorAllele_, SnpNucleotides& snp )
+limix::mfloat_t CPlinkFile::mfloat_tFromSnpNuculeotides( char& majorAllele_, SnpNucleotides& snp )
    {
    // We _KNOW_ the snp is well formed!  (
    if ( (majorAllele_ == '0') || (snp.alleles[0] == '0') )
@@ -1685,7 +1685,7 @@ limix::mfloat_t CPlinkFile::limix::mfloat_tFromSnpNuculeotides( char& majorAllel
    return( homozygousSecondaryAllele );
    }
 
-limix::mfloat_t CPlinkFile::limix::mfloat_tFromSnpProbabilities( SnpProbabilities& snpP )
+limix::mfloat_t CPlinkFile::mfloat_tFromSnpProbabilities( SnpProbabilities& snpP )
    {
    limix::mfloat_t rc;
    if ( (snpP.probabilityOfHomozygousMinor == -9.0) || (snpP.probabilityOfHeterozygous == -9.0) )
@@ -1701,7 +1701,7 @@ limix::mfloat_t CPlinkFile::limix::mfloat_tFromSnpProbabilities( SnpProbabilitie
 
 void CPlinkFile::ComputeNaturalSnpAlleleChars()
    {
-   map< char, size_t > alleleMap;
+   std::map< char, size_t > alleleMap;
 
    /*
     *  Iterate along each snp and compute the allele frequency

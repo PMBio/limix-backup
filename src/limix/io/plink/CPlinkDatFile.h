@@ -39,61 +39,62 @@
  *
  * Test Files: 
  */
+#include "Cplink.h"
 
 struct IndividualId
    {
-   string idFamily;
-   string idIndividual;
+   std::string idFamily;
+   std::string idIndividual;
    };
 
 struct DatRecord                       // information from .DAT file
    {
-   string         idSnp;            // rs# or SNP identifier
+   std::string         idSnp;            // rs# or SNP identifier
    char           majorAllele;
    char           minorAllele;
-   vector<SnpProbabilities> rgSnpProbabilities;
+   std::vector<SnpProbabilities> rgSnpProbabilities;
    };
 
 class CPlinkDatFile
    {
 public:
-   CPlinkDatFile( const string& filename_ );
+   CPlinkDatFile( const std::string& filename_ );
    ~CPlinkDatFile();
 
    void     Load();
-   void     Load( vector<FamRecord>* prgFam_ );
+   void     Load( std::vector<FamRecord>* prgFam_ );
 
    size_t   size() { size_t rc = rgDat.size(); return( rc ); }
    size_t   CountOfSnps() { size_t rc = rgDat.size(); return( rc ); }
    size_t   CountOfIndividuals() { size_t rc = (rgDat.size() > 0) ? rgDat[0].rgSnpProbabilities.size() : 0; return( rc ); }
    size_t   CountOfIndividualIds() { size_t rc = rgIndividualIds.size(); return( rc ); }
-   bool     FGetSnpInfo( const string& idSnp, SnpInfo& snpInfo_ );   
+   bool     FGetSnpInfo( const std::string& idSnp, SnpInfo& snpInfo_ );   
    bool     FGetSnpInfo( size_t idxSnp, SnpInfo& snpInfo_ );
-   bool     FSnpHasVariation( const string& idSnp );
+   bool     FSnpHasVariation( const std::string& idSnp );
    bool     FSnpHasVariation( size_t idxSNp );
-   DatRecord* DatRecordPointer( const string& idSnp );
+   DatRecord* DatRecordPointer( const std::string& idSnp );
    DatRecord* DatRecordPointer( size_t idxSnp );
 
-   SnpProbabilities GetSnpProbabilities( const string& idSnp, const string& idIndividual, const string& idFamily );
-   SnpProbabilities GetSnpProbabilities( const string& idSnp, const string& keyIndividual );
+   SnpProbabilities GetSnpProbabilities( const std::string& idSnp, const std::string& idIndividual, const std::string& idFamily );
+   SnpProbabilities GetSnpProbabilities( const std::string& idSnp, const std::string& keyIndividual );
    SnpProbabilities GetSnpProbabilities( size_t idxSnp, size_t idxIndividual );
 
-   bool     FIdSnpInDatFile( const string& idSnp );
-   bool     FKeyIndividualInDatFile( const string& keyIndividual );
-   size_t   IdxFromKeyIndividual( const string& keyIndividual );
+   bool     FIdSnpInDatFile( const std::string& idSnp );
+   bool     FKeyIndividualInDatFile( const std::string& keyIndividual );
+   size_t   IdxFromKeyIndividual( const std::string& keyIndividual );
 
 //private:
-   string   filename;
+   std::string   filename;
    FILE     *pFile;
 
-   vector< IndividualId > rgIndividualIds;
-   vector< DatRecord >   rgDat;
+   std::vector< IndividualId > rgIndividualIds;
+   std::vector< DatRecord >   rgDat;
 
-   map< string, size_t > idSnpToDatRecordIndex;
-   map< string, size_t > keyIndividualToDatRecordIndividualIndex;
+   std::map< std::string, size_t > idSnpToDatRecordIndex;
+   std::map< std::string, size_t > keyIndividualToDatRecordIndividualIndex;
 
-   size_t IdxFromIdSnp( const string& idSnp );
-   size_t IdxFromIdFamilyAndIdIndividual( const string& idFamily, const string& idIndividual );
+   size_t IdxFromIdSnp( const std::string& idSnp );
+   size_t IdxFromIdFamilyAndIdIndividual( const std::string& idFamily, const std::string& idIndividual );
    };
 
 #endif   // CPlinkDatFile_h
