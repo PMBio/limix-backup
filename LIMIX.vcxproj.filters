@@ -289,9 +289,6 @@
     <ClCompile Include="src\limix\io\plink\CPlinkFile.cpp">
       <Filter>src\limix\io\plink</Filter>
     </ClCompile>
-    <ClCompile Include="src\limix\utils\Utils.cpp">
-      <Filter>src\limix\utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\limix\io\plink\CPlinkMapFile.cpp">
       <Filter>src\limix\io\plink</Filter>
     </ClCompile>
@@ -308,6 +305,21 @@
       <Filter>src\limix\io\plink</Filter>
     </ClCompile>
     <ClCompile Include="src\limix\io\plink\CPhenData.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CLexer.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CKernelData.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\TsvLexer.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\Utils.cpp">
+      <Filter>src\limix\io\plink</Filter>
+    </ClCompile>
+    <ClCompile Include="src\limix\io\plink\CSnpFilterOptions.cpp">
       <Filter>src\limix\io\plink</Filter>
     </ClCompile>
   </ItemGroup>
@@ -502,9 +514,6 @@
     <ClInclude Include="src\limix\io\plink\CPlinkFile.h">
       <Filter>src\limix\io\plink</Filter>
     </ClInclude>
-    <ClInclude Include="src\limix\utils\Utils.h">
-      <Filter>src\limix\utils</Filter>
-    </ClInclude>
     <ClInclude Include="src\limix\io\plink\CPlinkMapFile.h">
       <Filter>src\limix\io\plink</Filter>
     </ClInclude>
@@ -524,6 +533,24 @@
       <Filter>src\limix\io\plink</Filter>
     </ClInclude>
     <ClInclude Include="src\limix\io\plink\CPhenData.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CLexer.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CKernelData.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\TsvLexer.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\Utils.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CSnpInfo.h">
+      <Filter>src\limix\io\plink</Filter>
+    </ClInclude>
+    <ClInclude Include="src\limix\io\plink\CSnpFilterOptions.h">
       <Filter>src\limix\io\plink</Filter>
     </ClInclude>
   </ItemGroup>

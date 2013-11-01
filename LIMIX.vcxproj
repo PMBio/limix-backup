@@ -66,6 +66,8 @@
     <ClCompile Include="src\limix\io\dataframe.cpp" />
     <ClCompile Include="src\limix\io\genotype.cpp" />
     <ClCompile Include="src\limix\io\plink\CCovariatesData.cpp" />
+    <ClCompile Include="src\limix\io\plink\CKernelData.cpp" />
+    <ClCompile Include="src\limix\io\plink\CLexer.cpp" />
     <ClCompile Include="src\limix\io\plink\CPhenData.cpp" />
     <ClCompile Include="src\limix\io\plink\CPlinkAlternatePhenotypeFile.cpp" />
     <ClCompile Include="src\limix\io\plink\CPlinkBedFile.cpp" />
@@ -73,6 +75,9 @@
     <ClCompile Include="src\limix\io\plink\CPlinkFile.cpp" />
     <ClCompile Include="src\limix\io\plink\CPlinkLexer.cpp" />
     <ClCompile Include="src\limix\io\plink\CPlinkMapFile.cpp" />
+    <ClCompile Include="src\limix\io\plink\CSnpFilterOptions.cpp" />
+    <ClCompile Include="src\limix\io\plink\TsvLexer.cpp" />
+    <ClCompile Include="src\limix\io\plink\Utils.cpp" />
     <ClCompile Include="src\limix\io\split.cpp" />
     <ClCompile Include="src\limix\io\vcf\smithwaterman\BandedSmithWaterman.cpp" />
     <ClCompile Include="src\limix\io\vcf\smithwaterman\disorder.cpp" />
@@ -109,7 +114,6 @@
     <ClCompile Include="src\limix\utils\logging.cpp" />
     <ClCompile Include="src\limix\utils\mathfunctions.cpp" />
     <ClCompile Include="src\limix\utils\matrix_helper.cpp" />
-    <ClCompile Include="src\limix\utils\Utils.cpp" />
     <ClCompile Include="src\testing\covar_tests.cpp" />
     <ClCompile Include="src\testing\gplvm_testing.cpp" />
     <ClCompile Include="src\testing\gp_testing.cpp" />
@@ -138,6 +142,8 @@
     <ClInclude Include="src\limix\io\genotype.h" />
     <ClInclude Include="src\limix\io\gzstream.h" />
     <ClInclude Include="src\limix\io\plink\CCovariatesData.h" />
+    <ClInclude Include="src\limix\io\plink\CKernelData.h" />
+    <ClInclude Include="src\limix\io\plink\CLexer.h" />
     <ClInclude Include="src\limix\io\plink\CPhenData.h" />
     <ClInclude Include="src\limix\io\plink\Cplink.h" />
     <ClInclude Include="src\limix\io\plink\CPlinkAlternatePhenotypeFile.h" />
@@ -146,6 +152,10 @@
     <ClInclude Include="src\limix\io\plink\CPlinkFile.h" />
     <ClInclude Include="src\limix\io\plink\CPlinkLexer.h" />
     <ClInclude Include="src\limix\io\plink\CPlinkMapFile.h" />
+    <ClInclude Include="src\limix\io\plink\CSnpFilterOptions.h" />
+    <ClInclude Include="src\limix\io\plink\CSnpInfo.h" />
+    <ClInclude Include="src\limix\io\plink\TsvLexer.h" />
+    <ClInclude Include="src\limix\io\plink\Utils.h" />
     <ClInclude Include="src\limix\io\split.h" />
     <ClInclude Include="src\limix\io\vcf\convert.h" />
     <ClInclude Include="src\limix\io\vcf\join.h" />
@@ -193,7 +203,6 @@
     <ClInclude Include="src\limix\utils\logging.h" />
     <ClInclude Include="src\limix\utils\mathfunctions.h" />
     <ClInclude Include="src\limix\utils\matrix_helper.h" />
-    <ClInclude Include="src\limix\utils\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LIMIX.rc" />
