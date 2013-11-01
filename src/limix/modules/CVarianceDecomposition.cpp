@@ -223,6 +223,7 @@ void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& design, const Matri
 		throw CGPMixException("CVarianceDecomposition: the design must have P columns");
 	fixedEffs.push_back(fixed);
 	designs.push_back(design);
+	this->is_init=false;
 }
 
 void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& fixed) throw(CGPMixException)
@@ -249,6 +250,7 @@ void CVarianceDecomposition::clearFixedEffs()
 {
 	this->fixedEffs.clear();
 	this->designs.clear();
+	this->is_init=false;
 }
 
 muint_t CVarianceDecomposition::getNumberFixedEffs() const
@@ -284,6 +286,7 @@ void CVarianceDecomposition::addTerm(PVarianceTerm term) throw(CGPMixException)
 		if (term->getNumberIndividuals()!=this->N*this->P)
 			throw CGPMixException("CVarianceDecomposition: the single trait term must have dimensions NP");
 	terms.push_back(term);
+	this->is_init=false;
 }
 
 void CVarianceDecomposition::addTerm(const MatrixXd& K) throw(CGPMixException)
