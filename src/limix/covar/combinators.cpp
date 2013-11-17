@@ -135,6 +135,9 @@ void AMultiCF::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
 		if (cp!=NULL)
 		{
 			cols = cp->getNumberDimensions();
+			//skip covaraince with 0 dimensions
+			if (cols==0)
+				continue;
 			if ((c0+cols)>=col)
 			{
 				cp->setXcol(X,col-c0);
@@ -161,6 +164,9 @@ void AMultiCF::agetX(CovarInput* Xout) const throw (CGPMixException)
 		if (cp!=NULL)
 		{
 			cols = cp->getNumberDimensions();
+			//ignore covariances with 0 columns
+			if (cols==0)
+				continue;
 			(*Xout).block(0,c0,trows,cols) = cp->getX();
 			//move pointer on
 			c0+=cols;

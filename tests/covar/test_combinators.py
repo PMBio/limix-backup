@@ -41,7 +41,34 @@ class CProductCF_test(unittest.TestCase,Acovar_test):
         self.n_params=self.C.getNumberParams()
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
-
+        
+class CMixedX_test(unittest.TestCase,Acovar_test):
+    """test class to ensure that X input free classed (CFixedCF and related) are handled propperly"""
+    
+    def setUp(self):
+        SP.random.seed(1)
+        self.n=10
+        n_dim2=12
+        K0 = SP.eye(self.n)
+        self.C=limix.CSumCF()
+        #sum of fixed CF and linearARD
+        covar1 = limix.CFixedCF(K0)
+        covar2 = limix.CCovLinearARD(n_dim2)
+        self.C.addCovariance(covar1)
+        self.C.addCovariance(covar2)
+        self.n_dim=self.C.getNumberDimensions()
+        self.X=SP.rand(self.n,self.n_dim)
+        self.C.setX(self.X)
+        self.name = 'CSumCF'
+        self.n_params=self.C.getNumberParams()
+        params=SP.exp(SP.randn(self.n_params))
+        self.C.setParams(params)
+    
+    def testX_stuff(self):
+        """test that X handling is consistent across covariances"""
+        self.assertTrue((self.X==self.C.getX()).all())
+        
+        
 class CKroneckerCF_test(unittest.TestCase,Acovar_test):
     """test class for CKroneckerCF"""
     def setUp(self):

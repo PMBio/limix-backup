@@ -21,6 +21,10 @@ namespace limix {
 %rename(getIparamDiag) CFreeFormCF::agetIparamDiag;
 #endif
 
+/*! \brief Base class for free form covariances that do not depend on the input X
+ *
+ * Note: as a hack until we implement appropriate handling of non-X covariances, the input dimension is 0
+ */
 class CFreeFormCF: public ACovarianceFunction {
         
 protected:
@@ -40,6 +44,13 @@ public:
 	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) {};
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
+	//override handling of K dimensions
+	virtual muint_t Kdim() const throw(CGPMixException)
+		{
+			return this->numberGroups;
+		}
+
+
 
     virtual void agetScales(CovarParams* out);
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
@@ -87,6 +98,11 @@ public:
 	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
 	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) {};
 	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
+	virtual muint_t Kdim() const throw(CGPMixException)
+		{
+			return this->numberGroups;
+		}
+
 
     virtual void agetScales(CovarParams* out);
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
@@ -121,6 +137,11 @@ public:
     virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
     virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) {};
     virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
+	virtual muint_t Kdim() const throw(CGPMixException)
+		{
+			return this->numberGroups;
+		}
+
 
     virtual void agetScales(CovarParams* out);
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
@@ -174,6 +195,11 @@ public:
 	//other overloads
 	virtual void aK(MatrixXd* out) const throw (CGPMixException);
 
+	virtual muint_t Kdim() const throw(CGPMixException)
+		{
+			return K0.rows();
+		}
+
     virtual void agetParamMask0(CovarParams* out) const;
 
 	//setter and getters
@@ -209,6 +235,12 @@ public:
 
     virtual void agetScales(CovarParams* out);
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+
+	virtual muint_t Kdim() const throw(CGPMixException)
+		{
+			return this->numberGroups;
+		}
+
 
     //Covariance pure functions
 	//pure functions that need to be implemented
@@ -249,6 +281,12 @@ public:
     virtual void agetScales(CovarParams* out);
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
 
+	virtual muint_t Kdim() const throw(CGPMixException)
+		{
+			return this->numberGroups;
+		}
+
+
     virtual void agetRank1(MatrixXd* out) const throw(CGPMixException);
     virtual void agetDiag(MatrixXd* out) const throw(CGPMixException);
     
@@ -286,6 +324,12 @@ public:
 
     virtual void agetScales(CovarParams* out);
     virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+
+	virtual muint_t Kdim() const throw(CGPMixException)
+		{
+			return this->numberGroups;
+		}
+
 
     //Covariance pure functions
     //pure functions that need to be implemented

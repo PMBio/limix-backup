@@ -80,7 +80,7 @@ def kronecker_lmm(snps,phenos,Asnps=None,K1r=None,K2r=None,K1c=None,K2c=None,cov
     return lmm
 
 
-def simple_lmm(snps,pheno,K=None,covs=None):
+def simple_lmm(snps,pheno,K=None,covs=None,numIntervals0=None,numIntervalsAlt=None):
     """
     Univariate fixed effects linear mixed model test for all SNPs
     ----------------------------------------------------------------------------
@@ -90,6 +90,8 @@ def simple_lmm(snps,pheno,K=None,covs=None):
     K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
                    If not provided, then linear regression analysis is performed
     covs   [N x D] SP.array of D covariates for N individuals
+    numIntervals0: number of bins for delta optimization (0 model)
+    numIntervalsAlt: number of bins for delta optimization (alt. model)
     -----------------------------------------------------------------------------
     Output:
     lmix LMM object
@@ -101,6 +103,10 @@ def simple_lmm(snps,pheno,K=None,covs=None):
     lm.setK(K)
     lm.setSNPs(snps)
     lm.setPheno(pheno)
+    if numIntervals0 is not None:
+        lm.setNumIntervals0(numIntervals0)
+    if numIntervalsAlt is not None:
+        lm.setNumIntervalsAlt(numIntervalsAlt)
     if covs is None:
         covs = SP.ones((snps.shape[0],1))
     lm.setCovs(covs)
