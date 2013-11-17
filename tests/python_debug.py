@@ -19,17 +19,29 @@ if __name__ == '__main__':
     N = Y.shape[0]
     Kg = SP.dot(X,X.T)
     Kg = Kg/Kg.diagonal().mean()
+    
 
-    if 1:
-        Y[0,0] = SP.nan
-        #Y[1,1] = SP.nan
-    #Y[10,0] = SP.nan
-    #Y[100,1] = SP.nan
+    K0 = SP.eye(Y.shape[0])
+    X0 = SP.randn(Y.shape[0],3)
+    covar1 = limix.CCovLinearISO(3)
+    covar1.setParams(SP.array([1.0]))
+    covar1.setX(X0)
+    covar2 = limix.CFixedCF(K0) 
+    covar2.setParams(SP.array([1.0]))
+        
+    covar=limix.CSumCF()
+    covar.addCovariance(covar2)
+    covar.addCovariance(covar1)
 
-    vc = VAR.CVarianceDecomposition(Y)
-    vc.addMultiTraitTerm(Kg)
-    vc.addMultiTraitTerm(is_noise=True)
-    vc.addFixedTerm(SP.ones((N,1)))
-    vc.findLocalOptimum(init_method='empCov',verbose=False)        
-    params = vc.getScales()
+    ll  = limix.CLikNormalIso()
+    gp=limix.CGPbase(covar,ll)
+    
+    hyperparams = limix.CGPHyperParams()
+    hyperparams['covar'] = SP.array([1.0,1.0])
+    hyperparams['lik'] = SP.array([0.1])
+    hyperparams['X']   = X0
+    
+    gp.setY(Y)
+    gp.setX(X0)
+    gp.setParams(hyperparams)
     

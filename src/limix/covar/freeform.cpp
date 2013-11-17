@@ -21,9 +21,9 @@ namespace limix {
     
 CFreeFormCF::CFreeFormCF(muint_t numberGroups)
 {
-    this->numberDimensions = 1;
+    this->numberDimensions = 0;
     this->numberGroups=numberGroups;
-    this->X=MatrixXd::Zero(numberGroups,1);
+    //this->X=MatrixXd::Zero(numberGroups,1);
     //number of parameters:
     this->numberParams = calcNumberParams(numberGroups);
     initParams();
@@ -201,9 +201,9 @@ void CFreeFormCF::agetIparamDiag(VectorXi* out) const
 
 CRankOneCF::CRankOneCF(muint_t numberGroups)
 {
-    this->numberDimensions = 1;
+    this->numberDimensions = 0;
     this->numberGroups=numberGroups;
-    this->X=MatrixXd::Zero(numberGroups,1);
+    //this->X=MatrixXd::Zero(numberGroups,1);
     //number of parameters:
     this->numberParams = numberGroups;
     initParams();
@@ -271,9 +271,9 @@ void CRankOneCF::agetParamMask0(CovarParams* out) const
 
 CLowRankCF::CLowRankCF(muint_t numberGroups, muint_t rank)
 {
-    this->numberDimensions = 1;
+    this->numberDimensions = 0;
     this->numberGroups=numberGroups;
-    this->X=MatrixXd::Zero(numberGroups,1);
+    //this->X=MatrixXd::Zero(numberGroups,1);
     //number of parameters:
     this->numberParams = rank*numberGroups;
     this->rank = rank;
@@ -351,8 +351,7 @@ CFixedCF::CFixedCF(const MatrixXd & K0) : ACovarianceFunction(1)
         throw CGPMixException("K0 must be a square Matrix");
     }
     this->numberGroups=K0.cols();
-    this->numberDimensions = 1;
-    this->X=MatrixXd::Zero(K0.cols(),1);
+    this->numberDimensions = 0;
     this->K0 = K0;
     initParams();
 }
@@ -449,8 +448,8 @@ void CFixedCF::agetK0cross_diag(VectorXd *out) const
 CDiagonalCF::CDiagonalCF(muint_t numberGroups)
 {
     this->numberGroups=numberGroups;
-    this->numberDimensions = 1;
-    this->X=MatrixXd::Zero(numberGroups,1);
+    this->numberDimensions = 0;
+    //this->X=MatrixXd::Zero(numberGroups,1);
     this->numberParams = numberGroups;
     initParams();
 }
@@ -508,8 +507,8 @@ void CDiagonalCF::agetParamMask0(CovarParams* out) const
 CRank1diagCF::CRank1diagCF(muint_t numberGroups)
 {
 	this->numberGroups = numberGroups;
-    this->numberDimensions = 1;
-    this->X=MatrixXd::Zero(numberGroups,1);
+    this->numberDimensions = 0;
+    //this->X=MatrixXd::Zero(numberGroups,1);
     if (numberGroups==2)
         this->numberParams = 3;
     else
@@ -630,9 +629,9 @@ void CRank1diagCF::agetParamMask0(CovarParams* out) const
 
 CSqExpCF::CSqExpCF(muint_t numberGroups, muint_t dim)
 {
-    this->numberDimensions = 1;
+    this->numberDimensions = 0;
     this->numberGroups=numberGroups;
-    this->X=MatrixXd::Zero(numberGroups,1);
+    //this->X=MatrixXd::Zero(numberGroups,1);
     //number of parameters:
     this->numberParams = (dim+1)*numberGroups;
     this->dim = dim;

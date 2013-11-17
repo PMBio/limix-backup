@@ -27,6 +27,13 @@ class CGPbase_test(unittest.TestCase):
         hyperparams0 = limix.CGPHyperParams()
         hyperparams0['covar'] = covar_params
         hyperparams0['lik'] = lik_params
+        self.constrainU = limix.CGPHyperParams()
+        self.constrainL = limix.CGPHyperParams()
+        self.constrainU['covar'] = +10*SP.ones_like(covar_params);
+        self.constrainL['covar'] = 0*SP.ones_like(covar_params);
+        self.constrainU['lik'] = +5*SP.ones_like(lik_params);
+        self.constrainL['lik'] = 0*SP.ones_like(lik_params);
+
         self.gp=limix.CGPbase(covar,ll)
         self.gp.setX(self.X)
         self.gp.setParams(hyperparams0)
@@ -36,13 +43,15 @@ class CGPbase_test(unittest.TestCase):
     def test_fit(self):
         #create optimization object
         self.gpopt = limix.CGPopt(self.gp)
+        self.gpopt.setOptBoundLower(self.constrainL);
+        self.gpopt.setOptBoundUpper(self.constrainU);
         #run
         self.gpopt.opt()
         params = SP.concatenate((self.gp.getParams()['covar'],self.gp.getParams()['lik']))[:,0]
         params_true = SP.array([0.28822188,  0.35271548,  0.13709146,  0.49447424])
         RV = ((params-params_true)**2).max()<1e-6
-        RV = RV & (SP.absolute(self.gp.LMLgrad()['lik']).max()<1E-5)
-        RV = RV & (SP.absolute(self.gp.LMLgrad()['covar']).max()<1E-5)
+        RV = RV & (SP.absolute(self.gp.LMLgrad()['lik']).max()<1E-4)
+        RV = RV & (SP.absolute(self.gp.LMLgrad()['covar']).max()<1E-4)
 
         self.assertTrue(RV)
 
