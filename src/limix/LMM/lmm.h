@@ -218,6 +218,7 @@ protected:
 	VectorXd S;
 	//verbose results:
 	bool storeVerboseResults;
+	bool calc_stes; //!<calculate standard erorrs?
 	MatrixXd nLL0, nLLAlt,f_tests,ldeltaAlt,ldelta0,beta_snp,beta_snp_ste,lsigma;
 
 
@@ -227,10 +228,12 @@ public:
 
 	//function to add testing kernel
 
-	//processing;
+	/*! process asssociation test*/
 	virtual void process() throw(CGPMixException);
+	/*! public function to update the covaraince decomposition*/
 	virtual void updateDecomposition() throw(CGPMixException);
 
+	/*! set the decompsotion elemnts of K directly \param U: eigenvectors, \param S: eigen vectors*/
 	void setKUS(const MatrixXd& K,const MatrixXd& U, const VectorXd& S)
 	{
 		setK(K,U,S);
@@ -321,6 +324,14 @@ public:
 	mfloat_t getLdeltaInit()
 	{
 		return this->ldeltaInit;
+	}
+	/*! calculate standard errors?*/
+	bool isCalcStes() const {
+		return calc_stes;
+	}
+	/*! calculate standard errors?*/
+	void setCalcStes(bool calcStes) {
+		calc_stes = calcStes;
 	}
 };
 typedef sptr<CLMM> PLMM;
@@ -478,7 +489,7 @@ inline void CLMMCore::nLLevalEx(const Eigen::MatrixBase<Derived1>& AObeta_, cons
 	AObeta.derived().resize(d,p);
 	AOsigma.derived().resize(1,p);
 
-	if (calc_ftest)
+	if (calc_ftest || calc_ste)
 		AOF_tests.derived().resize(d,p);
 	if (calc_ste)
 		AObeta_ste.derived().resize(d,p);
