@@ -250,6 +250,7 @@ int ALMM::getTestStatistics() const
     :ALMM()
     {
     	storeVerboseResults= true;
+    	calc_stes = true;
     }
 
     CLMM::~CLMM()
@@ -319,7 +320,8 @@ int ALMM::getTestStatistics() const
         nLLAlt.resize(num_pheno,num_snps);
         lsigma.resize(num_pheno,num_snps);
         beta_snp.resize(num_pheno,num_snps);
-        beta_snp_ste.resize(num_pheno,num_snps);
+        if(calc_stes)
+        	beta_snp_ste.resize(num_pheno,num_snps);
 
         //reserve memory for snp-wise foreground model
         MatrixXd UXps(num_samples, num_covs + 1);
@@ -357,10 +359,11 @@ int ALMM::getTestStatistics() const
             for(muint_t ip=0;ip<num_pheno;++ip)
             {
             	//3.1 evaluate test statistics (foreground)
-            	nLLevalEx(AObeta_,AObeta_ste_,AOsigma_,f_tests_,nLLAlt.block(ip, is, 1, 1), Upheno.block(0,ip,num_samples,1), UXps, S, ldeltaAlt(ip, is), calc_ftests);
+            	nLLevalEx(AObeta_,AObeta_ste_,AOsigma_,f_tests_,nLLAlt.block(ip, is, 1, 1), Upheno.block(0,ip,num_samples,1), UXps, S, ldeltaAlt(ip, is), calc_ftests,calc_stes);
             	lsigma(ip,is) = AOsigma_(0,0);
             	beta_snp(ip,is) = AObeta_(0,0);
-            	//beta_snp_ste(ip,is) = AObeta_ste_(0,0);
+            	if(calc_stes)
+            		beta_snp_ste(ip,is) = AObeta_ste_(0,0);
 
             	//3.2 evaluate test statistics (background)
                 if(this->testStatistics == ALMM::TEST_LLR)

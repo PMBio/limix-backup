@@ -25,8 +25,14 @@ class CLMM_test(unittest.TestCase):
             lmm.setPheno(D['Y'])
             lmm.process()
             pv = lmm.getPv().ravel()
-            D2= ((SP.log10(pv)-SP.log10(D['pv']))**2)
-            RV = SP.sqrt(D2.mean())<1E-6
+            BetaSte = lmm.getBetaSNPste().ravel()
+            Beta = lmm.getBetaSNP()
+            D2pv= ((SP.log10(pv)-SP.log10(D['pv']))**2)
+            D2Beta= (Beta-D['Beta'])**2
+            D2BetaSte = (BetaSte-D['BetaSte'])**2
+            RV = SP.sqrt(D2pv.mean())<1E-6
+            RV = RV & (D2Beta.mean()<1E-6)
+            RV = RV & (D2BetaSte.mean()<1E-6)
             self.assertTrue(RV)
 
 
