@@ -217,8 +217,9 @@ void CVarianceDecomposition::clear()
 
 void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& design, const MatrixXd& fixed) throw(CGPMixException)
 {
-	if ((muint_t)fixed.cols()!=(muint_t)1 || (muint_t)fixed.rows()!=this->N)
-		throw CGPMixException("CVarianceDecomposition: the fixed effect must have shape (N,1)");
+	//if ((muint_t)fixed.cols()!=(muint_t)1 || (muint_t)fixed.rows()!=this->N)
+	if ((muint_t)fixed.cols()<(muint_t)1 || (muint_t)fixed.rows()!=this->N)
+		throw CGPMixException("CVarianceDecomposition: the fixed effect must have shape (N,1+)");
 	if ((muint_t)design.cols()!=(muint_t)P)
 		throw CGPMixException("CVarianceDecomposition: the design must have P columns");
 	fixedEffs.push_back(fixed);
