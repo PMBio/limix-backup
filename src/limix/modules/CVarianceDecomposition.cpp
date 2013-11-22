@@ -220,8 +220,8 @@ void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& design, const Matri
 	//if ((muint_t)fixed.cols()!=(muint_t)1 || (muint_t)fixed.rows()!=this->N)
 	if ((muint_t)fixed.cols()<(muint_t)1 || (muint_t)fixed.rows()!=this->N)
 		throw CGPMixException("CVarianceDecomposition: the fixed effect must have shape (N,1+)");
-	if ((muint_t)design.cols()!=(muint_t)P)
-		throw CGPMixException("CVarianceDecomposition: the design must have P columns");
+	if ((muint_t)design.cols()!=(muint_t)P || (muint_t)design.rows()>(muint_t)P)
+		throw CGPMixException("CVarianceDecomposition: the design must have P columns and cannot have more than P rows");
 	fixedEffs.push_back(fixed);
 	designs.push_back(design);
 	this->is_init=false;
@@ -384,19 +384,21 @@ void CVarianceDecomposition::initGPbase() throw(CGPMixException)
 	// count number of cols
 	muint_t numberCols = 0;
 	MatrixXdVec::const_iterator design_iter = designs.begin();
-	for( ; design_iter!=designs.end(); design_iter++)
-		numberCols += design_iter[0].rows();
+	MatrixXdVec::const_iterator fixed_iter  = fixedEffs.begin();
+	for( ; design_iter!=designs.end(); design_iter++, fixed_iter++)
+		numberCols += design_iter[0].rows()*design_iter[0].cols();
 	//define fixed for CLinearMean
 	MatrixXd fixed(this->N*this->P,numberCols);
 	design_iter = designs.begin();
-	MatrixXdVec::const_iterator fixed_iter  = fixedEffs.begin();
+	fixed_iter  = fixedEffs.begin();
 	muint_t ncols = 0;
 	for(; design_iter!=designs.end(); design_iter++, fixed_iter++)
 	{
 		MatrixXd part;
 		akron(part,design_iter[0].transpose(),fixed_iter[0]);
-		fixed.block(0,ncols,this->N*this->P,design_iter[0].rows())=part;
-		ncols+=design_iter[0].rows();
+		//fixed.block(0,ncols,this->N*this->P,design_iter[0].rows())=part;//Christoph: bug? should also take into account the number of columns in the fixed effects
+		fixed.block(0,ncols,this->N*this->P,design_iter[0].rows()*fixed_iter[0].cols())=part;//Christoph: fix
+		ncols+=design_iter[0].rows()*fixed_iter[0].cols();
 	}
 
 	//vectorize phenotype
