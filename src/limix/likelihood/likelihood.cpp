@@ -106,6 +106,7 @@ void CLikNormalIso::setX(const CovarInput& X) throw (CGPMixException)
 void CLikNormalIso::aK(MatrixXd* out) const throw (CGPMixException)
 {
 	(*out) = MatrixXd::Zero(numRows,numRows);
+	assert(getParams().rows() * getParams().cols() > 0);
 	(*out).diagonal().setConstant(std::pow((mfloat_t)this->getParams()(0),2));//WARNING: mfloat_t conversion
 }
 
