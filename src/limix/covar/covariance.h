@@ -334,6 +334,8 @@ public:
 	//covariance normalization
 	//template <typename Derived1, typename Derived2,typename Derived3,typename Derived4,typename Derived5>
 	//inline static void scale_K(const Eigen::MatrixBase<Derived1> & K_);
+
+	friend std::ostream& operator<< (std::ostream &out, ACovarianceFunction &ACovarianceFunction);
 };
 typedef sptr<ACovarianceFunction> PCovarianceFunction;
 

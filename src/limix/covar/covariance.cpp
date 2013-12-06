@@ -276,6 +276,13 @@ void ACovarianceFunction::aKhess_param_num(ACovarianceFunction& covar, MatrixXd*
     covar.setParams(L0);
 }
 
+std::ostream& operator<< (std::ostream &out, ACovarianceFunction &cov)
+{
+	assert(cov.K().rows()>0 && cov.K().cols()>0);
+
+	Eigen::IOFormat fmt(Eigen::StreamPrecision, 0, ", ", ";\n", "", "", "[", "]");
+	return out << cov.K().format(fmt);
+}
 
 
 //COVAR cache
