@@ -21,6 +21,21 @@ class CLMMKroneckerCore : public CLMMCore
 
 };
 
+
+#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
+//ignore C++ versions
+%ignore CKroneckerLMM::getNLL0;
+%ignore CKroneckerLMM::getNLLAlt;
+%ignore CKroneckerLMM::getLdeltaAlt;
+%ignore CKroneckerLMM::getLdelta0;
+
+//rename argout versions for python; this overwrites the C++ convenience functions
+%rename(getNLL0) CKroneckerLMM::agetNLL0;
+%rename(getNLLAlt) CKroneckerLMM::agetNLLAlt;
+%rename(getLdeltaAlt) CKroneckerLMM::agetLdeltaAlt;
+%rename(getLdelta0) CKroneckerLMM::agetLdelta0;
+#endif
+
 /*! \brief Kronecker mixed model inference for pre-fitted covariance matrices
  *
  * Class is derived from CLMM, however provides special functions for Kronecker phenotypes
@@ -90,6 +105,26 @@ public:
 	{this->snps = snps;}
 	void setSNPcoldesign(const MatrixXd& design)
 	{this->snpcoldesign = design;}
+
+	void agetNLL0(MatrixXd* out)
+	{
+		(*out) = nLL0;
+	}
+	void agetNLLAlt(MatrixXd *out)
+	{
+		(*out) = nLLAlt;
+	}
+
+	void agetLdeltaAlt(MatrixXd *out)
+	{
+		(*out) = ldeltaAlt;
+	}
+	void agetLdelta0(MatrixXd *out)
+	{
+		(*out) = ldelta0;
+	}
+
+
 
 	/*! set Vecotr of covariates
 	 * \param covsR: vector of row covariate terms
