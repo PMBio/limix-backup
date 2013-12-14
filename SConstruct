@@ -64,19 +64,20 @@ print '**** Compiling in ' + build_prefix + ' mode...'
 cflags = []
 linkflags = []
 debugcflags   = ['-DDEBUG']   #extra compile flags for debug
-releasecflags = ['-O2', '-DRELEASE','-fopenmp']         #extra compile flags for release
+releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
 #releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
 debuglinkflags = []
-releaselinkflags = ['-lgomp']
 
 ### 3. compiler flags & environment
 if sys.platform=='win32':
    cflags.extend(['-EHsc'])
    debugcflags.extend(['-Zi'])
    debuglinkflags.extend(['/debug','/ASSEMBLYDEBUG'])
+   releasecflags.extend(['/openmp'])
 else:
    cflags.extend(['-fPIC'])
-   releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
+   releasecflags.extend(['-msse','-msse2','-fopenmp'])         #extra compile flags for release
+   releaselinkflags = ['-lgomp']				       
    debugcflags.extend(['-g','-Wextra'])
 
 #build environment
