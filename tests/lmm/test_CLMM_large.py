@@ -19,7 +19,7 @@ class CLMM_test_large(unittest.TestCase):
         for dn in self.datasets:
             D = data.load(os.path.join(self.dir_name,dn))
             #make vllarg X. This needs to be changed later
-            NL = 10
+            NL = 10000
             self.NL = NL
             X = SP.tile(D['X'],(1,self.NL))
             lmm = limix.CLMM()
