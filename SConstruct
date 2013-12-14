@@ -67,6 +67,7 @@ debugcflags   = ['-DDEBUG']   #extra compile flags for debug
 releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
 #releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
 debuglinkflags = []
+releaselinkflags = []
 
 ### 3. compiler flags & environment
 if sys.platform=='win32':
@@ -77,7 +78,7 @@ if sys.platform=='win32':
 else:
    cflags.extend(['-fPIC'])
    releasecflags.extend(['-msse','-msse2','-fopenmp'])         #extra compile flags for release
-   releaselinkflags = ['-lgomp']				       
+   releaselinkflags.extend(['-lgomp'])
    debugcflags.extend(['-g','-Wextra'])
 
 #build environment
