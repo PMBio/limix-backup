@@ -27,13 +27,14 @@ void CGenotypeBlock::init(const stringVec& row_header_names,const stringVec& col
 	{
 		std::string name = (*iter);
 		PArray1DXs tmp=PArray1DXs(new Array1DXs(rows));
-	//	(*this->rowHeader)[name] = tmp;
-	//TODO
+		(*this->rowHeader)[name] = tmp;
+
 	}
 	for(stringVec::const_iterator iter = col_header_names.begin(); iter!=col_header_names.end();iter++)
 	{
-		//std::string name = (*iter);
-		//(*this->colHeader)[name] = PArray1DXs(new Array1DXs(cols));
+		std::string name = (*iter);
+		PArray1DXs tmp=PArray1DXs(new Array1DXs(cols));
+		(*this->colHeader)[name] = tmp;
 	}
 
 	this->pos = PVectorXi(new VectorXi());

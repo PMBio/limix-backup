@@ -48,7 +48,6 @@ int main() {
 	CTTss=CTTss2;
 
 	*testi = TTi;
-	*testi = TTf;
 	*tests2 = TT2s;
 
 	TTss = TT2s;
