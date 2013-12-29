@@ -2,6 +2,7 @@
 import os
 import sys
 import subprocess
+import pdb
 
 #import autoconfig like handling
 from ACGenerateFile import *
@@ -33,7 +34,8 @@ help='Run unit tests after build', default=False)
 AddOption('--with-developcpp', dest='with_developcpp', action='store_true',
 help='Build development only commandline tools?', default=False)
 
-
+#override CXX compiler (for open MPI)
+AddOption('--CXX',dest='CXX',type='string',nargs=1,action='store',default=None,help='Manual specified CXX')
 
 #build options:
 build_options= {}
@@ -42,6 +44,7 @@ build_options['with_python'] = GetOption('with_python')
 build_options['with_developcpp'] = GetOption('with_developcpp')
 build_options['with_tests'] = GetOption('with_tests')
 build_options['with_documentation'] = GetOption('with_documentation')
+build_options['CXX'] = GetOption('CXX')
 
 
 
@@ -62,6 +65,7 @@ cflags = []
 linkflags = []
 debugcflags   = ['-DDEBUG']   #extra compile flags for debug
 releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
+#releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
 debuglinkflags = []
 releaselinkflags = []
 
@@ -70,9 +74,11 @@ if sys.platform=='win32':
    cflags.extend(['-EHsc'])
    debugcflags.extend(['-Zi'])
    debuglinkflags.extend(['/debug','/ASSEMBLYDEBUG'])
+   releasecflags.extend(['/openmp'])
 else:
    cflags.extend(['-fPIC'])
-   releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
+   releasecflags.extend(['-msse','-msse2','-fopenmp'])         #extra compile flags for release
+   releaselinkflags.extend(['-lgomp'])
    debugcflags.extend(['-g','-Wextra'])
 
 #build environment
@@ -86,6 +92,8 @@ for key in copy_env:
 env = Environment(SHLIBPREFIX="",ENV=ENV,tools = ['default','doxygen',TOOL_SUBST])
 env.Append(CCFLAGS=cflags)
 env.Append(LINKFLAGS=linkflags)
+if build_options['CXX']:
+   env['CXX'] = build_options['CXX']
 
 if mymode == 'debug':
    env.Append(CCFLAGS=debugcflags)

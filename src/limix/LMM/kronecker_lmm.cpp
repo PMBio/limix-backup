@@ -1,6 +1,7 @@
 #include "kronecker_lmm.h"
 #include "limix/utils/gamma.h"
 #include "limix/utils/matrix_helper.h"
+//#include <omp.h>
 //#define debugkron = 0
 
 namespace limix {
