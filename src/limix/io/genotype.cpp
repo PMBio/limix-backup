@@ -26,12 +26,14 @@ void CGenotypeBlock::init(const stringVec& row_header_names,const stringVec& col
 	for(stringVec::const_iterator iter = row_header_names.begin(); iter!=row_header_names.end();iter++)
 	{
 		std::string name = (*iter);
-		(*this->rowHeader)[name] = PArray1DXs(new Array1DXs(rows));
+		PArray1DXs tmp=PArray1DXs(new Array1DXs(rows));
+	//	(*this->rowHeader)[name] = tmp;
+	//TODO
 	}
 	for(stringVec::const_iterator iter = col_header_names.begin(); iter!=col_header_names.end();iter++)
 	{
-		std::string name = (*iter);
-		(*this->colHeader)[name] = PArray1DXs(new Array1DXs(cols));
+		//std::string name = (*iter);
+		//(*this->colHeader)[name] = PArray1DXs(new Array1DXs(cols));
 	}
 
 	this->pos = PVectorXi(new VectorXi());
@@ -263,8 +265,8 @@ PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) throw (CGP
 			RV->resizeMatrices(num_samples,buffer);
 		}
 		//3. store position and chromosome
-		RV->colHeader->set("chrom",i_snp,chrom);
-		RV->colHeader->set("snp_id",i_snp,snp_id);
+		RV->colHeader->setStr("chrom",i_snp,chrom);
+		RV->colHeader->setStr("snp_id",i_snp,snp_id);
 
 
 		(*RV->pos)(i_snp) = snp_pos;
@@ -296,7 +298,7 @@ PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) throw (CGP
 	for(muint_t i=0;i<RV->numSample();++i)
 	{
 		out_str << i;
-		RV->rowHeader->set("sample_id",i,out_str.str());
+		RV->rowHeader->setStr("sample_id",i,out_str.str());
 	}
 
 	return RV;

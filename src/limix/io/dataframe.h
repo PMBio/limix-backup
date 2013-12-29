@@ -19,7 +19,7 @@
 namespace limix {
 
 
-template <int rows,int cols>
+template <int rows,int cols,int options>
 /*!
  * Wrapper to handle Eigen arrays of flexible type.
  *
@@ -32,11 +32,11 @@ public:
 	//<! Currently, this class supports either INT, DOUBLE or STRING types
 	enum FlexType { INT, FLOAT, STRING, NONE };
 	//definitions of the corresponding Eigen types for convenience
-	typedef Eigen::Matrix<mint_t,rows,cols> IntMatrix;
+	typedef Eigen::Matrix<mint_t,rows,cols,options> IntMatrix;
 	typedef sptr<IntMatrix> PIntMatrix;
-	typedef Eigen::Matrix<mfloat_t,rows,cols> FloatMatrix;
+	typedef Eigen::Matrix<mfloat_t,rows,cols,options> FloatMatrix;
 	typedef sptr<FloatMatrix> PFloatMatrix;
-	typedef Eigen::Matrix<std::string,rows,cols> StringMatrix;
+	typedef Eigen::Matrix<std::string,rows,cols,options> StringMatrix;
 	typedef sptr<StringMatrix> PStringMatrix;
 
 protected:
@@ -120,6 +120,12 @@ public:
 		this->array = PStringMatrix(new StringMatrix(array));
 		this->type = STRING;
 	}
+	//wrapper for key eigen functions
+    void conservativeResize(muint_t size)
+    {
+    	if(this->type==STRING)
+    		static_pointer_cast<StringMatrix>(this->array)->conservativeResize(size);
+    }
 
 	//getter and setter
 	FlexType getType()
@@ -244,8 +250,8 @@ public:
 	//modification operators
 
 };
-typedef FlexEigenMatrix<Eigen::Dynamic, 1> CFlexVector;
-typedef FlexEigenMatrix<Eigen::Dynamic, Eigen::Dynamic> CFlexMatrix;
+typedef FlexEigenMatrix<Eigen::Dynamic, 1, Eigen::ColMajor> CFlexVector;
+typedef FlexEigenMatrix<Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> CFlexMatrix;
 typedef sptr<CFlexVector> PFlexVector;
 typedef sptr<CFlexMatrix> PFlexMatrix;
 
@@ -262,7 +268,7 @@ typedef sptr<CHeaderMap> PHeaderMap;
  *	CHeaderMap is based on a map of pointers to vectors of strings
  *	Each element consists of a vector with header elemnts which are used as columns or rows
  */
-class CHeaderMap : public std::map<std::string,PArray1DXs>
+class CHeaderMap : public std::map<std::string,CFlexVector>
 {
 public:
 	/*!
@@ -275,14 +281,15 @@ public:
 	 * \param n: index
 	 * \param value: string value
 	 */
-	void set(std::string name, muint_t n, std::string value);
+	void setStr(std::string name, muint_t n, std::string value);
 	/*!
-	 * directly retrieve the value of a particular header element
+	 * directly retrieve the value of a particular header element, assuming the column is a string type
 	 * \param name: header key
 	 * \param n: index
 	 */
-	std::string get(std::string name,muint_t n);
 
+    //TODO: fix me	 
+	//std::string get(std::string name,muint_t n);
 	/*!
 	 * Copy a certain number of elements form the header map
 	 * \param i_start: start index
