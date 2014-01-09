@@ -80,6 +80,9 @@ public:
 	}
 
 	//virtual functions
+	/*!
+	read num_snp from the current stream and return as GenotypeBlock
+	*/
 	virtual PGenotypeBlock read(mint_t num_snps=-1) throw (CGPMixException) = 0;
 };
 
@@ -101,9 +104,15 @@ class CGenotypeBlock : public CRMemDataFrame<MatrixXd> //,public AGenotypeContai
 	friend class CTextfileGenotypeContainer;
 protected:
 	PVectorXi pos;
+	/*!
+	resize the internal storage (rows: samples, columns: SNPs)
+	*/
 	virtual void resizeMatrices(muint_t num_rows, muint_t num_columns);
 	muint_t i_snp_read;
 
+	/*!
+	initialize the GenotypeBlock structure fro
+	*/
 	void init(const stringVec& row_header_names,const stringVec& col_haeder_names,muint_t rows,muint_t cols);
 
 public:

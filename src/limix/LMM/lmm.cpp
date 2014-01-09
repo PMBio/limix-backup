@@ -10,6 +10,7 @@
 #include "limix/utils/matrix_helper.h"
 #include <math.h>
 #include <cmath>
+//#include <omp.h>
 #include<Eigen/Core>
 
 
@@ -323,6 +324,7 @@ int ALMM::getTestStatistics() const
         if(calc_stes)
         	beta_snp_ste.resize(num_pheno,num_snps);
 
+
         //reserve memory for snp-wise foreground model
         MatrixXd UXps(num_samples, num_covs + 1);
         //add in covariats from column 1 on:
@@ -330,7 +332,6 @@ int ALMM::getTestStatistics() const
 
         MatrixXd UXi = MatrixXd::Zero(num_samples, 1);
         MatrixXd f_tests_,AObeta_,AObeta_ste_,AOsigma_;
-
 
         bool calc_ftests = (this->testStatistics == ALMM::TEST_F);
         if(calc_ftests)
