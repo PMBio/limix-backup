@@ -20,22 +20,27 @@ void CHeaderMap::resize(muint_t n)
 	for(CHeaderMap::iterator iter = this->begin(); iter!=this->end();iter++)
 	{
 		std::string name = (*iter).first;
-		PArray1DXs value = (*iter).second;
+		CFlexVector value = (*iter).second;
 		//resize
-		value->conservativeResize(n);
+		value.conservativeResize(n);
 	}
 }
 
-void CHeaderMap::set(std::string name, muint_t n, std::string value)
+void CHeaderMap::setStr(std::string name, muint_t n, std::string value)
 {
-
-	(*(*this)[name])[n] = value;
+	CFlexVector vector;
+	vector = (*this)[name];
+	CFlexVector::PStringMatrix strMatrix;
+	strMatrix = vector;
+	(*strMatrix)[n] = value;
 };
 
+/*
 std::string CHeaderMap::get(std::string name, muint_t n)
 {
 	return (*(*this)[name])[n];
 };
+*/
 
 PHeaderMap CHeaderMap::copy(muint_t i_start, muint_t n_elements)
 {
@@ -43,8 +48,9 @@ PHeaderMap CHeaderMap::copy(muint_t i_start, muint_t n_elements)
 	for(CHeaderMap::iterator iter = this->begin(); iter!=this->end();iter++)
 	{
 		std::string key = (*iter).first;
-		PArray1DXs value = (*iter).second;
-		(*RV)[key] = PArray1DXs(new Array1DXs(*value));
+		CFlexVector::PStringMatrix value = (*iter).second;
+		CFlexVector::PStringMatrix copy = CFlexVector::PStringMatrix(new CFlexVector::StringMatrix(*value));
+		(*RV)[key].setM(copy);
 	}
 	return RV;
 }

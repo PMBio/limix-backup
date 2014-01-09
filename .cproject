@@ -100,10 +100,10 @@
 		<configuration configurationName="Default">
 			<resource resourceType="PROJECT" workspacePath="/limix"/>
 		</configuration>
+		<configuration configurationName="debug_python_opt"/>
 		<configuration configurationName="debug_python">
 			<resource resourceType="PROJECT" workspacePath="/limix"/>
 		</configuration>
-		<configuration configurationName="debug_python_opt"/>
 		<configuration configurationName="debug"/>
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">

@@ -27,25 +27,32 @@ using namespace limix;
 
 int main() {
 
-
-	//Eigen::Array<mint_t,Eigen::Dynamic,1> TT(100);
-	//VectorXd TT = VectorXd::Ones(100);
-
-	//test->setArray((VectorXd)test_array);
-	//Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic> TT;
-	//TT = Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic>::Ones(100,100);
 	PMatrixXd TTf = PMatrixXd(new MatrixXd());
 	(*TTf) = MatrixXd::Ones(100,100);
 
 	PMatrixXi TTi = PMatrixXi(new MatrixXi());
 	(*TTi) = MatrixXi::Ones(100,100);
 
+	PArray1DXs TTs = PArray1DXs(new Array1DXs(100));
+	PArrayXs TTss = PArrayXs(new ArrayXs(100,100));
+	CFlexMatrix::PStringMatrix TT2s = CFlexMatrix::PStringMatrix(new CFlexMatrix::StringMatrix(100,100));
+
+	ArrayXs CTTss(100,100);
+	CFlexMatrix::StringMatrix CTTss2(100,100);
 
 	PFlexMatrix testf = PFlexMatrix(new CFlexMatrix(TTf));
 	PFlexMatrix testi = PFlexMatrix(new CFlexMatrix());
+	PFlexVector tests = PFlexVector(new CFlexVector());
+	PFlexMatrix tests2 = PFlexMatrix(new CFlexMatrix());
+
+	CTTss=CTTss2;
+
 	*testi = TTi;
+	*tests2 = TT2s;
 
+	TTss = TT2s;
 
+	
 	PMatrixXd TTf2 = *testf;
 	MatrixXd TTf3 = *(PMatrixXd)(*testf);
 
@@ -54,7 +61,7 @@ int main() {
 
 	//assignment operators
 	std::cout << TTi3;
-
+	std::cout << testi;
 
 	//std:: cout <<
 
