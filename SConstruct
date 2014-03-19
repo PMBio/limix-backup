@@ -77,8 +77,9 @@ if sys.platform=='win32':
    releasecflags.extend(['/openmp'])
 else:
    cflags.extend(['-fPIC'])
-   releasecflags.extend(['-msse','-msse2','-fopenmp'])         #extra compile flags for release
-   releaselinkflags.extend(['-lgomp'])
+   # releasecflags.extend(['-msse','-msse2','-fopenmp'])         #extra compile flags for release
+   releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
+   # releaselinkflags.extend(['-lgomp'])
    debugcflags.extend(['-g','-Wextra'])
 
 #build environment

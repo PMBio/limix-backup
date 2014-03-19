@@ -71,7 +71,8 @@ if conf.CheckFunc('copysign'):
 
 #check uint23_t
 uint32_t_header = '#include "stdint.h"'
-uint32_t_size = conf.CheckTypeSize('uint32_t',includes=uint32_t_header)
+# uint32_t_size = conf.CheckTypeSize('uint32_t',includes=uint32_t_header)
+uint32_t_size = 4
 if uint32_t_size:
    dict['SIZEOF_UNSIGNED_INT'] = str(uint32_t_size)
    dict['HAVE_UINT32_T'] = '#define HAVE_UINT32_T'

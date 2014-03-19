@@ -17,6 +17,8 @@
     #include <unordered_map>
     #include <memory>
 	#include<limits>
+#elif defined(__clang__)
+	#include <memory>
 #else
     #include <tr1/memory>
 #endif
@@ -27,11 +29,19 @@
 */
 
 //define shortcut for shared pointer
+
+#if defined(__clang__)
+#define sptr std::shared_ptr
+#define static_pointer_cast std::static_pointer_cast
+#define dynamic_pointer_cast std::dynamic_pointer_cast
+#define enable_shared_from_this std::enable_shared_from_this
+#else
 #define sptr std::tr1::shared_ptr
 #define static_pointer_cast std::tr1::static_pointer_cast
 #define dynamic_pointer_cast std::tr1::dynamic_pointer_cast
 #define enable_shared_from_this std::tr1::enable_shared_from_this
-
+#define nullptr NULL
+#endif
 /*
 //BOOST shared pointer
 #define sptr boost::shared_ptr
