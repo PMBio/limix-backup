@@ -43,7 +43,9 @@ using namespace limix;
 //support for std libs
 
 #define SWIG_SHARED_PTR_NAMESPACE std
+#ifndef __clang__
 #define SWIG_SHARED_PTR_SUBNAMESPACE tr1
+#endif
 %include "std_shared_ptr.i"
 
 //removed boost

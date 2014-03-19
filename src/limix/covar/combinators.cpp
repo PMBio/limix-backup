@@ -66,7 +66,7 @@ muint_t AMultiCF::getNumberDimensions() const throw (CGPMixException)
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 			rv+= cp->getNumberDimensions();
 	}
 	//loop through covariances and add up dimensionality;
@@ -79,7 +79,7 @@ muint_t AMultiCF::getNumberParams() const
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 			rv+= cp->getNumberParams();
 	}
 	//loop through covariances and add up dimensionality;
@@ -102,7 +102,7 @@ void AMultiCF::setX(const CovarInput& X) throw (CGPMixException)
 	for(ACovarVec::iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			cp->setX(X.block(0,c0,X.rows(),cols));
@@ -132,7 +132,7 @@ void AMultiCF::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
 	for(ACovarVec::iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			//skip covaraince with 0 dimensions
@@ -161,7 +161,7 @@ void AMultiCF::agetX(CovarInput* Xout) const throw (CGPMixException)
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			//ignore covariances with 0 columns
@@ -182,7 +182,7 @@ void AMultiCF::addSyncChild(Pbool l)
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 		{
 			PCovarianceFunction cp = iter[0];
-			if (cp!=NULL)
+			if (cp!=nullptr)
 			{
 				cp->addSyncChild(l);
 			}
@@ -194,7 +194,7 @@ void AMultiCF::delSyncChild(Pbool l)
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 		{
 			PCovarianceFunction cp = iter[0];
-			if (cp!=NULL)
+			if (cp!=nullptr)
 			{
 				cp->delSyncChild(l);
 			}
@@ -212,7 +212,7 @@ void AMultiCF::setParams(const CovarParams& params)
 	for(ACovarVec::iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			nparams = cp->getNumberParams();
 			cp->setParams(params.segment(i0,nparams));
@@ -232,7 +232,7 @@ void AMultiCF::agetParams(CovarParams* out) const
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			nparams = cp->getNumberParams();
 			(*out).segment(i0,nparams) = cp->getParams();
@@ -252,7 +252,7 @@ void AMultiCF::setParamMask(const CovarParams& params)
 	for(ACovarVec::iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			nparams = cp->getNumberParams();
 			cp->setParamMask(params.segment(i0,nparams));
@@ -273,7 +273,7 @@ void AMultiCF::agetParamMask(CovarParams* out) const
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			nparams = cp->getNumberParams();
 			(*out).segment(i0,nparams) = cp->getParamMask();
@@ -294,7 +294,7 @@ void AMultiCF::agetParamBounds0(CovarParams* lower, CovarParams* upper) const
     for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
     {
         PCovarianceFunction cp = iter[0];
-        if (cp!=NULL)
+        if (cp!=nullptr)
         {
             nparams = cp->getNumberParams();
             CovarParams _upper,_lower;
@@ -318,7 +318,7 @@ void AMultiCF::agetParamBounds(CovarParams* lower, CovarParams* upper) const
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			nparams = cp->getNumberParams();
 			CovarParams _upper,_lower;
@@ -342,7 +342,7 @@ void AMultiCF::setParamBounds(const CovarParams& lower, const CovarParams& upper
     for(ACovarVec::iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
     {
         PCovarianceFunction cp = iter[0];
-        if (cp!=NULL)
+        if (cp!=nullptr)
         {
             nparams = cp->getNumberParams();
             cp->setParamBounds(lower.segment(i0,nparams),upper.segment(i0,nparams));
@@ -382,7 +382,7 @@ void CSumCF::aK(MatrixXd* out) const throw (CGPMixException)
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			(*out) += cp->K();
 		}
@@ -397,7 +397,7 @@ void CSumCF::aKdiag(VectorXd* out) const throw (CGPMixException)
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			(*out) += cp->Kdiag();
 		}
@@ -417,7 +417,7 @@ void CSumCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CGPMix
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			MatrixXd Xstar_ = Xstar.block(0,c0,Xstar.rows(),cols);
@@ -441,7 +441,7 @@ void CSumCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CG
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			//std::cout << cp->getName() << "\n";
 			cols = cp->getNumberDimensions();
@@ -467,7 +467,7 @@ void CSumCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMixExce
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			params = cp->getNumberParams();
 			//is the parameter in that covariance function?
@@ -494,7 +494,7 @@ void CSumCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const
     for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
     {
         PCovarianceFunction cp = iter[0];
-        if (cp!=NULL)
+        if (cp!=nullptr)
         {
             params = cp->getNumberParams();
             //is the parameter in that covariance function?
@@ -525,7 +525,7 @@ void CSumCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			if ((d-c0)<cols)
@@ -548,7 +548,7 @@ void CSumCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMixExc
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			if ((d-c0)<cols)
@@ -574,7 +574,7 @@ void CSumCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			if ((d-c0)<cols)
@@ -632,7 +632,7 @@ void CLinCombCF::aK(MatrixXd* out) const throw(CGPMixException)
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++, i++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			(*out) += this->coeff(i)*cp->K();
 		}
@@ -648,7 +648,7 @@ void CLinCombCF::aKdiag(VectorXd* out) const throw(CGPMixException)
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++, i++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			(*out) += this->coeff(i)*cp->Kdiag();
 		}
@@ -669,7 +669,7 @@ void CLinCombCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CG
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++, i++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			MatrixXd Xstar_ = Xstar.block(0,c0,Xstar.rows(),cols);
@@ -694,7 +694,7 @@ void CLinCombCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const thro
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++,i++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			//std::cout << cp->getName() << "\n";
 			cols = cp->getNumberDimensions();
@@ -721,7 +721,7 @@ void CLinCombCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMix
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++,ii++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			params = cp->getNumberParams();
 			//is the parameter in that covariance function?
@@ -750,7 +750,7 @@ void CLinCombCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) c
     for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++,ii++)
     {
         PCovarianceFunction cp = iter[0];
-        if (cp!=NULL)
+        if (cp!=nullptr)
         {
             params = cp->getNumberParams();
             //is the parameter in that covariance function?
@@ -783,7 +783,7 @@ void CLinCombCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixExcep
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++,ii++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			if ((d-c0)<cols)
@@ -808,7 +808,7 @@ void CLinCombCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMi
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++,ii++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			if ((d-c0)<cols)
@@ -836,7 +836,7 @@ void CLinCombCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const m
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++,ii++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			if ((d-c0)<cols)
@@ -887,7 +887,7 @@ void CProductCF::aK(MatrixXd* out) const throw (CGPMixException)
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			(*out).array() *= cp->K().array();
 		}
@@ -902,7 +902,7 @@ void CProductCF::aKdiag(VectorXd* out) const throw (CGPMixException)
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			(*out).array() *= cp->Kdiag().array();
 		}
@@ -922,7 +922,7 @@ void CProductCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CG
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			MatrixXd Xstar_ = Xstar.block(0,c0,Xstar.rows(),cols);
@@ -946,7 +946,7 @@ void CProductCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const thro
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			MatrixXd Xstar_ = Xstar.block(0,c0,Xstar.rows(),cols);
@@ -971,7 +971,7 @@ void CProductCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMix
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			params = cp->getNumberParams();
 
@@ -999,7 +999,7 @@ void CProductCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) c
     for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
     {
         PCovarianceFunction cp = iter[0];
-        if (cp!=NULL)
+        if (cp!=nullptr)
         {
             params = cp->getNumberParams();
             //is the parameter in that covariance function?
@@ -1029,7 +1029,7 @@ void CProductCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixExcep
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			if ((d-c0)<cols)
@@ -1052,7 +1052,7 @@ void CProductCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMi
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			cols = cp->getNumberDimensions();
 			if ((d-c0)<cols)
@@ -1078,7 +1078,7 @@ void CProductCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const m
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
 	{
 		PCovarianceFunction cp = iter[0];
-		if (cp!=NULL)
+		if (cp!=nullptr)
 		{
 			//get Xstar
 			cols = cp->getNumberDimensions();
