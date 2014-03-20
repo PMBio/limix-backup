@@ -6,7 +6,7 @@ import scipy as SP
 import scipy.stats as ST
 import limix
 import limix.utils.preprocess as preprocess
-import limix_modules.modules.varianceDecomposition as VAR
+import limix.modules.varianceDecomposition as VAR
 try:
     import limix.utils.fdr as FDR
 except:
