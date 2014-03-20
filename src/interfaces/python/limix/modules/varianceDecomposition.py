@@ -184,6 +184,10 @@ class CVarianceDecomposition:
             cov=limix.CSumCF()
             cov.addCovariance(limix.CLowRankCF(self.P,self.rank))
             cov.addCovariance(limix.CDiagonalCF(self.P))
+        elif covar_type=='block_diag':
+            cov=limix.CSumCF()
+            cov.addCovariance(limix.CFixedCF(SP.ones((self.P,self.P))))
+            cov.addCovariance(limix.CDiagonalCF(self.P))
         elif covar_type=='lowrank_id':
             self.rank = rank
             cov=limix.CSumCF()
@@ -223,7 +227,7 @@ class CVarianceDecomposition:
         
         assert A.shape[1]==self.P, 'Incompatible shape'
         assert F.shape[0]==self.N, 'Incompatible shape'
-        assert F.shape[1]==1,      'Incompatible shape'
+        #assert F.shape[1]==1,      'Incompatible shape'
         
         self.vd.addFixedEffTerm(A,F)
     

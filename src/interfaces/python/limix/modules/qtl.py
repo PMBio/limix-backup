@@ -3,21 +3,83 @@ qtl.py contains wrappers around C++ Limix objects to streamline common tasks in 
 """
 
 import scipy as SP
+import scipy.stats as ST
 import limix
 import limix.utils.preprocess as preprocess
-import limix.modules.varianceDecomposition as VAR
+import limix_modules.modules.varianceDecomposition as VAR
+try:
+    import limix.utils.fdr as FDR
+except:
+    print "failed importying FDR"
 import time
 import pdb
 
+def estimateKronCovariances(phenos,K1r=None,K2r=None,K1c=None,K2c=None,covs=None,Acovs=None,covar_type='lowrank_diag',rank=1):
+    print ".. Training the backgrond covariance with a GP model"
+    vc = VAR.CVarianceDecomposition(phenos)
+    if K1r is not None:
+        vc.addMultiTraitTerm(K1r,covar_type=covar_type,rank=rank)
+    if K2r is not None:
+        vc.addMultiTraitTerm(K2r,covar_type=covar_type,rank=rank)
+    
+    for ic  in xrange(len(Acovs)):
+        vc.addFixedTerm(covs[ic],Acovs[ic])
+    vc.setScales()
+    start = time.time()
+    conv = vc.findLocalOptimum(fast=True)
+    assert conv, "CVariance Decomposition has not converged"
+    time_el = time.time()-start
+    print "Background model trained in %.2f s" % time_el
+    return vc
 
 
-## KroneckerLMM functions
-
-def kronecker_lmm(snps,phenos,Asnps=None,K1r=None,K2r=None,K1c=None,K2c=None,covs=None,Acovs=None):
+def updateKronCovs(covs,Acovs,N,P):
     """
-    simple wrapepr for kroneckerLMM code
+    make sure that covs and Acovs are lists
     """
-    #0. checks dimensions
+    if (covs is None) and (Acovs is None):
+        covs = [SP.ones([N,1])]
+        Acovs = [SP.eye(P)]
+
+    if Acovs is None or covs is None:
+        raise Exception("Either Acovs or covs is None, while the other isn't")
+
+    if (type(Acovs)!=list) and (type(covs)!=list):
+        Acovs= [Acovs]
+        covs = [covs]
+    if (type(covs)!=list) or (type(Acovs)!=list) or (len(covs)!=len(Acovs)):
+        raise Exception("Either Acovs or covs is not a list or they missmatch in length")
+    return covs, Acovs
+
+def simple_interaction_kronecker(snps,phenos,covs = None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K2r=None,K1c=None,K2c=None,covar_type='lowrank_diag',rank=1,searchDelta=False):
+    """
+    I-variate fixed effects interaction test for phenotype specific SNP effects
+    ----------------------------------------------------------------------------
+    Input:
+    snps   [N x S] SP.array of S SNPs for N individuals (test SNPs)
+    phenos [N x P] SP.array of P phenotypes for N individuals
+    Asnps1         list of SP.arrays of I interaction variables to be tested for N 
+                   individuals. Note that it is assumed that Asnps0 is already 
+                   included
+                   If not provided, the alternative model will be the independent model
+    Asnps0         single SP.array of I0 interaction variables to be included in the 
+                   background model when testing for interaction with Inters
+    K1r    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                   If not provided, then linear regression analysis is performed
+    K1c    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
+                   If not provided, then linear regression analysis is performed
+    K2r    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                   If not provided, then linear regression analysis is performed
+    K2c    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
+                   If not provided, then linear regression analysis is performed
+    covs   [N x D] SP.array of D covariates for N individuals
+    Acovs          list of SP.arrays of with phenotype design matrices for each covariate
+    -----------------------------------------------------------------------------
+    Output:
+    lmix LMM object
+    """
+    S=snps.shape[1]
+    #0. checks
     N  = phenos.shape[0]
     P  = phenos.shape[1]
     
@@ -33,36 +95,37 @@ def kronecker_lmm(snps,phenos,Asnps=None,K1r=None,K2r=None,K1c=None,K2c=None,cov
         assert K2r.shape[0]==N, 'K2r: dimensions dismatch'
         assert K2r.shape[1]==N, 'K2r: dimensions dismatch'
 
+    covs,Acovs = updateKronCovs(covs,Acovs,N,P)
+    
+    #Asnps can be several designs
+    if (Asnps0 is None):
+        Asnps0 = [SP.ones([1,P])]
+    if Asnps1 is None:
+        Asnps1 = [SP.eye([P])]
+    if (type(Asnps0)!=list):
+        Asnps0 = [Asnps0]
+    if (type(Asnps1)!=list):
+        Asnps1 = [Asnps1]
+    assert (len(Asnps0)==1) and (len(Asnps1)>0), "need at least one Snp design matrix for null and alt model"
+    
+    #one row per column design matrix
+    pv = SP.zeros((len(Asnps1),snps.shape[1]))
+    lrt = SP.zeros((len(Asnps1),snps.shape[1]))
+    pvAlt = SP.zeros((len(Asnps1),snps.shape[1]))
+    lrtAlt = SP.zeros((len(Asnps1),snps.shape[1]))
+    
     #1. run GP model to infer suitable covariance structure
     if K1c==None or K2c==None:
-        print ".. Training the backgrond covariance with a GP model"
-        vc = VAR.CVarianceDecomposition(phenos)
-        vc.addMultiTraitTerm(XX,covar_type='rank1_diag')
-        vc.addMultiTraitTerm(Kn,covar_type='rank1_diag')
-        fixed = SP.ones([N,1])
-        vc.addFixedTerm(fixed)
-        vc.setScales()
-        pdb.set_trace()
-        start = time.time()
-        conv = vc.fit(fast=True)
+        vc = estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, covar_type=covar_type, rank=rank)
         K1c = vc.getEstTraitCovar(0)
         K2c = vc.getEstTraitCovar(1)
-        time_el = time.time()-start
-        print "Bg model trained in %.2f s" % time_el
     else:
         assert K1c.shape[0]==P, 'K1c: dimensions dismatch'
         assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
         assert K2c.shape[0]==P, 'K2c: dimensions dismatch'
         assert K2c.shape[1]==P, 'K2c: dimensions dismatch'
     
-    #2. run kroneckerLMM
-    if covs==None:
-        covs = SP.ones([N,1])#was covs = SP.zeros([N,1])
-    Xcov = covs
-    if Acovs is None:
-        Acovs = SP.eye(P)
-    if Asnps is None:
-        Asnps = SP.ones([1,P])
+    #2. run kroneckerLMM for null model
     lmm = limix.CKroneckerLMM()
     lmm.setK1r(K1r)
     lmm.setK1c(K1c)
@@ -70,17 +133,102 @@ def kronecker_lmm(snps,phenos,Asnps=None,K1r=None,K2r=None,K1c=None,K2c=None,cov
     lmm.setK2c(K2c)
     lmm.setSNPs(snps)
     #add covariates
-    lmm.addCovariates(Xcov,Acovs)
-    #add SNP design
-    lmm.setSNPcoldesign(Asnps)
+    for ic  in xrange(len(Acovs)):
+        lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
-    lmm.setNumIntervalsAlt(0)
+    if searchDelta:      lmm.setNumIntervalsAlt(100)
+    else:                   lmm.setNumIntervalsAlt(0)
     lmm.setNumIntervals0(100)
+    #add SNP design
+    lmm.setSNPcoldesign(Asnps0[0])
     lmm.process()
-    return lmm
+    dof0 = Asnps0[0].shape[0]
+    pv0 = lmm.getPv()
+    #lrt0 = lmm.getTestStatistics()#cl:this returns a 0
+    lrt0 = ST.chi2.isf(pv0,dof0)
+    for iA in xrange(len(Asnps1)):
+        dof1 = Asnps1[iA].shape[0]
+        dof = dof1-dof0
+        lmm.setSNPcoldesign(Asnps1[iA])
+        lmm.process()
+        pvAlt[iA,:] = lmm.getPv()[0]
+        #lrtAlt[iA,:] = lmm.getTestStatistics()[0]#cl:this returns a 0
+        lrtAlt[iA,:] = ST.chi2.isf(pvAlt[iA,:],dof1)
+        lrt[iA,:] = lrtAlt[iA,:] - lrt0[0] # Don't need the likelihood ratios, as null model is the same between the two models
+        pv[iA,:] = ST.chi2.sf(lrt[iA,:],dof)
+    return pv,lrt0,pv0,lrt,lrtAlt,pvAlt
 
 
-def simple_lmm(snps,pheno,K=None,covs=None,numIntervals0=None,numIntervalsAlt=None):
+
+## KroneckerLMM functions
+
+def kronecker_lmm(snps,phenos,Asnps=None,K1r=None,K2r=None,K1c=None,K2c=None,covs=None,Acovs=None,covar_type='lowrank_diag',rank=1,searchDelta=False):
+    """
+    simple wrapper for kroneckerLMM code
+    """
+    #0. checks
+    N  = phenos.shape[0]
+    P  = phenos.shape[1]
+    
+    if K1r==None:
+        K1r = SP.dot(snps,snps.T)
+    else:
+        assert K1r.shape[0]==N, 'K1r: dimensions dismatch'
+        assert K1r.shape[1]==N, 'K1r: dimensions dismatch'
+
+    if K2r==None:
+        K2r = SP.eye(N)
+    else:
+        assert K2r.shape[0]==N, 'K2r: dimensions dismatch'
+        assert K2r.shape[1]==N, 'K2r: dimensions dismatch'
+
+    covs,Acovs = updateKronCovs(covs,Acovs,N,P)
+    
+    #Asnps can be several designs
+    if Asnps is None:
+        Asnps = [SP.ones([1,P])]
+    if (type(Asnps)!=list):
+        Asnps = [Asnps]
+    assert len(Asnps)>0, "need at least one Snp design matrix"
+    
+    #one row per column design matrix
+    pv = SP.zeros((len(Asnps),snps.shape[1]))
+    
+    #1. run GP model to infer suitable covariance structure
+    if K1c==None or K2c==None:
+        vc = estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, covar_type=covar_type, rank=rank)
+        K1c = vc.getEstTraitCovar(0)
+        K2c = vc.getEstTraitCovar(1)
+    else:
+        assert K1c.shape[0]==P, 'K1c: dimensions dismatch'
+        assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
+        assert K2c.shape[0]==P, 'K2c: dimensions dismatch'
+        assert K2c.shape[1]==P, 'K2c: dimensions dismatch'
+    
+    #2. run kroneckerLMM
+    
+    lmm = limix.CKroneckerLMM()
+    lmm.setK1r(K1r)
+    lmm.setK1c(K1c)
+    lmm.setK2r(K2r)
+    lmm.setK2c(K2c)
+    lmm.setSNPs(snps)
+    #add covariates
+    for ic  in xrange(len(Acovs)):
+        lmm.addCovariates(covs[ic],Acovs[ic])
+    lmm.setPheno(phenos)
+    if searchDelta:      lmm.setNumIntervalsAlt(100)
+    else:                   lmm.setNumIntervalsAlt(0)
+    lmm.setNumIntervals0(100)
+    for iA in xrange(len(Asnps)):
+        #add SNP design
+        lmm.setSNPcoldesign(Asnps[iA])
+        lmm.process()
+        pv[iA,:] = lmm.getPv()[0]
+    return lmm,pv
+
+
+def simple_lmm(snps,pheno,K=None,covs=None):
     """
     Univariate fixed effects linear mixed model test for all SNPs
     ----------------------------------------------------------------------------
@@ -90,23 +238,17 @@ def simple_lmm(snps,pheno,K=None,covs=None,numIntervals0=None,numIntervalsAlt=No
     K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
                    If not provided, then linear regression analysis is performed
     covs   [N x D] SP.array of D covariates for N individuals
-    numIntervals0: number of bins for delta optimization (0 model)
-    numIntervalsAlt: number of bins for delta optimization (alt. model)
     -----------------------------------------------------------------------------
     Output:
     lmix LMM object
     """
     t0=time.time()
     if K is None:
-        K=SP.eye(N)
+        K=SP.eye(snps.shape[0])
     lm = limix.CLMM()
     lm.setK(K)
     lm.setSNPs(snps)
     lm.setPheno(pheno)
-    if numIntervals0 is not None:
-        lm.setNumIntervals0(numIntervals0)
-    if numIntervalsAlt is not None:
-        lm.setNumIntervalsAlt(numIntervalsAlt)
     if covs is None:
         covs = SP.ones((snps.shape[0],1))
     lm.setCovs(covs)
@@ -210,6 +352,7 @@ def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None):
     lm = simple_interaction(snps=Xinter,pheno=Yinter,covs=Covinter,Inter=Inter,Inter0=Inter0)
     return lm
 
+
 def simple_interaction(snps,pheno,Inter,covs = None,K=None,Inter0=None):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
@@ -248,7 +391,7 @@ def simple_interaction(snps,pheno,Inter,covs = None,K=None,Inter0=None):
     return lmi
 
 
-def forward_lmm_kronecker(snps,phenos,Asnps = None,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,threshold = 5e-8, maxiter = 2):
+def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,threshold = 5e-8, maxiter = 2,qvalues=False, update_covariances = False,covar_type='lowrank_diag',rank=1):
     """
     kronecker fixed effects test with forward selection
     ----------------------------------------------------------------------------
@@ -263,46 +406,130 @@ def forward_lmm_kronecker(snps,phenos,Asnps = None,K1r=None,K1c=None,K2r=None,K2
     maxiter        (int) maximum number of interaction scans. First scan is
                    without inclusion, so maxiter-1 inclusions can be performed.
                    (default 2)
+    qvalues        Use q-value threshold and return q-values in additoin
     -----------------------------------------------------------------------------
     Output:
     lm             lmix LMM object
+    resultStruct with elements:
     iadded         array of indices of SNPs included in order of inclusion
     pvadded        array of Pvalues obtained by the included SNPs in iteration
                    before inclusion
     pvall   [maxiter x S] SP.array of Pvalues for all iterations
+    Optional:      corresponding q-values
+    qvadded
+    qvall
     """
-    P=phenos.shape[1]
-    t0=time.time()
+    
+    #0. checks
+    N  = phenos.shape[0]
+    P  = phenos.shape[1]
+    
+    if K1r==None:
+        K1r = SP.dot(snps,snps.T)
+    else:
+        assert K1r.shape[0]==N, 'K1r: dimensions dismatch'
+        assert K1r.shape[1]==N, 'K1r: dimensions dismatch'
+
+    if K2r==None:
+        K2r = SP.eye(N)
+    else:
+        assert K2r.shape[0]==N, 'K2r: dimensions dismatch'
+        assert K2r.shape[1]==N, 'K2r: dimensions dismatch'
+
+    covs,Acovs = updateKronCovs(covs,Acovs,N,P)
+
     if Asnps is None:
-        Asnps = SP.ones((1,P))
-    lm = kronecker_lmm(snps=snps,phenos=phenos,Asnps=Asnps,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covs=covs,Acovs=Acovs)
+        Asnps = [SP.ones([1,P])]
+    if (type(Asnps)!=list):
+        Asnps = [Asnps]
+    assert len(Asnps)>0, "need at least one Snp design matrix"
+
+    if Acond is None:
+        Acond = Asnps
+    if (type(Acond)!=list):
+        Acond = [Acond]
+    assert len(Acond)>0, "need at least one Snp design matrix"
+
+    #1. run GP model to infer suitable covariance structure
+    if K1c==None or K2c==None:
+        vc = estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, covar_type=covar_type, rank=rank)
+        K1c = vc.getEstTraitCovar(0)
+        K2c = vc.getEstTraitCovar(1)
+    else:
+        vc = None
+        assert K1c.shape[0]==P, 'K1c: dimensions dismatch'
+        assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
+        assert K2c.shape[0]==P, 'K2c: dimensions dismatch'
+        assert K2c.shape[1]==P, 'K2c: dimensions dismatch'    
+    t0 = time.time()
+    lm,pv = kronecker_lmm(snps=snps,phenos=phenos,Asnps=Asnps,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covs=covs,Acovs=Acovs)
+    
     #get pv
     #start stuff
     iadded = []
     pvadded = []
-    pvall = SP.zeros((maxiter,snps.shape[1]))
+    qvadded = []
+    time_el = []
+    pvall = SP.zeros((pv.shape[0]*maxiter,pv.shape[1]))
+    qvall = None
     t1=time.time()
     print ("finished GWAS testing in %.2f seconds" %(t1-t0))
-    pv = lm.getPv()
-    pvall[0:1,:]=pv
-    imin= pv.argmin()
+    time_el.append(t1-t0)
+    pvall[0:pv.shape[0],:]=pv
+    imin= SP.unravel_index(pv.argmin(),pv.shape)
+    score=pv[imin].min()
     niter = 1
-    while (pv[0,imin]<threshold) and niter<maxiter:
+    if qvalues:
+        assert pv.shape[0]==1, "This is untested with the fdr package. pv.shape[0]==1 failed"
+        qvall = SP.zeros((maxiter,snps.shape[1]))
+        qv  = FDR.qvalues(pv)
+        qvall[0:1,:] = qv
+        score=qv[imin]
+    #loop:
+    while (score<threshold) and niter<maxiter:
         t0=time.time()
-        pvadded.append(pv[0,imin])
+        pvadded.append(pv[imin])
         iadded.append(imin)
-        #covs=SP.concatenate((covs,snps[:,imin:(imin+1)]),1)
-        lm.addCovariates(snps[:,imin:(imin+1)],Asnps)
-        lm.process()
-        pv = lm.getPv()
-        pvall[niter:niter+1,:]=pv
-        imin= pv.argmin()
+        if qvalues:
+            qvadded.append(qv[imin])
+        if update_covariances and vc is not None:
+            vc.addFixedTerm(snps[:,imin[1]:(imin[1]+1)],Acond[imin[0]])
+            vc.setScales()#CL: don't know what this does, but findLocalOptima crashes becahuse vc.noisPos=None
+            vc.findLocalOptima(fast=True)
+            K1c = vc.getEstTraitCovar(0)
+            K2c = vc.getEstTraitCovar(1)
+            lm.setK1c(K1c)
+            lm.setK2c(K2c)
+        lm.addCovariates(snps[:,imin[1]:(imin[1]+1)],Acond[imin[0]])
+        for i in xrange(len(Asnps)):
+            #add SNP design
+            lm.setSNPcoldesign(Asnps[i])
+            lm.process()
+            pv[i,:] = lm.getPv()[0]
+        pvall[niter*pv.shape[0]:(niter+1)*pv.shape[0]]=pv
+        imin= SP.unravel_index(pv.argmin(),pv.shape)
+        if qvalues:
+            qv = FDR.qvalues(pv)
+            qvall[niter:niter+1,:] = qv
+            score = qv[imin].min()
+        else:
+            score = pv[imin].min()
         t1=time.time()
         print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+        time_el.append(t1-t0)
         niter=niter+1
-    return lm,iadded,pvadded,pvall
+    RV = {}
+    RV['iadded']  = iadded
+    RV['pvadded'] = pvadded
+    RV['pvall']   = pvall
+    RV['time_el'] = time_el
+    if qvalues:
+        RV['qvall'] = qvall
+        RV['qvadded'] = qvadded
+    return lm,RV
 
-def forward_lmm(snps,pheno,K=None,covs=None,threshold = 5e-8, maxiter = 2):
+
+def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxiter = 2):
     """
     univariate fixed effects test with forward selection
     ----------------------------------------------------------------------------
@@ -326,25 +553,55 @@ def forward_lmm(snps,pheno,K=None,covs=None,threshold = 5e-8, maxiter = 2):
     pvall   [maxiter x S] SP.array of Pvalues for all iterations
     """
 
-
+    if K is None:
+        K=SP.eye(snps.shape[0])
+    if covs is None:
+        covs = SP.ones((snps.shape[0],1))
+    
+    lm = simple_lmm(snps,pheno,K=K,covs=covs)
     pvall = SP.zeros((maxiter,snps.shape[1]))
-    t1=time.time()
-    print ("finished GWAS testing in %.2f seconds" %(t1-t0))
     pv = lm.getPv()
     pvall[0:1,:]=pv
     imin= pv.argmin()
     niter = 1
-    while (pv[0,imin]<threshold) and niter<maxiter:
+    #start stuff
+    iadded = []
+    pvadded = []
+    qvadded = []
+    if qvalues:
+        assert pv.shape[0]==1, "This is untested with the fdr package. pv.shape[0]==1 failed"
+        qvall = SP.zeros((maxiter,snps.shape[1]))
+        qv  = FDR.qvalues(pv)
+        qvall[0:1,:] = qv
+        score=qv.min()
+    else:
+        score=pv.min()
+    while (score<threshold) and niter<maxiter:
         t0=time.time()
         iadded.append(imin)
         pvadded.append(pv[0,imin])
+        if qvalues:
+            qvadded.append(qv[0,imin])
         covs=SP.concatenate((covs,snps[:,imin:(imin+1)]),1)
         lm.setCovs(covs)
         lm.process()
         pv = lm.getPv()
         pvall[niter:niter+1,:]=pv
         imin= pv.argmin()
+        if qvalues:
+            qv = FDR.qvalues(pv)
+            qvall[niter:niter+1,:] = qv
+            score = qv.min()
+        else:
+            score = pv.min()
         t1=time.time()
         print ("finished GWAS testing in %.2f seconds" %(t1-t0))
         niter=niter+1
-    return lm,iadded,pvadded,pvall
+    RV = {}
+    RV['iadded']  = iadded
+    RV['pvadded'] = pvadded
+    RV['pvall']   = pvall
+    if qvalues:
+        RV['qvall'] = qvall
+        RV['qvadded'] = qvadded
+    return lm,RV
