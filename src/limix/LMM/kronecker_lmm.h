@@ -62,7 +62,7 @@ protected:
 	VectorXd S1c;
 	MatrixXd U2r,S2r;//These are actually decompositions of S1U1K2r (K1r^{-1/2} K2r K1r^{-1/2})
 	MatrixXd U2c,S2c;//These are actually decompositions of S1U1K2c (K1c^{-1/2} K2c K1c^{-1/2})
-
+	muint_t num_intervals0_inter;
 	
 	MatrixXdVec rowdesign0;
 	MatrixXdVec Urowdesign0;
@@ -70,11 +70,15 @@ protected:
 	MatrixXdVec coldesignU0;
 	MatrixXd snps;
 	MatrixXd Usnps;
+	MatrixXd snpcoldesign0_inter;
+	MatrixXd snpcoldesignU0_inter;
 	MatrixXd snpcoldesign;
 	MatrixXd snpcoldesignU;
 	MatrixXd nLL0;
+	MatrixXd nLL0_inter;
 	MatrixXd nLLAlt;
 	MatrixXd ldelta0;
+	MatrixXd ldelta0_inter;
 	MatrixXd ldeltaAlt;
 public:
 	CKroneckerLMM();
@@ -105,11 +109,23 @@ public:
 	{this->snps = snps;}
 	void setSNPcoldesign(const MatrixXd& design)
 	{this->snpcoldesign = design;}
+	void setSNPcoldesign0(const MatrixXd& design)
+	{this->snpcoldesign0_inter = design;}
+	
+	void setNumIntervals0_inter(muint_t num_intervals0_inter)
+	{this->num_intervals0_inter=num_intervals0_inter;}
+
+	muint_t getNumIntervals0_inter()
+	{return this->num_intervals0_inter;}
 
 	void agetNLL0(MatrixXd* out)
 	{
 		(*out) = nLL0;
 	}
+	void agetNLL0_inter(MatrixXd* out)
+	{
+		(*out) = nLL0_inter;
+	}	
 	void agetNLLAlt(MatrixXd *out)
 	{
 		(*out) = nLLAlt;
@@ -123,7 +139,10 @@ public:
 	{
 		(*out) = ldelta0;
 	}
-
+	void agetLdelta0_inter(MatrixXd *out)
+	{
+		(*out) = ldelta0;
+	}
 
 
 	/*! set Vecotr of covariates

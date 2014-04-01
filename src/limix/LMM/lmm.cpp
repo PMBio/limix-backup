@@ -356,7 +356,7 @@ int ALMM::getTestStatistics() const
             else
             	ldeltaAlt.col(is) = ldelta0;
 
-            //3. loop over phenotypes and evluate likelihood etc.
+            //3. loop over phenotypes and evaluate likelihood etc.
             for(muint_t ip=0;ip<num_pheno;++ip)
             {
             	//3.1 evaluate test statistics (foreground)
