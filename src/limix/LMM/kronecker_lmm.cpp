@@ -35,10 +35,11 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	}
 
 	//2. init result arrays
-	nLL0.resize(1,num_snps);
-	nLLAlt.resize(1,num_snps);
-	ldelta0.resize(1,num_snps);
-	ldeltaAlt.resize(1,num_snps);
+	this->nLL0.resize(1,num_snps);
+	this->nLLAlt.resize(1,num_snps);
+	this->ldelta0.resize(1,num_snps);
+	this->ldelta0_inter.resize(1,num_snps);
+	this->ldeltaAlt.resize(1,num_snps);
 	this->pv.resize(1,num_snps);
 
 	//3. update the decompositions
@@ -63,6 +64,8 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	mfloat_t deltaNLL;
 	MatrixXdVec UrowdesignAlt = Urowdesign0;
 	UrowdesignAlt.push_back(MatrixXd());
+	MatrixXdVec coldesignU0_inter = coldesignU0;
+	coldesignU0_inter.push_back(snpcoldesignU0_inter);
 	MatrixXdVec coldesignUAlt = coldesignU0;
 	coldesignUAlt.push_back(snpcoldesignU);
 	MatrixXd& Usnpcurrent = UrowdesignAlt[UrowdesignAlt.size()-1];
@@ -71,7 +74,28 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	{
 		//0. update mean term
 		Usnpcurrent = Usnps.block(0,is,num_samples,1);
-		
+
+		//2. evaluate null model for coldesign0_inter
+		mfloat_t ldelta0_inter = ldelta0(0,is);
+		mfloat_t nLL0_inter;
+		if (num_intervals0_inter>0)
+		{
+			nLL0_inter = CKroneckerLMM::optdelta(ldelta0_inter,coldesignU0_inter,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r, ldeltaminAlt, ldeltamaxAlt, num_intervals0_inter);
+		}
+		else
+		{
+			nLL = CKroneckerLMM::nLLeval(ldelta,coldesignUAlt,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r);
+		}
+		nLLAlt(0,is) = nLL;
+		ldeltaAlt(0,is) = ldelta;
+		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
+		//std::cout<< "nLL0(0,is)"<< nLL0(0,is)<< "nLLAlt(0,is)" << nLLAlt(0,is)<< "\n";
+		if (deltaNLL<0.0)
+		{
+			std::cout << "outch" << "\n";
+			deltaNLL = 0.0;
+		}
+
 		//2. evaluate alternative model
 		mfloat_t ldelta = ldelta0(0,is);
 		mfloat_t nLL;
@@ -97,6 +121,7 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	}
 
 }
+
 
 void CKroneckerLMM::addCovariates(const MatrixXd& covsR, const MatrixXd& covsCol)
 {
@@ -461,6 +486,8 @@ void CKroneckerLMM::updateDecomposition() throw(CGPMixException) {
 	//SNP column design matrix
 	//design for SNPs
 	this->snpcoldesignU.noalias() = snpcoldesign * this->Crot;
+	this->snpcoldesignU0_inter.noalias() = snpcoldesign0_inter * this->Crot;
+
 
 	//phenotype
 	Upheno.noalias() = this->Rrot.transpose() * pheno * this->Crot;
