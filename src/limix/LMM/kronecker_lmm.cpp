@@ -20,6 +20,7 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	muint_t num_terms=rowdesign0.size();
 	//estimate effective degrees of freedom: difference in number of weights
 	muint_t dof = snpcoldesign.rows();//actually this should be the rank of this design matrix
+	muint_t dof0_inter = snpcoldesign0_inter.rows();//actually this should be the rank of this design matrix
 	//if (num_terms!=coldesign0.size() || num_terms!=coldesignU0.size() || num_terms!=rowdesign0.size() || num_terms!=Urowdesign0.size())
 	if (num_terms!=coldesign0.size() || num_terms!=rowdesign0.size() )
 	{
@@ -38,10 +39,16 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	this->nLL0.resize(1,num_snps);
 	this->nLLAlt.resize(1,num_snps);
 	this->ldelta0.resize(1,num_snps);
-	this->ldelta0_inter.resize(1,num_snps);
 	this->ldeltaAlt.resize(1,num_snps);
-	this->pv.resize(1,num_snps);
-
+	if (this->snpcoldesign0_inter.rows()!=0) //check if interaction design matrix is set
+	{
+		this->nLL0_inter.resize(1,num_snps);
+		this->ldelta0_inter.resize(1,num_snps);
+		this->pv.resize(3,num_snps);
+	}
+	else{
+		this->pv.resize(1,num_snps);
+	}
 	//3. update the decompositions
 	this->updateDecomposition();
 
@@ -65,7 +72,10 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	MatrixXdVec UrowdesignAlt = Urowdesign0;
 	UrowdesignAlt.push_back(MatrixXd());
 	MatrixXdVec coldesignU0_inter = coldesignU0;
-	coldesignU0_inter.push_back(snpcoldesignU0_inter);
+	if (this->snpcoldesign0_inter.rows()!=0) //check if interaction design matrix is set
+	{
+		coldesignU0_inter.push_back(snpcoldesignU0_inter);
+	}
 	MatrixXdVec coldesignUAlt = coldesignU0;
 	coldesignUAlt.push_back(snpcoldesignU);
 	MatrixXd& Usnpcurrent = UrowdesignAlt[UrowdesignAlt.size()-1];
@@ -76,29 +86,30 @@ void CKroneckerLMM::process() throw (CGPMixException){
 		Usnpcurrent = Usnps.block(0,is,num_samples,1);
 
 		//2. evaluate null model for coldesign0_inter
-		mfloat_t ldelta0_inter = ldelta0(0,is);
-		mfloat_t nLL0_inter;
-		if (num_intervals0_inter>0)
+		mfloat_t ldelta= ldelta0(0,is);
+		mfloat_t nLL;
+		if (this->snpcoldesign0_inter.rows()!=0) //check if interaction design matrix is set
 		{
-			nLL0_inter = CKroneckerLMM::optdelta(ldelta0_inter,coldesignU0_inter,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r, ldeltaminAlt, ldeltamaxAlt, num_intervals0_inter);
-		}
-		else
-		{
-			nLL = CKroneckerLMM::nLLeval(ldelta,coldesignUAlt,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r);
-		}
-		nLLAlt(0,is) = nLL;
-		ldeltaAlt(0,is) = ldelta;
-		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
-		//std::cout<< "nLL0(0,is)"<< nLL0(0,is)<< "nLLAlt(0,is)" << nLLAlt(0,is)<< "\n";
-		if (deltaNLL<0.0)
-		{
-			std::cout << "outch" << "\n";
-			deltaNLL = 0.0;
+			if (num_intervals0_inter>0)
+			{
+				nLL = CKroneckerLMM::optdelta(ldelta,coldesignU0_inter,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r, ldeltaminAlt, ldeltamaxAlt, num_intervals0_inter);
+			}
+			else
+			{
+				nLL = CKroneckerLMM::nLLeval(ldelta,coldesignU0_inter,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r);
+			}
+			nLL0_inter(0,is) = nLL;
+			ldelta0_inter(0,is) = ldelta;
+			deltaNLL = nLL0(0,is) - nLL0_inter(0,is);
+			//std::cout<< "nLL0(0,is)"<< nLL0(0,is)<< "nLLAlt(0,is)" << nLLAlt(0,is)<< "\n";
+			if (deltaNLL<0.0)
+			{
+				std::cout << "outch" << "\n";
+				deltaNLL = 0.0;
+			}
 		}
 
-		//2. evaluate alternative model
-		mfloat_t ldelta = ldelta0(0,is);
-		mfloat_t nLL;
+		//3. evaluate alternative model
 		if (num_intervalsAlt>0)
 		{
 			nLL = CKroneckerLMM::optdelta(ldelta,coldesignUAlt,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r, ldeltaminAlt, ldeltamaxAlt, num_intervalsAlt);
@@ -116,8 +127,13 @@ void CKroneckerLMM::process() throw (CGPMixException){
 			std::cout << "outch" << "\n";
 			deltaNLL = 0.0;
 		}
-		//3. pvalues
-		this->pv(0, is) = Gamma::gammaQ(deltaNLL, (double)(0.5) * dof);
+		//pvalues
+		this->pv(0, is) = Gamma::gammaQ(nLL0(0,is) - nLLAlt(0,is), (double)(0.5) * dof);
+		if (this->snpcoldesign0_inter.rows()!=0) //check if interaction design matrix is set
+		{
+			this->pv(1, is) = Gamma::gammaQ(nLL0_inter(0,is) - nLLAlt(0,is), (double)(0.5) * (dof-dof0_inter));
+			this->pv(2, is) = Gamma::gammaQ(nLL0(0,is) - nLL0_inter(0,is), (double)(0.5) * dof0_inter);
+		}
 	}
 
 }
@@ -486,8 +502,10 @@ void CKroneckerLMM::updateDecomposition() throw(CGPMixException) {
 	//SNP column design matrix
 	//design for SNPs
 	this->snpcoldesignU.noalias() = snpcoldesign * this->Crot;
-	this->snpcoldesignU0_inter.noalias() = snpcoldesign0_inter * this->Crot;
-
+	if (this->snpcoldesign0_inter.rows()!=0) //check if interaction design matrix is set
+	{
+		this->snpcoldesignU0_inter.noalias() = snpcoldesign0_inter * this->Crot;
+	}
 
 	//phenotype
 	Upheno.noalias() = this->Rrot.transpose() * pheno * this->Crot;

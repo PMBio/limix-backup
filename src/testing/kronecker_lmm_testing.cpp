@@ -6,7 +6,7 @@
 // Test file for kronecker LMM test
 //============================================================================
 
-#if 0
+#if 1
 
 //#define debugkron 1
 
@@ -83,6 +83,7 @@ int main() {
 		MatrixXd wcovar = randn((muint_t)Wr_covar,(muint_t)Wc_covar);
 
 		MatrixXd A = MatrixXd::Identity((muint_t)Wc,(muint_t)P);
+		MatrixXd A_inter = MatrixXd::Ones(1,(muint_t)P);
 		MatrixXd A_covar = MatrixXd::Ones((muint_t)Wc_covar,(muint_t)P);
 		MatrixXd wnoise1 = randn((muint_t)Xr1.cols(),(muint_t)Xc1.rows());
 		MatrixXd wnoise2 = randn((muint_t)Xr2.cols(),(muint_t)Xc2.rows());
@@ -111,18 +112,21 @@ int main() {
 		lmm.setK2c(Kc2);
 		lmm.setK2r(Kr2);
 		lmm.setSNPs(S);
+		lmm.setSNPcoldesign0_inter(A_inter);
 		lmm.setSNPcoldesign(A);
 		lmm.setCovariates(Xcov,Acov);
 		lmm.setPheno(Y);
-		lmm.setNumIntervalsAlt(0);//TODO: nLLeval with delta unequal to 1 does not work properly yet
-		lmm.setNumIntervals0(100);//TODO: nLLeval with delta unequal to 1 does not work properly yet 
+		lmm.setNumIntervalsAlt(0);
+		lmm.setNumIntervals0_inter(0);
+		lmm.setNumIntervals0(100);
 		lmm.process();
 		MatrixXd pv = MatrixXd();
 		lmm.agetPv(&pv);
 		mfloat_t pvmean = pv.mean();
 		
+		
 		//std::cout << "pv:\n" << pv << "\n";
-		std::cout << "mean(pv)="<<pvmean<<"  max(pv)="<< pv.maxCoeff() << "  min(pv)="<<pv.minCoeff()<<"\n";
+		std::cout << "mean(pv)="<<pvmean<<"  max(pv)="<< pv.maxCoeff() << "  min(pv)="<<pv.minCoeff()<<" cols:"<<pv.cols()<<" rows:"<<pv.rows()<<"\n";
 		std::cout << "done.\n" ;
 		
 		}

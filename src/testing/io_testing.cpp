@@ -1,4 +1,4 @@
-#if 1
+#if 0
 //============================================================================
 // Name        : GPmix.cpp
 // C++ testig file for variance component QTL

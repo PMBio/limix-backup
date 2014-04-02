@@ -109,7 +109,7 @@ public:
 	{this->snps = snps;}
 	void setSNPcoldesign(const MatrixXd& design)
 	{this->snpcoldesign = design;}
-	void setSNPcoldesign0(const MatrixXd& design)
+	void setSNPcoldesign0_inter(const MatrixXd& design)
 	{this->snpcoldesign0_inter = design;}
 	
 	void setNumIntervals0_inter(muint_t num_intervals0_inter)
@@ -141,7 +141,7 @@ public:
 	}
 	void agetLdelta0_inter(MatrixXd *out)
 	{
-		(*out) = ldelta0;
+		(*out) = ldelta0_inter;
 	}
 
 
