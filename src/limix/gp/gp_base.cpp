@@ -1,9 +1,8 @@
-/*
- * gp_base.cpp
- *
- *  Created on: Nov 11, 2011
- *      Author: stegle
- */
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
+//
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
 
 #include "gp_base.h"
 #include "limix/utils/matrix_helper.h"

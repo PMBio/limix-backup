@@ -1,3 +1,9 @@
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
+//
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
+
 %shared_ptr(bost::enable_shared_from_this<CGPbase>)
 %shared_ptr(std::map<std::string,MatrixXd>)
 %shared_ptr(limix::CCovarianceFunctionCache)

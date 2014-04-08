@@ -1,9 +1,8 @@
-/*
- * combinators.h
- *
- *  Created on: Dec 28, 2011
- *      Author: stegle
- */
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
+//
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
 
 #ifndef COMBINATORS_H_
 #define COMBINATORS_H_

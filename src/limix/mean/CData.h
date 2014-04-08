@@ -1,9 +1,8 @@
-/*
- * CData.h
- *
- *  Created on: Jan 4, 2012
- *      Author: clippert
- */
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
+//
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
 
 #ifndef CDATA_H_
 #define CDATA_H_

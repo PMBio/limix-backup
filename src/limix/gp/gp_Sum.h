@@ -1,9 +1,8 @@
-/*
- * gp_kronecker.h
- *
- *  Created on: Jul 29, 2013
- *      Author: casale
- */
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
+//
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
 
 #ifndef GP_Sum_H_
 #define GP_Sum_H_
