@@ -1,9 +1,8 @@
-/*
- * genotype.h
- *
- *  Created on: May 16, 2013
- *      Author: stegle
- */
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
+//
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
 
 #ifndef GENOTYPE_H_
 #define GENOTYPE_H_

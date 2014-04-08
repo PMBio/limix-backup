@@ -1,9 +1,8 @@
-/*
- * trait.h
- *
- *  Created on: Jan 16, 2012
- *      Author: stegle
- */
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
+//
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
 
 #ifndef FREEFORM_H_
 #define FREEFORM_H_

@@ -1,11 +1,11 @@
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
+//
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
+
 #if 0
-//============================================================================
-// Name        : GPmix.cpp
-// Author      :
-// Version     :
-// Copyright   : Your copyright notice
-// Description : Hello World in C++, Ansi-style
-//============================================================================
+
 
 #include <iostream>
 #include "limix/types.h"

@@ -1,9 +1,8 @@
-/*
- * CVarianceDecomposition.cpp
- *
- *  Created on: Nov 27, 2012
- *      Author: stegle
- */
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
+//
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
 
 #include "CVarianceDecomposition.h"
 #include "limix/utils/matrix_helper.h"

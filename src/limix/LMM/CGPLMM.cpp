@@ -1,9 +1,8 @@
-/*
- * CGPLMM.cpp
- *
- *  Created on: Feb 13, 2012
- *      Author: stegle
- */
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
+//
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
 
 #include "CGPLMM.h"
 #include "limix/utils/gamma.h"
