@@ -31,25 +31,11 @@
     <Compile Include="gp_test.py" />
     <Compile Include="kronecker_lmm_test.py" />
     <Compile Include="kronecker_test.py" />
-    <Compile Include="limix\core.py" />
-    <Compile Include="limix\modules\FastVDMM.py" />
-    <Compile Include="limix\modules\multiTraitQTL.py" />
-    <Compile Include="limix\modules\qtl.py" />
-    <Compile Include="limix\modules\varianceDecomposition.py" />
-    <Compile Include="limix\modules\__init__.py" />
-    <Compile Include="limix\utils\fastlmm.py" />
-    <Compile Include="limix\utils\fdr.py" />
-    <Compile Include="limix\utils\preprocess.py" />
-    <Compile Include="limix\utils\util.py" />
-    <Compile Include="limix\utils\__init__.py" />
-    <Compile Include="limix\__init__.py" />
     <Compile Include="multitrait.py" />
     <Compile Include="test_lmm.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="limix\" />
-    <Folder Include="limix\modules\" />
-    <Folder Include="limix\utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>

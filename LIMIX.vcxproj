@@ -102,7 +102,6 @@
     <ClCompile Include="src\limix\mean\ADataTerm.cpp" />
     <ClCompile Include="src\limix\mean\CData.cpp" />
     <ClCompile Include="src\limix\mean\CKroneckerMean.cpp" />
-    <ClCompile Include="src\limix\mean\CKroneckerSumMean.cpp" />
     <ClCompile Include="src\limix\mean\CLinearMean.cpp" />
     <ClCompile Include="src\limix\mean\CSumLinear.cpp" />
     <ClCompile Include="src\limix\modules\CVarianceDecomposition.cpp" />
@@ -126,7 +125,6 @@
     <ClCompile Include="src\testing\vqtl_testing.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="src\limix\covar\combinators.h" />
     <ClInclude Include="src\limix\covar\covariance.h" />
     <ClInclude Include="src\limix\covar\dist.h" />
@@ -189,7 +187,6 @@
     <ClInclude Include="src\limix\lmm\lmm_old.h" />
     <ClInclude Include="src\limix\mean\ADataTerm.h" />
     <ClInclude Include="src\limix\mean\CData.h" />
-    <ClInclude Include="src\limix\mean\CKroneckerSumMean.h" />
     <ClInclude Include="src\limix\mean\CKroneckerMean.h" />
     <ClInclude Include="src\limix\mean\CLinearMean.h" />
     <ClInclude Include="src\limix\mean\CSumLinear.h" />
