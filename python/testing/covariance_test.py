@@ -7,10 +7,11 @@
 import sys
 sys.path.append(r'./..')
 sys.path.append(r'./../../../pygp')
-#sys.path.append(r'./../../debug.win32/interfaces/python')
+sys.path.append(r'./../../debug.win32/interfaces/python')
 
 
 import limix
+print limix.__file__
 import pygp.covar.linear as lin
 import pygp.covar.se as se
 import pygp.covar.gradcheck as GC
