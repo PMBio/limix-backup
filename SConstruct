@@ -36,6 +36,8 @@ help='Build development only commandline tools?', default=False)
 
 #override CXX compiler (for open MPI)
 AddOption('--CXX',dest='CXX',type='string',nargs=1,action='store',default=None,help='Manual specified CXX')
+#override CC compiler (for open MPI)
+AddOption('--CC',dest='CC',type='string',nargs=1,action='store',default=None,help='Manual specified CC')
 
 #build options:
 build_options= {}
@@ -45,6 +47,7 @@ build_options['with_developcpp'] = GetOption('with_developcpp')
 build_options['with_tests'] = GetOption('with_tests')
 build_options['with_documentation'] = GetOption('with_documentation')
 build_options['CXX'] = GetOption('CXX')
+build_options['CC'] = GetOption('CC')
 
 
 
@@ -80,6 +83,8 @@ else:
    # releasecflags.extend(['-msse','-msse2','-fopenmp'])         #extra compile flags for release
    releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
    # releaselinkflags.extend(['-lgomp'])
+   releaselinkflags.extend(['-lstdc++'])
+   debuglinkflags.extend(['-lstdc++'])
    debugcflags.extend(['-g','-Wextra'])
 
 #build environment
@@ -95,6 +100,8 @@ env.Append(CCFLAGS=cflags)
 env.Append(LINKFLAGS=linkflags)
 if build_options['CXX']:
    env['CXX'] = build_options['CXX']
+if build_options['CC']:
+   env['CC'] = build_options['CC']
 
 if mymode == 'debug':
    env.Append(CCFLAGS=debugcflags)
