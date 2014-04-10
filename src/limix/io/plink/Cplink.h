@@ -44,26 +44,26 @@ typedef  long long      LARGE_INTEGER;
 #include "CPlinkAlternatePhenotypeFile.h"
 #include "CSnpFilterOptions.h"
 #include "CPlinkFile.h"
+namespace plink {
+	const size_t NoMatch = -1;
 
-const size_t NoMatch = -1;
+	std::string missingPhenotypeString = "-9";  // default is -9
+	limix::mfloat_t missingPhenotypeValue = -9.0;
+	std::string missingGenotypeString = "-9";  // default is -9
+	limix::mfloat_t missingGenotypeValue = -9.0;
 
-std::string missingPhenotypeString = "-9";  // default is -9
-limix::mfloat_t missingPhenotypeValue  = -9.0;
-std::string missingGenotypeString  = "-9";  // default is -9
-limix::mfloat_t missingGenotypeValue   = -9.0;
+	struct FamRecord              // or struct IndividualInfo... ?
+	{
+		// used by Fam and TFam
+		std::string idFamily;           // can be alpha-numeric / or numeric... but no spaces
+		std::string idIndividual;       // idIndiviual+idFamily must be unique!
+		std::string idPaternal;         // must match another idIndividual ? (what is Family relationship?)
+		std::string idMaternal;         // must match another idIndividual ? (what is Family relationship?)
+		int    sex;                // 1=male, 2=female, other=unknown
+		limix::mfloat_t   phenotype;          // -9=missing, 0=missing, 1=unaffected, 2=affected, or real (anything other than 0,1,2,-9)
 
-struct FamRecord              // or struct IndividualInfo... ?
-   {
-   // used by Fam and TFam
-   std::string idFamily;           // can be alpha-numeric / or numeric... but no spaces
-   std::string idIndividual;       // idIndiviual+idFamily must be unique!
-   std::string idPaternal;         // must match another idIndividual ? (what is Family relationship?)
-   std::string idMaternal;         // must match another idIndividual ? (what is Family relationship?)
-   int    sex;                // 1=male, 2=female, other=unknown
-   limix::mfloat_t   phenotype;          // -9=missing, 0=missing, 1=unaffected, 2=affected, or real (anything other than 0,1,2,-9)
+		FamRecord() { sex = 0; phenotype = 0.0; }
+	};
 
-   FamRecord() {sex=0;phenotype=0.0;}
-   };
-
-
+}//end :plink
 #endif

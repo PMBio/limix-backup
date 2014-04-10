@@ -178,7 +178,7 @@ void CGPLMM::process() throw (CGPMixException)
 		if (deltaNLL<=0)
 			deltaNLL = 1E-10;
 		//3. pvalues
-		this->pv(0, is) = Gamma::gammaQ(deltaNLL, (double)(0.5) * getDegreesFredom());
+		this->pv(0, is) = stats::Gamma::gammaQ(deltaNLL, (double)(0.5) * getDegreesFredom());
 	}
 }
 

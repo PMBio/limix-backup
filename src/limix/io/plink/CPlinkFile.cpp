@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 /*
  *******************************************************************
  *
@@ -37,7 +31,7 @@
  * Include Files
  */
 #include "CPlinkFile.h"
-
+namespace plink {
 static limix::mfloat_t unknownOrMissing = std::numeric_limits<limix::mfloat_t>::quiet_NaN();
 static limix::mfloat_t homozygousPrimaryAllele = 0.0;
 static limix::mfloat_t heterozygousAllele = 1.0;
@@ -2958,3 +2952,4 @@ void CPlinkFile::ExtractSnpsFromDosage( CPlinkDatFile& datFile, CPlinkMapFile& m
    {
    ExtractSnpsFromRgMap();
    }
+}// end :plink

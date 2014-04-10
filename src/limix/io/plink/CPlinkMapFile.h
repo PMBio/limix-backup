@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 #if !defined( CPlinkMapFile_h )
 #define CPlinkMapFile_h
 /*
@@ -48,38 +42,40 @@
 
 #include "Cplink.h"
 
-struct MapRecord
-   {
-   SnpInfo snpInfo;           // the MapRecord only contains SNP description information
-   };
+namespace plink {
 
-class CPlinkMapFile
-   {
-public:
-   CPlinkMapFile();
-   CPlinkMapFile( const std::string& filename_ );
+	struct MapRecord
+	{
+		SnpInfo snpInfo;           // the MapRecord only contains SNP description information
+	};
+
+	class CPlinkMapFile
+	{
+	public:
+		CPlinkMapFile();
+		CPlinkMapFile(const std::string& filename_);
 #if 0
-   CPlinkMapFile( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ );
+		CPlinkMapFile( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ );
 #endif
-   ~CPlinkMapFile();
+		~CPlinkMapFile();
 
-   void     Load();
-   void     Load( const std::string& filename_ );
+		void     Load();
+		void     Load(const std::string& filename_);
 
-   size_t   CountOfMapRecords() { size_t rc = rgMapRecords.size(); return( rc ); }
-   size_t   CountOfSnps() { return( CountOfMapRecords() ); }
-   SnpInfo* PSnpInfo( const std::string& idSnp );
-   SnpInfo* PSnpInfo( size_t idxSnpInfo );
-   MapRecord* PMapRecord( size_t idx ) { MapRecord* pmr = &rgMapRecords[ idx ]; return( pmr ); }
+		size_t   CountOfMapRecords() { size_t rc = rgMapRecords.size(); return(rc); }
+		size_t   CountOfSnps() { return(CountOfMapRecords()); }
+		SnpInfo* PSnpInfo(const std::string& idSnp);
+		SnpInfo* PSnpInfo(size_t idxSnpInfo);
+		MapRecord* PMapRecord(size_t idx) { MapRecord* pmr = &rgMapRecords[idx]; return(pmr); }
 
-//private:
-   std::string   filename;
+		//private:
+		std::string   filename;
 #if 0
-   FILE     *pFile;
+		FILE     *pFile;
 #endif
 
-   std::vector< MapRecord >   rgMapRecords;
-   std::map< std::string, size_t > idSnpToSnpInfoIndex;
-   };
-
+		std::vector< MapRecord >   rgMapRecords;
+		std::map< std::string, size_t > idSnpToSnpInfoIndex;
+	};
+}//end :plink
 #endif      // CPlinkMapFile_h

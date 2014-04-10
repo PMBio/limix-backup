@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 #if !defined( CLexer_h )
 #define CLexer_h
 /*
@@ -42,54 +36,56 @@
 /*
  * 'Publish' our defines
  */
-typedef enum _TokType
-   {
-   tokError   = 0
-   ,tokTab    = '\t'
-   ,tokEOF    = 256
-   ,tokEOL
-   ,tokSymbol
-   ,tokSeparator
-   } TokType;
+namespace plink {
 
-class CToken
-   {
-public:
-   CToken() { type=tokError;offset=0;line=column=0; };
+	typedef enum _TokType
+	{
+		tokError = 0
+		, tokTab = '\t'
+		, tokEOF = 256
+		, tokEOL
+		, tokSymbol
+		, tokSeparator
+	} TokType;
 
-   TokType     type;       // stores Token Type
-   long long   offset;     // track file position of token
-   size_t      line;
-   size_t      column;
-   std::string      text;
-   };
+	class CToken
+	{
+	public:
+		CToken() { type = tokError; offset = 0; line = column = 0; };
 
-class CLexer
-   {
-public:
-   CLexer( const std::string& filename );
-   ~CLexer();
+		TokType     type;       // stores Token Type
+		long long   offset;     // track file position of token
+		size_t      line;
+		size_t      column;
+		std::string      text;
+	};
 
-   void        AdvanceCh();
-   void        SkipToEol();
-   void        SkipWhiteSpace();
-   int         LookAheadChar() { return( m_chLook ); }
-   size_t      CurColumn() { return( m_column ); }
-   size_t      CurLine()   { return( m_line ); }
-   std::string&     Filename()  { return( m_fileName ); }
-   long long   LexerFileOffset() {  return( _ftelli64( m_pFile )-1 ); }   // already read the first character
+	class CLexer
+	{
+	public:
+		CLexer(const std::string& filename);
+		~CLexer();
 
-private:
-   std::string   m_fileName;
-   FILE     *m_pFile;
+		void        AdvanceCh();
+		void        SkipToEol();
+		void        SkipWhiteSpace();
+		int         LookAheadChar() { return(m_chLook); }
+		size_t      CurColumn() { return(m_column); }
+		size_t      CurLine()   { return(m_line); }
+		std::string&     Filename()  { return(m_fileName); }
+		long long   LexerFileOffset() { return(_ftelli64(m_pFile) - 1); }   // already read the first character
 
-   // track file position
-   unsigned long m_line;
-   unsigned long m_column;       // expanded for tabs
-   int      m_cchInLine;         // count of characters in the line (
+	private:
+		std::string   m_fileName;
+		FILE     *m_pFile;
 
-   int      m_chLook;            // look ahead
-   std::string   m_text;
-   };
+		// track file position
+		unsigned long m_line;
+		unsigned long m_column;       // expanded for tabs
+		int      m_cchInLine;         // count of characters in the line (
 
+		int      m_chLook;            // look ahead
+		std::string   m_text;
+	};
+}// end: plink
 #endif      // CLexer

@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 #if !defined( CPhenData_h )
 #define CPhenData_h
 /*
@@ -46,31 +40,33 @@
 /*
  * 'Publish' our class declarations / function prototypes
  */
-class CPhenData
-   {
-public:
-   std::vector<std::string> rowLabels;
-   std::vector<std::string> columnLabels;
-   std::vector<std::vector<limix::mfloat_t> > phenVectors;       // temporary storage of Phenotype reads
+namespace plink {
 
-   size_t         cRows;
-   size_t         cColumns;
-   std::map<std::string, size_t> columnMap;      // map column to column index
-   std::map<std::string, size_t> rowMap;         // map column to column index
+	class CPhenData
+	{
+	public:
+		std::vector<std::string> rowLabels;
+		std::vector<std::string> columnLabels;
+		std::vector<std::vector<limix::mfloat_t> > phenVectors;       // temporary storage of Phenotype reads
 
-   limix::mfloat_t         *phenArray;
+		size_t         cRows;
+		size_t         cColumns;
+		std::map<std::string, size_t> columnMap;      // map column to column index
+		std::map<std::string, size_t> rowMap;         // map column to column index
 
-   CPhenData();
-   ~CPhenData();
-   void ReadPhenFile( std::string& phenFile );
-   void WritePhenFile( std::string& phenFile );
-   void CreateColumnMajorArrayFromVectors();
-   void CreateColumnMajorArrayFromVectorsAndMapping( std::vector<std::string> columnLabelOrder );
-   };
+		limix::mfloat_t         *phenArray;
+
+		CPhenData();
+		~CPhenData();
+		void ReadPhenFile(std::string& phenFile);
+		void WritePhenFile(std::string& phenFile);
+		void CreateColumnMajorArrayFromVectors();
+		void CreateColumnMajorArrayFromVectorsAndMapping(std::vector<std::string> columnLabelOrder);
+	};
 
 
-/*
- * 'Publish' the globals we define
- */
-
+	/*
+	 * 'Publish' the globals we define
+	 */
+}//end: plink
 #endif   // CPhenData_h

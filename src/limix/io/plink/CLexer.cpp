@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 /*
  *******************************************************************
  *
@@ -48,101 +42,104 @@
 /*
  * The code
  */
-CLexer::CLexer( const std::string& filename )
-   {
-   m_fileName = filename;
 
-   if ( m_fileName.size() == 0 )
-      {
-      Fatal( "Could not create CLexer.  Parameter 'filename' is zero length string" );
-      }
+namespace plink {
+	CLexer::CLexer(const std::string& filename)
+	{
+		m_fileName = filename;
 
-   m_pFile = fopen( m_fileName.c_str(), "rb" );          // read in binary to ensure ftell works right
+		if (m_fileName.size() == 0)
+		{
+			Fatal("Could not create CLexer.  Parameter 'filename' is zero length string");
+		}
 
-   if ( !m_pFile )
-      {
-      std::string fullPath = FullPath( m_fileName );
-      Fatal( "Cannot open input file [%s].\n  CRT Error %d: %s", fullPath.c_str(), errno, strerror( errno ) );
-      }
+		m_pFile = fopen(m_fileName.c_str(), "rb");          // read in binary to ensure ftell works right
 
-   m_chLook = 0;
-   m_line = 1ul;
-   m_column = 1ul;
-   AdvanceCh();            // this will read the first character into m_chLook
-                           //   and advance cchInLine 1 with a '\0' in m_chLook
-   m_cchInLine = 0;        //   so reset m_cchInLine properly
+		if (!m_pFile)
+		{
+			std::string fullPath = FullPath(m_fileName);
+			Fatal("Cannot open input file [%s].\n  CRT Error %d: %s", fullPath.c_str(), errno, strerror(errno));
+		}
 
-   m_text.clear();
+		m_chLook = 0;
+		m_line = 1ul;
+		m_column = 1ul;
+		AdvanceCh();            // this will read the first character into m_chLook
+		//   and advance cchInLine 1 with a '\0' in m_chLook
+		m_cchInLine = 0;        //   so reset m_cchInLine properly
 
-   }
+		m_text.clear();
 
-CLexer::~CLexer()
-   {
-   if ( m_pFile )
-      {
-      if ( fclose( m_pFile ) != 0 )
-         {
-         std::string fullPath = FullPath( m_fileName );
-         Fatal( "fclose( %s ) failed.\n  CRT Error %d: %s", fullPath.c_str(), errno, strerror( errno ) );
-         }
-      m_pFile = nullptr;
-      }
+	}
 
-   m_fileName.clear();
-   }
+	CLexer::~CLexer()
+	{
+		if (m_pFile)
+		{
+			if (fclose(m_pFile) != 0)
+			{
+				std::string fullPath = FullPath(m_fileName);
+				Fatal("fclose( %s ) failed.\n  CRT Error %d: %s", fullPath.c_str(), errno, strerror(errno));
+			}
+			m_pFile = nullptr;
+		}
 
-void CLexer::AdvanceCh()
-   {
-   /*
-    * Advancing the character pointer so keep track of the 'file' location in row column too
-    */
-   if ( m_chLook == '\n')
-      {
-      m_column = 1;
-      m_cchInLine = 0;
-      ++m_line;
-      }
-   else if ( m_chLook == '\t')
-      {
-      m_column = ((m_column+8) & (~(8-1)))+1;
-      ++m_cchInLine;
-      }
-   else if ( (m_chLook >= ' ') && (m_chLook <= '~') )         // printable?
-      {
-      ++m_cchInLine;
-      ++m_column;
-      }
-   else 
-      {
-      ++m_cchInLine;
-      // don't know what to do with column (eg. \a or 'bell')
-      }
+		m_fileName.clear();
+	}
 
-SkipCh:
-   m_chLook = fgetc( m_pFile );                             // advance to next charater?
-   if (m_chLook == '\r')
-      {
-      m_column = 1;
-      m_cchInLine = 0;
-      goto SkipCh;                                          // swallow <cr> and let them become <nl> or '\n'
-      }
+	void CLexer::AdvanceCh()
+	{
+		/*
+		 * Advancing the character pointer so keep track of the 'file' location in row column too
+		 */
+		if (m_chLook == '\n')
+		{
+			m_column = 1;
+			m_cchInLine = 0;
+			++m_line;
+		}
+		else if (m_chLook == '\t')
+		{
+			m_column = ((m_column + 8) & (~(8 - 1))) + 1;
+			++m_cchInLine;
+		}
+		else if ((m_chLook >= ' ') && (m_chLook <= '~'))         // printable?
+		{
+			++m_cchInLine;
+			++m_column;
+		}
+		else
+		{
+			++m_cchInLine;
+			// don't know what to do with column (eg. \a or 'bell')
+		}
 
-   }
+	SkipCh:
+		m_chLook = fgetc(m_pFile);                             // advance to next charater?
+		if (m_chLook == '\r')
+		{
+			m_column = 1;
+			m_cchInLine = 0;
+			goto SkipCh;                                          // swallow <cr> and let them become <nl> or '\n'
+		}
 
-void CLexer::SkipToEol()
-   {
-   do
-      {
-      AdvanceCh();
-      } while( (LookAheadChar() != EOF) 
-            && (LookAheadChar() != '\n') );
-   }
+	}
 
-void CLexer::SkipWhiteSpace()
-   {
-   do
-      {
-      AdvanceCh();
-      } while( (LookAheadChar() == ' ') 
-            || (LookAheadChar() == '\t') );
-   }
+	void CLexer::SkipToEol()
+	{
+		do
+		{
+			AdvanceCh();
+		} while ((LookAheadChar() != EOF)
+			&& (LookAheadChar() != '\n'));
+	}
+
+	void CLexer::SkipWhiteSpace()
+	{
+		do
+		{
+			AdvanceCh();
+		} while ((LookAheadChar() == ' ')
+			|| (LookAheadChar() == '\t'));
+	}
+}// end :plink

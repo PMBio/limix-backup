@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 #if !defined( CSnpInfo_h )
 #define CSnpInfo_h
 /*
@@ -21,57 +15,59 @@
 
 #include "Cplink.h"
 
-struct SnpNucleotides         // what two nucleotides occur here
-   {
-   char alleles[2];
+namespace plink {
 
-   SnpNucleotides() {Clear();}
-   void Clear() {alleles[0] = alleles[1] = '\0';}
-   };
+	struct SnpNucleotides         // what two nucleotides occur here
+	{
+		char alleles[2];
 
-struct SnpProbabilities       // With what probabilities do each
-   {                          //   major & minor nucleotide appear
-   limix::mfloat_t probabilityOfHomozygousMinor;
-   limix::mfloat_t probabilityOfHeterozygous;
+		SnpNucleotides() { Clear(); }
+		void Clear() { alleles[0] = alleles[1] = '\0'; }
+	};
 
-   SnpProbabilities() {Clear();}
-   SnpProbabilities( limix::mfloat_t homozygousMinor, limix::mfloat_t heterozygous );
-   void Clear() {probabilityOfHomozygousMinor = probabilityOfHeterozygous = 0.0;}
-   };
+	struct SnpProbabilities       // With what probabilities do each
+	{                          //   major & minor nucleotide appear
+		limix::mfloat_t probabilityOfHomozygousMinor;
+		limix::mfloat_t probabilityOfHeterozygous;
 
-inline SnpProbabilities::SnpProbabilities( limix::mfloat_t homozygousMinor, limix::mfloat_t heterozygous )
-   {
-   probabilityOfHomozygousMinor = homozygousMinor;
-   probabilityOfHeterozygous = heterozygous;
-   }
+		SnpProbabilities() { Clear(); }
+		SnpProbabilities(limix::mfloat_t homozygousMinor, limix::mfloat_t heterozygous);
+		void Clear() { probabilityOfHomozygousMinor = probabilityOfHeterozygous = 0.0; }
+	};
 
-inline bool operator==( const SnpProbabilities& lhs, const SnpProbabilities& rhs ) 
-   {
-   if ( (lhs.probabilityOfHomozygousMinor == rhs.probabilityOfHomozygousMinor) 
-     && (lhs.probabilityOfHeterozygous == rhs.probabilityOfHeterozygous) )
-      {
-      return( true );
-      }
-   return( false );
-   };
+	inline SnpProbabilities::SnpProbabilities(limix::mfloat_t homozygousMinor, limix::mfloat_t heterozygous)
+	{
+		probabilityOfHomozygousMinor = homozygousMinor;
+		probabilityOfHeterozygous = heterozygous;
+	}
 
-inline bool operator!=( const SnpProbabilities& lhs, const SnpProbabilities& rhs )
-   {
-   return( !(lhs == rhs) );
-   }
+	inline bool operator==(const SnpProbabilities& lhs, const SnpProbabilities& rhs)
+	{
+		if ((lhs.probabilityOfHomozygousMinor == rhs.probabilityOfHomozygousMinor)
+			&& (lhs.probabilityOfHeterozygous == rhs.probabilityOfHeterozygous))
+		{
+			return(true);
+		}
+		return(false);
+	};
 
-struct SnpInfo                // information that describes a SNP
-   {
-   int    iChromosome;        // 1-22, X, Y, XY, MT, or 0 if unplaced
-   std::string idChromosome;
-   std::string idSnp;              // rs# or snp identifier
-   limix::mfloat_t   geneticDistance;    // morgans
-   int    basepairPosition;   // bp units
-   char   majorAllele;        // A2 when reading/writing
-   char   minorAllele;        // A1 when reading/writing
+	inline bool operator!=(const SnpProbabilities& lhs, const SnpProbabilities& rhs)
+	{
+		return(!(lhs == rhs));
+	}
 
-   SnpInfo() {iChromosome=basepairPosition=0;geneticDistance=0.0;majorAllele=minorAllele='\0';}
-   void Clear() {iChromosome=basepairPosition=0;geneticDistance=0.0;majorAllele=minorAllele='\0';idChromosome.clear();idSnp.clear();}
-   };
+	struct SnpInfo                // information that describes a SNP
+	{
+		int    iChromosome;        // 1-22, X, Y, XY, MT, or 0 if unplaced
+		std::string idChromosome;
+		std::string idSnp;              // rs# or snp identifier
+		limix::mfloat_t   geneticDistance;    // morgans
+		int    basepairPosition;   // bp units
+		char   majorAllele;        // A2 when reading/writing
+		char   minorAllele;        // A1 when reading/writing
 
+		SnpInfo() { iChromosome = basepairPosition = 0; geneticDistance = 0.0; majorAllele = minorAllele = '\0'; }
+		void Clear() { iChromosome = basepairPosition = 0; geneticDistance = 0.0; majorAllele = minorAllele = '\0'; idChromosome.clear(); idSnp.clear(); }
+	};
+}//end :plink
 #endif   // CSnpInfo_h

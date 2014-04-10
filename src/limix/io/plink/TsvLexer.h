@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 #if !defined( TsvLexer_h )
 #define TsvLexer_h
 /*
@@ -45,16 +39,18 @@
 /*
  * 'Publish' our class declarations / function prototypes
  */
-class CTsvLexer : CLexer
-   {
-public:
-   CTsvLexer( std::string filename );
-   ~CTsvLexer();
-   unsigned NextToken( CToken& tok );
-   };
+namespace plink {
 
-/*
- * 'Publish' the globals we define
- */
+	class CTsvLexer : CLexer
+	{
+	public:
+		CTsvLexer(std::string filename);
+		~CTsvLexer();
+		unsigned NextToken(CToken& tok);
+	};
 
+	/*
+	 * 'Publish' the globals we define
+	 */
+}// end :plink
 #endif   // TsvLexer_h

@@ -270,7 +270,7 @@ void train_associations(MatrixXd* pvals,const MatrixXd& X,const MatrixXd& Y,cons
 			MatrixXd f_tests;
 			nLL(ip,is) = nLLeval(f_tests,ldelta(ip,is),UY_,UX_,S);
 			//4. calc lod score
-			(*pvals)(ip,is) = Gamma::gammaQ(nLL0(ip)-nLL(ip,is),(double)0.5);
+			(*pvals)(ip,is) = stats::Gamma::gammaQ(nLL0(ip)-nLL(ip,is),(double)0.5);
 		} //end for SNP
 	}//end for phenotypes
 }
@@ -418,15 +418,15 @@ for (int is=0;is<ns;is++)
 		{
 			nLL0(ip,is)   = nLLeval(f_tests,_ldelta0,UY_,Ucovariates_,S);
 			//calc p-value
-			(*pvals)(ip,is) = Gamma::gammaQ(nLL0(ip,is)-nLL(ip,is),(double)0.5*1.0);
+			(*pvals)(ip, is) = stats::Gamma::gammaQ(nLL0(ip, is) - nLL(ip, is), (double)0.5*1.0);
 		}
 		else
 		{
 			//calc p-value
-			(*pvals)(ip,is) = 1.0 -FisherF::Cdf(f_tests(nc+ni+1),1.0 , (double)(nn - f_tests.rows()));
+			(*pvals)(ip, is) = 1.0 - stats::FisherF::Cdf(f_tests(nc + ni + 1), 1.0, (double)(nn - f_tests.rows()));
 		}
-		//double pval_F = 1.0 -FisherF::Cdf(f_tests(nc+ni+1),1.0 , (double)(nn - f_tests.rows()));
-		//double pval_LRT=Gamma::gammaQ(nLL0(ip,is)-nLL(ip,is),(double)0.5*1.0);
+		//double pval_F = 1.0 - stats::FisherF::Cdf(f_tests(nc+ni+1),1.0 , (double)(nn - f_tests.rows()));
+		//double pval_LRT=stats::Gamma::gammaQ(nLL0(ip,is)-nLL(ip,is),(double)0.5*1.0);
 		//printf("nLL0 : %.4f nLL : %.4f F: %.4f, LRT %.4f, \ndiff = %.4f, fstat: %.4f, p_f: %.4f\n",nLL0(ip,is),nLL(ip,is), log(pval_F),log(pval_LRT),log(pval_F)-log(pval_LRT),f_tests(nc+ni+1), FisherF::Cdf(f_tests(nc+ni+1),1.0 , (double)(nn - f_tests.rows())));
 		//printf("\n");
 	}// :: for pheno
@@ -494,7 +494,7 @@ void train_associations_SingleSNP(MatrixXd* PV, MatrixXd* LL, MatrixXd* ldelta, 
 		//fit delta on null model
 		MatrixXd f_tests(nc+1,1);
 		(*LL)(ip,0)   = -1.0*nLLeval(f_tests, (*ldelta)(ip), UY_, UX_, S);
-		(*PV)(ip,0) = 1.0-FisherF::Cdf(f_tests(1,0), 1.0 , (double)(nn - f_tests.rows()));
+		(*PV)(ip, 0) = 1.0 - stats::FisherF::Cdf(f_tests(1, 0), 1.0, (double)(nn - f_tests.rows()));
 		//printf("ip : %i, ldelta : %.4f, PV: %.4f LL: %.4f\n", (int)ip, ldelta(ip),(PV(ip)),LL(ip));
 		//  for(size_t dim = 0; dim<(size_t)f_tests.rows();++dim)
 		//	{

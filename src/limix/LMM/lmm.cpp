@@ -372,13 +372,13 @@ int ALMM::getTestStatistics() const
                 	mfloat_t DL = nLL0(ip, 0) - nLLAlt(ip, is);
                 	if (DL<0)
                 		DL = 0;
-                    this->pv(ip, is) = Gamma::gammaQ(DL, (double)0.5 * 1.0);
+                    this->pv(ip, is) = stats::Gamma::gammaQ(DL, (double)0.5 * 1.0);
                 }
                 else if(this->testStatistics == ALMM::TEST_F)
                     {
                     	//store ftest statitics for testing SNP
                     	f_tests(ip,is) = f_tests_(0,0);
-                        this->pv(ip, is) = 1.0 - FisherF::Cdf(f_tests_(0,0), 1.0, (double)(num_samples - f_tests_.rows()));
+                        this->pv(ip, is) = 1.0 - stats::FisherF::Cdf(f_tests_(0,0), 1.0, (double)(num_samples - f_tests_.rows()));
                     }
             } //end :: for ip
 
@@ -539,12 +539,12 @@ int ALMM::getTestStatistics() const
         			//for likelihood ratios, we require evaluation on the new null model due to I0:
         			nLLevalEx(AObeta_,AObeta_ste_,AOsigma_,f_tests_,nLL0.block(ip,is,1,1),Upheno.col(ip), UXps.block(0,num_inter,num_samples,num_inter0+num_covs), S,ldelta0(ip, is),false);
         			//adjust degrees of freedom and calc pv:
-        			this->pv(ip, is) = Gamma::gammaQ(nLL0(ip, is) - nLLAlt(ip, is), (double)0.5*(num_inter));
+        			this->pv(ip, is) = stats::Gamma::gammaQ(nLL0(ip, is) - nLLAlt(ip, is), (double)0.5*(num_inter));
         		}
         		else if (this->testStatistics==ALMM::TEST_F)
         		{
         			f_tests(ip,is) = f_tests_(0,0);
-        			this->pv(ip,is) = 1.0 -FisherF::Cdf(f_tests_(0,0),1.0 , (double)(num_samples - f_tests_.rows()));
+        			this->pv(ip,is) = 1.0 - stats::FisherF::Cdf(f_tests_(0,0),1.0 , (double)(num_samples - f_tests_.rows()));
         		}
         	} //end for SNP
 	}
@@ -777,7 +777,7 @@ int ALMM::getTestStatistics() const
     		//fit delta on null model
     		MatrixXd f_tests(nc+1,1);
     		(*LL)(ip,0)   = -1.0*nLLeval(&f_tests, (*ldelta)(ip), UY_, UX_, S);
-    		(*PV)(ip,0) = 1.0-FisherF::Cdf(f_tests(1,0), 1.0 , (double)(nn - f_tests.rows()));
+    		(*PV)(ip,0) = 1.0 - stats::FisherF::Cdf(f_tests(1,0), 1.0 , (double)(nn - f_tests.rows()));
     		//printf("ip : %i, ldelta : %.4f, PV: %.4f LL: %.4f\n", (int)ip, ldelta(ip),(PV(ip)),LL(ip));
     		//  for(size_t dim = 0; dim<(size_t)f_tests.rows();++dim)
     		//	{

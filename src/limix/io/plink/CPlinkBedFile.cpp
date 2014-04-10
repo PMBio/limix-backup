@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 /*
  *******************************************************************
  *
@@ -41,100 +35,101 @@
  * Include Files
  */
 #include "CPlinkBedFile.h"
+namespace plink {
+	CBedFile::CBedFile(const std::string& filename_, size_t cIndividuals_, size_t cSnps_)
+	{
+		filename = FullPath(filename_);         // save class local copy of expanded filename
+		cIndividuals = cIndividuals_;
+		cSnps = cSnps_;
+		cbStride = 0;
 
-CBedFile::CBedFile( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ )
-   {
-   filename = FullPath( filename_ );         // save class local copy of expanded filename
-   cIndividuals = cIndividuals_;
-   cSnps = cSnps_;
-   cbStride = 0;
+		if (filename.empty())
+		{
+			Fatal("Could not create BedFile Reader.  Parameter 'filename' is zero length string");
+		}
 
-   if ( filename.empty() )
-      {
-      Fatal( "Could not create BedFile Reader.  Parameter 'filename' is zero length string" );
-      }
+		pFile = fopen(filename.c_str(), "rb");  // read in binary to ensure ftell works right
+		if (!pFile)
+		{
+			Fatal("Cannot open input file [%s].\n  CRT Error %d: %s", filename.c_str(), errno, strerror(errno));
+		}
 
-   pFile = fopen( filename.c_str(), "rb" );  // read in binary to ensure ftell works right
-   if ( !pFile )
-      {
-      Fatal( "Cannot open input file [%s].\n  CRT Error %d: %s", filename.c_str(), errno, strerror( errno ) );
-      }
+		//  Verify 'magic' number
+		unsigned char rd1 = NextChar();
+		unsigned char rd2 = NextChar();
+		if ((bedFileMagic1 != rd1) || (bedFileMagic2 != rd2))
+		{
+			Fatal("Invalid BED file [%s]."
+				"\n  BED file header is incorrect."
+				"\n  Expected magic number of 0x%02x 0x%02x, found 0x%02x 0x%02x",
+				filename.c_str(), bedFileMagic1, bedFileMagic2, rd1, rd2);
+		}
 
-   //  Verify 'magic' number
-   unsigned char rd1 = NextChar();
-   unsigned char rd2 = NextChar();
-   if ( (bedFileMagic1 != rd1) || (bedFileMagic2 != rd2))
-      {
-      Fatal( "Invalid BED file [%s]."
-           "\n  BED file header is incorrect."
-           "\n  Expected magic number of 0x%02x 0x%02x, found 0x%02x 0x%02x", 
-               filename.c_str(), bedFileMagic1, bedFileMagic2, rd1, rd2 );
-      }
+		// Verify 'mode' is valid
+		unsigned char rd3 = NextChar();
+		switch (rd3)
+		{
+		case 0:  // mode = 'IndividualMajor' or RowMajor
+			layout = GroupGenotypesByIndividual;   // all SNPs per individual are sequential in memory
+			cbStride = (cSnps + 3) / 4;              // 4 genotypes per byte so round up
+			break;
+		case 1:  // mode = 'SnpMajor' or ColumnMajor
+			layout = GroupGenotypesBySnp;          // all individuals per SNP are sequential in memory
+			cbStride = (cIndividuals + 3) / 4;       // 4 genotypes per byte so round up
+			break;
+		default:
+			Fatal("Invalid BED file [%s].  BED file header is incorrect.  Expected mode to be 0 or 1, found %d", filename.c_str(), rd3);
+			break;
+		}
+	}
 
-   // Verify 'mode' is valid
-   unsigned char rd3 = NextChar();
-   switch( rd3 )
-      {
-   case 0:  // mode = 'IndividualMajor' or RowMajor
-      layout = GroupGenotypesByIndividual;   // all SNPs per individual are sequential in memory
-      cbStride = (cSnps + 3)/4;              // 4 genotypes per byte so round up
-      break;
-   case 1:  // mode = 'SnpMajor' or ColumnMajor
-      layout = GroupGenotypesBySnp;          // all individuals per SNP are sequential in memory
-      cbStride = (cIndividuals + 3)/4;       // 4 genotypes per byte so round up
-      break;
-   default:
-      Fatal( "Invalid BED file [%s].  BED file header is incorrect.  Expected mode to be 0 or 1, found %d", filename.c_str(), rd3 );
-      break;
-      }
-   }
+	CBedFile::~CBedFile()
+	{
+		if (pFile)
+		{
+			fclose(pFile);
+			pFile = nullptr;
+		}
+	}
 
-CBedFile::~CBedFile()
-   {
-   if ( pFile )
-      {
-      fclose( pFile );
-      pFile = nullptr;
-      }
-   }
+	int CBedFile::NextChar()
+	{
+		int value = fgetc(pFile);
+		if (value == EOF)
+		{
+			Fatal("Invalid BED file [%s].  Encountered EOF before exepected.", filename.c_str());
+		}
+		return((unsigned char)value);
+	}
 
-int CBedFile::NextChar()
-   {
-   int value = fgetc( pFile );
-   if ( value == EOF )
-      {
-      Fatal( "Invalid BED file [%s].  Encountered EOF before exepected.", filename.c_str() );
-      }
-   return( (unsigned char)value );
-   }
+	size_t CBedFile::Read(BYTE *pb, size_t cbToRead)
+	{
+		size_t cbRead = fread(pb, 1, cbToRead, pFile);
+		if (cbRead != cbToRead)
+		{
+			if (feof(pFile))
+			{
+				Fatal("Encountered EOF before exepected in BED file. Invalid BED file [%s]", filename.c_str());
+			}
+			int err = ferror(pFile);
+			if (err)
+			{
+				Fatal("Encountered a file error %d in BED file [%s]", err, filename.c_str());
+			}
+		}
+		return(cbRead);
+	}
 
-size_t CBedFile::Read( BYTE *pb, size_t cbToRead )
-   {
-   size_t cbRead = fread( pb, 1, cbToRead, pFile );
-   if ( cbRead != cbToRead )
-      {
-      if ( feof( pFile ) )
-         {
-         Fatal( "Encountered EOF before exepected in BED file. Invalid BED file [%s]", filename.c_str() );
-         }
-      int err = ferror( pFile );
-      if ( err )
-         {
-         Fatal( "Encountered a file error %d in BED file [%s]", err, filename.c_str() );
-         }
-      }
-   return( cbRead );
-   }
+	size_t CBedFile::ReadLine(BYTE *pb, size_t idx)
+	{
+		long long fpos = cbHeader + (idx*cbStride);
+		long long fposCur = _ftelli64(pFile);
+		if (fpos != fposCur)
+		{
+			_fseeki64(pFile, fpos, SEEK_SET);
+		}
 
-size_t CBedFile::ReadLine( BYTE *pb, size_t idx )
-   {
-   long long fpos = cbHeader + (idx*cbStride);
-   long long fposCur = _ftelli64( pFile );
-   if ( fpos != fposCur )
-      {
-      _fseeki64( pFile, fpos, SEEK_SET );
-      }
-   
-   size_t cbRead = Read( pb, cbStride );
-   return( cbRead );
-   }
+		size_t cbRead = Read(pb, cbStride);
+		return(cbRead);
+	}
+}// end :plink

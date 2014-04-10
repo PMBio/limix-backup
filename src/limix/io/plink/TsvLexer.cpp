@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 /*
  *******************************************************************
  *
@@ -49,54 +43,57 @@
 /*
  * The code
  */
-CTsvLexer::CTsvLexer( std::string filename ) : CLexer( filename )
-   {
-   // CLexer does all the initialization
-   }
+namespace plink {
 
-CTsvLexer::~CTsvLexer()
-   {
-   // CLexer does all the cleanup right now
-   }
+	CTsvLexer::CTsvLexer(std::string filename) : CLexer(filename)
+	{
+		// CLexer does all the initialization
+	}
+
+	CTsvLexer::~CTsvLexer()
+	{
+		// CLexer does all the cleanup right now
+	}
 
 
-unsigned CTsvLexer::NextToken( CToken& tok )
-   {
-   tok.type = tokError;
-   tok.column = CurColumn();     // get the current position so we start collecting the token --  m_column;
-   tok.line = CurLine(); 
-   tok.offset = LexerFileOffset();
-   tok.text.clear();
+	unsigned CTsvLexer::NextToken(CToken& tok)
+	{
+		tok.type = tokError;
+		tok.column = CurColumn();     // get the current position so we start collecting the token --  m_column;
+		tok.line = CurLine();
+		tok.offset = LexerFileOffset();
+		tok.text.clear();
 
-   switch( LookAheadChar() )
-      {
-   case EOF:      // return EOF token
-      tok.type = tokEOF;
-      break;
-   case '\t':     // return a TAB token
-      tok.type = tokTab;
-      AdvanceCh();
-      break;
-   case '\n':     // return a EOL token
-      tok.type = tokEOL;
-      AdvanceCh();
-      break;
-   default:       // see if it is a Symbol (ascii printable)
-      if ( (LookAheadChar() < ' ') || (LookAheadChar() > '~') )
-         {
-         Fatal( "Found invalid character in file [%s] at Line: %d Column: %d", Filename().c_str(), tok.line, tok.column );
-         break;
-         }
-      
-      // accumulate ascii printable characters as a symbol
-      while ( (LookAheadChar() >= ' ') && (LookAheadChar() <= '~' ) )
-         {
-         tok.text += (char)LookAheadChar();
-         AdvanceCh();
-         }
-      tok.type = tokSymbol;
-      break;
-      }
-   return( tok.type );
-   }
+		switch (LookAheadChar())
+		{
+		case EOF:      // return EOF token
+			tok.type = tokEOF;
+			break;
+		case '\t':     // return a TAB token
+			tok.type = tokTab;
+			AdvanceCh();
+			break;
+		case '\n':     // return a EOL token
+			tok.type = tokEOL;
+			AdvanceCh();
+			break;
+		default:       // see if it is a Symbol (ascii printable)
+			if ((LookAheadChar() < ' ') || (LookAheadChar() > '~'))
+			{
+				Fatal("Found invalid character in file [%s] at Line: %d Column: %d", Filename().c_str(), tok.line, tok.column);
+				break;
+			}
 
+			// accumulate ascii printable characters as a symbol
+			while ((LookAheadChar() >= ' ') && (LookAheadChar() <= '~'))
+			{
+				tok.text += (char)LookAheadChar();
+				AdvanceCh();
+			}
+			tok.type = tokSymbol;
+			break;
+		}
+		return(tok.type);
+	}
+
+}//end :plink
