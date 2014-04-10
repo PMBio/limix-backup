@@ -3,30 +3,12 @@ FDR estimation using Benjamini Hochberg and Stories method
 
 """
 
-try:
-    import rpy2.robjects.numpy2ri
-    from rpy2.robjects import r as r
-    from rpy2 import rinterface
-except ImportError:
-    pass
-
 import numpy as np
 import scipy as sp
 import sys, pickle, pdb
 import scipy.stats as st
 import scipy.interpolate
 import logging as LG
-
-def R_qvalues(pv):
-    rinterface.set_writeconsole(None)
-    r.library("qvalue")
-    bench = r("qvalue")
-    
-    results = bench(pv)
-    pi0 = results[1]
-    qv = np.array(results[2]) 
-
-    return qv, pi0 
 
 
 def qvalues1(PV,m=None,pi=1.0):
