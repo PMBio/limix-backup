@@ -12,7 +12,6 @@ try:
 except:
     print "failed importying FDR"
 import time
-import pdb
 
 def estimateKronCovariances(phenos,K1r=None,K2r=None,K1c=None,K2c=None,covs=None,Acovs=None,covar_type='lowrank_diag',rank=1):
     print ".. Training the backgrond covariance with a GP model"
@@ -51,7 +50,7 @@ def updateKronCovs(covs,Acovs,N,P):
         raise Exception("Either Acovs or covs is not a list or they missmatch in length")
     return covs, Acovs
 
-def simple_interaction_kronecker(snps,phenos,covs = None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K2r=None,K1c=None,K2c=None,covar_type='lowrank_diag',rank=1,searchDelta=False):
+def simple_interaction_kronecker_deprecated(snps,phenos,covs = None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K2r=None,K1c=None,K2c=None,covar_type='lowrank_diag',rank=1,searchDelta=False):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
     ----------------------------------------------------------------------------
@@ -144,7 +143,6 @@ def simple_interaction_kronecker(snps,phenos,covs = None,Acovs=None,Asnps1=None,
     lmm.process()
     dof0 = Asnps0[0].shape[0]
     pv0 = lmm.getPv()
-    #lrt0 = lmm.getTestStatistics()#cl:this returns a 0
     lrt0 = ST.chi2.isf(pv0,dof0)
     for iA in xrange(len(Asnps1)):
         dof1 = Asnps1[iA].shape[0]
@@ -152,13 +150,113 @@ def simple_interaction_kronecker(snps,phenos,covs = None,Acovs=None,Asnps1=None,
         lmm.setSNPcoldesign(Asnps1[iA])
         lmm.process()
         pvAlt[iA,:] = lmm.getPv()[0]
-        #lrtAlt[iA,:] = lmm.getTestStatistics()[0]#cl:this returns a 0
         lrtAlt[iA,:] = ST.chi2.isf(pvAlt[iA,:],dof1)
         lrt[iA,:] = lrtAlt[iA,:] - lrt0[0] # Don't need the likelihood ratios, as null model is the same between the two models
         pv[iA,:] = ST.chi2.sf(lrt[iA,:],dof)
     return pv,lrt0,pv0,lrt,lrtAlt,pvAlt
 
+def simple_interaction_kronecker(snps,phenos,covs = None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K2r=None,K1c=None,K2c=None,covar_type='lowrank_diag',rank=1,searchDelta=False):
+    """
+    I-variate fixed effects interaction test for phenotype specific SNP effects
+    ----------------------------------------------------------------------------
+    Input:
+    snps   [N x S] SP.array of S SNPs for N individuals (test SNPs)
+    phenos [N x P] SP.array of P phenotypes for N individuals
+    Asnps1         list of SP.arrays of I interaction variables to be tested for N 
+                   individuals. Note that it is assumed that Asnps0 is already 
+                   included
+                   If not provided, the alternative model will be the independent model
+    Asnps0         single SP.array of I0 interaction variables to be included in the 
+                   background model when testing for interaction with Inters
+    K1r    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                   If not provided, then linear regression analysis is performed
+    K1c    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
+                   If not provided, then linear regression analysis is performed
+    K2r    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                   If not provided, then linear regression analysis is performed
+    K2c    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
+                   If not provided, then linear regression analysis is performed
+    covs   [N x D] SP.array of D covariates for N individuals
+    Acovs          list of SP.arrays of with phenotype design matrices for each covariate
+    -----------------------------------------------------------------------------
+    Output:
+    lmix LMM object
+    """
+    S=snps.shape[1]
+    #0. checks
+    N  = phenos.shape[0]
+    P  = phenos.shape[1]
+    
+    if K1r==None:
+        K1r = SP.dot(snps,snps.T)
+    else:
+        assert K1r.shape[0]==N, 'K1r: dimensions dismatch'
+        assert K1r.shape[1]==N, 'K1r: dimensions dismatch'
 
+    if K2r==None:
+        K2r = SP.eye(N)
+    else:
+        assert K2r.shape[0]==N, 'K2r: dimensions dismatch'
+        assert K2r.shape[1]==N, 'K2r: dimensions dismatch'
+
+    covs,Acovs = updateKronCovs(covs,Acovs,N,P)
+    
+    #Asnps can be several designs
+    if (Asnps0 is None):
+        Asnps0 = [SP.ones([1,P])]
+    if Asnps1 is None:
+        Asnps1 = [SP.eye([P])]
+    if (type(Asnps0)!=list):
+        Asnps0 = [Asnps0]
+    if (type(Asnps1)!=list):
+        Asnps1 = [Asnps1]
+    assert (len(Asnps0)==1) and (len(Asnps1)>0), "need at least one Snp design matrix for null and alt model"
+    
+    #one row per column design matrix
+    pv = SP.zeros((len(Asnps1),snps.shape[1]))
+    lrt = SP.zeros((len(Asnps1),snps.shape[1]))
+    pvAlt = SP.zeros((len(Asnps1),snps.shape[1]))
+    lrtAlt = SP.zeros((len(Asnps1),snps.shape[1]))
+    
+    #1. run GP model to infer suitable covariance structure
+    if K1c==None or K2c==None:
+        vc = estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, covar_type=covar_type, rank=rank)
+        K1c = vc.getEstTraitCovar(0)
+        K2c = vc.getEstTraitCovar(1)
+    else:
+        assert K1c.shape[0]==P, 'K1c: dimensions dismatch'
+        assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
+        assert K2c.shape[0]==P, 'K2c: dimensions dismatch'
+        assert K2c.shape[1]==P, 'K2c: dimensions dismatch'
+    
+    #2. run kroneckerLMM for null model
+    lmm = limix.CKroneckerLMM()
+    lmm.setK1r(K1r)
+    lmm.setK1c(K1c)
+    lmm.setK2r(K2r)
+    lmm.setK2c(K2c)
+    lmm.setSNPs(snps)
+    #add covariates
+    for ic  in xrange(len(Acovs)):
+        lmm.addCovariates(covs[ic],Acovs[ic])
+    lmm.setPheno(phenos)
+    if searchDelta:      
+        lmm.setNumIntervalsAlt(100)
+        lmm.setNumIntervals0_inter(100)
+    else:                
+        lmm.setNumIntervalsAlt(0)
+        lmm.setNumIntervals0_inter(0)
+    lmm.setNumIntervals0(100)
+    #add SNP design
+    lmm.setSNPcoldesign0_inter(Asnps0[0])
+    for iA in xrange(len(Asnps1)):
+        lmm.setSNPcoldesign(Asnps1[iA])
+        lmm.process()
+        
+        pvAlt[iA,:] = lmm.getPv()[0]
+        pv[iA,:] = lmm.getPv()[1]
+        pv0 = lmm.getPv()[2]
+    return pv,pv0,pvAlt
 
 ## KroneckerLMM functions
 
@@ -228,7 +326,7 @@ def kronecker_lmm(snps,phenos,Asnps=None,K1r=None,K2r=None,K1c=None,K2c=None,cov
     return lmm,pv
 
 
-def simple_lmm(snps,pheno,K=None,covs=None):
+def simple_lmm(snps,pheno,K=None,covs=None, test='lrt'):
     """
     Univariate fixed effects linear mixed model test for all SNPs
     ----------------------------------------------------------------------------
@@ -238,6 +336,7 @@ def simple_lmm(snps,pheno,K=None,covs=None):
     K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
                    If not provided, then linear regression analysis is performed
     covs   [N x D] SP.array of D covariates for N individuals
+    test    'lrt' for likelihood ratio test (default) or 'f' for F-test
     -----------------------------------------------------------------------------
     Output:
     lmix LMM object
@@ -252,6 +351,13 @@ def simple_lmm(snps,pheno,K=None,covs=None):
     if covs is None:
         covs = SP.ones((snps.shape[0],1))
     lm.setCovs(covs)
+    if test=='lrt':
+        lm.setTestStatistics(0)
+    elif test=='f':
+        lm.setTestStatistics(1)
+    else:
+        print test
+        raise NotImplementedError("only f or lrt are implemented")
     lm.process()
     t1=time.time()
     print ("finished GWAS testing in %.2f seconds" %(t1-t0))
@@ -282,7 +388,7 @@ def interact_GxG(pheno,snps1,snps2=None,K=None,covs=None):
     return interact_GxE(snps=snps1,pheno=pheno,env=snps2,covs=covs,K=K)
 
 
-def interact_GxE_1dof(snps,pheno,env,K=None,covs=None):
+def interact_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
     """
     Univariate GxE fixed effects interaction linear mixed model test for all 
     pairs of SNPs and environmental variables.
@@ -294,6 +400,7 @@ def interact_GxE_1dof(snps,pheno,env,K=None,covs=None):
     K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
                    If not provided, then linear regression analysis is performed
     covs   [N x D] SP.array of D covariates for N individuals
+    test    'lrt' for likelihood ratio test (default) or 'f' for F-test
     -----------------------------------------------------------------------------
     Output:
     pv     [E x S] SP.array of P values for interaction tests between all 
@@ -312,7 +419,7 @@ def interact_GxE_1dof(snps,pheno,env,K=None,covs=None):
     for i in xrange(env.shape[1]):
         t0_i = time.time()
         cov_i = SP.concatenate((covs,env[:,i:(i+1)]),1)
-        lm_i = simple_interaction(snps=snps,pheno=pheno,covs=cov_i,Inter=env[:,i:(i+1)],Inter0=Inter0)
+        lm_i = simple_interaction(snps=snps,pheno=pheno,covs=cov_i,Inter=env[:,i:(i+1)],Inter0=Inter0, test=test)
         pv[i,:]=lm_i.getPv()[0,:]
         t1_i = time.time()
         print ("Finished %i out of %i interaction scans in %.2f seconds."%((i+1),env.shape[1],(t1_i-t0_i)))
@@ -321,7 +428,7 @@ def interact_GxE_1dof(snps,pheno,env,K=None,covs=None):
     return pv
         
 
-def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None):
+def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None,test='lrt'):
     """
     Univariate fixed effects interaction test for phenotype specific SNP effects
     ----------------------------------------------------------------------------
@@ -332,6 +439,7 @@ def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None):
     K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
                    If not provided, then linear regression analysis is performed
     covs   [N x D] SP.array of D covariates for N individuals
+    test    'lrt' for likelihood ratio test (default) or 'f' for F-test
     -----------------------------------------------------------------------------
     Output:
     lmix LMM object
@@ -349,11 +457,11 @@ def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None):
     Yinter=SP.concatenate((pheno1,pheno2),0)
     Xinter = SP.tile(snps,(2,1))
     Covitner= SP.tile(covs(2,1))
-    lm = simple_interaction(snps=Xinter,pheno=Yinter,covs=Covinter,Inter=Inter,Inter0=Inter0)
+    lm = simple_interaction(snps=Xinter,pheno=Yinter,covs=Covinter,Inter=Inter,Inter0=Inter0,test=test)
     return lm
 
 
-def simple_interaction(snps,pheno,Inter,covs = None,K=None,Inter0=None):
+def simple_interaction(snps,pheno,Inter,covs = None,K=None,Inter0=None,test='lrt'):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
     ----------------------------------------------------------------------------
@@ -368,6 +476,7 @@ def simple_interaction(snps,pheno,Inter,covs = None,K=None,Inter0=None):
     K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
                    If not provided, then linear regression analysis is performed
     covs   [N x D] SP.array of D covariates for N individuals
+    test    'lrt' for likelihood ratio test (default) or 'f' for F-test
     -----------------------------------------------------------------------------
     Output:
     lmix LMM object
@@ -387,6 +496,13 @@ def simple_interaction(snps,pheno,Inter,covs = None,K=None,Inter0=None):
     lmi.setCovs(covs)
     lmi.setInter0(Inter0)
     lmi.setInter(Inter)
+    if test=='lrt':
+        lmi.setTestStatistics(0)
+    elif test=='f':
+        lmi.setTestStatistics(1)
+    else:
+        print test
+        raise NotImplementedError("only f or lrt are implemented")
     lmi.process()
     return lmi
 
@@ -529,7 +645,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
     return lm,RV
 
 
-def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxiter = 2):
+def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxiter = 2,test='lrt'):
     """
     univariate fixed effects test with forward selection
     ----------------------------------------------------------------------------
@@ -544,6 +660,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxi
     maxiter        (int) maximum number of interaction scans. First scan is
                    without inclusion, so maxiter-1 inclusions can be performed.
                    (default 2)
+    test           'lrt' for likelihood ratio test (default) or 'f' for F-test
     -----------------------------------------------------------------------------
     Output:
     lm             lmix LMM object
@@ -558,7 +675,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxi
     if covs is None:
         covs = SP.ones((snps.shape[0],1))
     
-    lm = simple_lmm(snps,pheno,K=K,covs=covs)
+    lm = simple_lmm(snps,pheno,K=K,covs=covs,test=test)
     pvall = SP.zeros((maxiter,snps.shape[1]))
     pv = lm.getPv()
     pvall[0:1,:]=pv
