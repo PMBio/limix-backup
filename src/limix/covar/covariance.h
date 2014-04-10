@@ -63,12 +63,9 @@ typedef VectorXd CovarParams;
  */
 class ACovarianceFunction : public CParamObject {
 protected:
-	//the inputs of the kernel
-	CovarInput X; 			//!<Input of the covariance function
-	//the hyperparameters of K
-	CovarParams params; 	//!<Local covariance parameters
-	//mask for hyperparameter optimization
-	CovarParams paramsMask; //!<mask of the covariance for optimization
+	CovarInput X; 			//!<Input of the covariance function/kernel
+	CovarParams params; 	//!<Local covariance parameters (the hyperparameters of K)
+	CovarParams paramsMask; //!<mask of the covariance hyperparameters for optimization
 	muint_t numberParams;   //!<number of parameters
 	muint_t numberDimensions;//!<dimension of the expected input (\see X)
 	CovarParams bound_lower; //!<lower bound of hyperparameters for optimization

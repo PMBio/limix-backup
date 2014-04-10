@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 #if !defined( CCovariatesData_h )
 #define CCovariatesData_h
 /*
@@ -21,32 +15,34 @@
 
 #include "Cplink.h"
 
-class CCovariatesData
-   {
-public:
-   std::vector<std::string> indIDs;
-   std::vector<std::string> famIDs;
-   std::vector<std::vector<limix::mfloat_t> > covariates;      // temporary storage of Covariates
-   std::vector<bool>   markedAsConstant;       // indicator of constant covariates
-   
-   size_t         n_individuals;
-   size_t         n_covariates;
-   std::map< std::string, size_t > keyIndividualToCovariatesDataIndividualIndex;
+namespace plink {
 
-   std::string         filename;
+	class CCovariatesData
+	{
+	public:
+		std::vector<std::string> indIDs;
+		std::vector<std::string> famIDs;
+		std::vector<std::vector<limix::mfloat_t> > covariates;      // temporary storage of Covariates
+		std::vector<bool>   markedAsConstant;       // indicator of constant covariates
 
-   CCovariatesData();
-   ~CCovariatesData();
-   void ReadCovariatesFile( std::string& covariatesFile );
-   void WriteCovariatesFile( std::string& covariatesFile );
-//   void CreateColumnMajorArrayFromstd::vectors();
-   void CreateColumnMajorArrayFromVectorsAndMapping( std::vector<std::string>& columnLabelOrder , real *covariatesArray, size_t n_covariates);
-   void MarkConstantCovariates();
+		size_t         n_individuals;
+		size_t         n_covariates;
+		std::map< std::string, size_t > keyIndividualToCovariatesDataIndividualIndex;
 
-   bool     FKeyIndividualInDatFile( const std::string& keyIndividual );
-   size_t   IdxFromKeyIndividual( const std::string& keyIndividual );
-   size_t   IdxFromIdFamilyAndIdIndividual( const std::string& idFamily, const std::string& idIndividual );
+		std::string         filename;
 
-   };
+		CCovariatesData();
+		~CCovariatesData();
+		void ReadCovariatesFile(std::string& covariatesFile);
+		void WriteCovariatesFile(std::string& covariatesFile);
+		//   void CreateColumnMajorArrayFromstd::vectors();
+		void CreateColumnMajorArrayFromVectorsAndMapping(std::vector<std::string>& columnLabelOrder, real *covariatesArray, size_t n_covariates);
+		void MarkConstantCovariates();
 
+		bool     FKeyIndividualInDatFile(const std::string& keyIndividual);
+		size_t   IdxFromKeyIndividual(const std::string& keyIndividual);
+		size_t   IdxFromIdFamilyAndIdIndividual(const std::string& idFamily, const std::string& idIndividual);
+
+	};
+}//end: plink
 #endif   // CCovariatesData_h

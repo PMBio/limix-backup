@@ -134,11 +134,11 @@ void CKroneckerLMM::process() throw (CGPMixException){
 			deltaNLL = 0.0;
 		}
 		//pvalues
-		this->pv(0, is) = Gamma::gammaQ(nLL0(0,is) - nLLAlt(0,is), (double)(0.5) * dof);
+		this->pv(0, is) = stats::Gamma::gammaQ(nLL0(0,is) - nLLAlt(0,is), (double)(0.5) * dof);
 		if (this->snpcoldesign0_inter.rows()!=0) //check if interaction design matrix is set
 		{
-			this->pv(1, is) = Gamma::gammaQ(nLL0_inter(0,is) - nLLAlt(0,is), (double)(0.5) * (dof-dof0_inter));
-			this->pv(2, is) = Gamma::gammaQ(nLL0(0,is) - nLL0_inter(0,is), (double)(0.5) * dof0_inter);
+			this->pv(1, is) = stats::Gamma::gammaQ(nLL0_inter(0,is) - nLLAlt(0,is), (double)(0.5) * (dof-dof0_inter));
+			this->pv(2, is) = stats::Gamma::gammaQ(nLL0(0,is) - nLL0_inter(0,is), (double)(0.5) * dof0_inter);
 		}
 	}
 

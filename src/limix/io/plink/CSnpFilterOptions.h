@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 #if !defined( CSnpFilterOptions_h )
 #define Startup_h
 /*
@@ -34,41 +28,44 @@
  *
  * Test Files: 
  */
-typedef  std::string   SnpId;
 
-class SnpFilterOptions              // hold all the SnpFilter related parameters
-   {
-public:
-   enum FilterType 
-      {
-      FilterByNone = 0
-     ,FilterByCount                 // use 'n' SNPs
-     ,FilterByJob
-     ,FilterByFilelist
-     ,FilterByTopN
-      }   filterType;
-//   bool   fUseSnpFilter;            // Do we use the Snp Filter or not?
-   int    cSnpsInJob;               // how many SNPs/Genotypes to process in one pass
-   int    cJobsInFile;              // the number of iterations to complete all jobs
-   int    thisJobIndex;             // the iteration we are processing this invocation
-   int    numberOfJobs;
-   std::string extractFile;              // file with SNPid's to operate on.
-   std::vector< SnpId > snpIdsToExtract; // list of SNPid's to extract
+namespace plink {
 
-   SnpFilterOptions() {filterType=FilterByNone; cSnpsInJob=-1; cJobsInFile=-1; thisJobIndex=-1; numberOfJobs=-1; }
+	typedef  std::string   SnpId;
 
-   size_t IndexToFirstSnpInJob( size_t cSnpsToPartition );
-   size_t IndexToLastSnpInJob( size_t cSnpsToPartition );
+	class SnpFilterOptions              // hold all the SnpFilter related parameters
+	{
+	public:
+		enum FilterType
+		{
+			FilterByNone = 0
+			, FilterByCount                 // use 'n' SNPs
+			, FilterByJob
+			, FilterByFilelist
+			, FilterByTopN
+		}   filterType;
+		//   bool   fUseSnpFilter;            // Do we use the Snp Filter or not?
+		int    cSnpsInJob;               // how many SNPs/Genotypes to process in one pass
+		int    cJobsInFile;              // the number of iterations to complete all jobs
+		int    thisJobIndex;             // the iteration we are processing this invocation
+		int    numberOfJobs;
+		std::string extractFile;              // file with SNPid's to operate on.
+		std::vector< SnpId > snpIdsToExtract; // list of SNPid's to extract
 
-   bool FUseSnpFilter() { return( filterType != FilterByNone ); }
-   bool FFilterByFile() { return( (filterType == FilterByFilelist) || (filterType == FilterByTopN) ); }
+		SnpFilterOptions() { filterType = FilterByNone; cSnpsInJob = -1; cJobsInFile = -1; thisJobIndex = -1; numberOfJobs = -1; }
 
-   void SetByCount( int cSnps );
-   void SetByJob( int cJobs, int iJob );
-   void SetByFileList( std::string& filename );
-   void SetByTopN( std::string& filename, int cSnps );
+		size_t IndexToFirstSnpInJob(size_t cSnpsToPartition);
+		size_t IndexToLastSnpInJob(size_t cSnpsToPartition);
 
-   void LoadSnpIdsToExtract();
-   };
+		bool FUseSnpFilter() { return(filterType != FilterByNone); }
+		bool FFilterByFile() { return((filterType == FilterByFilelist) || (filterType == FilterByTopN)); }
 
+		void SetByCount(int cSnps);
+		void SetByJob(int cJobs, int iJob);
+		void SetByFileList(std::string& filename);
+		void SetByTopN(std::string& filename, int cSnps);
+
+		void LoadSnpIdsToExtract();
+	};
+}// end :plink
 #endif   // CSnpFilterOptions_h

@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 #if !defined( CPlinkBedFile_h )
 #define CPlinkBedFile_h
 /*
@@ -39,40 +33,40 @@
  * Test Files: 
  */
 #include "Cplink.h"
+namespace plink {
+	const BYTE bedFileMagic1 = 0x6C;       // 0b01101100 or 'l' (lowercase 'L')
+	const BYTE bedFileMagic2 = 0x1B;       // 0b00011011 or <esc>
 
-const BYTE bedFileMagic1 = 0x6C;       // 0b01101100 or 'l' (lowercase 'L')
-const BYTE bedFileMagic2 = 0x1B;       // 0b00011011 or <esc>
+	enum LayoutMode
+	{
+		RowMajor = 0                    // all elements of a row are sequential in memory
+		, ColumnMajor = 1                 // all elements of a colomn are sequential in memory
+		, GroupGenotypesByIndividual = 0  // all SNP genotypes for a specific individual are seqential in memory
+		, GroupGenotypesBySnp = 1         // all Individual's genotypes for a specific SNP are sequential in memory
+	};
 
-enum LayoutMode
-   {
-   RowMajor=0                    // all elements of a row are sequential in memory
-  ,ColumnMajor=1                 // all elements of a colomn are sequential in memory
-  ,GroupGenotypesByIndividual=0  // all SNP genotypes for a specific individual are seqential in memory
-  ,GroupGenotypesBySnp=1         // all Individual's genotypes for a specific SNP are sequential in memory
-   };
+	class CBedFile
+	{
+	public:
+		//CBedFile( const string& filename_ );
+		CBedFile(const std::string& filename_, size_t cIndividuals_, size_t cSnps_);
+		~CBedFile();
+		int      NextChar();
+		size_t   Read(BYTE *pb, size_t cbToRead);
+		size_t   ReadLine(BYTE *pb, size_t idx);
 
-class CBedFile
-   {
-public:
-   //CBedFile( const string& filename_ );
-   CBedFile( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ );
-   ~CBedFile();
-   int      NextChar();
-   size_t   Read( BYTE *pb, size_t cbToRead );
-   size_t   ReadLine( BYTE *pb, size_t idx );
+		//private:
+		static const size_t   cbHeader = 3;         // 
+		std::string   filename;
+		FILE     *pFile;
 
-//private:
-   static const size_t   cbHeader = 3;         // 
-   std::string   filename;
-   FILE     *pFile;
-   
-   LayoutMode  layout;        // 0=RowMajor(all snps per individual together);
-                              // 1=ColumnMajor(all individuals per SNP together in memory)
-   size_t   cIndividuals;
-   size_t   cSnps;
-   size_t   cbStride;
+		LayoutMode  layout;        // 0=RowMajor(all snps per individual together);
+		// 1=ColumnMajor(all individuals per SNP together in memory)
+		size_t   cIndividuals;
+		size_t   cSnps;
+		size_t   cbStride;
 
-   void     Init( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ );
-   };
-
+		void     Init(const std::string& filename_, size_t cIndividuals_, size_t cSnps_);
+	};
+}// end :plink
 #endif      // CPlinkBedFile_h

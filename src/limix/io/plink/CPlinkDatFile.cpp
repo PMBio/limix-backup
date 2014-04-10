@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 /*
  *******************************************************************
  *
@@ -35,274 +29,275 @@
  */
 
 #include "CPlinkDatFile.h"
+namespace plink {
+	CPlinkDatFile::CPlinkDatFile(const std::string& filename_)
+	{
+		filename = filename_;
+		pFile = nullptr;
+	}
 
-CPlinkDatFile::CPlinkDatFile( const std::string& filename_ )
-   {
-   filename = filename_;
-   pFile = nullptr;
-   }
+	//CPlinkDatFile::CPlinkDatFile( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ ) {}
 
-//CPlinkDatFile::CPlinkDatFile( const std::string& filename_, size_t cIndividuals_, size_t cSnps_ ) {}
+	CPlinkDatFile::~CPlinkDatFile()
+	{
+		if (pFile != nullptr)
+		{
+			fclose(pFile);
+			pFile = nullptr;
+		}
+	}
 
-CPlinkDatFile::~CPlinkDatFile()
-   {
-   if ( pFile != nullptr )
-      {
-      fclose( pFile );
-      pFile = nullptr;
-      }
-   }
+	void CPlinkDatFile::Load()
+	{
+		Load(nullptr);
+	}
 
-void CPlinkDatFile::Load()
-   {
-   Load( nullptr );
-   }
+	void CPlinkDatFile::Load(std::vector<FamRecord>* prgFam_)
+	{
+		SnpProbabilities         snpP;
+		std::vector<SnpProbabilities> rgSnpP;
+		DatRecord                dr;
+		IndividualId             individualId;
+		size_t                   cIndividualsExpected = prgFam_ ? prgFam_->size() : 0;
 
-void CPlinkDatFile::Load( std::vector<FamRecord>* prgFam_ )
-   {
-   SnpProbabilities         snpP;
-   std::vector<SnpProbabilities> rgSnpP;
-   DatRecord                dr;
-   IndividualId             individualId;
-   size_t                   cIndividualsExpected = prgFam_ ? prgFam_->size() : 0;
+		Verbose("                  Loading .DAT file: [%s]", filename.c_str());
+		CTimer timer(true);
+		CToken tok;
+		CPlinkLexer lex(filename);
 
-   Verbose( "                  Loading .DAT file: [%s]", filename.c_str() );
-   CTimer timer( true );
-   CToken tok;
-   CPlinkLexer lex( filename );
+		do { // skip leading blank lines and comments.
+			lex.NextToken(tok);
+		} while (tok.type == tokEOL);
+		if ((tok.type == tokSymbol) && (tok.text == "SNP"))
+		{
+			// Header row in file
+			std::string allele1Header;
+			std::string allele2Header;
 
-   do { // skip leading blank lines and comments.
-      lex.NextToken( tok );
-      } while ( tok.type == tokEOL );
-   if ( (tok.type == tokSymbol) && (tok.text == "SNP") )
-      {
-      // Header row in file
-      std::string allele1Header;
-      std::string allele2Header;
+			lex.NextToken(tok);      // advance past "SNP" and throw away
+			lex.ExpectId(tok, allele1Header, "Allele1_Header");    // advance past "A1" and throw away
+			lex.ExpectId(tok, allele2Header, "Allele2_Header");    // advance past "A2" and throw away
+			while ((tok.type != tokEOF) && (tok.type != tokEOL))
+			{
+				// Get the Family/Individual ID pairs
+				lex.ExpectId(tok, individualId.idFamily, "FamilyID");
+				lex.ExpectId(tok, individualId.idIndividual, "IndividualID");
 
-      lex.NextToken( tok );      // advance past "SNP" and throw away
-      lex.ExpectId( tok, allele1Header, "Allele1_Header" );    // advance past "A1" and throw away
-      lex.ExpectId( tok, allele2Header, "Allele2_Header" );    // advance past "A2" and throw away
-      while( (tok.type != tokEOF) && (tok.type != tokEOL) )
-         {
-         // Get the Family/Individual ID pairs
-         lex.ExpectId( tok, individualId.idFamily, "FamilyID" );
-         lex.ExpectId( tok, individualId.idIndividual, "IndividualID" );
+				// Validate we have a unique key for this individual
+				std::string key = KeyFromIdFamilyAndIdIndividual(individualId.idFamily, individualId.idIndividual);
+				if (FKeyIndividualInDatFile(key))
+				{
+					Fatal("Duplicate FamilyId:IndividualId [%s:%s] found in header elements %d and %d",
+						individualId.idFamily.c_str(),
+						individualId.idIndividual.c_str(),
+						keyIndividualToDatRecordIndividualIndex[key] + 1,
+						keyIndividualToDatRecordIndividualIndex.size() + 1);
+				}
 
-         // Validate we have a unique key for this individual
-         std::string key = KeyFromIdFamilyAndIdIndividual( individualId.idFamily, individualId.idIndividual );
-         if ( FKeyIndividualInDatFile( key ) )
-            {
-            Fatal( "Duplicate FamilyId:IndividualId [%s:%s] found in header elements %d and %d", 
-                  individualId.idFamily.c_str(),
-                  individualId.idIndividual.c_str(),
-                  keyIndividualToDatRecordIndividualIndex[ key ]+1, 
-                  keyIndividualToDatRecordIndividualIndex.size()+1 );
-            }
+				keyIndividualToDatRecordIndividualIndex[key] = rgIndividualIds.size();
+				rgIndividualIds.push_back(individualId);
+			}
 
-         keyIndividualToDatRecordIndividualIndex[ key ] = rgIndividualIds.size();
-         rgIndividualIds.push_back( individualId );
-         }
+			cIndividualsExpected = rgIndividualIds.size();
+		}
 
-      cIndividualsExpected = rgIndividualIds.size();
-      }
+		// No header row or bogus header row
+		if (cIndividualsExpected == 0)
+		{
+			Fatal("Expected a header row starting with \"SNP\" in file [%s]", filename.c_str());
+		}
 
-   // No header row or bogus header row
-   if ( cIndividualsExpected == 0 )
-      {
-      Fatal( "Expected a header row starting with \"SNP\" in file [%s]", filename.c_str() );
-      }
+		// We are either at the first token of the file without a header or the first token of a new line
+		while (tok.type != tokEOF)        // for each line until EOF
+		{
+			if (tok.type == tokEOL)        // blank line...or comment line or ???
+			{
+				lex.NextToken(tok);
+				continue;
+			}
 
-   // We are either at the first token of the file without a header or the first token of a new line
-   while ( tok.type != tokEOF )        // for each line until EOF
-      {
-      if ( tok.type == tokEOL )        // blank line...or comment line or ???
-         {
-         lex.NextToken( tok );
-         continue;
-         }
+			rgSnpP.clear();
+			lex.ExpectId(tok, dr.idSnp, "SnpID");
+			lex.ExpectSnpAlleles(tok, dr.majorAllele, dr.minorAllele);
+			while ((tok.type != tokEOF) && (tok.type != tokEOL))
+			{
+				lex.ExpectSnpProbabilities(tok, snpP);
+				rgSnpP.push_back(snpP);
+			}
 
-      rgSnpP.clear();
-      lex.ExpectId( tok, dr.idSnp, "SnpID" );
-      lex.ExpectSnpAlleles( tok, dr.majorAllele, dr.minorAllele );
-      while( (tok.type != tokEOF) && (tok.type != tokEOL) )
-         {
-         lex.ExpectSnpProbabilities( tok, snpP );
-         rgSnpP.push_back( snpP );
-         }
+			if (rgSnpP.size() != cIndividualsExpected)
+			{
+				Fatal("Expected SNP probability pairs for %d individuals on line %d.  Found %Id", cIndividualsExpected, tok.line, rgSnpP.size());
+			}
 
-      if ( rgSnpP.size() != cIndividualsExpected )
-         {
-         Fatal( "Expected SNP probability pairs for %d individuals on line %d.  Found %Id", cIndividualsExpected, tok.line, rgSnpP.size() );
-         }
+			if (idSnpToDatRecordIndex.count(dr.idSnp))
+			{
+				Fatal("Duplicate SNP Id %s found in SNPs %d and %d", dr.idSnp.c_str(), idSnpToDatRecordIndex[dr.idSnp] + 1, rgDat.size() + 1);
+			}
 
-      if ( idSnpToDatRecordIndex.count( dr.idSnp ) )
-         {
-         Fatal( "Duplicate SNP Id %s found in SNPs %d and %d", dr.idSnp.c_str(), idSnpToDatRecordIndex[ dr.idSnp ]+1, rgDat.size()+1 );
-         }
+			idSnpToDatRecordIndex[dr.idSnp] = rgDat.size();
+			dr.rgSnpProbabilities = rgSnpP;
+			rgDat.push_back(dr);
+		}
 
-      idSnpToDatRecordIndex[ dr.idSnp ] = rgDat.size();
-      dr.rgSnpProbabilities = rgSnpP;
-      rgDat.push_back( dr );
-      }
+		if (rgIndividualIds.size() == 0)
+		{
+			/*
+			 * We got here because we have not header row but a we have data.
+			 *   Copy the IndividualId from the rgFam information and construct
+			 *   the needed indexing support.
+			 */
+			for (size_t iIndividual = 0; iIndividual < prgFam_->size(); ++iIndividual)
+			{
+				FamRecord* pfr = &(prgFam_->at(iIndividual));
+				individualId.idFamily = pfr->idFamily;
+				individualId.idIndividual = pfr->idIndividual;
+				std::string key = KeyFromIdFamilyAndIdIndividual(individualId.idFamily, individualId.idIndividual);
+				keyIndividualToDatRecordIndividualIndex[key] = rgIndividualIds.size();
+				rgIndividualIds.push_back(individualId);
+			}
+		}
+		timer.Stop();
+		timer.Report(0x02, "     Loading .DAT file elapsed time: %s");
+	}
 
-   if ( rgIndividualIds.size() == 0 )
-      {
-      /*
-       * We got here because we have not header row but a we have data.  
-       *   Copy the IndividualId from the rgFam information and construct
-       *   the needed indexing support.
-       */
-      for( size_t iIndividual = 0; iIndividual < prgFam_->size(); ++iIndividual )
-         {
-         FamRecord* pfr = &(prgFam_->at( iIndividual ));
-         individualId.idFamily = pfr->idFamily;
-         individualId.idIndividual = pfr->idIndividual;
-         std::string key = KeyFromIdFamilyAndIdIndividual( individualId.idFamily, individualId.idIndividual );
-         keyIndividualToDatRecordIndividualIndex[ key ] = rgIndividualIds.size();
-         rgIndividualIds.push_back( individualId );
-         }
-      }
-   timer.Stop();
-   timer.Report( 0x02, "     Loading .DAT file elapsed time: %s" );
-   }
+	bool CPlinkDatFile::FGetSnpInfo(const std::string& idSnp, SnpInfo& snpInfo_)
+	{
+		snpInfo_.Clear();
 
-bool CPlinkDatFile::FGetSnpInfo( const std::string& idSnp, SnpInfo& snpInfo_ )
-   {
-   snpInfo_.Clear();
+		if (idSnpToDatRecordIndex.count(idSnp) == 0)
+		{
+			return(false);
+		}
 
-   if ( idSnpToDatRecordIndex.count( idSnp ) == 0 )
-      {
-      return( false );
-      }
+		size_t idx = idSnpToDatRecordIndex[idSnp];
+		snpInfo_.idSnp = rgDat[idx].idSnp;
+		snpInfo_.majorAllele = rgDat[idx].majorAllele;
+		snpInfo_.minorAllele = rgDat[idx].minorAllele;
+		return(true);
+	}
 
-   size_t idx = idSnpToDatRecordIndex[ idSnp ];
-   snpInfo_.idSnp = rgDat[ idx ].idSnp;
-   snpInfo_.majorAllele = rgDat[ idx ].majorAllele;
-   snpInfo_.minorAllele = rgDat[ idx ].minorAllele;
-   return( true );
-   }
+	bool CPlinkDatFile::FGetSnpInfo(size_t idx, SnpInfo& snpInfo_)
+	{
+		snpInfo_.Clear();
 
-bool CPlinkDatFile::FGetSnpInfo( size_t idx, SnpInfo& snpInfo_ )
-   {
-   snpInfo_.Clear();
+		if (idx >= rgDat.size())
+		{
+			return(false);
+		}
 
-   if ( idx >= rgDat.size() )
-      {
-      return( false );
-      }
+		snpInfo_.idSnp = rgDat[idx].idSnp;
+		snpInfo_.majorAllele = rgDat[idx].majorAllele;
+		snpInfo_.minorAllele = rgDat[idx].minorAllele;
+		return(true);
+	}
 
-   snpInfo_.idSnp = rgDat[ idx ].idSnp;
-   snpInfo_.majorAllele = rgDat[ idx ].majorAllele;
-   snpInfo_.minorAllele = rgDat[ idx ].minorAllele;
-   return( true );
-   }
+	bool CPlinkDatFile::FSnpHasVariation(const std::string& idSnp)
+	{
+		size_t idxSnp = IdxFromIdSnp(idSnp);
+		return(FSnpHasVariation(idxSnp));
+	}
 
-bool CPlinkDatFile::FSnpHasVariation( const std::string& idSnp )
-   {
-   size_t idxSnp = IdxFromIdSnp( idSnp );
-   return( FSnpHasVariation( idxSnp ) );
-   }
+	bool CPlinkDatFile::FSnpHasVariation(size_t idxSnp)
+	{
+		DatRecord* dr = DatRecordPointer(idxSnp);
+		SnpProbabilities probabilities0(-1.0, -1.0);
 
-bool CPlinkDatFile::FSnpHasVariation( size_t idxSnp )
-   {
-   DatRecord* dr = DatRecordPointer( idxSnp );
-   SnpProbabilities probabilities0(-1.0, -1.0);
+		for (size_t iProbability = 0; iProbability < dr->rgSnpProbabilities.size(); ++iProbability)
+		{
+			const SnpProbabilities& p = dr->rgSnpProbabilities[iProbability];
+			if (p.probabilityOfHeterozygous != -9.0)
+			{
+				if (probabilities0.probabilityOfHomozygousMinor == -1.0)
+				{
+					probabilities0 = p;
+				}
+				else if (probabilities0 != p)
+				{
+					return(true);
+				}
+			}
+		}
+		return(false);
+	}
 
-   for ( size_t iProbability=0; iProbability < dr->rgSnpProbabilities.size(); ++ iProbability )
-      {
-      const SnpProbabilities& p = dr->rgSnpProbabilities[ iProbability ];
-      if ( p.probabilityOfHeterozygous != -9.0 ) 
-         {
-         if ( probabilities0.probabilityOfHomozygousMinor == -1.0 )
-            {
-            probabilities0 = p;
-            }
-         else if ( probabilities0 != p )
-            {
-            return( true );
-            }
-         }
-      }
-   return( false );
-   }
+	SnpProbabilities CPlinkDatFile::GetSnpProbabilities(const std::string& idSnp, const std::string& idIndividual, const std::string& idFamily)
+	{
+		size_t idxSnp = IdxFromIdSnp(idSnp);
+		size_t idxIndividual = IdxFromIdFamilyAndIdIndividual(idFamily, idIndividual);
+		return(rgDat[idxSnp].rgSnpProbabilities[idxIndividual]);
+	}
 
-SnpProbabilities CPlinkDatFile::GetSnpProbabilities( const std::string& idSnp, const std::string& idIndividual, const std::string& idFamily )
-   {
-   size_t idxSnp = IdxFromIdSnp( idSnp );
-   size_t idxIndividual = IdxFromIdFamilyAndIdIndividual( idFamily, idIndividual );
-   return( rgDat[ idxSnp ].rgSnpProbabilities[ idxIndividual ] );
-   }
+	SnpProbabilities CPlinkDatFile::GetSnpProbabilities(const std::string& idSnp, const std::string& keyIndividual)
+	{
+		size_t idxSnp = IdxFromIdSnp(idSnp);
+		size_t idxIndividual = IdxFromKeyIndividual(keyIndividual);
+		return(rgDat[idxSnp].rgSnpProbabilities[idxIndividual]);
+	}
 
-SnpProbabilities CPlinkDatFile::GetSnpProbabilities( const std::string& idSnp, const std::string& keyIndividual )
-   {
-   size_t idxSnp = IdxFromIdSnp( idSnp );
-   size_t idxIndividual = IdxFromKeyIndividual( keyIndividual );
-   return( rgDat[ idxSnp ].rgSnpProbabilities[ idxIndividual ] );
-   }
+	SnpProbabilities CPlinkDatFile::GetSnpProbabilities(size_t idxSnp, size_t idxIndividual)
+	{
+		return(rgDat[idxSnp].rgSnpProbabilities[idxIndividual]);
+	}
 
-SnpProbabilities CPlinkDatFile::GetSnpProbabilities( size_t idxSnp, size_t idxIndividual )
-   {
-   return( rgDat[ idxSnp ].rgSnpProbabilities[ idxIndividual ] );
-   }
+	size_t CPlinkDatFile::IdxFromIdSnp(const std::string& idSnp)
+	{
+		if (idSnpToDatRecordIndex.count(idSnp) == 0)
+		{
+			Fatal("Unable to find SnpId [%s] in .DAT SNP information.", idSnp.c_str());
+		}
+		size_t idx = idSnpToDatRecordIndex[idSnp];
+		return(idx);
+	}
 
-size_t CPlinkDatFile::IdxFromIdSnp( const std::string& idSnp )
-   {
-   if ( idSnpToDatRecordIndex.count( idSnp ) == 0 )
-      {
-      Fatal( "Unable to find SnpId [%s] in .DAT SNP information.", idSnp.c_str() );
-      }
-   size_t idx = idSnpToDatRecordIndex[ idSnp ];
-   return( idx );
-   }
+	size_t CPlinkDatFile::IdxFromKeyIndividual(const std::string& keyIndividual)
+	{
+		if (keyIndividualToDatRecordIndividualIndex.count(keyIndividual) == 0)
+		{
+			Fatal("Unable to find individual [%s] in .DAT genotype.", keyIndividual.c_str());
+		}
+		size_t idx = keyIndividualToDatRecordIndividualIndex[keyIndividual];
+		return(idx);
+	}
 
-size_t CPlinkDatFile::IdxFromKeyIndividual( const std::string& keyIndividual )
-   {
-   if ( keyIndividualToDatRecordIndividualIndex.count( keyIndividual ) == 0 )
-      {
-      Fatal( "Unable to find individual [%s] in .DAT genotype.", keyIndividual.c_str() );
-      }
-   size_t idx = keyIndividualToDatRecordIndividualIndex[ keyIndividual ];
-   return( idx );
-   }
+	size_t CPlinkDatFile::IdxFromIdFamilyAndIdIndividual(const std::string& idFamily, const std::string& idIndividual)
+	{
+		std::string key = KeyFromIdFamilyAndIdIndividual(idFamily, idIndividual);
+		size_t idx = IdxFromKeyIndividual(key);
+		return(idx);
+	}
 
-size_t CPlinkDatFile::IdxFromIdFamilyAndIdIndividual( const std::string& idFamily, const std::string& idIndividual )
-   {
-   std::string key = KeyFromIdFamilyAndIdIndividual( idFamily, idIndividual );
-   size_t idx = IdxFromKeyIndividual( key );
-   return( idx );
-   }
+	bool CPlinkDatFile::FKeyIndividualInDatFile(const std::string& keyIndividual)
+	{
+		return(keyIndividualToDatRecordIndividualIndex.count(keyIndividual) != 0);
+	}
 
-bool CPlinkDatFile::FKeyIndividualInDatFile( const std::string& keyIndividual )
-   {
-   return( keyIndividualToDatRecordIndividualIndex.count( keyIndividual ) != 0 );
-   }
+	bool CPlinkDatFile::FIdSnpInDatFile(const std::string& idSnp)
+	{
+		return(idSnpToDatRecordIndex.count(idSnp) != 0);
+	}
 
-bool CPlinkDatFile::FIdSnpInDatFile( const std::string& idSnp )
-   {
-   return( idSnpToDatRecordIndex.count( idSnp ) != 0 );
-   }
+	DatRecord* CPlinkDatFile::DatRecordPointer(const std::string& idSnp)
+	{
+		if (idSnpToDatRecordIndex.count(idSnp) == 0)
+		{
+			return(nullptr);
+		}
 
-DatRecord* CPlinkDatFile::DatRecordPointer( const std::string& idSnp )
-   {
-   if ( idSnpToDatRecordIndex.count( idSnp ) == 0 )
-      {
-      return( nullptr );
-      }
+		size_t idx = idSnpToDatRecordIndex[idSnp];
+		DatRecord* dr = &rgDat[idx];
+		return(dr);
+	}
 
-   size_t idx = idSnpToDatRecordIndex[ idSnp ];
-   DatRecord* dr = &rgDat[ idx ];
-   return( dr );
-   }
+	DatRecord* CPlinkDatFile::DatRecordPointer(size_t idxSnp)
+	{
+		if (idxSnp > rgDat.size())
+		{
+			return(nullptr);
+		}
 
-DatRecord* CPlinkDatFile::DatRecordPointer( size_t idxSnp )
-   {
-   if ( idxSnp > rgDat.size() )
-      {
-      return( nullptr );
-      }
+		DatRecord* dr = &rgDat[idxSnp];
+		return(dr);
+	}
 
-   DatRecord* dr = &rgDat[ idxSnp ];
-   return( dr );
-   }
-
+}// end:plink

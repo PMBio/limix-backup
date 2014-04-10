@@ -1,9 +1,9 @@
-/*
- * matrix_helper.h
- *
- *  Created on: Nov 10, 2011
- *      Author: stegle
- */
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
+//
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
+
 
 #ifndef MATRIX_HELPER_H_
 #define MATRIX_HELPER_H_

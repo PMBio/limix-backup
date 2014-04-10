@@ -1,9 +1,3 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
-//
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
-
 #if !defined( CKernelData_h )
 #define CKernelData_h
 /*
@@ -47,30 +41,32 @@
 /*
  * 'Publish' our class declarations / function prototypes
  */
-class CKernelData
-   {
-public:
-   std::vector<std::string> columnLabels;
-   std::vector<std::string> rowLabels;
-   std::vector<std::vector<limix::mfloat_t> > kernelVectors;        // temporary storage of Kernel reads
-   
-   size_t         cColumns;
-   size_t         cRows;
-   std::map<std::string, size_t> columnMap;      // map column to column index
-   std::map<std::string, size_t> rowMap;         // map column to column index
+namespace plink {
 
-   limix::mfloat_t         *kernelArray;
+	class CKernelData
+	{
+	public:
+		std::vector<std::string> columnLabels;
+		std::vector<std::string> rowLabels;
+		std::vector<std::vector<limix::mfloat_t> > kernelVectors;        // temporary storage of Kernel reads
 
-   CKernelData();
-   ~CKernelData();
-   void ReadKernelFile( std::string& kernelFile );
-   void WriteKernelFile( std::string& kernelFile );
-   void CreateColumnMajorArrayFromVectors();
-   void CreateColumnMajorArrayFromVectorsAndMapping( std::vector<std::string> columnLabelOrder );
-   };
+		size_t         cColumns;
+		size_t         cRows;
+		std::map<std::string, size_t> columnMap;      // map column to column index
+		std::map<std::string, size_t> rowMap;         // map column to column index
 
-/*
- * 'Publish' the globals we define
- */
+		limix::mfloat_t         *kernelArray;
 
+		CKernelData();
+		~CKernelData();
+		void ReadKernelFile(std::string& kernelFile);
+		void WriteKernelFile(std::string& kernelFile);
+		void CreateColumnMajorArrayFromVectors();
+		void CreateColumnMajorArrayFromVectorsAndMapping(std::vector<std::string> columnLabelOrder);
+	};
+
+	/*
+	 * 'Publish' the globals we define
+	 */
+}//end: plink
 #endif   // CKernelData_h

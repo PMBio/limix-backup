@@ -13,7 +13,7 @@
 
 namespace limix {
 
-//Define a vector of covariances which is needed to represent the sum and product CF
+//!> Define a vector of covariances which is needed to represent the sum and product CF
 typedef std::vector<PCovarianceFunction> ACovarVec;
 //SWIG template declaration:
 //TODO: swig vector
@@ -26,7 +26,7 @@ class AMultiCF : public ACovarianceFunction
 {
 protected:
 	ACovarVec vecCovariances;
-	muint_t numMaxCovariances; //!< internal varaince, controlling the maximum number of cavariances in a combinators, this may depend on the CF (default -1) - no limi
+	muint_t numMaxCovariances; //!< internal variance, controlling the maximum number of cavariances in a combinators, this may depend on the CF (default -1) - no limi
 public:
 	/*!
 	 * Constructor for abstract type of MultiPleCovariances
@@ -60,8 +60,13 @@ public:
 	virtual muint_t getNumberParams() const;
 
 	//setX and getX
-	virtual void setX(const CovarInput& X) throw (CGPMixException);
-	virtual void agetX(CovarInput* Xout) const throw (CGPMixException);
+	virtual void setX(const CovarInput& X) throw (CGPMixException);				//!< setter for covariance input matrix X
+	virtual void agetX(CovarInput* Xout) const throw (CGPMixException);			//!< getter for covariance input matrix X
+	/*!
+	setter for a single column of CovarInput X
+	@param X	single column of a CovarInput
+	@param col	index of the column
+	*/
 	virtual void setXcol(const CovarInput& X,muint_t col) throw (CGPMixException);
 
 	//set and get Params
@@ -105,7 +110,7 @@ typedef sptr<CSumCF> PSumCF;
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
 %rename(getParams) CLinCombCF::agetParams;
 #endif
-/*
+/*!
 * Kronecker function for pairs of covariances
 */
 class CLinCombCF : public AMultiCF {
@@ -140,7 +145,9 @@ typedef sptr<CLinCombCF> PLinCombCF;
 #if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
 //%sptr(gpmix::CProductCF)
 #endif
-
+/*!
+Product combinator of a pair of covariances
+*/
 class CProductCF : public AMultiCF {
 public:
 	CProductCF(const ACovarVec& covariances);
@@ -212,11 +219,11 @@ public:
 	bool isKronecker() const;
 
 	//X handling
-	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
-	virtual void agetX(CovarInput* Xout) const throw (CGPMixException) {};
-	virtual void setXcol(const CovarInput& X,muint_t col) throw (CGPMixException) {};
-	virtual void setXr(const CovarInput& Xr) throw (CGPMixException);
-	virtual void setXc(const CovarInput& Xc) throw (CGPMixException);
+	virtual void setX(const CovarInput& X) throw (CGPMixException) {};					//!< No function as Combinator has no X of its own. See .setXr() and .setXc() instead for setters of the row and column covariance inputs.
+	virtual void agetX(CovarInput* Xout) const throw (CGPMixException) {};				//!< No function as Combinator has no X of its own. See .getXr() and .getXc() instead for getters of the row and column covariance inputs.
+	virtual void setXcol(const CovarInput& X,muint_t col) throw (CGPMixException) {};	//!< No function as Combinator has no X of its own. See .setXr() and .setXc() instead for setters of the row and column covariance inputs.
+	virtual void setXr(const CovarInput& Xr) throw (CGPMixException);	//!< setter of the covariance input of the row covariance
+	virtual void setXc(const CovarInput& Xc) throw (CGPMixException);	//!< setter of the covariance input of the column covariance
 
 	//overloaded pure virtual members
 	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
