@@ -729,5 +729,6 @@ namespace plink {
 			fprintf(pf, "\n%*s%s", indent + 2, "", " *** NYI DumpGroupSim ***");
 		}
 	}
-}// end :plink
+
 #endif
+}// end :plink
