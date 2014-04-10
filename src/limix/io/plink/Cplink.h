@@ -9,17 +9,17 @@
 #define CPLINK_h
 
 #include "limix/types.h"
-
+namespace plink {
 #if defined( _MSC_VER )          // using Visual C compiler
 #define  NOMINMAX
 #include <windows.h>
 #else // using gcc/g++ to compiler for Linux
 #define  nullptr        NULL           // gcc does not yet support nullptr
-typedef  unsigned char  BYTE;          // common Windows types not found in gcc
-typedef  long long      __int64;
-typedef  long long      LARGE_INTEGER;
+	typedef  unsigned char  BYTE;          // common Windows types not found in gcc
+	typedef  long long      __int64;
+	typedef  long long      LARGE_INTEGER;
 #endif
-
+}// end :plink
 #if defined( _MSC_VER )          // using Visual C compiler
 #include <io.h>                  // for access()
 #else

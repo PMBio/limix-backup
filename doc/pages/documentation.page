@@ -4,7 +4,7 @@
   LIMIX is a computationally efficient and flexible toolkit for covariance modelling and mixed model problems.
   In brief, Limix provides support for
 
-  LIMIX is fully implemented in C++ and provides interfaces to python and R.
+  LIMIX is fully implemented in C++ and provides interfaces to python. We plan to add interfaces to R in the future.
   
   \li \subpage installation
   \li \subpage tutorial
