@@ -13,7 +13,7 @@
 
 namespace limix {
 
-/*! \brief Core comptuational class for Cronecker LMM
+/*! \brief Core comptuational class for Kronecker LMM
  *
  * Fill me
  */
