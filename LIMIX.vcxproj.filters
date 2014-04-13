@@ -104,6 +104,12 @@
     <Filter Include="src\limix\io\plink">
       <UniqueIdentifier>{a3fd334d-9612-4208-aeba-ecf04b611118}</UniqueIdentifier>
     </Filter>
+    <Filter Include="doc">
+      <UniqueIdentifier>{12481705-0136-4bb6-aefd-aae5953bf479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc\pages">
+      <UniqueIdentifier>{3a6aab83-ed5d-4ddc-b82d-8180af2760b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\limix\mean\ADataTerm.cpp">
@@ -691,6 +697,33 @@
     </None>
     <None Include="python\gp\__init__.py">
       <Filter>python\gp</Filter>
+    </None>
+    <None Include="doc\doxy.cfg">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\pages\authors.page">
+      <Filter>doc\pages</Filter>
+    </None>
+    <None Include="doc\pages\documentation.page">
+      <Filter>doc\pages</Filter>
+    </None>
+    <None Include="doc\pages\examples.page">
+      <Filter>doc\pages</Filter>
+    </None>
+    <None Include="doc\pages\faq.page">
+      <Filter>doc\pages</Filter>
+    </None>
+    <None Include="doc\pages\installation.page">
+      <Filter>doc\pages</Filter>
+    </None>
+    <None Include="doc\pages\license.page">
+      <Filter>doc\pages</Filter>
+    </None>
+    <None Include="doc\pages\limix_html_footer.html">
+      <Filter>doc\pages</Filter>
+    </None>
+    <None Include="doc\pages\tutorial.page">
+      <Filter>doc\pages</Filter>
     </None>
   </ItemGroup>
 </Project>
