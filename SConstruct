@@ -3,10 +3,29 @@ import os
 import sys
 import subprocess
 import pdb
+import distutils.sysconfig, os
+
 
 #import autoconfig like handling
 from ACGenerateFile import *
 
+#build prefix
+build_prefix = 'build'
+#maximum number of build jobs
+max_jobs = 2
+#build tool
+build_tool = 'default'
+if sys.platform=='win32':
+#defulat on windw: mingw
+   pass
+   #build_tool = 'mingw'
+
+### 0. get default compiler settings from distutils
+dist_vars = distutils.sysconfig.get_config_vars('CC', 'CXX', 'OPT', 'BASECFLAGS', 'CCSHARED', 'LDSHARED', 'SO')
+for i in range(len(dist_vars)):
+   if dist_vars[i] is None:
+      dist_vars[i] = ""
+(cc, cxx, opt, basecflags, ccshared, ldshared, so_ext) = dist_vars
 
 ### 1. Command line handling
 #command line handling
@@ -34,12 +53,27 @@ help='Run unit tests after build', default=False)
 AddOption('--with-developcpp', dest='with_developcpp', action='store_true',
 help='Build development only commandline tools?', default=False)
 
-#override CXX compiler (for open MPI)
-AddOption('--CXX',dest='CXX',type='string',nargs=1,action='store',default=None,help='Manual specified CXX')
+#override  build settings
+AddOption('--CXX',dest='CXX',type='string',nargs=1,action='store',default=cxx,help='Manual specified CXX')
 #override CC compiler (for open MPI)
-AddOption('--CC',dest='CC',type='string',nargs=1,action='store',default=None,help='Manual specified CC')
+AddOption('--CC',dest='CC',type='string',nargs=1,action='store',default=cc,help='Manual specified CC')
+#override  build tool
+AddOption('--build_tool',dest='build_tool',type='string',nargs=1,action='store',default=build_tool,help='Manual specification of build tool')
 
-#build options:
+# 2. parallel build options
+# Do parallel builds by default
+n_jobs = 1
+
+try:
+    import multiprocessing
+    n_jobs = min(max_jobs,multiprocessing.cpu_count())
+except:
+    pass
+
+SetOption('num_jobs', n_jobs)
+
+
+#3. parse build options:
 build_options= {}
 build_options['with_vcf'] = GetOption('with_vcf')
 build_options['with_python'] = GetOption('with_python')
@@ -48,8 +82,7 @@ build_options['with_tests'] = GetOption('with_tests')
 build_options['with_documentation'] = GetOption('with_documentation')
 build_options['CXX'] = GetOption('CXX')
 build_options['CC'] = GetOption('CC')
-
-
+build_options['build_tool'] = GetOption('build_tool')
 
 ### 2. build mode
 #build mode:
@@ -61,31 +94,16 @@ if not (mymode in ['debug', 'release']):
 
 #tell the user what we're doing
 #create build prefix
-build_prefix = mymode + '.' + sys.platform
+build_prefix = os.path.join(build_prefix,mymode + '.' + sys.platform)
 print '**** Compiling in ' + build_prefix + ' mode...'
-
-cflags = []
+cflags = basecflags.split(' ')
+cxxflags = []
 linkflags = []
 debugcflags   = ['-DDEBUG']   #extra compile flags for debug
-releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
-#releasecflags = ['-O2', '-DRELEASE']         #extra compile flags for release
+releasecflags = opt.split(' ')         #extra compile flags for release
+releasecflags.extend(['-DRELEASE'])         #extra compile flags for release
 debuglinkflags = []
 releaselinkflags = []
-
-### 3. compiler flags & environment
-if sys.platform=='win32':
-   cflags.extend(['-EHsc'])
-   debugcflags.extend(['-Zi'])
-   debuglinkflags.extend(['/debug','/ASSEMBLYDEBUG'])
-   releasecflags.extend(['/openmp'])
-else:
-   cflags.extend(['-fPIC'])
-   # releasecflags.extend(['-msse','-msse2','-fopenmp'])         #extra compile flags for release
-   releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
-   # releaselinkflags.extend(['-lgomp'])
-   releaselinkflags.extend(['-lstdc++'])
-   debuglinkflags.extend(['-lstdc++'])
-   debugcflags.extend(['-g','-Wextra'])
 
 #build environment
 copy_env = ['PATH','INCLUDE','LIB','TMP']
@@ -95,8 +113,27 @@ for key in copy_env:
        ENV[key] = os.environ[key]
 
 #TOOL_SUST
-env = Environment(SHLIBPREFIX="",ENV=ENV,tools = ['default','doxygen',TOOL_SUBST])
+env = Environment(SHLIBPREFIX="",ENV=ENV,tools = [build_options['build_tool'],'doxygen',TOOL_SUBST])
+
+#Microsoft Visual Studio compiler selected?
+if(env['CC']=='cl'):
+   cflags.extend(['-EHsc'])
+   debugcflags.extend(['-Zi'])
+   debuglinkflags.extend(['/debug','/ASSEMBLYDEBUG'])
+else: 
+   #slse? (clang / gcc settings are very similar)
+   cflags.extend(['-fPIC'])
+   #we require c++0x for smart pointers but presently not more than this.
+   cxxflags.extend(['-std=c++0x'])
+   # releasecflags.extend(['-msse','-msse2','-fopenmp'])         #extra compile flags for release
+   releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
+   # releaselinkflags.extend(['-lgomp'])
+   releaselinkflags.extend(['-lstdc++'])
+   debuglinkflags.extend(['-lstdc++'])
+   debugcflags.extend(['-g','-Wextra'])
+
 env.Append(CCFLAGS=cflags)
+env.Append(CXXFLAGS=cxxflags)
 env.Append(LINKFLAGS=linkflags)
 if build_options['CXX']:
    env['CXX'] = build_options['CXX']
@@ -109,6 +146,10 @@ if mymode == 'debug':
 else:
    env.Append(CCFLAGS=releasecflags)
    env.Append(LINKFLAGS=releaselinkflags)
+#set shared library settings
+#env.Append(SHLINK=ldshared)
+#env.Append(SHLIBSUFFIX=so_ext)
+#env.Append(SHLIBPREFIX="")
 
 limix_include = ['#/src']
 external_include = ['#/External']
