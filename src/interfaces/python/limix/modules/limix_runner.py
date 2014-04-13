@@ -38,6 +38,7 @@ class LIMIX_runner(object):
 
     def load_data(self):
         #Run the job specified in data_script
+        options=self.options
         command = open(self.options.data_script).read()
         t0=time.time()
         exec(command)
@@ -49,6 +50,7 @@ class LIMIX_runner(object):
     def run_experiment(self):
         #Run the job specified in experiment_script
         data=self.data
+        options=self.options
         command = open(self.options.experiment_script).read()
         t0=time.time()
         exec(command)
