@@ -171,6 +171,9 @@ protected:
 	muint_t N;
 	muint_t P;
 
+	//penalization
+	mfloat_t lambda;
+
 	//debug bool
 	bool debug;
 
@@ -216,6 +219,9 @@ protected:
 public:
 	CGPkronSum(const MatrixXd& Y,PCovarianceFunction covarr1, PCovarianceFunction covarc1,PCovarianceFunction covarr2, PCovarianceFunction covarc2, PLikelihood lik, PDataTerm dataTerm);
 	virtual ~CGPkronSum();
+
+	//set penalization constant
+	virtual void setLambda(mfloat_t lambda) {this->lambda=lambda;};
 
 	//getter for parameter bounds and hyperparam Mask
 	virtual CGPHyperParams getParamBounds(bool upper) const;
