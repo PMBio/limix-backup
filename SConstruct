@@ -15,10 +15,11 @@ build_prefix = 'build'
 max_jobs = 2
 #build tool
 build_tool = 'default'
-if sys.platform=='win32':
-#defulat on windw: mingw
-   pass
-   #build_tool = 'mingw'
+#on windows, we could also use mingw 
+#rerun swig by default?
+reswig = True
+reswig = False 
+
 
 ### 0. get default compiler settings from distutils
 dist_vars = distutils.sysconfig.get_config_vars('CC', 'CXX', 'OPT', 'BASECFLAGS', 'CCSHARED', 'LDSHARED', 'SO')
@@ -40,6 +41,10 @@ help='Build VCFlib?', default=True)
 #build python interface?
 AddOption('--without-python', dest='with_python', action='store_false',
 help='Disable python interface', default=True)
+
+#run swig?
+AddOption('--reswig', dest='reswig', action='store_true',
+help='Run swig?', default=reswig)
 
 #build doxygen documentation?
 AddOption('--with-documentation', dest='with_documentation', action='store_true',
@@ -83,6 +88,7 @@ build_options['with_documentation'] = GetOption('with_documentation')
 build_options['CXX'] = GetOption('CXX')
 build_options['CC'] = GetOption('CC')
 build_options['build_tool'] = GetOption('build_tool')
+build_options['reswig'] = GetOption('reswig')
 
 ### 2. build mode
 #build mode:
