@@ -59,7 +59,7 @@ class CGPLVM_test(unittest.TestCase):
         ll  = limix.CLikNormalIso()
         #create hyperparm     
         covar_params = SP.array([1.0])
-        lik_params = SP.array([0.1])
+        lik_params = SP.array([1.0])
         hyperparams = limix.CGPHyperParams()
         hyperparams['covar'] = covar_params
         hyperparams['lik'] = lik_params
@@ -77,11 +77,11 @@ class CGPLVM_test(unittest.TestCase):
         #create optimization object
         self.gpopt = limix.CGPopt(self.gp)
         #run
-        self.gpopt.opt()
-        RV = True
+        RV = self.gpopt.opt()
+        RV = self.gpopt.opt()
         
-        RV = RV & (SP.absolute(self.gp.LMLgrad()['X']).max()<1E-2)
-        RV = RV & (SP.absolute(self.gp.LMLgrad()['covar']).max()<1E-2)
+        RV = RV & (SP.absolute(self.gp.LMLgrad()['X']).max()<1E-1)
+        RV = RV & (SP.absolute(self.gp.LMLgrad()['covar']).max()<1E-1)
         RV = RV & (SP.absolute(self.gp.LMLgrad()['lik']).max()<1E-1)
         self.assertTrue(RV)
 
@@ -102,6 +102,7 @@ class CGPLVM_test_constK(CGPLVM_test):
 
         #2. setup GP        
         K0 = SP.dot(self.simulation['S'],self.simulation['S'].T)
+        K0[:] = 0
 
         covar1 = limix.CFixedCF(K0)
         covar2 = limix.CCovLinearISO(K)
