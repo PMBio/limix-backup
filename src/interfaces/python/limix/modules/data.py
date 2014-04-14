@@ -175,7 +175,7 @@ class QTLData():
         return X
 
     def getCovariance(self,normalize=True,i0=None,i1=None,pos0=None,pos1=None,chrom=None,center=True,unit=True,pos_cum0=None,pos_cum1=None,blocksize=None,X=None,**kw_args):
-        """caclculat the empirical genotype covariance in a region"""
+        """calculate the empirical genotype covariance in a region"""
         if X is not None:
             K=X.dot(X.T)
             Nsnp=X.shape[1]
