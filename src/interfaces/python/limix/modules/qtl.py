@@ -472,17 +472,17 @@ def simple_interaction(snps,pheno,Inter,covs = None,K=None,Inter0=None,test='lrt
     I-variate fixed effects interaction test for phenotype specific SNP effects
     
     Args:
-    snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
-    pheno:  [N x 1] SP.array of 1 phenotype for N individuals
-    Inter:  [N x I] SP.array of I interaction variables to be tested for N 
-                    individuals (optional). If not provided, only the SNP is 
-                    included in the null model.
-    Inter0: [N x I0] SP.array of I0 interaction variables to be included in the 
-                     background model when testing for interaction with Inter
-    K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                    If not provided, then linear regression analysis is performed
-    covs:   [N x D] SP.array of D covariates for N individuals
-    test:    'lrt' for likelihood ratio test (default) or 'f' for F-test
+        snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
+        pheno:  [N x 1] SP.array of 1 phenotype for N individuals
+        Inter:  [N x I] SP.array of I interaction variables to be tested for N 
+                        individuals (optional). If not provided, only the SNP is 
+                        included in the null model.
+        Inter0: [N x I0] SP.array of I0 interaction variables to be included in the 
+                         background model when testing for interaction with Inter
+        K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        covs:   [N x D] SP.array of D covariates for N individuals
+        test:    'lrt' for likelihood ratio test (default) or 'f' for F-test
     
     Returns:
         limix LMM object
