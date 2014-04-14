@@ -112,4 +112,6 @@ localenv.Depends(srclst, config)
 #srclst = ['api/f77api.c']
 
 lib=localenv.StaticLibrary('nlopt',srclst)
+#lib=localenv.SharedLibrary('nlopt',srclst)
+
 Return('lib')

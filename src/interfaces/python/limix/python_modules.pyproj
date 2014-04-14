@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{c562839d-e28a-403c-8331-4024a1b467ef}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>__init__.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+    <InterpreterVersion />
+    <PtvsTargetsFile>$(VSToolsPath)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <VSToolsPath Condition=" '$(VSToolsPath)' == '' ">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="modules\data.py" />
+    <Compile Include="modules\example_scripts\example_data.py" />
+    <Compile Include="modules\example_scripts\gwas_example.py" />
+    <Compile Include="modules\FastVDMM.py" />
+    <Compile Include="modules\limix_runner.py" />
+    <Compile Include="modules\multiTraitQTL.py" />
+    <Compile Include="modules\panama.py" />
+    <Compile Include="modules\qtl.py" />
+    <Compile Include="modules\varianceDecomposition.py" />
+    <Compile Include="modules\__init__.py" />
+    <Compile Include="utils\fastlmm.py" />
+    <Compile Include="utils\fdr.py" />
+    <Compile Include="utils\preprocess.py" />
+    <Compile Include="utils\util.py" />
+    <Compile Include="utils\__init__.py" />
+    <Compile Include="__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="modules" />
+    <Folder Include="modules\example_data\" />
+    <Folder Include="modules\example_scripts\" />
+    <Folder Include="utils" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="modules\example_data\kruglyak.hdf5" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>
