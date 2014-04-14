@@ -43,7 +43,6 @@ else:
    module_in = "_core.so"
    module_out = "_core.so"
 
-pdb.set_trace()
 if build_options['reswig']:
    #build from .i file
    srclst = ['limix.i']
