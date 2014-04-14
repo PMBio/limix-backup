@@ -7,10 +7,7 @@ import scipy.stats as ST
 import limix
 import limix.utils.preprocess as preprocess
 import limix.modules.varianceDecomposition as VAR
-try:
-    import limix.utils.fdr as FDR
-except:
-    print "failed importying FDR"
+import limix.utils.fdr as FDR
 import time
 
 def estimateKronCovariances(phenos,K1r=None,K2r=None,K1c=None,K2c=None,covs=None,Acovs=None,covar_type='lowrank_diag',rank=1):
