@@ -437,18 +437,18 @@ def interact_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
 def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None,test='lrt'):
     """
     Univariate fixed effects interaction test for phenotype specific SNP effects
-    ----------------------------------------------------------------------------
-    Input:
-    snps   [N x S] SP.array of S SNPs for N individuals (test SNPs)
-    pheno1 [N x 1] SP.array of 1 phenotype for N individuals
-    pheno2 [N x 1] SP.array of 1 phenotype for N individuals
-    K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    covs   [N x D] SP.array of D covariates for N individuals
-    test    'lrt' for likelihood ratio test (default) or 'f' for F-test
-    -----------------------------------------------------------------------------
-    Output:
-    lmix LMM object
+    
+    Args:
+        snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
+        pheno1: [N x 1] SP.array of 1 phenotype for N individuals
+        pheno2: [N x 1] SP.array of 1 phenotype for N individuals
+        K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        covs:   [N x D] SP.array of D covariates for N individuals
+        test:    'lrt' for likelihood ratio test (default) or 'f' for F-test
+    
+    Returns:
+        limix LMM object
     """
     N=snps.shape[0]
     if K is None:
