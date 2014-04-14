@@ -12,24 +12,21 @@
 #include <iostream>
 #include <string>
 
+#define CPP11
+
 #ifdef _WIN32
     #include <unordered_map>
     #include <memory>
 	#include<limits>
-#elif defined(__clang__)
+//use new C++ 11 way of defining things:
+#elif defined(CPP11)
 	#include <memory>
 #else
     #include <tr1/memory>
 #endif
-/*
-//we now use shared pointers from boost
-#include "boost/shared_ptr.hpp"
-#include "boost/enable_shared_from_this.hpp"
-*/
 
 //define shortcut for shared pointer
-
-#if defined(__clang__)
+#if defined(CPP11)
 #define sptr std::shared_ptr
 #define static_pointer_cast std::static_pointer_cast
 #define dynamic_pointer_cast std::dynamic_pointer_cast
@@ -41,6 +38,11 @@
 #define enable_shared_from_this std::tr1::enable_shared_from_this
 #define nullptr NULL
 #endif
+
+#ifndef nullptr
+#define nullptr NULL
+#endif
+
 /*
 //BOOST shared pointer
 #define sptr boost::shared_ptr

@@ -227,6 +227,15 @@
     <ResourceCompile Include="LIMIX.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="doc\doxy.cfg" />
+    <None Include="doc\pages\authors.page" />
+    <None Include="doc\pages\documentation.page" />
+    <None Include="doc\pages\examples.page" />
+    <None Include="doc\pages\faq.page" />
+    <None Include="doc\pages\installation.page" />
+    <None Include="doc\pages\license.page" />
+    <None Include="doc\pages\limix_html_footer.html" />
+    <None Include="doc\pages\tutorial.page" />
     <None Include="python\demo\data\demo.h5py" />
     <None Include="python\demo\data\realdata.h5py" />
     <None Include="python\demo\gpKronSum.py" />
