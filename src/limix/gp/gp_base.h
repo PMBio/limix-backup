@@ -229,7 +229,8 @@ public:
 	virtual void setLik(PLikelihood lik);
 	virtual void setDataTerm(PDataTerm data);
 
-
+	//set penalization
+	virtual void setLambda(CGPHyperParams lambda) {};
 
 	//getter and setter for Parameters:
 	virtual void setParams(const CGPHyperParams& hyperparams) throw(CGPMixException);					//!< sets the parameters without a mask
