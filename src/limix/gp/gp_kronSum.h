@@ -22,17 +22,17 @@ class CGPkronSumCache;
 Stores all the intermediate computations for the two covariance Kronecker model
 
 - K        = C \kron R + Sigma \kron Omega
-- Sigma    = Usigma Ssigma Usigma.T
-- Omega    = Uomega Somega Uomega.T
-- Cstar    = Ssigma^(-0.5) Usigma.T C Usigma.T Ssigma^(-0.5)
-- Rstar    = Somega^(-0.5) Uomega.T R Uomega.T Somega^(-0.5)
-- Cstar    = Ucstar Scstar Ucstar.T
-- Rstar    = Urstar Srstar Urstar.T
-- Lambdac  = Ucstar Ssigma^(-0.5) Usigma
-- Lambdar  = Uomega Somega^(-0.5) Uomega
+- Sigma    = Usigma diag(Ssigma) Usigma.T
+- Omega    = Uomega diag(Somega) Uomega.T
+- Cstar    = diag(Ssigma)^(-0.5) Usigma.T C Usigma.T diag(Ssigma)^(-0.5)
+- Rstar    = diag(Somega)^(-0.5) Uomega.T R Uomega.T diag(Somega)^(-0.5)
+- Cstar    = Ucstar diag(Scstar) Ucstar.T
+- Rstar    = Urstar diag(Srstar) Urstar.T
+- Lambdac  = Ucstar diag(Ssigma^(-0.5)) Usigma
+- Lambdar  = Uomega diag(Somega^(-0.5)) Uomega
 - YrotPart = vec^(-1)((I \kron Lambdar) vec(Y) )
 - Yrot     = vec^(-1)((Lambdac \kron I) vec(YrotPart) )
-- Ytilde   = vec^(-1)((Scstar \kron Srstar + I) vec(Yrot) )
+- Ytilde   = vec^(-1)((Scstar \kron diag(Srstar) + I) vec(Yrot) )
 - Rrot     = (Lambdac \kron Lambdar)   R   (Lambdac \kron Lambdar).T
 - OmegaRot = (Lambdac \kron Lambdar) Omega (Lambdac \kron Lambdar).T
 */

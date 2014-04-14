@@ -59,23 +59,22 @@ CGPkronSumCache::CGPkronSumCache(CGPkronSum* gp)
 }
 
 
+/*!
+This is optimised for the case where rows are fixed and colomns vary
+(because of the partial rotation on Y, Rrot and OmegaRot)
 
+if R1 or Omega change
+- row rotations (inner rotation performed only if Omega changes)
+- Lambdar
+- YrotPart, Yrot, Ytilde
+- Rrot, OmegaRot
+if C1 or Sigma change
+- col rotations (inner rotation performed only if Sigma changes)
+- Lambdac
+- Yrot, Ytilde
+*/
 void CGPkronSumCache::validateCache()
 {
-    /*
-     This is optimised for the case where rows are fixed and colomns vary
-        (because of the partial rotation on Y, Rrot and OmegaRot)
-
-     if R1 or Omega change
-        - row rotations (inner rotation performed only if Omega changes)
-        - Lambdar
-        - YrotPart, Yrot, Ytilde
-        - Rrot, OmegaRot
-     if C1 or Sigma change
-        - col rotations (inner rotation performed only if Sigma changes)
-        - Lambdac
-        - Yrot, Ytilde
-    */
 	muint_t maskRR = this->gp->covarr1->getParamMask().sum()+this->gp->covarr2->getParamMask().sum();
 	if((!*syncCovarc1) || (!*syncCovarc2))
 	{
@@ -103,6 +102,12 @@ void CGPkronSumCache::validateCache()
 	setSync();
 }
 
+/*!
+Computes the eigen deceomposition of the rotated column covariance (Cstar).
+
+- Cstar    = diag(Ssigma)^(-0.5) Usigma.T C Usigma.T diag(Ssigma)^(-0.5)
+- Cstar    = Ucstar diag(Scstar) Ucstar.T
+*/
 void CGPkronSumCache::updateSVDcstar()
 {
 	MatrixXd USisqrt;
@@ -115,6 +120,7 @@ void CGPkronSumCache::updateSVDcstar()
 	ScstarCache = eigensolver.eigenvalues();
 }
 
+
 MatrixXd& CGPkronSumCache::rgetSsigma()
 {
 	validateCache();
@@ -125,6 +131,12 @@ MatrixXd& CGPkronSumCache::rgetSsigma()
 	return SsigmaCache;
 }
 
+/*!
+Returns the eigenvalues (Scstar) of the rotated column covariance (Cstar).
+
+- Cstar    = diag(Ssigma)^(-0.5) Usigma.T C Usigma.T diag(Ssigma)^(-0.5)
+- Cstar    = Ucstar diag(Scstar) Ucstar.T
+*/
 MatrixXd& CGPkronSumCache::rgetScstar()
 {
 	validateCache();
@@ -137,6 +149,13 @@ MatrixXd& CGPkronSumCache::rgetScstar()
 	return ScstarCache;
 }
 
+
+/*!
+Returns the Matrix of eigenvectors (Ucstar) of the rotated column covariance (Cstar).
+
+- Cstar    = diag(Ssigma)^(-0.5) Usigma.T C Usigma.T diag(Ssigma)^(-0.5)
+- Cstar    = Ucstar diag(Scstar) Ucstar.T
+*/
 MatrixXd& CGPkronSumCache::rgetUcstar()
 {
 	validateCache();
@@ -160,6 +179,12 @@ MatrixXd& CGPkronSumCache::rgetLambdac()
 	return LambdacCache;
 }
 
+/*!
+Computes the eigen deceomposition of the rotated row covariance (Rstar).
+
+- Rstar    = diag(Somega)^(-0.5) Uomega.T R Uomega.T diag(Somega)^(-0.5)
+- Rstar    = Urstar diag(Srstar) Urstar.T
+*/
 void CGPkronSumCache::updateSVDrstar()
 {
 	clock_t beg = clock();
@@ -174,6 +199,13 @@ void CGPkronSumCache::updateSVDrstar()
 	if (this->gp->debug)	std::cout<<"SVD rows:   "<<te1(beg)<<std::endl;
 }
 
+
+/*!
+Returns the eigenvalues (Scstar) of the rotated row covariance (Rstar).
+
+- Rstar    = diag(Somega)^(-0.5) Uomega.T R Uomega.T diag(Somega)^(-0.5)
+- Rstar    = Urstar diag(Srstar) Urstar.T
+*/
 MatrixXd& CGPkronSumCache::rgetSomega()
 {
 	validateCache();
@@ -184,6 +216,12 @@ MatrixXd& CGPkronSumCache::rgetSomega()
 	return SomegaCache;
 }
 
+/*!
+Returns the matrix of eigenvectors (Ucstar) of the rotated row covariance (Rstar).
+
+- Rstar    = diag(Somega)^(-0.5) Uomega.T R Uomega.T diag(Somega)^(-0.5)
+- Rstar    = Urstar diag(Srstar) Urstar.T
+*/
 MatrixXd& CGPkronSumCache::rgetSrstar()
 {
 	validateCache();
