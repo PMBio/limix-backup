@@ -14,6 +14,9 @@ except:
 import time
 
 def estimateKronCovariances(phenos,K1r=None,K2r=None,K1c=None,K2c=None,covs=None,Acovs=None,covar_type='lowrank_diag',rank=1):
+    """
+    estimates the background covariance model before testing
+    """
     print ".. Training the backgrond covariance with a GP model"
     vc = VAR.CVarianceDecomposition(phenos)
     if K1r is not None:
@@ -52,30 +55,35 @@ def updateKronCovs(covs,Acovs,N,P):
 
 def simple_interaction_kronecker_deprecated(snps,phenos,covs = None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K2r=None,K1c=None,K2c=None,covar_type='lowrank_diag',rank=1,searchDelta=False):
     """
-    I-variate fixed effects interaction test for phenotype specific SNP effects
-    ----------------------------------------------------------------------------
-    Input:
-    snps   [N x S] SP.array of S SNPs for N individuals (test SNPs)
-    phenos [N x P] SP.array of P phenotypes for N individuals
-    Asnps1         list of SP.arrays of I interaction variables to be tested for N 
-                   individuals. Note that it is assumed that Asnps0 is already 
-                   included
-                   If not provided, the alternative model will be the independent model
-    Asnps0         single SP.array of I0 interaction variables to be included in the 
-                   background model when testing for interaction with Inters
-    K1r    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    K1c    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    K2r    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    K2c    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    covs   [N x D] SP.array of D covariates for N individuals
-    Acovs          list of SP.arrays of with phenotype design matrices for each covariate
-    -----------------------------------------------------------------------------
-    Output:
-    lmix LMM object
+    I-variate fixed effects interaction test for phenotype specific SNP effects. 
+    (Runs multiple likelihood ratio tests and computes the P-values in python from the likelihood ratios)
+    
+    Args:
+        snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
+        phenos: [N x P] SP.array of P phenotypes for N individuals
+        Asnps1:         list of SP.arrays of I interaction variables to be tested for N 
+                        individuals. Note that it is assumed that Asnps0 is already included.
+                        If not provided, the alternative model will be the independent model
+        Asnps0:         single SP.array of I0 interaction variables to be included in the 
+                        background model when testing for interaction with Inters
+        K1r:    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        K1c:    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        K2r:    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        K2c:    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        covs:   [N x D] SP.array of D covariates for N individuals
+        Acovs:          list of SP.arrays of with phenotype design matrices for each covariate
+    
+    Returns:
+        pv:     P-values of the interaction test
+        lrt0:   log likelihood ratio statistics of the null model
+        pv0:    P-values of the null model
+        lrt:    log likelihood ratio statistics of the interaction test
+        lrtAlt: log likelihood ratio statistics of the alternative model
+        pvAlt:  P-values of the alternative model
     """
     S=snps.shape[1]
     #0. checks
@@ -158,29 +166,30 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs = None,Acovs=None,A
 def simple_interaction_kronecker(snps,phenos,covs = None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K2r=None,K1c=None,K2c=None,covar_type='lowrank_diag',rank=1,searchDelta=False):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
-    ----------------------------------------------------------------------------
-    Input:
-    snps   [N x S] SP.array of S SNPs for N individuals (test SNPs)
-    phenos [N x P] SP.array of P phenotypes for N individuals
-    Asnps1         list of SP.arrays of I interaction variables to be tested for N 
-                   individuals. Note that it is assumed that Asnps0 is already 
-                   included
-                   If not provided, the alternative model will be the independent model
-    Asnps0         single SP.array of I0 interaction variables to be included in the 
-                   background model when testing for interaction with Inters
-    K1r    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    K1c    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    K2r    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    K2c    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    covs   [N x D] SP.array of D covariates for N individuals
-    Acovs          list of SP.arrays of with phenotype design matrices for each covariate
-    -----------------------------------------------------------------------------
-    Output:
-    lmix LMM object
+    
+    Args:
+        snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
+        phenos: [N x P] SP.array of P phenotypes for N individuals
+        Asnps1:         list of SP.arrays of I interaction variables to be tested for N 
+                        individuals. Note that it is assumed that Asnps0 is already included
+                        If not provided, the alternative model will be the independent model
+        Asnps0:         single SP.array of I0 interaction variables to be included in the 
+                        background model when testing for interaction with Inters
+        K1r:    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        K1c:    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        K2r:    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        K2c:    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        covs:   [N x D] SP.array of D covariates for N individuals
+        Acovs:          list of SP.arrays of with phenotype design matrices for each covariate
+    
+    Returns:
+        pv:     P-values of the interaction test
+        pv0:    P-values of the null model
+        pvAlt:  P-values of the alternative model
     """
     S=snps.shape[1]
     #0. checks
@@ -329,17 +338,17 @@ def kronecker_lmm(snps,phenos,Asnps=None,K1r=None,K2r=None,K1c=None,K2c=None,cov
 def simple_lmm(snps,pheno,K=None,covs=None, test='lrt'):
     """
     Univariate fixed effects linear mixed model test for all SNPs
-    ----------------------------------------------------------------------------
-    Input:
-    snps   [N x S] SP.array of S SNPs for N individuals
-    pheno  [N x 1] SP.array of 1 phenotype for N individuals
-    K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    covs   [N x D] SP.array of D covariates for N individuals
-    test    'lrt' for likelihood ratio test (default) or 'f' for F-test
-    -----------------------------------------------------------------------------
-    Output:
-    lmix LMM object
+    
+    Args:
+        snps:   [N x S] SP.array of S SNPs for N individuals
+        pheno:  [N x 1] SP.array of 1 phenotype for N individuals
+        K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        covs:   [N x D] SP.array of D covariates for N individuals
+        test:   'lrt' for likelihood ratio test (default) or 'f' for F-test
+    
+    Returns:
+        limix LMM object
     """
     t0=time.time()
     if K is None:
@@ -367,18 +376,18 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt'):
 def interact_GxG(pheno,snps1,snps2=None,K=None,covs=None):
     """
     Epistasis test between two sets of SNPs
-    ----------------------------------------------------------------------------
-    Input:
-    snps1  [N x S1] SP.array of S1 SNPs for N individuals
-    snps2  [N x S2] SP.array of S2 SNPs for N individuals
-    pheno  [N x 1] SP.array of 1 phenotype for N individuals
-    K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    covs   [N x D] SP.array of D covariates for N individuals
-    -----------------------------------------------------------------------------
-    Output:
-    pv     [S2 x S1] SP.array of P values for epistasis tests beten all SNPs in 
-           snps1 and snps2
+    
+    Args:
+        snps1:  [N x S1] SP.array of S1 SNPs for N individuals
+        snps2:  [N x S2] SP.array of S2 SNPs for N individuals
+        pheno:  [N x 1] SP.array of 1 phenotype for N individuals
+        K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        covs:   [N x D] SP.array of D covariates for N individuals
+    
+    Returns:
+        pv:     [S2 x S1] SP.array of P values for epistasis tests beten all SNPs in 
+                snps1 and snps2
     """
     if K is None:
         K=SP.eye(N)
@@ -392,19 +401,19 @@ def interact_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
     """
     Univariate GxE fixed effects interaction linear mixed model test for all 
     pairs of SNPs and environmental variables.
-    ----------------------------------------------------------------------------
-    Input:
-    snps   [N x S] SP.array of S SNPs for N individuals
-    pheno  [N x 1] SP.array of 1 phenotype for N individuals
-    env    [N x E] SP.array of E environmental variables for N individuals
-    K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    covs   [N x D] SP.array of D covariates for N individuals
-    test    'lrt' for likelihood ratio test (default) or 'f' for F-test
-    -----------------------------------------------------------------------------
-    Output:
-    pv     [E x S] SP.array of P values for interaction tests between all 
-           E environmental variables and all S SNPs
+    
+    Args:
+        snps:   [N x S] SP.array of S SNPs for N individuals
+        pheno:  [N x 1] SP.array of 1 phenotype for N individuals
+        env:    [N x E] SP.array of E environmental variables for N individuals
+        K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        covs:   [N x D] SP.array of D covariates for N individuals
+        test:    'lrt' for likelihood ratio test (default) or 'f' for F-test
+    
+    Returns:
+        pv:     [E x S] SP.array of P values for interaction tests between all 
+             E environmental variables and all S SNPs
     """
     N=snps.shape[0]
     if K is None:
@@ -464,22 +473,22 @@ def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None,test='lrt'):
 def simple_interaction(snps,pheno,Inter,covs = None,K=None,Inter0=None,test='lrt'):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
-    ----------------------------------------------------------------------------
-    Input:
-    snps   [N x S] SP.array of S SNPs for N individuals (test SNPs)
-    pheno  [N x 1] SP.array of 1 phenotype for N individuals
-    Inter  [N x I] SP.array of I interaction variables to be tested for N 
-                   individuals (optional)
-                   If not provided, only the SNP is included in the null model
-    Inter0 [N x I0] SP.array of I0 interaction variables to be included in the 
-                    background model when testing for interaction with Inter
-    K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    covs   [N x D] SP.array of D covariates for N individuals
-    test    'lrt' for likelihood ratio test (default) or 'f' for F-test
-    -----------------------------------------------------------------------------
-    Output:
-    lmix LMM object
+    
+    Args:
+    snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
+    pheno:  [N x 1] SP.array of 1 phenotype for N individuals
+    Inter:  [N x I] SP.array of I interaction variables to be tested for N 
+                    individuals (optional). If not provided, only the SNP is 
+                    included in the null model.
+    Inter0: [N x I0] SP.array of I0 interaction variables to be included in the 
+                     background model when testing for interaction with Inter
+    K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                    If not provided, then linear regression analysis is performed
+    covs:   [N x D] SP.array of D covariates for N individuals
+    test:    'lrt' for likelihood ratio test (default) or 'f' for F-test
+    
+    Returns:
+        limix LMM object
     """
     N=snps.shape[0]
     if covs is None:
@@ -510,30 +519,28 @@ def simple_interaction(snps,pheno,Inter,covs = None,K=None,Inter0=None,test='lrt
 def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,threshold = 5e-8, maxiter = 2,qvalues=False, update_covariances = False,covar_type='lowrank_diag',rank=1):
     """
     kronecker fixed effects test with forward selection
-    ----------------------------------------------------------------------------
-    Input:
-    snps   [N x S] SP.array of S SNPs for N individuals (test SNPs)
-    pheno  [N x P] SP.array of 1 phenotype for N individuals
-    K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    covs   [N x D] SP.array of D covariates for N individuals
-    threshold      (float) P-value thrashold for inclusion in forward selection
-                   (default 5e-8)
-    maxiter        (int) maximum number of interaction scans. First scan is
-                   without inclusion, so maxiter-1 inclusions can be performed.
-                   (default 2)
-    qvalues        Use q-value threshold and return q-values in additoin
-    -----------------------------------------------------------------------------
-    Output:
-    lm             lmix LMM object
-    resultStruct with elements:
-    iadded         array of indices of SNPs included in order of inclusion
-    pvadded        array of Pvalues obtained by the included SNPs in iteration
-                   before inclusion
-    pvall   [maxiter x S] SP.array of Pvalues for all iterations
-    Optional:      corresponding q-values
-    qvadded
-    qvall
+    
+    Args:
+        snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
+        pheno:  [N x P] SP.array of 1 phenotype for N individuals
+        K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        covs:   [N x D] SP.array of D covariates for N individuals
+        threshold:      (float) P-value thrashold for inclusion in forward selection (default 5e-8)
+        maxiter:        (int) maximum number of interaction scans. First scan is
+                        without inclusion, so maxiter-1 inclusions can be performed. (default 2)
+        qvalues:        Use q-value threshold and return q-values in addition
+    
+    Returns:
+        lm:             lmix LMMi object
+        resultStruct with elements:
+            iadded:         array of indices of SNPs included in order of inclusion
+            pvadded:        array of Pvalues obtained by the included SNPs in iteration
+                            before inclusion
+            pvall:   [maxiter x S] SP.array of Pvalues for all iterations
+        Optional:      corresponding q-values
+            qvadded
+            qvall
     """
     
     #0. checks
@@ -648,26 +655,24 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
 def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxiter = 2,test='lrt'):
     """
     univariate fixed effects test with forward selection
-    ----------------------------------------------------------------------------
-    Input:
-    snps   [N x S] SP.array of S SNPs for N individuals (test SNPs)
-    pheno  [N x 1] SP.array of 1 phenotype for N individuals
-    K      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                   If not provided, then linear regression analysis is performed
-    covs   [N x D] SP.array of D covariates for N individuals
-    threshold      (float) P-value thrashold for inclusion in forward selection
-                   (default 5e-8)
-    maxiter        (int) maximum number of interaction scans. First scan is
-                   without inclusion, so maxiter-1 inclusions can be performed.
-                   (default 2)
-    test           'lrt' for likelihood ratio test (default) or 'f' for F-test
-    -----------------------------------------------------------------------------
-    Output:
-    lm             lmix LMM object
-    iadded         array of indices of SNPs included in order of inclusion
-    pvadded        array of Pvalues obtained by the included SNPs in iteration
-                   before inclusion
-    pvall   [maxiter x S] SP.array of Pvalues for all iterations
+    
+    Args:
+        snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
+        pheno:  [N x 1] SP.array of 1 phenotype for N individuals
+        K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+                        If not provided, then linear regression analysis is performed
+        covs:   [N x D] SP.array of D covariates for N individuals
+        threshold:      (float) P-value thrashold for inclusion in forward selection (default 5e-8)
+        maxiter:        (int) maximum number of interaction scans. First scan is
+                        without inclusion, so maxiter-1 inclusions can be performed. (default 2)
+        test:           'lrt' for likelihood ratio test (default) or 'f' for F-test
+    
+    Returns:
+        lm:             limix LMM object
+        iadded:         array of indices of SNPs included in order of inclusion
+        pvadded:        array of Pvalues obtained by the included SNPs in iteration
+                        before inclusion
+        pvall:   [maxiter x S] SP.array of Pvalues for all iterations
     """
 
     if K is None:
