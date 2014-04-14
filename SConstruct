@@ -211,3 +211,9 @@ if build_options['with_tests']:
    args = [sys.executable, 'run_all.py',os.path.join('./..',build_prefix,'interfaces','python')]
    subprocess.call(args,cwd='tests')
    pass 
+
+#install ?
+if build_options['with_python']:
+   python_inst = os.path.join(build_prefix,'interfaces','python','limix')
+   env.Depends(python_inst, [python_interface])
+   env.Alias('install',env.Install(distutils.sysconfig.get_python_lib(),python_inst))
