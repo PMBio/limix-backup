@@ -15,9 +15,7 @@ class CVarianceDecomposition:
     """
     helper function for variance decomposition in limix
     This class mainly takes care of initialization and interpreation of results
-    """
-    
-    """
+
     Methods:
         __init__(self,Y):            Constructor
         addSingleTraitTerm:          Add Single Trait Term
@@ -36,7 +34,10 @@ class CVarianceDecomposition:
     
     def __init__(self,Y,standardize=False):
         """
-        Y: phenotype matrix [N, P]
+        Args:
+            Y:              phenotype matrix [N, P]
+            standardize:    if True, impute missing phenotype values by mean value,
+                            zero-mean and unit-variance phenotype (Boolean, default False)
         """
         
         #create column of 1 for fixed if nothing providede
@@ -70,7 +71,12 @@ class CVarianceDecomposition:
     
     
     def setY(self,Y,standardize=False):
+        """
+        setter for phenotype values
         
+        Args:
+            Y: phenotype matrix [N, P]
+        """
         assert Y.shape[0]==self.N, 'Incompatible shape'
         assert Y.shape[1]==self.P, 'Incompatible shape'
         
@@ -93,10 +99,12 @@ class CVarianceDecomposition:
     
     def addSingleTraitTerm(self,K=None,is_noise=False,normalize=True,Ks=None):
         """
-        add single trait term
-        is_noise:   if is_noise: I->K
-        K:          Intra-Trait Covariance Matrix [N, N]
-        (K is normalised in the C++ code such that K.trace()==N)
+        add single trait random effects term (no trait-trait covariance matrix)
+        
+        Args:
+            is_noise:   if is_noise: I->K
+            K:          Individual-individual (Intra-Trait) Covariance Matrix [N, N]
+                        (K is normalised in the C++ code such that K.trace()==N)
         """
         
         assert self.P == 1, 'Incompatible number of traits'
@@ -137,11 +145,28 @@ class CVarianceDecomposition:
     
     def addMultiTraitTerm(self,K=None,covar_type='freeform',rank=1,dim=1,covar_K0=None,is_noise=False,normalize=True,Ks=None):
         """
-        add multi trait term (inter-trait covariance matrix is consiered freeform)
-        K:  Intra-Trait Covariance Matrix [N, N]
-        (K is normalised in the C++ code such that K.trace()==N)
-        covar_type: type of covaraince to use. Default "freeform"
-        covar_K0: fixed CF covariance (if covar_type=='fixed')
+        add multi trait random effects term (inter-trait covariance matrix is optimized)
+        
+        Args:
+            K:      Individual-individual (Intra-Trait) Covariance Matrix [N, N]
+                    (K is normalised in the C++ code such that K.trace()=N)
+            covar_type: type of covaraince to use. Default 'freeform'. possible values are 
+                            'freeform': free form optimization, 
+                            'fixed': use a fixed matrix specified in covar_K0,
+                            'rank1': optimize a rank-1 matrix, 
+                            'diag': optimize a diagonal matrix, 
+                            'rank1_diag': optimize a rank-1 matrix plus a free diagonal matrix, 
+                            'rank1_id': optimize a rank-1 matrix plus the weight of a constant diagonal matrix, 
+                            'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+                            'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,
+                            'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+                            'sqexp': optimize a squared exponential GPLVM matrix having dim inputs
+            rank:       rank of a possible lowrank component (default 1)
+            dim:        dimension of a possible GPLVM (default 1)
+            covar_K0:   fixed CF covariance (if covar_type=='fixed')
+            is_noise:   Boolean indicator specifying if the matrix is homoscedastic noise (weighted identity covariance) (default False)
+            normalize:  Boolean indicator specifying if K is normalized such that K.trace()=N.
+            Ks:         Kstar for making predictions.
         """
         assert self.P > 1, 'Incompatible number of traits'
         
@@ -752,7 +777,13 @@ class CVarianceDecomposition:
     """
     
     def setKstar(self,term_i,Ks):
-    
+        """
+        Set the kernel for predictions
+
+        Args:
+            term_i:     TODO
+            Ks:         (TODO: is this the covariance between train and test or the covariance between test points?)
+        """
         assert Ks.shape[0]==self.N
     
         #if Kss!=None:
@@ -764,7 +795,12 @@ class CVarianceDecomposition:
     
     
     def predictMean(self):
-                
+        """
+        predict the conditional mean (BLUP)
+
+        Returns:
+            predictions (BLUP)
+        """
         assert self.noisPos!=None,      'No noise element'
         assert self.init,               'GP not initialised'
                 
