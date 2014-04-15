@@ -344,10 +344,11 @@ class CVarianceDecomposition:
                 if self.offset[term_i]>0:
                     _scales = SP.concatenate((_scales,SP.array([SP.sqrt(self.offset[term_i])])))
                 scales.append(_scales)
+            scales = SP.concatenate(scales)
         else:
             scales=SP.randn(self.vd.getNumberScales())
 
-        return SP.concatenate(scales)
+        return scales
 
     def _perturbation(self):
         """
@@ -360,9 +361,10 @@ class CVarianceDecomposition:
                 if self.offset[term_i]>0:
                     _scales  = SP.concatenate((_scales,SP.zeros(1)))
                 scales.append(_scales)
+            scales = SP.concatenate(scales)
         else:
             scales = SP.randn(self.vd.getNumberScales())
-        return SP.concatenate(scales)
+        return scales
  
     def trainGP(self,fast=False,scales0=None,fixed0=None):
         """
@@ -395,7 +397,7 @@ class CVarianceDecomposition:
         return conv
 
     
-    def findLocalOptimum(self,fast=False,scales0=None,fixed0=None,init_method='diagonal',termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=True):
+    def findLocalOptimum(self,fast=False,scales0=None,fixed0=None,init_method='random',termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=True):
         """
         Train the model using the specified initialization strategy
         
@@ -411,7 +413,6 @@ class CVarianceDecomposition:
             verbose:        print if convergence is achieved
         """
 
-        pdb.set_trace()
         if not self.init:		self.initGP(fast=fast)
 
         if scales0!=None: 	init_method = 'manual'
@@ -440,7 +441,7 @@ class CVarianceDecomposition:
                 print 'No local minimum found for the tested initialization points'
             else:
                 print 'Local minimum found at iteration %d' % i
-                
+ 
         return conv
 
 
@@ -466,7 +467,7 @@ class CVarianceDecomposition:
                 # compare with previous minima
                 temp=1
                 for j in range(len(opt_list)):
-                    if SP.allclose(abs(self.getScales()),abs(opt_list[j]['params'])):
+                    if SP.allclose(abs(self.getScales()),abs(opt_list[j]['scales'])):
                         temp=0
                         opt_list[j]['counter']+=1
                         break
@@ -477,21 +478,20 @@ class CVarianceDecomposition:
                     opt['scales'] = self.getScales()
                     opt_list.append(opt)
         
-        if verbose: print "n_times\t\tLML"
         
-        out = []
-                        
         # sort by LML
         LML = SP.array([opt_list[i]['LML'] for i in range(len(opt_list))])
         index   = LML.argsort()[::-1]
         out = []
-        for i in range(len(opt_list)):
-            out.append(opt_list[index[i]])
-            print "\nLocal mimima found:"
+        if verbose:
+            print "\nLocal mimima\n"
+            print "n_times\t\tLML"
             print "------------------------------------"
-            if verbose:
-                print "%d\t\t%f" % (opt_list[index[i]]['counter'], opt_list[index[i]]['LML'])
-            print ""
+            for i in range(len(opt_list)):
+                out.append(opt_list[index[i]])
+                if verbose:
+                    print "%d\t\t%f" % (opt_list[index[i]]['counter'], opt_list[index[i]]['LML'])
+                print ""
 
         return out
 
