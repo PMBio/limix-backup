@@ -276,6 +276,7 @@ CLowRankCF::CLowRankCF(muint_t numberGroups, muint_t rank)
     //number of parameters:
     this->numberParams = rank*numberGroups;
     this->rank = rank;
+    initParams();
 }
 
 CLowRankCF::~CLowRankCF()
