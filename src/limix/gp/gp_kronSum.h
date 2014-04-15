@@ -227,6 +227,11 @@ public:
 	virtual CGPHyperParams getParamBounds(bool upper) const;
 	virtual CGPHyperParams getParamMask() const;
 
+	//get Covariances
+	PCovarianceFunction getCovarr1() {return covarr1;};
+	PCovarianceFunction getCovarr2() {return covarr2;};
+	PCovarianceFunction getCovarc1() {return covarc1;};
+	PCovarianceFunction getCovarc2() {return covarc2;};
 	//get from cache
 	virtual void agetKEffInvYCache(MatrixXd* out) throw (CGPMixException);
 
@@ -324,35 +329,6 @@ public:
 	mfloat_t getRtLML2() 	{return rtLML2;}
 	mfloat_t getRtLML3() 	{return rtLML3;}
 	mfloat_t getRtLML4() 	{return rtLML4;}
-
-
-
-
-
-
-	/*
-	void setX1(const CovarInput& X) throw (CGPMixException);
-	void setX2(const CovarInput& X) throw (CGPMixException);
-	void setY(const MatrixXd& Y);
-	void setCovar1(PCovarianceFunction covar);
-	void setCovar2(PCovarianceFunction covar);
-
-	PCovarianceFunction getCovar1() {return this->covar1;};
-	PCovarianceFunction getCovar2() {return this->covar2;};
-
-	PGPkronSumCache agetCache() {return this->cache;}
-
-	virtual mfloat_t LML(const CGPHyperParams& params) throw (CGPMixException)
-	{
-		return CGPbase::LML(params);
-	}
-	//same for concatenated list of parameters
-	virtual mfloat_t LML(const VectorXd& params) throw (CGPMixException)
-	{
-		return CGPbase::LML(params);
-	}
-
-	*/
 
 };
 typedef sptr<CGPkronSum> PGPkronSum;

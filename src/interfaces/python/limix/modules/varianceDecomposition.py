@@ -100,6 +100,14 @@ class CVarianceDecomposition:
         self.cache['Lparams'] = None
         self.cache['paramsST']= None
 
+    def addRandomEffect(self,K=None,covar_type='freeform',is_noise=False,normalize=True,Ks=None,offset=1e-4,rank=1,covar_K0=None):
+        """
+        Add random effect Term
+        depending on self.P=1 or >1 add single trait or multi trait random effect term
+        """
+        if self.P==1:	self.addSingleTraitTerm(K=K,is_noise=is_noise,normalize=normalize,Ks=Ks)
+        else:			self.addMultiTraitTerm(K=K,covar_type=covar_type,is_noise=is_noise,normalize=normalize,Ks=Ks,offset=offset,rank=rank,covar_K0=covar_K0)
+
     
     def addSingleTraitTerm(self,K=None,is_noise=False,normalize=True,Ks=None):
         """
@@ -176,7 +184,7 @@ class CVarianceDecomposition:
         
         assert K!=None or is_noise, 'CVarianceDecomposition:: Specify covariance structure'
         
-        assert offset>0, 'CVarianceDecomposition:: offset must be >0'
+        assert offset>=0, 'CVarianceDecomposition:: offset must be >=0'
 
         if is_noise:
             assert self.noisPos==None, 'CVarianceDecomposition:: noise term already exists'
@@ -255,7 +263,7 @@ class CVarianceDecomposition:
         self.cache['paramsST']= None
     
     
-    def addFixedTerm(self,F,A=None):
+    def addFixedEffect(self,F=None,A=None):
         """
         set the fixed effect term
         F: fixed effect matrix [N,1]
@@ -263,6 +271,8 @@ class CVarianceDecomposition:
         """
         if A==None:
             A = SP.eye(self.P)
+        if F==None:
+            F = SP.ones((self.N,1))
         
         assert A.shape[1]==self.P, 'Incompatible shape'
         assert F.shape[0]==self.N, 'Incompatible shape'
@@ -296,13 +306,12 @@ class CVarianceDecomposition:
         self.init=True
         self.fast=fast
 
-    def _getScalesDiagonal(self,termx=0):
+    def _getScalesDiag(self,termx=0):
         """
         Uses 2 term single trait model to get covar params for initialization
         --------------------------------------------------
         termx:          non-noise term terms that is used for initialization 
         """
-        assert self.init==True, 'CVarianceDeciomposition:: GP not initialized'
         assert self.P>1, 'CVarianceDecomposition:: diagonal init_method allowed only for multi trait models' 
         assert self.noisPos!=None, 'CVarianceDecomposition:: noise term has to be set'
         assert termx<self.n_terms-1, 'CVarianceDecomposition:: termx>=n_terms-1'
@@ -324,17 +333,15 @@ class CVarianceDecomposition:
             scales.append(_scales)
         return SP.concatenate(scales)
 
-    def _getScalesRandom(self):
+    def _getScalesRand(self):
         """
         Return a vector of random scales
         """
-        assert self.init==True, 'CVarianceDeciomposition:: GP not initialized'
-
         if self.P>1:
             scales = []
             for term_i in range(self.n_terms):
                 _scales = SP.randn(self.diag[term_i].shape[0])
-                if self.offsetp[term_i]>0:
+                if self.offset[term_i]>0:
                     _scales = SP.concatenate((_scales,SP.array([SP.sqrt(self.offset[term_i])])))
                 scales.append(_scales)
         else:
@@ -349,31 +356,34 @@ class CVarianceDecomposition:
         if self.P>1:
             scales = []
             for term_i in range(self.n_terms):
-                _scales += SP.randn(self.diag[term_i].shape[0])
-                if self.offsetp[term_i]>0:
-                    _scales  = SP.concatenate((_scales,SP.zeros(0)))
+                _scales = SP.randn(self.diag[term_i].shape[0])
+                if self.offset[term_i]>0:
+                    _scales  = SP.concatenate((_scales,SP.zeros(1)))
                 scales.append(_scales)
         else:
             scales = SP.randn(self.vd.getNumberScales())
         return SP.concatenate(scales)
  
-    def trainGP(self,scales0=None,fixed0=None):
+    def trainGP(self,fast=False,scales0=None,fixed0=None):
         """
         Train the gp
         -------------------------------
         scales0		initial variance components params
         fixed0      initial fixed effect params
         """
-        assert self.init==True, 'CVarianceDeciomposition:: GP not initialized'
         assert self.n_terms>0, 'CVarianceDecomposition:: No variance component terms'
-        
+
+        if not self.init:		self.initGP(fast=fast)
+
         # set scales0
-        if init_scales!=None:
-            self.setScales(init_scales) 
+        if scales0!=None:
+            self.setScales(scales0)
+        # init gp params
+        self.vd.initGPparams()
         # set fixed0
-        if init_fixed!=None:
+        if fixed0!=None:
             params = self.gp.getParams()
-            params['dataTerm'] = init_fixed
+            params['dataTerm'] = fixed0
             self.gp.setParams(params)
         
         # LIMIX CVARIANCEDECOMPOSITION TRAINING
@@ -385,7 +395,7 @@ class CVarianceDecomposition:
         return conv
 
     
-    def findLocalOptimum(self,fast=False,scales0=None,fixed0=None,init_method='random',n_times=10,perturb=True,pertSize=1e-3,verbose=True):
+    def findLocalOptimum(self,fast=False,scales0=None,fixed0=None,init_method='diagonal',termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=True):
         """
         Train the model using the specified initialization strategy
         
@@ -394,18 +404,20 @@ class CVarianceDecomposition:
             scales0:        if not None init_method is set to manual
             fixed0:         initial fixed effects
             init_method:    initialization method \in {random,diagonal,manual} 
+            termx:			term for diagonal diagonalisation
             n_times:        number of times the initialization
             perturb:        if true, the initial point is perturbed with gaussian noise
             perturbSize:    size of the perturbation
             verbose:        print if convergence is achieved
         """
 
-        if not self.init:		self.initGP(fast)        
+        pdb.set_trace()
+        if not self.init:		self.initGP(fast=fast)
 
         if scales0!=None: 	init_method = 'manual'
         
         if init_method=='diagonal':
-            scales0 = _getScalesDiagonal(self,termx=0)
+            scales0 = self._getScalesDiag(termx=termx)
             
         if init_method=='diagonal' or init_method=='manual':
             if not perturb:		n_times = 1
@@ -415,12 +427,12 @@ class CVarianceDecomposition:
 
         for i in range(n_times):
             if init_method=='random':
-                scales1 = self._getScalesRandom()
+                scales1 = self._getScalesRand()
                 fixed1  = pertSize*SP.randn(fixed0.shape[0],fixed0.shape[1])
             elif perturb:
-                scales1 = scales0+perturb*self._perturbation()
+                scales1 = scales0+pertSize*self._perturbation()
                 fixed1  = fixed0+pertSize*SP.randn(fixed0.shape[0],fixed0.shape[1])
-            conv = self.fit(fast=fast,scales0=scales1,fixed0=fixed1)
+            conv = self.trainGP(scales0=scales1,fixed0=fixed1)
             if conv:    break
     
         if verbose:
@@ -446,9 +458,9 @@ class CVarianceDecomposition:
         # minimises n_times
         for i in range(n_times):
             
-            scales1 = self._getScalesRandom()
+            scales1 = self._getScalesRand()
             fixed1  = 1e-1*SP.randn(fixed0.shape[0],fixed0.shape[1])
-            conv = self.fit(fast=fast,scales0=scales1,fixed0=fixed1)
+            conv = self.trainGP(fast=fast,scales0=scales1,fixed0=fixed1)
 
             if conv:
                 # compare with previous minima

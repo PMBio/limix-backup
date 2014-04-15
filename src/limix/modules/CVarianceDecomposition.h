@@ -237,6 +237,7 @@ public:
 	virtual PSumCF getCovar() {return this->covar;};
 	virtual PLinearMean getMean() {return static_pointer_cast<CLinearMean>(this->gp->getDataTerm());};
 	//init and train GP
+	virtual void initGPparams() throw(CGPMixException);
 	virtual void initGP(bool fast=false) throw(CGPMixException);
 	virtual void initGPbase() throw(CGPMixException);
 	virtual void initGPkronSum() throw(CGPMixException);
