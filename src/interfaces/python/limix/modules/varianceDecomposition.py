@@ -197,14 +197,14 @@ class CVarianceDecomposition:
         cov = limix.CSumCF()
         if covar_type=='freeform':
             cov.addCovariance(limix.CFreeFormCF(self.P))
-            L = SP.eye(P)
+            L = SP.eye(self.P)
             diag = SP.concatenate([L[i,:(i+1)] for i in range(self.P)])
         elif covar_type=='fixed':
             cov.addCovariance(limix.CFixedCF(covar_K0))
             diag = SP.zeros(1)
         elif covar_type=='diag':
             cov.addCovariance(limix.CDiagonalCF(self.P))
-            diag = SP.ones(P)
+            diag = SP.ones(self.P)
         elif covar_type=='lowrank':
             cov.addCovariance(limix.CLowRankCF(self.P,rank))
             diag = SP.zeros(self.P*rank)
@@ -226,7 +226,7 @@ class CVarianceDecomposition:
         elif covar_type=='block_diag':
             cov.addCovariance(limix.CFixedCF(SP.ones((self.P,self.P))))
             cov.addCovariance(limix.CDiagonalCF(self.P))
-            diag = SP.concatenate([SP.zeros(1),SP.ones(P)])
+            diag = SP.concatenate([SP.zeros(1),SP.ones(self.P)])
         else:
             assert True==False, 'CVarianceDecomposition:: covar_type not valid'
 
@@ -304,12 +304,12 @@ class CVarianceDecomposition:
         """
         assert self.init==True, 'CVarianceDeciomposition:: GP not initialized'
         assert self.P>1, 'CVarianceDecomposition:: diagonal init_method allowed only for multi trait models' 
-        assert termx!=self.noisPos, 'CVarianceDecomposition:: noise term cannot be used to initialize with diagonal'
-        assert termx>=n_terms, 'CVarianceDecomposition:: termx>=n_terms'
+        assert self.noisPos!=None, 'CVarianceDecomposition:: noise term has to be set'
+        assert termx<self.n_terms-1, 'CVarianceDecomposition:: termx>=n_terms-1'
         assert self.covar_type[self.noisPos] not in ['lowrank','block','fixed'], 'CVarianceDecimposition:: diagonal initializaiton not posible for such a parametrization'
         assert self.covar_type[termx] not in ['lowrank','block','fixed'], 'CVarianceDecimposition:: diagonal initializaiton not posible for such a parametrization'
         scales = []
-        res = estimateHeritabilities(self.vd.getTerm(termx).getK())
+        res = self.estimateHeritabilities(self.vd.getTerm(termx).getK())
         scaleg = SP.sqrt(res['varg'].mean())
         scalen = SP.sqrt(res['varn'].mean())
         for term_i in range(self.n_terms):
@@ -320,9 +320,9 @@ class CVarianceDecomposition:
             else:
                 _scales = 0.*self.diag[term_i]
             if self.offset[term_i]>0:
-                _scales = SP.concatenate((scales,SP.sqrt(self.offset[term_i])))
+                _scales = SP.concatenate((_scales,SP.array([SP.sqrt(self.offset[term_i])])))
             scales.append(_scales)
-        return SP.array(scales)
+        return SP.concatenate(scales)
 
     def _getScalesRandom(self):
         """
@@ -335,12 +335,12 @@ class CVarianceDecomposition:
             for term_i in range(self.n_terms):
                 _scales = SP.randn(self.diag[term_i].shape[0])
                 if self.offsetp[term_i]>0:
-                    _scales = SP.concatenate((_scales,SP.sqrt(self.offset[term_i])))
+                    _scales = SP.concatenate((_scales,SP.array([SP.sqrt(self.offset[term_i])])))
                 scales.append(_scales)
         else:
             scales=SP.randn(self.vd.getNumberScales())
 
-        return scales
+        return SP.concatenate(scales)
 
     def _perturbation(self):
         """
@@ -355,7 +355,7 @@ class CVarianceDecomposition:
                 scales.append(_scales)
         else:
             scales = SP.randn(self.vd.getNumberScales())
-        return SP.array(scales)
+        return SP.concatenate(scales)
  
     def trainGP(self,scales0=None,fixed0=None):
         """
