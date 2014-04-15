@@ -158,21 +158,19 @@ class CVarianceDecomposition:
             covar_type: type of covaraince to use. Default 'freeform'. possible values are 
                             'freeform': free form optimization, 
                             'fixed': use a fixed matrix specified in covar_K0,
-                            'rank1': optimize a rank-1 matrix, 
                             'diag': optimize a diagonal matrix, 
-                            'rank1_diag': optimize a rank-1 matrix plus a free diagonal matrix, 
-                            'rank1_id': optimize a rank-1 matrix plus the weight of a constant diagonal matrix, 
-                            'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                            'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,
+                            'lowrank': optimize a low rank matrix. The rank of the lowrank part is specified in the variable rank,
                             'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                            'sqexp': optimize a squared exponential GPLVM matrix having dim inputs
+                            'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+                            'block': optimize the weight of a constant P x P block matrix of ones,
+                            'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
+                            'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,                            
             is_noise:   Boolean indicator specifying if the matrix is homoscedastic noise (weighted identity covariance) (default False)
             normalize:  Boolean indicator specifying if K is normalized such that K.trace()=N.
             Ks:			NxNtest cross covariance for predictions
             offset:		diagonal contribution added to trait-to-trait covariance matrices for regularization
             rank:       rank of a possible lowrank component (default 1)
             covar_K0:   PxP matrix for trait-to-trait covariance matrix if fixed type is used
-            Ks:         Kstar for making predictions.
         """
         assert self.P > 1, 'CVarianceDecomposition:: Incompatible number of traits'
         
@@ -390,15 +388,16 @@ class CVarianceDecomposition:
     def findLocalOptimum(self,fast=False,scales0=None,fixed0=None,init_method='random',n_times=10,perturb=True,pertSize=1e-3,verbose=True):
         """
         Train the model using the specified initialization strategy
-        ----------------------------------------------------------
-        fast		    if true, fast gp is initialized
-        scales0         if not None init_method is set to manual
-        fixed0          initial fixed effects
-        init_method     initialization method \in {random,diagonal,manual} 
-        n_times         number of times the initialization
-        perturb         if true, the initial point is perturbed with gaussian noise
-        perturbSize     size of the perturbation
-        verbose         print if convergence is achieved
+        
+        Args:
+            fast:		    if true, fast gp is initialized
+            scales0:        if not None init_method is set to manual
+            fixed0:         initial fixed effects
+            init_method:    initialization method \in {random,diagonal,manual} 
+            n_times:        number of times the initialization
+            perturb:        if true, the initial point is perturbed with gaussian noise
+            perturbSize:    size of the perturbation
+            verbose:        print if convergence is achieved
         """
 
         if not self.init:		self.initGP(fast)        
