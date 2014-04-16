@@ -199,6 +199,7 @@ setup(
     long_description = read('README'),
     license = 'BSD',
     keywords = 'linear mixed models, GWAS, QTL',
+    scripts = ['src/interfaces/python/limix/modules/limix_runner.py'],
     packages = ['limix'],
     package_dir = {'': 'build/release'},
     #use manual build system building on scons
