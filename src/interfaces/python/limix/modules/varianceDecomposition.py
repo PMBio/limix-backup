@@ -278,9 +278,12 @@ class CVarianceDecomposition:
         
         assert A.shape[1]==self.P, 'Incompatible shape'
         assert F.shape[0]==self.N, 'Incompatible shape'
-        assert F.shape[1]==1,      'Incompatible shape'
-        
-        self.vd.addFixedEffTerm(A,F)
+       
+        if F.shape[1]>1:
+            for m in range(F.shape[1]):
+                self.vd.addFixedEffTerm(A,F[:,m:m+1])
+        else:
+            self.vd.addFixedEffTerm(A,F)
     
         self.gp      = None
         self.init    = False
