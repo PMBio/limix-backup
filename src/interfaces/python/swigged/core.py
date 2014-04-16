@@ -2336,59 +2336,6 @@ class CParamObject(_object):
 CParamObject_swigregister = _core.CParamObject_swigregister
 CParamObject_swigregister(CParamObject)
 
-
-def ridge_regression(*args):
-  """
-    ridge_regression(MatrixXd const & Xfull, MatrixXd const & y, limix::mfloat_t mu)
-
-    Parameters:
-        Xfull: MatrixXd const &
-        y: MatrixXd const &
-        mu: limix::mfloat_t
-
-    """
-  return _core.ridge_regression(*args)
-
-def lasso_irr(*args):
-  """
-    lasso_irr(MatrixXd const & X, MatrixXd const & y, limix::mfloat_t mu, limix::mfloat_t optTol=1E-6, 
-        limix::mfloat_t threshold=1E-6, limix::muint_t maxIter=10000)
-
-    Parameters:
-        X: MatrixXd const &
-        y: MatrixXd const &
-        mu: limix::mfloat_t
-        optTol: limix::mfloat_t
-        threshold: limix::mfloat_t
-        maxIter: limix::muint_t
-
-    lasso_irr(MatrixXd const & X, MatrixXd const & y, limix::mfloat_t mu, limix::mfloat_t optTol=1E-6, 
-        limix::mfloat_t threshold=1E-6)
-
-    Parameters:
-        X: MatrixXd const &
-        y: MatrixXd const &
-        mu: limix::mfloat_t
-        optTol: limix::mfloat_t
-        threshold: limix::mfloat_t
-
-    lasso_irr(MatrixXd const & X, MatrixXd const & y, limix::mfloat_t mu, limix::mfloat_t optTol=1E-6)
-
-    Parameters:
-        X: MatrixXd const &
-        y: MatrixXd const &
-        mu: limix::mfloat_t
-        optTol: limix::mfloat_t
-
-    lasso_irr(MatrixXd const & X, MatrixXd const & y, limix::mfloat_t mu)
-
-    Parameters:
-        X: MatrixXd const &
-        y: MatrixXd const &
-        mu: limix::mfloat_t
-
-    """
-  return _core.lasso_irr(*args)
 class ACovarianceFunction(CParamObject):
     """Proxy of C++ limix::ACovarianceFunction class"""
     __swig_setmethods__ = {}
@@ -6851,6 +6798,16 @@ class CGPbase(_object):
         """
         return _core.CGPbase_setDataTerm(self, *args)
 
+    def setLambda(self, *args):
+        """
+        setLambda(CGPbase self, CGPHyperParams _lambda)
+
+        Parameters:
+            lambda: limix::CGPHyperParams
+
+        """
+        return _core.CGPbase_setLambda(self, *args)
+
     def setParams(self, *args):
         """
         setParams(CGPbase self, CGPHyperParams hyperparams)
@@ -7992,6 +7949,16 @@ class CGPkronSum(CGPbase):
         except: self.this = this
     __swig_destroy__ = _core.delete_CGPkronSum
     __del__ = lambda self : None;
+    def setLambda(self, *args):
+        """
+        setLambda(CGPkronSum self, limix::mfloat_t _lambda)
+
+        Parameters:
+            lambda: limix::mfloat_t
+
+        """
+        return _core.CGPkronSum_setLambda(self, *args)
+
     def getParamBounds(self, *args):
         """
         getParamBounds(CGPkronSum self, bool upper) -> CGPHyperParams
@@ -8011,6 +7978,46 @@ class CGPkronSum(CGPbase):
 
         """
         return _core.CGPkronSum_getParamMask(self)
+
+    def getCovarr1(self):
+        """
+        getCovarr1(CGPkronSum self) -> limix::PCovarianceFunction
+
+        Parameters:
+            self: limix::CGPkronSum *
+
+        """
+        return _core.CGPkronSum_getCovarr1(self)
+
+    def getCovarr2(self):
+        """
+        getCovarr2(CGPkronSum self) -> limix::PCovarianceFunction
+
+        Parameters:
+            self: limix::CGPkronSum *
+
+        """
+        return _core.CGPkronSum_getCovarr2(self)
+
+    def getCovarc1(self):
+        """
+        getCovarc1(CGPkronSum self) -> limix::PCovarianceFunction
+
+        Parameters:
+            self: limix::CGPkronSum *
+
+        """
+        return _core.CGPkronSum_getCovarc1(self)
+
+    def getCovarc2(self):
+        """
+        getCovarc2(CGPkronSum self) -> limix::PCovarianceFunction
+
+        Parameters:
+            self: limix::CGPkronSum *
+
+        """
+        return _core.CGPkronSum_getCovarc2(self)
 
     def agetKEffInvYCache(self):
         """
@@ -9975,223 +9982,6 @@ class nLLevalFunctor(_object):
 nLLevalFunctor_swigregister = _core.nLLevalFunctor_swigregister
 nLLevalFunctor_swigregister(nLLevalFunctor)
 
-class CGPLMM(ALMM):
-    """Proxy of C++ limix::CGPLMM class"""
-    __swig_setmethods__ = {}
-    for _s in [ALMM]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, CGPLMM, name, value)
-    __swig_getmethods__ = {}
-    for _s in [ALMM]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
-    __getattr__ = lambda self, name: _swig_getattr(self, CGPLMM, name)
-    __repr__ = _swig_repr
-    def __init__(self, *args): 
-        """
-        __init__(limix::CGPLMM self, limix::PGPkronecker gp) -> CGPLMM
-
-        Parameters:
-            gp: limix::PGPkronecker
-
-        __init__(limix::CGPLMM self) -> CGPLMM
-        """
-        this = _core.new_CGPLMM(*args)
-        try: self.this.append(this)
-        except: self.this = this
-    __swig_destroy__ = _core.delete_CGPLMM
-    __del__ = lambda self : None;
-    def process(self):
-        """
-        process(CGPLMM self)
-
-        Parameters:
-            self: limix::CGPLMM *
-
-        """
-        return _core.CGPLMM_process(self)
-
-    def setAAlt(self, *args):
-        """
-        setAAlt(CGPLMM self, MatrixXd const & AAlt)
-
-        Parameters:
-            AAlt: MatrixXd const &
-
-        """
-        return _core.CGPLMM_setAAlt(self, *args)
-
-    def getAAlt(self):
-        """
-        getAAlt(CGPLMM self)
-
-        Parameters:
-            self: limix::CGPLMM *
-
-        """
-        return _core.CGPLMM_getAAlt(self)
-
-    def setVA0(self, *args):
-        """
-        setVA0(CGPLMM self, MatrixXdVec VA0)
-
-        Parameters:
-            VA0: limix::MatrixXdVec const &
-
-        """
-        return _core.CGPLMM_setVA0(self, *args)
-
-    def getVA0(self):
-        """
-        getVA0(CGPLMM self) -> MatrixXdVec
-
-        Parameters:
-            self: limix::CGPLMM *
-
-        """
-        return _core.CGPLMM_getVA0(self)
-
-    def addA0(self, *args):
-        """
-        addA0(CGPLMM self, MatrixXd const & a)
-
-        Parameters:
-            a: MatrixXd const &
-
-        """
-        return _core.CGPLMM_addA0(self, *args)
-
-    def setA0(self, *args):
-        """
-        setA0(CGPLMM self, MatrixXd const & a0, limix::muint_t i)
-
-        Parameters:
-            a0: MatrixXd const &
-            i: limix::muint_t
-
-        """
-        return _core.CGPLMM_setA0(self, *args)
-
-    def getA0(self, *args):
-        """
-        getA0(CGPLMM self, limix::muint_t i)
-
-        Parameters:
-            i: limix::muint_t
-
-        """
-        return _core.CGPLMM_getA0(self, *args)
-
-    def getDegreesFredom(self):
-        """
-        getDegreesFredom(CGPLMM self) -> limix::muint_t
-
-        Parameters:
-            self: limix::CGPLMM *
-
-        """
-        return _core.CGPLMM_getDegreesFredom(self)
-
-    def getGp(self):
-        """
-        getGp(CGPLMM self) -> limix::PGPkronecker
-
-        Parameters:
-            self: limix::CGPLMM const *
-
-        """
-        return _core.CGPLMM_getGp(self)
-
-    def setGp(self, *args):
-        """
-        setGp(CGPLMM self, limix::PGPkronecker gp)
-
-        Parameters:
-            gp: limix::PGPkronecker
-
-        """
-        return _core.CGPLMM_setGp(self, *args)
-
-    def getNLL0(self):
-        """
-        getNLL0(CGPLMM self)
-
-        Parameters:
-            self: limix::CGPLMM *
-
-        """
-        return _core.CGPLMM_getNLL0(self)
-
-    def getNLLAlt(self):
-        """
-        getNLLAlt(CGPLMM self)
-
-        Parameters:
-            self: limix::CGPLMM *
-
-        """
-        return _core.CGPLMM_getNLLAlt(self)
-
-    def getParams0(self):
-        """
-        getParams0(CGPLMM self) -> CGPHyperParams
-
-        Parameters:
-            self: limix::CGPLMM *
-
-        """
-        return _core.CGPLMM_getParams0(self)
-
-    def setParams0(self, *args):
-        """
-        setParams0(CGPLMM self, CGPHyperParams params0)
-
-        Parameters:
-            params0: limix::CGPHyperParams const &
-
-        """
-        return _core.CGPLMM_setParams0(self, *args)
-
-    def getParamsMask(self):
-        """
-        getParamsMask(CGPLMM self) -> CGPHyperParams
-
-        Parameters:
-            self: limix::CGPLMM *
-
-        """
-        return _core.CGPLMM_getParamsMask(self)
-
-    def setParamsMask(self, *args):
-        """
-        setParamsMask(CGPLMM self, CGPHyperParams p)
-
-        Parameters:
-            p: limix::CGPHyperParams const &
-
-        """
-        return _core.CGPLMM_setParamsMask(self, *args)
-
-    def getLdeltaAlt(self):
-        """
-        getLdeltaAlt(CGPLMM self)
-
-        Parameters:
-            self: limix::CGPLMM *
-
-        """
-        return _core.CGPLMM_getLdeltaAlt(self)
-
-    def getLdelta0(self):
-        """
-        getLdelta0(CGPLMM self)
-
-        Parameters:
-            self: limix::CGPLMM *
-
-        """
-        return _core.CGPLMM_getLdelta0(self)
-
-CGPLMM_swigregister = _core.CGPLMM_swigregister
-CGPLMM_swigregister(CGPLMM)
-
 class CLMMKroneckerCore(_object):
     """Proxy of C++ limix::CLMMKroneckerCore class"""
     __swig_setmethods__ = {}
@@ -11229,6 +11019,16 @@ class CVarianceDecomposition(_object):
 
         """
         return _core.CVarianceDecomposition_getMean(self)
+
+    def initGPparams(self):
+        """
+        initGPparams(CVarianceDecomposition self)
+
+        Parameters:
+            self: limix::CVarianceDecomposition *
+
+        """
+        return _core.CVarianceDecomposition_initGPparams(self)
 
     def initGP(self, fast=False):
         """
