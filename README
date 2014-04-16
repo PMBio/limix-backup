@@ -1,39 +1,14 @@
-GPMix C++ library with interfaces
-to R and python.
+GPMix C++ library with interfaces to Python.
 
-Descirbe me here:
+
+
 
 Authors:
-Christoph Lippert, Oliver Stegle
 
+Oliver Stegle (stegle@ebi.ac.uk) Christoph Lippert (lippert@microsoft.com)
+Franceso Paolo Casale (casale@ebi.ac.uk)
 
 Directory structure:
 
 External/
 - 3rd party libraries we use, Eigen etc.
-
-cmake/
-- cmake helper scripts for building the full library from scratch using the cmake build system
-
-src/
-	/python_interface			Python interface files (SWIG)
-  	/gpmix  					GPMix C++ source
-  	/tests						Unit Tests
-  	/testing					Test scripts for debugging purposes
-
-/python							Python component of GPmix
-/R								R component of GPmix
- 
- 
- 
-Code conventions:
-
-Some care needs to be taken, in particular to allow for semingless integration with SWIG.
-
-1) getters and setters
-Key for ease of use are the SWIG components that allow for conversion of MatrixXd/VectorXd components to python arrays.
-The relevants bits are in src/python_interface/eigen.i
-Note: all classses have MatrixXd getX() components and agetX(MatrixXd* out)
-The former are very useful for C++ internal usage. In Swig agetX is used and getX is ignored (see for example covaraince.h)
-
-Note: aXXX denotes "argout" version of the getter/accessor.
