@@ -59,23 +59,22 @@ CGPkronSumCache::CGPkronSumCache(CGPkronSum* gp)
 }
 
 
+/*!
+This is optimised for the case where rows are fixed and colomns vary
+(because of the partial rotation on Y, Rrot and OmegaRot)
 
+if R1 or Omega change
+- row rotations (inner rotation performed only if Omega changes)
+- Lambdar
+- YrotPart, Yrot, Ytilde
+- Rrot, OmegaRot
+if C1 or Sigma change
+- col rotations (inner rotation performed only if Sigma changes)
+- Lambdac
+- Yrot, Ytilde
+*/
 void CGPkronSumCache::validateCache()
 {
-    /*
-     This is optimised for the case where rows are fixed and colomns vary
-        (because of the partial rotation on Y, Rrot and OmegaRot)
-
-     if R1 or Omega change
-        - row rotations (inner rotation performed only if Omega changes)
-        - Lambdar
-        - YrotPart, Yrot, Ytilde
-        - Rrot, OmegaRot
-     if C1 or Sigma change
-        - col rotations (inner rotation performed only if Sigma changes)
-        - Lambdac
-        - Yrot, Ytilde
-    */
 	muint_t maskRR = this->gp->covarr1->getParamMask().sum()+this->gp->covarr2->getParamMask().sum();
 	if((!*syncCovarc1) || (!*syncCovarc2))
 	{
@@ -103,6 +102,12 @@ void CGPkronSumCache::validateCache()
 	setSync();
 }
 
+/*!
+Computes the eigen deceomposition of the rotated column covariance (Cstar).
+
+- Cstar    = diag(Ssigma)^(-0.5) Usigma.T C Usigma.T diag(Ssigma)^(-0.5)
+- Cstar    = Ucstar diag(Scstar) Ucstar.T
+*/
 void CGPkronSumCache::updateSVDcstar()
 {
 	MatrixXd USisqrt;
@@ -115,6 +120,7 @@ void CGPkronSumCache::updateSVDcstar()
 	ScstarCache = eigensolver.eigenvalues();
 }
 
+
 MatrixXd& CGPkronSumCache::rgetSsigma()
 {
 	validateCache();
@@ -125,6 +131,12 @@ MatrixXd& CGPkronSumCache::rgetSsigma()
 	return SsigmaCache;
 }
 
+/*!
+Returns the eigenvalues (Scstar) of the rotated column covariance (Cstar).
+
+- Cstar    = diag(Ssigma)^(-0.5) Usigma.T C Usigma.T diag(Ssigma)^(-0.5)
+- Cstar    = Ucstar diag(Scstar) Ucstar.T
+*/
 MatrixXd& CGPkronSumCache::rgetScstar()
 {
 	validateCache();
@@ -137,6 +149,13 @@ MatrixXd& CGPkronSumCache::rgetScstar()
 	return ScstarCache;
 }
 
+
+/*!
+Returns the Matrix of eigenvectors (Ucstar) of the rotated column covariance (Cstar).
+
+- Cstar    = diag(Ssigma)^(-0.5) Usigma.T C Usigma.T diag(Ssigma)^(-0.5)
+- Cstar    = Ucstar diag(Scstar) Ucstar.T
+*/
 MatrixXd& CGPkronSumCache::rgetUcstar()
 {
 	validateCache();
@@ -160,6 +179,12 @@ MatrixXd& CGPkronSumCache::rgetLambdac()
 	return LambdacCache;
 }
 
+/*!
+Computes the eigen deceomposition of the rotated row covariance (Rstar).
+
+- Rstar    = diag(Somega)^(-0.5) Uomega.T R Uomega.T diag(Somega)^(-0.5)
+- Rstar    = Urstar diag(Srstar) Urstar.T
+*/
 void CGPkronSumCache::updateSVDrstar()
 {
 	clock_t beg = clock();
@@ -174,6 +199,13 @@ void CGPkronSumCache::updateSVDrstar()
 	if (this->gp->debug)	std::cout<<"SVD rows:   "<<te1(beg)<<std::endl;
 }
 
+
+/*!
+Returns the eigenvalues (Scstar) of the rotated row covariance (Rstar).
+
+- Rstar    = diag(Somega)^(-0.5) Uomega.T R Uomega.T diag(Somega)^(-0.5)
+- Rstar    = Urstar diag(Srstar) Urstar.T
+*/
 MatrixXd& CGPkronSumCache::rgetSomega()
 {
 	validateCache();
@@ -184,6 +216,12 @@ MatrixXd& CGPkronSumCache::rgetSomega()
 	return SomegaCache;
 }
 
+/*!
+Returns the matrix of eigenvectors (Ucstar) of the rotated row covariance (Rstar).
+
+- Rstar    = diag(Somega)^(-0.5) Uomega.T R Uomega.T diag(Somega)^(-0.5)
+- Rstar    = Urstar diag(Srstar) Urstar.T
+*/
 MatrixXd& CGPkronSumCache::rgetSrstar()
 {
 	validateCache();
@@ -312,6 +350,9 @@ CGPkronSum::CGPkronSum(const MatrixXd& Y,
 	this->setY(Y);
 	this->N=Y.rows();
 	this->P=Y.cols();
+
+	this->lambda=0;
+
 	rtLML1a=0;
 	rtLML1b=0;
 	rtLML1c=0;
@@ -472,7 +513,18 @@ mfloat_t CGPkronSum::LML() throw (CGPMixException)
     mfloat_t lml_const = 0.5*Yrot.cols()*Yrot.rows() * limix::log((2.0 * PI));
     rtLML4+=te1(beg);
 
-    return lml_quad + lml_det + lml_const;
+	//4. penalization
+	mfloat_t lml_pen = 0;
+	if (lambda>0) {
+		MatrixXd C1 = covarc1->K();
+		MatrixXd C2 = covarc2->K();
+		for (muint_t ir=0; ir<C1.rows(); ir++)
+			for (muint_t ic=0; ic<ir; ic++)
+				lml_pen+= C1(ir,ic)*C1(ir,ic)+C2(ir,ic)*C2(ir,ic);
+		lml_pen*=lambda;
+	}
+
+    return lml_quad + lml_det + lml_const+ lml_pen;
 };
 
 
@@ -484,12 +536,32 @@ CGPHyperParams CGPkronSum::LMLgrad() throw (CGPMixException)
     if(params.exists("covarc1")){
         VectorXd grad_covar;
         aLMLgrad_covarc1(&grad_covar);
+        if (lambda>0) {
+            MatrixXd C1, C1grad;
+            for (muint_t i=0; i<params["covarc1"].rows(); i++) {
+                C1     = covarc1->K();
+                C1grad = covarc1->Kgrad_param(i);
+                for (muint_t ir=0; ir<C1.rows(); ir++)
+                    for (muint_t ic=0; ic<ir; ic++)
+                        grad_covar(i)+= 2*lambda*C1(ir,ic)*C1grad(ir,ic);
+            }
+        }
         rv.set("covarc1", grad_covar);
     }
     if(params.exists("covarc2")){
         VectorXd grad_covar;
         aLMLgrad_covarc2(&grad_covar);
         rv.set("covarc2", grad_covar);
+        if (lambda>0) {
+            MatrixXd C2, C2grad;
+            for (muint_t i=0; i<params["covarc2"].rows(); i++) {
+                C2     = covarc2->K();
+                C2grad = covarc2->Kgrad_param(i);
+                for (muint_t ir=0; ir<C2.rows(); ir++)
+                    for (muint_t ic=0; ic<ir; ic++)
+                        grad_covar(i)+= 2*lambda*C2(ir,ic)*C2grad(ir,ic);
+            }
+        }
     }
     if(params.exists("covarr1")){
         VectorXd grad_covar;

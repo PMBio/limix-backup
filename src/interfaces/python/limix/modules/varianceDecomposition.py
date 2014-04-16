@@ -15,28 +15,28 @@ class CVarianceDecomposition:
     """
     helper function for variance decomposition in limix
     This class mainly takes care of initialization and interpreation of results
-    """
-    
-    """
+
     Methods:
         __init__(self,Y):            Constructor
         addSingleTraitTerm:          Add Single Trait Term
-        addMultiTraitTerm:           Add Multi Trait Term (inter-trait Covariance Matrix is FreeForm)
+        addMultiTraitTerm:           Add Multi Trait Term (form of trait-to-trait covariance matrix need to be set as well)
         addFixedTerm:                Add Fixed Effect Term
         fit:                         Fit phenos and returns the minimum with some info
         setScales:                   Set the vector of covar parameterss
         getScales:                   Return the vector of the covar parameters
         getFixed:                    Return the vector of the dataTerm parameters
         getEmpTraitCovar:            Return the empirical trait covariance
-        getEstTraitCovar:            Return the total trait covariance in the GP by summing up the trait covariances C_i
-        getLaplaceCovar:             Calculate the inverse hessian of the -loglikelihood with respect to the parameters (covariance matrix of the posterior over params under laplace approximation)
+        getEstTraitCovar:            Return the estimated trait-to-trait covariance matrix for term i
         estimateHeritabilities:      Given K, it fits the model with 1 global fixed effects and covariance matrix hg[p]*K+hn[p] for each trait p and returns the vectors hg and hn
     """
     
     
     def __init__(self,Y,standardize=False):
         """
-        Y: phenotype matrix [N, P]
+        Args:
+            Y:              phenotype matrix [N, P]
+            standardize:    if True, impute missing phenotype values by mean value,
+                            zero-mean and unit-variance phenotype (Boolean, default False)
         """
         
         #create column of 1 for fixed if nothing providede
@@ -57,8 +57,11 @@ class CVarianceDecomposition:
         self.fast    = False
         self.noisPos = None
         self.optimum = None
-        
+
+        # for multi trait models 
         self.covar_type = []
+        self.diag       = []
+        self.offset     = []
         
         self.cache = {}
         self.cache['Sigma']   = None
@@ -70,15 +73,22 @@ class CVarianceDecomposition:
     
     
     def setY(self,Y,standardize=False):
+        """
+        Set phenotype matrix
         
-        assert Y.shape[0]==self.N, 'Incompatible shape'
-        assert Y.shape[1]==self.P, 'Incompatible shape'
+        Args:
+            Y: phenotype matrix [N, P]
+            standardize:		if True, phenotype is standardized
+        """
+        assert Y.shape[0]==self.N, 'CVarianceDecomposition:: Incompatible shape'
+        assert Y.shape[1]==self.P, 'CVarianceDecomposition:: Incompatible shape'
+
         
         if standardize:
             Y=preprocess.standardize(Y)
 
         #check that missing values match the current structure
-        assert (~(SP.isnan(Y).any(axis=1))==self.Iok).all(), 'pattern of missing values needs to match Y given at initialization'
+        assert (~(SP.isnan(Y).any(axis=1))==self.Iok).all(), 'CVarianceDecomposition:: pattern of missing values needs to match Y given at initialization'
 
         self.Y = Y
         self.vd.setPheno(Y)
@@ -90,13 +100,24 @@ class CVarianceDecomposition:
         self.cache['Lparams'] = None
         self.cache['paramsST']= None
 
+    def addRandomEffect(self,K=None,covar_type='freeform',is_noise=False,normalize=True,Ks=None,offset=1e-4,rank=1,covar_K0=None):
+        """
+        Add random effect Term
+        depending on self.P=1 or >1 add single trait or multi trait random effect term
+        """
+        if self.P==1:	self.addSingleTraitTerm(K=K,is_noise=is_noise,normalize=normalize,Ks=Ks)
+        else:			self.addMultiTraitTerm(K=K,covar_type=covar_type,is_noise=is_noise,normalize=normalize,Ks=Ks,offset=offset,rank=rank,covar_K0=covar_K0)
+
     
     def addSingleTraitTerm(self,K=None,is_noise=False,normalize=True,Ks=None):
         """
-        add single trait term
-        is_noise:   if is_noise: I->K
-        K:          Intra-Trait Covariance Matrix [N, N]
-        (K is normalised in the C++ code such that K.trace()==N)
+        add random effects term for single trait models (no trait-trait covariance matrix)
+        
+        Args:
+            K:          NxN sample covariance matrix
+            is_noise:	bool labeling the noise term (noise term has K=eye)
+            normalize:	if True, K and Ks are scales such that K.diagonal().mean()==1
+            Ks:			NxN test cross covariance for predictions
         """
         
         assert self.P == 1, 'Incompatible number of traits'
@@ -118,7 +139,7 @@ class CVarianceDecomposition:
             Norm = 1/K.diagonal().mean()
             K *= Norm
             if Ks!=None: Ks *= Norm
-    
+
         self.vd.addTerm(limix.CSingleTraitTerm(K))
         if Ks!=None: self.setKstar(self.n_terms,Ks)
         self.n_terms+=1
@@ -135,71 +156,97 @@ class CVarianceDecomposition:
 
     
     
-    def addMultiTraitTerm(self,K=None,covar_type='freeform',rank=1,dim=1,covar_K0=None,is_noise=False,normalize=True,Ks=None):
+    def addMultiTraitTerm(self,K=None,covar_type='freeform',is_noise=False,normalize=True,Ks=None,offset=1e-4,rank=1,covar_K0=None):
         """
-        add multi trait term (inter-trait covariance matrix is consiered freeform)
-        K:  Intra-Trait Covariance Matrix [N, N]
-        (K is normalised in the C++ code such that K.trace()==N)
-        covar_type: type of covaraince to use. Default "freeform"
-        covar_K0: fixed CF covariance (if covar_type=='fixed')
+        add multi trait random effects term (inter-trait covariance matrix is optimized)
+        
+        Args:
+            K:      Individual-individual (Intra-Trait) Covariance Matrix [N, N]
+                    (K is normalised in the C++ code such that K.trace()=N)
+            covar_type: type of covaraince to use. Default 'freeform'. possible values are 
+                            'freeform': free form optimization, 
+                            'fixed': use a fixed matrix specified in covar_K0,
+                            'diag': optimize a diagonal matrix, 
+                            'lowrank': optimize a low rank matrix. The rank of the lowrank part is specified in the variable rank,
+                            'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+                            'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+                            'block': optimize the weight of a constant P x P block matrix of ones,
+                            'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
+                            'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,                            
+            is_noise:   Boolean indicator specifying if the matrix is homoscedastic noise (weighted identity covariance) (default False)
+            normalize:  Boolean indicator specifying if K is normalized such that K.trace()=N.
+            Ks:			NxNtest cross covariance for predictions
+            offset:		diagonal contribution added to trait-to-trait covariance matrices for regularization
+            rank:       rank of a possible lowrank component (default 1)
+            covar_K0:   PxP matrix for trait-to-trait covariance matrix if fixed type is used
         """
-        assert self.P > 1, 'Incompatible number of traits'
+        assert self.P > 1, 'CVarianceDecomposition:: Incompatible number of traits'
         
-        assert K!=None or is_noise, 'Specify covariance structure'
+        assert K!=None or is_noise, 'CVarianceDecomposition:: Specify covariance structure'
         
+        assert offset>=0, 'CVarianceDecomposition:: offset must be >=0'
+
         if is_noise:
-            assert self.noisPos==None, 'noise term already exists'
+            assert self.noisPos==None, 'CVarianceDecomposition:: noise term already exists'
             K = SP.eye(self.N)
             self.noisPos = self.n_terms
         else:
-            assert K.shape[0]==self.N, 'Incompatible shape'
-            assert K.shape[1]==self.N, 'Incompatible shape'
+            assert K.shape[0]==self.N, 'CVarianceDecomposition:: Incompatible shape'
+            assert K.shape[1]==self.N, 'CVarianceDecomposition:: Incompatible shape'
 
         if Ks!=None:
-            assert Ks.shape[0]==self.N, 'Incompatible shape'
+            assert Ks.shape[0]==self.N, 'CVarianceDecomposition:: Incompatible shape'
 
         if normalize:
             Norm = 1/K.diagonal().mean()
             K *= Norm
             if Ks!=None: Ks *= Norm
 
+        cov = limix.CSumCF()
         if covar_type=='freeform':
-            cov = limix.CFreeFormCF(self.P)
+            cov.addCovariance(limix.CFreeFormCF(self.P))
+            L = SP.eye(self.P)
+            diag = SP.concatenate([L[i,:(i+1)] for i in range(self.P)])
         elif covar_type=='fixed':
-            cov = limix.CFixedCF(covar_K0)
-        elif covar_type=='rank1':
-            cov = limix.CRankOneCF(self.P)
+            cov.addCovariance(limix.CFixedCF(covar_K0))
+            diag = SP.zeros(1)
         elif covar_type=='diag':
-            cov = limix.CDiagonalCF(self.P)
-        elif covar_type=='rank1_diag':
-            cov=limix.CSumCF()
-            cov.addCovariance(limix.CRankOneCF(self.P))
             cov.addCovariance(limix.CDiagonalCF(self.P))
-        elif covar_type=='rank1_id':
-            cov=limix.CSumCF()
-            cov.addCovariance(limix.CRankOneCF(self.P))
+            diag = SP.ones(self.P)
+        elif covar_type=='lowrank':
+            cov.addCovariance(limix.CLowRankCF(self.P,rank))
+            diag = SP.zeros(self.P*rank)
+        elif covar_type=='lowrank_id':
+            cov.addCovariance(limix.CLowRankCF(self.P,rank))
             cov.addCovariance(limix.CFixedCF(SP.eye(self.P)))
+            diag = SP.concatenate([SP.zeros(self.P*rank),SP.ones(1)])
         elif covar_type=='lowrank_diag':
-            self.rank = rank
-            cov=limix.CSumCF()
-            cov.addCovariance(limix.CLowRankCF(self.P,self.rank))
+            cov.addCovariance(limix.CLowRankCF(self.P,rank))
             cov.addCovariance(limix.CDiagonalCF(self.P))
+            diag = SP.concatenate([SP.zeros(self.P*rank),SP.ones(self.P)])
+        elif covar_type=='block':
+            cov.addCovariance(limix.CFixedCF(SP.ones((self.P,self.P))))
+            diag = SP.zeros(1)
+        elif covar_type=='block_id':
+            cov.addCovariance(limix.CFixedCF(SP.ones((self.P,self.P))))
+            cov.addCovariance(limix.CFixedCF(SP.eye(self.P)))
+            diag = SP.concatenate([SP.zeros(1),SP.ones(1)])
         elif covar_type=='block_diag':
-            cov=limix.CSumCF()
             cov.addCovariance(limix.CFixedCF(SP.ones((self.P,self.P))))
             cov.addCovariance(limix.CDiagonalCF(self.P))
-        elif covar_type=='lowrank_id':
-            self.rank = rank
-            cov=limix.CSumCF()
-            cov.addCovariance(limix.CLowRankCF(self.P,self.rank))
-            cov.addCovariance(limix.CFixedCF(SP.eye(self.P)))
-        elif covar_type=='sqexp':
-            self.dim = dim
-            cov = limix.CSqExpCF(self.P,self.dim)
+            diag = SP.concatenate([SP.zeros(1),SP.ones(self.P)])
         else:
-            assert True==False, 'covar_type not valid'
-                
+            assert True==False, 'CVarianceDecomposition:: covar_type not valid'
+
+        if offset>0:
+            _cov = limix.CFixedCF(SP.eye(self.P))
+            _cov.setParams(SP.array([SP.sqrt(offset)]))
+            _cov.setParamMask(SP.zeros(1))
+            cov.addCovariance(_cov)
+        self.offset.append(offset)
+
         self.covar_type.append(covar_type)
+        self.diag.append(diag)
 
         self.vd.addTerm(cov,K)
         if Ks!=None: self.setKstar(self.n_terms,Ks)
@@ -216,18 +263,22 @@ class CVarianceDecomposition:
         self.cache['paramsST']= None
     
     
-    def addFixedTerm(self,F,A=None):
+    def addFixedEffect(self,F=None,A=None):
         """
         set the fixed effect term
-        A: design matrix [K,P] (e.g. SP.ones((1,P)) common effect; SP.eye(P) specific effect))
-        F: fixed effect matrix [N,1]
+
+        Args:
+            F: fixed effect matrix [N,1]
+            A: design matrix [K,P] (e.g. SP.ones((1,P)) common effect; SP.eye(P) any effect))
         """
         if A==None:
             A = SP.eye(self.P)
+        if F==None:
+            F = SP.ones((self.N,1))
         
         assert A.shape[1]==self.P, 'Incompatible shape'
         assert F.shape[0]==self.N, 'Incompatible shape'
-        #assert F.shape[1]==1,      'Incompatible shape'
+        assert F.shape[1]==1,      'Incompatible shape'
         
         self.vd.addFixedEffTerm(A,F)
     
@@ -240,99 +291,155 @@ class CVarianceDecomposition:
         self.cache['Hessian'] = None
         self.cache['Lparams'] = None
         self.cache['paramsST']= None
-    
-            
-    def fit(self,fast=False,init_scales=None,init_fixed=None,init_method='random'):
-        """
-        fit a variance component model with the predefined design and the initialization and returns all the results
-        if fast=True, use GPkronSum (valid only if P>1 and n_terms==2) 
-        """
-        
-        assert self.n_terms>0, 'No variance component terms'
-        
-        if init_scales!=None:
-            init_method = 'manual'
-            self.setScales(init_scales)
-        
-        # Parameter initialisation
-        assert init_method in ['manual','empCov','singleTrait','random','mixed'], 'method %s not known' % init_method
-        
-        if init_method=='mixed':
-            method_box = ['empCov','random']
-            if self.n_terms==2 and self.P>1:    method_box.append('singleTrait')
-            method = SP.random.permutation(method_box)[0]
-        else:
-            method = init_method
-        
-        if method == 'random':
-            self.setScales()
-        elif method == 'empCov':
-            self.initEmpirical()
-            self.perturbScales()
-        elif method == 'singleTrait':
-            self.initSingleTrait()
-            self.perturbScales()
-        
 
-        params0 = self.getScales()
+
+    def initGP(self,fast=False):
+        """
+        Initialize GP objetct
         
-        # GP initialisation
+        Args:
+            fast:   if fast==True initialize gpkronSum gp
+        """
         if fast:
-            assert self.n_terms==2, 'error: number of terms must be 2'
-            assert self.P>1,        'error: number of traits must be > 1'
+            assert self.n_terms==2, 'CVarianceDecomposition: for fast inference number of terms must be == 2'
+            assert self.P>1,        'CVarianceDecomposition: for fast inference number of traits must be > 1'
             self.vd.initGPkronSum()
         else:
             self.vd.initGP()
         self.gp=self.vd.getGP()
-                
-        LML0=-1.0*self.gp.LML()
+        self.init=True
+        self.fast=fast
 
-        # set Fixed effect randomly
-        params = self.gp.getParams()
-        if init_fixed!=None:
-            params['dataTerm'] = init_fixed
+    def _getScalesDiag(self,termx=0):
+        """
+        Uses 2 term single trait model to get covar params for initialization
+        
+        Args:
+            termx:      non-noise term terms that is used for initialization 
+        """
+        assert self.P>1, 'CVarianceDecomposition:: diagonal init_method allowed only for multi trait models' 
+        assert self.noisPos!=None, 'CVarianceDecomposition:: noise term has to be set'
+        assert termx<self.n_terms-1, 'CVarianceDecomposition:: termx>=n_terms-1'
+        assert self.covar_type[self.noisPos] not in ['lowrank','block','fixed'], 'CVarianceDecimposition:: diagonal initializaiton not posible for such a parametrization'
+        assert self.covar_type[termx] not in ['lowrank','block','fixed'], 'CVarianceDecimposition:: diagonal initializaiton not posible for such a parametrization'
+        scales = []
+        res = self.estimateHeritabilities(self.vd.getTerm(termx).getK())
+        scaleg = SP.sqrt(res['varg'].mean())
+        scalen = SP.sqrt(res['varn'].mean())
+        for term_i in range(self.n_terms):
+            if term_i==termx:
+                _scales = scaleg*self.diag[term_i]
+            elif term_i==self.noisPos:
+                _scales = scalen*self.diag[term_i]
+            else:
+                _scales = 0.*self.diag[term_i]
+            if self.offset[term_i]>0:
+                _scales = SP.concatenate((_scales,SP.array([SP.sqrt(self.offset[term_i])])))
+            scales.append(_scales)
+        return SP.concatenate(scales)
+
+    def _getScalesRand(self):
+        """
+        Return a vector of random scales
+        """
+        if self.P>1:
+            scales = []
+            for term_i in range(self.n_terms):
+                _scales = SP.randn(self.diag[term_i].shape[0])
+                if self.offset[term_i]>0:
+                    _scales = SP.concatenate((_scales,SP.array([SP.sqrt(self.offset[term_i])])))
+                scales.append(_scales)
+            scales = SP.concatenate(scales)
         else:
-            params['dataTerm'] = 1e-3*SP.randn(params['dataTerm'].shape[0],params['dataTerm'].shape[1])
-        self.gp.setParams(params)
-        
-        # LIMIX CVARIANCEDECOMPOSITION FITTING
-        start_time = time.time()
-        conv =self.vd.trainGP()
-        time_train=time.time()-start_time
-        
-        # Check whether limix::CVarianceDecomposition.train() has converged
-        LMLgrad = self.vd.getLMLgrad()
-        if conv:
-            self.optimum = {
-                'params0':          params0,
-                'LML0':             LML0,
-                'init_method':      method,
-                'time_train':       SP.array([time_train]),
-                
-                'LML':              -1.0*self.gp.LML(),
-                'params':           self.getScales()
-            }
-            
-        self.init    = True
-        self.fast    = fast
+            scales=SP.randn(self.vd.getNumberScales())
 
+        return scales
+
+    def _perturbation(self):
+        """
+        Returns Gaussian perturbation
+        """
+        if self.P>1:
+            scales = []
+            for term_i in range(self.n_terms):
+                _scales = SP.randn(self.diag[term_i].shape[0])
+                if self.offset[term_i]>0:
+                    _scales  = SP.concatenate((_scales,SP.zeros(1)))
+                scales.append(_scales)
+            scales = SP.concatenate(scales)
+        else:
+            scales = SP.randn(self.vd.getNumberScales())
+        return scales
+ 
+    def trainGP(self,fast=False,scales0=None,fixed0=None):
+        """
+        Train the gp
+       
+        Args:
+            scales0:	initial variance components params
+            fixed0:     initial fixed effect params
+        """
+        assert self.n_terms>0, 'CVarianceDecomposition:: No variance component terms'
+
+        if not self.init:		self.initGP(fast=fast)
+
+        # set scales0
+        if scales0!=None:
+            self.setScales(scales0)
+        # init gp params
+        self.vd.initGPparams()
+        # set fixed0
+        if fixed0!=None:
+            params = self.gp.getParams()
+            params['dataTerm'] = fixed0
+            self.gp.setParams(params)
+        
+        # LIMIX CVARIANCEDECOMPOSITION TRAINING
+        conv =self.vd.trainGP()
+        
         self.cache['Sigma']   = None
         self.cache['Hessian'] = None
             
         return conv
-        pass
 
     
-    def findLocalOptimum(self,fast=False,init_scales=None,init_fixed=None,init_method='random',verbose=True,n_times=10):
+    def findLocalOptimum(self,fast=False,scales0=None,fixed0=None,init_method='random',termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=True):
         """
-        Train the model up to n_times using the random method initilisation method init_method
-        and stop as soon as a local optimum is found
+        Train the model using the specified initialization strategy
+        
+        Args:
+            fast:		    if true, fast gp is initialized
+            scales0:        if not None init_method is set to manual
+            fixed0:         initial fixed effects
+            init_method:    initialization method \in {random,diagonal,manual} 
+            termx:			term for diagonal diagonalisation
+            n_times:        number of times the initialization
+            perturb:        if true, the initial point is perturbed with gaussian noise
+            perturbSize:    size of the perturbation
+            verbose:        print if convergence is achieved
         """
+
+        if not self.init:		self.initGP(fast=fast)
+
+        if scales0!=None: 	init_method = 'manual'
         
-        if init_scales!=None:   n_times=1
-        
+        if init_method=='diagonal':
+            scales0 = self._getScalesDiag(termx=termx)
+            
+        if init_method=='diagonal' or init_method=='manual':
+            if not perturb:		n_times = 1
+
+        if fixed0==None:
+            fixed0 = SP.zeros_like(self.gp.getParams()['dataTerm'])
+
         for i in range(n_times):
-            conv = self.fit(fast=fast,init_scales=init_scales,init_fixed=init_fixed,init_method=init_method)
+            if init_method=='random':
+                scales1 = self._getScalesRand()
+                fixed1  = pertSize*SP.randn(fixed0.shape[0],fixed0.shape[1])
+            elif perturb:
+                scales1 = scales0+pertSize*self._perturbation()
+                fixed1  = fixed0+pertSize*SP.randn(fixed0.shape[0],fixed0.shape[1])
+            conv = self.trainGP(scales0=scales1,fixed0=fixed1)
             if conv:    break
     
         if verbose:
@@ -340,54 +447,69 @@ class CVarianceDecomposition:
                 print 'No local minimum found for the tested initialization points'
             else:
                 print 'Local minimum found at iteration %d' % i
-                
+ 
         return conv
-            
-            
-    def findLocalOptima(self,fast=False,init_method='empCov',verbose=True,n_times=10):
+
+
+    def findLocalOptima(self,fast=False,verbose=True,n_times=10):
         """
-        Train the model n_times using the random method initilisation method init_method
-        and returns a list of the local optima that have been found
+        Train the model repeadly up to a number specified by the users with random restarts and
+        return a list of all relative minima that have been found 
+        
+        Args:
+            fast:       Boolean. if set to True initalize kronSumGP
+            verbose:    Boolean. If set to True, verbose output is produced. (default True)
+            n_times:    number of re-starts of the optimization. (default 10)
         """
+        if not self.init:       self.initGP(fast)
         
         opt_list = []
-    
+
+        fixed0 = SP.zeros_like(self.gp.getParams()['dataTerm'])    
+
         # minimises n_times
         for i in range(n_times):
             
-            if self.fit(fast=fast,init_method=init_method):
-                # checks whether the minimum was found before
+            scales1 = self._getScalesRand()
+            fixed1  = 1e-1*SP.randn(fixed0.shape[0],fixed0.shape[1])
+            conv = self.trainGP(fast=fast,scales0=scales1,fixed0=fixed1)
+
+            if conv:
+                # compare with previous minima
                 temp=1
                 for j in range(len(opt_list)):
-                    if (abs(self.optimum['params'])-abs(opt_list[j]['params'])).max()<1e-6:
+                    if SP.allclose(abs(self.getScales()),abs(opt_list[j]['scales'])):
                         temp=0
                         opt_list[j]['counter']+=1
                         break
                 if temp==1:
-                    optimum = self.optimum
-                    optimum['counter'] = 1
-                    opt_list.append(optimum)
+                    opt = {}
+                    opt['counter'] = 1
+                    opt['LML'] = self.getLML()
+                    opt['scales'] = self.getScales()
+                    opt_list.append(opt)
         
-        if verbose: print "n_times\t\tLML"
         
-        out = []
-                        
         # sort by LML
         LML = SP.array([opt_list[i]['LML'] for i in range(len(opt_list))])
         index   = LML.argsort()[::-1]
         out = []
-        for i in range(len(opt_list)):
-            out.append(opt_list[index[i]])
-            if verbose:
-                print "%d\t\t%f" % (opt_list[index[i]]['counter'], opt_list[index[i]]['LML'])
+        if verbose:
+            print "\nLocal mimima\n"
+            print "n_times\t\tLML"
+            print "------------------------------------"
+            for i in range(len(opt_list)):
+                out.append(opt_list[index[i]])
+                if verbose:
+                    print "%d\t\t%f" % (opt_list[index[i]]['counter'], opt_list[index[i]]['LML'])
+                print ""
 
         return out
-    
 
 
     def getLML(self):
         """
-        Return LML
+        Return log marginal likelihood
         """
         assert self.init, 'GP not initialised'
         return self.vd.getLML()
@@ -395,7 +517,7 @@ class CVarianceDecomposition:
 
     def getLMLgrad(self):
         """
-        Return LMLgrad
+        Return gradient of log-marginal likelihood
         """
         assert self.init, 'GP not initialised'
         return self.vd.getLMLgrad()
@@ -404,8 +526,11 @@ class CVarianceDecomposition:
     def setScales(self,scales=None,term_num=None):
         """
         get random initialization of variances based on the empirical trait variance
-        if scales==None:    set them randomly
-        else:               set scales to term_i (if term_i==None: set to all terms)
+
+        Args:
+            scales:     if scales==None: set them randomly, 
+                        else: set scales to term_num (if term_num==None: set to all terms)
+            term_num:   set scales to term_num
         """
         if scales==None:
             for term_i in range(self.n_terms):
@@ -426,8 +551,10 @@ class CVarianceDecomposition:
     def getScales(self,term_i=None):
         """
         Returns the Parameters
-        term_i: index of the term we are interested in
-        if term_i==None returns the whole vector of parameters
+        
+        Args:
+            term_i:     index of the term we are interested in
+                        if term_i==None returns the whole vector of parameters
         """
         if term_i==None:
             RV = self.vd.getScales()
@@ -448,7 +575,9 @@ class CVarianceDecomposition:
     def getEstTraitCovar(self,term_i=None):
         """
         Returns the estimated trait covariance matrix
-        term_i: index of the term we are interested in
+
+        Args:
+            term_i:     index of the term we are interested in
         """
         assert self.P>1, 'Trait covars not defined for single trait analysis'
         
@@ -464,7 +593,9 @@ class CVarianceDecomposition:
     def getEstTraitCorrCoef(self,term_i=None):
         """
         Returns the estimated trait correlation matrix
-        term_i: index of the term we are interested in
+
+        Args:
+            term_i:     index of the term we are interested in
         """
         cov = self.getEstTraitCovar(term_i)
         stds=SP.sqrt(cov.diagonal())[:,SP.newaxis]
@@ -542,6 +673,9 @@ class CVarianceDecomposition:
     def getStdErrors(self,term_i):
         """
         RETURNS THE STANDARD DEVIATIONS ON VARIANCES AND CORRELATIONS BY PROPRAGATING THE UNCERTAINTY ON LAMBDAS
+
+        Args:
+            term_i:     index of the term we are interested in
         """
         assert self.init,        'GP not initialised'
         assert self.fast==False, 'Not supported for fast implementation'
@@ -631,128 +765,18 @@ class CVarianceDecomposition:
 
         return sth
 
-
-    def empCov2params(self):
-        """
-        calculate parameters from the empirical covariance matrix
-        """
-        
-        assert self.noisPos!=None, 'No noise element'
-        
-        noise_type = self.vd.getTerm(self.noisPos).getTraitCovar().getName()
-        
-        assert noise_type in ['CFreeFormCF','SumCF'], 'not supported for %s noise matrices' % noise_type
-        
-        empCovar = self.getEmpTraitCovar()
-        
-        if self.cache['Lparams']==None:
-            if noise_type=='CFreeFormCF':
-                L = SP.linalg.cholesky(empCovar).T
-                self.cache['Lparams'] = SP.concatenate([L[i,:(i+1)] for i in range(self.P)])
-            else:
-                if (self.P==2):
-                    chia=empCovar[0,0]
-                    chib=empCovar[1,1]
-                    corr=empCovar[0,1]/SP.sqrt(chia*chib)
-                    c2 = 0.5*(chia+chib-SP.sqrt((chia+chib)**2-4*chia*chib*(1-corr**2)))
-                    a2 = chia - c2
-                    b2 = chib - c2
-                    self.cache['Lparams'] = SP.sqrt(abs(SP.array([a2,b2,c2])))
-                    if corr<0:   self.cache['Lparams'][1] = -self.cache['Lparams'][1]
-                else:
-                    S, U = SP.linalg.eigh(empCovar)
-                    k = SP.argmax(S)
-                    a = SP.sqrt(S[k])*U[:,k]
-                    c = (empCovar-SP.dot(a[:,SP.newaxis],a[:,SP.newaxis].T)).diagonal()
-                    c = SP.sqrt(c)
-                    self.cache['Lparams'] = SP.concatenate((a,c))
-    
-        return self.cache['Lparams']
-
-
-    def herit2params(self):
-        """
-        calculates parameters from the single trait model
-        """
-        
-        assert self.noisPos!=None, 'No noise element'
-        assert self.n_terms==2,    'number of element must be 2'
-        assert self.P>=2,          'number of phenotypes must be >=2'
-        
-        noise_type = self.vd.getTerm(self.noisPos).getTraitCovar().getName()
-        assert noise_type in ['CFreeFormCF','SumCF'], 'not supported for %s noise matrices' % noise_type
-        
-        sth = self.estimateHeritabilities(self.vd.getTerm(abs(self.noisPos-1)).getK())
-    
-        if self.cache['paramsST']==None:
-            self.cache['paramsST'] = SP.zeros(0)
-            for i in range(self.n_terms):
-                if i==self.noisPos: var = sth['varn']
-                else:               var = sth['varg']
-                if noise_type=='CFreeFormCF':
-                    L = SP.diag(SP.sqrt(var))
-                    temp = SP.concatenate([L[i,:(i+1)] for i in range(self.P)])
-                else:
-                    if self.P==2:
-                        temp = SP.array([var[0]-var.min(),var[0]-var.min(),var.max()-var.min()])
-                        temp = SP.sqrt(temp)
-                    else:
-                        temp = SP.concatenate((SP.zeros(self.P),SP.sqrt(var)))
-                self.cache['paramsST'] = SP.concatenate((self.cache['paramsST'],temp))
-            
-        return self.cache['paramsST']
-
-    
-    def initEmpirical(self):
-        """
-        init using parameters from the empirical covariance
-        """
-        
-        assert self.noisPos!=None, 'No noise element'
-        
-        for term_i in range(self.n_terms):
-            if term_i==self.noisPos:
-                if self.P==1:
-                    self.setScales(SP.array([SP.sqrt(self.getEmpTraitCovar())]),term_i)
-                else:
-                    params  = self.empCov2params()
-                    self.setScales(params,term_i)
-            else:
-                n_scales = self.vd.getTerm(term_i).getNumberScales()
-                params = SP.zeros(n_scales)
-                self.setScales(params,term_i)
-    
-    
-    def initSingleTrait(self):
-        """
-        init using parameters from the single trait model
-        """
-        
-        assert self.noisPos!=None, 'No noise element'
-        assert self.n_terms==2, 'number of element must be 2'
-        assert self.P>=2, 'number of phenotypes must be >=2'
-
-        params  = self.herit2params()
-
-        self.setScales(params)
-
-            
-
-    def perturbScales(self,std=1e-3):
-        """
-        perturb the current values of the scales by N(0,std**2)
-        """
-        
-        params = self.getScales()
-        params+= std*SP.randn(params.shape[0])
-        self.setScales(params)
-
     """
     CODE FOR PREDICTIONS
     """
     
     def setKstar(self,term_i,Ks):
-    
+        """
+        Set the kernel for predictions
+
+        Args:
+            term_i:     index of the term we are interested in
+            Ks:         (TODO: is this the covariance between train and test or the covariance between test points?)
+        """
         assert Ks.shape[0]==self.N
     
         #if Kss!=None:
@@ -760,11 +784,15 @@ class CVarianceDecomposition:
             #assert Kss.shape[1]==Ks.shape[1]
 
         self.vd.getTerm(term_i).getKcf().setK0cross(Ks)
-    
-    
-    
+
+
     def predictMean(self):
-                
+        """
+        predict the conditional mean (BLUP)
+
+        Returns:
+            predictions (BLUP)
+        """
         assert self.noisPos!=None,      'No noise element'
         assert self.init,               'GP not initialised'
                 
@@ -788,15 +816,4 @@ class CVarianceDecomposition:
         Ymean+=self.getFixed()[:,0]
                 
         return Ymean
-
-        
-
-        
-
-
-
-
-
-
-
 

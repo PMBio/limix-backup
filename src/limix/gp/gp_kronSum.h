@@ -22,17 +22,17 @@ class CGPkronSumCache;
 Stores all the intermediate computations for the two covariance Kronecker model
 
 - K        = C \kron R + Sigma \kron Omega
-- Sigma    = Usigma Ssigma Usigma.T
-- Omega    = Uomega Somega Uomega.T
-- Cstar    = Ssigma^(-0.5) Usigma.T C Usigma.T Ssigma^(-0.5)
-- Rstar    = Somega^(-0.5) Uomega.T R Uomega.T Somega^(-0.5)
-- Cstar    = Ucstar Scstar Ucstar.T
-- Rstar    = Urstar Srstar Urstar.T
-- Lambdac  = Ucstar Ssigma^(-0.5) Usigma
-- Lambdar  = Uomega Somega^(-0.5) Uomega
+- Sigma    = Usigma diag(Ssigma) Usigma.T
+- Omega    = Uomega diag(Somega) Uomega.T
+- Cstar    = diag(Ssigma)^(-0.5) Usigma.T C Usigma.T diag(Ssigma)^(-0.5)
+- Rstar    = diag(Somega)^(-0.5) Uomega.T R Uomega.T diag(Somega)^(-0.5)
+- Cstar    = Ucstar diag(Scstar) Ucstar.T
+- Rstar    = Urstar diag(Srstar) Urstar.T
+- Lambdac  = Ucstar diag(Ssigma^(-0.5)) Usigma
+- Lambdar  = Uomega diag(Somega^(-0.5)) Uomega
 - YrotPart = vec^(-1)((I \kron Lambdar) vec(Y) )
 - Yrot     = vec^(-1)((Lambdac \kron I) vec(YrotPart) )
-- Ytilde   = vec^(-1)((Scstar \kron Srstar + I) vec(Yrot) )
+- Ytilde   = vec^(-1)((Scstar \kron diag(Srstar) + I) vec(Yrot) )
 - Rrot     = (Lambdac \kron Lambdar)   R   (Lambdac \kron Lambdar).T
 - OmegaRot = (Lambdac \kron Lambdar) Omega (Lambdac \kron Lambdar).T
 */
@@ -171,6 +171,9 @@ protected:
 	muint_t N;
 	muint_t P;
 
+	//penalization
+	mfloat_t lambda;
+
 	//debug bool
 	bool debug;
 
@@ -217,10 +220,18 @@ public:
 	CGPkronSum(const MatrixXd& Y,PCovarianceFunction covarr1, PCovarianceFunction covarc1,PCovarianceFunction covarr2, PCovarianceFunction covarc2, PLikelihood lik, PDataTerm dataTerm);
 	virtual ~CGPkronSum();
 
+	//set penalization constant
+	virtual void setLambda(mfloat_t lambda) {this->lambda=lambda;};
+
 	//getter for parameter bounds and hyperparam Mask
 	virtual CGPHyperParams getParamBounds(bool upper) const;
 	virtual CGPHyperParams getParamMask() const;
 
+	//get Covariances
+	PCovarianceFunction getCovarr1() {return covarr1;};
+	PCovarianceFunction getCovarr2() {return covarr2;};
+	PCovarianceFunction getCovarc1() {return covarc1;};
+	PCovarianceFunction getCovarc2() {return covarc2;};
 	//get from cache
 	virtual void agetKEffInvYCache(MatrixXd* out) throw (CGPMixException);
 
@@ -318,35 +329,6 @@ public:
 	mfloat_t getRtLML2() 	{return rtLML2;}
 	mfloat_t getRtLML3() 	{return rtLML3;}
 	mfloat_t getRtLML4() 	{return rtLML4;}
-
-
-
-
-
-
-	/*
-	void setX1(const CovarInput& X) throw (CGPMixException);
-	void setX2(const CovarInput& X) throw (CGPMixException);
-	void setY(const MatrixXd& Y);
-	void setCovar1(PCovarianceFunction covar);
-	void setCovar2(PCovarianceFunction covar);
-
-	PCovarianceFunction getCovar1() {return this->covar1;};
-	PCovarianceFunction getCovar2() {return this->covar2;};
-
-	PGPkronSumCache agetCache() {return this->cache;}
-
-	virtual mfloat_t LML(const CGPHyperParams& params) throw (CGPMixException)
-	{
-		return CGPbase::LML(params);
-	}
-	//same for concatenated list of parameters
-	virtual mfloat_t LML(const VectorXd& params) throw (CGPMixException)
-	{
-		return CGPbase::LML(params);
-	}
-
-	*/
 
 };
 typedef sptr<CGPkronSum> PGPkronSum;

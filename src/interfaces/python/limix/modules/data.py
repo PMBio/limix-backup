@@ -13,6 +13,14 @@ def estCumPos(pos,chrom,offset = 20000000):
     '''
     compute the cumulative position of each variant given the position and the chromosome
     Also return the starting cumulativeposition of each chromosome
+
+    Args:
+        pos:        scipy.array of basepair positions (on the chromosome)
+        chrom:      scipy.array of chromosomes
+        offset:     offset between chromosomes for cumulative position (default 20000000 bp)
+    Returns:
+        cum_pos:    scipy.array of cumulative positions
+        chrom_pos:  scipy.array of starting cumulative positions for each chromosme
     '''
     chromvals = SP.unique(chrom)#SP.unique is always sorted
     chrom_pos=SP.zeros_like(chromvals)#get the starting position of each Chrom
@@ -27,22 +35,32 @@ def estCumPos(pos,chrom,offset = 20000000):
     return cum_pos,chrom_pos
         
         
-def imputeMissing(X,center=True,unit=True):
+def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.0, betaB=1.0):
         '''
         fill in missing values in the SNP matrix by the mean value
         optionally center the data and unit-variance it
+
+        Args:
+            X:      scipy.array of SNP values. If dtype=='int8' the missing values are -9, 
+                    otherwise the missing values are scipy.nan
+            center: Boolean indicator if data should be mean centered
+                    Not supported in C-based parser
+            unit:   Boolean indicator if data should be normalized to have unit variance
+                    Not supported in C-based parser
+            betaNotUnitVariance:    use Beta(betaA,betaB) standardization instead of unit variance 
+                                    (only with C-based parser) (default: False)
+            betaA:  shape parameter for Beta(betaA,betaB) standardization (only with C-based parser)
+            betaB:  scale parameter for Beta(betaA,betaB) standardization (only with C-based parser)
+        Returns:
+            X:      scipy.array of standardized SNPs with scipy.float64 values
         '''
         typeX=X.dtype
         if typeX!=SP.int8:
             iNanX = X!=X
         else:
             iNanX = X==-9
-        if iNanX.any():
-            
+        if iNanX.any() or betaNotUnitVariance:
             if cparser:
-                betaNotUnitVariance=False
-                betaA=1.0
-                betaB=1.0
                 print "using C-based imputer"
                 if X.flags["C_CONTIGUOUS"] or typeX!=SP.float32:
                     X = SP.array(X, order="F", dtype=SP.float32)
@@ -54,6 +72,8 @@ def imputeMissing(X,center=True,unit=True):
                     parser.standardize(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
                 X=SP.array(X,dtype=SP.float64)
             else:
+                if betaNotUnitVariance:
+                    raise NotImplementedError("Beta(betaA,betaB) standardization only in C-based parser, but not found")
                 nObsX = (~iNanX).sum(0)
                 if typeX!=SP.float64:
                     X=SP.array(X,dtype=SP.float64)
@@ -89,9 +109,11 @@ class QTLData():
         self.load()
 
     def load(self,cache_genotype=False,cache_phenotype=True):
-        """load data file:
-        cache_genotype: load genotypes fully into memory (False)
-        cache_phenotype: load phentopyes fully intro memry (True)        
+        """load data file
+        
+        Args:
+            cache_genotype:     load genotypes fully into memory (default: False)
+            cache_phenotype:    load phentopyes fully intro memry (default: True)        
         """
         self.f = h5py.File(self.file_name,'r')
         self.pheno = self.f['phenotype']
@@ -139,6 +161,23 @@ class QTLData():
         assert (self.genoM.shape[0]==self.phenoM.shape[0]), 'dimension missmatch'
 
     def getGenoIndex(self,pos0=None,pos1=None,chrom=None,pos_cum0=None,pos_cum1=None):
+        """computes 0-based genotype index from position of cumulative position. 
+        Positions can be given in one out of two ways: 
+        - position (pos0-pos1 on chrom)
+        - cumulative position (pos_cum0-pos_cum1)
+        If all these are None (default), then all genotypes are returned
+
+        Args:
+            pos0:       position based selection (start position)
+            pos1:       position based selection (stop position)
+            chrom:      position based selection (chromosome)
+            pos_cum0:   cumulative position based selection (start position)
+            pos_cum1:   cumulative position based selection (stop position)
+        
+        Returns:
+            i0:         genotype index based selection (start index)
+            i1:         genotype index based selection (stop index)
+        """
         if (pos0 is not None) & (pos1 is not None) & (chrom is not None):
             I = self.gneoChrom==chrom
             I = I & (self.genoPos>=p0) & (self.genoPos<p1)
@@ -157,11 +196,27 @@ class QTLData():
             i1=None
         return i0,i1
  
-    def getGenotypes(self,i0=None,i1=None,pos0=None,pos1=None,chrom=None,center=True,unit=True,pos_cum0=None,pos_cum1=None):
-        """load genotypes
-        i0..i1: genotype index based selection
-        pos0..pos1 / chrom: position based selection
-        pos_cum0..pos_cum1: cumulative position based selection
+    def getGenotypes(self,i0=None,i1=None,pos0=None,pos1=None,chrom=None,center=True,unit=True,pos_cum0=None,pos_cum1=None,impute_missing=True):
+        """load genotypes. 
+        Optionally the indices for loading subgroups the genotypes for all people
+        can be given in one out of three ways: 
+        - 0-based indexing (i0-i1)
+        - position (pos0-pos1 on chrom)
+        - cumulative position (pos_cum0-pos_cum1)
+        If all these are None (default), then all genotypes are returned
+
+        Args:
+            i0:         genotype index based selection (start index)
+            i1:         genotype index based selection (stop index)
+            pos0:       position based selection (start position)
+            pos1:       position based selection (stop position)
+            chrom:      position based selection (chromosome)
+            pos_cum0:   cumulative position based selection (start position)
+            pos_cum1:   cumulative position based selection (stop position)
+            impute_missing: Boolean indicator variable if missing values should be imputed
+        
+        Returns:
+            X:          scipy.array of genotype values
         """
         #position based matching?
         if (i0 is None) and (i1 is None) and ((pos0 is not None) & (pos1 is not None) & (chrom is not None)) or ((pos_cum0 is not None) & (pos_cum1 is not None)):
@@ -171,7 +226,8 @@ class QTLData():
             X = self.genoM[:,i0:i1]
         else:
             X = self.genoM[:,:]
-        X = imputeMissing(X,center=center,unit=unit)
+        if impute_missing:
+            X = imputeMissing(X,center=center,unit=unit)
         return X
 
     def getCovariance(self,normalize=True,i0=None,i1=None,pos0=None,pos1=None,chrom=None,center=True,unit=True,pos_cum0=None,pos_cum1=None,blocksize=None,X=None,**kw_args):
@@ -209,10 +265,17 @@ class QTLData():
 
     def getPhenotypes(self,i0=None,i1=None,phenotype_IDs=None,center=True,impute=True,intersection=False):
         """load Phenotypes
-        i0..i1: phenotype indices to load
-        phenotype_IDs: names of phenotypes to load
-        impute: imputation of missing values (True)
-        intersection: restrict observation to those obseved in all phenotypes? (False)
+        
+        Args:
+            i0:             phenotype indices to load (start individual index)
+            i1:             phenotype indices to load (stop individual index)
+            phenotype_IDs:  names of phenotypes to load
+            impute:         imputation of missing values (default: True)
+            intersection:   restrict observation to those obseved in all phenotypes? (default: False)
+        
+        Returns:
+            Y:              phenotype values
+            Ikeep:          index of individuals in Y
         """
         if phenotype_IDs is not None:
             I = SP.array([SP.nonzero(self.phenotype_ID==n)[0][0] for n in phenotype_IDs])
@@ -239,6 +302,14 @@ class QTLData():
         return [Y,Ikeep]
 
     def getPos(self):
+        """
+        get the positions of the genotypes
+
+        Returns:
+            chromosome
+            position
+            cumulative_position
+        """
         return [self.genoChrom,self.genoPos,self.genoPos_cum]
 
     def getIcis_geno(self,geneID,cis_window=50E3):
@@ -250,7 +321,16 @@ class QTLData():
         return Icis
 
     def subSample(self,Irow=None,Icol_geno=None,Icol_pheno=None):
-        """sample a particular set of individuals (Irow) or phenotypes (Icol_pheno) or genotypes (Icol_geno)"""
+        """sample a particular set of individuals (Irow) or phenotypes (Icol_pheno) or genotypes (Icol_geno)
+        
+        Args:
+            Irow:           indices for a set of individuals
+            Icol_pheno:     indices for a set of phenotypes
+            Icol_geno:      indices for a set of SNPs
+        
+        Returns:
+            QTLdata opject holding the specified subset of the data
+        """
         C = copy.copy(self)
         if Irow is not None:
             C.genoM = C.genoM[Irow]
