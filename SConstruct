@@ -166,17 +166,6 @@ env.Append(CPPPATH = external_include)
 ### 4. conf tests
 conf = Configure(env)
 #hader checks
-       
-build_options['with_zlib'] = False
-
-#if conf.CheckCHeader('zlib.h') & conf.CheckLib('libz'):
-if False:
-   build_options['with_zlib'] = True
-else:
-   build_options['with_zlib'] = False
-
-if build_options['with_zlib']:
-   env.Append(CCFLAGS=['-DZLIB'])
 
 #make sure the sconscripts can get to the variables
 Export('env', 'conf','mymode','build_prefix','build_options','limix_include','external_include')
