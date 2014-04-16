@@ -266,8 +266,10 @@ class CVarianceDecomposition:
     def addFixedEffect(self,F=None,A=None):
         """
         set the fixed effect term
-        F: fixed effect matrix [N,1]
-        A: design matrix [K,P] (e.g. SP.ones((1,P)) common effect; SP.eye(P) specific effect))
+
+        Args:
+            F: fixed effect matrix [N,1]
+            A: design matrix [K,P] (e.g. SP.ones((1,P)) common effect; SP.eye(P) any effect))
         """
         if A==None:
             A = SP.eye(self.P)
@@ -294,7 +296,9 @@ class CVarianceDecomposition:
     def initGP(self,fast=False):
         """
         Initialize GP objetct
-        if fast==True initialize gpkronSum gp
+        
+        Args:
+            fast:   if fast==True initialize gpkronSum gp
         """
         if fast:
             assert self.n_terms==2, 'CVarianceDecomposition: for fast inference number of terms must be == 2'
@@ -309,8 +313,9 @@ class CVarianceDecomposition:
     def _getScalesDiag(self,termx=0):
         """
         Uses 2 term single trait model to get covar params for initialization
-        --------------------------------------------------
-        termx:          non-noise term terms that is used for initialization 
+        
+        Args:
+            termx:      non-noise term terms that is used for initialization 
         """
         assert self.P>1, 'CVarianceDecomposition:: diagonal init_method allowed only for multi trait models' 
         assert self.noisPos!=None, 'CVarianceDecomposition:: noise term has to be set'
@@ -352,7 +357,7 @@ class CVarianceDecomposition:
 
     def _perturbation(self):
         """
-        Returns gaussian perturbation
+        Returns Gaussian perturbation
         """
         if self.P>1:
             scales = []
@@ -369,9 +374,10 @@ class CVarianceDecomposition:
     def trainGP(self,fast=False,scales0=None,fixed0=None):
         """
         Train the gp
-        -------------------------------
-        scales0		initial variance components params
-        fixed0      initial fixed effect params
+       
+        Args:
+            scales0:	initial variance components params
+            fixed0:     initial fixed effect params
         """
         assert self.n_terms>0, 'CVarianceDecomposition:: No variance component terms'
 
@@ -449,6 +455,11 @@ class CVarianceDecomposition:
         """
         Train the model repeadly up to a number specified by the users with random restarts and
         return a list of all relative minima that have been found 
+        
+        Args:
+            fast:       Boolean. if set to True initalize kronSumGP
+            verbose:    Boolean. If set to True, verbose output is produced. (default True)
+            n_times:    number of re-starts of the optimization. (default 10)
         """
         if not self.init:       self.initGP(fast)
         
@@ -498,7 +509,7 @@ class CVarianceDecomposition:
 
     def getLML(self):
         """
-        Return LML
+        Return log marginal likelihood
         """
         assert self.init, 'GP not initialised'
         return self.vd.getLML()
@@ -506,7 +517,7 @@ class CVarianceDecomposition:
 
     def getLMLgrad(self):
         """
-        Return LMLgrad
+        Return gradient of log-marginal likelihood
         """
         assert self.init, 'GP not initialised'
         return self.vd.getLMLgrad()
@@ -515,8 +526,11 @@ class CVarianceDecomposition:
     def setScales(self,scales=None,term_num=None):
         """
         get random initialization of variances based on the empirical trait variance
-        if scales==None:    set them randomly
-        else:               set scales to term_i (if term_i==None: set to all terms)
+
+        Args:
+            scales:     if scales==None: set them randomly, 
+                        else: set scales to term_num (if term_num==None: set to all terms)
+            term_num:   set scales to term_num
         """
         if scales==None:
             for term_i in range(self.n_terms):
@@ -537,8 +551,10 @@ class CVarianceDecomposition:
     def getScales(self,term_i=None):
         """
         Returns the Parameters
-        term_i: index of the term we are interested in
-        if term_i==None returns the whole vector of parameters
+        
+        Args:
+            term_i:     index of the term we are interested in
+                        if term_i==None returns the whole vector of parameters
         """
         if term_i==None:
             RV = self.vd.getScales()
@@ -559,7 +575,9 @@ class CVarianceDecomposition:
     def getEstTraitCovar(self,term_i=None):
         """
         Returns the estimated trait covariance matrix
-        term_i: index of the term we are interested in
+
+        Args:
+            term_i:     index of the term we are interested in
         """
         assert self.P>1, 'Trait covars not defined for single trait analysis'
         
@@ -575,7 +593,9 @@ class CVarianceDecomposition:
     def getEstTraitCorrCoef(self,term_i=None):
         """
         Returns the estimated trait correlation matrix
-        term_i: index of the term we are interested in
+
+        Args:
+            term_i:     index of the term we are interested in
         """
         cov = self.getEstTraitCovar(term_i)
         stds=SP.sqrt(cov.diagonal())[:,SP.newaxis]
@@ -653,6 +673,9 @@ class CVarianceDecomposition:
     def getStdErrors(self,term_i):
         """
         RETURNS THE STANDARD DEVIATIONS ON VARIANCES AND CORRELATIONS BY PROPRAGATING THE UNCERTAINTY ON LAMBDAS
+
+        Args:
+            term_i:     index of the term we are interested in
         """
         assert self.init,        'GP not initialised'
         assert self.fast==False, 'Not supported for fast implementation'
@@ -751,7 +774,7 @@ class CVarianceDecomposition:
         Set the kernel for predictions
 
         Args:
-            term_i:     TODO
+            term_i:     index of the term we are interested in
             Ks:         (TODO: is this the covariance between train and test or the covariance between test points?)
         """
         assert Ks.shape[0]==self.N
