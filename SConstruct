@@ -139,6 +139,7 @@ else:
    cflags.extend(['-fPIC'])
    #we require c++0x for smart pointers but presently not more than this.
    cxxflags.extend(['-std=c++0x'])
+   cxxflags.extend(['-stdlib=libc++'])
    # releasecflags.extend(['-msse','-msse2','-fopenmp'])         #extra compile flags for release
    releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
    # releaselinkflags.extend(['-lgomp'])
