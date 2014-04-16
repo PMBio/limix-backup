@@ -5,10 +5,10 @@
 // See license.txt for the complete license.
 
 #include "genotype.h"
-#include "limix/io/vcf/Variant.h"
-#include "limix/io/vcf/split.h"
+//#include "limix/io/vcf/Variant.h"
+//#include "limix/io/vcf/split.h"
 
-using namespace vcf;
+//using namespace vcf;
 
 namespace limix {
 

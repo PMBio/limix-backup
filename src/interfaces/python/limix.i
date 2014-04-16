@@ -1,11 +1,11 @@
 %module core
 %feature("autodoc", "3");
+%include exception.i       
 
 %{
 #define SWIG_FILE_WITH_INIT
 #define SWIG
 #include "limix/types.h"
-#include "limix/lasso/lasso.h"
 #include "limix/covar/covariance.h"
 #include "limix/utils/cache.h"
 #include "limix/covar/linear.h"
@@ -25,7 +25,6 @@
 #include "limix/gp/gp_opt.h"
 #include "limix/LMM/lmm.h"
 #include "limix/LMM/kronecker_lmm.h"
-#include "limix/LMM/CGPLMM.h"
 #include "limix/modules/CVarianceDecomposition.h"
 #include "limix/io/dataframe.h"
 #include "limix/io/genotype.h"
@@ -61,6 +60,20 @@ using namespace limix;
 %}
 
 
+%exception{
+	try {
+	$action
+	} catch (limix::CGPMixException& e) {
+	std::cout << "caught: " << e.what() << "\n";
+	SWIG_exception(SWIG_ValueError, "LIMIX exception");
+	return NULL;
+	} catch (...) {
+	std::cout << "caught: unknown "<< "\n";
+	SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+	}
+}
+
+
 // Includ dedicated interface files
 %include "./../types.i"
 %include "./../covar.i"
@@ -74,7 +87,6 @@ using namespace limix;
 
 //generated outodoc:
 %include "limix/types.h"
-%include "limix/lasso/lasso.h"
 %include "limix/covar/covariance.h"
 %include "limix/utils/cache.h"
 %include "limix/covar/linear.h"
@@ -93,7 +105,6 @@ using namespace limix;
 %include "limix/gp/gp_Sum.h"
 %include "limix/gp/gp_opt.h"
 %include "limix/LMM/lmm.h"
-%include "limix/LMM/CGPLMM.h"
 %include "limix/LMM/kronecker_lmm.h"
 %include "limix/modules/CVarianceDecomposition.h"
 %include "limix/io/dataframe.h"
