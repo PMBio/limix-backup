@@ -525,12 +525,13 @@ bool CVarianceDecomposition::trainGP() throw(CGPMixException)
 	// initGP if is not init
 	if (this->is_init==0)	this->initGP();
 
-	// store LML0, scales0
-	mfloat_t LML0 = this->getLML();
-	VectorXd scales0; this->agetScales(&scales0);
-
 	//train GP
 	conv = this->opt->opt();
+
+	//check convergence
+    VectorXd scales;
+    this->agetScales(&scales);
+    conv *= (scales.unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).maxCoeff()<(mfloat_t)10.0);
 
 	return conv;
 }
