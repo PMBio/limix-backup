@@ -2,6 +2,7 @@ import distutils.cmd
 import sys,os
 from distutils.core import setup
 import pdb
+import glob
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
@@ -158,6 +159,13 @@ sys.path = libs + sys.path
 
 import SCons.Script
 
+def file_list_recursive(dir_name):
+    FL = []
+    for root, dirs, files in os.walk(dir_name):
+        FL_ = [os.path.join(root,fn) for fn in files]
+        FL.extend(FL_)
+    return FL
+
 class build_py_cmd(distutils.cmd.Command):
     def initialize_options(self):
         pass
@@ -169,7 +177,17 @@ class build_py_cmd(distutils.cmd.Command):
         SCons.Script.main()
         pbs.scons()
     def get_source_files(self):
-        return ['./src/limix/*/*.cpp']
+        FL = []
+        FL.extend(file_list_recursive('./src'))
+        FL.extend(file_list_recursive('./External'))
+        FL.extend(file_list_recursive('./tests'))
+        FL.extend(file_list_recursive('./site_scons'))
+        FL.extend(file_list_recursive('./doc/pages'))
+        FL.extend(['SConstruct','README','license.txt','MANIFEST','doc/doxy.cfg'])
+        return FL
+    #data files
+    #data_files=[('', ['license.txt'])]
+    data_files= []
 
 setup(
     name = 'limix',
@@ -181,10 +199,12 @@ setup(
     long_description = read('README'),
     license = 'BSD',
     keywords = 'linear mixed models, GWAS, QTL',
+    scripts = ['src/interfaces/python/limix/modules/limix_runner.py'],
     packages = ['limix'],
     package_dir = {'': 'build/release'},
     #use manual build system building on scons
     cmdclass = {'build_py': build_py_cmd},
     #dependencies
-    requires = ['scipy','numpy','scons','pylab','h5py']
+    requires = ['scipy','numpy','scons','pylab','h5py'],
+   
     )

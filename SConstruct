@@ -43,8 +43,7 @@ AddOption('--without-python', dest='with_python', action='store_false',
 help='Disable python interface', default=True)
 
 #run swig?
-AddOption('--reswig', dest='reswig', action='store_true',
-help='Run swig?', default=reswig)
+AddOption('--reswig', dest='reswig', action='store_true', help='Run swig?', default=reswig)
 
 #build doxygen documentation?
 AddOption('--with-documentation', dest='with_documentation', action='store_true',
@@ -64,6 +63,13 @@ AddOption('--CXX',dest='CXX',type='string',nargs=1,action='store',default=cxx,he
 AddOption('--CC',dest='CC',type='string',nargs=1,action='store',default=cc,help='Manual specified CC')
 #override  build tool
 AddOption('--build_tool',dest='build_tool',type='string',nargs=1,action='store',default=build_tool,help='Manual specification of build tool')
+
+#set output?
+AddOption('--record',dest='record',type='string',nargs=1,action='store',default='',help='Record build output for distutils build')
+
+#dummpy options to please setup tools
+AddOption('--compile', dest='compile', action='store_true', help='No action', default=reswig)
+AddOption('--single-version-externally-managed', dest='single-version-externally-managed', action='store_true', help='No action', default=reswig)
 
 # 2. parallel build options
 # Do parallel builds by default
@@ -89,6 +95,7 @@ build_options['CXX'] = GetOption('CXX')
 build_options['CC'] = GetOption('CC')
 build_options['build_tool'] = GetOption('build_tool')
 build_options['reswig'] = GetOption('reswig')
+build_options['record'] = GetOption('record')
 
 ### 2. build mode
 #build mode:
@@ -120,6 +127,7 @@ for key in copy_env:
 
 #TOOL_SUST
 env = Environment(SHLIBPREFIX="",ENV=ENV,tools = [build_options['build_tool'],'doxygen',TOOL_SUBST])
+#env = Environment(SHLIBPREFIX="",ENV=ENV,tools = [build_options['build_tool'],TOOL_SUBST])
 
 #Microsoft Visual Studio compiler selected?
 if(env['CC']=='cl'):
@@ -162,6 +170,13 @@ limix_include = ['#/src']
 external_include = ['#/External']
 env.Append(CPPPATH = limix_include)
 env.Append(CPPPATH = external_include)
+
+#record to extenral file?
+if build_options['record']:
+  env['SHCCCOM'] += " 2> %s" % build_options['record'] 
+  env['SHCXXCOM'] += " 2> %s"% build_options['record'] 
+  env['CCCOM'] += " 2> %s"% build_options['record'] 
+  env['CXXCOM'] += " 2> %s"% build_options['record'] 
 
 
 ### 4. conf tests
