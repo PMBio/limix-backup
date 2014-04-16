@@ -65,13 +65,13 @@ class CVarianceDecompositionKronecker_test(unittest.TestCase):
         self.Kg = self.Kg/self.Kg.diagonal().mean()
 
         self.vc = VAR.CVarianceDecomposition(self.D['Y'])
-        self.vc.addMultiTraitTerm(self.Kg)
-        self.vc.addMultiTraitTerm(is_noise=True)
-        self.vc.addFixedTerm(SP.ones((self.N,1)))
+        self.vc.addRandomEffect(self.Kg,offset=0)
+        self.vc.addRandomEffect(is_noise=True,offset=0)
+        self.vc.addFixedEffect()
         
     def test_fit(self):
         """ optimization test """
-        self.vc.findLocalOptimum(init_method='empCov',verbose=False)
+        self.vc.findLocalOptimum(verbose=False)
         params = self.vc.getScales()
         if self.generate:
             self.D['params_true'] = params
@@ -83,7 +83,7 @@ class CVarianceDecompositionKronecker_test(unittest.TestCase):
 
     def test_fitFast(self):
         """ optimization test """
-        self.vc.findLocalOptimum(fast=True,init_method='empCov',verbose=False)
+        self.vc.findLocalOptimum(fast=True,verbose=False)
         params = self.vc.getScales()
         if self.generate:
             self.D['params_true'] = params
@@ -104,7 +104,6 @@ class CVarianceDecompositionSoftKronecker_test(unittest.TestCase):
         X  = (SP.rand(self.N,self.S)<0.2)*1.
         self.D['X'] = X
 
-    
     def genPheno(self):
         dp = SP.ones(self.P); dp[1]=-1
         Y = SP.zeros((self.N,self.P))
@@ -120,8 +119,7 @@ class CVarianceDecompositionSoftKronecker_test(unittest.TestCase):
             Y[:,p]=y
         Y=SP.stats.zscore(Y,0)
         self.D['Y']= Y
-        
-    
+
     def setUp(self):
         #check: do we have a csv File?
         self.dir_name = os.path.dirname(__file__)
@@ -156,13 +154,13 @@ class CVarianceDecompositionSoftKronecker_test(unittest.TestCase):
             self.D['Y'][10,0] = SP.nan
             self.D['Y'][100,1] = SP.nan
         self.vc = VAR.CVarianceDecomposition(self.D['Y'])
-        self.vc.addMultiTraitTerm(self.Kg)
-        self.vc.addMultiTraitTerm(is_noise=True)
-        self.vc.addFixedTerm(SP.ones((self.N,1)))
+        self.vc.addRandomEffect(self.Kg,offset=0)
+        self.vc.addRandomEffect(is_noise=True,offset=0)
+        self.vc.addFixedEffect()
         
     def test_fit(self):
         """ optimization test """
-        self.vc.findLocalOptimum(init_method='empCov',verbose=False)
+        self.vc.findLocalOptimum(verbose=False)
         params = self.vc.getScales()
         if self.generate:
             self.D['params_true'] = params

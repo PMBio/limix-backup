@@ -656,7 +656,7 @@ inline void CLMMCore::optdeltaEx(const Eigen::MatrixBase<Derived1> & AO_delta_,c
     {
     	ldeltagrid(ii) = ldelta;
     	//get nll for all phenotypes jointly (using current ldelta)
-    	this->nLLevalEx(f_tests_,AObeta_,AObeta_ste_,AOsigma_, nllgrid.block(ii,0,1,Np),UY, UX, S,ldelta,false,REML = REML);
+    	this->nLLevalEx(f_tests_,AObeta_,AObeta_ste_,AOsigma_, nllgrid.block(ii,0,1,Np),UY, UX, S,ldelta,false,REML);
     	//move on delta
     	ldelta += ldeltaD;
     }

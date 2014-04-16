@@ -275,10 +275,10 @@ int ALMM::getTestStatistics() const
         this->num_snps = snps.cols();
         this->num_pheno = pheno.cols();
         this->num_covs = covs.cols();
-        if(!num_samples == pheno.rows())
+        if(!(num_samples == pheno.rows()))
             throw new CGPMixException("phenotypes and SNP dimensions inconsistent");
 
-        if(!num_samples == covs.rows())
+        if(!(num_samples == covs.rows()))
             throw CGPMixException("covariates and SNP dimensions inconsistent");
 
         if(!(this->UK_cached)){

@@ -369,6 +369,29 @@ void CVarianceDecomposition::initGP(bool fast) throw(CGPMixException)
 	else		initGPbase();
 }
 
+void CVarianceDecomposition::initGPparams() throw(CGPMixException)
+{
+	/* get params from covariance matrices and set them to the GP object
+ 	*/
+    if (is_init!=1)
+		throw CGPMixException("CVarianceDecomposition:: initGP before initGPparams");
+    CGPHyperParams params;
+	if (fast) {
+        params["covarr1"] = static_pointer_cast<CGPkronSum>(gp)->getCovarr1()->getParams();
+        params["covarc1"] = static_pointer_cast<CGPkronSum>(gp)->getCovarc1()->getParams();
+        params["covarr2"] = static_pointer_cast<CGPkronSum>(gp)->getCovarr2()->getParams();
+        params["covarc2"] = static_pointer_cast<CGPkronSum>(gp)->getCovarc2()->getParams();
+        params["dataTerm"] = gp->getDataTerm()->getParams();
+        gp->setParams(params);
+	}
+	else {
+    	params["covar"] = gp->getCovar()->getParams();
+		muint_t ncols = static_pointer_cast<CLinearMean>(gp->getDataTerm())->getRowsParams();
+    	params["dataTerm"] = MatrixXd::Zero(ncols,1);
+    	gp->setParams(params);
+	}
+}
+
 void CVarianceDecomposition::initGPbase() throw(CGPMixException)
 {
 	covar = PSumCF(new CSumCF());
@@ -385,7 +408,7 @@ void CVarianceDecomposition::initGPbase() throw(CGPMixException)
 	MatrixXdVec::const_iterator design_iter = designs.begin();
 	MatrixXdVec::const_iterator fixed_iter  = fixedEffs.begin();
 	for( ; design_iter!=designs.end(); design_iter++, fixed_iter++)
-		numberCols += design_iter[0].rows()*design_iter[0].cols();
+		numberCols += design_iter[0].rows()*fixed_iter[0].cols();
 	//define fixed for CLinearMean
 	MatrixXd fixed(this->N*this->P,numberCols);
 	design_iter = designs.begin();
@@ -434,16 +457,12 @@ void CVarianceDecomposition::initGPbase() throw(CGPMixException)
 	PLinearMean mean(new CLinearMean(y,fixed));
 	gp = PGPbase(new CGPbase(covar,lik,mean));
 	gp->setY(y);
-	//Initialize Params
-	CGPHyperParams params;
-	params["covar"] = covar->getParams();
-	params["dataTerm"] = MatrixXd::Zero(fixed.cols(),1);
-	gp->setParams(params);
-	opt = PGPopt(new CGPopt(gp));
-
 	this->fast=false;
-
 	this->is_init=1;
+	//Initialize Params
+	initGPparams();
+	//optimizer
+	opt = PGPopt(new CGPopt(gp));
 }
 
 void CVarianceDecomposition::initGPkronSum() throw(CGPMixException)
@@ -489,17 +508,12 @@ void CVarianceDecomposition::initGPkronSum() throw(CGPMixException)
         PLikNormalNULL lik(new CLikNormalNULL());
         //define gpKronSum
         gp = PGPkronSum(new CGPkronSum(pheno,covarr1,covarc1,covarr2,covarc2,lik,mean));
-        //Initialize Params
-        CGPHyperParams params;
-        params["covarr1"] = covarr1->getParams();
-        params["covarc1"] = covarc1->getParams();
-        params["covarr2"] = covarr2->getParams();
-        params["covarc2"] = covarc2->getParams();
-        params["dataTerm"] = mean->getParams();
-        gp->setParams(params);
-        opt = PGPopt(new CGPopt(gp));
         this->fast=true;
         this->is_init=1;
+        //Initialize Params
+        initGPparams();
+		//Optimizer GP
+        opt = PGPopt(new CGPopt(gp));
     }
 }
 
@@ -517,12 +531,6 @@ bool CVarianceDecomposition::trainGP() throw(CGPMixException)
 
 	//train GP
 	conv = this->opt->opt();
-
-	//check convergence
-	conv *= (this->getLMLgrad()<(mfloat_t)1e-3);
-	VectorXd scales;
-	this->agetScales(&scales);
-	conv *= (scales.unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).maxCoeff()<(mfloat_t)10.0);
 
 	return conv;
 }

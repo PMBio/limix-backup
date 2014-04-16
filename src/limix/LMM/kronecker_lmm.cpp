@@ -363,7 +363,7 @@ void CKroneckerLMM::updateDecomposition() throw(CGPMixException) {
     this->num_snps = snps.cols();
     this->num_pheno = pheno.cols();
     //this->num_covs = covs.cols();
-    if(!num_samples == pheno.rows() || !num_samples == snps.rows() )
+    if(!(num_samples == pheno.rows()) || !(num_samples == snps.rows()) )
         throw new CGPMixException("phenotypes and SNP dimensions inconsistent");
 
     //if(!num_samples == covs.rows())
