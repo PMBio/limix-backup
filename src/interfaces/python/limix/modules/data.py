@@ -120,6 +120,8 @@ class QTLData():
         self.geno  = self.f['genotype']
         #TODO: load all row and column headers for genotype and phenotype
         
+        import ipdb; ipdb.set_trace()
+
         #parse out thse we alwasy need for convenience
         self.genoM = self.geno['matrix']
         self.phenoM = self.pheno['matrix']
@@ -262,6 +264,42 @@ class QTLData():
         else:#divide by number of SNPs in K
             K/=Nsnp
         return K
+
+    def getGenoID(self,i0=None,i1=None,pos0=None,pos1=None,chrom=None,pos_cum0=None,pos_cum1=None):
+        """get genotype IDs. 
+        Optionally the indices for loading subgroups the genotype IDs for all people
+        can be given in one out of three ways: 
+        - 0-based indexing (i0-i1)
+        - position (pos0-pos1 on chrom)
+        - cumulative position (pos_cum0-pos_cum1)
+        If all these are None (default), then all genotypes are returned
+
+        Args:
+            i0:         genotype index based selection (start index)
+            i1:         genotype index based selection (stop index)
+            pos0:       position based selection (start position)
+            pos1:       position based selection (stop position)
+            chrom:      position based selection (chromosome)
+            pos_cum0:   cumulative position based selection (start position)
+            pos_cum1:   cumulative position based selection (stop position)
+           
+        Returns:
+            ID:         scipy.array of genotype IDs (e.g. rs IDs)
+        """
+        #position based matching?
+        if (i0 is None) and (i1 is None) and ((pos0 is not None) & (pos1 is not None) & (chrom is not None)) or ((pos_cum0 is not None) & (pos_cum1 is not None)):
+            i0,i1=self.getGenoIndex(pos0=pos0,pos1=pos1,chrom=chrom,pos_cum0=pos_cum0,pos_cum1=pose_cum1)
+        if "genotype_id" in self.geno.keys():
+            if (i0 is not None) & (i1 is not None):
+                return self.geno["genotype_id"][i0:i1]
+            else:
+                return self.geno["genotype_id"][i0:i1]
+        else:
+            if (i0 is not None) & (i1 is not None):
+                return SP.arange(i0,i0)
+            else:
+                return SP.arange(self.genoM.shape[1])
+        pass
 
     def getPhenotypes(self,i0=None,i1=None,phenotype_IDs=None,center=True,impute=True,intersection=False):
         """load Phenotypes

@@ -38,7 +38,7 @@ searchDelta=False           #specify if delta should be optimized for each SNP
 #run the analysis
 result = {}     #create result dictionary
 result['pvalues']=QTL.simple_interaction_kronecker(snps=snps,phenos=phenos,covs=covs,Acovs=Acovs,Asnps1=Asnps1,Asnps0=Asnps0,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covar_type=covar_type,rank=rank,searchDelta=searchDelta)
-result['']
+result['a']=a
 
-import pandas as pd
-result['pvalues']=pd.DataFrame(data=pvalues,index=[ 'pv', 'pv0', 'pvAlt']
+#import pandas as pd
+#result['pvalues']=pd.DataFrame(data=pvalues.T,index=data.,columns=['pv', 'pv0', 'pvAlt'])

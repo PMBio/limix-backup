@@ -4,7 +4,7 @@
 # LIMIX is provided under a 2-clause BSD license.
 # See license.txt for the complete license.
 
-import limix.modules.data as DATA
+import data as DATA
 import scipy as SP
 
 data_file = "./example_data/kruglyak.hdf5"
