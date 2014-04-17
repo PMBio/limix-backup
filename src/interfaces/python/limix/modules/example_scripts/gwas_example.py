@@ -17,17 +17,18 @@ X = data.getGenotypes()
 K = data.getCovariance()
 pos = data.getPos()
 
-[Y,I] = data.getPhenotypes(phenotype_IDs=pheno_names_complete,intersection=True)
-X = X[I]
-K = K[I,:][:,I]
+[Y,Ikeep] = data.getPhenotypes(phenotype_IDs=pheno_names_complete,intersection=True)
+X = X[Ikeep].copy()
+K = K[Ikeep,:][:,Ikeep].copy()
 
 #set parameters for the analysis
-covs = None                 #covariates
+phenos=Y                    #phenotypes
+covs=None                   #covariates
 Acovs=None                  #the design matrix for the covariates   
-Asnps1=SP.eye(2)            #the alternative model design matrix for the SNPs
-Asnps0=SP.ones((1,2))       #the null model design matrix for the SNPs
+Asnps1=SP.eye(P)            #the alternative model design matrix for the SNPs
+Asnps0=SP.ones((1,P))       #the null model design matrix for the SNPs
 K1r=K                       #the first sample-sample covariance matrix (non-noise)
-K2r=SP.eye(K.shape[1])      #the second sample-sample covariance matrix (noise)
+K2r=SP.eye(N)               #the second sample-sample covariance matrix (noise)
 K1c=None                    #the first phenotype-phenotype covariance matrix (non-noise)
 K2c=None                    #the second phenotype-phenotype covariance matrix (noise)
 covar_type='lowrank_diag'   #the type of covariance matrix to be estimated for unspecified covariances 
@@ -35,4 +36,9 @@ rank=1                      #the rank of covariance matrix to be estimated for u
 searchDelta=False           #specify if delta should be optimized for each SNP
 
 #run the analysis
-result = QTL.simple_interaction_kronecker(snps=snps,phenos=phenos,covs=covs,Acovs=Acovs,Asnps1=Asnps1,Asnps0=Asnps0,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covar_type=covar_type,rank=rank,searchDelta=searchDelta)
+result = {}     #create result dictionary
+result['pvalues']=QTL.simple_interaction_kronecker(snps=snps,phenos=phenos,covs=covs,Acovs=Acovs,Asnps1=Asnps1,Asnps0=Asnps0,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covar_type=covar_type,rank=rank,searchDelta=searchDelta)
+result['']
+
+import pandas as pd
+result['pvalues']=pd.DataFrame(data=pvalues,index=[ 'pv', 'pv0', 'pvAlt']
