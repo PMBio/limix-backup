@@ -43,7 +43,8 @@ class LIMIX_runner(object):
         options=self.options
         command = open(self.options.data_script).read()
         t0=time.time()
-        exec(command)
+        data=None       #fallback data
+        exec(command)   #creates variable data
         t1=time.time()
         print ("Elapsed time for data reading is %.2f seconds" % (t1-t0))
         self.data=data
@@ -57,7 +58,8 @@ class LIMIX_runner(object):
         options=self.options
         command = open(self.options.experiment_script).read()
         t0=time.time()
-        exec(command)
+        result=None     #fallback result
+        exec(command)   #creates variable result
         t1=time.time()
         print ("Elapsed time for running the experiment is %.2f seconds" % (t1-t0)) 
         self.result=result
@@ -65,9 +67,19 @@ class LIMIX_runner(object):
 
     def write_resultfile(self):
         """
-        TODO
+        Write the outout to disk
         """
-        pass
+        data=self.data
+        options=self.options
+        result=self.result
+        command = open(self.options.output_script).read()
+        t0=time.time()
+        output=None     #fallback output
+        exec(command)   #creates variable output
+        t1=time.time()
+        print ("Elapsed time for running the experiment is %.2f seconds" % (t1-t0)) 
+        return output
+        
 
 if __name__ == "__main__":
     print ("last modified: %s" % time.ctime(os.path.getmtime(__file__)))

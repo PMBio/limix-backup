@@ -77,8 +77,8 @@ class CVarianceDecomposition:
         Set phenotype matrix
         
         Args:
-            Y: phenotype matrix [N, P]
-            standardize:		if True, phenotype is standardized
+            Y:              phenotype matrix [N, P]
+            standardize:	if True, phenotype is standardized
         """
         assert Y.shape[0]==self.N, 'CVarianceDecomposition:: Incompatible shape'
         assert Y.shape[1]==self.P, 'CVarianceDecomposition:: Incompatible shape'

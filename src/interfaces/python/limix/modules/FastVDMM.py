@@ -57,10 +57,11 @@ class CFastVDMM:
     
     def __init__(self,Y,C1,C2,K1,K2=None):
         """
-        Y:  NxP phenotype matrix
-        C:  list of trait covariances
-        K1: kernel matrix 1
-        K2: kernel matrix 2
+        Args:
+            Y:  NxP phenotype matrix
+            C:  list of trait covariances
+            K1: kernel matrix 1
+            K2: kernel matrix 2
         """
         
         self.N=Y.shape[0]
@@ -74,14 +75,14 @@ class CFastVDMM:
             logdet_compl = 0
             K = K1
         else:
-            eigen2, U2 = SP.linalg.eig(K2)
+            eigen2, U2 = SP.linalg.eigh(K2)
             eigen2= SP.array(eigen2,dtype=float)
             S2is = SP.diag(1/SP.sqrt(eigen2))
             logdet_compl = self.P*SP.log(eigen2).sum()
             K = SP.dot(S2is,SP.dot(U2.T,SP.dot(K1,SP.dot(U2,S2is))))
                 
         #Diagonalization of Part I
-        eigen, U = SP.linalg.eig(K)
+        eigen, U = SP.linalg.eigh(K)
         eigen = SP.array(eigen,dtype=float)
         U= SP.array(U,dtype=float)
         S   = SP.diag(eigen)
