@@ -11,6 +11,8 @@ import scipy as sp
 import limix
 from optparse import OptionParser
 
+sys.path.append("./../../")
+
 class LIMIX_runner(object):
     '''
     A class for running a LIMIX pipeline.

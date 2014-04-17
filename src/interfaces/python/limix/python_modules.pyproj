@@ -24,6 +24,7 @@
   <ItemGroup>
     <Compile Include="modules\data.py" />
     <Compile Include="modules\example_scripts\example_data.py" />
+    <Compile Include="modules\example_scripts\example_output.py" />
     <Compile Include="modules\example_scripts\gwas_example.py" />
     <Compile Include="modules\FastVDMM.py" />
     <Compile Include="modules\limix_runner.py" />
