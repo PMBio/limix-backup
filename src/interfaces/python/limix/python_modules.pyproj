@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="modules\data.py" />
+    <Compile Include="modules\data_new.py" />
     <Compile Include="modules\example_scripts\example_data.py" />
     <Compile Include="modules\example_scripts\example_output.py" />
     <Compile Include="modules\example_scripts\gwas_example.py" />
