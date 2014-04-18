@@ -120,8 +120,6 @@ class QTLData():
         self.geno  = self.f['genotype']
         #TODO: load all row and column headers for genotype and phenotype
         
-        import ipdb; ipdb.set_trace()
-
         #parse out thse we alwasy need for convenience
         self.genoM = self.geno['matrix']
         self.phenoM = self.pheno['matrix']
