@@ -406,7 +406,7 @@ class CVarianceDecomposition:
         return conv
 
     
-    def findLocalOptimum(self,fast=False,scales0=None,fixed0=None,init_method='random',termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=True):
+    def findLocalOptimum(self,fast=False,scales0=None,fixed0=None,init_method=None,termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=True):
         """
         Train the model using the specified initialization strategy
         
@@ -421,6 +421,10 @@ class CVarianceDecomposition:
             perturbSize:    size of the perturbation
             verbose:        print if convergence is achieved
         """
+
+        if init_method==None:
+            if self.P==1:	init_method = 'random'
+            else:           init_method = 'diagonal'
 
         if not self.init:		self.initGP(fast=fast)
 
