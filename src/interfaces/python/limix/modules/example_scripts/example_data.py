@@ -4,9 +4,12 @@
 # LIMIX is provided under a 2-clause BSD license.
 # See license.txt for the complete license.
 
-import data as DATA
+import data_new as DATA
 import scipy as SP
 
 data_file = "./example_data/kruglyak.hdf5"
 
-data = DATA.QTLData(data_file)
+geno_reader  = DATA.geno_reader_hdf5(data_file)
+pheno_reader = DATA.pheno_reader_hdf5(data_file)
+
+data = DATA.QTLData(geno_reader=geno_reader,pheno_reader=pheno_reader)
