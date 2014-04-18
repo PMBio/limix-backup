@@ -301,13 +301,15 @@ class QTLData():
                 return SP.arange(self.genoM.shape[1])
         pass
 
-    def getPhenotypes(self,i0=None,i1=None,phenotype_IDs=None,center=True,impute=True,intersection=False):
+    def getPhenotypes(self,i0=None,i1=None,phenotype_IDs=None,geneIDs=None,environments=None,center=True,impute=True,intersection=False):
         """load Phenotypes
         
         Args:
             i0:             phenotype indices to load (start individual index)
             i1:             phenotype indices to load (stop individual index)
             phenotype_IDs:  names of phenotypes to load
+            geneIDs:        names of genes to load
+            environments:   names of environments to load
             impute:         imputation of missing values (default: True)
             intersection:   restrict observation to those obseved in all phenotypes? (default: False)
         
@@ -315,6 +317,20 @@ class QTLData():
             Y:              phenotype values
             Ikeep:          index of individuals in Y
         """
+        if phenotype_IDs is None and (geneIDs is not None or environments is not None):
+           if geneIDs is None:
+               geneIDs = self.geneIDs
+           elif type(geneIDs)!=list:
+               geneIDs = [geneIDs]
+           if environments is None:
+               environments = self.Es
+           elif type(environments)!=list:
+               environments = [environments]
+           phenotype_IDs = []
+           for env in environments:
+               for gene in geneIDs:
+                   phenotype_IDs.append('%s:%d'%(gene,env))
+
         if phenotype_IDs is not None:
             I = SP.array([SP.nonzero(self.phenotype_ID==n)[0][0] for n in phenotype_IDs])
         else:
