@@ -108,6 +108,7 @@ class QTLData():
         self.file_name = file_name
         self.load()
 
+
     def load(self,cache_genotype=False,cache_phenotype=True):
         """load data file
         
@@ -119,11 +120,10 @@ class QTLData():
         self.pheno = self.f['phenotype']
         self.geno  = self.f['genotype']
         #TODO: load all row and column headers for genotype and phenotype
-        
-        import ipdb; ipdb.set_trace()
 
         #parse out thse we alwasy need for convenience
         self.genoM = self.geno['matrix']
+
         self.phenoM = self.pheno['matrix']
         self.sample_ID = self.geno['row_header']['sample_ID'][:]
         self.genoChrom = self.geno['col_header']['chrom'][:]
