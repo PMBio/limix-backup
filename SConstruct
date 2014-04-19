@@ -63,7 +63,11 @@ AddOption('--CXX',dest='CXX',type='string',nargs=1,action='store',default=cxx,he
 AddOption('--CC',dest='CC',type='string',nargs=1,action='store',default=cc,help='Manual specified CC')
 #override  build tool
 AddOption('--build_tool',dest='build_tool',type='string',nargs=1,action='store',default=build_tool,help='Manual specification of build tool')
+#use static bind?
+#note: if enabled, the library is effectively GPL as nlopt is lesser GPL and hence we require dynamic binding
+AddOption('--static-bind',dest='static_bind',action='store_true',help='Enforce static binding of external libs',default=False)
 
+#### options that are needed for distutils compatibility ####
 #set output?
 AddOption('--record',dest='record',type='string',nargs=1,action='store',default='',help='Record build output for distutils build')
 
@@ -96,6 +100,7 @@ build_options['CC'] = GetOption('CC')
 build_options['build_tool'] = GetOption('build_tool')
 build_options['reswig'] = GetOption('reswig')
 build_options['record'] = GetOption('record')
+build_options['static_bind'] = GetOption('static_bind')
 
 ### 2. build mode
 #build mode:
@@ -163,8 +168,12 @@ else:
    env.Append(LINKFLAGS=releaselinkflags)
 #set shared library settings
 #env.Append(SHLINK=ldshared)
-#env.Append(SHLIBSUFFIX=so_ext)
 #env.Append(SHLIBPREFIX="")
+#set suffix for shared libraries
+print env['SHLIBSUFFIX']
+print env['SHLIBPREFIX']
+env['SHLIBSUFFIX']=so_ext
+env['SHLIBPREFIX'] = 'lib'
 
 limix_include = ['#/src']
 external_include = ['#/External']
