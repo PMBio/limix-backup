@@ -1,3 +1,7 @@
+import scipy as SP
+import h5py
+import data_util as du
+
 class pheno_reader_hdf5():
     def __init__(self,file_name):
         self.file_name = file_name
