@@ -18,7 +18,8 @@ def estCumPos(pos,chrom,offset = 20000000):
         pos:        scipy.array of basepair positions (on the chromosome)
         chrom:      scipy.array of chromosomes
         offset:     offset between chromosomes for cumulative position (default 20000000 bp)
-    Returns:
+    
+        Returns:
         cum_pos:    scipy.array of cumulative positions
         chrom_pos:  scipy.array of starting cumulative positions for each chromosme
     '''
@@ -51,6 +52,7 @@ def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.
                                     (only with C-based parser) (default: False)
             betaA:  shape parameter for Beta(betaA,betaB) standardization (only with C-based parser)
             betaB:  scale parameter for Beta(betaA,betaB) standardization (only with C-based parser)
+
         Returns:
             X:      scipy.array of standardized SNPs with scipy.float64 values
         '''
