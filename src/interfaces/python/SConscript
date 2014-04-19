@@ -23,38 +23,42 @@ localenv.Append(CPPPATH = [python_inc_path,numpy_inc_path])
 localenv.Append(SWIGFLAGS=['-python','-c++'])
 localenv.Append(SWIGPATH =[limix_include,external_include,'#/src/interfaces/python'])
 localenv.Append(LIBS=['limix','nlopt'])
+#localenv.Append(LIBS=['limix'])
 LIBPATH = [python_lib_path,os.path.join(abs_build_prefix,'limix'),os.path.join(abs_build_prefix,'nlopt')]
 #add python lib path, windows needs this..
 LIBPATH.append(os.path.join(sys.prefix,'libs'))
 localenv.Append(LIBPATH=LIBPATH)
 
 #dynamic lookups, needed with MAC at least
-if(localenv['PLATFORM']=='darwin'):
-	localenv.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup'])
 
-if sys.platform=='win32':
+if(localenv['PLATFORM']=='win32'):
    #rename modules
    module_in = "_core.dll"
    module_out = "_core.pyd"
-elif sys.platform=='darwin':
+elif(localenv['PLATFORM']=='darwin'):
    module_in = "_core"
    module_out = "_core.so"  
+   localenv.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup','-Wl,-rpath,@loader_path/.'])#,'-Wl,rpath,@loader_path/.'])
 else:
+   #LINUX
    module_in = "_core.so"
    module_out = "_core.so"
 
+
+#run SWIG?
 if build_options['reswig']:
    #build from .i file
    srclst = ['limix.i']
+   #srclst = ['limix.i',ibnlopt]
    localenv.Depends(srclst, [libnlopt,liblimix])
-   limixlib_swig=localenv.LoadableModule('_core',srclst)
-   wrapper_in = os.path.join(build_prefix,"interfaces","python","core.py")
 else:
    #use precompiled python wrapper
    srclst = ['swigged/limix_wrap.cc']
-   limixlib_swig=localenv.LoadableModule('_core',srclst)
-   wrapper_in = os.path.join('src','interfaces','python','swigged',"core.py")
-
+   
+#build:
+limixlib_swig=localenv.LoadableModule('_core',srclst)
+#path of wrapper for installer
+wrapper_in = os.path.join('src','interfaces','python','swigged',"core.py")
 
 
 limix_in    = os.path.join('src','interfaces','python','limix')
@@ -65,8 +69,11 @@ limix_in    = os.path.join('src','interfaces','python','limix')
 copy=Command(target="limix",source=limixlib_swig,action = [Delete("$TARGET"), 
 	Copy("$TARGET",limix_in),
 	Copy("$TARGET",wrapper_in),
-	Copy(os.path.join("$TARGET",module_out),os.path.join(build_prefix,"interfaces","python",module_in))
+   Copy("$TARGET",libnlopt[0]),
+   #Copy("$TARGET",os.path.join(build_prefix,"nlopt","libnlopt.so")),
+	#Copy(os.path.join("$TARGET",module_out),os.path.join(build_prefix,"interfaces","python",module_in))
+   Copy(os.path.join("$TARGET",module_out),limixlib_swig[0])
 	])
 
-#AlwaysBuild([copy])
+AlwaysBuild([copy])
 Return('limixlib_swig')
