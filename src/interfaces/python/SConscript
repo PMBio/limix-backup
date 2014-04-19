@@ -35,14 +35,17 @@ if(localenv['PLATFORM']=='win32'):
    #rename modules
    module_in = "_core.dll"
    module_out = "_core.pyd"
+   #TODO: no idea how to change runpath settings in windows land 
 elif(localenv['PLATFORM']=='darwin'):
    module_in = "_core"
    module_out = "_core.so"  
-   localenv.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup','-Wl,-rpath,@loader_path/.'])#,'-Wl,rpath,@loader_path/.'])
+   #runpath in mac osx is *very* different than linux
+   localenv.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup','-Wl,-rpath,@loader_path/.'])
 else:
    #LINUX
    module_in = "_core.so"
    module_out = "_core.so"
+   localenv.Append(LINKFLAGS = ['-Wl,-rpath=$ORIGIN'])
 
 
 #run SWIG?
@@ -54,7 +57,7 @@ if build_options['reswig']:
 else:
    #use precompiled python wrapper
    srclst = ['swigged/limix_wrap.cc']
-   
+
 #build:
 limixlib_swig=localenv.LoadableModule('_core',srclst)
 #path of wrapper for installer
