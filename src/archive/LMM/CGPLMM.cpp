@@ -29,7 +29,7 @@ void CGPLMM::checkConsistency() throw (CGPMixException)
 	this->num_pheno = pheno.cols();
 	this->num_covs = covs.cols();
 	if(!num_samples == pheno.rows())
-		throw new CGPMixException("phenotypes and SNP dimensions inconsistent");
+		throw CGPMixException("phenotypes and SNP dimensions inconsistent");
 
 	if(!num_samples == covs.rows())
 		throw CGPMixException("covariates and SNP dimensions inconsistent");

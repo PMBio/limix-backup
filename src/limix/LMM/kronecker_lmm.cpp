@@ -30,14 +30,14 @@ void CKroneckerLMM::process() throw (CGPMixException){
 	//if (num_terms!=coldesign0.size() || num_terms!=coldesignU0.size() || num_terms!=rowdesign0.size() || num_terms!=Urowdesign0.size())
 	if (num_terms!=coldesign0.size() || num_terms!=rowdesign0.size() )
 	{
-		throw new CGPMixException("number terms in background model inconsistent");
+		throw CGPMixException("number terms in background model inconsistent");
 	}
 	for(muint_t c=0;c<rowdesign0.size();++c)
 	{
 		//if (P!=coldesign0[c].cols() || P!=coldesignU0[P].cols() || N!=rowdesign0[c].rows() || N!=Urowdesign0[c].rows())
 		if (P!=(muint_t)coldesign0[c].cols() || N!=(muint_t)rowdesign0[c].rows() )
 		{
-			throw new CGPMixException("dimensions in background model inconsistent");
+			throw CGPMixException("dimensions in background model inconsistent");
 		}
 	}
 
@@ -363,8 +363,8 @@ void CKroneckerLMM::updateDecomposition() throw(CGPMixException) {
     this->num_snps = snps.cols();
     this->num_pheno = pheno.cols();
     //this->num_covs = covs.cols();
-    if(!(num_samples == pheno.rows()) || !(num_samples == snps.rows()) )
-        throw new CGPMixException("phenotypes and SNP dimensions inconsistent");
+    if(!(num_samples == (muint_t) pheno.rows()) || !(num_samples == (muint_t) snps.rows()) )
+        throw CGPMixException("phenotypes and SNP dimensions inconsistent");
 
     //if(!num_samples == covs.rows())
     //    throw CGPMixException("covariates and SNP dimensions inconsistent");
@@ -374,14 +374,14 @@ void CKroneckerLMM::updateDecomposition() throw(CGPMixException) {
     this->U2c = eigensolver2c.eigenvectors();
     this->S2c = eigensolver2c.eigenvalues();
 	if (!(this->S2c(0)>1e-12)){
-		throw new CGPMixException("The column covariance of the second covariance term has to be full rank, but is not.");
+		throw CGPMixException("The column covariance of the second covariance term has to be full rank, but is not.");
 	}
 
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver2r(K2r);
     this->U2r = eigensolver2r.eigenvectors();
     this->S2r = eigensolver2r.eigenvalues();
 	if (!(this->S2r(0)>1e-12)){
-		throw new CGPMixException("The row covariance of the second covariance term has to be full rank, but is not.");
+		throw CGPMixException("The row covariance of the second covariance term has to be full rank, but is not.");
 	}
         
 	this->Rrot = this->U2r;

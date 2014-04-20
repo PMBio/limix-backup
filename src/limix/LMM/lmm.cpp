@@ -275,10 +275,10 @@ int ALMM::getTestStatistics() const
         this->num_snps = snps.cols();
         this->num_pheno = pheno.cols();
         this->num_covs = covs.cols();
-        if(!(num_samples == pheno.rows()))
-            throw new CGPMixException("phenotypes and SNP dimensions inconsistent");
+        if(!(num_samples == (muint_t)pheno.rows()))
+            throw CGPMixException("phenotypes and SNP dimensions inconsistent");
 
-        if(!(num_samples == covs.rows()))
+        if(!(num_samples == (muint_t)covs.rows()))
             throw CGPMixException("covariates and SNP dimensions inconsistent");
 
         if(!(this->UK_cached)){
@@ -600,7 +600,7 @@ int ALMM::getTestStatistics() const
             ldelta += ldeltaD;
         } //end for all intervals
 		nLLevalFunctor func(UY, UX, S, REML);
-		for(muint_t i=1;i<(numintervals-1);i++){
+		for(muint_t i=1;i<(muint_t)(numintervals-1);i++){
 		  if (nllgrid(i,0)<nllgrid(i+1,0) && nllgrid(i,0)<nllgrid(i-1,0)){
 			  //check wether a local optimum exists in this triplet
 			 mfloat_t current_nLL=std::numeric_limits<mfloat_t>::infinity();
