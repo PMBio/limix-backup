@@ -15,8 +15,8 @@ localenv.Append(LIBS=['limix','nlopt'])
 #add path
 localenv.Append(LIBPATH=[os.path.join(abs_build_prefix,'limix'),os.path.join(abs_build_prefix,'nlopt')])
 
-if build_options['with_zlib']:
-   localenv.Append(LIBS=['libz'])
+# if build_options['with_zlib']:
+   # localenv.Append(LIBS=['libz'])
 
 program=localenv.Program('main',srclst)
 Return('program')

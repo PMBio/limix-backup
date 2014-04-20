@@ -172,6 +172,7 @@ else:
 #set suffix for shared libraries
 print env['SHLIBSUFFIX']
 print env['SHLIBPREFIX']
+
 env['SHLIBSUFFIX']=so_ext
 env['SHLIBPREFIX'] = 'lib'
 

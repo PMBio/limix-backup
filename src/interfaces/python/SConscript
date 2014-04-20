@@ -78,5 +78,5 @@ copy=Command(target="limix",source=limixlib_swig,action = [Delete("$TARGET"),
    Copy(os.path.join("$TARGET",module_out),limixlib_swig[0])
 	])
 
-AlwaysBuild([copy])
+#AlwaysBuild([copy])
 Return('limixlib_swig')

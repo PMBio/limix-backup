@@ -538,7 +538,7 @@ CGPHyperParams CGPkronSum::LMLgrad() throw (CGPMixException)
         aLMLgrad_covarc1(&grad_covar);
         if (lambda>0) {
             MatrixXd C1, C1grad;
-            for (muint_t i=0; i<params["covarc1"].rows(); i++) {
+            for (muint_t i=0; i<(muint_t)params["covarc1"].rows(); i++) {
                 C1     = covarc1->K();
                 C1grad = covarc1->Kgrad_param(i);
                 for (muint_t ir=0; ir<C1.rows(); ir++)

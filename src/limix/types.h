@@ -11,6 +11,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <exception>
 
 #define CPP11
 
@@ -205,7 +206,7 @@ typedef sptr<stringVec> PstringVec;
 
 
 //GpMix Exception Class
-class CGPMixException
+class CGPMixException : public std::exception
 {
   public:
 	CGPMixException(std::string str="Unlabeled exception")
