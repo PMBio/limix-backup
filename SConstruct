@@ -17,9 +17,12 @@ max_jobs = 2
 build_tool = 'default'
 #on windows, we could also use mingw 
 #rerun swig by default?
-reswig = True
-reswig = False 
+reswig_default = False 
+static_bind_default = False
 
+#windows currently only supports static bind
+if(sys.platform =='win32'):
+  static_bind_default =True
 
 ### 0. get default compiler settings from distutils
 dist_vars = distutils.sysconfig.get_config_vars('CC', 'CXX', 'OPT', 'BASECFLAGS', 'CCSHARED', 'LDSHARED', 'SO')
@@ -43,7 +46,7 @@ AddOption('--without-python', dest='with_python', action='store_false',
 help='Disable python interface', default=True)
 
 #run swig?
-AddOption('--reswig', dest='reswig', action='store_true', help='Run swig?', default=reswig)
+AddOption('--reswig', dest='reswig', action='store_true', help='Run swig?', default=reswig_default)
 
 #build doxygen documentation?
 AddOption('--with-documentation', dest='with_documentation', action='store_true',
@@ -65,15 +68,15 @@ AddOption('--CC',dest='CC',type='string',nargs=1,action='store',default=cc,help=
 AddOption('--build_tool',dest='build_tool',type='string',nargs=1,action='store',default=build_tool,help='Manual specification of build tool')
 #use static bind?
 #note: if enabled, the library is effectively GPL as nlopt is lesser GPL and hence we require dynamic binding
-AddOption('--static-bind',dest='static_bind',action='store_true',help='Enforce static binding of external libs',default=False)
+AddOption('--static-bind',dest='static_bind',action='store_true',help='Enforce static binding of external libs',default=static_bind_default)
 
 #### options that are needed for distutils compatibility ####
 #set output?
 AddOption('--record',dest='record',type='string',nargs=1,action='store',default='',help='Record build output for distutils build')
 
 #dummpy options to please setup tools
-AddOption('--compile', dest='compile', action='store_true', help='No action', default=reswig)
-AddOption('--single-version-externally-managed', dest='single-version-externally-managed', action='store_true', help='No action', default=reswig)
+AddOption('--compile', dest='compile', action='store_true', help='No action', default=False)
+AddOption('--single-version-externally-managed', dest='single-version-externally-managed', action='store_true', help='No action', default=False)
 
 # 2. parallel build options
 # Do parallel builds by default
