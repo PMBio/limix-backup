@@ -23,14 +23,6 @@ namespace limix {
 /*
  * CVarainceTerm captures a specific term in the varaince model
  */
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-//%ignore AVarianceTerm::getHpInit;
-%rename(getK) AVarianceTerm::agetK;
-%rename(getX) AVarianceTerm::agetX;
-%rename(getScales) AVarianceTerm::agetScales;
-#endif
-
 class AVarianceTerm {
 protected:
 	//Covariance Functions
@@ -81,8 +73,6 @@ typedef sptr<AVarianceTerm> PVarianceTerm;
  * 	Single trait variance Term
  */
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-#endif
 
 class CSingleTraitTerm : public AVarianceTerm
 {
@@ -118,9 +108,6 @@ typedef sptr<CSingleTraitTerm> PSingleTraitTerm;
 /*
  * 	Single trait variance Term
  */
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-#endif
 
 class CMultiTraitTerm : public AVarianceTerm
 {
@@ -169,10 +156,6 @@ typedef sptr<CMultiTraitTerm> PMultiTraitTerm;
 
 typedef std::vector<PVarianceTerm> PVarianceTermVec;
 typedef std::vector<MatrixXd> MatrixXdVec;
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%rename(getScales) CVarianceDecomposition::agetScales;
-#endif
 
 class CVarianceDecomposition
 {

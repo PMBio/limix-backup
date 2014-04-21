@@ -51,7 +51,7 @@ class CLMM_test(unittest.TestCase):
         try:
             lmm.process()
         except Exception,e:
-            pdb.set_trace()
+            self.assertTrue(1==1)
             pass
 
     def test_permutation(self):

@@ -1801,347 +1801,6 @@ class VectorXiVec(_object):
 VectorXiVec_swigregister = _core.VectorXiVec_swigregister
 VectorXiVec_swigregister(VectorXiVec)
 
-class StringStringVecMap(_object):
-    """Proxy of C++ std::map<(std::string,stringVec)> class"""
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, StringStringVecMap, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, StringStringVecMap, name)
-    __repr__ = _swig_repr
-    def iterator(self):
-        """
-        iterator(StringStringVecMap self) -> SwigPyIterator
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_iterator(self)
-
-    def __iter__(self): return self.iterator()
-    def __nonzero__(self):
-        """
-        __nonzero__(StringStringVecMap self) -> bool
-
-        Parameters:
-            self: std::map< std::string,stringVec > const *
-
-        """
-        return _core.StringStringVecMap___nonzero__(self)
-
-    def __bool__(self):
-        """
-        __bool__(StringStringVecMap self) -> bool
-
-        Parameters:
-            self: std::map< std::string,stringVec > const *
-
-        """
-        return _core.StringStringVecMap___bool__(self)
-
-    def __len__(self):
-        """
-        __len__(StringStringVecMap self) -> std::map< std::string,stringVec >::size_type
-
-        Parameters:
-            self: std::map< std::string,stringVec > const *
-
-        """
-        return _core.StringStringVecMap___len__(self)
-
-    def __iter__(self): return self.key_iterator()
-    def iterkeys(self): return self.key_iterator()
-    def itervalues(self): return self.value_iterator()
-    def iteritems(self): return self.iterator()
-    def __getitem__(self, *args):
-        """
-        __getitem__(StringStringVecMap self, std::map< std::string,stringVec >::key_type const & key) -> std::map< std::string,stringVec >::mapped_type const &
-
-        Parameters:
-            key: std::map< std::string,stringVec >::key_type const &
-
-        """
-        return _core.StringStringVecMap___getitem__(self, *args)
-
-    def __delitem__(self, *args):
-        """
-        __delitem__(StringStringVecMap self, std::map< std::string,stringVec >::key_type const & key)
-
-        Parameters:
-            key: std::map< std::string,stringVec >::key_type const &
-
-        """
-        return _core.StringStringVecMap___delitem__(self, *args)
-
-    def has_key(self, *args):
-        """
-        has_key(StringStringVecMap self, std::map< std::string,stringVec >::key_type const & key) -> bool
-
-        Parameters:
-            key: std::map< std::string,stringVec >::key_type const &
-
-        """
-        return _core.StringStringVecMap_has_key(self, *args)
-
-    def keys(self):
-        """
-        keys(StringStringVecMap self) -> PyObject *
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_keys(self)
-
-    def values(self):
-        """
-        values(StringStringVecMap self) -> PyObject *
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_values(self)
-
-    def items(self):
-        """
-        items(StringStringVecMap self) -> PyObject *
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_items(self)
-
-    def __contains__(self, *args):
-        """
-        __contains__(StringStringVecMap self, std::map< std::string,stringVec >::key_type const & key) -> bool
-
-        Parameters:
-            key: std::map< std::string,stringVec >::key_type const &
-
-        """
-        return _core.StringStringVecMap___contains__(self, *args)
-
-    def key_iterator(self):
-        """
-        key_iterator(StringStringVecMap self) -> SwigPyIterator
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_key_iterator(self)
-
-    def value_iterator(self):
-        """
-        value_iterator(StringStringVecMap self) -> SwigPyIterator
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_value_iterator(self)
-
-    def __setitem__(self, *args):
-        """
-        __setitem__(StringStringVecMap self, std::map< std::string,stringVec >::key_type const & key)
-
-        Parameters:
-            key: std::map< std::string,stringVec >::key_type const &
-
-        __setitem__(StringStringVecMap self, std::map< std::string,stringVec >::key_type const & key, std::map< std::string,stringVec >::mapped_type const & x)
-
-        Parameters:
-            key: std::map< std::string,stringVec >::key_type const &
-            x: std::map< std::string,stringVec >::mapped_type const &
-
-        """
-        return _core.StringStringVecMap___setitem__(self, *args)
-
-    def asdict(self):
-        """
-        asdict(StringStringVecMap self) -> PyObject *
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_asdict(self)
-
-    def __init__(self, *args): 
-        """
-        __init__(std::map<(std::string,stringVec)> self, std::less< std::string > const & arg2) -> StringStringVecMap
-
-        Parameters:
-            arg2: std::less< std::string > const &
-
-        __init__(std::map<(std::string,stringVec)> self) -> StringStringVecMap
-        __init__(std::map<(std::string,stringVec)> self, StringStringVecMap arg2) -> StringStringVecMap
-
-        Parameters:
-            arg2: std::map< std::string,stringVec > const &
-
-        """
-        this = _core.new_StringStringVecMap(*args)
-        try: self.this.append(this)
-        except: self.this = this
-    def empty(self):
-        """
-        empty(StringStringVecMap self) -> bool
-
-        Parameters:
-            self: std::map< std::string,stringVec > const *
-
-        """
-        return _core.StringStringVecMap_empty(self)
-
-    def size(self):
-        """
-        size(StringStringVecMap self) -> std::map< std::string,stringVec >::size_type
-
-        Parameters:
-            self: std::map< std::string,stringVec > const *
-
-        """
-        return _core.StringStringVecMap_size(self)
-
-    def clear(self):
-        """
-        clear(StringStringVecMap self)
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_clear(self)
-
-    def swap(self, *args):
-        """
-        swap(StringStringVecMap self, StringStringVecMap v)
-
-        Parameters:
-            v: std::map< std::string,stringVec > &
-
-        """
-        return _core.StringStringVecMap_swap(self, *args)
-
-    def get_allocator(self):
-        """
-        get_allocator(StringStringVecMap self) -> std::map< std::string,stringVec >::allocator_type
-
-        Parameters:
-            self: std::map< std::string,stringVec > const *
-
-        """
-        return _core.StringStringVecMap_get_allocator(self)
-
-    def begin(self):
-        """
-        begin(StringStringVecMap self) -> std::map< std::string,stringVec >::iterator
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_begin(self)
-
-    def end(self):
-        """
-        end(StringStringVecMap self) -> std::map< std::string,stringVec >::iterator
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_end(self)
-
-    def rbegin(self):
-        """
-        rbegin(StringStringVecMap self) -> std::map< std::string,stringVec >::reverse_iterator
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_rbegin(self)
-
-    def rend(self):
-        """
-        rend(StringStringVecMap self) -> std::map< std::string,stringVec >::reverse_iterator
-
-        Parameters:
-            self: std::map< std::string,stringVec > *
-
-        """
-        return _core.StringStringVecMap_rend(self)
-
-    def count(self, *args):
-        """
-        count(StringStringVecMap self, std::map< std::string,stringVec >::key_type const & x) -> std::map< std::string,stringVec >::size_type
-
-        Parameters:
-            x: std::map< std::string,stringVec >::key_type const &
-
-        """
-        return _core.StringStringVecMap_count(self, *args)
-
-    def erase(self, *args):
-        """
-        erase(StringStringVecMap self, std::map< std::string,stringVec >::key_type const & x) -> std::map< std::string,stringVec >::size_type
-
-        Parameters:
-            x: std::map< std::string,stringVec >::key_type const &
-
-        erase(StringStringVecMap self, std::map< std::string,stringVec >::iterator position)
-
-        Parameters:
-            position: std::map< std::string,stringVec >::iterator
-
-        erase(StringStringVecMap self, std::map< std::string,stringVec >::iterator first, std::map< std::string,stringVec >::iterator last)
-
-        Parameters:
-            first: std::map< std::string,stringVec >::iterator
-            last: std::map< std::string,stringVec >::iterator
-
-        """
-        return _core.StringStringVecMap_erase(self, *args)
-
-    def find(self, *args):
-        """
-        find(StringStringVecMap self, std::map< std::string,stringVec >::key_type const & x) -> std::map< std::string,stringVec >::iterator
-
-        Parameters:
-            x: std::map< std::string,stringVec >::key_type const &
-
-        """
-        return _core.StringStringVecMap_find(self, *args)
-
-    def lower_bound(self, *args):
-        """
-        lower_bound(StringStringVecMap self, std::map< std::string,stringVec >::key_type const & x) -> std::map< std::string,stringVec >::iterator
-
-        Parameters:
-            x: std::map< std::string,stringVec >::key_type const &
-
-        """
-        return _core.StringStringVecMap_lower_bound(self, *args)
-
-    def upper_bound(self, *args):
-        """
-        upper_bound(StringStringVecMap self, std::map< std::string,stringVec >::key_type const & x) -> std::map< std::string,stringVec >::iterator
-
-        Parameters:
-            x: std::map< std::string,stringVec >::key_type const &
-
-        """
-        return _core.StringStringVecMap_upper_bound(self, *args)
-
-    __swig_destroy__ = _core.delete_StringStringVecMap
-    __del__ = lambda self : None;
-StringStringVecMap_swigregister = _core.StringStringVecMap_swigregister
-StringStringVecMap_swigregister(StringStringVecMap)
-
 PI = _core.PI
 
 def isnan(*args):
@@ -2335,6 +1994,46 @@ class CParamObject(_object):
     __del__ = lambda self : None;
 CParamObject_swigregister = _core.CParamObject_swigregister
 CParamObject_swigregister(CParamObject)
+
+class CNamedCache(CParamObject):
+    """Proxy of C++ limix::CNamedCache class"""
+    __swig_setmethods__ = {}
+    for _s in [CParamObject]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CNamedCache, name, value)
+    __swig_getmethods__ = {}
+    for _s in [CParamObject]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, CNamedCache, name)
+    __repr__ = _swig_repr
+    def __init__(self): 
+        """__init__(limix::CNamedCache self) -> CNamedCache"""
+        this = _core.new_CNamedCache()
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _core.delete_CNamedCache
+    __del__ = lambda self : None;
+    def set(self, *args):
+        """
+        set(CNamedCache self, std::string name, PCVoid m)
+
+        Parameters:
+            name: std::string
+            m: PCVoid
+
+        """
+        return _core.CNamedCache_set(self, *args)
+
+    def get(self, *args):
+        """
+        get(CNamedCache self, std::string const & name) -> PCVoid
+
+        Parameters:
+            name: std::string const &
+
+        """
+        return _core.CNamedCache_get(self, *args)
+
+CNamedCache_swigregister = _core.CNamedCache_swigregister
+CNamedCache_swigregister(CNamedCache)
 
 class ACovarianceFunction(CParamObject):
     """Proxy of C++ limix::ACovarianceFunction class"""
@@ -2850,46 +2549,6 @@ class CCovarianceFunctionCacheOld(CParamObject):
 
 CCovarianceFunctionCacheOld_swigregister = _core.CCovarianceFunctionCacheOld_swigregister
 CCovarianceFunctionCacheOld_swigregister(CCovarianceFunctionCacheOld)
-
-class CNamedCache(CParamObject):
-    """Proxy of C++ limix::CNamedCache class"""
-    __swig_setmethods__ = {}
-    for _s in [CParamObject]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, CNamedCache, name, value)
-    __swig_getmethods__ = {}
-    for _s in [CParamObject]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
-    __getattr__ = lambda self, name: _swig_getattr(self, CNamedCache, name)
-    __repr__ = _swig_repr
-    def __init__(self): 
-        """__init__(limix::CNamedCache self) -> CNamedCache"""
-        this = _core.new_CNamedCache()
-        try: self.this.append(this)
-        except: self.this = this
-    __swig_destroy__ = _core.delete_CNamedCache
-    __del__ = lambda self : None;
-    def set(self, *args):
-        """
-        set(CNamedCache self, std::string name, PCVoid m)
-
-        Parameters:
-            name: std::string
-            m: PCVoid
-
-        """
-        return _core.CNamedCache_set(self, *args)
-
-    def get(self, *args):
-        """
-        get(CNamedCache self, std::string const & name) -> PCVoid
-
-        Parameters:
-            name: std::string const &
-
-        """
-        return _core.CNamedCache_get(self, *args)
-
-CNamedCache_swigregister = _core.CNamedCache_swigregister
-CNamedCache_swigregister(CNamedCache)
 
 class CCovLinearISO(ACovarianceFunction):
     """Proxy of C++ limix::CCovLinearISO class"""
@@ -3832,25 +3491,25 @@ class CFixedCF(ACovarianceFunction):
         """
         return _core.CFixedCF_setK0cross(self, *args)
 
-    def getK0(self):
+    def agetK0(self):
         """
-        getK0(CFixedCF self)
+        agetK0(CFixedCF self)
 
         Parameters:
             self: limix::CFixedCF const *
 
         """
-        return _core.CFixedCF_getK0(self)
+        return _core.CFixedCF_agetK0(self)
 
-    def getK0cross(self):
+    def agetK0cross(self):
         """
-        getK0cross(CFixedCF self)
+        agetK0cross(CFixedCF self)
 
         Parameters:
             self: limix::CFixedCF const *
 
         """
-        return _core.CFixedCF_getK0cross(self)
+        return _core.CFixedCF_agetK0cross(self)
 
     def setK0cross_diag(self, *args):
         """
@@ -3862,15 +3521,15 @@ class CFixedCF(ACovarianceFunction):
         """
         return _core.CFixedCF_setK0cross_diag(self, *args)
 
-    def getK0cross_diag(self):
+    def agetK0cross_diag(self):
         """
-        getK0cross_diag(CFixedCF self)
+        agetK0cross_diag(CFixedCF self)
 
         Parameters:
             self: limix::CFixedCF const *
 
         """
-        return _core.CFixedCF_getK0cross_diag(self)
+        return _core.CFixedCF_agetK0cross_diag(self)
 
     def getName(self):
         """
@@ -4147,25 +3806,25 @@ class CRank1diagCF(ACovarianceFunction):
         """
         return _core.CRank1diagCF_Kdim(self)
 
-    def getRank1(self):
+    def agetRank1(self):
         """
-        getRank1(CRank1diagCF self)
+        agetRank1(CRank1diagCF self)
 
         Parameters:
             self: limix::CRank1diagCF const *
 
         """
-        return _core.CRank1diagCF_getRank1(self)
+        return _core.CRank1diagCF_agetRank1(self)
 
-    def getDiag(self):
+    def agetDiag(self):
         """
-        getDiag(CRank1diagCF self)
+        agetDiag(CRank1diagCF self)
 
         Parameters:
             self: limix::CRank1diagCF const *
 
         """
-        return _core.CRank1diagCF_getDiag(self)
+        return _core.CRank1diagCF_agetDiag(self)
 
     def Kcross(self, *args):
         """
@@ -9982,30 +9641,13 @@ class nLLevalFunctor(_object):
 nLLevalFunctor_swigregister = _core.nLLevalFunctor_swigregister
 nLLevalFunctor_swigregister(nLLevalFunctor)
 
-class CLMMKroneckerCore(_object):
-    """Proxy of C++ limix::CLMMKroneckerCore class"""
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, CLMMKroneckerCore, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, CLMMKroneckerCore, name)
-    __repr__ = _swig_repr
-    def __init__(self): 
-        """__init__(limix::CLMMKroneckerCore self) -> CLMMKroneckerCore"""
-        this = _core.new_CLMMKroneckerCore()
-        try: self.this.append(this)
-        except: self.this = this
-    __swig_destroy__ = _core.delete_CLMMKroneckerCore
-    __del__ = lambda self : None;
-CLMMKroneckerCore_swigregister = _core.CLMMKroneckerCore_swigregister
-CLMMKroneckerCore_swigregister(CLMMKroneckerCore)
-
-class CKroneckerLMM(CLMMKroneckerCore,ALMM):
+class CKroneckerLMM(ALMM):
     """Proxy of C++ limix::CKroneckerLMM class"""
     __swig_setmethods__ = {}
-    for _s in [CLMMKroneckerCore,ALMM]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    for _s in [ALMM]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
     __setattr__ = lambda self, name, value: _swig_setattr(self, CKroneckerLMM, name, value)
     __swig_getmethods__ = {}
-    for _s in [CLMMKroneckerCore,ALMM]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    for _s in [ALMM]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
     __getattr__ = lambda self, name: _swig_getattr(self, CKroneckerLMM, name)
     __repr__ = _swig_repr
     def __init__(self): 

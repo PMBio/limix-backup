@@ -15,10 +15,6 @@ namespace limix {
 typedef VectorXd LikParams;
 
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::ALikelihood)
-#endif
-
 //For now, likelihood is a special case of covariance function
 class ALikelihood : public ACovarianceFunction {
 	//indicator if the class is synced with the cache
@@ -36,10 +32,6 @@ public:
 typedef sptr<ALikelihood> PLikelihood;
 
 
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CLikNormalNULL)
-#endif
 
 /* Null likelihood model: assuming all variation is explained in covar*/
 class CLikNormalNULL : public ALikelihood {
@@ -64,9 +56,6 @@ typedef sptr<CLikNormalNULL> PLikNormalNULL;
 
 
 /* Gaussian likelihood model*/
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CLikNormalIso)
-#endif
 class CLikNormalIso : public ALikelihood {
 protected:
 	muint_t numRows;

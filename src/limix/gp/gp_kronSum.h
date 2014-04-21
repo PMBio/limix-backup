@@ -145,15 +145,6 @@ public:
 typedef sptr<CGPkronSumCache> PGPkronSumCache;
 
 
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%ignore CGPkronSum::predictMean;
-%ignore CGPkronSum::predictVar;
-
-%rename(predictMean) CGPkronSum::apredictMean;
-%rename(predictVar) CGPkronSum::apredictVar;
-#endif
-
 class CGPkronSum: public CGPbase {
 	friend class CGPkronSumCache;
 	virtual void updateParams() throw (CGPMixException);

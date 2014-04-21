@@ -11,9 +11,6 @@
 
 namespace limix {
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CCovSqexpARD)
-#endif
 class CCovSqexpARD: public ACovarianceFunction {
 public:
 	CCovSqexpARD(muint_t numberDimensions=1): ACovarianceFunction(1)

@@ -14,6 +14,8 @@
 %shared_ptr(limix::CHeaderMap);
 
 //vector template definitions
+/*
 namespace std {
 	%template(StringStringVecMap) map<string,stringVec>;
 };
+*/

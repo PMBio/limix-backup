@@ -60,13 +60,6 @@ public:
 };
 typedef sptr<CGPKroneckerCache> PGPKroneckerCache;
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%ignore CGPkronecker::predictMean;
-%ignore CGPkronecker::predictVar;
-
-%rename(predictMean) CGPkronecker::apredictMean;
-%rename(predictVar) CGPkronecker::apredictVar;
-#endif
 
 class CGPkronecker: public CGPbase {
 	friend class CGPKroneckerCache;
