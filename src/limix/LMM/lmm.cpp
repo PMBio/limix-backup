@@ -232,7 +232,7 @@ int ALMM::getTestStatistics() const
             return;
 
         if(perm.rows() != M.rows()){
-            throw CGPMixException("ALMM:Permutation vector has incompatible length");
+            throw CLimixException("ALMM:Permutation vector has incompatible length");
         }
         //create temporary copy
         MatrixXd Mc = M;
@@ -276,19 +276,19 @@ int ALMM::getTestStatistics() const
         this->num_pheno = pheno.cols();
         this->num_covs = covs.cols();
         if (num_samples==0)
-            throw CGPMixException("LMM requires a non-zero sample size");
+            throw CLimixException("LMM requires a non-zero sample size");
 
         if (num_snps==0)
-            throw CGPMixException("LMM requires non-zero SNPs");
+            throw CLimixException("LMM requires non-zero SNPs");
 
         if (num_pheno==0)
-            throw CGPMixException("LMM requires non-zero phenotypes");
+            throw CLimixException("LMM requires non-zero phenotypes");
 
         if(!(num_samples == (muint_t)pheno.rows()))
-            throw CGPMixException("phenotypes and SNP dimensions inconsistent");
+            throw CLimixException("phenotypes and SNP dimensions inconsistent");
 
         if(!(num_samples == (muint_t)covs.rows()))
-            throw CGPMixException("covariates and SNP dimensions inconsistent");
+            throw CLimixException("covariates and SNP dimensions inconsistent");
 
         if(isnull(K))
         {
@@ -464,7 +464,7 @@ int ALMM::getTestStatistics() const
     {
     	//TODO: Ftest is not correct for simple cases where I0=0 as ftest_rows yields the wrong answer.
     	if((num_inter > 1) && (this->testStatistics == ALMM::TEST_F)){
-            throw CGPMixException("CInteractLMM:: cannot use Ftest for more than 1 interaction dimension!");
+            throw CLimixException("CInteractLMM:: cannot use Ftest for more than 1 interaction dimension!");
         }
         //get decomposition
         updateDecomposition();

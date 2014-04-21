@@ -48,13 +48,13 @@ protected:
 		if(set)
 		{
 			if((this->type!=type) && (this->type!=NONE))
-				throw CGPMixException("Type check, flexible EigenArrays need to have a predetermined type which is constant across their lifetime");
+				throw CLimixException("Type check, flexible EigenArrays need to have a predetermined type which is constant across their lifetime");
 			this->type = type;
 		}
 		else
 		{
 			if((this->type!=type))
-				throw CGPMixException("Type check failed, attempted to convert a flexible array into an incompatible type");
+				throw CLimixException("Type check failed, attempted to convert a flexible array into an incompatible type");
 		}
 	}
 	PVoid array;    //<! The underlying pointer to the unknown Eigen Type

@@ -1862,39 +1862,39 @@ def inverse(*args):
 
     """
   return _core.inverse(*args)
-class CGPMixException(_object):
-    """Proxy of C++ limix::CGPMixException class"""
+class CLimixException(_object):
+    """Proxy of C++ limix::CLimixException class"""
     __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, CGPMixException, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CLimixException, name, value)
     __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, CGPMixException, name)
+    __getattr__ = lambda self, name: _swig_getattr(self, CLimixException, name)
     __repr__ = _swig_repr
     def __init__(self, str="Unlabeled exception"): 
         """
-        __init__(limix::CGPMixException self, std::string str="Unlabeled exception") -> CGPMixException
+        __init__(limix::CLimixException self, std::string str="Unlabeled exception") -> CLimixException
 
         Parameters:
             str: std::string
 
-        __init__(limix::CGPMixException self) -> CGPMixException
+        __init__(limix::CLimixException self) -> CLimixException
         """
-        this = _core.new_CGPMixException(str)
+        this = _core.new_CLimixException(str)
         try: self.this.append(this)
         except: self.this = this
     def what(self):
         """
-        what(CGPMixException self) -> std::string
+        what(CLimixException self) -> std::string
 
         Parameters:
-            self: limix::CGPMixException *
+            self: limix::CLimixException *
 
         """
-        return _core.CGPMixException_what(self)
+        return _core.CLimixException_what(self)
 
-    __swig_destroy__ = _core.delete_CGPMixException
+    __swig_destroy__ = _core.delete_CLimixException
     __del__ = lambda self : None;
-CGPMixException_swigregister = _core.CGPMixException_swigregister
-CGPMixException_swigregister(CGPMixException)
+CLimixException_swigregister = _core.CLimixException_swigregister
+CLimixException_swigregister(CLimixException)
 cvar = _core.cvar
 L2pi = cvar.L2pi
 

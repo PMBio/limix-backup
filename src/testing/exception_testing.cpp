@@ -51,7 +51,7 @@ int main() {
 		lmm.process();
 		
 		}
-		catch(CGPMixException& e) {
+		catch(CLimixException& e) {
 			cout <<"Caught: Exception : "<< e.what() << endl;
 		}
 

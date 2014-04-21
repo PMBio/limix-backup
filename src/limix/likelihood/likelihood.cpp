@@ -75,12 +75,12 @@ void CLikNormalNULL::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const
 
 void CLikNormalNULL::aKgrad_param(MatrixXd* out, const muint_t row) const 
 {
-	throw CGPMixException("CLikNormalNULL has no hyperparameters!");
+	throw CLimixException("CLikNormalNULL has no hyperparameters!");
 }
     
 void CLikNormalNULL::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
-    throw CGPMixException("CLikNormalNULL has no hyperparameters!");
+    throw CLimixException("CLikNormalNULL has no hyperparameters!");
 }
 
 
@@ -132,7 +132,7 @@ void CLikNormalIso::aKgrad_param(MatrixXd* out, const muint_t row) const
 void CLikNormalIso::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
-        throw CGPMixException("Parameter index out of range.");
+        throw CLimixException("Parameter index out of range.");
     }
     (*out).setConstant(numRows,numRows,0.0);
     (*out).diagonal().setConstant(2.);
@@ -155,28 +155,28 @@ void CLikNormalSVD::setX(const CovarInput& X)
 
 void CLikNormalSVD::aK(MatrixXd* out) const 
 {
-	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
+	throw CLimixException("CLinkNormalSVD cannot be evaluated directly");
 }
 
 void CLikNormalSVD::aKdiag(VectorXd* out) const 
 {
-	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
+	throw CLimixException("CLinkNormalSVD cannot be evaluated directly");
 }
 
 void CLikNormalSVD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
-	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
+	throw CLimixException("CLinkNormalSVD cannot be evaluated directly");
 }
 
 
 void CLikNormalSVD::aKgrad_param(MatrixXd* out, const muint_t row) const 
 {
-	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
+	throw CLimixException("CLinkNormalSVD cannot be evaluated directly");
 }
     
 void CLikNormalSVD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
-	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
+	throw CLimixException("CLinkNormalSVD cannot be evaluated directly");
 }
 
 mfloat_t CLikNormalSVD::getSigmaK2()

@@ -123,7 +123,7 @@ void CTextfileGenotypeContainer::openFile()
     	in_stream = new igzstream(in_filename.c_str());
     	ext = filenameParts.at(filenameParts.size()-2);
       #else
-	throw CGPMixException("not compiled with zlib");
+	throw CLimixException("not compiled with zlib");
       #endif
     }
     else
@@ -142,7 +142,7 @@ void CTextfileGenotypeContainer::openFile()
     }
     else if (filenameParts.back() == "bz2")
     {
-    	throw CGPMixException("bz2 not supported");
+    	throw CLimixException("bz2 not supported");
     	//in_stream.push(boost::iostreams::basic_bzip2_compressor<>());
     	ext = filenameParts.at(filenameParts.size()-2);
     }
@@ -165,7 +165,7 @@ void CTextfileGenotypeContainer::openFile()
 	else if(ext=="bed")
 		this->file_format = BED;
 	else
-		throw CGPMixException("unknown file format");
+		throw CLimixException("unknown file format");
 
 	is_open = true;
 
@@ -183,7 +183,7 @@ PGenotypeBlock CTextfileGenotypeContainer::read(mint_t num_snps)
 	else if (this->file_format==BED)
 		return read_BED(num_snps);
 	else
-		throw CGPMixException("unsupported file format in read");
+		throw CLimixException("unsupported file format in read");
 }
 
 void CTextfileGenotypeContainer::read_header_GEN()
@@ -197,7 +197,7 @@ void CTextfileGenotypeContainer::read_header_GEN()
 PGenotypeBlock CTextfileGenotypeContainer::read_BED(muint_t num_snps) 
 {
 	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock());
-	throw CGPMixException("BED readder not implemented");
+	throw CLimixException("BED readder not implemented");
 	return RV;
 }
 
@@ -253,7 +253,7 @@ PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps)
 			//figure out sample size
 			num_samples = (fields.size()-5) / 3;
 		else if (num_samples!=((fields.size()-5)/3))
-			throw CGPMixException("Line while reading as inconsistent length");
+			throw CLimixException("Line while reading as inconsistent length");
 
 		//2. need to extend buffer?
 		if (i_snp>=buffer)
@@ -315,7 +315,7 @@ CMemGenotypeContainer::~CMemGenotypeContainer() {
 PGenotypeBlock CMemGenotypeContainer::read(mint_t num_snps) 
 	{
 
-	throw CGPMixException("fix block to allow reading from a position");
+	throw CLimixException("fix block to allow reading from a position");
 	PGenotypeBlock RV = this->block->read(num_snps);
 	reading_row += num_snps;
 

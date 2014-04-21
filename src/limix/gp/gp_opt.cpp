@@ -93,7 +93,7 @@ bool CGPopt::opt()
 	//3. check that they have the same shape than X
 	if ((x_min.rows()!=x_max.rows()) || (numOptParams!=(muint_t)x_max.rows()))
 	{
-			throw CGPMixException("Constraints and parameters of gp optimization have incompatible shape.");
+			throw CLimixException("Constraints and parameters of gp optimization have incompatible shape.");
 	}
 	nlopt_set_lower_bounds(optimizer, x_min.data());
 	nlopt_set_upper_bounds(optimizer, x_max.data());

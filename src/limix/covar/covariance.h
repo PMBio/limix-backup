@@ -441,7 +441,7 @@ inline void ACovarianceFunction::checkWithinDimensions(muint_t d) const
 	{
 		std::ostringstream os;
 		os << "Dimension index ("<<d<<") out of range in covariance (0.."<<getNumberDimensions()<<").";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 }
 inline void ACovarianceFunction::checkWithinParams(muint_t i) const 
@@ -450,7 +450,7 @@ inline void ACovarianceFunction::checkWithinParams(muint_t i) const
 	{
 		std::ostringstream os;
 		os << "Parameter index ("<<i<<") out of range in covariance (0.."<<getNumberParams()<<").";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 }
 
@@ -461,7 +461,7 @@ inline void ACovarianceFunction::checkXDimensions(const CovarInput& X) const
 	{
 		std::ostringstream os;
 		os << "X("<<(muint_t)X.rows()<<","<<(muint_t)X.cols()<<") column dimension missmatch (covariance: "<<this->getNumberDimensions() <<")";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 }
 inline void ACovarianceFunction::checkParamDimensions(const CovarParams& params) const 
@@ -469,7 +469,7 @@ inline void ACovarianceFunction::checkParamDimensions(const CovarParams& params)
 	if ((muint_t)(params.rows()) != this->getNumberParams()){
 		std::ostringstream os;
 		os << "Wrong number of params for covariance funtion " << this->getName() << ". numberParams = " << this->getNumberParams() << ", params.cols() = " << params.cols();
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 }
 

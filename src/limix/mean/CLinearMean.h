@@ -90,17 +90,17 @@ inline void CLinearMean::checkDimensions(const MatrixXd& weights, const MatrixXd
 	if (notIsnullweights && notIsnullFixed && (weights.rows()) != fixedEffects.cols() ){
 		std::ostringstream os;
 		os << this->getName() << ": Number of weights and fixed effects do not match. number fixed effects = " << fixedEffects.cols() << ", number weights = " << weights.rows();
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	if (notIsnullFixed && notIsnullY && (fixedEffects.rows()) != Y.rows() ){
 			std::ostringstream os;
 			os << this->getName() << ": Number of samples in fixedEffects and Y do not match. fixed effects : " << fixedEffects.rows() << ", Y = " << Y.rows();
-			throw CGPMixException(os.str());
+			throw CLimixException(os.str());
 		}
 	if ( notIsnullweights && notIsnullY && (weights.cols()) != Y.cols() ){
 			std::ostringstream os;
 			os << this->getName() << ": Number of target dimensions do not match in Y and weights. Y: " << Y.cols() << ", weights = " << weights.cols();
-			throw CGPMixException(os.str());
+			throw CLimixException(os.str());
 		}
 }
 typedef sptr<CLinearMean> PLinearMean;
