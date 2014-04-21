@@ -3028,99 +3028,100 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t swig_types[88]
 #define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_const_stringVec_t_t swig_types[89]
 #define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[90]
-#define SWIGTYPE_p_std__invalid_argument swig_types[91]
-#define SWIGTYPE_p_std__lessT_std__string_t swig_types[92]
-#define SWIGTYPE_p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t swig_types[93]
-#define SWIGTYPE_p_std__mapT_std__string_PCVoid_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_PCVoid_t_t_t swig_types[94]
-#define SWIGTYPE_p_std__mapT_std__string_stringVec_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_limix__stringVec_t_t_t swig_types[95]
-#define SWIGTYPE_p_std__shared_ptrT_MatrixXd_t swig_types[96]
-#define SWIGTYPE_p_std__shared_ptrT_bool_t swig_types[97]
-#define SWIGTYPE_p_std__shared_ptrT_bost__enable_shared_from_thisT_CGPbase_t_t swig_types[98]
-#define SWIGTYPE_p_std__shared_ptrT_limix__ACovarianceFunction_t swig_types[99]
-#define SWIGTYPE_p_std__shared_ptrT_limix__ADataTerm_t swig_types[100]
-#define SWIGTYPE_p_std__shared_ptrT_limix__AGenotypeContainer_t swig_types[101]
-#define SWIGTYPE_p_std__shared_ptrT_limix__ALMM_t swig_types[102]
-#define SWIGTYPE_p_std__shared_ptrT_limix__ALikelihood_t swig_types[103]
-#define SWIGTYPE_p_std__shared_ptrT_limix__AMultiCF_t swig_types[104]
-#define SWIGTYPE_p_std__shared_ptrT_limix__ARDataFrameT_MatrixXd_t_t swig_types[105]
-#define SWIGTYPE_p_std__shared_ptrT_limix__AVarianceTerm_t swig_types[106]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearARD_t swig_types[107]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearISODelta_t swig_types[108]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearISO_t swig_types[109]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovSqexpARD_t swig_types[110]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovarianceFunctionCacheOld_t swig_types[111]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovarianceFunctionCache_t swig_types[112]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CData_t swig_types[113]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CDiagonalCF_t swig_types[114]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CFixedCF_t swig_types[115]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CFreeFormCF_t swig_types[116]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPCholCache_t swig_types[117]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPHyperParams_t swig_types[118]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPKroneckerCache_t swig_types[119]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPLMM_t swig_types[120]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPSumCache_t swig_types[121]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPSum_t swig_types[122]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPbase_t swig_types[123]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronSumCache_t swig_types[124]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronSum_t swig_types[125]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronecker_t swig_types[126]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPopt_t swig_types[127]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPvarDecomp_t swig_types[128]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGenotypeBlock_t swig_types[129]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CHeaderMap_t swig_types[130]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CInteractLMM_t swig_types[131]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerCF_t swig_types[132]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerLMM_t swig_types[133]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerMean_t swig_types[134]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLMMCore_t swig_types[135]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLMMKroneckerCore_t swig_types[136]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLMM_t swig_types[137]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalIso_t swig_types[138]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalNULL_t swig_types[139]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalSVD_t swig_types[140]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLinCombCF_t swig_types[141]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLinearMean_t swig_types[142]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLowRankCF_t swig_types[143]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CMemGenotypeContainer_t swig_types[144]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CMultiTraitTerm_t swig_types[145]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CMultiTraitVQTL_t swig_types[146]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CNamedCache_t swig_types[147]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CParamObject_t swig_types[148]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CProductCF_t swig_types[149]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t swig_types[150]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_t swig_types[151]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CRank1diagCF_t swig_types[152]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CRankOneCF_t swig_types[153]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CSingleTraitTerm_t swig_types[154]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CSqExpCF_t swig_types[155]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CSumCF_t swig_types[156]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CSumLinear_t swig_types[157]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CTextfileGenotypeContainer_t swig_types[158]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CVarianceDecomposition_t swig_types[159]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CVqtl_t swig_types[160]
-#define SWIGTYPE_p_std__shared_ptrT_limix__FlexEigenMatrixT_Eigen__Dynamic_1_Eigen__ColMajor_t_t swig_types[161]
-#define SWIGTYPE_p_std__shared_ptrT_limix__FlexEigenMatrixT_Eigen__Dynamic_Eigen__Dynamic_Eigen__ColMajor_t_t swig_types[162]
-#define SWIGTYPE_p_std__shared_ptrT_limix__stringVec_t swig_types[163]
-#define SWIGTYPE_p_std__shared_ptrT_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t_t swig_types[164]
-#define SWIGTYPE_p_std__vectorT_MatrixXd_std__allocatorT_MatrixXd_t_t swig_types[165]
-#define SWIGTYPE_p_std__vectorT_VectorXi_std__allocatorT_VectorXi_t_t swig_types[166]
-#define SWIGTYPE_p_std__vectorT__Tp__Alloc_t swig_types[167]
-#define SWIGTYPE_p_std__vectorT_limix__CGPHyperParams_std__allocatorT_limix__CGPHyperParams_t_t swig_types[168]
-#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_bool_t_std__allocatorT_std__shared_ptrT_bool_t_t_t swig_types[169]
-#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__ACovarianceFunction_t_std__allocatorT_std__shared_ptrT_limix__ACovarianceFunction_t_t_t swig_types[170]
-#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__AVarianceTerm_t_std__allocatorT_std__shared_ptrT_limix__AVarianceTerm_t_t_t swig_types[171]
-#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__CLinearMean_t_std__allocatorT_std__shared_ptrT_limix__CLinearMean_t_t_t swig_types[172]
-#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[173]
-#define SWIGTYPE_p_stringVec swig_types[174]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[175]
-#define SWIGTYPE_p_unsigned_char swig_types[176]
-#define SWIGTYPE_p_unsigned_int swig_types[177]
-#define SWIGTYPE_p_unsigned_long swig_types[178]
-#define SWIGTYPE_p_unsigned_long_long swig_types[179]
-#define SWIGTYPE_p_unsigned_short swig_types[180]
-#define SWIGTYPE_p_value_type swig_types[181]
-static swig_type_info *swig_types[183];
-static swig_module_info swig_module = {swig_types, 182, 0, 0, 0, 0};
+#define SWIGTYPE_p_std__exception swig_types[91]
+#define SWIGTYPE_p_std__invalid_argument swig_types[92]
+#define SWIGTYPE_p_std__lessT_std__string_t swig_types[93]
+#define SWIGTYPE_p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t swig_types[94]
+#define SWIGTYPE_p_std__mapT_std__string_PCVoid_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_PCVoid_t_t_t swig_types[95]
+#define SWIGTYPE_p_std__mapT_std__string_stringVec_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_limix__stringVec_t_t_t swig_types[96]
+#define SWIGTYPE_p_std__shared_ptrT_MatrixXd_t swig_types[97]
+#define SWIGTYPE_p_std__shared_ptrT_bool_t swig_types[98]
+#define SWIGTYPE_p_std__shared_ptrT_bost__enable_shared_from_thisT_CGPbase_t_t swig_types[99]
+#define SWIGTYPE_p_std__shared_ptrT_limix__ACovarianceFunction_t swig_types[100]
+#define SWIGTYPE_p_std__shared_ptrT_limix__ADataTerm_t swig_types[101]
+#define SWIGTYPE_p_std__shared_ptrT_limix__AGenotypeContainer_t swig_types[102]
+#define SWIGTYPE_p_std__shared_ptrT_limix__ALMM_t swig_types[103]
+#define SWIGTYPE_p_std__shared_ptrT_limix__ALikelihood_t swig_types[104]
+#define SWIGTYPE_p_std__shared_ptrT_limix__AMultiCF_t swig_types[105]
+#define SWIGTYPE_p_std__shared_ptrT_limix__ARDataFrameT_MatrixXd_t_t swig_types[106]
+#define SWIGTYPE_p_std__shared_ptrT_limix__AVarianceTerm_t swig_types[107]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearARD_t swig_types[108]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearISODelta_t swig_types[109]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearISO_t swig_types[110]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovSqexpARD_t swig_types[111]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovarianceFunctionCacheOld_t swig_types[112]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovarianceFunctionCache_t swig_types[113]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CData_t swig_types[114]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CDiagonalCF_t swig_types[115]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CFixedCF_t swig_types[116]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CFreeFormCF_t swig_types[117]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPCholCache_t swig_types[118]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPHyperParams_t swig_types[119]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPKroneckerCache_t swig_types[120]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPLMM_t swig_types[121]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPSumCache_t swig_types[122]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPSum_t swig_types[123]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPbase_t swig_types[124]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronSumCache_t swig_types[125]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronSum_t swig_types[126]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronecker_t swig_types[127]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPopt_t swig_types[128]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPvarDecomp_t swig_types[129]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGenotypeBlock_t swig_types[130]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CHeaderMap_t swig_types[131]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CInteractLMM_t swig_types[132]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerCF_t swig_types[133]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerLMM_t swig_types[134]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerMean_t swig_types[135]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLMMCore_t swig_types[136]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLMMKroneckerCore_t swig_types[137]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLMM_t swig_types[138]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalIso_t swig_types[139]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalNULL_t swig_types[140]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalSVD_t swig_types[141]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLinCombCF_t swig_types[142]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLinearMean_t swig_types[143]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLowRankCF_t swig_types[144]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CMemGenotypeContainer_t swig_types[145]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CMultiTraitTerm_t swig_types[146]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CMultiTraitVQTL_t swig_types[147]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CNamedCache_t swig_types[148]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CParamObject_t swig_types[149]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CProductCF_t swig_types[150]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t swig_types[151]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_t swig_types[152]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CRank1diagCF_t swig_types[153]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CRankOneCF_t swig_types[154]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CSingleTraitTerm_t swig_types[155]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CSqExpCF_t swig_types[156]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CSumCF_t swig_types[157]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CSumLinear_t swig_types[158]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CTextfileGenotypeContainer_t swig_types[159]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CVarianceDecomposition_t swig_types[160]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CVqtl_t swig_types[161]
+#define SWIGTYPE_p_std__shared_ptrT_limix__FlexEigenMatrixT_Eigen__Dynamic_1_Eigen__ColMajor_t_t swig_types[162]
+#define SWIGTYPE_p_std__shared_ptrT_limix__FlexEigenMatrixT_Eigen__Dynamic_Eigen__Dynamic_Eigen__ColMajor_t_t swig_types[163]
+#define SWIGTYPE_p_std__shared_ptrT_limix__stringVec_t swig_types[164]
+#define SWIGTYPE_p_std__shared_ptrT_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t_t swig_types[165]
+#define SWIGTYPE_p_std__vectorT_MatrixXd_std__allocatorT_MatrixXd_t_t swig_types[166]
+#define SWIGTYPE_p_std__vectorT_VectorXi_std__allocatorT_VectorXi_t_t swig_types[167]
+#define SWIGTYPE_p_std__vectorT__Tp__Alloc_t swig_types[168]
+#define SWIGTYPE_p_std__vectorT_limix__CGPHyperParams_std__allocatorT_limix__CGPHyperParams_t_t swig_types[169]
+#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_bool_t_std__allocatorT_std__shared_ptrT_bool_t_t_t swig_types[170]
+#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__ACovarianceFunction_t_std__allocatorT_std__shared_ptrT_limix__ACovarianceFunction_t_t_t swig_types[171]
+#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__AVarianceTerm_t_std__allocatorT_std__shared_ptrT_limix__AVarianceTerm_t_t_t swig_types[172]
+#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__CLinearMean_t_std__allocatorT_std__shared_ptrT_limix__CLinearMean_t_t_t swig_types[173]
+#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[174]
+#define SWIGTYPE_p_stringVec swig_types[175]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[176]
+#define SWIGTYPE_p_unsigned_char swig_types[177]
+#define SWIGTYPE_p_unsigned_int swig_types[178]
+#define SWIGTYPE_p_unsigned_long swig_types[179]
+#define SWIGTYPE_p_unsigned_long_long swig_types[180]
+#define SWIGTYPE_p_unsigned_short swig_types[181]
+#define SWIGTYPE_p_value_type swig_types[182]
+static swig_type_info *swig_types[184];
+static swig_module_info swig_module = {swig_types, 183, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -7120,11 +7121,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_iterator(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (swig::SwigPyIterator *)std_vector_Sl_MatrixXd_Sg__iterator(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7153,11 +7156,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___nonzero__(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (bool)std_vector_Sl_MatrixXd_Sg____nonzero__((std::vector< MatrixXd > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7186,11 +7191,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___bool__(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (bool)std_vector_Sl_MatrixXd_Sg____bool__((std::vector< MatrixXd > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7219,11 +7226,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___len__(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = std_vector_Sl_MatrixXd_Sg____len__((std::vector< MatrixXd > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7258,11 +7267,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_pop(PyObject *SWIGUNUSEDPARM(self), PyObj
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7318,11 +7329,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___getslice__(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7391,11 +7404,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___setslice____SWIG_0(PyObject *SWIGUNUSED
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7452,11 +7467,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___setslice____SWIG_1(PyObject *SWIGUNUSED
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7575,11 +7592,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___delslice__(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7622,11 +7641,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___delitem____SWIG_0(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7672,11 +7693,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___getitem____SWIG_0(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7735,11 +7758,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___setitem____SWIG_0(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7786,11 +7811,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___setitem____SWIG_1(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7835,11 +7862,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___delitem____SWIG_1(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -7930,11 +7959,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___getitem____SWIG_1(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8096,11 +8127,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___setitem____SWIG_2(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8270,11 +8303,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_append(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       std_vector_Sl_MatrixXd_Sg__append(arg1,(MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8294,11 +8329,13 @@ SWIGINTERN PyObject *_wrap_new_MatrixXdVec__SWIG_0(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (std::vector< MatrixXd > *)new std::vector< MatrixXd >();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8332,11 +8369,13 @@ SWIGINTERN PyObject *_wrap_new_MatrixXdVec__SWIG_1(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (std::vector< MatrixXd > *)new std::vector< MatrixXd >((std::vector< MatrixXd > const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8367,11 +8406,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_empty(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = (bool)((std::vector< MatrixXd > const *)arg1)->empty();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8400,11 +8441,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_size(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = ((std::vector< MatrixXd > const *)arg1)->size();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8432,11 +8475,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_clear(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->clear();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8476,11 +8521,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_swap(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       (arg1)->swap(*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8509,11 +8556,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_get_allocator(PyObject *SWIGUNUSEDPARM(se
     try {
       result = ((std::vector< MatrixXd > const *)arg1)->get_allocator();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8542,11 +8591,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_begin(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = (arg1)->begin();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8576,11 +8627,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_end(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (arg1)->end();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8610,11 +8663,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_rbegin(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (arg1)->rbegin();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8644,11 +8699,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_rend(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (arg1)->rend();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8678,11 +8735,13 @@ SWIGINTERN PyObject *_wrap_new_MatrixXdVec__SWIG_2(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (std::vector< MatrixXd > *)new std::vector< MatrixXd >(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8710,11 +8769,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_pop_back(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->pop_back();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8751,11 +8812,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_resize__SWIG_0(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->resize(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8799,11 +8862,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_erase__SWIG_0(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (arg1)->erase(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -8863,11 +8928,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_erase__SWIG_1(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (arg1)->erase(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9020,11 +9087,13 @@ SWIGINTERN PyObject *_wrap_new_MatrixXdVec__SWIG_3(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (std::vector< MatrixXd > *)new std::vector< MatrixXd >(arg1,(std::vector< MatrixXd >::value_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9182,11 +9251,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_push_back(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->push_back((std::vector< MatrixXd >::value_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9215,11 +9286,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_front(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = (std::vector< MatrixXd >::value_type *) &((std::vector< MatrixXd > const *)arg1)->front();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9248,11 +9321,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_back(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (std::vector< MatrixXd >::value_type *) &((std::vector< MatrixXd > const *)arg1)->back();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9361,11 +9436,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_assign(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (arg1)->assign(arg2,(std::vector< MatrixXd >::value_type const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9474,11 +9551,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_resize__SWIG_1(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->resize(arg2,(std::vector< MatrixXd >::value_type const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9647,11 +9726,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_insert__SWIG_0(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (arg1)->insert(arg2,(std::vector< MatrixXd >::value_type const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9776,11 +9857,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_insert__SWIG_1(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->insert(arg2,arg3,(std::vector< MatrixXd >::value_type const &)*arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9879,11 +9962,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_reserve(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->reserve(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9912,11 +9997,13 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_capacity(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = ((std::vector< MatrixXd > const *)arg1)->capacity();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9944,11 +10031,13 @@ SWIGINTERN PyObject *_wrap_delete_MatrixXdVec(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       delete arg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -9986,11 +10075,13 @@ SWIGINTERN PyObject *_wrap_StringVec_iterator(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (swig::SwigPyIterator *)std_vector_Sl_std_string_Sg__iterator(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10019,11 +10110,13 @@ SWIGINTERN PyObject *_wrap_StringVec___nonzero__(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (bool)std_vector_Sl_std_string_Sg____nonzero__((std::vector< std::string > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10052,11 +10145,13 @@ SWIGINTERN PyObject *_wrap_StringVec___bool__(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (bool)std_vector_Sl_std_string_Sg____bool__((std::vector< std::string > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10085,11 +10180,13 @@ SWIGINTERN PyObject *_wrap_StringVec___len__(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = std_vector_Sl_std_string_Sg____len__((std::vector< std::string > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10124,11 +10221,13 @@ SWIGINTERN PyObject *_wrap_StringVec_pop(PyObject *SWIGUNUSEDPARM(self), PyObjec
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10184,11 +10283,13 @@ SWIGINTERN PyObject *_wrap_StringVec___getslice__(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10257,11 +10358,13 @@ SWIGINTERN PyObject *_wrap_StringVec___setslice____SWIG_0(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10318,11 +10421,13 @@ SWIGINTERN PyObject *_wrap_StringVec___setslice____SWIG_1(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10441,11 +10546,13 @@ SWIGINTERN PyObject *_wrap_StringVec___delslice__(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10488,11 +10595,13 @@ SWIGINTERN PyObject *_wrap_StringVec___delitem____SWIG_0(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10538,11 +10647,13 @@ SWIGINTERN PyObject *_wrap_StringVec___getitem____SWIG_0(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10601,11 +10712,13 @@ SWIGINTERN PyObject *_wrap_StringVec___setitem____SWIG_0(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10652,11 +10765,13 @@ SWIGINTERN PyObject *_wrap_StringVec___setitem____SWIG_1(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10701,11 +10816,13 @@ SWIGINTERN PyObject *_wrap_StringVec___delitem____SWIG_1(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10796,11 +10913,13 @@ SWIGINTERN PyObject *_wrap_StringVec___getitem____SWIG_1(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -10904,11 +11023,13 @@ SWIGINTERN PyObject *_wrap_StringVec___setitem____SWIG_2(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11021,11 +11142,13 @@ SWIGINTERN PyObject *_wrap_StringVec_append(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       std_vector_Sl_std_string_Sg__append(arg1,(std::string const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11047,11 +11170,13 @@ SWIGINTERN PyObject *_wrap_new_StringVec__SWIG_0(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (std::vector< std::string > *)new std::vector< std::string >();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11085,11 +11210,13 @@ SWIGINTERN PyObject *_wrap_new_StringVec__SWIG_1(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (std::vector< std::string > *)new std::vector< std::string >((std::vector< std::string > const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11120,11 +11247,13 @@ SWIGINTERN PyObject *_wrap_StringVec_empty(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (bool)((std::vector< std::string > const *)arg1)->empty();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11153,11 +11282,13 @@ SWIGINTERN PyObject *_wrap_StringVec_size(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       result = ((std::vector< std::string > const *)arg1)->size();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11185,11 +11316,13 @@ SWIGINTERN PyObject *_wrap_StringVec_clear(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       (arg1)->clear();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11229,11 +11362,13 @@ SWIGINTERN PyObject *_wrap_StringVec_swap(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       (arg1)->swap(*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11262,11 +11397,13 @@ SWIGINTERN PyObject *_wrap_StringVec_get_allocator(PyObject *SWIGUNUSEDPARM(self
     try {
       result = ((std::vector< std::string > const *)arg1)->get_allocator();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11295,11 +11432,13 @@ SWIGINTERN PyObject *_wrap_StringVec_begin(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (arg1)->begin();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11329,11 +11468,13 @@ SWIGINTERN PyObject *_wrap_StringVec_end(PyObject *SWIGUNUSEDPARM(self), PyObjec
     try {
       result = (arg1)->end();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11363,11 +11504,13 @@ SWIGINTERN PyObject *_wrap_StringVec_rbegin(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (arg1)->rbegin();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11397,11 +11540,13 @@ SWIGINTERN PyObject *_wrap_StringVec_rend(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       result = (arg1)->rend();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11431,11 +11576,13 @@ SWIGINTERN PyObject *_wrap_new_StringVec__SWIG_2(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (std::vector< std::string > *)new std::vector< std::string >(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11463,11 +11610,13 @@ SWIGINTERN PyObject *_wrap_StringVec_pop_back(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (arg1)->pop_back();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11504,11 +11653,13 @@ SWIGINTERN PyObject *_wrap_StringVec_resize__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
     try {
       (arg1)->resize(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11552,11 +11703,13 @@ SWIGINTERN PyObject *_wrap_StringVec_erase__SWIG_0(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (arg1)->erase(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11616,11 +11769,13 @@ SWIGINTERN PyObject *_wrap_StringVec_erase__SWIG_1(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (arg1)->erase(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11715,11 +11870,13 @@ SWIGINTERN PyObject *_wrap_new_StringVec__SWIG_3(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (std::vector< std::string > *)new std::vector< std::string >(arg1,(std::vector< std::string >::value_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11820,11 +11977,13 @@ SWIGINTERN PyObject *_wrap_StringVec_push_back(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->push_back((std::vector< std::string >::value_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11855,11 +12014,13 @@ SWIGINTERN PyObject *_wrap_StringVec_front(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (std::vector< std::string >::value_type *) &((std::vector< std::string > const *)arg1)->front();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11888,11 +12049,13 @@ SWIGINTERN PyObject *_wrap_StringVec_back(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       result = (std::vector< std::string >::value_type *) &((std::vector< std::string > const *)arg1)->back();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -11943,11 +12106,13 @@ SWIGINTERN PyObject *_wrap_StringVec_assign(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       (arg1)->assign(arg2,(std::vector< std::string >::value_type const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12000,11 +12165,13 @@ SWIGINTERN PyObject *_wrap_StringVec_resize__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
     try {
       (arg1)->resize(arg2,(std::vector< std::string >::value_type const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12116,11 +12283,13 @@ SWIGINTERN PyObject *_wrap_StringVec_insert__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (arg1)->insert(arg2,(std::vector< std::string >::value_type const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12189,11 +12358,13 @@ SWIGINTERN PyObject *_wrap_StringVec_insert__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
     try {
       (arg1)->insert(arg2,arg3,(std::vector< std::string >::value_type const &)*arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12292,11 +12463,13 @@ SWIGINTERN PyObject *_wrap_StringVec_reserve(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->reserve(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12325,11 +12498,13 @@ SWIGINTERN PyObject *_wrap_StringVec_capacity(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = ((std::vector< std::string > const *)arg1)->capacity();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12357,11 +12532,13 @@ SWIGINTERN PyObject *_wrap_delete_StringVec(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       delete arg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12400,11 +12577,13 @@ SWIGINTERN PyObject *_wrap_new_StringMatrixMap__SWIG_0(PyObject *SWIGUNUSEDPARM(
     try {
       result = (std::map< std::string,MatrixXd > *)new std::map< std::string,MatrixXd >((std::less< std::string > const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12450,11 +12629,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_iterator(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (swig::SwigPyIterator *)std_map_Sl_std_string_Sc_MatrixXd_Sg__iterator(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12495,11 +12676,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___nonzero__(PyObject *SWIGUNUSEDPARM(
     try {
       result = (bool)std_map_Sl_std_string_Sc_MatrixXd_Sg____nonzero__((std::map< std::string,MatrixXd > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12540,11 +12723,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___bool__(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (bool)std_map_Sl_std_string_Sc_MatrixXd_Sg____bool__((std::map< std::string,MatrixXd > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12585,11 +12770,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___len__(PyObject *SWIGUNUSEDPARM(self
     try {
       result = std_map_Sl_std_string_Sc_MatrixXd_Sg____len__((std::map< std::string,MatrixXd > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12650,11 +12837,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___getitem__(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12716,11 +12905,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___delitem__(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12777,11 +12968,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_has_key(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (bool)std_map_Sl_std_string_Sc_MatrixXd_Sg__has_key((std::map< std::string,MatrixXd > const *)arg1,(std::string const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12824,11 +13017,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_keys(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_MatrixXd_Sg__keys(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12869,11 +13064,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_values(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_MatrixXd_Sg__values(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12914,11 +13111,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_items(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_MatrixXd_Sg__items(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -12973,11 +13172,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___contains__(PyObject *SWIGUNUSEDPARM
     try {
       result = (bool)std_map_Sl_std_string_Sc_MatrixXd_Sg____contains__(arg1,(std::string const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13022,11 +13223,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_key_iterator(PyObject *SWIGUNUSEDPARM
     try {
       result = (swig::SwigPyIterator *)std_map_Sl_std_string_Sc_MatrixXd_Sg__key_iterator(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13069,11 +13272,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_value_iterator(PyObject *SWIGUNUSEDPA
     try {
       result = (swig::SwigPyIterator *)std_map_Sl_std_string_Sc_MatrixXd_Sg__value_iterator(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13127,11 +13332,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___setitem____SWIG_0(PyObject *SWIGUNU
     try {
       std_map_Sl_std_string_Sc_MatrixXd_Sg____setitem____SWIG_0(arg1,(std::string const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13265,11 +13472,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___setitem____SWIG_1(PyObject *SWIGUNU
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13361,11 +13570,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_asdict(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_MatrixXd_Sg__asdict(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13385,11 +13596,13 @@ SWIGINTERN PyObject *_wrap_new_StringMatrixMap__SWIG_1(PyObject *SWIGUNUSEDPARM(
     try {
       result = (std::map< std::string,MatrixXd > *)new std::map< std::string,MatrixXd >();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13426,11 +13639,13 @@ SWIGINTERN PyObject *_wrap_new_StringMatrixMap__SWIG_2(PyObject *SWIGUNUSEDPARM(
     try {
       result = (std::map< std::string,MatrixXd > *)new std::map< std::string,MatrixXd >((std::map< std::string,MatrixXd > const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13516,11 +13731,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_empty(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (bool)((std::map< std::string,MatrixXd > const *)arg1)->empty();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13561,11 +13778,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_size(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = ((std::map< std::string,MatrixXd > const *)arg1)->size();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13605,11 +13824,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_clear(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->clear();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13671,11 +13892,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_swap(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->swap(*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13716,11 +13939,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_get_allocator(PyObject *SWIGUNUSEDPAR
     try {
       result = ((std::map< std::string,MatrixXd > const *)arg1)->get_allocator();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13761,11 +13986,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_begin(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (arg1)->begin();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13807,11 +14034,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_end(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (arg1)->end();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13853,11 +14082,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_rbegin(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (arg1)->rbegin();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13899,11 +14130,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_rend(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (arg1)->rend();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -13959,11 +14192,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_erase__SWIG_0(PyObject *SWIGUNUSEDPAR
     try {
       result = (arg1)->erase((std::map< std::string,MatrixXd >::key_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14020,11 +14255,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_count(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = ((std::map< std::string,MatrixXd > const *)arg1)->count((std::map< std::string,MatrixXd >::key_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14081,11 +14318,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_erase__SWIG_1(PyObject *SWIGUNUSEDPAR
     try {
       (arg1)->erase(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14155,11 +14394,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_erase__SWIG_2(PyObject *SWIGUNUSEDPAR
     try {
       (arg1)->erase(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14278,11 +14519,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_find(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (arg1)->find((std::map< std::string,MatrixXd >::key_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14340,11 +14583,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_lower_bound(PyObject *SWIGUNUSEDPARM(
     try {
       result = (arg1)->lower_bound((std::map< std::string,MatrixXd >::key_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14402,11 +14647,13 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_upper_bound(PyObject *SWIGUNUSEDPARM(
     try {
       result = (arg1)->upper_bound((std::map< std::string,MatrixXd >::key_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14449,11 +14696,13 @@ SWIGINTERN PyObject *_wrap_delete_StringMatrixMap(PyObject *SWIGUNUSEDPARM(self)
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14491,11 +14740,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_iterator(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (swig::SwigPyIterator *)std_vector_Sl_VectorXi_Sg__iterator(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14524,11 +14775,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___nonzero__(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (bool)std_vector_Sl_VectorXi_Sg____nonzero__((std::vector< VectorXi > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14557,11 +14810,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___bool__(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (bool)std_vector_Sl_VectorXi_Sg____bool__((std::vector< VectorXi > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14590,11 +14845,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___len__(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = std_vector_Sl_VectorXi_Sg____len__((std::vector< VectorXi > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14629,11 +14886,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_pop(PyObject *SWIGUNUSEDPARM(self), PyObj
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14689,11 +14948,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___getslice__(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14762,11 +15023,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___setslice____SWIG_0(PyObject *SWIGUNUSED
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14823,11 +15086,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___setslice____SWIG_1(PyObject *SWIGUNUSED
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14946,11 +15211,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___delslice__(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -14993,11 +15260,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___delitem____SWIG_0(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15043,11 +15312,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___getitem____SWIG_0(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15106,11 +15377,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___setitem____SWIG_0(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15157,11 +15430,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___setitem____SWIG_1(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15206,11 +15481,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___delitem____SWIG_1(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15301,11 +15578,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___getitem____SWIG_1(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15467,11 +15746,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___setitem____SWIG_2(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15640,11 +15921,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_append(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       std_vector_Sl_VectorXi_Sg__append(arg1,(VectorXi const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15664,11 +15947,13 @@ SWIGINTERN PyObject *_wrap_new_VectorXiVec__SWIG_0(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (std::vector< VectorXi > *)new std::vector< VectorXi >();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15702,11 +15987,13 @@ SWIGINTERN PyObject *_wrap_new_VectorXiVec__SWIG_1(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (std::vector< VectorXi > *)new std::vector< VectorXi >((std::vector< VectorXi > const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15737,11 +16024,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_empty(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = (bool)((std::vector< VectorXi > const *)arg1)->empty();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15770,11 +16059,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_size(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = ((std::vector< VectorXi > const *)arg1)->size();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15802,11 +16093,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_clear(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->clear();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15846,11 +16139,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_swap(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       (arg1)->swap(*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15879,11 +16174,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_get_allocator(PyObject *SWIGUNUSEDPARM(se
     try {
       result = ((std::vector< VectorXi > const *)arg1)->get_allocator();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15912,11 +16209,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_begin(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = (arg1)->begin();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15946,11 +16245,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_end(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (arg1)->end();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -15980,11 +16281,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_rbegin(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (arg1)->rbegin();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16014,11 +16317,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_rend(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (arg1)->rend();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16048,11 +16353,13 @@ SWIGINTERN PyObject *_wrap_new_VectorXiVec__SWIG_2(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (std::vector< VectorXi > *)new std::vector< VectorXi >(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16080,11 +16387,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_pop_back(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->pop_back();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16121,11 +16430,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_resize__SWIG_0(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->resize(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16169,11 +16480,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_erase__SWIG_0(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (arg1)->erase(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16233,11 +16546,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_erase__SWIG_1(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (arg1)->erase(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16390,11 +16705,13 @@ SWIGINTERN PyObject *_wrap_new_VectorXiVec__SWIG_3(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (std::vector< VectorXi > *)new std::vector< VectorXi >(arg1,(std::vector< VectorXi >::value_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16551,11 +16868,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_push_back(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->push_back((std::vector< VectorXi >::value_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16584,11 +16903,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_front(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = (std::vector< VectorXi >::value_type *) &((std::vector< VectorXi > const *)arg1)->front();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16617,11 +16938,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_back(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (std::vector< VectorXi >::value_type *) &((std::vector< VectorXi > const *)arg1)->back();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16730,11 +17053,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_assign(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (arg1)->assign(arg2,(std::vector< VectorXi >::value_type const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -16843,11 +17168,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_resize__SWIG_1(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->resize(arg2,(std::vector< VectorXi >::value_type const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17015,11 +17342,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_insert__SWIG_0(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (arg1)->insert(arg2,(std::vector< VectorXi >::value_type const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17144,11 +17473,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_insert__SWIG_1(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->insert(arg2,arg3,(std::vector< VectorXi >::value_type const &)*arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17245,11 +17576,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_reserve(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->reserve(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17278,11 +17611,13 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_capacity(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = ((std::vector< VectorXi > const *)arg1)->capacity();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17310,11 +17645,13 @@ SWIGINTERN PyObject *_wrap_delete_VectorXiVec(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       delete arg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17353,11 +17690,13 @@ SWIGINTERN PyObject *_wrap_new_StringStringVecMap__SWIG_0(PyObject *SWIGUNUSEDPA
     try {
       result = (std::map< std::string,stringVec > *)new std::map< std::string,stringVec >((std::less< std::string > const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17388,11 +17727,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_iterator(PyObject *SWIGUNUSEDPARM(
     try {
       result = (swig::SwigPyIterator *)std_map_Sl_std_string_Sc_stringVec_Sg__iterator(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17421,11 +17762,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap___nonzero__(PyObject *SWIGUNUSEDPA
     try {
       result = (bool)std_map_Sl_std_string_Sc_stringVec_Sg____nonzero__((std::map< std::string,stringVec > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17454,11 +17797,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap___bool__(PyObject *SWIGUNUSEDPARM(
     try {
       result = (bool)std_map_Sl_std_string_Sc_stringVec_Sg____bool__((std::map< std::string,stringVec > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17487,11 +17832,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap___len__(PyObject *SWIGUNUSEDPARM(s
     try {
       result = std_map_Sl_std_string_Sc_stringVec_Sg____len__((std::map< std::string,stringVec > const *)arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17540,11 +17887,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap___getitem__(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17594,11 +17943,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap___delitem__(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17643,11 +17994,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_has_key(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (bool)std_map_Sl_std_string_Sc_stringVec_Sg__has_key((std::map< std::string,stringVec > const *)arg1,(std::string const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17678,11 +18031,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_keys(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_stringVec_Sg__keys(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17711,11 +18066,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_values(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_stringVec_Sg__values(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17744,11 +18101,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_items(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_stringVec_Sg__items(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17791,11 +18150,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap___contains__(PyObject *SWIGUNUSEDP
     try {
       result = (bool)std_map_Sl_std_string_Sc_stringVec_Sg____contains__(arg1,(std::string const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17828,11 +18189,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_key_iterator(PyObject *SWIGUNUSEDP
     try {
       result = (swig::SwigPyIterator *)std_map_Sl_std_string_Sc_stringVec_Sg__key_iterator(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17863,11 +18226,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_value_iterator(PyObject *SWIGUNUSE
     try {
       result = (swig::SwigPyIterator *)std_map_Sl_std_string_Sc_stringVec_Sg__value_iterator(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17909,11 +18274,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap___setitem____SWIG_0(PyObject *SWIG
     try {
       std_map_Sl_std_string_Sc_stringVec_Sg____setitem____SWIG_0(arg1,(std::string const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -17975,11 +18342,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap___setitem____SWIG_1(PyObject *SWIG
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18060,11 +18429,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_asdict(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_stringVec_Sg__asdict(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18084,11 +18455,13 @@ SWIGINTERN PyObject *_wrap_new_StringStringVecMap__SWIG_1(PyObject *SWIGUNUSEDPA
     try {
       result = (std::map< std::string,stringVec > *)new std::map< std::string,stringVec >();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18120,11 +18493,13 @@ SWIGINTERN PyObject *_wrap_new_StringStringVecMap__SWIG_2(PyObject *SWIGUNUSEDPA
     try {
       result = (std::map< std::string,stringVec > *)new std::map< std::string,stringVec >((std::map< std::string,stringVec > const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18193,11 +18568,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_empty(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (bool)((std::map< std::string,stringVec > const *)arg1)->empty();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18226,11 +18603,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_size(PyObject *SWIGUNUSEDPARM(self
     try {
       result = ((std::map< std::string,stringVec > const *)arg1)->size();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18258,11 +18637,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_clear(PyObject *SWIGUNUSEDPARM(sel
     try {
       (arg1)->clear();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18302,11 +18683,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_swap(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->swap(*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18335,11 +18718,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_get_allocator(PyObject *SWIGUNUSED
     try {
       result = ((std::map< std::string,stringVec > const *)arg1)->get_allocator();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18368,11 +18753,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_begin(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (arg1)->begin();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18402,11 +18789,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_end(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (arg1)->end();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18436,11 +18825,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_rbegin(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (arg1)->rbegin();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18470,11 +18861,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_rend(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (arg1)->rend();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18518,11 +18911,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_erase__SWIG_0(PyObject *SWIGUNUSED
     try {
       result = (arg1)->erase((std::map< std::string,stringVec >::key_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18567,11 +18962,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_count(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = ((std::map< std::string,stringVec > const *)arg1)->count((std::map< std::string,stringVec >::key_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18616,11 +19013,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_erase__SWIG_1(PyObject *SWIGUNUSED
     try {
       (arg1)->erase(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18678,11 +19077,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_erase__SWIG_2(PyObject *SWIGUNUSED
     try {
       (arg1)->erase(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18792,11 +19193,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_find(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (arg1)->find((std::map< std::string,stringVec >::key_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18842,11 +19245,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_lower_bound(PyObject *SWIGUNUSEDPA
     try {
       result = (arg1)->lower_bound((std::map< std::string,stringVec >::key_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18892,11 +19297,13 @@ SWIGINTERN PyObject *_wrap_StringStringVecMap_upper_bound(PyObject *SWIGUNUSEDPA
     try {
       result = (arg1)->upper_bound((std::map< std::string,stringVec >::key_type const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18927,11 +19334,13 @@ SWIGINTERN PyObject *_wrap_delete_StringStringVecMap(PyObject *SWIGUNUSEDPARM(se
     try {
       delete arg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -18981,11 +19390,13 @@ SWIGINTERN PyObject *_wrap_isnan(PyObject *SWIGUNUSEDPARM(self), PyObject *args)
     try {
       result = (bool)limix::isnan(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19014,11 +19425,13 @@ SWIGINTERN PyObject *_wrap_isinf(PyObject *SWIGUNUSEDPARM(self), PyObject *args)
     try {
       result = (bool)limix::isinf(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19047,11 +19460,13 @@ SWIGINTERN PyObject *_wrap_exp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
     try {
       result = (limix::mfloat_t)limix::exp(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19080,11 +19495,13 @@ SWIGINTERN PyObject *_wrap_sqrt(PyObject *SWIGUNUSEDPARM(self), PyObject *args) 
     try {
       result = (limix::mfloat_t)limix::sqrt(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19113,11 +19530,13 @@ SWIGINTERN PyObject *_wrap_log(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
     try {
       result = (limix::mfloat_t)limix::log(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19146,11 +19565,13 @@ SWIGINTERN PyObject *_wrap_inverse(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
     try {
       result = (limix::mfloat_t)limix::inverse(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19181,11 +19602,13 @@ SWIGINTERN PyObject *_wrap_new_CGPMixException__SWIG_0(PyObject *SWIGUNUSEDPARM(
     try {
       result = (limix::CGPMixException *)new limix::CGPMixException(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19205,11 +19628,13 @@ SWIGINTERN PyObject *_wrap_new_CGPMixException__SWIG_1(PyObject *SWIGUNUSEDPARM(
     try {
       result = (limix::CGPMixException *)new limix::CGPMixException();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19269,11 +19694,13 @@ SWIGINTERN PyObject *_wrap_CGPMixException_what(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (arg1)->what();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19301,11 +19728,13 @@ SWIGINTERN PyObject *_wrap_delete_CGPMixException(PyObject *SWIGUNUSEDPARM(self)
     try {
       delete arg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19332,11 +19761,13 @@ SWIGINTERN PyObject *_wrap_new_CParamObject(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (limix::CParamObject *)new limix::CParamObject();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19396,11 +19827,13 @@ SWIGINTERN PyObject *_wrap_CParamObject_addSyncParent(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->addSyncParent(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19457,11 +19890,13 @@ SWIGINTERN PyObject *_wrap_CParamObject_addSyncChild(PyObject *SWIGUNUSEDPARM(se
     try {
       (arg1)->addSyncChild(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19518,11 +19953,13 @@ SWIGINTERN PyObject *_wrap_CParamObject_delSyncParent(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->delSyncParent(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19579,11 +20016,13 @@ SWIGINTERN PyObject *_wrap_CParamObject_delSyncChild(PyObject *SWIGUNUSEDPARM(se
     try {
       (arg1)->delSyncChild(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19632,11 +20071,13 @@ SWIGINTERN PyObject *_wrap_CParamObject_propagateSync__SWIG_0(PyObject *SWIGUNUS
     try {
       (arg1)->propagateSync(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19676,11 +20117,13 @@ SWIGINTERN PyObject *_wrap_CParamObject_propagateSync__SWIG_1(PyObject *SWIGUNUS
     try {
       (arg1)->propagateSync();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19762,11 +20205,13 @@ SWIGINTERN PyObject *_wrap_CParamObject_isInSync(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (bool)(arg1)->isInSync();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19815,11 +20260,13 @@ SWIGINTERN PyObject *_wrap_CParamObject_setSync__SWIG_0(PyObject *SWIGUNUSEDPARM
     try {
       (arg1)->setSync(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19859,11 +20306,13 @@ SWIGINTERN PyObject *_wrap_CParamObject_setSync__SWIG_1(PyObject *SWIGUNUSEDPARM
     try {
       (arg1)->setSync();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19944,11 +20393,13 @@ SWIGINTERN PyObject *_wrap_delete_CParamObject(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -19995,11 +20446,13 @@ SWIGINTERN PyObject *_wrap_delete_ACovarianceFunction(PyObject *SWIGUNUSEDPARM(s
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -20040,11 +20493,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getName(PyObject *SWIGUNUSEDPARM(
     try {
       result = ((limix::ACovarianceFunction const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -20156,11 +20611,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setParams(PyObject *SWIGUNUSEDPAR
     try {
       (arg1)->setParams((limix::CovarParams const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -20206,11 +20663,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getParams(PyObject *SWIGUNUSEDPAR
     try {
       ((limix::ACovarianceFunction const *)arg1)->agetParams(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -20298,11 +20757,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getParamBounds0(PyObject *SWIGUNU
     try {
       ((limix::ACovarianceFunction const *)arg1)->agetParamBounds0(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -20426,11 +20887,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getParamBounds(PyObject *SWIGUNUS
     try {
       ((limix::ACovarianceFunction const *)arg1)->agetParamBounds(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -20692,11 +21155,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setParamBounds(PyObject *SWIGUNUS
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -20742,11 +21207,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getParamMask(PyObject *SWIGUNUSED
     try {
       ((limix::ACovarianceFunction const *)arg1)->agetParamMask(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -20894,11 +21361,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setParamMask(PyObject *SWIGUNUSED
     try {
       (arg1)->setParamMask((limix::CovarParams const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21016,11 +21485,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setX(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21147,11 +21618,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setXcol(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21203,11 +21676,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getX(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21267,11 +21742,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getDimX(PyObject *SWIGUNUSEDPARM(
     try {
       result = (limix::muint_t)((limix::ACovarianceFunction const *)arg1)->getDimX();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21312,11 +21789,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getNumberParams(PyObject *SWIGUNU
     try {
       result = (limix::muint_t)((limix::ACovarianceFunction const *)arg1)->getNumberParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21357,11 +21836,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getNumberDimensions(PyObject *SWI
     try {
       result = (limix::muint_t)((limix::ACovarianceFunction const *)arg1)->getNumberDimensions();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21410,11 +21891,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setNumberDimensions(PyObject *SWI
     try {
       (arg1)->setNumberDimensions(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21461,11 +21944,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kdim(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21517,11 +22002,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_K(PyObject *SWIGUNUSEDPARM(self),
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21592,11 +22079,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kdiag(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21693,11 +22182,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kgrad_X(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21840,11 +22331,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kcross(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -21987,11 +22480,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kcross_diag(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -22088,11 +22583,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kgrad_param(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -22181,11 +22678,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Khess_param(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -22337,11 +22836,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kcross_grad_X(PyObject *SWIGUNUSE
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -22421,11 +22922,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kdiag_grad_X(PyObject *SWIGUNUSED
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -22521,11 +23024,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_theta__SWI
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_theta(*arg1,arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -22576,11 +23081,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_theta__SWI
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_theta(*arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -22622,11 +23129,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_theta__SWI
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_theta(*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -22758,11 +23267,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_x__SWIG_0(
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_x(*arg1,arg2,arg3,arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -22822,11 +23333,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_x__SWIG_1(
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_x(*arg1,arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -22877,11 +23390,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_x__SWIG_2(
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_x(*arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -22923,11 +23438,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_x__SWIG_3(
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_x(*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23087,11 +23604,13 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Khess_param_num(PyObject *SWIGUNU
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23137,11 +23656,13 @@ SWIGINTERN PyObject *_wrap_new_CCovarianceFunctionCacheOld__SWIG_0(PyObject *SWI
     try {
       result = (limix::CCovarianceFunctionCacheOld *)new limix::CCovarianceFunctionCacheOld();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23177,11 +23698,13 @@ SWIGINTERN PyObject *_wrap_new_CCovarianceFunctionCacheOld__SWIG_1(PyObject *SWI
     try {
       result = (limix::CCovarianceFunctionCacheOld *)new limix::CCovarianceFunctionCacheOld(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23255,11 +23778,13 @@ SWIGINTERN PyObject *_wrap_delete_CCovarianceFunctionCacheOld(PyObject *SWIGUNUS
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23312,11 +23837,13 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_setCovar(PyObject *SWIGUN
     try {
       (arg1)->setCovar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23373,11 +23900,13 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_addSyncChild(PyObject *SW
     try {
       (arg1)->addSyncChild(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23434,11 +23963,13 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_delSyncChild(PyObject *SW
     try {
       (arg1)->delSyncChild(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23479,11 +24010,13 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_getCovar(PyObject *SWIGUN
     try {
       result = (arg1)->getCovar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23527,11 +24060,13 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_rgetK(PyObject *SWIGUNUSE
     try {
       result = (MatrixXd *) &(arg1)->rgetK();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23572,11 +24107,13 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_rgetUK(PyObject *SWIGUNUS
     try {
       result = (MatrixXd *) &(arg1)->rgetUK();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23617,11 +24154,13 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_rgetSK(PyObject *SWIGUNUS
     try {
       result = (VectorXd *) &(arg1)->rgetSK();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23662,11 +24201,13 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_rgetCholK(PyObject *SWIGU
     try {
       result = (MatrixXdChol *) &(arg1)->rgetCholK();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23693,11 +24234,13 @@ SWIGINTERN PyObject *_wrap_new_CNamedCache(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (limix::CNamedCache *)new limix::CNamedCache();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23740,11 +24283,13 @@ SWIGINTERN PyObject *_wrap_delete_CNamedCache(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23812,11 +24357,13 @@ SWIGINTERN PyObject *_wrap_CNamedCache_set(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       (arg1)->set(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23871,11 +24418,13 @@ SWIGINTERN PyObject *_wrap_CNamedCache_get(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (arg1)->get((std::string const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23913,11 +24462,13 @@ SWIGINTERN PyObject *_wrap_new_CCovLinearISO__SWIG_0(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::CCovLinearISO *)new limix::CCovLinearISO(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -23940,11 +24491,13 @@ SWIGINTERN PyObject *_wrap_new_CCovLinearISO__SWIG_1(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::CCovLinearISO *)new limix::CCovLinearISO();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -24019,11 +24572,13 @@ SWIGINTERN PyObject *_wrap_delete_CCovLinearISO(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -24147,11 +24702,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Kcross(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -24294,11 +24851,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Kcross_diag(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -24395,11 +24954,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Kgrad_param(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -24488,11 +25049,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Khess_param(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -24644,11 +25207,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -24728,11 +25293,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -24809,11 +25376,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_getName(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = ((limix::CCovLinearISO const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -24849,11 +25418,13 @@ SWIGINTERN PyObject *_wrap_new_CCovLinearARD__SWIG_0(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::CCovLinearARD *)new limix::CCovLinearARD(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -24876,11 +25447,13 @@ SWIGINTERN PyObject *_wrap_new_CCovLinearARD__SWIG_1(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::CCovLinearARD *)new limix::CCovLinearARD();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -24955,11 +25528,13 @@ SWIGINTERN PyObject *_wrap_delete_CCovLinearARD(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -25008,11 +25583,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_setNumberDimensions(PyObject *SWIGUNUSE
     try {
       (arg1)->setNumberDimensions(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -25136,11 +25713,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Kcross(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -25283,11 +25862,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Kcross_diag(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -25384,11 +25965,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Kgrad_param(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -25477,11 +26060,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Khess_param(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -25633,11 +26218,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -25717,11 +26304,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -25798,11 +26387,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_getName(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = ((limix::CCovLinearARD const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -25849,11 +26440,13 @@ SWIGINTERN PyObject *_wrap_delete_CCovLinearISODelta(PyObject *SWIGUNUSEDPARM(se
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -25977,11 +26570,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISODelta_Kcross(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -26124,11 +26719,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISODelta_Kcross_diag(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -26225,11 +26822,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISODelta_Kgrad_param(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -26318,11 +26917,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISODelta_Khess_param(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -26382,11 +26983,13 @@ SWIGINTERN PyObject *_wrap_CCovLinearISODelta_getName(PyObject *SWIGUNUSEDPARM(s
     try {
       result = ((limix::CCovLinearISODelta const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -26422,11 +27025,13 @@ SWIGINTERN PyObject *_wrap_new_CFreeFormCF(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (limix::CFreeFormCF *)new limix::CFreeFormCF(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -26469,11 +27074,13 @@ SWIGINTERN PyObject *_wrap_delete_CFreeFormCF(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -26591,11 +27198,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_setX(PyObject *SWIGUNUSEDPARM(self), PyOb
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -26722,11 +27331,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_setXcol(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -26850,11 +27461,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -27023,11 +27636,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -27107,11 +27722,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -27194,11 +27811,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyOb
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -27244,11 +27863,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_agetScales(PyObject *SWIGUNUSEDPARM(self)
     try {
       (arg1)->agetScales(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -27402,11 +28023,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_setParamsCovariance(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -27530,11 +28153,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kcross(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -27614,11 +28239,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -27707,11 +28334,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Khess_param(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -27776,11 +28405,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(s
     try {
       ((limix::CFreeFormCF const *)arg1)->agetParamMask0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -27857,11 +28488,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_getName(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = ((limix::CFreeFormCF const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -27979,11 +28612,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_setParamsVarCorr(PyObject *SWIGUNUSEDPARM
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -28029,11 +28664,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_agetL0(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       ((limix::CFreeFormCF const *)arg1)->agetL0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -28113,11 +28750,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_agetL0grad_param(PyObject *SWIGUNUSEDPARM
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -28182,11 +28821,13 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_getIparamDiag(PyObject *SWIGUNUSEDPARM(se
     try {
       ((limix::CFreeFormCF const *)arg1)->agetIparamDiag(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -28241,11 +28882,13 @@ SWIGINTERN PyObject *_wrap_new_CRankOneCF(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       result = (limix::CRankOneCF *)new limix::CRankOneCF(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -28288,11 +28931,13 @@ SWIGINTERN PyObject *_wrap_delete_CRankOneCF(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -28410,11 +29055,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_setX(PyObject *SWIGUNUSEDPARM(self), PyObj
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -28541,11 +29188,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_setXcol(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -28669,11 +29318,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -28842,11 +29493,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -28926,11 +29579,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -29013,11 +29668,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyObj
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -29063,11 +29720,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_agetScales(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->agetScales(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -29221,11 +29880,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_setParamsCovariance(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -29349,11 +30010,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyO
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -29433,11 +30096,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -29526,11 +30191,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Khess_param(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -29595,11 +30262,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(se
     try {
       ((limix::CRankOneCF const *)arg1)->agetParamMask0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -29676,11 +30345,13 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_getName(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = ((limix::CRankOneCF const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -29725,11 +30396,13 @@ SWIGINTERN PyObject *_wrap_new_CLowRankCF(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       result = (limix::CLowRankCF *)new limix::CLowRankCF(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -29772,11 +30445,13 @@ SWIGINTERN PyObject *_wrap_delete_CLowRankCF(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -29894,11 +30569,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_setX(PyObject *SWIGUNUSEDPARM(self), PyObj
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -30025,11 +30702,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_setXcol(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -30153,11 +30832,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -30326,11 +31007,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -30410,11 +31093,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -30497,11 +31182,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyObj
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -30547,11 +31234,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_agetScales(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->agetScales(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -30705,11 +31394,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_setParamsCovariance(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -30833,11 +31524,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyO
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -30917,11 +31610,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -31010,11 +31705,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Khess_param(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -31079,11 +31776,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(se
     try {
       ((limix::CLowRankCF const *)arg1)->agetParamMask0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -31160,11 +31859,13 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_getName(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = ((limix::CLowRankCF const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -31263,11 +31964,13 @@ SWIGINTERN PyObject *_wrap_new_CFixedCF(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       result = (limix::CFixedCF *)new limix::CFixedCF((MatrixXd const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -31310,11 +32013,13 @@ SWIGINTERN PyObject *_wrap_delete_CFixedCF(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -31360,11 +32065,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_agetScales(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->agetScales(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -31518,11 +32225,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_setParamsCovariance(PyObject *SWIGUNUSEDPARM
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -31646,11 +32355,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyObj
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -31793,11 +32504,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -31894,11 +32607,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -31987,11 +32702,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Khess_param(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -32143,11 +32860,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -32227,11 +32946,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self),
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -32319,11 +33040,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_K(PyObject *SWIGUNUSEDPARM(self), PyObject *
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -32389,11 +33112,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyObjec
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -32439,11 +33164,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(self
     try {
       ((limix::CFixedCF const *)arg1)->agetParamMask0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -32591,11 +33318,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_setK0(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       (arg1)->setK0((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -32707,11 +33436,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_setK0cross(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->setK0cross((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -32757,11 +33488,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_getK0(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       ((limix::CFixedCF const *)arg1)->agetK0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -32826,11 +33559,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_getK0cross(PyObject *SWIGUNUSEDPARM(self), P
     try {
       ((limix::CFixedCF const *)arg1)->agetK0cross(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -32961,11 +33696,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_setK0cross_diag(PyObject *SWIGUNUSEDPARM(sel
     try {
       (arg1)->setK0cross_diag((VectorXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -33011,11 +33748,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_getK0cross_diag(PyObject *SWIGUNUSEDPARM(sel
     try {
       ((limix::CFixedCF const *)arg1)->agetK0cross_diag(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -33092,11 +33831,13 @@ SWIGINTERN PyObject *_wrap_CFixedCF_getName(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = ((limix::CFixedCF const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -33132,11 +33873,13 @@ SWIGINTERN PyObject *_wrap_new_CDiagonalCF(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (limix::CDiagonalCF *)new limix::CDiagonalCF(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -33179,11 +33922,13 @@ SWIGINTERN PyObject *_wrap_delete_CDiagonalCF(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -33301,11 +34046,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_setX(PyObject *SWIGUNUSEDPARM(self), PyOb
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -33432,11 +34179,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_setXcol(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -33560,11 +34309,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -33733,11 +34484,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -33817,11 +34570,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -33903,11 +34658,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_agetScales(PyObject *SWIGUNUSEDPARM(self)
     try {
       (arg1)->agetScales(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -34061,11 +34818,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_setParamsCovariance(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -34112,11 +34871,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyOb
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -34240,11 +35001,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kcross(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -34324,11 +35087,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -34417,11 +35182,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Khess_param(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -34486,11 +35253,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(s
     try {
       ((limix::CDiagonalCF const *)arg1)->agetParamMask0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -34567,11 +35336,13 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_getName(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = ((limix::CDiagonalCF const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -34607,11 +35378,13 @@ SWIGINTERN PyObject *_wrap_new_CRank1diagCF(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (limix::CRank1diagCF *)new limix::CRank1diagCF(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -34654,11 +35427,13 @@ SWIGINTERN PyObject *_wrap_delete_CRank1diagCF(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -34776,11 +35551,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_setX(PyObject *SWIGUNUSEDPARM(self), PyO
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -34907,11 +35684,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_setXcol(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -35035,11 +35814,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -35208,11 +35989,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -35292,11 +36075,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -35378,11 +36163,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_agetScales(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->agetScales(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -35536,11 +36323,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_setParamsCovariance(PyObject *SWIGUNUSED
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -35587,11 +36376,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyO
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -35643,11 +36434,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_getRank1(PyObject *SWIGUNUSEDPARM(self),
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -35718,11 +36511,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_getDiag(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -35865,11 +36660,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kcross(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -35949,11 +36746,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -36042,11 +36841,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Khess_param(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -36111,11 +36912,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(
     try {
       ((limix::CRank1diagCF const *)arg1)->agetParamMask0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -36192,11 +36995,13 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_getName(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = ((limix::CRank1diagCF const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -36241,11 +37046,13 @@ SWIGINTERN PyObject *_wrap_new_CSqExpCF(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       result = (limix::CSqExpCF *)new limix::CSqExpCF(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -36288,11 +37095,13 @@ SWIGINTERN PyObject *_wrap_delete_CSqExpCF(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -36410,11 +37219,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_setX(PyObject *SWIGUNUSEDPARM(self), PyObjec
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -36541,11 +37352,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_setXcol(PyObject *SWIGUNUSEDPARM(self), PyOb
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -36669,11 +37482,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -36842,11 +37657,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -36926,11 +37743,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self),
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37012,11 +37831,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_agetScales(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->agetScales(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37170,11 +37991,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_setParamsCovariance(PyObject *SWIGUNUSEDPARM
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37221,11 +38044,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyObjec
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37349,11 +38174,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyObj
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37433,11 +38260,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37526,11 +38355,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Khess_param(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37595,11 +38426,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(self
     try {
       ((limix::CSqExpCF const *)arg1)->agetParamMask0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37676,11 +38509,13 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_getName(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = ((limix::CSqExpCF const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37716,11 +38551,13 @@ SWIGINTERN PyObject *_wrap_new_CCovSqexpARD__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::CCovSqexpARD *)new limix::CCovSqexpARD(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37743,11 +38580,13 @@ SWIGINTERN PyObject *_wrap_new_CCovSqexpARD__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::CCovSqexpARD *)new limix::CCovSqexpARD();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37822,11 +38661,13 @@ SWIGINTERN PyObject *_wrap_delete_CCovSqexpARD(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -37875,11 +38716,13 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_setNumberDimensions(PyObject *SWIGUNUSED
     try {
       (arg1)->setNumberDimensions(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38003,11 +38846,13 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Kcross(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38150,11 +38995,13 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Kcross_diag(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38251,11 +39098,13 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Kgrad_param(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38344,11 +39193,13 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Khess_param(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38500,11 +39351,13 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38584,11 +39437,13 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38665,11 +39520,13 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_getName(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = ((limix::CCovSqexpARD const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38716,11 +39573,13 @@ SWIGINTERN PyObject *_wrap_delete_AMultiCF(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38767,11 +39626,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyObjec
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38828,11 +39689,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_addSyncChild(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->addSyncChild(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38889,11 +39752,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_delSyncChild(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->delSyncChild(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -38952,11 +39817,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_addCovariance(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39024,11 +39891,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setCovariance(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39084,11 +39953,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getCovariance(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39138,11 +40009,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getNumberDimensions(PyObject *SWIGUNUSEDPARM
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39197,11 +40070,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setNumberDimensions(PyObject *SWIGUNUSEDPARM
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39242,11 +40117,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getNumberParams(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::muint_t)((limix::AMultiCF const *)arg1)->getNumberParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39364,11 +40241,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setX(PyObject *SWIGUNUSEDPARM(self), PyObjec
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39420,11 +40299,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getX(PyObject *SWIGUNUSEDPARM(self), PyObjec
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39570,11 +40451,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setXcol(PyObject *SWIGUNUSEDPARM(self), PyOb
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39686,11 +40569,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setParams(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (arg1)->setParams((limix::CovarParams const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39736,11 +40621,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getParams(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       ((limix::AMultiCF const *)arg1)->agetParams(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39822,11 +40709,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getParamMask(PyObject *SWIGUNUSEDPARM(self),
     try {
       ((limix::AMultiCF const *)arg1)->agetParamMask(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -39974,11 +40863,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setParamMask(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->setParamMask((limix::CovarParams const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -40030,11 +40921,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getParamBounds0(PyObject *SWIGUNUSEDPARM(sel
     try {
       ((limix::AMultiCF const *)arg1)->agetParamBounds0(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -40158,11 +41051,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getParamBounds(PyObject *SWIGUNUSEDPARM(self
     try {
       ((limix::AMultiCF const *)arg1)->agetParamBounds(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -40424,11 +41319,13 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setParamBounds(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -40467,11 +41364,13 @@ SWIGINTERN PyObject *_wrap_new_CSumCF__SWIG_0(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (limix::CSumCF *)new limix::CSumCF((limix::ACovarVec const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -40503,11 +41402,13 @@ SWIGINTERN PyObject *_wrap_new_CSumCF__SWIG_1(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (limix::CSumCF *)new limix::CSumCF(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -40530,11 +41431,13 @@ SWIGINTERN PyObject *_wrap_new_CSumCF__SWIG_2(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (limix::CSumCF *)new limix::CSumCF();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -40618,11 +41521,13 @@ SWIGINTERN PyObject *_wrap_delete_CSumCF(PyObject *SWIGUNUSEDPARM(self), PyObjec
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -40746,11 +41651,13 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyObjec
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -40893,11 +41800,13 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -40994,11 +41903,13 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41087,11 +41998,13 @@ SWIGINTERN PyObject *_wrap_CSumCF_Khess_param(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41243,11 +42156,13 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41327,11 +42242,13 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41419,11 +42336,13 @@ SWIGINTERN PyObject *_wrap_CSumCF_K(PyObject *SWIGUNUSEDPARM(self), PyObject *ar
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41494,11 +42413,13 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kdiag(PyObject *SWIGUNUSEDPARM(self), PyObject
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41595,11 +42516,13 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kgrad_X(PyObject *SWIGUNUSEDPARM(self), PyObje
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41659,11 +42582,13 @@ SWIGINTERN PyObject *_wrap_CSumCF_getName(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       result = ((limix::CSumCF const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41702,11 +42627,13 @@ SWIGINTERN PyObject *_wrap_new_CLinCombCF__SWIG_0(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (limix::CLinCombCF *)new limix::CLinCombCF((limix::ACovarVec const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41738,11 +42665,13 @@ SWIGINTERN PyObject *_wrap_new_CLinCombCF__SWIG_1(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (limix::CLinCombCF *)new limix::CLinCombCF(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41765,11 +42694,13 @@ SWIGINTERN PyObject *_wrap_new_CLinCombCF__SWIG_2(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (limix::CLinCombCF *)new limix::CLinCombCF();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41853,11 +42784,13 @@ SWIGINTERN PyObject *_wrap_delete_CLinCombCF(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -41969,11 +42902,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_setCoeff(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->setCoeff((VectorXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -42019,11 +42954,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_agetCoeff(PyObject *SWIGUNUSEDPARM(self), 
     try {
       ((limix::CLinCombCF const *)arg1)->agetCoeff(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -42183,11 +43120,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyO
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -42330,11 +43269,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -42431,11 +43372,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -42524,11 +43467,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Khess_param(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -42680,11 +43625,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -42764,11 +43711,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -42856,11 +43805,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_K(PyObject *SWIGUNUSEDPARM(self), PyObject
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -42931,11 +43882,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kdiag(PyObject *SWIGUNUSEDPARM(self), PyOb
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43032,11 +43985,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kgrad_X(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43096,11 +44051,13 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_getName(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = ((limix::CLinCombCF const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43139,11 +44096,13 @@ SWIGINTERN PyObject *_wrap_new_CProductCF__SWIG_0(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (limix::CProductCF *)new limix::CProductCF((limix::ACovarVec const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43175,11 +44134,13 @@ SWIGINTERN PyObject *_wrap_new_CProductCF__SWIG_1(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (limix::CProductCF *)new limix::CProductCF(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43202,11 +44163,13 @@ SWIGINTERN PyObject *_wrap_new_CProductCF__SWIG_2(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (limix::CProductCF *)new limix::CProductCF();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43290,11 +44253,13 @@ SWIGINTERN PyObject *_wrap_delete_CProductCF(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43418,11 +44383,13 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyO
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43565,11 +44532,13 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43666,11 +44635,13 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43759,11 +44730,13 @@ SWIGINTERN PyObject *_wrap_CProductCF_Khess_param(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43915,11 +44888,13 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -43999,11 +44974,13 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44091,11 +45068,13 @@ SWIGINTERN PyObject *_wrap_CProductCF_K(PyObject *SWIGUNUSEDPARM(self), PyObject
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44166,11 +45145,13 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kdiag(PyObject *SWIGUNUSEDPARM(self), PyOb
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44267,11 +45248,13 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kgrad_X(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44331,11 +45314,13 @@ SWIGINTERN PyObject *_wrap_CProductCF_getName(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = ((limix::CProductCF const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44362,11 +45347,13 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerCF__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::CKroneckerCF *)new limix::CKroneckerCF();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44415,11 +45402,13 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerCF__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::CKroneckerCF *)new limix::CKroneckerCF(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44497,11 +45486,13 @@ SWIGINTERN PyObject *_wrap_delete_CKroneckerCF(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44548,11 +45539,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyO
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44605,11 +45598,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setRowCovariance(PyObject *SWIGUNUSEDPAR
     try {
       (arg1)->setRowCovariance(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44662,11 +45657,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setColCovariance(PyObject *SWIGUNUSEDPAR
     try {
       (arg1)->setColCovariance(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44713,11 +45710,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_getRowCovariance(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44767,11 +45766,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_getColCovariance(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44886,11 +45887,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setKroneckerIndicator(PyObject *SWIGUNUS
     try {
       (arg1)->setKroneckerIndicator((MatrixXi const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44935,11 +45938,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_getKroneckerIndicator(PyObject *SWIGUNUS
     try {
       ((limix::CKroneckerCF const *)arg1)->getKroneckerIndicator(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -44999,11 +46004,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_isKronecker(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (bool)((limix::CKroneckerCF const *)arg1)->isKronecker();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -45121,11 +46128,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setX(PyObject *SWIGUNUSEDPARM(self), PyO
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -45177,11 +46186,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_getX(PyObject *SWIGUNUSEDPARM(self), PyO
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -45327,11 +46338,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setXcol(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -45449,11 +46462,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setXr(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -45571,11 +46586,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setXc(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -45699,11 +46716,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kcross(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -45846,11 +46865,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -45947,11 +46968,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -46040,11 +47063,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Khess_param(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -46196,11 +47221,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -46280,11 +47307,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -46372,11 +47401,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_K(PyObject *SWIGUNUSEDPARM(self), PyObje
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -46447,11 +47478,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kdiag(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -46548,11 +47581,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kgrad_X(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -46612,11 +47647,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_getName(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = ((limix::CKroneckerCF const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -46658,11 +47695,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_createKroneckerIndex(PyObject *SWIGUNUSE
     try {
       limix::CKroneckerCF::createKroneckerIndex(arg1,arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -46728,11 +47767,13 @@ SWIGINTERN PyObject *_wrap_delete_ALikelihood(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -46856,11 +47897,13 @@ SWIGINTERN PyObject *_wrap_ALikelihood_Kcross(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -47003,11 +48046,13 @@ SWIGINTERN PyObject *_wrap_ALikelihood_Kcross_diag(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -47176,11 +48221,13 @@ SWIGINTERN PyObject *_wrap_ALikelihood_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -47260,11 +48307,13 @@ SWIGINTERN PyObject *_wrap_ALikelihood_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -47327,11 +48376,13 @@ SWIGINTERN PyObject *_wrap_new_CLikNormalNULL(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (limix::CLikNormalNULL *)new limix::CLikNormalNULL();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -47374,11 +48425,13 @@ SWIGINTERN PyObject *_wrap_delete_CLikNormalNULL(PyObject *SWIGUNUSEDPARM(self),
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -47430,11 +48483,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_K(PyObject *SWIGUNUSEDPARM(self), PyOb
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -47505,11 +48560,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_Kdiag(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -47669,11 +48726,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_Kcross_diag(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -47770,11 +48829,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_Kgrad_param(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -47863,11 +48924,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_Khess_param(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48004,11 +49067,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_setX(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48049,11 +49114,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_getName(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = ((limix::CLikNormalNULL const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48080,11 +49147,13 @@ SWIGINTERN PyObject *_wrap_new_CLikNormalIso(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = (limix::CLikNormalIso *)new limix::CLikNormalIso();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48127,11 +49196,13 @@ SWIGINTERN PyObject *_wrap_delete_CLikNormalIso(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48183,11 +49254,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_K(PyObject *SWIGUNUSEDPARM(self), PyObj
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48258,11 +49331,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_Kdiag(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48422,11 +49497,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_Kcross_diag(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48523,11 +49600,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_Kgrad_param(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48616,11 +49695,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_Khess_param(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48757,11 +49838,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_setX(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48802,11 +49885,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_getName(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = ((limix::CLikNormalIso const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48833,11 +49918,13 @@ SWIGINTERN PyObject *_wrap_new_CLikNormalSVD(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = (limix::CLikNormalSVD *)new limix::CLikNormalSVD();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48880,11 +49967,13 @@ SWIGINTERN PyObject *_wrap_delete_CLikNormalSVD(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -48936,11 +50025,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_K(PyObject *SWIGUNUSEDPARM(self), PyObj
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49011,11 +50102,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_Kdiag(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49175,11 +50268,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_Kcross_diag(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49276,11 +50371,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_Kgrad_param(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49369,11 +50466,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_Khess_param(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49510,11 +50609,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_setX(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49555,11 +50656,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_getSigmaK2(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::mfloat_t)(arg1)->getSigmaK2();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49600,11 +50703,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_getDelta(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (limix::mfloat_t)(arg1)->getDelta();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49645,11 +50750,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_getSigmaK2grad(PyObject *SWIGUNUSEDPARM
     try {
       result = (limix::mfloat_t)(arg1)->getSigmaK2grad();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49690,11 +50797,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_getDeltagrad(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::mfloat_t)(arg1)->getDeltagrad();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49735,11 +50844,13 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_getName(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = ((limix::CLikNormalSVD const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49786,11 +50897,13 @@ SWIGINTERN PyObject *_wrap_delete_ADataTerm(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49902,11 +51015,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_setParams(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->setParams((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -49952,11 +51067,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_aGetParams(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->aGetParams(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50016,11 +51133,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_getParams(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (arg1)->getParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50132,11 +51251,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_setY(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       (arg1)->setY((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50177,11 +51298,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_getRowsParams(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::muint_t)(arg1)->getRowsParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50222,11 +51345,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_getColsParams(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::muint_t)(arg1)->getColsParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50272,11 +51397,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_evaluate(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (arg1)->aEvaluate(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50341,11 +51468,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_gradY(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       (arg1)->aGradY(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50416,11 +51545,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_aGradParams(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->aGradParams(arg2,(MatrixXd const *)arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50504,11 +51635,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_sumJacobianGradParams(PyObject *SWIGUNUSEDP
     try {
       (arg1)->aSumJacobianGradParams(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50573,11 +51706,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_sumLogJacobian(PyObject *SWIGUNUSEDPARM(sel
     try {
       (arg1)->aSumLogJacobian(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50637,11 +51772,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_getY(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       result = (arg1)->getY();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50754,11 +51891,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_gradParams(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (arg1)->gradParams((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50799,11 +51938,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_getName(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = ((limix::ADataTerm const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50915,11 +52056,13 @@ SWIGINTERN PyObject *_wrap_ADataTerm_checkDimensions(PyObject *SWIGUNUSEDPARM(se
     try {
       (arg1)->checkDimensions((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50946,11 +52089,13 @@ SWIGINTERN PyObject *_wrap_new_CData__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = (limix::CData *)new limix::CData();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -50985,11 +52130,13 @@ SWIGINTERN PyObject *_wrap_new_CData__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = (limix::CData *)new limix::CData(*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51064,11 +52211,13 @@ SWIGINTERN PyObject *_wrap_delete_CData(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51109,11 +52258,13 @@ SWIGINTERN PyObject *_wrap_CData_getName(PyObject *SWIGUNUSEDPARM(self), PyObjec
     try {
       result = ((limix::CData const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51154,11 +52305,13 @@ SWIGINTERN PyObject *_wrap_CData_getRowsParams(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (limix::muint_t)(arg1)->getRowsParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51199,11 +52352,13 @@ SWIGINTERN PyObject *_wrap_CData_getColsParams(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (limix::muint_t)(arg1)->getColsParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51230,11 +52385,13 @@ SWIGINTERN PyObject *_wrap_new_CLinearMean__SWIG_0(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::CLinearMean *)new limix::CLinearMean();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51266,11 +52423,13 @@ SWIGINTERN PyObject *_wrap_new_CLinearMean__SWIG_1(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::CLinearMean *)new limix::CLinearMean(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51509,11 +52668,13 @@ SWIGINTERN PyObject *_wrap_new_CLinearMean__SWIG_2(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::CLinearMean *)new limix::CLinearMean((MatrixXd const &)*arg1,(MatrixXd const &)*arg2,(MatrixXd const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51680,11 +52841,13 @@ SWIGINTERN PyObject *_wrap_new_CLinearMean__SWIG_3(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::CLinearMean *)new limix::CLinearMean((MatrixXd const &)*arg1,(MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51794,11 +52957,13 @@ SWIGINTERN PyObject *_wrap_delete_CLinearMean(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51844,11 +53009,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_agetA(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->agetA(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51908,11 +53075,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getA(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (arg1)->getA();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -51958,11 +53127,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_evaluate(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->aEvaluate(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52033,11 +53204,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_aGradParams(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->aGradParams(arg2,(MatrixXd const *)arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52187,11 +53360,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_setParams(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->setParams((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52303,11 +53478,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_setFixedEffects(PyObject *SWIGUNUSEDPARM(
     try {
       (arg1)->setFixedEffects((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52353,11 +53530,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_aGetParams(PyObject *SWIGUNUSEDPARM(self)
     try {
       (arg1)->aGetParams(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52422,11 +53601,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_aGetFixedEffects(PyObject *SWIGUNUSEDPARM
     try {
       (arg1)->aGetFixedEffects(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52491,11 +53672,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_aPredictY(PyObject *SWIGUNUSEDPARM(self),
     try {
       ((limix::CLinearMean const *)arg1)->aPredictY(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52566,11 +53749,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_aPredictYstar(PyObject *SWIGUNUSEDPARM(se
     try {
       ((limix::CLinearMean const *)arg1)->aPredictYstar(arg2,(MatrixXd const *)arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52649,11 +53834,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getRowsParams(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::muint_t)(arg1)->getRowsParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52694,11 +53881,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getColsParams(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::muint_t)(arg1)->getColsParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52739,11 +53928,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getFixedEffects(PyObject *SWIGUNUSEDPARM(
     try {
       result = (arg1)->getFixedEffects();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52784,11 +53975,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getName(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = ((limix::CLinearMean const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -52900,11 +54093,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_checkDimensions__SWIG_0(PyObject *SWIGUNU
     try {
       (arg1)->checkDimensions((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -53193,11 +54388,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_checkDimensions__SWIG_1(PyObject *SWIGUNU
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -53477,11 +54674,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_checkDimensions__SWIG_2(PyObject *SWIGUNU
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -53752,11 +54951,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_checkDimensions__SWIG_3(PyObject *SWIGUNU
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -54018,11 +55219,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_checkDimensions__SWIG_4(PyObject *SWIGUNU
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -54221,11 +55424,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_predictY__SWIG_0(PyObject *SWIGUNUSEDPARM
     try {
       result = ((limix::CLinearMean const *)arg1)->predictY();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -54338,11 +55543,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_predictY__SWIG_1(PyObject *SWIGUNUSEDPARM
     try {
       result = ((limix::CLinearMean const *)arg1)->predictY((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -54423,11 +55630,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_setWeightsOLS__SWIG_0(PyObject *SWIGUNUSE
     try {
       (arg1)->setWeightsOLS();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -54539,11 +55748,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_setWeightsOLS__SWIG_1(PyObject *SWIGUNUSE
     try {
       (arg1)->setWeightsOLS((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -54625,11 +55836,13 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getNTargets(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::muint_t)((limix::CLinearMean const *)arg1)->getNTargets();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -54656,11 +55869,13 @@ SWIGINTERN PyObject *_wrap_new_CSumLinear(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       result = (limix::CSumLinear *)new limix::CSumLinear();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -54703,11 +55918,13 @@ SWIGINTERN PyObject *_wrap_delete_CSumLinear(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -54753,11 +55970,13 @@ SWIGINTERN PyObject *_wrap_CSumLinear_aGetParams(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->aGetParams(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -54888,11 +56107,13 @@ SWIGINTERN PyObject *_wrap_CSumLinear_setParams(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->setParams((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -54938,11 +56159,13 @@ SWIGINTERN PyObject *_wrap_CSumLinear_evaluate(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->aEvaluate(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55013,11 +56236,13 @@ SWIGINTERN PyObject *_wrap_CSumLinear_aGradParams(PyObject *SWIGUNUSEDPARM(self)
     try {
       (arg1)->aGradParams(arg2,(MatrixXd const *)arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55108,11 +56333,13 @@ SWIGINTERN PyObject *_wrap_CSumLinear_appendTerm(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->appendTerm(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55162,11 +56389,13 @@ SWIGINTERN PyObject *_wrap_CSumLinear_getTerm(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (arg1)->getTerm(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55210,11 +56439,13 @@ SWIGINTERN PyObject *_wrap_CSumLinear_getNterms(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (limix::muint_t)((limix::CSumLinear const *)arg1)->getNterms();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55255,11 +56486,13 @@ SWIGINTERN PyObject *_wrap_CSumLinear_getTerms(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (limix::VecLinearMean *) &(arg1)->getTerms();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55300,11 +56533,13 @@ SWIGINTERN PyObject *_wrap_CSumLinear_getRowsParams(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::muint_t)(arg1)->getRowsParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55345,11 +56580,13 @@ SWIGINTERN PyObject *_wrap_CSumLinear_getColsParams(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::muint_t)(arg1)->getColsParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55376,11 +56613,13 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerMean__SWIG_0(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::CKroneckerMean *)new limix::CKroneckerMean();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55439,11 +56678,13 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerMean__SWIG_1(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::CKroneckerMean *)new limix::CKroneckerMean(*arg1,*arg2,*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55514,11 +56755,13 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerMean__SWIG_2(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::CKroneckerMean *)new limix::CKroneckerMean(*arg1,*arg2,*arg3,*arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55628,11 +56871,13 @@ SWIGINTERN PyObject *_wrap_delete_CKroneckerMean(PyObject *SWIGUNUSEDPARM(self),
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55744,11 +56989,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_setA(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->setA((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55794,11 +57041,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_agetA(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->agetA(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55929,11 +57178,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_setWeightsOLS__SWIG_0(PyObject *SWIGUN
     try {
       (arg1)->setWeightsOLS((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -55979,11 +57230,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_evaluate(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->aEvaluate(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56048,11 +57301,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_aPredictY(PyObject *SWIGUNUSEDPARM(sel
     try {
       ((limix::CKroneckerMean const *)arg1)->aPredictY(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56123,11 +57378,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_aGradParams(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->aGradParams(arg2,(MatrixXd const *)arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56205,11 +57462,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_setWeightsOLS__SWIG_1(PyObject *SWIGUN
     try {
       (arg1)->setWeightsOLS();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56377,11 +57636,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_checkDimensions(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56422,11 +57683,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_getName(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = ((limix::CKroneckerMean const *)arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56467,11 +57730,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_getDimFixedEffects(PyObject *SWIGUNUSE
     try {
       result = (limix::muint_t)((limix::CKroneckerMean const *)arg1)->getDimFixedEffects();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56512,11 +57777,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_getColsParams(PyObject *SWIGUNUSEDPARM
     try {
       result = (limix::muint_t)(arg1)->getColsParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56543,11 +57810,13 @@ SWIGINTERN PyObject *_wrap_new_CGPHyperParams__SWIG_0(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::CGPHyperParams *)new limix::CGPHyperParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56592,11 +57861,13 @@ SWIGINTERN PyObject *_wrap_new_CGPHyperParams__SWIG_1(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::CGPHyperParams *)new limix::CGPHyperParams((limix::CGPHyperParams const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56670,11 +57941,13 @@ SWIGINTERN PyObject *_wrap_delete_CGPHyperParams(PyObject *SWIGUNUSEDPARM(self),
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56726,11 +57999,13 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_getParamArray__SWIG_0(PyObject *SWIGUN
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56884,11 +58159,13 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_setParamArray__SWIG_0(PyObject *SWIGUN
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -56962,11 +58239,13 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_getParamArray__SWIG_1(PyObject *SWIGUN
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57182,11 +58461,13 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_setParamArray__SWIG_1(PyObject *SWIGUN
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57275,11 +58556,13 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_getNumberParams__SWIG_0(PyObject *SWIG
     try {
       result = (limix::muint_t)((limix::CGPHyperParams const *)arg1)->getNumberParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57342,11 +58625,13 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_getNumberParams__SWIG_1(PyObject *SWIG
     try {
       result = (limix::muint_t)((limix::CGPHyperParams const *)arg1)->getNumberParams((limix::CGPHyperParams const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57512,11 +58797,13 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams___setitem__(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->set((std::string const &)*arg2,(MatrixXd const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57578,11 +58865,13 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams___getitem__(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->aget(arg2,(std::string const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57644,11 +58933,13 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_getNames(PyObject *SWIGUNUSEDPARM(self
     try {
       result = ((limix::CGPHyperParams const *)arg1)->getNames();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57700,11 +58991,13 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_exists(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (bool)((limix::CGPHyperParams const *)arg1)->exists(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57745,11 +59038,13 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams___str__(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = ((limix::CGPHyperParams const *)arg1)->toString();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57797,11 +59092,13 @@ SWIGINTERN PyObject *_wrap_new_CGPCholCache(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (limix::CGPCholCache *)new limix::CGPCholCache(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57844,11 +59141,13 @@ SWIGINTERN PyObject *_wrap_delete_CGPCholCache(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57889,11 +59188,13 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_getCovar(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (arg1)->getCovar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57949,11 +59250,13 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_setCovar(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->setCovar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -57994,11 +59297,13 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_rgetKEff(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (MatrixXd *) &(arg1)->rgetKEff();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58039,11 +59344,13 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_rgetKEffChol(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (MatrixXdChol *) &(arg1)->rgetKEffChol();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58084,11 +59391,13 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_rgetKEffInv(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (MatrixXd *) &(arg1)->rgetKEffInv();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58129,11 +59438,13 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_rgetYeffective(PyObject *SWIGUNUSEDPARM(
     try {
       result = (MatrixXd *) &(arg1)->rgetYeffective();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58174,11 +59485,13 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_rgetKEffInvY(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (MatrixXd *) &(arg1)->rgetKEffInvY();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58219,11 +59532,13 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_getDKEffInv_KEffInvYYKinv(PyObject *SWIG
     try {
       result = (MatrixXd *) &(arg1)->getDKEffInv_KEffInvYYKinv();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58289,11 +59604,13 @@ SWIGINTERN PyObject *_wrap_new_CGPbase__SWIG_0(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (limix::CGPbase *)new limix::CGPbase(arg1,arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58342,11 +59659,13 @@ SWIGINTERN PyObject *_wrap_new_CGPbase__SWIG_1(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (limix::CGPbase *)new limix::CGPbase(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58382,11 +59701,13 @@ SWIGINTERN PyObject *_wrap_new_CGPbase__SWIG_2(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (limix::CGPbase *)new limix::CGPbase(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58486,11 +59807,13 @@ SWIGINTERN PyObject *_wrap_delete_CGPbase(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58542,11 +59865,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_set_data(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       (arg1)->set_data(*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58599,11 +59924,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_setCovar(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       (arg1)->setCovar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58656,11 +59983,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_setLik(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       (arg1)->setLik(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58713,11 +60042,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_setDataTerm(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->setDataTerm(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58774,11 +60105,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_setLambda(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->setLambda(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58846,11 +60179,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_setParams__SWIG_0(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -58940,11 +60275,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_setParams__SWIG_1(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -59033,11 +60370,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getParams(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = ((limix::CGPbase const *)arg1)->getParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -59158,11 +60497,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_setParamArray__SWIG_0(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -59302,11 +60643,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_setParamArray__SWIG_1(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -59400,11 +60743,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getParamArray(PyObject *SWIGUNUSEDPARM(self),
     try {
       ((limix::CGPbase const *)arg1)->agetParamArray(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -59490,11 +60835,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getParamBounds(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = ((limix::CGPbase const *)arg1)->getParamBounds(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -59538,11 +60885,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getParamMask(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = ((limix::CGPbase const *)arg1)->getParamMask();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -59591,11 +60940,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getY(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       (arg1)->agetY(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -59726,11 +61077,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_setY(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       (arg1)->setY((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -59776,11 +61129,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getX(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       ((limix::CGPbase const *)arg1)->agetX(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -59917,11 +61272,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_setX(PyObject *SWIGUNUSEDPARM(self), PyObject
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -59962,11 +61319,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getNumberSamples(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::muint_t)(arg1)->getNumberSamples();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60007,11 +61366,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getNumberDimension(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::muint_t)(arg1)->getNumberDimension();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60052,11 +61413,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getCache(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (arg1)->getCache();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60100,11 +61463,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getCovar(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (arg1)->getCovar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60148,11 +61513,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getLik(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       result = (arg1)->getLik();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60196,11 +61563,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getDataTerm(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (arg1)->getDataTerm();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60255,11 +61624,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_agetKEffInvYCache(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60325,11 +61696,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LML__SWIG_0(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60398,11 +61771,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LML__SWIG_1(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60521,11 +61896,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LML__SWIG_2(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60625,11 +62002,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad__SWIG_0(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60701,11 +62080,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad__SWIG_1(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60827,11 +62208,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad__SWIG_2(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -60939,11 +62322,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_aLMLgrad__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -61053,11 +62438,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_aLMLgrad__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -61217,11 +62604,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_aLMLgrad__SWIG_2(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -61362,11 +62751,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad_covar(PyObject *SWIGUNUSEDPARM(self),
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -61454,11 +62845,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad_lik(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -61546,11 +62939,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_aLMLgrad_X(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -61621,11 +63016,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_aLMLgrad_dataTerm(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -61713,11 +63110,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLhess(PyObject *SWIGUNUSEDPARM(self), PyObj
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -61788,11 +63187,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLhess_covar(PyObject *SWIGUNUSEDPARM(self),
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -61863,11 +63264,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLhess_lik(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -61938,11 +63341,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLhess_covarlik(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62030,11 +63435,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getCov_laplace(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62100,11 +63507,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_getStd_laplace(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62231,11 +63640,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_predictMean(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62378,11 +63789,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_predictVar(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62448,11 +63861,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad_X(PyObject *SWIGUNUSEDPARM(self), PyO
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62499,11 +63914,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad_dataTerm(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62560,11 +63977,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad_num(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62630,11 +64049,13 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLhess_num(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62860,11 +64281,13 @@ SWIGINTERN PyObject *_wrap_new_CGPKroneckerCache(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (limix::CGPKroneckerCache *)new limix::CGPKroneckerCache(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62907,11 +64330,13 @@ SWIGINTERN PyObject *_wrap_delete_CGPKroneckerCache(PyObject *SWIGUNUSEDPARM(sel
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62952,11 +64377,13 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_rgetYrot(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (MatrixXd *) &(arg1)->rgetYrot();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -62997,11 +64424,13 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_rgetSi(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (MatrixXd *) &(arg1)->rgetSi();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63042,11 +64471,13 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_rgetYSi(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (MatrixXd *) &(arg1)->rgetYSi();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63087,11 +64518,13 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_rgetKinvY(PyObject *SWIGUNUSEDPARM(
     try {
       result = (MatrixXd *) &(arg1)->rgetKinvY();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63137,11 +64570,13 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_agetSi(PyObject *SWIGUNUSEDPARM(sel
     try {
       (arg1)->agetSi(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63206,11 +64641,13 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_agetYSi(PyObject *SWIGUNUSEDPARM(se
     try {
       (arg1)->agetYSi(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63275,11 +64712,13 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_agetYrot(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->agetYrot(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63377,11 +64816,13 @@ SWIGINTERN PyObject *_wrap_new_CGPkronecker__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::CGPkronecker *)new limix::CGPkronecker(arg1,arg2,arg3,arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63443,11 +64884,13 @@ SWIGINTERN PyObject *_wrap_new_CGPkronecker__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::CGPkronecker *)new limix::CGPkronecker(arg1,arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63496,11 +64939,13 @@ SWIGINTERN PyObject *_wrap_new_CGPkronecker__SWIG_2(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::CGPkronecker *)new limix::CGPkronecker(arg1,arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63612,11 +65057,13 @@ SWIGINTERN PyObject *_wrap_delete_CGPkronecker(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63734,11 +65181,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setX_r(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63856,11 +65305,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setX_c(PyObject *SWIGUNUSEDPARM(self), P
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -63972,11 +65423,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setY(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->setY((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -64029,11 +65482,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setCovar_r(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->setCovar_r(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -64086,11 +65541,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setCovar_c(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->setCovar_c(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -64137,11 +65594,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LML__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -64210,11 +65669,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LML__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -64333,11 +65794,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LML__SWIG_2(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -64431,11 +65894,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getLik(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (arg1)->getLik();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -64634,11 +66099,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_predictMean(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -64853,11 +66320,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_predictVar(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -64923,11 +66392,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LMLgrad(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -64991,11 +66462,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LMLgrad_covar(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65083,11 +66556,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_aLMLgrad_covar_r(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65175,11 +66650,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_aLMLgrad_covar_c(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65267,11 +66744,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LMLgrad_lik(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65359,11 +66838,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_aLMLgrad_X_r(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65434,11 +66915,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_aLMLgrad_X_c(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65509,11 +66992,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_aLMLgrad_dataTerm(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65573,11 +67058,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getCache(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (arg1)->getCache();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65621,11 +67108,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getCovarC(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = ((limix::CGPkronecker const *)arg1)->getCovarC();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65669,11 +67158,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getCovarR(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = ((limix::CGPkronecker const *)arg1)->getCovarR();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65717,11 +67208,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getGplvmDimensionsC(PyObject *SWIGUNUSED
     try {
       result = ((limix::CGPkronecker const *)arg1)->getGplvmDimensionsC();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65762,11 +67255,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getGplvmDimensionsR(PyObject *SWIGUNUSED
     try {
       result = ((limix::CGPkronecker const *)arg1)->getGplvmDimensionsR();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65823,11 +67318,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setGplvmDimensionsC(PyObject *SWIGUNUSED
     try {
       (arg1)->setGplvmDimensionsC(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -65884,11 +67381,13 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setGplvmDimensionsR(PyObject *SWIGUNUSED
     try {
       (arg1)->setGplvmDimensionsR(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66292,11 +67791,13 @@ SWIGINTERN PyObject *_wrap_new_CGPkronSumCache(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (limix::CGPkronSumCache *)new limix::CGPkronSumCache(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66339,11 +67840,13 @@ SWIGINTERN PyObject *_wrap_delete_CGPkronSumCache(PyObject *SWIGUNUSEDPARM(self)
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66384,11 +67887,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetSsigma(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (MatrixXd *) &(arg1)->rgetSsigma();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66429,11 +67934,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetScstar(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (MatrixXd *) &(arg1)->rgetScstar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66474,11 +67981,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetUcstar(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (MatrixXd *) &(arg1)->rgetUcstar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66519,11 +68028,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetLambdac(PyObject *SWIGUNUSEDPARM(
     try {
       result = (MatrixXd *) &(arg1)->rgetLambdac();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66564,11 +68075,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetSomega(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (MatrixXd *) &(arg1)->rgetSomega();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66609,11 +68122,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetSrstar(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (MatrixXd *) &(arg1)->rgetSrstar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66654,11 +68169,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetUrstar(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (MatrixXd *) &(arg1)->rgetUrstar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66699,11 +68216,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetLambdar(PyObject *SWIGUNUSEDPARM(
     try {
       result = (MatrixXd *) &(arg1)->rgetLambdar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66744,11 +68263,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetYrotPart(PyObject *SWIGUNUSEDPARM
     try {
       result = (MatrixXd *) &(arg1)->rgetYrotPart();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66789,11 +68310,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetYrot(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (MatrixXd *) &(arg1)->rgetYrot();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66834,11 +68357,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetYtilde(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (MatrixXd *) &(arg1)->rgetYtilde();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66879,11 +68404,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetRrot(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (MatrixXd *) &(arg1)->rgetRrot();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66924,11 +68451,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetOmegaRot(PyObject *SWIGUNUSEDPARM
     try {
       result = (MatrixXd *) &(arg1)->rgetOmegaRot();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -66974,11 +68503,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetSsigma(PyObject *SWIGUNUSEDPARM(
     try {
       (arg1)->argetSsigma(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67043,11 +68574,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetScstar(PyObject *SWIGUNUSEDPARM(
     try {
       (arg1)->argetScstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67112,11 +68645,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetUcstar(PyObject *SWIGUNUSEDPARM(
     try {
       (arg1)->argetUcstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67181,11 +68716,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetLambdac(PyObject *SWIGUNUSEDPARM
     try {
       (arg1)->argetLambdac(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67250,11 +68787,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetSomega(PyObject *SWIGUNUSEDPARM(
     try {
       (arg1)->argetSomega(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67319,11 +68858,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetSrstar(PyObject *SWIGUNUSEDPARM(
     try {
       (arg1)->argetSrstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67388,11 +68929,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetUrstar(PyObject *SWIGUNUSEDPARM(
     try {
       (arg1)->argetUrstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67457,11 +69000,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetLambdar(PyObject *SWIGUNUSEDPARM
     try {
       (arg1)->argetLambdar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67526,11 +69071,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetYrotPart(PyObject *SWIGUNUSEDPAR
     try {
       (arg1)->argetYrotPart(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67595,11 +69142,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetYrot(PyObject *SWIGUNUSEDPARM(se
     try {
       (arg1)->argetYrot(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67664,11 +69213,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetYtilde(PyObject *SWIGUNUSEDPARM(
     try {
       (arg1)->argetYtilde(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67733,11 +69284,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetRrot(PyObject *SWIGUNUSEDPARM(se
     try {
       (arg1)->argetRrot(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -67802,11 +69355,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetOmegaRot(PyObject *SWIGUNUSEDPAR
     try {
       (arg1)->argetOmegaRot(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68002,11 +69557,13 @@ SWIGINTERN PyObject *_wrap_new_CGPkronSum(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       result = (limix::CGPkronSum *)new limix::CGPkronSum((MatrixXd const &)*arg1,arg2,arg3,arg4,arg5,arg6,arg7);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68049,11 +69606,13 @@ SWIGINTERN PyObject *_wrap_delete_CGPkronSum(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68102,11 +69661,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_setLambda(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->setLambda(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68156,11 +69717,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getParamBounds(PyObject *SWIGUNUSEDPARM(se
     try {
       result = ((limix::CGPkronSum const *)arg1)->getParamBounds(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68204,11 +69767,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getParamMask(PyObject *SWIGUNUSEDPARM(self
     try {
       result = ((limix::CGPkronSum const *)arg1)->getParamMask();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68252,11 +69817,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getCovarr1(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (arg1)->getCovarr1();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68300,11 +69867,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getCovarr2(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (arg1)->getCovarr2();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68348,11 +69917,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getCovarc1(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (arg1)->getCovarc1();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68396,11 +69967,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getCovarc2(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (arg1)->getCovarc2();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68455,11 +70028,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetKEffInvYCache(PyObject *SWIGUNUSEDPARM
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68525,11 +70100,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_LML(PyObject *SWIGUNUSEDPARM(self), PyObje
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68576,11 +70153,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_LMLgrad(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68635,11 +70214,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLgrad_covarc1(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68727,11 +70308,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLgrad_covarc2(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68819,11 +70402,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLgrad_covarr1(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -68911,11 +70496,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLgrad_covarr2(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69003,11 +70590,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLgrad_dataTerm(PyObject *SWIGUNUSEDPARM
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69078,11 +70667,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLhess_c1c1(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69147,11 +70738,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetSc(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->agetSc(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69216,11 +70809,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUc(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->agetUc(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69285,11 +70880,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetSr(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->agetSr(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69354,11 +70951,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUr(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->agetUr(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69423,11 +71022,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetSsigma(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->agetSsigma(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69492,11 +71093,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUsigma(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->agetUsigma(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69561,11 +71164,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetSomega(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->agetSomega(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69630,11 +71235,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUomega(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->agetUomega(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69699,11 +71306,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetScstar(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->agetScstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69768,11 +71377,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUcstar(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->agetUcstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69837,11 +71448,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetSrstar(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->agetSrstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69906,11 +71519,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUrstar(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->agetUrstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -69975,11 +71590,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetLambdac(PyObject *SWIGUNUSEDPARM(self)
     try {
       (arg1)->agetLambdac(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70044,11 +71661,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetLambdar(PyObject *SWIGUNUSEDPARM(self)
     try {
       (arg1)->agetLambdar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70113,11 +71732,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetYrotPart(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->agetYrotPart(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70182,11 +71803,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetYrot(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->agetYrot(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70251,11 +71874,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetCstar(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->agetCstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70315,11 +71940,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getN(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (limix::muint_t)(arg1)->getN();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70360,11 +71987,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getP(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (limix::muint_t)(arg1)->getP();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70413,11 +72042,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_setDebugMode(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->setDebugMode(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70458,11 +72089,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtSVDcols(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::mfloat_t)(arg1)->getRtSVDcols();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70503,11 +72136,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtSVDrows(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::mfloat_t)(arg1)->getRtSVDrows();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70548,11 +72183,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLambdac(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::mfloat_t)(arg1)->getRtLambdac();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70593,11 +72230,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLambdar(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::mfloat_t)(arg1)->getRtLambdar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70638,11 +72277,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtYrotPart(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::mfloat_t)(arg1)->getRtYrotPart();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70683,11 +72324,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtYrot(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (limix::mfloat_t)(arg1)->getRtYrot();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70728,11 +72371,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtYtilde(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (limix::mfloat_t)(arg1)->getRtYtilde();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70773,11 +72418,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtRrot(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (limix::mfloat_t)(arg1)->getRtRrot();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70818,11 +72465,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtOmegaRot(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::mfloat_t)(arg1)->getRtOmegaRot();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70863,11 +72512,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1a(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1a();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70908,11 +72559,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1b(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1b();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70953,11 +72606,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1c(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1c();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -70998,11 +72653,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1d(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1d();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71043,11 +72700,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1e(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1e();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71088,11 +72747,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1f(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1f();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71133,11 +72794,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part2(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part2();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71178,11 +72841,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC2part1(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC2part1();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71223,11 +72888,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC2part2(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC2part2();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71268,11 +72935,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR1part1a(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR1part1a();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71313,11 +72982,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR1part1b(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR1part1b();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71358,11 +73029,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR1part2(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR1part2();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71403,11 +73076,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR2part1a(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR2part1a();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71448,11 +73123,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR2part1b(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR2part1b();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71493,11 +73170,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR2part2(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR2part2();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71538,11 +73217,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLMLgradCovar(PyObject *SWIGUNUSEDPARM
     try {
       result = (limix::mfloat_t)(arg1)->getRtLMLgradCovar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71583,11 +73264,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLMLgradDataTerm(PyObject *SWIGUNUSEDP
     try {
       result = (limix::mfloat_t)(arg1)->getRtLMLgradDataTerm();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71628,11 +73311,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getIs_it(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (limix::mfloat_t)(arg1)->getIs_it();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71673,11 +73358,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtGrad(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (limix::mfloat_t)(arg1)->getRtGrad();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71718,11 +73405,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML1a(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML1a();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71763,11 +73452,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML1b(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML1b();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71808,11 +73499,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML1c(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML1c();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71853,11 +73546,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML1d(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML1d();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71898,11 +73593,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML1e(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML1e();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71943,11 +73640,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML2(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML2();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -71988,11 +73687,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML3(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML3();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72033,11 +73734,13 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML4(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML4();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72263,11 +73966,13 @@ SWIGINTERN PyObject *_wrap_new_CGPSumCache(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (limix::CGPSumCache *)new limix::CGPSumCache(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72310,11 +74015,13 @@ SWIGINTERN PyObject *_wrap_delete_CGPSumCache(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72355,11 +74062,13 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_rgetScstar(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (MatrixXd *) &(arg1)->rgetScstar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72400,11 +74109,13 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_rgetUcstar(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (MatrixXd *) &(arg1)->rgetUcstar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72445,11 +74156,13 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_rgetLambda(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (MatrixXd *) &(arg1)->rgetLambda();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72490,11 +74203,13 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_rgetYrot(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (MatrixXd *) &(arg1)->rgetYrot();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72540,11 +74255,13 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_argetScstar(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->argetScstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72609,11 +74326,13 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_argetUcstar(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->argetUcstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72678,11 +74397,13 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_argetLambda(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->argetLambda(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72747,11 +74468,13 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_argetYrot(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->argetYrot(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72921,11 +74644,13 @@ SWIGINTERN PyObject *_wrap_new_CGPSum(PyObject *SWIGUNUSEDPARM(self), PyObject *
     try {
       result = (limix::CGPSum *)new limix::CGPSum((MatrixXd const &)*arg1,arg2,arg3,arg4,arg5);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -72968,11 +74693,13 @@ SWIGINTERN PyObject *_wrap_delete_CGPSum(PyObject *SWIGUNUSEDPARM(self), PyObjec
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73090,11 +74817,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_setX1(PyObject *SWIGUNUSEDPARM(self), PyObject
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73212,11 +74941,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_setX2(PyObject *SWIGUNUSEDPARM(self), PyObject
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73328,11 +75059,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_setY(PyObject *SWIGUNUSEDPARM(self), PyObject 
     try {
       (arg1)->setY((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73385,11 +75118,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_setCovar1(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       (arg1)->setCovar1(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73442,11 +75177,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_setCovar2(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       (arg1)->setCovar2(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73487,11 +75224,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_getCovar1(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (arg1)->getCovar1();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73535,11 +75274,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_getCovar2(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (arg1)->getCovar2();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73588,11 +75329,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_agetScstar(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->agetScstar(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73657,11 +75400,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_agetLambda(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->agetLambda(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73726,11 +75471,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_agetYrot(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       (arg1)->agetYrot(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73789,11 +75536,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_debugCache(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->debugCache();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73834,11 +75583,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_agetCache(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (arg1)->agetCache();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73888,11 +75639,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_LML__SWIG_0(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -73961,11 +75714,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_LML__SWIG_1(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74084,11 +75839,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_LML__SWIG_2(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74188,11 +75945,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_LMLgrad(PyObject *SWIGUNUSEDPARM(self), PyObje
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74256,11 +76015,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_LMLgrad_covar(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74348,11 +76109,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_aLMLgrad_covar1(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74440,11 +76203,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_aLMLgrad_covar2(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74532,11 +76297,13 @@ SWIGINTERN PyObject *_wrap_CGPSum_aLMLgrad_dataTerm(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74595,11 +76362,13 @@ SWIGINTERN PyObject *_wrap_new_CGPopt(PyObject *SWIGUNUSEDPARM(self), PyObject *
     try {
       result = (limix::CGPopt *)new limix::CGPopt(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74642,11 +76411,13 @@ SWIGINTERN PyObject *_wrap_delete_CGPopt(PyObject *SWIGUNUSEDPARM(self), PyObjec
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74705,11 +76476,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_gradCheck__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (bool)(arg1)->gradCheck(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74759,11 +76532,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_gradCheck__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (bool)(arg1)->gradCheck(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74804,11 +76579,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_gradCheck__SWIG_2(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (bool)(arg1)->gradCheck();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74918,11 +76695,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_opt(PyObject *SWIGUNUSEDPARM(self), PyObject *
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -74963,11 +76742,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_getParamMask(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = ((limix::CGPopt const *)arg1)->getParamMask();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75027,11 +76808,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_setParamMask(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->setParamMask(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75072,11 +76855,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_getTolerance(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (double)((limix::CGPopt const *)arg1)->getTolerance();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75125,11 +76910,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_setTolerance__SWIG_0(PyObject *SWIGUNUSEDPARM(
     try {
       (arg1)->setTolerance(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75169,11 +76956,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_setTolerance__SWIG_1(PyObject *SWIGUNUSEDPARM(
     try {
       (arg1)->setTolerance();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75256,11 +77045,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_getNumEvaluations(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::muint_t)(arg1)->getNumEvaluations();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75301,11 +77092,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_getOptBoundLower(PyObject *SWIGUNUSEDPARM(self
     try {
       result = ((limix::CGPopt const *)arg1)->getOptBoundLower();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75365,11 +77158,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_setOptBoundLower(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->setOptBoundLower(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75410,11 +77205,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_getOptBoundUpper(PyObject *SWIGUNUSEDPARM(self
     try {
       result = ((limix::CGPopt const *)arg1)->getOptBoundUpper();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75474,11 +77271,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_setOptBoundUpper(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->setOptBoundUpper(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75519,11 +77318,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_getOptStartParams(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = ((limix::CGPopt const *)arg1)->getOptStartParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75575,11 +77376,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_setOptStartParams(PyObject *SWIGUNUSEDPARM(sel
     try {
       (arg1)->setOptStartParams((std::vector< limix::CGPHyperParams,std::allocator< limix::CGPHyperParams > > const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75641,11 +77444,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_addOptStartParams__SWIG_0(PyObject *SWIGUNUSED
     try {
       (arg1)->addOptStartParams((limix::CGPHyperParams const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75757,11 +77562,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_addOptStartParams__SWIG_1(PyObject *SWIGUNUSED
     try {
       (arg1)->addOptStartParams((VectorXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75846,11 +77653,13 @@ SWIGINTERN PyObject *_wrap_CGPopt_getOptParams(PyObject *SWIGUNUSEDPARM(self), P
     try {
       result = (arg1)->getOptParams();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75900,11 +77709,13 @@ SWIGINTERN PyObject *_wrap_delete_ALMM(PyObject *SWIGUNUSEDPARM(self), PyObject 
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75945,11 +77756,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getNumIntervals0(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (limix::muint_t)((limix::ALMM const *)arg1)->getNumIntervals0();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -75998,11 +77811,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setNumIntervals0(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->setNumIntervals0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76051,11 +77866,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setNumIntervalsAlt(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->setNumIntervalsAlt(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76096,11 +77913,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getNumIntervalsAlt(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::muint_t)((limix::ALMM const *)arg1)->getNumIntervalsAlt();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76141,11 +77960,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getLdeltamin0(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (limix::mfloat_t)((limix::ALMM const *)arg1)->getLdeltamin0();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76194,11 +78015,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setLdeltamin0(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (arg1)->setLdeltamin0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76247,11 +78070,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setLdeltaminAlt(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->setLdeltaminAlt(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76292,11 +78117,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getLdeltaminAlt(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (limix::mfloat_t)((limix::ALMM const *)arg1)->getLdeltaminAlt();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76337,11 +78164,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getLdeltamaxAlt(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (limix::mfloat_t)((limix::ALMM const *)arg1)->getLdeltamaxAlt();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76390,11 +78219,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setLdeltamaxAlt(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->setLdeltamaxAlt(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76435,11 +78266,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getLdeltamax0(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (limix::mfloat_t)((limix::ALMM const *)arg1)->getLdeltamax0();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76488,11 +78321,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setLdeltamax0(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (arg1)->setLdeltamax0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76541,11 +78376,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setLdeltaInit(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (arg1)->setLdeltaInit(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76586,11 +78423,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getLdeltaInit(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (limix::mfloat_t)((limix::ALMM const *)arg1)->getLdeltaInit();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76631,11 +78470,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getNumSamples(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (limix::muint_t)((limix::ALMM const *)arg1)->getNumSamples();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76681,11 +78522,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getPheno(PyObject *SWIGUNUSEDPARM(self), PyObjec
     try {
       ((limix::ALMM const *)arg1)->agetPheno(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76750,11 +78593,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getPv(PyObject *SWIGUNUSEDPARM(self), PyObject *
     try {
       ((limix::ALMM const *)arg1)->agetPv(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76819,11 +78664,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getSnps(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       ((limix::ALMM const *)arg1)->agetSnps(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -76888,11 +78735,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getCovs(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       ((limix::ALMM const *)arg1)->agetCovs(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77023,11 +78872,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setCovs(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       (arg1)->setCovs((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77139,11 +78990,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setPheno(PyObject *SWIGUNUSEDPARM(self), PyObjec
     try {
       (arg1)->setPheno((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77255,11 +79108,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setSNPs(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       (arg1)->setSNPs((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77305,11 +79160,13 @@ SWIGINTERN PyObject *_wrap_ALMM_process(PyObject *SWIGUNUSEDPARM(self), PyObject
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77355,11 +79212,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getK(PyObject *SWIGUNUSEDPARM(self), PyObject *a
     try {
       ((limix::ALMM const *)arg1)->agetK(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77490,11 +79349,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setK(PyObject *SWIGUNUSEDPARM(self), PyObject *a
     try {
       (arg1)->setK((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77606,11 +79467,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setPermutation(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (arg1)->setPermutation((VectorXi const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77656,11 +79519,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getPermutation(PyObject *SWIGUNUSEDPARM(self), P
     try {
       ((limix::ALMM const *)arg1)->agetPermutation(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77746,11 +79611,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompApprox0__SWIG_0(PyObject *SWIGUNUSEDPA
     try {
       (arg1)->setVarcompApprox0(arg2,arg3,arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77808,11 +79675,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompApprox0__SWIG_1(PyObject *SWIGUNUSEDPA
     try {
       (arg1)->setVarcompApprox0(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77861,11 +79730,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompApprox0__SWIG_2(PyObject *SWIGUNUSEDPA
     try {
       (arg1)->setVarcompApprox0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -77905,11 +79776,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompApprox0__SWIG_3(PyObject *SWIGUNUSEDPA
     try {
       (arg1)->setVarcompApprox0();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -78065,11 +79938,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompExact__SWIG_0(PyObject *SWIGUNUSEDPARM
     try {
       (arg1)->setVarcompExact(arg2,arg3,arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -78127,11 +80002,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompExact__SWIG_1(PyObject *SWIGUNUSEDPARM
     try {
       (arg1)->setVarcompExact(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -78180,11 +80057,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompExact__SWIG_2(PyObject *SWIGUNUSEDPARM
     try {
       (arg1)->setVarcompExact(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -78224,11 +80103,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompExact__SWIG_3(PyObject *SWIGUNUSEDPARM
     try {
       (arg1)->setVarcompExact();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -78358,11 +80239,13 @@ SWIGINTERN PyObject *_wrap_ALMM_getTestStatistics(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (int)((limix::ALMM const *)arg1)->getTestStatistics();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -78411,11 +80294,13 @@ SWIGINTERN PyObject *_wrap_ALMM_setTestStatistics(PyObject *SWIGUNUSEDPARM(self)
     try {
       (arg1)->setTestStatistics(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -78442,11 +80327,13 @@ SWIGINTERN PyObject *_wrap_new_CLMM(PyObject *SWIGUNUSEDPARM(self), PyObject *ar
     try {
       result = (limix::CLMM *)new limix::CLMM();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -78489,11 +80376,13 @@ SWIGINTERN PyObject *_wrap_delete_CLMM(PyObject *SWIGUNUSEDPARM(self), PyObject 
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -78539,11 +80428,13 @@ SWIGINTERN PyObject *_wrap_CLMM_process(PyObject *SWIGUNUSEDPARM(self), PyObject
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -78589,11 +80480,13 @@ SWIGINTERN PyObject *_wrap_CLMM_updateDecomposition(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -78849,11 +80742,13 @@ SWIGINTERN PyObject *_wrap_CLMM_setKUS(PyObject *SWIGUNUSEDPARM(self), PyObject 
     try {
       (arg1)->setKUS((MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(VectorXd const &)*arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79109,11 +81004,13 @@ SWIGINTERN PyObject *_wrap_CLMM_setK__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->setK((MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(VectorXd const &)*arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79225,11 +81122,13 @@ SWIGINTERN PyObject *_wrap_CLMM_setK__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->setK((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79330,11 +81229,13 @@ SWIGINTERN PyObject *_wrap_CLMM_getNLL0(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       (arg1)->agetNLL0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79399,11 +81300,13 @@ SWIGINTERN PyObject *_wrap_CLMM_getNLLAlt(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       (arg1)->agetNLLAlt(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79468,11 +81371,13 @@ SWIGINTERN PyObject *_wrap_CLMM_getFtests(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       (arg1)->agetFtests(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79537,11 +81442,13 @@ SWIGINTERN PyObject *_wrap_CLMM_getLdeltaAlt(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->agetLdeltaAlt(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79606,11 +81513,13 @@ SWIGINTERN PyObject *_wrap_CLMM_getLdelta0(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       (arg1)->agetLdelta0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79675,11 +81584,13 @@ SWIGINTERN PyObject *_wrap_CLMM_getLSigma(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       (arg1)->agetLSigma(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79744,11 +81655,13 @@ SWIGINTERN PyObject *_wrap_CLMM_getBetaSNP(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       (arg1)->agetBetaSNP(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79813,11 +81726,13 @@ SWIGINTERN PyObject *_wrap_CLMM_getBetaSNPste(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (arg1)->agetBetaSNPste(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79885,11 +81800,13 @@ SWIGINTERN PyObject *_wrap_CLMM_setLdeltaInit(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       (arg1)->setLdeltaInit(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79930,11 +81847,13 @@ SWIGINTERN PyObject *_wrap_CLMM_getLdeltaInit(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (limix::mfloat_t)(arg1)->getLdeltaInit();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -79975,11 +81894,13 @@ SWIGINTERN PyObject *_wrap_CLMM_isCalcStes(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (bool)((limix::CLMM const *)arg1)->isCalcStes();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80028,11 +81949,13 @@ SWIGINTERN PyObject *_wrap_CLMM_setCalcStes(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       (arg1)->setCalcStes(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80059,11 +81982,13 @@ SWIGINTERN PyObject *_wrap_new_CInteractLMM(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (limix::CInteractLMM *)new limix::CInteractLMM();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80106,11 +82031,13 @@ SWIGINTERN PyObject *_wrap_delete_CInteractLMM(PyObject *SWIGUNUSEDPARM(self), P
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80222,11 +82149,13 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_setInter(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->setInter((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80272,11 +82201,13 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_getInter(PyObject *SWIGUNUSEDPARM(self),
     try {
       ((limix::CInteractLMM const *)arg1)->agetInter(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80407,11 +82338,13 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_setInter0(PyObject *SWIGUNUSEDPARM(self)
     try {
       (arg1)->setInter0((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80457,11 +82390,13 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_agetInter0(PyObject *SWIGUNUSEDPARM(self
     try {
       ((limix::CInteractLMM const *)arg1)->agetInter0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80526,11 +82461,13 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_process(PyObject *SWIGUNUSEDPARM(self), 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80576,11 +82513,13 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_updateDecomposition(PyObject *SWIGUNUSED
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80621,11 +82560,13 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_getInter0(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = ((limix::CInteractLMM const *)arg1)->getInter0();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80666,11 +82607,13 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_isRefitDelta0Pheno(PyObject *SWIGUNUSEDP
     try {
       result = (bool)((limix::CInteractLMM const *)arg1)->isRefitDelta0Pheno();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -80719,11 +82662,13 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_setRefitDelta0Pheno(PyObject *SWIGUNUSED
     try {
       (arg1)->setRefitDelta0Pheno(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -81154,11 +83099,13 @@ SWIGINTERN PyObject *_wrap_train_associations_SingleSNP(PyObject *SWIGUNUSEDPARM
     try {
       limix::train_associations_SingleSNP(arg1,arg2,arg3,(MatrixXd const &)*arg4,(MatrixXd const &)*arg5,(MatrixXd const &)*arg6,(MatrixXd const &)*arg7,(MatrixXd const &)*arg8,arg9,arg10,arg11);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -81487,11 +83434,13 @@ SWIGINTERN PyObject *_wrap_optdelta__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (double)limix::optdelta((MatrixXd const &)*arg1,(MatrixXd const &)*arg2,(MatrixXd const &)*arg3,arg4,arg5,arg6,arg7);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -81754,11 +83703,13 @@ SWIGINTERN PyObject *_wrap_optdelta__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyOb
     try {
       result = (double)limix::optdelta((MatrixXd const &)*arg1,(MatrixXd const &)*arg2,(MatrixXd const &)*arg3,arg4,arg5,arg6);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -82168,11 +84119,13 @@ SWIGINTERN PyObject *_wrap_optdeltaAllY(PyObject *SWIGUNUSEDPARM(self), PyObject
     try {
       limix::optdeltaAllY(arg1,(MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4,(MatrixXd const &)*arg5);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -82451,11 +84404,13 @@ SWIGINTERN PyObject *_wrap_nLLeval__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (double)limix::nLLeval(arg1,arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4,(MatrixXd const &)*arg5,arg6);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -82725,11 +84680,13 @@ SWIGINTERN PyObject *_wrap_nLLeval__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObj
     try {
       result = (double)limix::nLLeval(arg1,arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4,(MatrixXd const &)*arg5);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83073,11 +85030,13 @@ SWIGINTERN PyObject *_wrap_nLLevalAllY(PyObject *SWIGUNUSEDPARM(self), PyObject 
     try {
       limix::nLLevalAllY(arg1,arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4,(VectorXd const &)*arg5);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83176,11 +85135,13 @@ SWIGINTERN PyObject *_wrap_new_nLLevalFunctor(PyObject *SWIGUNUSEDPARM(self), Py
     try {
       result = (limix::nLLevalFunctor *)new limix::nLLevalFunctor(arg1,arg2,arg3,arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83208,11 +85169,13 @@ SWIGINTERN PyObject *_wrap_delete_nLLevalFunctor(PyObject *SWIGUNUSEDPARM(self),
     try {
       delete arg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83250,11 +85213,13 @@ SWIGINTERN PyObject *_wrap_nLLevalFunctor___call__(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (limix::mfloat_t)(arg1)->operator ()(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83281,11 +85246,13 @@ SWIGINTERN PyObject *_wrap_new_CLMMKroneckerCore(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (limix::CLMMKroneckerCore *)new limix::CLMMKroneckerCore();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83328,11 +85295,13 @@ SWIGINTERN PyObject *_wrap_delete_CLMMKroneckerCore(PyObject *SWIGUNUSEDPARM(sel
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83359,11 +85328,13 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerLMM(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       result = (limix::CKroneckerLMM *)new limix::CKroneckerLMM();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83406,11 +85377,13 @@ SWIGINTERN PyObject *_wrap_delete_CKroneckerLMM(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83456,11 +85429,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_process(PyObject *SWIGUNUSEDPARM(self),
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83506,11 +85481,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_updateDecomposition(PyObject *SWIGUNUSE
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83622,11 +85599,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setK1r(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->setK1r((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83738,11 +85717,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setK1c(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->setK1c((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83854,11 +85835,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setK2r(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->setK2r((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -83970,11 +85953,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setK2c(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (arg1)->setK2c((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84086,11 +86071,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setPheno(PyObject *SWIGUNUSEDPARM(self)
     try {
       (arg1)->setPheno((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84202,11 +86189,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setSNPs(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->setSNPs((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84318,11 +86307,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setSNPcoldesign(PyObject *SWIGUNUSEDPAR
     try {
       (arg1)->setSNPcoldesign((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84434,11 +86425,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setSNPcoldesign0_inter(PyObject *SWIGUN
     try {
       (arg1)->setSNPcoldesign0_inter((MatrixXd const &)*arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84487,11 +86480,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setNumIntervals0_inter(PyObject *SWIGUN
     try {
       (arg1)->setNumIntervals0_inter(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84532,11 +86527,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getNumIntervals0_inter(PyObject *SWIGUN
     try {
       result = (limix::muint_t)(arg1)->getNumIntervals0_inter();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84582,11 +86579,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getNLL0(PyObject *SWIGUNUSEDPARM(self),
     try {
       (arg1)->agetNLL0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84651,11 +86650,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_agetNLL0_inter(PyObject *SWIGUNUSEDPARM
     try {
       (arg1)->agetNLL0_inter(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84720,11 +86721,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getNLLAlt(PyObject *SWIGUNUSEDPARM(self
     try {
       (arg1)->agetNLLAlt(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84789,11 +86792,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getLdeltaAlt(PyObject *SWIGUNUSEDPARM(s
     try {
       (arg1)->agetLdeltaAlt(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84858,11 +86863,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getLdelta0(PyObject *SWIGUNUSEDPARM(sel
     try {
       (arg1)->agetLdelta0(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -84927,11 +86934,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_agetLdelta0_inter(PyObject *SWIGUNUSEDP
     try {
       (arg1)->agetLdelta0_inter(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -85018,11 +87027,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setCovariates__SWIG_0(PyObject *SWIGUNU
     try {
       (arg1)->setCovariates((limix::MatrixXdVec const &)*arg2,(limix::MatrixXdVec const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -85210,11 +87221,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_addCovariates(PyObject *SWIGUNUSEDPARM(
     try {
       (arg1)->addCovariates((MatrixXd const &)*arg2,(MatrixXd const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -85407,11 +87420,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setCovariates__SWIG_1(PyObject *SWIGUNU
     try {
       (arg1)->setCovariates(arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -85887,11 +87902,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_nLLeval(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (limix::mfloat_t)limix::CKroneckerLMM::nLLeval(arg1,(std::vector< MatrixXd,std::allocator< MatrixXd > > const &)*arg2,(std::vector< MatrixXd,std::allocator< MatrixXd > > const &)*arg3,(MatrixXd const &)*arg4,(VectorXd const &)*arg5,(VectorXd const &)*arg6,(VectorXd const &)*arg7,(VectorXd const &)*arg8);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -86342,11 +88359,13 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_optdelta(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (limix::mfloat_t)limix::CKroneckerLMM::optdelta(*arg1,(std::vector< MatrixXd,std::allocator< MatrixXd > > const &)*arg2,(std::vector< MatrixXd,std::allocator< MatrixXd > > const &)*arg3,(MatrixXd const &)*arg4,(VectorXd const &)*arg5,(VectorXd const &)*arg6,(VectorXd const &)*arg7,(VectorXd const &)*arg8,arg9,arg10,arg11);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -86484,11 +88503,13 @@ SWIGINTERN PyObject *_wrap_new_nLLevalKronFunctor(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (limix::nLLevalKronFunctor *)new limix::nLLevalKronFunctor(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -86516,11 +88537,13 @@ SWIGINTERN PyObject *_wrap_delete_nLLevalKronFunctor(PyObject *SWIGUNUSEDPARM(se
     try {
       delete arg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -86558,11 +88581,13 @@ SWIGINTERN PyObject *_wrap_nLLevalKronFunctor___call__(PyObject *SWIGUNUSEDPARM(
     try {
       result = (limix::mfloat_t)(arg1)->operator ()(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -86609,11 +88634,13 @@ SWIGINTERN PyObject *_wrap_delete_AVarianceTerm(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -86654,11 +88681,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getName(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -86699,11 +88728,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getInfo(PyObject *SWIGUNUSEDPARM(self),
     try {
       result = (arg1)->getInfo();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -86761,11 +88792,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_setSampleFilter(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -86806,11 +88839,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getNumberTraits(PyObject *SWIGUNUSEDPAR
     try {
       result = (limix::muint_t)(arg1)->getNumberTraits();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -86857,11 +88892,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getNumberIndividuals(PyObject *SWIGUNUS
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -86979,11 +89016,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_setK(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87035,11 +89074,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getK(PyObject *SWIGUNUSEDPARM(self), Py
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87099,11 +89140,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getKcf(PyObject *SWIGUNUSEDPARM(self), 
     try {
       result = (arg1)->getKcf();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87153,11 +89196,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getTraitCovar(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87278,11 +89323,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_setScales(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87334,11 +89381,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getScales(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87421,11 +89470,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getNumberScales(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87471,11 +89522,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_initTerm(PyObject *SWIGUNUSEDPARM(self)
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87522,11 +89575,13 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getCovariance(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87556,11 +89611,13 @@ SWIGINTERN PyObject *_wrap_new_CSingleTraitTerm__SWIG_0(PyObject *SWIGUNUSEDPARM
     try {
       result = (limix::CSingleTraitTerm *)new limix::CSingleTraitTerm();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87655,11 +89712,13 @@ SWIGINTERN PyObject *_wrap_new_CSingleTraitTerm__SWIG_1(PyObject *SWIGUNUSEDPARM
     try {
       result = (limix::CSingleTraitTerm *)new limix::CSingleTraitTerm((MatrixXd const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87734,11 +89793,13 @@ SWIGINTERN PyObject *_wrap_delete_CSingleTraitTerm(PyObject *SWIGUNUSEDPARM(self
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87779,11 +89840,13 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getName(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87824,11 +89887,13 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getInfo(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (arg1)->getInfo();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87886,11 +89951,13 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_setSampleFilter(PyObject *SWIGUNUSED
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87931,11 +89998,13 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getNumberTraits(PyObject *SWIGUNUSED
     try {
       result = (limix::muint_t)(arg1)->getNumberTraits();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -87982,11 +90051,13 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getTraitCovar(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88107,11 +90178,13 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_setScales(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88163,11 +90236,13 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getScales(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88250,11 +90325,13 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getNumberScales(PyObject *SWIGUNUSED
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88300,11 +90377,13 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_initTerm(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88351,11 +90430,13 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getCovariance(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88394,11 +90475,13 @@ SWIGINTERN PyObject *_wrap_new_CMultiTraitTerm__SWIG_0(PyObject *SWIGUNUSEDPARM(
     try {
       result = (limix::CMultiTraitTerm *)new limix::CMultiTraitTerm(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88515,11 +90598,13 @@ SWIGINTERN PyObject *_wrap_new_CMultiTraitTerm__SWIG_1(PyObject *SWIGUNUSEDPARM(
     try {
       result = (limix::CMultiTraitTerm *)new limix::CMultiTraitTerm(arg1,arg2,(MatrixXd const &)*arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88609,11 +90694,13 @@ SWIGINTERN PyObject *_wrap_delete_CMultiTraitTerm(PyObject *SWIGUNUSEDPARM(self)
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88654,11 +90741,13 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getName(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (arg1)->getName();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88699,11 +90788,13 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getInfo(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (arg1)->getInfo();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88761,11 +90852,13 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_setSampleFilter(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88806,11 +90899,13 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getNumberTraits(PyObject *SWIGUNUSEDP
     try {
       result = (limix::muint_t)(arg1)->getNumberTraits();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88869,11 +90964,13 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_setTraitCovar(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -88920,11 +91017,13 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getTraitCovar(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89045,11 +91144,13 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_setScales(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89101,11 +91202,13 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getScales(PyObject *SWIGUNUSEDPARM(se
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89188,11 +91291,13 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getNumberScales(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89238,11 +91343,13 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_initTerm(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89289,11 +91396,13 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getCovariance(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89395,11 +91504,13 @@ SWIGINTERN PyObject *_wrap_new_CVarianceDecomposition(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::CVarianceDecomposition *)new limix::CVarianceDecomposition((MatrixXd const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89442,11 +91553,13 @@ SWIGINTERN PyObject *_wrap_delete_CVarianceDecomposition(PyObject *SWIGUNUSEDPAR
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89486,11 +91599,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_clear(PyObject *SWIGUNUSEDPARM
     try {
       (arg1)->clear();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89608,11 +91723,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_setPheno(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89664,11 +91781,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getPheno(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89734,11 +91853,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getNumberTraits(PyObject *SWIG
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89785,11 +91906,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getNumberIndividuals(PyObject 
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -89979,11 +92102,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_addFixedEffTerm__SWIG_0(PyObje
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -90101,11 +92226,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_addFixedEffTerm__SWIG_1(PyObje
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -90217,11 +92344,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getFixed(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -90301,11 +92430,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getDesign(PyObject *SWIGUNUSED
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -90364,11 +92495,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_clearFixedEffs(PyObject *SWIGU
     try {
       (arg1)->clearFixedEffs();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -90409,11 +92542,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getNumberFixedEffs(PyObject *S
     try {
       result = (limix::muint_t)((limix::CVarianceDecomposition const *)arg1)->getNumberFixedEffs();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -90472,11 +92607,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_addTerm__SWIG_0(PyObject *SWIG
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -90594,11 +92731,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_addTerm__SWIG_1(PyObject *SWIG
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -90729,11 +92868,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_addTerm__SWIG_2(PyObject *SWIG
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -90852,11 +92993,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getTerm(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -90899,11 +93042,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_clearTerms(PyObject *SWIGUNUSE
     try {
       (arg1)->clearTerms();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -90944,11 +93089,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getNumberTerms(PyObject *SWIGU
     try {
       result = (limix::muint_t)((limix::CVarianceDecomposition const *)arg1)->getNumberTerms();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91066,11 +93213,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_setScales__SWIG_0(PyObject *SW
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91197,11 +93346,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_setScales__SWIG_1(PyObject *SW
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91311,11 +93462,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getScales__SWIG_0(PyObject *SW
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91403,11 +93556,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getScales__SWIG_1(PyObject *SW
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91531,11 +93686,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getNumberScales(PyObject *SWIG
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91576,11 +93733,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getGP(PyObject *SWIGUNUSEDPARM
     try {
       result = (arg1)->getGP();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91624,11 +93783,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getCovar(PyObject *SWIGUNUSEDP
     try {
       result = (arg1)->getCovar();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91672,11 +93833,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getMean(PyObject *SWIGUNUSEDPA
     try {
       result = (arg1)->getMean();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91725,11 +93888,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_initGPparams(PyObject *SWIGUNU
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91784,11 +93949,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_initGP__SWIG_0(PyObject *SWIGU
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91834,11 +94001,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_initGP__SWIG_1(PyObject *SWIGU
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91925,11 +94094,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_initGPbase(PyObject *SWIGUNUSE
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -91975,11 +94146,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_initGPkronSum(PyObject *SWIGUN
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92026,11 +94199,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_trainGP(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92082,11 +94257,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getFixedEffects(PyObject *SWIG
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92169,11 +94346,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getLML(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92220,11 +94399,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getLMLgrad(PyObject *SWIGUNUSE
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92271,11 +94452,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getLMLgradGPbase(PyObject *SWI
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92322,11 +94505,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getLMLgradGPkronSum(PyObject *
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92567,11 +94752,13 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_aestimateHeritability(PyObject
     try {
       limix::CVarianceDecomposition::aestimateHeritability(arg1,(MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92663,11 +94850,13 @@ SWIGINTERN PyObject *_wrap_CHeaderMap_resize(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->resize(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92738,11 +94927,13 @@ SWIGINTERN PyObject *_wrap_CHeaderMap_setStr(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (arg1)->setStr(arg2,arg3,arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92801,11 +94992,13 @@ SWIGINTERN PyObject *_wrap_CHeaderMap_copy__SWIG_0(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (arg1)->copy(arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92858,11 +95051,13 @@ SWIGINTERN PyObject *_wrap_CHeaderMap_copy__SWIG_1(PyObject *SWIGUNUSEDPARM(self
     try {
       result = (arg1)->copy(arg2);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92936,11 +95131,13 @@ SWIGINTERN PyObject *_wrap_new_CHeaderMap(PyObject *SWIGUNUSEDPARM(self), PyObje
     try {
       result = (limix::CHeaderMap *)new limix::CHeaderMap();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -92983,11 +95180,13 @@ SWIGINTERN PyObject *_wrap_delete_CHeaderMap(PyObject *SWIGUNUSEDPARM(self), PyO
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93014,11 +95213,13 @@ SWIGINTERN PyObject *_wrap_new_CRMemDataFrameXd__SWIG_0(PyObject *SWIGUNUSEDPARM
     try {
       result = (limix::CRMemDataFrame< MatrixXd > *)new limix::CRMemDataFrame< MatrixXd >();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93063,11 +95264,13 @@ SWIGINTERN PyObject *_wrap_new_CRMemDataFrameXd__SWIG_1(PyObject *SWIGUNUSEDPARM
     try {
       result = (limix::CRMemDataFrame< MatrixXd > *)new limix::CRMemDataFrame< MatrixXd >((limix::CRMemDataFrame< MatrixXd > const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93133,11 +95336,13 @@ SWIGINTERN PyObject *_wrap_new_CRMemDataFrameXd__SWIG_2(PyObject *SWIGUNUSEDPARM
     try {
       result = (limix::CRMemDataFrame< MatrixXd > *)new limix::CRMemDataFrame< MatrixXd >(arg1,arg2,arg3);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93228,11 +95433,13 @@ SWIGINTERN PyObject *_wrap_delete_CRMemDataFrameXd(PyObject *SWIGUNUSEDPARM(self
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93279,11 +95486,13 @@ SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_getRowHeader(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93333,11 +95542,13 @@ SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_getColHeader(PyObject *SWIGUNUSEDPAR
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93392,11 +95603,13 @@ SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_agetMatrix(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93462,11 +95675,13 @@ SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_getMatrix(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93493,11 +95708,13 @@ SWIGINTERN PyObject *_wrap_new_CRWMemDataFrameXd__SWIG_0(PyObject *SWIGUNUSEDPAR
     try {
       result = (limix::CRWMemDataFrame< MatrixXd > *)new limix::CRWMemDataFrame< MatrixXd >();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93542,11 +95759,13 @@ SWIGINTERN PyObject *_wrap_new_CRWMemDataFrameXd__SWIG_1(PyObject *SWIGUNUSEDPAR
     try {
       result = (limix::CRWMemDataFrame< MatrixXd > *)new limix::CRWMemDataFrame< MatrixXd >((limix::CRMemDataFrame< MatrixXd > const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93620,11 +95839,13 @@ SWIGINTERN PyObject *_wrap_delete_CRWMemDataFrameXd(PyObject *SWIGUNUSEDPARM(sel
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93683,11 +95904,13 @@ SWIGINTERN PyObject *_wrap_CRWMemDataFrameXd_setRowHeader(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93746,11 +95969,13 @@ SWIGINTERN PyObject *_wrap_CRWMemDataFrameXd_setColHeader(PyObject *SWIGUNUSEDPA
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93868,11 +96093,13 @@ SWIGINTERN PyObject *_wrap_CRWMemDataFrameXd_setMatrix__SWIG_0(PyObject *SWIGUNU
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -93935,11 +96162,13 @@ SWIGINTERN PyObject *_wrap_CRWMemDataFrameXd_setMatrix__SWIG_1(PyObject *SWIGUNU
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94031,11 +96260,13 @@ SWIGINTERN PyObject *_wrap_delete_ARDataFrameXd(PyObject *SWIGUNUSEDPARM(self), 
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94082,11 +96313,13 @@ SWIGINTERN PyObject *_wrap_ARDataFrameXd_getRowHeader(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94136,11 +96369,13 @@ SWIGINTERN PyObject *_wrap_ARDataFrameXd_getColHeader(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94195,11 +96430,13 @@ SWIGINTERN PyObject *_wrap_ARDataFrameXd_agetMatrix(PyObject *SWIGUNUSEDPARM(sel
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94265,11 +96502,13 @@ SWIGINTERN PyObject *_wrap_ARDataFrameXd_getMatrix(PyObject *SWIGUNUSEDPARM(self
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94304,11 +96543,13 @@ SWIGINTERN PyObject *_wrap_delete_AWDataFrameXd(PyObject *SWIGUNUSEDPARM(self), 
     try {
       delete arg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94355,11 +96596,13 @@ SWIGINTERN PyObject *_wrap_AWDataFrameXd_setRowHeader(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94406,11 +96649,13 @@ SWIGINTERN PyObject *_wrap_AWDataFrameXd_setColHeader(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94516,11 +96761,13 @@ SWIGINTERN PyObject *_wrap_AWDataFrameXd_setMatrix__SWIG_0(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94571,11 +96818,13 @@ SWIGINTERN PyObject *_wrap_AWDataFrameXd_setMatrix__SWIG_1(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94669,11 +96918,13 @@ SWIGINTERN PyObject *_wrap_delete_AGenotypeContainer(PyObject *SWIGUNUSEDPARM(se
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94742,11 +96993,13 @@ SWIGINTERN PyObject *_wrap_AGenotypeContainer_setSNPFilter(PyObject *SWIGUNUSEDP
     try {
       (arg1)->setSNPFilter(arg2,arg3,arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94802,11 +97055,13 @@ SWIGINTERN PyObject *_wrap_AGenotypeContainer_read__SWIG_0(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94856,11 +97111,13 @@ SWIGINTERN PyObject *_wrap_AGenotypeContainer_read__SWIG_1(PyObject *SWIGUNUSEDP
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -94931,11 +97188,13 @@ SWIGINTERN PyObject *_wrap_new_CGenotypeBlock__SWIG_0(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::CGenotypeBlock *)new limix::CGenotypeBlock();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95020,11 +97279,13 @@ SWIGINTERN PyObject *_wrap_new_CGenotypeBlock__SWIG_1(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::CGenotypeBlock *)new limix::CGenotypeBlock((limix::stringVec const &)*arg1,(limix::stringVec const &)*arg2,arg3,arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95073,11 +97334,13 @@ SWIGINTERN PyObject *_wrap_new_CGenotypeBlock__SWIG_2(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::CGenotypeBlock *)new limix::CGenotypeBlock((limix::CGenotypeBlock const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95160,11 +97423,13 @@ SWIGINTERN PyObject *_wrap_new_CGenotypeBlock__SWIG_3(PyObject *SWIGUNUSEDPARM(s
     try {
       result = (limix::CGenotypeBlock *)new limix::CGenotypeBlock(arg1,arg2,arg3,arg4);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95282,11 +97547,13 @@ SWIGINTERN PyObject *_wrap_delete_CGenotypeBlock(PyObject *SWIGUNUSEDPARM(self),
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95327,11 +97594,13 @@ SWIGINTERN PyObject *_wrap_CGenotypeBlock_numSample(PyObject *SWIGUNUSEDPARM(sel
     try {
       result = (limix::muint_t)(arg1)->numSample();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95372,11 +97641,13 @@ SWIGINTERN PyObject *_wrap_CGenotypeBlock_numSNPs(PyObject *SWIGUNUSEDPARM(self)
     try {
       result = (limix::muint_t)(arg1)->numSNPs();
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95428,11 +97699,13 @@ SWIGINTERN PyObject *_wrap_CGenotypeBlock_getPosition(PyObject *SWIGUNUSEDPARM(s
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95507,11 +97780,13 @@ SWIGINTERN PyObject *_wrap_CGenotypeBlock_read__SWIG_0(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95561,11 +97836,13 @@ SWIGINTERN PyObject *_wrap_CGenotypeBlock_read__SWIG_1(PyObject *SWIGUNUSEDPARM(
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95650,11 +97927,13 @@ SWIGINTERN PyObject *_wrap_new_CTextfileGenotypeContainer(PyObject *SWIGUNUSEDPA
     try {
       result = (limix::CTextfileGenotypeContainer *)new limix::CTextfileGenotypeContainer((std::string const &)*arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95699,11 +97978,13 @@ SWIGINTERN PyObject *_wrap_delete_CTextfileGenotypeContainer(PyObject *SWIGUNUSE
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95759,11 +98040,13 @@ SWIGINTERN PyObject *_wrap_CTextfileGenotypeContainer_read__SWIG_0(PyObject *SWI
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95813,11 +98096,13 @@ SWIGINTERN PyObject *_wrap_CTextfileGenotypeContainer_read__SWIG_1(PyObject *SWI
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95901,11 +98186,13 @@ SWIGINTERN PyObject *_wrap_new_CMemGenotypeContainer(PyObject *SWIGUNUSEDPARM(se
     try {
       result = (limix::CMemGenotypeContainer *)new limix::CMemGenotypeContainer(arg1);
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -95948,11 +98235,13 @@ SWIGINTERN PyObject *_wrap_delete_CMemGenotypeContainer(PyObject *SWIGUNUSEDPARM
     try {
       (void)arg1; delete smartarg1;
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -96008,11 +98297,13 @@ SWIGINTERN PyObject *_wrap_CMemGenotypeContainer_read__SWIG_0(PyObject *SWIGUNUS
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -96062,11 +98353,13 @@ SWIGINTERN PyObject *_wrap_CMemGenotypeContainer_read__SWIG_1(PyObject *SWIGUNUS
       }
       
     } catch (limix::CGPMixException& e) {
-      std::cout << "caught: " << e.what() << "\n";
-      SWIG_exception(SWIG_ValueError, "LIMIX exception");
+      std::cout << "caught LIMIX exception: " << e.what() << "\n";
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
       return NULL;
     } catch (...) {
-      std::cout << "caught: unknown "<< "\n";
+      std::cout << "caught: unknown exception"<< "\n";
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
@@ -105185,6 +107478,9 @@ static void *_p_std__shared_ptrT_limix__CGPkronSum_tTo_p_std__shared_ptrT_limix_
     *newmemory = SWIG_CAST_NEW_MEMORY;
     return (void *) new std::shared_ptr< limix::CGPbase >(*(std::shared_ptr< limix::CGPkronSum > *)x);
 }
+static void *_p_limix__CGPMixExceptionTo_p_std__exception(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((std::exception *)  ((limix::CGPMixException *) x));
+}
 static void *_p_limix__CSingleTraitTermTo_p_limix__AVarianceTerm(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::AVarianceTerm *)  ((limix::CSingleTraitTerm *) x));
 }
@@ -105351,6 +107647,7 @@ static swig_type_info _swigt__p_std__allocatorT_VectorXi_t = {"_p_std__allocator
 static swig_type_info _swigt__p_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t = {"_p_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t", "std::map< std::string,MatrixXd >::allocator_type *|std::allocator< std::pair< std::string const,MatrixXd > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__allocatorT_std__pairT_std__string_const_stringVec_t_t = {"_p_std__allocatorT_std__pairT_std__string_const_stringVec_t_t", "std::allocator< std::pair< std::string const,stringVec > > *|std::map< std::string,stringVec >::allocator_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__allocatorT_std__string_t = {"_p_std__allocatorT_std__string_t", "std::vector< std::string >::allocator_type *|std::allocator< std::string > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__exception = {"_p_std__exception", "std::exception *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__invalid_argument = {"_p_std__invalid_argument", "std::invalid_argument *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__lessT_std__string_t = {"_p_std__lessT_std__string_t", "std::less< std::string > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t = {"_p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t", "std::map< std::string,MatrixXd,std::less< std::string >,std::allocator< std::pair< std::string const,MatrixXd > > > *|std::map< std::string,MatrixXd > *", 0, 0, (void*)0, 0};
@@ -105535,6 +107832,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t,
   &_swigt__p_std__allocatorT_std__pairT_std__string_const_stringVec_t_t,
   &_swigt__p_std__allocatorT_std__string_t,
+  &_swigt__p_std__exception,
   &_swigt__p_std__invalid_argument,
   &_swigt__p_std__lessT_std__string_t,
   &_swigt__p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t,
@@ -105719,6 +108017,7 @@ static swig_cast_info _swigc__p_std__allocatorT_VectorXi_t[] = {  {&_swigt__p_st
 static swig_cast_info _swigc__p_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t[] = {  {&_swigt__p_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__allocatorT_std__pairT_std__string_const_stringVec_t_t[] = {  {&_swigt__p_std__allocatorT_std__pairT_std__string_const_stringVec_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__allocatorT_std__string_t[] = {  {&_swigt__p_std__allocatorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__exception[] = {  {&_swigt__p_std__exception, 0, 0, 0},  {&_swigt__p_limix__CGPMixException, _p_limix__CGPMixExceptionTo_p_std__exception, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__invalid_argument[] = {  {&_swigt__p_std__invalid_argument, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__lessT_std__string_t[] = {  {&_swigt__p_std__lessT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t[] = {  {&_swigt__p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t, 0, 0, 0},  {&_swigt__p_limix__CGPHyperParams, _p_limix__CGPHyperParamsTo_p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t, 0, 0},{0, 0, 0, 0}};
@@ -105903,6 +108202,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t,
   _swigc__p_std__allocatorT_std__pairT_std__string_const_stringVec_t_t,
   _swigc__p_std__allocatorT_std__string_t,
+  _swigc__p_std__exception,
   _swigc__p_std__invalid_argument,
   _swigc__p_std__lessT_std__string_t,
   _swigc__p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t,
