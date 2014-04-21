@@ -41,7 +41,7 @@ void slice(const Eigen::PlainObjectBase<DerivedX> & m1,const MatrixXb& Iselect, 
 	if (Iselect.cols()==1)
 	{
 		if (Iselect.rows()!=m1.rows())
-			throw CGPMixException("Slicing operator needs to be N x 1 or 1 x M if m1 is an N x M matrix");
+			throw CLimixException("Slicing operator needs to be N x 1 or 1 x M if m1 is an N x M matrix");
 		//slice along the row dimension
 		muint_t rc = 0;
 		bool v;
@@ -60,7 +60,7 @@ void slice(const Eigen::PlainObjectBase<DerivedX> & m1,const MatrixXb& Iselect, 
 	else if (Iselect.rows()==1)
 	{
 		if (Iselect.cols()!=m1.cols())
-			throw CGPMixException("Slicing operator needs to be N x 1 or 1 x M if m1 is an N x M matrix");
+			throw CLimixException("Slicing operator needs to be N x 1 or 1 x M if m1 is an N x M matrix");
 		muint_t cc = 0;
 		for (muint_t ic=0;ic<(muint_t)Iselect.cols();++ic)
 			if(Iselect(0,ic)>0)
@@ -72,7 +72,7 @@ void slice(const Eigen::PlainObjectBase<DerivedX> & m1,const MatrixXb& Iselect, 
 		out.conservativeResize(m1.rows(),cc);
 	}else
 	{
-		throw CGPMixException("Slicing operator needs to be N x 1 or 1 x M if m1 is an N x M matrix");
+		throw CLimixException("Slicing operator needs to be N x 1 or 1 x M if m1 is an N x M matrix");
 	}
 }
 
@@ -166,7 +166,7 @@ inline void AexpandMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::Mat
 	//0. check consistencey
 	if ((filter_row.count()!=m.rows()) || (filter_col.count()!=m.cols()))
 	{
-		throw CGPMixException("expandMask: filter and array inconsistent");
+		throw CLimixException("expandMask: filter and array inconsistent");
 	}
 
 	//1. expand out array
@@ -194,7 +194,7 @@ inline void AfilterMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::Mat
 	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
 	if ((filter_row.rows()!=m.rows()) || (filter_col.rows()!=m.cols()))
 	{
-		throw CGPMixException("expandMask: filter and array inconsistent");
+		throw CLimixException("expandMask: filter and array inconsistent");
 	}
 	//1. reshape result matrix according to filter:
 	muint_t num_rows = filter_row.count();
@@ -460,7 +460,7 @@ inline mfloat_t getVarianceK(const Eigen::MatrixBase<Derived1> & K_)
 	//Eigen::MatrixBase<Derived1>& K = const_cast< Eigen::MatrixBase<Derived1>& >(K);
 	//ensure that it is a square matrix:
 	if (K_.rows()!=K_.cols())
-		throw CGPMixException("Kernel scaling requires square kernel matrix");
+		throw CLimixException("Kernel scaling requires square kernel matrix");
 
 	//diagonal
 	mfloat_t c = K_.trace();

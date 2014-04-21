@@ -18,7 +18,7 @@ inline void scale_K(const Eigen::MatrixBase<Derived1> & K_)
 	//ensure that it is a square matrix:
 	if (K.rows()!=K.cols())
 	{
-		throw CGPMixException("Kernel scaling requires square kernel matrix");
+		throw CLimixException("Kernel scaling requires square kernel matrix");
 	}
 
 	//diagonal
@@ -70,7 +70,7 @@ void CVqtl::setPheno(const MatrixXd& pheno)
 {
 	if (pheno.cols()!=1)
 	{
-		throw CGPMixException("Currently, CVqtl can only handle univariate phenotypes which need to be of shpae [N x 1]");
+		throw CLimixException("Currently, CVqtl can only handle univariate phenotypes which need to be of shpae [N x 1]");
 	}
 
 	this->pheno = pheno;
@@ -90,7 +90,7 @@ void CVqtl::fitVariances(MatrixXd* out,const MatrixXi& snp_index)
 {
 	if ((snp_index.cols()!=2) || (snp_index.rows()==0))
 	{
-		throw CGPMixException("fit function needs a list with matrix indes of size [N x 2]");
+		throw CLimixException("fit function needs a list with matrix indes of size [N x 2]");
 	}
 
 	//0. start covaraince fucntion

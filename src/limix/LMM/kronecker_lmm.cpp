@@ -30,14 +30,14 @@ void CKroneckerLMM::process() {
 	//if (num_terms!=coldesign0.size() || num_terms!=coldesignU0.size() || num_terms!=rowdesign0.size() || num_terms!=Urowdesign0.size())
 	if (num_terms!=coldesign0.size() || num_terms!=rowdesign0.size() )
 	{
-		throw CGPMixException("number terms in background model inconsistent");
+		throw CLimixException("number terms in background model inconsistent");
 	}
 	for(muint_t c=0;c<rowdesign0.size();++c)
 	{
 		//if (P!=coldesign0[c].cols() || P!=coldesignU0[P].cols() || N!=rowdesign0[c].rows() || N!=Urowdesign0[c].rows())
 		if (P!=(muint_t)coldesign0[c].cols() || N!=(muint_t)rowdesign0[c].rows() )
 		{
-			throw CGPMixException("dimensions in background model inconsistent");
+			throw CLimixException("dimensions in background model inconsistent");
 		}
 	}
 
@@ -365,33 +365,33 @@ void CKroneckerLMM::updateDecomposition()  {
     //this->num_covs = covs.cols();
 
     if (num_samples==0)
-        throw CGPMixException("LMM requires a non-zero sample size");
+        throw CLimixException("LMM requires a non-zero sample size");
 
     if (num_snps==0)
-        throw CGPMixException("LMM requires non-zero SNPs");
+        throw CLimixException("LMM requires non-zero SNPs");
 
     if (num_pheno==0)
-        throw CGPMixException("LMM requires non-zero phenotypes");
+        throw CLimixException("LMM requires non-zero phenotypes");
 
     if(!(num_samples == (muint_t) pheno.rows()) || !(num_samples == (muint_t) snps.rows()) )
-        throw CGPMixException("phenotypes and SNP dimensions inconsistent");
+        throw CLimixException("phenotypes and SNP dimensions inconsistent");
 
     //if(!num_samples == covs.rows())
-    //    throw CGPMixException("covariates and SNP dimensions inconsistent");
+    //    throw CLimixException("covariates and SNP dimensions inconsistent");
 
     //decomposition of K//should be a Cholesky for speed
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver2c(K2c);
     this->U2c = eigensolver2c.eigenvectors();
     this->S2c = eigensolver2c.eigenvalues();
 	if (!(this->S2c(0)>1e-12)){
-		throw CGPMixException("The column covariance of the second covariance term has to be full rank, but is not.");
+		throw CLimixException("The column covariance of the second covariance term has to be full rank, but is not.");
 	}
 
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver2r(K2r);
     this->U2r = eigensolver2r.eigenvectors();
     this->S2r = eigensolver2r.eigenvalues();
 	if (!(this->S2r(0)>1e-12)){
-		throw CGPMixException("The row covariance of the second covariance term has to be full rank, but is not.");
+		throw CLimixException("The row covariance of the second covariance term has to be full rank, but is not.");
 	}
         
 	this->Rrot = this->U2r;

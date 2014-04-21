@@ -38,7 +38,7 @@ void AMultiCF::setCovariance(muint_t i, PCovarianceFunction covar)
 	//check this is witin ther permitted range:
 	if(i>numMaxCovariances)
 	{
-		throw CGPMixException("AMultiCF: number of covariances limited.");
+		throw CLimixException("AMultiCF: number of covariances limited.");
 	}
 	vecCovariances[i] = covar;
 }
@@ -52,7 +52,7 @@ void AMultiCF::addCovariance(PCovarianceFunction covar)
 {
 	if(vecCovariances.size()+1>numMaxCovariances)
 	{
-		throw CGPMixException("AMultiCF: number of covariances limited.");
+		throw CLimixException("AMultiCF: number of covariances limited.");
 	}
 	vecCovariances.push_back(covar);
 }
@@ -85,7 +85,7 @@ muint_t AMultiCF::getNumberParams() const
 
 void AMultiCF::setNumberDimensions(muint_t numberDimensions) 
 		{
-	throw CGPMixException("Multiple covariance functions do not support setting X dimensions. Set dimensions of member covariance functions instead.");
+	throw CLimixException("Multiple covariance functions do not support setting X dimensions. Set dimensions of member covariance functions instead.");
 		}
 
 
@@ -115,13 +115,13 @@ void AMultiCF::setXcol(const CovarInput& X,muint_t col)
 	{
 		std::ostringstream os;
 		os << "setXcol out of range. Current X:"<<col<< "..."<<col+X.cols()<<" own:"<<this->getNumberDimensions() <<")";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	if (X.cols()>1)
 	{
 		std::ostringstream os;
 		os << "setXcol (Combinator CF) only suports setting individual columns" << "\n";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	muint_t c0=0;
 	muint_t cols;
@@ -406,7 +406,7 @@ void CSumCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const
 				{
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),this->Kdim(),0);
 	muint_t c0=0;
@@ -430,7 +430,7 @@ void CSumCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const
 	{
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),0);
 	muint_t c0=0;
@@ -657,7 +657,7 @@ void CLinCombCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const
 {
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),this->Kdim(),0);
 	muint_t c0=0;
@@ -682,7 +682,7 @@ void CLinCombCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const
 	{
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),0);
 	muint_t c0=0;
@@ -911,7 +911,7 @@ void CProductCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const
 {
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),this->Kdim(),1.0);
 	muint_t c0=0;
@@ -935,7 +935,7 @@ void CProductCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const
 	{
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),1.0);
 	muint_t c0=0;

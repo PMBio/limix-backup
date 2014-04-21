@@ -2974,26 +2974,26 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_limix__CGPCholCache swig_types[34]
 #define SWIGTYPE_p_limix__CGPHyperParams swig_types[35]
 #define SWIGTYPE_p_limix__CGPKroneckerCache swig_types[36]
-#define SWIGTYPE_p_limix__CGPMixException swig_types[37]
-#define SWIGTYPE_p_limix__CGPSum swig_types[38]
-#define SWIGTYPE_p_limix__CGPSumCache swig_types[39]
-#define SWIGTYPE_p_limix__CGPbase swig_types[40]
-#define SWIGTYPE_p_limix__CGPkronSum swig_types[41]
-#define SWIGTYPE_p_limix__CGPkronSumCache swig_types[42]
-#define SWIGTYPE_p_limix__CGPkronecker swig_types[43]
-#define SWIGTYPE_p_limix__CGPopt swig_types[44]
-#define SWIGTYPE_p_limix__CGenotypeBlock swig_types[45]
-#define SWIGTYPE_p_limix__CHeaderMap swig_types[46]
-#define SWIGTYPE_p_limix__CInteractLMM swig_types[47]
-#define SWIGTYPE_p_limix__CKroneckerCF swig_types[48]
-#define SWIGTYPE_p_limix__CKroneckerLMM swig_types[49]
-#define SWIGTYPE_p_limix__CKroneckerMean swig_types[50]
-#define SWIGTYPE_p_limix__CLMM swig_types[51]
-#define SWIGTYPE_p_limix__CLMMCore swig_types[52]
-#define SWIGTYPE_p_limix__CLMMKroneckerCore swig_types[53]
-#define SWIGTYPE_p_limix__CLikNormalIso swig_types[54]
-#define SWIGTYPE_p_limix__CLikNormalNULL swig_types[55]
-#define SWIGTYPE_p_limix__CLikNormalSVD swig_types[56]
+#define SWIGTYPE_p_limix__CGPSum swig_types[37]
+#define SWIGTYPE_p_limix__CGPSumCache swig_types[38]
+#define SWIGTYPE_p_limix__CGPbase swig_types[39]
+#define SWIGTYPE_p_limix__CGPkronSum swig_types[40]
+#define SWIGTYPE_p_limix__CGPkronSumCache swig_types[41]
+#define SWIGTYPE_p_limix__CGPkronecker swig_types[42]
+#define SWIGTYPE_p_limix__CGPopt swig_types[43]
+#define SWIGTYPE_p_limix__CGenotypeBlock swig_types[44]
+#define SWIGTYPE_p_limix__CHeaderMap swig_types[45]
+#define SWIGTYPE_p_limix__CInteractLMM swig_types[46]
+#define SWIGTYPE_p_limix__CKroneckerCF swig_types[47]
+#define SWIGTYPE_p_limix__CKroneckerLMM swig_types[48]
+#define SWIGTYPE_p_limix__CKroneckerMean swig_types[49]
+#define SWIGTYPE_p_limix__CLMM swig_types[50]
+#define SWIGTYPE_p_limix__CLMMCore swig_types[51]
+#define SWIGTYPE_p_limix__CLMMKroneckerCore swig_types[52]
+#define SWIGTYPE_p_limix__CLikNormalIso swig_types[53]
+#define SWIGTYPE_p_limix__CLikNormalNULL swig_types[54]
+#define SWIGTYPE_p_limix__CLikNormalSVD swig_types[55]
+#define SWIGTYPE_p_limix__CLimixException swig_types[56]
 #define SWIGTYPE_p_limix__CLinCombCF swig_types[57]
 #define SWIGTYPE_p_limix__CLinearMean swig_types[58]
 #define SWIGTYPE_p_limix__CLowRankCF swig_types[59]
@@ -7013,7 +7013,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_iterator(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (swig::SwigPyIterator *)std_vector_Sl_MatrixXd_Sg__iterator(arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7046,7 +7046,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___nonzero__(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (bool)std_vector_Sl_MatrixXd_Sg____nonzero__((std::vector< MatrixXd > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7079,7 +7079,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___bool__(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (bool)std_vector_Sl_MatrixXd_Sg____bool__((std::vector< MatrixXd > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7112,7 +7112,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___len__(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = std_vector_Sl_MatrixXd_Sg____len__((std::vector< MatrixXd > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7151,7 +7151,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_pop(PyObject *SWIGUNUSEDPARM(self), PyObj
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7211,7 +7211,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___getslice__(PyObject *SWIGUNUSEDPARM(sel
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7284,7 +7284,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___setslice____SWIG_0(PyObject *SWIGUNUSED
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7345,7 +7345,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___setslice____SWIG_1(PyObject *SWIGUNUSED
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7468,7 +7468,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___delslice__(PyObject *SWIGUNUSEDPARM(sel
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7515,7 +7515,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___delitem____SWIG_0(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7565,7 +7565,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___getitem____SWIG_0(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7628,7 +7628,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___setitem____SWIG_0(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7679,7 +7679,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___setitem____SWIG_1(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7728,7 +7728,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___delitem____SWIG_1(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7823,7 +7823,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___getitem____SWIG_1(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -7989,7 +7989,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec___setitem____SWIG_2(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8163,7 +8163,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_append(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       std_vector_Sl_MatrixXd_Sg__append(arg1,(MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8187,7 +8187,7 @@ SWIGINTERN PyObject *_wrap_new_MatrixXdVec__SWIG_0(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (std::vector< MatrixXd > *)new std::vector< MatrixXd >();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8225,7 +8225,7 @@ SWIGINTERN PyObject *_wrap_new_MatrixXdVec__SWIG_1(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (std::vector< MatrixXd > *)new std::vector< MatrixXd >((std::vector< MatrixXd > const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8260,7 +8260,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_empty(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (bool)((std::vector< MatrixXd > const *)arg1)->empty();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8293,7 +8293,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_size(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = ((std::vector< MatrixXd > const *)arg1)->size();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8325,7 +8325,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_clear(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->clear();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8369,7 +8369,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_swap(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->swap(*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8402,7 +8402,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_get_allocator(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = ((std::vector< MatrixXd > const *)arg1)->get_allocator();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8435,7 +8435,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_begin(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (arg1)->begin();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8469,7 +8469,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_end(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (arg1)->end();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8503,7 +8503,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_rbegin(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (arg1)->rbegin();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8537,7 +8537,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_rend(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (arg1)->rend();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8571,7 +8571,7 @@ SWIGINTERN PyObject *_wrap_new_MatrixXdVec__SWIG_2(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (std::vector< MatrixXd > *)new std::vector< MatrixXd >(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8603,7 +8603,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_pop_back(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->pop_back();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8644,7 +8644,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_resize__SWIG_0(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->resize(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8692,7 +8692,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_erase__SWIG_0(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (arg1)->erase(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8756,7 +8756,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_erase__SWIG_1(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (arg1)->erase(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -8913,7 +8913,7 @@ SWIGINTERN PyObject *_wrap_new_MatrixXdVec__SWIG_3(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (std::vector< MatrixXd > *)new std::vector< MatrixXd >(arg1,(std::vector< MatrixXd >::value_type const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9075,7 +9075,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_push_back(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->push_back((std::vector< MatrixXd >::value_type const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9108,7 +9108,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_front(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (std::vector< MatrixXd >::value_type *) &((std::vector< MatrixXd > const *)arg1)->front();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9141,7 +9141,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_back(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (std::vector< MatrixXd >::value_type *) &((std::vector< MatrixXd > const *)arg1)->back();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9254,7 +9254,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_assign(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->assign(arg2,(std::vector< MatrixXd >::value_type const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9367,7 +9367,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_resize__SWIG_1(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->resize(arg2,(std::vector< MatrixXd >::value_type const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9540,7 +9540,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_insert__SWIG_0(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (arg1)->insert(arg2,(std::vector< MatrixXd >::value_type const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9669,7 +9669,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_insert__SWIG_1(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->insert(arg2,arg3,(std::vector< MatrixXd >::value_type const &)*arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9772,7 +9772,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_reserve(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->reserve(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9805,7 +9805,7 @@ SWIGINTERN PyObject *_wrap_MatrixXdVec_capacity(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = ((std::vector< MatrixXd > const *)arg1)->capacity();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9837,7 +9837,7 @@ SWIGINTERN PyObject *_wrap_delete_MatrixXdVec(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       delete arg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9879,7 +9879,7 @@ SWIGINTERN PyObject *_wrap_StringVec_iterator(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (swig::SwigPyIterator *)std_vector_Sl_std_string_Sg__iterator(arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9912,7 +9912,7 @@ SWIGINTERN PyObject *_wrap_StringVec___nonzero__(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (bool)std_vector_Sl_std_string_Sg____nonzero__((std::vector< std::string > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9945,7 +9945,7 @@ SWIGINTERN PyObject *_wrap_StringVec___bool__(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (bool)std_vector_Sl_std_string_Sg____bool__((std::vector< std::string > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -9978,7 +9978,7 @@ SWIGINTERN PyObject *_wrap_StringVec___len__(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = std_vector_Sl_std_string_Sg____len__((std::vector< std::string > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10017,7 +10017,7 @@ SWIGINTERN PyObject *_wrap_StringVec_pop(PyObject *SWIGUNUSEDPARM(self), PyObjec
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10077,7 +10077,7 @@ SWIGINTERN PyObject *_wrap_StringVec___getslice__(PyObject *SWIGUNUSEDPARM(self)
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10150,7 +10150,7 @@ SWIGINTERN PyObject *_wrap_StringVec___setslice____SWIG_0(PyObject *SWIGUNUSEDPA
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10211,7 +10211,7 @@ SWIGINTERN PyObject *_wrap_StringVec___setslice____SWIG_1(PyObject *SWIGUNUSEDPA
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10334,7 +10334,7 @@ SWIGINTERN PyObject *_wrap_StringVec___delslice__(PyObject *SWIGUNUSEDPARM(self)
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10381,7 +10381,7 @@ SWIGINTERN PyObject *_wrap_StringVec___delitem____SWIG_0(PyObject *SWIGUNUSEDPAR
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10431,7 +10431,7 @@ SWIGINTERN PyObject *_wrap_StringVec___getitem____SWIG_0(PyObject *SWIGUNUSEDPAR
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10494,7 +10494,7 @@ SWIGINTERN PyObject *_wrap_StringVec___setitem____SWIG_0(PyObject *SWIGUNUSEDPAR
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10545,7 +10545,7 @@ SWIGINTERN PyObject *_wrap_StringVec___setitem____SWIG_1(PyObject *SWIGUNUSEDPAR
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10594,7 +10594,7 @@ SWIGINTERN PyObject *_wrap_StringVec___delitem____SWIG_1(PyObject *SWIGUNUSEDPAR
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10689,7 +10689,7 @@ SWIGINTERN PyObject *_wrap_StringVec___getitem____SWIG_1(PyObject *SWIGUNUSEDPAR
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10797,7 +10797,7 @@ SWIGINTERN PyObject *_wrap_StringVec___setitem____SWIG_2(PyObject *SWIGUNUSEDPAR
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10914,7 +10914,7 @@ SWIGINTERN PyObject *_wrap_StringVec_append(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       std_vector_Sl_std_string_Sg__append(arg1,(std::string const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10940,7 +10940,7 @@ SWIGINTERN PyObject *_wrap_new_StringVec__SWIG_0(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (std::vector< std::string > *)new std::vector< std::string >();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -10978,7 +10978,7 @@ SWIGINTERN PyObject *_wrap_new_StringVec__SWIG_1(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (std::vector< std::string > *)new std::vector< std::string >((std::vector< std::string > const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11013,7 +11013,7 @@ SWIGINTERN PyObject *_wrap_StringVec_empty(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (bool)((std::vector< std::string > const *)arg1)->empty();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11046,7 +11046,7 @@ SWIGINTERN PyObject *_wrap_StringVec_size(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = ((std::vector< std::string > const *)arg1)->size();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11078,7 +11078,7 @@ SWIGINTERN PyObject *_wrap_StringVec_clear(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (arg1)->clear();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11122,7 +11122,7 @@ SWIGINTERN PyObject *_wrap_StringVec_swap(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       (arg1)->swap(*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11155,7 +11155,7 @@ SWIGINTERN PyObject *_wrap_StringVec_get_allocator(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = ((std::vector< std::string > const *)arg1)->get_allocator();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11188,7 +11188,7 @@ SWIGINTERN PyObject *_wrap_StringVec_begin(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (arg1)->begin();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11222,7 +11222,7 @@ SWIGINTERN PyObject *_wrap_StringVec_end(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       result = (arg1)->end();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11256,7 +11256,7 @@ SWIGINTERN PyObject *_wrap_StringVec_rbegin(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (arg1)->rbegin();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11290,7 +11290,7 @@ SWIGINTERN PyObject *_wrap_StringVec_rend(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = (arg1)->rend();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11324,7 +11324,7 @@ SWIGINTERN PyObject *_wrap_new_StringVec__SWIG_2(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (std::vector< std::string > *)new std::vector< std::string >(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11356,7 +11356,7 @@ SWIGINTERN PyObject *_wrap_StringVec_pop_back(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->pop_back();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11397,7 +11397,7 @@ SWIGINTERN PyObject *_wrap_StringVec_resize__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->resize(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11445,7 +11445,7 @@ SWIGINTERN PyObject *_wrap_StringVec_erase__SWIG_0(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (arg1)->erase(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11509,7 +11509,7 @@ SWIGINTERN PyObject *_wrap_StringVec_erase__SWIG_1(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (arg1)->erase(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11608,7 +11608,7 @@ SWIGINTERN PyObject *_wrap_new_StringVec__SWIG_3(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (std::vector< std::string > *)new std::vector< std::string >(arg1,(std::vector< std::string >::value_type const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11713,7 +11713,7 @@ SWIGINTERN PyObject *_wrap_StringVec_push_back(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->push_back((std::vector< std::string >::value_type const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11748,7 +11748,7 @@ SWIGINTERN PyObject *_wrap_StringVec_front(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (std::vector< std::string >::value_type *) &((std::vector< std::string > const *)arg1)->front();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11781,7 +11781,7 @@ SWIGINTERN PyObject *_wrap_StringVec_back(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = (std::vector< std::string >::value_type *) &((std::vector< std::string > const *)arg1)->back();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11836,7 +11836,7 @@ SWIGINTERN PyObject *_wrap_StringVec_assign(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->assign(arg2,(std::vector< std::string >::value_type const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -11893,7 +11893,7 @@ SWIGINTERN PyObject *_wrap_StringVec_resize__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->resize(arg2,(std::vector< std::string >::value_type const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12009,7 +12009,7 @@ SWIGINTERN PyObject *_wrap_StringVec_insert__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (arg1)->insert(arg2,(std::vector< std::string >::value_type const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12082,7 +12082,7 @@ SWIGINTERN PyObject *_wrap_StringVec_insert__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->insert(arg2,arg3,(std::vector< std::string >::value_type const &)*arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12185,7 +12185,7 @@ SWIGINTERN PyObject *_wrap_StringVec_reserve(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->reserve(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12218,7 +12218,7 @@ SWIGINTERN PyObject *_wrap_StringVec_capacity(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = ((std::vector< std::string > const *)arg1)->capacity();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12250,7 +12250,7 @@ SWIGINTERN PyObject *_wrap_delete_StringVec(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       delete arg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12293,7 +12293,7 @@ SWIGINTERN PyObject *_wrap_new_StringMatrixMap__SWIG_0(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (std::map< std::string,MatrixXd > *)new std::map< std::string,MatrixXd >((std::less< std::string > const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12343,7 +12343,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_iterator(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (swig::SwigPyIterator *)std_map_Sl_std_string_Sc_MatrixXd_Sg__iterator(arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12388,7 +12388,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___nonzero__(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (bool)std_map_Sl_std_string_Sc_MatrixXd_Sg____nonzero__((std::map< std::string,MatrixXd > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12433,7 +12433,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___bool__(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (bool)std_map_Sl_std_string_Sc_MatrixXd_Sg____bool__((std::map< std::string,MatrixXd > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12478,7 +12478,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___len__(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = std_map_Sl_std_string_Sc_MatrixXd_Sg____len__((std::map< std::string,MatrixXd > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12543,7 +12543,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___getitem__(PyObject *SWIGUNUSEDPARM(
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12609,7 +12609,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___delitem__(PyObject *SWIGUNUSEDPARM(
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12670,7 +12670,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_has_key(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (bool)std_map_Sl_std_string_Sc_MatrixXd_Sg__has_key((std::map< std::string,MatrixXd > const *)arg1,(std::string const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12717,7 +12717,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_keys(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_MatrixXd_Sg__keys(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12762,7 +12762,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_values(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_MatrixXd_Sg__values(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12807,7 +12807,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_items(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_MatrixXd_Sg__items(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12866,7 +12866,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___contains__(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (bool)std_map_Sl_std_string_Sc_MatrixXd_Sg____contains__(arg1,(std::string const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12915,7 +12915,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_key_iterator(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (swig::SwigPyIterator *)std_map_Sl_std_string_Sc_MatrixXd_Sg__key_iterator(arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -12962,7 +12962,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_value_iterator(PyObject *SWIGUNUSEDPA
   {
     try {
       result = (swig::SwigPyIterator *)std_map_Sl_std_string_Sc_MatrixXd_Sg__value_iterator(arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13020,7 +13020,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___setitem____SWIG_0(PyObject *SWIGUNU
   {
     try {
       std_map_Sl_std_string_Sc_MatrixXd_Sg____setitem____SWIG_0(arg1,(std::string const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13158,7 +13158,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap___setitem____SWIG_1(PyObject *SWIGUNU
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13254,7 +13254,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_asdict(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (PyObject *)std_map_Sl_std_string_Sc_MatrixXd_Sg__asdict(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13278,7 +13278,7 @@ SWIGINTERN PyObject *_wrap_new_StringMatrixMap__SWIG_1(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (std::map< std::string,MatrixXd > *)new std::map< std::string,MatrixXd >();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13319,7 +13319,7 @@ SWIGINTERN PyObject *_wrap_new_StringMatrixMap__SWIG_2(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (std::map< std::string,MatrixXd > *)new std::map< std::string,MatrixXd >((std::map< std::string,MatrixXd > const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13409,7 +13409,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_empty(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (bool)((std::map< std::string,MatrixXd > const *)arg1)->empty();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13454,7 +13454,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_size(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = ((std::map< std::string,MatrixXd > const *)arg1)->size();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13498,7 +13498,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_clear(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->clear();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13564,7 +13564,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_swap(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->swap(*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13609,7 +13609,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_get_allocator(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = ((std::map< std::string,MatrixXd > const *)arg1)->get_allocator();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13654,7 +13654,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_begin(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (arg1)->begin();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13700,7 +13700,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_end(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (arg1)->end();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13746,7 +13746,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_rbegin(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (arg1)->rbegin();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13792,7 +13792,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_rend(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (arg1)->rend();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13852,7 +13852,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_erase__SWIG_0(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = (arg1)->erase((std::map< std::string,MatrixXd >::key_type const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13913,7 +13913,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_count(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = ((std::map< std::string,MatrixXd > const *)arg1)->count((std::map< std::string,MatrixXd >::key_type const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -13974,7 +13974,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_erase__SWIG_1(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->erase(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14048,7 +14048,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_erase__SWIG_2(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->erase(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14171,7 +14171,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_find(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (arg1)->find((std::map< std::string,MatrixXd >::key_type const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14233,7 +14233,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_lower_bound(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (arg1)->lower_bound((std::map< std::string,MatrixXd >::key_type const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14295,7 +14295,7 @@ SWIGINTERN PyObject *_wrap_StringMatrixMap_upper_bound(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (arg1)->upper_bound((std::map< std::string,MatrixXd >::key_type const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14342,7 +14342,7 @@ SWIGINTERN PyObject *_wrap_delete_StringMatrixMap(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14384,7 +14384,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_iterator(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (swig::SwigPyIterator *)std_vector_Sl_VectorXi_Sg__iterator(arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14417,7 +14417,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___nonzero__(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (bool)std_vector_Sl_VectorXi_Sg____nonzero__((std::vector< VectorXi > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14450,7 +14450,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___bool__(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (bool)std_vector_Sl_VectorXi_Sg____bool__((std::vector< VectorXi > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14483,7 +14483,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___len__(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = std_vector_Sl_VectorXi_Sg____len__((std::vector< VectorXi > const *)arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14522,7 +14522,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_pop(PyObject *SWIGUNUSEDPARM(self), PyObj
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14582,7 +14582,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___getslice__(PyObject *SWIGUNUSEDPARM(sel
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14655,7 +14655,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___setslice____SWIG_0(PyObject *SWIGUNUSED
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14716,7 +14716,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___setslice____SWIG_1(PyObject *SWIGUNUSED
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14839,7 +14839,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___delslice__(PyObject *SWIGUNUSEDPARM(sel
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14886,7 +14886,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___delitem____SWIG_0(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14936,7 +14936,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___getitem____SWIG_0(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -14999,7 +14999,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___setitem____SWIG_0(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15050,7 +15050,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___setitem____SWIG_1(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15099,7 +15099,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___delitem____SWIG_1(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_ValueError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15194,7 +15194,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___getitem____SWIG_1(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15360,7 +15360,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec___setitem____SWIG_2(PyObject *SWIGUNUSEDP
         SWIG_exception_fail(SWIG_IndexError, (&_e)->what());
       }
       
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15533,7 +15533,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_append(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       std_vector_Sl_VectorXi_Sg__append(arg1,(VectorXi const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15557,7 +15557,7 @@ SWIGINTERN PyObject *_wrap_new_VectorXiVec__SWIG_0(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (std::vector< VectorXi > *)new std::vector< VectorXi >();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15595,7 +15595,7 @@ SWIGINTERN PyObject *_wrap_new_VectorXiVec__SWIG_1(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (std::vector< VectorXi > *)new std::vector< VectorXi >((std::vector< VectorXi > const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15630,7 +15630,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_empty(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (bool)((std::vector< VectorXi > const *)arg1)->empty();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15663,7 +15663,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_size(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = ((std::vector< VectorXi > const *)arg1)->size();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15695,7 +15695,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_clear(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->clear();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15739,7 +15739,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_swap(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->swap(*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15772,7 +15772,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_get_allocator(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = ((std::vector< VectorXi > const *)arg1)->get_allocator();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15805,7 +15805,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_begin(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (arg1)->begin();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15839,7 +15839,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_end(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (arg1)->end();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15873,7 +15873,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_rbegin(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (arg1)->rbegin();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15907,7 +15907,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_rend(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (arg1)->rend();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15941,7 +15941,7 @@ SWIGINTERN PyObject *_wrap_new_VectorXiVec__SWIG_2(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (std::vector< VectorXi > *)new std::vector< VectorXi >(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -15973,7 +15973,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_pop_back(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->pop_back();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -16014,7 +16014,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_resize__SWIG_0(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->resize(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -16062,7 +16062,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_erase__SWIG_0(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (arg1)->erase(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -16126,7 +16126,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_erase__SWIG_1(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (arg1)->erase(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -16283,7 +16283,7 @@ SWIGINTERN PyObject *_wrap_new_VectorXiVec__SWIG_3(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (std::vector< VectorXi > *)new std::vector< VectorXi >(arg1,(std::vector< VectorXi >::value_type const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -16444,7 +16444,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_push_back(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->push_back((std::vector< VectorXi >::value_type const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -16477,7 +16477,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_front(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (std::vector< VectorXi >::value_type *) &((std::vector< VectorXi > const *)arg1)->front();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -16510,7 +16510,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_back(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (std::vector< VectorXi >::value_type *) &((std::vector< VectorXi > const *)arg1)->back();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -16623,7 +16623,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_assign(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->assign(arg2,(std::vector< VectorXi >::value_type const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -16736,7 +16736,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_resize__SWIG_1(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->resize(arg2,(std::vector< VectorXi >::value_type const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -16908,7 +16908,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_insert__SWIG_0(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (arg1)->insert(arg2,(std::vector< VectorXi >::value_type const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17037,7 +17037,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_insert__SWIG_1(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->insert(arg2,arg3,(std::vector< VectorXi >::value_type const &)*arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17138,7 +17138,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_reserve(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->reserve(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17171,7 +17171,7 @@ SWIGINTERN PyObject *_wrap_VectorXiVec_capacity(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = ((std::vector< VectorXi > const *)arg1)->capacity();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17203,7 +17203,7 @@ SWIGINTERN PyObject *_wrap_delete_VectorXiVec(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       delete arg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17257,7 +17257,7 @@ SWIGINTERN PyObject *_wrap_isnan(PyObject *SWIGUNUSEDPARM(self), PyObject *args)
   {
     try {
       result = (bool)limix::isnan(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17290,7 +17290,7 @@ SWIGINTERN PyObject *_wrap_isinf(PyObject *SWIGUNUSEDPARM(self), PyObject *args)
   {
     try {
       result = (bool)limix::isinf(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17323,7 +17323,7 @@ SWIGINTERN PyObject *_wrap_exp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   {
     try {
       result = (limix::mfloat_t)limix::exp(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17356,7 +17356,7 @@ SWIGINTERN PyObject *_wrap_sqrt(PyObject *SWIGUNUSEDPARM(self), PyObject *args) 
   {
     try {
       result = (limix::mfloat_t)limix::sqrt(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17389,7 +17389,7 @@ SWIGINTERN PyObject *_wrap_log(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   {
     try {
       result = (limix::mfloat_t)limix::log(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17422,7 +17422,7 @@ SWIGINTERN PyObject *_wrap_inverse(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
   {
     try {
       result = (limix::mfloat_t)limix::inverse(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17438,26 +17438,26 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_CGPMixException__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_CLimixException__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   PyObject * obj0 = 0 ;
-  limix::CGPMixException *result = 0 ;
+  limix::CLimixException *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:new_CGPMixException",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:new_CLimixException",&obj0)) SWIG_fail;
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj0, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "new_CGPMixException" "', argument " "1"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "new_CLimixException" "', argument " "1"" of type '" "std::string""'"); 
     }
     arg1 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
     try {
-      result = (limix::CGPMixException *)new limix::CGPMixException(arg1);
-    } catch (limix::CGPMixException& e) {
+      result = (limix::CLimixException *)new limix::CLimixException(arg1);
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17466,22 +17466,22 @@ SWIGINTERN PyObject *_wrap_new_CGPMixException__SWIG_0(PyObject *SWIGUNUSEDPARM(
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_limix__CGPMixException, SWIG_POINTER_NEW |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_limix__CLimixException, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_new_CGPMixException__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_CLimixException__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  limix::CGPMixException *result = 0 ;
+  limix::CLimixException *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)":new_CGPMixException")) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)":new_CLimixException")) SWIG_fail;
   {
     try {
-      result = (limix::CGPMixException *)new limix::CGPMixException();
-    } catch (limix::CGPMixException& e) {
+      result = (limix::CLimixException *)new limix::CLimixException();
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17490,14 +17490,14 @@ SWIGINTERN PyObject *_wrap_new_CGPMixException__SWIG_1(PyObject *SWIGUNUSEDPARM(
       SWIG_exception(SWIG_RuntimeError,"Unknown exception");
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_limix__CGPMixException, SWIG_POINTER_NEW |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_limix__CLimixException, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_new_CGPMixException(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_CLimixException(PyObject *self, PyObject *args) {
   int argc;
   PyObject *argv[2];
   int ii;
@@ -17508,44 +17508,44 @@ SWIGINTERN PyObject *_wrap_new_CGPMixException(PyObject *self, PyObject *args) {
     argv[ii] = PyTuple_GET_ITEM(args,ii);
   }
   if (argc == 0) {
-    return _wrap_new_CGPMixException__SWIG_1(self, args);
+    return _wrap_new_CLimixException__SWIG_1(self, args);
   }
   if (argc == 1) {
     int _v;
     int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
     _v = SWIG_CheckState(res);
     if (_v) {
-      return _wrap_new_CGPMixException__SWIG_0(self, args);
+      return _wrap_new_CLimixException__SWIG_0(self, args);
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_CGPMixException'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_CLimixException'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    limix::CGPMixException::CGPMixException(std::string)\n"
-    "    limix::CGPMixException::CGPMixException()\n");
+    "    limix::CLimixException::CLimixException(std::string)\n"
+    "    limix::CLimixException::CLimixException()\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_CGPMixException_what(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_CLimixException_what(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  limix::CGPMixException *arg1 = (limix::CGPMixException *) 0 ;
+  limix::CLimixException *arg1 = (limix::CLimixException *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   std::string result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:CGPMixException_what",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_limix__CGPMixException, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:CLimixException_what",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_limix__CLimixException, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CGPMixException_what" "', argument " "1"" of type '" "limix::CGPMixException *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CLimixException_what" "', argument " "1"" of type '" "limix::CLimixException *""'"); 
   }
-  arg1 = reinterpret_cast< limix::CGPMixException * >(argp1);
+  arg1 = reinterpret_cast< limix::CLimixException * >(argp1);
   {
     try {
       result = (arg1)->what();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17561,23 +17561,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_CGPMixException(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_CLimixException(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  limix::CGPMixException *arg1 = (limix::CGPMixException *) 0 ;
+  limix::CLimixException *arg1 = (limix::CLimixException *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_CGPMixException",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_limix__CGPMixException, SWIG_POINTER_DISOWN |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_CLimixException",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_limix__CLimixException, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CGPMixException" "', argument " "1"" of type '" "limix::CGPMixException *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CLimixException" "', argument " "1"" of type '" "limix::CLimixException *""'"); 
   }
-  arg1 = reinterpret_cast< limix::CGPMixException * >(argp1);
+  arg1 = reinterpret_cast< limix::CLimixException * >(argp1);
   {
     try {
       delete arg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17593,10 +17593,10 @@ fail:
 }
 
 
-SWIGINTERN PyObject *CGPMixException_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *CLimixException_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_limix__CGPMixException, SWIG_NewClientData(obj));
+  SWIG_TypeNewClientData(SWIGTYPE_p_limix__CLimixException, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
@@ -17608,7 +17608,7 @@ SWIGINTERN PyObject *_wrap_new_CParamObject(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (limix::CParamObject *)new limix::CParamObject();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17672,7 +17672,7 @@ SWIGINTERN PyObject *_wrap_CParamObject_addSyncParent(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->addSyncParent(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17733,7 +17733,7 @@ SWIGINTERN PyObject *_wrap_CParamObject_addSyncChild(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->addSyncChild(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17794,7 +17794,7 @@ SWIGINTERN PyObject *_wrap_CParamObject_delSyncParent(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->delSyncParent(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17855,7 +17855,7 @@ SWIGINTERN PyObject *_wrap_CParamObject_delSyncChild(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->delSyncChild(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17908,7 +17908,7 @@ SWIGINTERN PyObject *_wrap_CParamObject_propagateSync__SWIG_0(PyObject *SWIGUNUS
   {
     try {
       (arg1)->propagateSync(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -17952,7 +17952,7 @@ SWIGINTERN PyObject *_wrap_CParamObject_propagateSync__SWIG_1(PyObject *SWIGUNUS
   {
     try {
       (arg1)->propagateSync();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18038,7 +18038,7 @@ SWIGINTERN PyObject *_wrap_CParamObject_isInSync(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (bool)(arg1)->isInSync();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18091,7 +18091,7 @@ SWIGINTERN PyObject *_wrap_CParamObject_setSync__SWIG_0(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->setSync(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18135,7 +18135,7 @@ SWIGINTERN PyObject *_wrap_CParamObject_setSync__SWIG_1(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->setSync();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18220,7 +18220,7 @@ SWIGINTERN PyObject *_wrap_delete_CParamObject(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18251,7 +18251,7 @@ SWIGINTERN PyObject *_wrap_new_CNamedCache(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (limix::CNamedCache *)new limix::CNamedCache();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18298,7 +18298,7 @@ SWIGINTERN PyObject *_wrap_delete_CNamedCache(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18370,7 +18370,7 @@ SWIGINTERN PyObject *_wrap_CNamedCache_set(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (arg1)->set(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18429,7 +18429,7 @@ SWIGINTERN PyObject *_wrap_CNamedCache_get(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (arg1)->get((std::string const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18482,7 +18482,7 @@ SWIGINTERN PyObject *_wrap_delete_ACovarianceFunction(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18527,7 +18527,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getName(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = ((limix::ACovarianceFunction const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18643,7 +18643,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setParams(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->setParams((limix::CovarParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18693,7 +18693,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getParams(PyObject *SWIGUNUSEDPAR
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->agetParams(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18785,7 +18785,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getParamBounds0(PyObject *SWIGUNU
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->agetParamBounds0(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -18913,7 +18913,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getParamBounds(PyObject *SWIGUNUS
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->agetParamBounds(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19173,7 +19173,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setParamBounds(PyObject *SWIGUNUS
   {
     try {
       (arg1)->setParamBounds((limix::CovarParams const &)*arg2,(limix::CovarParams const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19223,7 +19223,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getParamMask(PyObject *SWIGUNUSED
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->agetParamMask(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19375,7 +19375,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setParamMask(PyObject *SWIGUNUSED
   {
     try {
       (arg1)->setParamMask((limix::CovarParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19491,7 +19491,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setX(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19616,7 +19616,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setXcol(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->setXcol((limix::CovarInput const &)*arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19666,7 +19666,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getX(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->agetX(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19730,7 +19730,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getDimX(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (limix::muint_t)((limix::ACovarianceFunction const *)arg1)->getDimX();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19775,7 +19775,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getNumberParams(PyObject *SWIGUNU
   {
     try {
       result = (limix::muint_t)((limix::ACovarianceFunction const *)arg1)->getNumberParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19820,7 +19820,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_getNumberDimensions(PyObject *SWI
   {
     try {
       result = (limix::muint_t)((limix::ACovarianceFunction const *)arg1)->getNumberDimensions();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19873,7 +19873,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_setNumberDimensions(PyObject *SWI
   {
     try {
       (arg1)->setNumberDimensions(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19918,7 +19918,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kdim(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::muint_t)((limix::ACovarianceFunction const *)arg1)->Kdim();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -19968,7 +19968,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_K(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->aK(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -20037,7 +20037,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kdiag(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->aKdiag(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -20132,7 +20132,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kgrad_X(PyObject *SWIGUNUSEDPARM(
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->aKgrad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -20273,7 +20273,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kcross(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -20414,7 +20414,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kcross_diag(PyObject *SWIGUNUSEDP
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -20509,7 +20509,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kgrad_param(PyObject *SWIGUNUSEDP
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -20596,7 +20596,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Khess_param(PyObject *SWIGUNUSEDP
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -20746,7 +20746,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kcross_grad_X(PyObject *SWIGUNUSE
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -20824,7 +20824,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Kdiag_grad_X(PyObject *SWIGUNUSED
   {
     try {
       ((limix::ACovarianceFunction const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -20924,7 +20924,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_theta__SWI
   {
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_theta(*arg1,arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -20979,7 +20979,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_theta__SWI
   {
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_theta(*arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21025,7 +21025,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_theta__SWI
   {
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_theta(*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21161,7 +21161,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_x__SWIG_0(
   {
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_x(*arg1,arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21225,7 +21225,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_x__SWIG_1(
   {
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_x(*arg1,arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21280,7 +21280,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_x__SWIG_2(
   {
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_x(*arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21326,7 +21326,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_check_covariance_Kgrad_x__SWIG_3(
   {
     try {
       result = (bool)limix::ACovarianceFunction::check_covariance_Kgrad_x(*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21484,7 +21484,7 @@ SWIGINTERN PyObject *_wrap_ACovarianceFunction_Khess_param_num(PyObject *SWIGUNU
   {
     try {
       limix::ACovarianceFunction::aKhess_param_num(*arg1,arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21534,7 +21534,7 @@ SWIGINTERN PyObject *_wrap_new_CCovarianceFunctionCacheOld__SWIG_0(PyObject *SWI
   {
     try {
       result = (limix::CCovarianceFunctionCacheOld *)new limix::CCovarianceFunctionCacheOld();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21574,7 +21574,7 @@ SWIGINTERN PyObject *_wrap_new_CCovarianceFunctionCacheOld__SWIG_1(PyObject *SWI
   {
     try {
       result = (limix::CCovarianceFunctionCacheOld *)new limix::CCovarianceFunctionCacheOld(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21652,7 +21652,7 @@ SWIGINTERN PyObject *_wrap_delete_CCovarianceFunctionCacheOld(PyObject *SWIGUNUS
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21709,7 +21709,7 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_setCovar(PyObject *SWIGUN
   {
     try {
       (arg1)->setCovar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21770,7 +21770,7 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_addSyncChild(PyObject *SW
   {
     try {
       (arg1)->addSyncChild(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21831,7 +21831,7 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_delSyncChild(PyObject *SW
   {
     try {
       (arg1)->delSyncChild(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21876,7 +21876,7 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_getCovar(PyObject *SWIGUN
   {
     try {
       result = (arg1)->getCovar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21924,7 +21924,7 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_rgetK(PyObject *SWIGUNUSE
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetK();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -21969,7 +21969,7 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_rgetUK(PyObject *SWIGUNUS
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetUK();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22014,7 +22014,7 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_rgetSK(PyObject *SWIGUNUS
   {
     try {
       result = (VectorXd *) &(arg1)->rgetSK();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22059,7 +22059,7 @@ SWIGINTERN PyObject *_wrap_CCovarianceFunctionCacheOld_rgetCholK(PyObject *SWIGU
   {
     try {
       result = (MatrixXdChol *) &(arg1)->rgetCholK();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22099,7 +22099,7 @@ SWIGINTERN PyObject *_wrap_new_CCovLinearISO__SWIG_0(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::CCovLinearISO *)new limix::CCovLinearISO(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22126,7 +22126,7 @@ SWIGINTERN PyObject *_wrap_new_CCovLinearISO__SWIG_1(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::CCovLinearISO *)new limix::CCovLinearISO();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22205,7 +22205,7 @@ SWIGINTERN PyObject *_wrap_delete_CCovLinearISO(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22327,7 +22327,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Kcross(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CCovLinearISO const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22468,7 +22468,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Kcross_diag(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CCovLinearISO const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22563,7 +22563,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Kgrad_param(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CCovLinearISO const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22650,7 +22650,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Khess_param(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CCovLinearISO const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22800,7 +22800,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(
   {
     try {
       ((limix::CCovLinearISO const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22878,7 +22878,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CCovLinearISO const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22959,7 +22959,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISO_getName(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = ((limix::CCovLinearISO const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -22999,7 +22999,7 @@ SWIGINTERN PyObject *_wrap_new_CCovLinearARD__SWIG_0(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::CCovLinearARD *)new limix::CCovLinearARD(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -23026,7 +23026,7 @@ SWIGINTERN PyObject *_wrap_new_CCovLinearARD__SWIG_1(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::CCovLinearARD *)new limix::CCovLinearARD();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -23105,7 +23105,7 @@ SWIGINTERN PyObject *_wrap_delete_CCovLinearARD(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -23158,7 +23158,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_setNumberDimensions(PyObject *SWIGUNUSE
   {
     try {
       (arg1)->setNumberDimensions(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -23280,7 +23280,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Kcross(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CCovLinearARD const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -23421,7 +23421,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Kcross_diag(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CCovLinearARD const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -23516,7 +23516,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Kgrad_param(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CCovLinearARD const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -23603,7 +23603,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Khess_param(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CCovLinearARD const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -23753,7 +23753,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(
   {
     try {
       ((limix::CCovLinearARD const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -23831,7 +23831,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CCovLinearARD const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -23912,7 +23912,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearARD_getName(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = ((limix::CCovLinearARD const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -23963,7 +23963,7 @@ SWIGINTERN PyObject *_wrap_delete_CCovLinearISODelta(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -24085,7 +24085,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISODelta_Kcross(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CCovLinearISODelta const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -24226,7 +24226,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISODelta_Kcross_diag(PyObject *SWIGUNUSEDPA
   {
     try {
       ((limix::CCovLinearISODelta const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -24321,7 +24321,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISODelta_Kgrad_param(PyObject *SWIGUNUSEDPA
   {
     try {
       ((limix::CCovLinearISODelta const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -24408,7 +24408,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISODelta_Khess_param(PyObject *SWIGUNUSEDPA
   {
     try {
       ((limix::CCovLinearISODelta const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -24472,7 +24472,7 @@ SWIGINTERN PyObject *_wrap_CCovLinearISODelta_getName(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = ((limix::CCovLinearISODelta const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -24512,7 +24512,7 @@ SWIGINTERN PyObject *_wrap_new_CFreeFormCF(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (limix::CFreeFormCF *)new limix::CFreeFormCF(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -24559,7 +24559,7 @@ SWIGINTERN PyObject *_wrap_delete_CFreeFormCF(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -24675,7 +24675,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_setX(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -24800,7 +24800,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_setXcol(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setXcol((limix::CovarInput const &)*arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -24922,7 +24922,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CFreeFormCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -25089,7 +25089,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CFreeFormCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -25167,7 +25167,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CFreeFormCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -25248,7 +25248,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (limix::muint_t)((limix::CFreeFormCF const *)arg1)->Kdim();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -25298,7 +25298,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_agetScales(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->agetScales(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -25450,7 +25450,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_setParamsCovariance(PyObject *SWIGUNUSEDP
   {
     try {
       (arg1)->setParamsCovariance((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -25572,7 +25572,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kcross(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::CFreeFormCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -25650,7 +25650,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CFreeFormCF const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -25737,7 +25737,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_Khess_param(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CFreeFormCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -25806,7 +25806,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CFreeFormCF const *)arg1)->agetParamMask0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -25887,7 +25887,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_getName(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = ((limix::CFreeFormCF const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26003,7 +26003,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_setParamsVarCorr(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->setParamsVarCorr((limix::CovarParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26053,7 +26053,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_agetL0(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::CFreeFormCF const *)arg1)->agetL0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26131,7 +26131,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_agetL0grad_param(PyObject *SWIGUNUSEDPARM
   {
     try {
       ((limix::CFreeFormCF const *)arg1)->agetL0grad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26200,7 +26200,7 @@ SWIGINTERN PyObject *_wrap_CFreeFormCF_getIparamDiag(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CFreeFormCF const *)arg1)->agetIparamDiag(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26259,7 +26259,7 @@ SWIGINTERN PyObject *_wrap_new_CRankOneCF(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = (limix::CRankOneCF *)new limix::CRankOneCF(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26306,7 +26306,7 @@ SWIGINTERN PyObject *_wrap_delete_CRankOneCF(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26422,7 +26422,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_setX(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26547,7 +26547,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_setXcol(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setXcol((limix::CovarInput const &)*arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26669,7 +26669,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CRankOneCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26836,7 +26836,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CRankOneCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26914,7 +26914,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CRankOneCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -26995,7 +26995,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (limix::muint_t)((limix::CRankOneCF const *)arg1)->Kdim();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -27045,7 +27045,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_agetScales(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->agetScales(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -27197,7 +27197,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_setParamsCovariance(PyObject *SWIGUNUSEDPA
   {
     try {
       (arg1)->setParamsCovariance((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -27319,7 +27319,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       ((limix::CRankOneCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -27397,7 +27397,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CRankOneCF const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -27484,7 +27484,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_Khess_param(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CRankOneCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -27553,7 +27553,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CRankOneCF const *)arg1)->agetParamMask0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -27634,7 +27634,7 @@ SWIGINTERN PyObject *_wrap_CRankOneCF_getName(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = ((limix::CRankOneCF const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -27683,7 +27683,7 @@ SWIGINTERN PyObject *_wrap_new_CLowRankCF(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = (limix::CLowRankCF *)new limix::CLowRankCF(arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -27730,7 +27730,7 @@ SWIGINTERN PyObject *_wrap_delete_CLowRankCF(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -27846,7 +27846,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_setX(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -27971,7 +27971,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_setXcol(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setXcol((limix::CovarInput const &)*arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -28093,7 +28093,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CLowRankCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -28260,7 +28260,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CLowRankCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -28338,7 +28338,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CLowRankCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -28419,7 +28419,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (limix::muint_t)((limix::CLowRankCF const *)arg1)->Kdim();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -28469,7 +28469,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_agetScales(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->agetScales(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -28621,7 +28621,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_setParamsCovariance(PyObject *SWIGUNUSEDPA
   {
     try {
       (arg1)->setParamsCovariance((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -28743,7 +28743,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       ((limix::CLowRankCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -28821,7 +28821,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CLowRankCF const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -28908,7 +28908,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_Khess_param(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CLowRankCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -28977,7 +28977,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CLowRankCF const *)arg1)->agetParamMask0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -29058,7 +29058,7 @@ SWIGINTERN PyObject *_wrap_CLowRankCF_getName(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = ((limix::CLowRankCF const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -29161,7 +29161,7 @@ SWIGINTERN PyObject *_wrap_new_CFixedCF(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       result = (limix::CFixedCF *)new limix::CFixedCF((MatrixXd const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -29208,7 +29208,7 @@ SWIGINTERN PyObject *_wrap_delete_CFixedCF(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -29258,7 +29258,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_agetScales(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->agetScales(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -29410,7 +29410,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_setParamsCovariance(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->setParamsCovariance((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -29532,7 +29532,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       ((limix::CFixedCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -29673,7 +29673,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CFixedCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -29768,7 +29768,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CFixedCF const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -29855,7 +29855,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Khess_param(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CFixedCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30005,7 +30005,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CFixedCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30083,7 +30083,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       ((limix::CFixedCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30169,7 +30169,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_K(PyObject *SWIGUNUSEDPARM(self), PyObject *
   {
     try {
       ((limix::CFixedCF const *)arg1)->aK(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30233,7 +30233,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       result = (limix::muint_t)((limix::CFixedCF const *)arg1)->Kdim();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30283,7 +30283,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CFixedCF const *)arg1)->agetParamMask0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30435,7 +30435,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_setK0(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       (arg1)->setK0((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30551,7 +30551,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_setK0cross(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setK0cross((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30601,7 +30601,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_agetK0(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       ((limix::CFixedCF const *)arg1)->agetK0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30670,7 +30670,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_agetK0cross(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CFixedCF const *)arg1)->agetK0cross(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30805,7 +30805,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_setK0cross_diag(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->setK0cross_diag((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30855,7 +30855,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_agetK0cross_diag(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CFixedCF const *)arg1)->agetK0cross_diag(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30936,7 +30936,7 @@ SWIGINTERN PyObject *_wrap_CFixedCF_getName(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = ((limix::CFixedCF const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -30976,7 +30976,7 @@ SWIGINTERN PyObject *_wrap_new_CDiagonalCF(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (limix::CDiagonalCF *)new limix::CDiagonalCF(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -31023,7 +31023,7 @@ SWIGINTERN PyObject *_wrap_delete_CDiagonalCF(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -31139,7 +31139,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_setX(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -31264,7 +31264,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_setXcol(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setXcol((limix::CovarInput const &)*arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -31386,7 +31386,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CDiagonalCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -31553,7 +31553,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CDiagonalCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -31631,7 +31631,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CDiagonalCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -31717,7 +31717,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_agetScales(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->agetScales(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -31869,7 +31869,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_setParamsCovariance(PyObject *SWIGUNUSEDP
   {
     try {
       (arg1)->setParamsCovariance((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -31914,7 +31914,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (limix::muint_t)((limix::CDiagonalCF const *)arg1)->Kdim();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -32036,7 +32036,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kcross(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::CDiagonalCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -32114,7 +32114,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CDiagonalCF const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -32201,7 +32201,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_Khess_param(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CDiagonalCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -32270,7 +32270,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CDiagonalCF const *)arg1)->agetParamMask0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -32351,7 +32351,7 @@ SWIGINTERN PyObject *_wrap_CDiagonalCF_getName(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = ((limix::CDiagonalCF const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -32391,7 +32391,7 @@ SWIGINTERN PyObject *_wrap_new_CRank1diagCF(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (limix::CRank1diagCF *)new limix::CRank1diagCF(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -32438,7 +32438,7 @@ SWIGINTERN PyObject *_wrap_delete_CRank1diagCF(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -32554,7 +32554,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_setX(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -32679,7 +32679,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_setXcol(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->setXcol((limix::CovarInput const &)*arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -32801,7 +32801,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CRank1diagCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -32968,7 +32968,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CRank1diagCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33046,7 +33046,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CRank1diagCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33132,7 +33132,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_agetScales(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->agetScales(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33284,7 +33284,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_setParamsCovariance(PyObject *SWIGUNUSED
   {
     try {
       (arg1)->setParamsCovariance((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33329,7 +33329,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (limix::muint_t)((limix::CRank1diagCF const *)arg1)->Kdim();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33379,7 +33379,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_agetRank1(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CRank1diagCF const *)arg1)->agetRank1(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33448,7 +33448,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_agetDiag(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       ((limix::CRank1diagCF const *)arg1)->agetDiag(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33589,7 +33589,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kcross(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       ((limix::CRank1diagCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33667,7 +33667,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CRank1diagCF const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33754,7 +33754,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_Khess_param(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CRank1diagCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33823,7 +33823,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(
   {
     try {
       ((limix::CRank1diagCF const *)arg1)->agetParamMask0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33904,7 +33904,7 @@ SWIGINTERN PyObject *_wrap_CRank1diagCF_getName(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = ((limix::CRank1diagCF const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -33953,7 +33953,7 @@ SWIGINTERN PyObject *_wrap_new_CSqExpCF(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       result = (limix::CSqExpCF *)new limix::CSqExpCF(arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -34000,7 +34000,7 @@ SWIGINTERN PyObject *_wrap_delete_CSqExpCF(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -34116,7 +34116,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_setX(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -34241,7 +34241,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_setXcol(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->setXcol((limix::CovarInput const &)*arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -34363,7 +34363,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CSqExpCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -34530,7 +34530,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CSqExpCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -34608,7 +34608,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       ((limix::CSqExpCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -34694,7 +34694,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_agetScales(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->agetScales(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -34846,7 +34846,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_setParamsCovariance(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->setParamsCovariance((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -34891,7 +34891,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       result = (limix::muint_t)((limix::CSqExpCF const *)arg1)->Kdim();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35013,7 +35013,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       ((limix::CSqExpCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35091,7 +35091,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CSqExpCF const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35178,7 +35178,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_Khess_param(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CSqExpCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35247,7 +35247,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CSqExpCF const *)arg1)->agetParamMask0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35328,7 +35328,7 @@ SWIGINTERN PyObject *_wrap_CSqExpCF_getName(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = ((limix::CSqExpCF const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35368,7 +35368,7 @@ SWIGINTERN PyObject *_wrap_new_CCovSqexpARD__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::CCovSqexpARD *)new limix::CCovSqexpARD(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35395,7 +35395,7 @@ SWIGINTERN PyObject *_wrap_new_CCovSqexpARD__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::CCovSqexpARD *)new limix::CCovSqexpARD();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35474,7 +35474,7 @@ SWIGINTERN PyObject *_wrap_delete_CCovSqexpARD(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35527,7 +35527,7 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_setNumberDimensions(PyObject *SWIGUNUSED
   {
     try {
       (arg1)->setNumberDimensions(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35649,7 +35649,7 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Kcross(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       ((limix::CCovSqexpARD const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35790,7 +35790,7 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Kcross_diag(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CCovSqexpARD const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35885,7 +35885,7 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Kgrad_param(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CCovSqexpARD const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -35972,7 +35972,7 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Khess_param(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CCovSqexpARD const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36122,7 +36122,7 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CCovSqexpARD const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36200,7 +36200,7 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CCovSqexpARD const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36281,7 +36281,7 @@ SWIGINTERN PyObject *_wrap_CCovSqexpARD_getName(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = ((limix::CCovSqexpARD const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36332,7 +36332,7 @@ SWIGINTERN PyObject *_wrap_delete_AMultiCF(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36377,7 +36377,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       result = (limix::muint_t)((limix::AMultiCF const *)arg1)->Kdim();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36438,7 +36438,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_addSyncChild(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->addSyncChild(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36499,7 +36499,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_delSyncChild(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->delSyncChild(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36556,7 +36556,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_addCovariance(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->addCovariance(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36622,7 +36622,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setCovariance(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->setCovariance(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36676,7 +36676,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getCovariance(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (arg1)->getCovariance(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36724,7 +36724,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getNumberDimensions(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (limix::muint_t)((limix::AMultiCF const *)arg1)->getNumberDimensions();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36777,7 +36777,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setNumberDimensions(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->setNumberDimensions(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36822,7 +36822,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getNumberParams(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::muint_t)((limix::AMultiCF const *)arg1)->getNumberParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36938,7 +36938,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setX(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -36988,7 +36988,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getX(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       ((limix::AMultiCF const *)arg1)->agetX(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -37132,7 +37132,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setXcol(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->setXcol((limix::CovarInput const &)*arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -37248,7 +37248,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setParams(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setParams((limix::CovarParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -37298,7 +37298,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getParams(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::AMultiCF const *)arg1)->agetParams(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -37384,7 +37384,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getParamMask(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       ((limix::AMultiCF const *)arg1)->agetParamMask(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -37536,7 +37536,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setParamMask(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->setParamMask((limix::CovarParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -37592,7 +37592,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getParamBounds0(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::AMultiCF const *)arg1)->agetParamBounds0(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -37720,7 +37720,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_getParamBounds(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::AMultiCF const *)arg1)->agetParamBounds(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -37980,7 +37980,7 @@ SWIGINTERN PyObject *_wrap_AMultiCF_setParamBounds(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->setParamBounds((limix::CovarParams const &)*arg2,(limix::CovarParams const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -38023,7 +38023,7 @@ SWIGINTERN PyObject *_wrap_new_CSumCF__SWIG_0(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::CSumCF *)new limix::CSumCF((limix::ACovarVec const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -38059,7 +38059,7 @@ SWIGINTERN PyObject *_wrap_new_CSumCF__SWIG_1(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::CSumCF *)new limix::CSumCF(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -38086,7 +38086,7 @@ SWIGINTERN PyObject *_wrap_new_CSumCF__SWIG_2(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::CSumCF *)new limix::CSumCF();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -38174,7 +38174,7 @@ SWIGINTERN PyObject *_wrap_delete_CSumCF(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -38296,7 +38296,7 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       ((limix::CSumCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -38437,7 +38437,7 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::CSumCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -38532,7 +38532,7 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::CSumCF const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -38619,7 +38619,7 @@ SWIGINTERN PyObject *_wrap_CSumCF_Khess_param(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::CSumCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -38769,7 +38769,7 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CSumCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -38847,7 +38847,7 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       ((limix::CSumCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -38933,7 +38933,7 @@ SWIGINTERN PyObject *_wrap_CSumCF_K(PyObject *SWIGUNUSEDPARM(self), PyObject *ar
   {
     try {
       ((limix::CSumCF const *)arg1)->aK(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39002,7 +39002,7 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kdiag(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       ((limix::CSumCF const *)arg1)->aKdiag(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39097,7 +39097,7 @@ SWIGINTERN PyObject *_wrap_CSumCF_Kgrad_X(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       ((limix::CSumCF const *)arg1)->aKgrad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39161,7 +39161,7 @@ SWIGINTERN PyObject *_wrap_CSumCF_getName(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = ((limix::CSumCF const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39204,7 +39204,7 @@ SWIGINTERN PyObject *_wrap_new_CLinCombCF__SWIG_0(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (limix::CLinCombCF *)new limix::CLinCombCF((limix::ACovarVec const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39240,7 +39240,7 @@ SWIGINTERN PyObject *_wrap_new_CLinCombCF__SWIG_1(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (limix::CLinCombCF *)new limix::CLinCombCF(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39267,7 +39267,7 @@ SWIGINTERN PyObject *_wrap_new_CLinCombCF__SWIG_2(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (limix::CLinCombCF *)new limix::CLinCombCF();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39355,7 +39355,7 @@ SWIGINTERN PyObject *_wrap_delete_CLinCombCF(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39471,7 +39471,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_setCoeff(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setCoeff((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39521,7 +39521,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_agetCoeff(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CLinCombCF const *)arg1)->agetCoeff(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39679,7 +39679,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       ((limix::CLinCombCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39820,7 +39820,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CLinCombCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -39915,7 +39915,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CLinCombCF const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40002,7 +40002,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Khess_param(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CLinCombCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40152,7 +40152,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CLinCombCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40230,7 +40230,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CLinCombCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40316,7 +40316,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_K(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       ((limix::CLinCombCF const *)arg1)->aK(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40385,7 +40385,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kdiag(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       ((limix::CLinCombCF const *)arg1)->aKdiag(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40480,7 +40480,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_Kgrad_X(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::CLinCombCF const *)arg1)->aKgrad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40544,7 +40544,7 @@ SWIGINTERN PyObject *_wrap_CLinCombCF_getName(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = ((limix::CLinCombCF const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40587,7 +40587,7 @@ SWIGINTERN PyObject *_wrap_new_CProductCF__SWIG_0(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (limix::CProductCF *)new limix::CProductCF((limix::ACovarVec const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40623,7 +40623,7 @@ SWIGINTERN PyObject *_wrap_new_CProductCF__SWIG_1(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (limix::CProductCF *)new limix::CProductCF(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40650,7 +40650,7 @@ SWIGINTERN PyObject *_wrap_new_CProductCF__SWIG_2(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (limix::CProductCF *)new limix::CProductCF();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40738,7 +40738,7 @@ SWIGINTERN PyObject *_wrap_delete_CProductCF(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -40860,7 +40860,7 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       ((limix::CProductCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41001,7 +41001,7 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CProductCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41096,7 +41096,7 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CProductCF const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41183,7 +41183,7 @@ SWIGINTERN PyObject *_wrap_CProductCF_Khess_param(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       ((limix::CProductCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41333,7 +41333,7 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CProductCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41411,7 +41411,7 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CProductCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41497,7 +41497,7 @@ SWIGINTERN PyObject *_wrap_CProductCF_K(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       ((limix::CProductCF const *)arg1)->aK(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41566,7 +41566,7 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kdiag(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       ((limix::CProductCF const *)arg1)->aKdiag(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41661,7 +41661,7 @@ SWIGINTERN PyObject *_wrap_CProductCF_Kgrad_X(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::CProductCF const *)arg1)->aKgrad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41725,7 +41725,7 @@ SWIGINTERN PyObject *_wrap_CProductCF_getName(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = ((limix::CProductCF const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41756,7 +41756,7 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerCF__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::CKroneckerCF *)new limix::CKroneckerCF();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41809,7 +41809,7 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerCF__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::CKroneckerCF *)new limix::CKroneckerCF(arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41891,7 +41891,7 @@ SWIGINTERN PyObject *_wrap_delete_CKroneckerCF(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41936,7 +41936,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (limix::muint_t)((limix::CKroneckerCF const *)arg1)->Kdim();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -41993,7 +41993,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setRowCovariance(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->setRowCovariance(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -42050,7 +42050,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setColCovariance(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->setColCovariance(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -42095,7 +42095,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_getRowCovariance(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = (arg1)->getRowCovariance();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -42143,7 +42143,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_getColCovariance(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = (arg1)->getColCovariance();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -42262,7 +42262,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setKroneckerIndicator(PyObject *SWIGUNUS
   {
     try {
       (arg1)->setKroneckerIndicator((MatrixXi const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -42311,7 +42311,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_getKroneckerIndicator(PyObject *SWIGUNUS
   {
     try {
       ((limix::CKroneckerCF const *)arg1)->getKroneckerIndicator(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -42375,7 +42375,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_isKronecker(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (bool)((limix::CKroneckerCF const *)arg1)->isKronecker();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -42491,7 +42491,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setX(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -42541,7 +42541,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_getX(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       ((limix::CKroneckerCF const *)arg1)->agetX(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -42685,7 +42685,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setXcol(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->setXcol((limix::CovarInput const &)*arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -42801,7 +42801,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setXr(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setXr((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -42917,7 +42917,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_setXc(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setXc((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -43039,7 +43039,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kcross(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       ((limix::CKroneckerCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -43180,7 +43180,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CKroneckerCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -43275,7 +43275,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CKroneckerCF const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -43362,7 +43362,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Khess_param(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CKroneckerCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -43512,7 +43512,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CKroneckerCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -43590,7 +43590,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CKroneckerCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -43676,7 +43676,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_K(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       ((limix::CKroneckerCF const *)arg1)->aK(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -43745,7 +43745,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kdiag(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::CKroneckerCF const *)arg1)->aKdiag(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -43840,7 +43840,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_Kgrad_X(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CKroneckerCF const *)arg1)->aKgrad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -43904,7 +43904,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_getName(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = ((limix::CKroneckerCF const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -43950,7 +43950,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerCF_createKroneckerIndex(PyObject *SWIGUNUSE
   {
     try {
       limix::CKroneckerCF::createKroneckerIndex(arg1,arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -44020,7 +44020,7 @@ SWIGINTERN PyObject *_wrap_delete_ALikelihood(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -44142,7 +44142,7 @@ SWIGINTERN PyObject *_wrap_ALikelihood_Kcross(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::ALikelihood const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -44283,7 +44283,7 @@ SWIGINTERN PyObject *_wrap_ALikelihood_Kcross_diag(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::ALikelihood const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -44450,7 +44450,7 @@ SWIGINTERN PyObject *_wrap_ALikelihood_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::ALikelihood const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -44528,7 +44528,7 @@ SWIGINTERN PyObject *_wrap_ALikelihood_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::ALikelihood const *)arg1)->aKdiag_grad_X(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -44595,7 +44595,7 @@ SWIGINTERN PyObject *_wrap_new_CLikNormalNULL(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::CLikNormalNULL *)new limix::CLikNormalNULL();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -44642,7 +44642,7 @@ SWIGINTERN PyObject *_wrap_delete_CLikNormalNULL(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -44692,7 +44692,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_K(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       ((limix::CLikNormalNULL const *)arg1)->aK(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -44761,7 +44761,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_Kdiag(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       ((limix::CLikNormalNULL const *)arg1)->aKdiag(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -44919,7 +44919,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_Kcross_diag(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CLikNormalNULL const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45014,7 +45014,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_Kgrad_param(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CLikNormalNULL const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45101,7 +45101,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_Khess_param(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CLikNormalNULL const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45236,7 +45236,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_setX(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45281,7 +45281,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalNULL_getName(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = ((limix::CLikNormalNULL const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45312,7 +45312,7 @@ SWIGINTERN PyObject *_wrap_new_CLikNormalIso(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (limix::CLikNormalIso *)new limix::CLikNormalIso();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45359,7 +45359,7 @@ SWIGINTERN PyObject *_wrap_delete_CLikNormalIso(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45409,7 +45409,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_K(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       ((limix::CLikNormalIso const *)arg1)->aK(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45478,7 +45478,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_Kdiag(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       ((limix::CLikNormalIso const *)arg1)->aKdiag(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45636,7 +45636,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_Kcross_diag(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CLikNormalIso const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45731,7 +45731,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_Kgrad_param(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CLikNormalIso const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45818,7 +45818,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_Khess_param(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CLikNormalIso const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45953,7 +45953,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_setX(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -45998,7 +45998,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalIso_getName(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = ((limix::CLikNormalIso const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46029,7 +46029,7 @@ SWIGINTERN PyObject *_wrap_new_CLikNormalSVD(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (limix::CLikNormalSVD *)new limix::CLikNormalSVD();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46076,7 +46076,7 @@ SWIGINTERN PyObject *_wrap_delete_CLikNormalSVD(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46126,7 +46126,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_K(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       ((limix::CLikNormalSVD const *)arg1)->aK(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46195,7 +46195,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_Kdiag(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       ((limix::CLikNormalSVD const *)arg1)->aKdiag(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46353,7 +46353,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_Kcross_diag(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CLikNormalSVD const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46448,7 +46448,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_Kgrad_param(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CLikNormalSVD const *)arg1)->aKgrad_param(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46535,7 +46535,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_Khess_param(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CLikNormalSVD const *)arg1)->aKhess_param(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46670,7 +46670,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_setX(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46715,7 +46715,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_getSigmaK2(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::mfloat_t)(arg1)->getSigmaK2();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46760,7 +46760,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_getDelta(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (limix::mfloat_t)(arg1)->getDelta();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46805,7 +46805,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_getSigmaK2grad(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (limix::mfloat_t)(arg1)->getSigmaK2grad();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46850,7 +46850,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_getDeltagrad(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::mfloat_t)(arg1)->getDeltagrad();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46895,7 +46895,7 @@ SWIGINTERN PyObject *_wrap_CLikNormalSVD_getName(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = ((limix::CLikNormalSVD const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -46946,7 +46946,7 @@ SWIGINTERN PyObject *_wrap_delete_ADataTerm(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47062,7 +47062,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_setParams(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setParams((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47112,7 +47112,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_aGetParams(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->aGetParams(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47176,7 +47176,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_getParams(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (arg1)->getParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47292,7 +47292,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_setY(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       (arg1)->setY((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47337,7 +47337,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_getRowsParams(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::muint_t)(arg1)->getRowsParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47382,7 +47382,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_getColsParams(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::muint_t)(arg1)->getColsParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47432,7 +47432,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_evaluate(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->aEvaluate(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47501,7 +47501,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_gradY(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (arg1)->aGradY(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47576,7 +47576,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_aGradParams(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->aGradParams(arg2,(MatrixXd const *)arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47664,7 +47664,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_sumJacobianGradParams(PyObject *SWIGUNUSEDP
   {
     try {
       (arg1)->aSumJacobianGradParams(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47733,7 +47733,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_sumLogJacobian(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->aSumLogJacobian(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47797,7 +47797,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_getY(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = (arg1)->getY();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47914,7 +47914,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_gradParams(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (arg1)->gradParams((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -47959,7 +47959,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_getName(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = ((limix::ADataTerm const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48075,7 +48075,7 @@ SWIGINTERN PyObject *_wrap_ADataTerm_checkDimensions(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->checkDimensions((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48106,7 +48106,7 @@ SWIGINTERN PyObject *_wrap_new_CData__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (limix::CData *)new limix::CData();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48145,7 +48145,7 @@ SWIGINTERN PyObject *_wrap_new_CData__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (limix::CData *)new limix::CData(*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48224,7 +48224,7 @@ SWIGINTERN PyObject *_wrap_delete_CData(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48269,7 +48269,7 @@ SWIGINTERN PyObject *_wrap_CData_getName(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       result = ((limix::CData const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48314,7 +48314,7 @@ SWIGINTERN PyObject *_wrap_CData_getRowsParams(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (limix::muint_t)(arg1)->getRowsParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48359,7 +48359,7 @@ SWIGINTERN PyObject *_wrap_CData_getColsParams(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (limix::muint_t)(arg1)->getColsParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48390,7 +48390,7 @@ SWIGINTERN PyObject *_wrap_new_CLinearMean__SWIG_0(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::CLinearMean *)new limix::CLinearMean();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48426,7 +48426,7 @@ SWIGINTERN PyObject *_wrap_new_CLinearMean__SWIG_1(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::CLinearMean *)new limix::CLinearMean(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48669,7 +48669,7 @@ SWIGINTERN PyObject *_wrap_new_CLinearMean__SWIG_2(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::CLinearMean *)new limix::CLinearMean((MatrixXd const &)*arg1,(MatrixXd const &)*arg2,(MatrixXd const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48840,7 +48840,7 @@ SWIGINTERN PyObject *_wrap_new_CLinearMean__SWIG_3(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::CLinearMean *)new limix::CLinearMean((MatrixXd const &)*arg1,(MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -48954,7 +48954,7 @@ SWIGINTERN PyObject *_wrap_delete_CLinearMean(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49004,7 +49004,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_agetA(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->agetA(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49068,7 +49068,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getA(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (arg1)->getA();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49118,7 +49118,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_evaluate(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->aEvaluate(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49193,7 +49193,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_aGradParams(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->aGradParams(arg2,(MatrixXd const *)arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49347,7 +49347,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_setParams(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->setParams((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49463,7 +49463,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_setFixedEffects(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->setFixedEffects((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49513,7 +49513,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_aGetParams(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->aGetParams(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49582,7 +49582,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_aGetFixedEffects(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->aGetFixedEffects(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49651,7 +49651,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_aPredictY(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       ((limix::CLinearMean const *)arg1)->aPredictY(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49726,7 +49726,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_aPredictYstar(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CLinearMean const *)arg1)->aPredictYstar(arg2,(MatrixXd const *)arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49809,7 +49809,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getRowsParams(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::muint_t)(arg1)->getRowsParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49854,7 +49854,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getColsParams(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::muint_t)(arg1)->getColsParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49899,7 +49899,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getFixedEffects(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (arg1)->getFixedEffects();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -49944,7 +49944,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getName(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = ((limix::CLinearMean const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -50060,7 +50060,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_checkDimensions__SWIG_0(PyObject *SWIGUNU
   {
     try {
       (arg1)->checkDimensions((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -50347,7 +50347,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_checkDimensions__SWIG_1(PyObject *SWIGUNU
   {
     try {
       ((limix::CLinearMean const *)arg1)->checkDimensions((MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4,arg5,arg6,arg7);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -50625,7 +50625,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_checkDimensions__SWIG_2(PyObject *SWIGUNU
   {
     try {
       ((limix::CLinearMean const *)arg1)->checkDimensions((MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4,arg5,arg6);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -50894,7 +50894,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_checkDimensions__SWIG_3(PyObject *SWIGUNU
   {
     try {
       ((limix::CLinearMean const *)arg1)->checkDimensions((MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4,arg5);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -51154,7 +51154,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_checkDimensions__SWIG_4(PyObject *SWIGUNU
   {
     try {
       ((limix::CLinearMean const *)arg1)->checkDimensions((MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -51357,7 +51357,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_predictY__SWIG_0(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = ((limix::CLinearMean const *)arg1)->predictY();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -51474,7 +51474,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_predictY__SWIG_1(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = ((limix::CLinearMean const *)arg1)->predictY((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -51559,7 +51559,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_setWeightsOLS__SWIG_0(PyObject *SWIGUNUSE
   {
     try {
       (arg1)->setWeightsOLS();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -51675,7 +51675,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_setWeightsOLS__SWIG_1(PyObject *SWIGUNUSE
   {
     try {
       (arg1)->setWeightsOLS((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -51761,7 +51761,7 @@ SWIGINTERN PyObject *_wrap_CLinearMean_getNTargets(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::muint_t)((limix::CLinearMean const *)arg1)->getNTargets();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -51792,7 +51792,7 @@ SWIGINTERN PyObject *_wrap_new_CSumLinear(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = (limix::CSumLinear *)new limix::CSumLinear();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -51839,7 +51839,7 @@ SWIGINTERN PyObject *_wrap_delete_CSumLinear(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -51889,7 +51889,7 @@ SWIGINTERN PyObject *_wrap_CSumLinear_aGetParams(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->aGetParams(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52024,7 +52024,7 @@ SWIGINTERN PyObject *_wrap_CSumLinear_setParams(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->setParams((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52074,7 +52074,7 @@ SWIGINTERN PyObject *_wrap_CSumLinear_evaluate(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->aEvaluate(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52149,7 +52149,7 @@ SWIGINTERN PyObject *_wrap_CSumLinear_aGradParams(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->aGradParams(arg2,(MatrixXd const *)arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52244,7 +52244,7 @@ SWIGINTERN PyObject *_wrap_CSumLinear_appendTerm(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->appendTerm(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52298,7 +52298,7 @@ SWIGINTERN PyObject *_wrap_CSumLinear_getTerm(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (arg1)->getTerm(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52346,7 +52346,7 @@ SWIGINTERN PyObject *_wrap_CSumLinear_getNterms(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (limix::muint_t)((limix::CSumLinear const *)arg1)->getNterms();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52391,7 +52391,7 @@ SWIGINTERN PyObject *_wrap_CSumLinear_getTerms(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (limix::VecLinearMean *) &(arg1)->getTerms();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52436,7 +52436,7 @@ SWIGINTERN PyObject *_wrap_CSumLinear_getRowsParams(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::muint_t)(arg1)->getRowsParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52481,7 +52481,7 @@ SWIGINTERN PyObject *_wrap_CSumLinear_getColsParams(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::muint_t)(arg1)->getColsParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52512,7 +52512,7 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerMean__SWIG_0(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::CKroneckerMean *)new limix::CKroneckerMean();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52575,7 +52575,7 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerMean__SWIG_1(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::CKroneckerMean *)new limix::CKroneckerMean(*arg1,*arg2,*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52650,7 +52650,7 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerMean__SWIG_2(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::CKroneckerMean *)new limix::CKroneckerMean(*arg1,*arg2,*arg3,*arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52764,7 +52764,7 @@ SWIGINTERN PyObject *_wrap_delete_CKroneckerMean(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52880,7 +52880,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_setA(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setA((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -52930,7 +52930,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_agetA(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->agetA(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53065,7 +53065,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_setWeightsOLS__SWIG_0(PyObject *SWIGUN
   {
     try {
       (arg1)->setWeightsOLS((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53115,7 +53115,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_evaluate(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->aEvaluate(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53184,7 +53184,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_aPredictY(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::CKroneckerMean const *)arg1)->aPredictY(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53259,7 +53259,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_aGradParams(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->aGradParams(arg2,(MatrixXd const *)arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53341,7 +53341,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_setWeightsOLS__SWIG_1(PyObject *SWIGUN
   {
     try {
       (arg1)->setWeightsOLS();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53507,7 +53507,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_checkDimensions(PyObject *SWIGUNUSEDPA
   {
     try {
       ((limix::CKroneckerMean const *)arg1)->checkDimensions((MatrixXd const &)*arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53552,7 +53552,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_getName(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = ((limix::CKroneckerMean const *)arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53597,7 +53597,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_getDimFixedEffects(PyObject *SWIGUNUSE
   {
     try {
       result = (limix::muint_t)((limix::CKroneckerMean const *)arg1)->getDimFixedEffects();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53642,7 +53642,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerMean_getColsParams(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (limix::muint_t)(arg1)->getColsParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53673,7 +53673,7 @@ SWIGINTERN PyObject *_wrap_new_CGPHyperParams__SWIG_0(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::CGPHyperParams *)new limix::CGPHyperParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53722,7 +53722,7 @@ SWIGINTERN PyObject *_wrap_new_CGPHyperParams__SWIG_1(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::CGPHyperParams *)new limix::CGPHyperParams((limix::CGPHyperParams const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53800,7 +53800,7 @@ SWIGINTERN PyObject *_wrap_delete_CGPHyperParams(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -53850,7 +53850,7 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_getParamArray__SWIG_0(PyObject *SWIGUN
   {
     try {
       ((limix::CGPHyperParams const *)arg1)->agetParamArray(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54002,7 +54002,7 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_setParamArray__SWIG_0(PyObject *SWIGUN
   {
     try {
       (arg1)->setParamArray((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54074,7 +54074,7 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_getParamArray__SWIG_1(PyObject *SWIGUN
   {
     try {
       ((limix::CGPHyperParams const *)arg1)->agetParamArray(arg2,(limix::CGPHyperParams const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54288,7 +54288,7 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_setParamArray__SWIG_1(PyObject *SWIGUN
   {
     try {
       (arg1)->setParamArray((VectorXd const &)*arg2,(limix::CGPHyperParams const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54381,7 +54381,7 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_getNumberParams__SWIG_0(PyObject *SWIG
   {
     try {
       result = (limix::muint_t)((limix::CGPHyperParams const *)arg1)->getNumberParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54448,7 +54448,7 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_getNumberParams__SWIG_1(PyObject *SWIG
   {
     try {
       result = (limix::muint_t)((limix::CGPHyperParams const *)arg1)->getNumberParams((limix::CGPHyperParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54618,7 +54618,7 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams___setitem__(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->set((std::string const &)*arg2,(MatrixXd const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54684,7 +54684,7 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams___getitem__(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->aget(arg2,(std::string const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54750,7 +54750,7 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_getNames(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = ((limix::CGPHyperParams const *)arg1)->getNames();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54806,7 +54806,7 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams_exists(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (bool)((limix::CGPHyperParams const *)arg1)->exists(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54851,7 +54851,7 @@ SWIGINTERN PyObject *_wrap_CGPHyperParams___str__(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = ((limix::CGPHyperParams const *)arg1)->toString();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54903,7 +54903,7 @@ SWIGINTERN PyObject *_wrap_new_CGPCholCache(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (limix::CGPCholCache *)new limix::CGPCholCache(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54950,7 +54950,7 @@ SWIGINTERN PyObject *_wrap_delete_CGPCholCache(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -54995,7 +54995,7 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_getCovar(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (arg1)->getCovar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55055,7 +55055,7 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_setCovar(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->setCovar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55100,7 +55100,7 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_rgetKEff(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetKEff();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55145,7 +55145,7 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_rgetKEffChol(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (MatrixXdChol *) &(arg1)->rgetKEffChol();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55190,7 +55190,7 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_rgetKEffInv(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetKEffInv();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55235,7 +55235,7 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_rgetYeffective(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetYeffective();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55280,7 +55280,7 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_rgetKEffInvY(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetKEffInvY();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55325,7 +55325,7 @@ SWIGINTERN PyObject *_wrap_CGPCholCache_getDKEffInv_KEffInvYYKinv(PyObject *SWIG
   {
     try {
       result = (MatrixXd *) &(arg1)->getDKEffInv_KEffInvYYKinv();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55395,7 +55395,7 @@ SWIGINTERN PyObject *_wrap_new_CGPbase__SWIG_0(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (limix::CGPbase *)new limix::CGPbase(arg1,arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55448,7 +55448,7 @@ SWIGINTERN PyObject *_wrap_new_CGPbase__SWIG_1(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (limix::CGPbase *)new limix::CGPbase(arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55488,7 +55488,7 @@ SWIGINTERN PyObject *_wrap_new_CGPbase__SWIG_2(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (limix::CGPbase *)new limix::CGPbase(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55592,7 +55592,7 @@ SWIGINTERN PyObject *_wrap_delete_CGPbase(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55648,7 +55648,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_set_data(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->set_data(*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55705,7 +55705,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_setCovar(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->setCovar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55762,7 +55762,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_setLik(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       (arg1)->setLik(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55819,7 +55819,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_setDataTerm(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setDataTerm(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55880,7 +55880,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_setLambda(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->setLambda(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -55946,7 +55946,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_setParams__SWIG_0(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->setParams((limix::CGPHyperParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -56034,7 +56034,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_setParams__SWIG_1(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->setParams((limix::CGPHyperParams const &)*arg2,(limix::CGPHyperParams const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -56127,7 +56127,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getParams(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = ((limix::CGPbase const *)arg1)->getParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -56246,7 +56246,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_setParamArray__SWIG_0(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->setParamArray((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -56384,7 +56384,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_setParamArray__SWIG_1(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->setParamArray((VectorXd const &)*arg2,(limix::CGPHyperParams const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -56482,7 +56482,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getParamArray(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       ((limix::CGPbase const *)arg1)->agetParamArray(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -56572,7 +56572,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getParamBounds(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = ((limix::CGPbase const *)arg1)->getParamBounds(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -56620,7 +56620,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getParamMask(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = ((limix::CGPbase const *)arg1)->getParamMask();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -56673,7 +56673,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getY(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       (arg1)->agetY(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -56808,7 +56808,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_setY(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       (arg1)->setY((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -56858,7 +56858,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getX(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       ((limix::CGPbase const *)arg1)->agetX(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -56993,7 +56993,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_setX(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       (arg1)->setX((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57038,7 +57038,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getNumberSamples(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::muint_t)(arg1)->getNumberSamples();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57083,7 +57083,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getNumberDimension(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::muint_t)(arg1)->getNumberDimension();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57128,7 +57128,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getCache(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (arg1)->getCache();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57176,7 +57176,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getCovar(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (arg1)->getCovar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57224,7 +57224,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getLik(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = (arg1)->getLik();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57272,7 +57272,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getDataTerm(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (arg1)->getDataTerm();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57325,7 +57325,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_agetKEffInvYCache(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->agetKEffInvYCache(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57389,7 +57389,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LML__SWIG_0(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (limix::mfloat_t)(arg1)->LML();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57456,7 +57456,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LML__SWIG_1(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (limix::mfloat_t)(arg1)->LML((limix::CGPHyperParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57573,7 +57573,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LML__SWIG_2(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (limix::mfloat_t)(arg1)->LML((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57671,7 +57671,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad__SWIG_0(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (arg1)->LMLgrad();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57741,7 +57741,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad__SWIG_1(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (arg1)->LMLgrad((limix::CGPHyperParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57861,7 +57861,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad__SWIG_2(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (arg1)->LMLgrad((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -57967,7 +57967,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_aLMLgrad__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->aLMLgrad(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -58075,7 +58075,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_aLMLgrad__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->aLMLgrad(arg2,(limix::CGPHyperParams const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -58233,7 +58233,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_aLMLgrad__SWIG_2(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->aLMLgrad(arg2,(VectorXd const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -58372,7 +58372,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad_covar(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->aLMLgrad_covar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -58458,7 +58458,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad_lik(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->aLMLgrad_lik(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -58544,7 +58544,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_aLMLgrad_X(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->aLMLgrad_X(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -58613,7 +58613,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_aLMLgrad_dataTerm(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->aLMLgrad_dataTerm(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -58699,7 +58699,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLhess(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (arg1)->aLMLhess(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -58768,7 +58768,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLhess_covar(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->aLMLhess_covar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -58837,7 +58837,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLhess_lik(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->aLMLhess_lik(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -58906,7 +58906,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLhess_covarlik(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->aLMLhess_covarlik(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -58992,7 +58992,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getCov_laplace(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->agetCov_laplace(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59056,7 +59056,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_getStd_laplace(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (arg1)->agetStd_laplace();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59181,7 +59181,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_predictMean(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->apredictMean(arg2,(MatrixXd const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59322,7 +59322,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_predictVar(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->apredictVar(arg2,(MatrixXd const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59386,7 +59386,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad_X(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (arg1)->LMLgrad_X();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59431,7 +59431,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad_dataTerm(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (arg1)->LMLgrad_dataTerm();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59486,7 +59486,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLgrad_num(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (double)limix::CGPbase::LMLgrad_num(*arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59550,7 +59550,7 @@ SWIGINTERN PyObject *_wrap_CGPbase_LMLhess_num(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (double)limix::CGPbase::LMLhess_num(*arg1,arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59780,7 +59780,7 @@ SWIGINTERN PyObject *_wrap_new_CGPKroneckerCache(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (limix::CGPKroneckerCache *)new limix::CGPKroneckerCache(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59827,7 +59827,7 @@ SWIGINTERN PyObject *_wrap_delete_CGPKroneckerCache(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59872,7 +59872,7 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_rgetYrot(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetYrot();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59917,7 +59917,7 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_rgetSi(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetSi();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -59962,7 +59962,7 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_rgetYSi(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetYSi();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60007,7 +60007,7 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_rgetKinvY(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetKinvY();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60057,7 +60057,7 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_agetSi(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->agetSi(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60126,7 +60126,7 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_agetYSi(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->agetYSi(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60195,7 +60195,7 @@ SWIGINTERN PyObject *_wrap_CGPKroneckerCache_agetYrot(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->agetYrot(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60297,7 +60297,7 @@ SWIGINTERN PyObject *_wrap_new_CGPkronecker__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::CGPkronecker *)new limix::CGPkronecker(arg1,arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60363,7 +60363,7 @@ SWIGINTERN PyObject *_wrap_new_CGPkronecker__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::CGPkronecker *)new limix::CGPkronecker(arg1,arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60416,7 +60416,7 @@ SWIGINTERN PyObject *_wrap_new_CGPkronecker__SWIG_2(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::CGPkronecker *)new limix::CGPkronecker(arg1,arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60532,7 +60532,7 @@ SWIGINTERN PyObject *_wrap_delete_CGPkronecker(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60648,7 +60648,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setX_r(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setX_r((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60764,7 +60764,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setX_c(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setX_c((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60880,7 +60880,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setY(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->setY((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60937,7 +60937,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setCovar_r(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->setCovar_r(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -60994,7 +60994,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setCovar_c(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->setCovar_c(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -61039,7 +61039,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LML__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::mfloat_t)(arg1)->LML();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -61106,7 +61106,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LML__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::mfloat_t)(arg1)->LML((limix::CGPHyperParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -61223,7 +61223,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LML__SWIG_2(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::mfloat_t)(arg1)->LML((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -61321,7 +61321,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getLik(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (arg1)->getLik();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -61518,7 +61518,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_predictMean(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->apredictMean(arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -61731,7 +61731,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_predictVar(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->apredictVar(arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -61795,7 +61795,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LMLgrad(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (arg1)->LMLgrad();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -61857,7 +61857,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LMLgrad_covar(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->aLMLgrad_covar(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -61943,7 +61943,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_aLMLgrad_covar_r(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->aLMLgrad_covar_r(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62029,7 +62029,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_aLMLgrad_covar_c(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->aLMLgrad_covar_c(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62115,7 +62115,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_LMLgrad_lik(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->aLMLgrad_lik(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62201,7 +62201,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_aLMLgrad_X_r(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->aLMLgrad_X_r(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62270,7 +62270,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_aLMLgrad_X_c(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->aLMLgrad_X_c(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62339,7 +62339,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_aLMLgrad_dataTerm(PyObject *SWIGUNUSEDPA
   {
     try {
       (arg1)->aLMLgrad_dataTerm(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62403,7 +62403,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getCache(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (arg1)->getCache();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62451,7 +62451,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getCovarC(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = ((limix::CGPkronecker const *)arg1)->getCovarC();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62499,7 +62499,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getCovarR(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = ((limix::CGPkronecker const *)arg1)->getCovarR();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62547,7 +62547,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getGplvmDimensionsC(PyObject *SWIGUNUSED
   {
     try {
       result = ((limix::CGPkronecker const *)arg1)->getGplvmDimensionsC();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62592,7 +62592,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_getGplvmDimensionsR(PyObject *SWIGUNUSED
   {
     try {
       result = ((limix::CGPkronecker const *)arg1)->getGplvmDimensionsR();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62653,7 +62653,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setGplvmDimensionsC(PyObject *SWIGUNUSED
   {
     try {
       (arg1)->setGplvmDimensionsC(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -62714,7 +62714,7 @@ SWIGINTERN PyObject *_wrap_CGPkronecker_setGplvmDimensionsR(PyObject *SWIGUNUSED
   {
     try {
       (arg1)->setGplvmDimensionsR(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63122,7 +63122,7 @@ SWIGINTERN PyObject *_wrap_new_CGPkronSumCache(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (limix::CGPkronSumCache *)new limix::CGPkronSumCache(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63169,7 +63169,7 @@ SWIGINTERN PyObject *_wrap_delete_CGPkronSumCache(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63214,7 +63214,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetSsigma(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetSsigma();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63259,7 +63259,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetScstar(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetScstar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63304,7 +63304,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetUcstar(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetUcstar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63349,7 +63349,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetLambdac(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetLambdac();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63394,7 +63394,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetSomega(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetSomega();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63439,7 +63439,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetSrstar(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetSrstar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63484,7 +63484,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetUrstar(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetUrstar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63529,7 +63529,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetLambdar(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetLambdar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63574,7 +63574,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetYrotPart(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetYrotPart();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63619,7 +63619,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetYrot(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetYrot();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63664,7 +63664,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetYtilde(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetYtilde();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63709,7 +63709,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetRrot(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetRrot();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63754,7 +63754,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_rgetOmegaRot(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetOmegaRot();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63804,7 +63804,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetSsigma(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->argetSsigma(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63873,7 +63873,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetScstar(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->argetScstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -63942,7 +63942,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetUcstar(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->argetUcstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64011,7 +64011,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetLambdac(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->argetLambdac(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64080,7 +64080,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetSomega(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->argetSomega(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64149,7 +64149,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetSrstar(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->argetSrstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64218,7 +64218,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetUrstar(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->argetUrstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64287,7 +64287,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetLambdar(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->argetLambdar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64356,7 +64356,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetYrotPart(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->argetYrotPart(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64425,7 +64425,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetYrot(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->argetYrot(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64494,7 +64494,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetYtilde(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->argetYtilde(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64563,7 +64563,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetRrot(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->argetRrot(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64632,7 +64632,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSumCache_argetOmegaRot(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->argetOmegaRot(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64832,7 +64832,7 @@ SWIGINTERN PyObject *_wrap_new_CGPkronSum(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = (limix::CGPkronSum *)new limix::CGPkronSum((MatrixXd const &)*arg1,arg2,arg3,arg4,arg5,arg6,arg7);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64879,7 +64879,7 @@ SWIGINTERN PyObject *_wrap_delete_CGPkronSum(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64932,7 +64932,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_setLambda(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->setLambda(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -64986,7 +64986,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getParamBounds(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = ((limix::CGPkronSum const *)arg1)->getParamBounds(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65034,7 +65034,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getParamMask(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = ((limix::CGPkronSum const *)arg1)->getParamMask();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65082,7 +65082,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getCovarr1(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (arg1)->getCovarr1();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65130,7 +65130,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getCovarr2(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (arg1)->getCovarr2();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65178,7 +65178,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getCovarc1(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (arg1)->getCovarc1();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65226,7 +65226,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getCovarc2(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (arg1)->getCovarc2();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65279,7 +65279,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetKEffInvYCache(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->agetKEffInvYCache(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65343,7 +65343,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_LML(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = (limix::mfloat_t)(arg1)->LML();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65388,7 +65388,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_LMLgrad(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (arg1)->LMLgrad();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65441,7 +65441,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLgrad_covarc1(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->aLMLgrad_covarc1(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65527,7 +65527,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLgrad_covarc2(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->aLMLgrad_covarc2(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65613,7 +65613,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLgrad_covarr1(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->aLMLgrad_covarr1(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65699,7 +65699,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLgrad_covarr2(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->aLMLgrad_covarr2(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65785,7 +65785,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLgrad_dataTerm(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->aLMLgrad_dataTerm(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65854,7 +65854,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_aLMLhess_c1c1(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->aLMLhess_c1c1(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65923,7 +65923,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetSc(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->agetSc(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -65992,7 +65992,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUc(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->agetUc(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66061,7 +66061,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetSr(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->agetSr(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66130,7 +66130,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUr(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->agetUr(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66199,7 +66199,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetSsigma(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->agetSsigma(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66268,7 +66268,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUsigma(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->agetUsigma(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66337,7 +66337,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetSomega(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->agetSomega(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66406,7 +66406,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUomega(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->agetUomega(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66475,7 +66475,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetScstar(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->agetScstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66544,7 +66544,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUcstar(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->agetUcstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66613,7 +66613,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetSrstar(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->agetSrstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66682,7 +66682,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetUrstar(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->agetUrstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66751,7 +66751,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetLambdac(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->agetLambdac(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66820,7 +66820,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetLambdar(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->agetLambdar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66889,7 +66889,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetYrotPart(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->agetYrotPart(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -66958,7 +66958,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetYrot(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->agetYrot(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67027,7 +67027,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_agetCstar(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->agetCstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67091,7 +67091,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getN(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (limix::muint_t)(arg1)->getN();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67136,7 +67136,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getP(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (limix::muint_t)(arg1)->getP();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67189,7 +67189,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_setDebugMode(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->setDebugMode(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67234,7 +67234,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtSVDcols(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtSVDcols();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67279,7 +67279,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtSVDrows(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtSVDrows();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67324,7 +67324,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLambdac(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLambdac();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67369,7 +67369,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLambdar(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLambdar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67414,7 +67414,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtYrotPart(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtYrotPart();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67459,7 +67459,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtYrot(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtYrot();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67504,7 +67504,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtYtilde(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtYtilde();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67549,7 +67549,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtRrot(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtRrot();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67594,7 +67594,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtOmegaRot(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtOmegaRot();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67639,7 +67639,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1a(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1a();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67684,7 +67684,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1b(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1b();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67729,7 +67729,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1c(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1c();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67774,7 +67774,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1d(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1d();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67819,7 +67819,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1e(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1e();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67864,7 +67864,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part1f(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part1f();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67909,7 +67909,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC1part2(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC1part2();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67954,7 +67954,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC2part1(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC2part1();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -67999,7 +67999,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCC2part2(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCC2part2();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68044,7 +68044,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR1part1a(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR1part1a();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68089,7 +68089,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR1part1b(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR1part1b();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68134,7 +68134,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR1part2(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR1part2();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68179,7 +68179,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR2part1a(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR2part1a();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68224,7 +68224,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR2part1b(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR2part1b();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68269,7 +68269,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtCR2part2(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtCR2part2();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68314,7 +68314,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLMLgradCovar(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLMLgradCovar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68359,7 +68359,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLMLgradDataTerm(PyObject *SWIGUNUSEDP
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLMLgradDataTerm();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68404,7 +68404,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getIs_it(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (limix::mfloat_t)(arg1)->getIs_it();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68449,7 +68449,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtGrad(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtGrad();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68494,7 +68494,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML1a(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML1a();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68539,7 +68539,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML1b(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML1b();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68584,7 +68584,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML1c(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML1c();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68629,7 +68629,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML1d(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML1d();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68674,7 +68674,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML1e(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML1e();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68719,7 +68719,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML2(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML2();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68764,7 +68764,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML3(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML3();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -68809,7 +68809,7 @@ SWIGINTERN PyObject *_wrap_CGPkronSum_getRtLML4(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (limix::mfloat_t)(arg1)->getRtLML4();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69039,7 +69039,7 @@ SWIGINTERN PyObject *_wrap_new_CGPSumCache(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (limix::CGPSumCache *)new limix::CGPSumCache(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69086,7 +69086,7 @@ SWIGINTERN PyObject *_wrap_delete_CGPSumCache(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69131,7 +69131,7 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_rgetScstar(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetScstar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69176,7 +69176,7 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_rgetUcstar(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetUcstar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69221,7 +69221,7 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_rgetLambda(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetLambda();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69266,7 +69266,7 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_rgetYrot(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (MatrixXd *) &(arg1)->rgetYrot();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69316,7 +69316,7 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_argetScstar(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->argetScstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69385,7 +69385,7 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_argetUcstar(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->argetUcstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69454,7 +69454,7 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_argetLambda(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->argetLambda(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69523,7 +69523,7 @@ SWIGINTERN PyObject *_wrap_CGPSumCache_argetYrot(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->argetYrot(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69697,7 +69697,7 @@ SWIGINTERN PyObject *_wrap_new_CGPSum(PyObject *SWIGUNUSEDPARM(self), PyObject *
   {
     try {
       result = (limix::CGPSum *)new limix::CGPSum((MatrixXd const &)*arg1,arg2,arg3,arg4,arg5);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69744,7 +69744,7 @@ SWIGINTERN PyObject *_wrap_delete_CGPSum(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69860,7 +69860,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_setX1(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       (arg1)->setX1((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -69976,7 +69976,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_setX2(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       (arg1)->setX2((limix::CovarInput const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70092,7 +70092,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_setY(PyObject *SWIGUNUSEDPARM(self), PyObject 
   {
     try {
       (arg1)->setY((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70149,7 +70149,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_setCovar1(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->setCovar1(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70206,7 +70206,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_setCovar2(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->setCovar2(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70251,7 +70251,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_getCovar1(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (arg1)->getCovar1();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70299,7 +70299,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_getCovar2(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (arg1)->getCovar2();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70352,7 +70352,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_agetScstar(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->agetScstar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70421,7 +70421,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_agetLambda(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->agetLambda(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70490,7 +70490,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_agetYrot(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (arg1)->agetYrot(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70553,7 +70553,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_debugCache(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->debugCache();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70598,7 +70598,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_agetCache(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (arg1)->agetCache();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70646,7 +70646,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_LML__SWIG_0(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::mfloat_t)(arg1)->LML();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70713,7 +70713,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_LML__SWIG_1(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::mfloat_t)(arg1)->LML((limix::CGPHyperParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70830,7 +70830,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_LML__SWIG_2(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::mfloat_t)(arg1)->LML((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70928,7 +70928,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_LMLgrad(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = (arg1)->LMLgrad();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -70990,7 +70990,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_LMLgrad_covar(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->aLMLgrad_covar(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71076,7 +71076,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_aLMLgrad_covar1(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->aLMLgrad_covar1(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71162,7 +71162,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_aLMLgrad_covar2(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->aLMLgrad_covar2(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71248,7 +71248,7 @@ SWIGINTERN PyObject *_wrap_CGPSum_aLMLgrad_dataTerm(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->aLMLgrad_dataTerm(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71311,7 +71311,7 @@ SWIGINTERN PyObject *_wrap_new_CGPopt(PyObject *SWIGUNUSEDPARM(self), PyObject *
   {
     try {
       result = (limix::CGPopt *)new limix::CGPopt(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71358,7 +71358,7 @@ SWIGINTERN PyObject *_wrap_delete_CGPopt(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71421,7 +71421,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_gradCheck__SWIG_0(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (bool)(arg1)->gradCheck(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71475,7 +71475,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_gradCheck__SWIG_1(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (bool)(arg1)->gradCheck(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71520,7 +71520,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_gradCheck__SWIG_2(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (bool)(arg1)->gradCheck();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71628,7 +71628,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_opt(PyObject *SWIGUNUSEDPARM(self), PyObject *
   {
     try {
       result = (bool)(arg1)->opt();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71673,7 +71673,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_getParamMask(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = ((limix::CGPopt const *)arg1)->getParamMask();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71737,7 +71737,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_setParamMask(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setParamMask(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71782,7 +71782,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_getTolerance(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (double)((limix::CGPopt const *)arg1)->getTolerance();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71835,7 +71835,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_setTolerance__SWIG_0(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->setTolerance(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71879,7 +71879,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_setTolerance__SWIG_1(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->setTolerance();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -71966,7 +71966,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_getNumEvaluations(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::muint_t)(arg1)->getNumEvaluations();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72011,7 +72011,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_getOptBoundLower(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = ((limix::CGPopt const *)arg1)->getOptBoundLower();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72075,7 +72075,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_setOptBoundLower(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->setOptBoundLower(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72120,7 +72120,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_getOptBoundUpper(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = ((limix::CGPopt const *)arg1)->getOptBoundUpper();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72184,7 +72184,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_setOptBoundUpper(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->setOptBoundUpper(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72229,7 +72229,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_getOptStartParams(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = ((limix::CGPopt const *)arg1)->getOptStartParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72285,7 +72285,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_setOptStartParams(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->setOptStartParams((std::vector< limix::CGPHyperParams,std::allocator< limix::CGPHyperParams > > const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72351,7 +72351,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_addOptStartParams__SWIG_0(PyObject *SWIGUNUSED
   {
     try {
       (arg1)->addOptStartParams((limix::CGPHyperParams const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72467,7 +72467,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_addOptStartParams__SWIG_1(PyObject *SWIGUNUSED
   {
     try {
       (arg1)->addOptStartParams((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72556,7 +72556,7 @@ SWIGINTERN PyObject *_wrap_CGPopt_getOptParams(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (arg1)->getOptParams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72610,7 +72610,7 @@ SWIGINTERN PyObject *_wrap_delete_ALMM(PyObject *SWIGUNUSEDPARM(self), PyObject 
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72655,7 +72655,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getNumIntervals0(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (limix::muint_t)((limix::ALMM const *)arg1)->getNumIntervals0();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72708,7 +72708,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setNumIntervals0(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->setNumIntervals0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72761,7 +72761,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setNumIntervalsAlt(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->setNumIntervalsAlt(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72806,7 +72806,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getNumIntervalsAlt(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::muint_t)((limix::ALMM const *)arg1)->getNumIntervalsAlt();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72851,7 +72851,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getLdeltamin0(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::mfloat_t)((limix::ALMM const *)arg1)->getLdeltamin0();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72904,7 +72904,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setLdeltamin0(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setLdeltamin0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -72957,7 +72957,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setLdeltaminAlt(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->setLdeltaminAlt(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73002,7 +73002,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getLdeltaminAlt(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (limix::mfloat_t)((limix::ALMM const *)arg1)->getLdeltaminAlt();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73047,7 +73047,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getLdeltamaxAlt(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (limix::mfloat_t)((limix::ALMM const *)arg1)->getLdeltamaxAlt();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73100,7 +73100,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setLdeltamaxAlt(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->setLdeltamaxAlt(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73145,7 +73145,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getLdeltamax0(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::mfloat_t)((limix::ALMM const *)arg1)->getLdeltamax0();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73198,7 +73198,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setLdeltamax0(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setLdeltamax0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73251,7 +73251,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setLdeltaInit(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setLdeltaInit(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73296,7 +73296,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getLdeltaInit(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::mfloat_t)((limix::ALMM const *)arg1)->getLdeltaInit();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73341,7 +73341,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getNumSamples(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::muint_t)((limix::ALMM const *)arg1)->getNumSamples();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73391,7 +73391,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getPheno(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       ((limix::ALMM const *)arg1)->agetPheno(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73460,7 +73460,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getPv(PyObject *SWIGUNUSEDPARM(self), PyObject *
   {
     try {
       ((limix::ALMM const *)arg1)->agetPv(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73529,7 +73529,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getSnps(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       ((limix::ALMM const *)arg1)->agetSnps(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73598,7 +73598,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getCovs(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       ((limix::ALMM const *)arg1)->agetCovs(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73733,7 +73733,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setCovs(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       (arg1)->setCovs((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73849,7 +73849,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setPheno(PyObject *SWIGUNUSEDPARM(self), PyObjec
   {
     try {
       (arg1)->setPheno((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -73965,7 +73965,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setSNPs(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       (arg1)->setSNPs((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74009,7 +74009,7 @@ SWIGINTERN PyObject *_wrap_ALMM_process(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       (arg1)->process();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74059,7 +74059,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getK(PyObject *SWIGUNUSEDPARM(self), PyObject *a
   {
     try {
       ((limix::ALMM const *)arg1)->agetK(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74194,7 +74194,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setK(PyObject *SWIGUNUSEDPARM(self), PyObject *a
   {
     try {
       (arg1)->setK((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74310,7 +74310,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setPermutation(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (arg1)->setPermutation((VectorXi const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74360,7 +74360,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getPermutation(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       ((limix::ALMM const *)arg1)->agetPermutation(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74450,7 +74450,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompApprox0__SWIG_0(PyObject *SWIGUNUSEDPA
   {
     try {
       (arg1)->setVarcompApprox0(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74512,7 +74512,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompApprox0__SWIG_1(PyObject *SWIGUNUSEDPA
   {
     try {
       (arg1)->setVarcompApprox0(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74565,7 +74565,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompApprox0__SWIG_2(PyObject *SWIGUNUSEDPA
   {
     try {
       (arg1)->setVarcompApprox0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74609,7 +74609,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompApprox0__SWIG_3(PyObject *SWIGUNUSEDPA
   {
     try {
       (arg1)->setVarcompApprox0();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74769,7 +74769,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompExact__SWIG_0(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->setVarcompExact(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74831,7 +74831,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompExact__SWIG_1(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->setVarcompExact(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74884,7 +74884,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompExact__SWIG_2(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->setVarcompExact(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -74928,7 +74928,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setVarcompExact__SWIG_3(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->setVarcompExact();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -75062,7 +75062,7 @@ SWIGINTERN PyObject *_wrap_ALMM_getTestStatistics(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (int)((limix::ALMM const *)arg1)->getTestStatistics();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -75115,7 +75115,7 @@ SWIGINTERN PyObject *_wrap_ALMM_setTestStatistics(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->setTestStatistics(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -75146,7 +75146,7 @@ SWIGINTERN PyObject *_wrap_new_CLMM(PyObject *SWIGUNUSEDPARM(self), PyObject *ar
   {
     try {
       result = (limix::CLMM *)new limix::CLMM();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -75193,7 +75193,7 @@ SWIGINTERN PyObject *_wrap_delete_CLMM(PyObject *SWIGUNUSEDPARM(self), PyObject 
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -75237,7 +75237,7 @@ SWIGINTERN PyObject *_wrap_CLMM_process(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       (arg1)->process();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -75281,7 +75281,7 @@ SWIGINTERN PyObject *_wrap_CLMM_updateDecomposition(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->updateDecomposition();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -75541,7 +75541,7 @@ SWIGINTERN PyObject *_wrap_CLMM_setKUS(PyObject *SWIGUNUSEDPARM(self), PyObject 
   {
     try {
       (arg1)->setKUS((MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(VectorXd const &)*arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -75801,7 +75801,7 @@ SWIGINTERN PyObject *_wrap_CLMM_setK__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->setK((MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(VectorXd const &)*arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -75917,7 +75917,7 @@ SWIGINTERN PyObject *_wrap_CLMM_setK__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->setK((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76022,7 +76022,7 @@ SWIGINTERN PyObject *_wrap_CLMM_getNLL0(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       (arg1)->agetNLL0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76091,7 +76091,7 @@ SWIGINTERN PyObject *_wrap_CLMM_getNLLAlt(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       (arg1)->agetNLLAlt(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76160,7 +76160,7 @@ SWIGINTERN PyObject *_wrap_CLMM_getFtests(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       (arg1)->agetFtests(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76229,7 +76229,7 @@ SWIGINTERN PyObject *_wrap_CLMM_getLdeltaAlt(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->agetLdeltaAlt(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76298,7 +76298,7 @@ SWIGINTERN PyObject *_wrap_CLMM_getLdelta0(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (arg1)->agetLdelta0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76367,7 +76367,7 @@ SWIGINTERN PyObject *_wrap_CLMM_getLSigma(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       (arg1)->agetLSigma(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76436,7 +76436,7 @@ SWIGINTERN PyObject *_wrap_CLMM_getBetaSNP(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       (arg1)->agetBetaSNP(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76505,7 +76505,7 @@ SWIGINTERN PyObject *_wrap_CLMM_getBetaSNPste(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->agetBetaSNPste(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76577,7 +76577,7 @@ SWIGINTERN PyObject *_wrap_CLMM_setLdeltaInit(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setLdeltaInit(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76622,7 +76622,7 @@ SWIGINTERN PyObject *_wrap_CLMM_getLdeltaInit(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::mfloat_t)(arg1)->getLdeltaInit();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76667,7 +76667,7 @@ SWIGINTERN PyObject *_wrap_CLMM_isCalcStes(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (bool)((limix::CLMM const *)arg1)->isCalcStes();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76720,7 +76720,7 @@ SWIGINTERN PyObject *_wrap_CLMM_setCalcStes(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       (arg1)->setCalcStes(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76751,7 +76751,7 @@ SWIGINTERN PyObject *_wrap_new_CInteractLMM(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (limix::CInteractLMM *)new limix::CInteractLMM();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76798,7 +76798,7 @@ SWIGINTERN PyObject *_wrap_delete_CInteractLMM(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76914,7 +76914,7 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_setInter(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->setInter((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -76964,7 +76964,7 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_getInter(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       ((limix::CInteractLMM const *)arg1)->agetInter(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -77099,7 +77099,7 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_setInter0(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->setInter0((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -77149,7 +77149,7 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_agetInter0(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::CInteractLMM const *)arg1)->agetInter0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -77212,7 +77212,7 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_process(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->process();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -77256,7 +77256,7 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_updateDecomposition(PyObject *SWIGUNUSED
   {
     try {
       (arg1)->updateDecomposition();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -77301,7 +77301,7 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_getInter0(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = ((limix::CInteractLMM const *)arg1)->getInter0();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -77346,7 +77346,7 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_isRefitDelta0Pheno(PyObject *SWIGUNUSEDP
   {
     try {
       result = (bool)((limix::CInteractLMM const *)arg1)->isRefitDelta0Pheno();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -77399,7 +77399,7 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_setRefitDelta0Pheno(PyObject *SWIGUNUSED
   {
     try {
       (arg1)->setRefitDelta0Pheno(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -77834,7 +77834,7 @@ SWIGINTERN PyObject *_wrap_train_associations_SingleSNP(PyObject *SWIGUNUSEDPARM
   {
     try {
       limix::train_associations_SingleSNP(arg1,arg2,arg3,(MatrixXd const &)*arg4,(MatrixXd const &)*arg5,(MatrixXd const &)*arg6,(MatrixXd const &)*arg7,(MatrixXd const &)*arg8,arg9,arg10,arg11);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -78167,7 +78167,7 @@ SWIGINTERN PyObject *_wrap_optdelta__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (double)limix::optdelta((MatrixXd const &)*arg1,(MatrixXd const &)*arg2,(MatrixXd const &)*arg3,arg4,arg5,arg6,arg7);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -78434,7 +78434,7 @@ SWIGINTERN PyObject *_wrap_optdelta__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyOb
   {
     try {
       result = (double)limix::optdelta((MatrixXd const &)*arg1,(MatrixXd const &)*arg2,(MatrixXd const &)*arg3,arg4,arg5,arg6);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -78848,7 +78848,7 @@ SWIGINTERN PyObject *_wrap_optdeltaAllY(PyObject *SWIGUNUSEDPARM(self), PyObject
   {
     try {
       limix::optdeltaAllY(arg1,(MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4,(MatrixXd const &)*arg5);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -79131,7 +79131,7 @@ SWIGINTERN PyObject *_wrap_nLLeval__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (double)limix::nLLeval(arg1,arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4,(MatrixXd const &)*arg5,arg6);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -79405,7 +79405,7 @@ SWIGINTERN PyObject *_wrap_nLLeval__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObj
   {
     try {
       result = (double)limix::nLLeval(arg1,arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4,(MatrixXd const &)*arg5);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -79753,7 +79753,7 @@ SWIGINTERN PyObject *_wrap_nLLevalAllY(PyObject *SWIGUNUSEDPARM(self), PyObject 
   {
     try {
       limix::nLLevalAllY(arg1,arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4,(VectorXd const &)*arg5);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -79856,7 +79856,7 @@ SWIGINTERN PyObject *_wrap_new_nLLevalFunctor(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       result = (limix::nLLevalFunctor *)new limix::nLLevalFunctor(arg1,arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -79888,7 +79888,7 @@ SWIGINTERN PyObject *_wrap_delete_nLLevalFunctor(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       delete arg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -79930,7 +79930,7 @@ SWIGINTERN PyObject *_wrap_nLLevalFunctor___call__(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (limix::mfloat_t)(arg1)->operator ()(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -79961,7 +79961,7 @@ SWIGINTERN PyObject *_wrap_new_CKroneckerLMM(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       result = (limix::CKroneckerLMM *)new limix::CKroneckerLMM();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -80008,7 +80008,7 @@ SWIGINTERN PyObject *_wrap_delete_CKroneckerLMM(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -80052,7 +80052,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_process(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->process();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -80096,7 +80096,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_updateDecomposition(PyObject *SWIGUNUSE
   {
     try {
       (arg1)->updateDecomposition();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -80212,7 +80212,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setK1r(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->setK1r((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -80328,7 +80328,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setK1c(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->setK1c((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -80444,7 +80444,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setK2r(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->setK2r((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -80560,7 +80560,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setK2c(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (arg1)->setK2c((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -80676,7 +80676,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setPheno(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->setPheno((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -80792,7 +80792,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setSNPs(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->setSNPs((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -80908,7 +80908,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setSNPcoldesign(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->setSNPcoldesign((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81024,7 +81024,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setSNPcoldesign0_inter(PyObject *SWIGUN
   {
     try {
       (arg1)->setSNPcoldesign0_inter((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81077,7 +81077,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setNumIntervals0_inter(PyObject *SWIGUN
   {
     try {
       (arg1)->setNumIntervals0_inter(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81122,7 +81122,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getNumIntervals0_inter(PyObject *SWIGUN
   {
     try {
       result = (limix::muint_t)(arg1)->getNumIntervals0_inter();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81172,7 +81172,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getNLL0(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (arg1)->agetNLL0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81241,7 +81241,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_agetNLL0_inter(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->agetNLL0_inter(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81310,7 +81310,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getNLLAlt(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->agetNLLAlt(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81379,7 +81379,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getLdeltaAlt(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->agetLdeltaAlt(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81448,7 +81448,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getLdelta0(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->agetLdelta0(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81517,7 +81517,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_agetLdelta0_inter(PyObject *SWIGUNUSEDP
   {
     try {
       (arg1)->agetLdelta0_inter(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81608,7 +81608,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setCovariates__SWIG_0(PyObject *SWIGUNU
   {
     try {
       (arg1)->setCovariates((limix::MatrixXdVec const &)*arg2,(limix::MatrixXdVec const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81800,7 +81800,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_addCovariates(PyObject *SWIGUNUSEDPARM(
   {
     try {
       (arg1)->addCovariates((MatrixXd const &)*arg2,(MatrixXd const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -81997,7 +81997,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_setCovariates__SWIG_1(PyObject *SWIGUNU
   {
     try {
       (arg1)->setCovariates(arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -82477,7 +82477,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_nLLeval(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (limix::mfloat_t)limix::CKroneckerLMM::nLLeval(arg1,(std::vector< MatrixXd,std::allocator< MatrixXd > > const &)*arg2,(std::vector< MatrixXd,std::allocator< MatrixXd > > const &)*arg3,(MatrixXd const &)*arg4,(VectorXd const &)*arg5,(VectorXd const &)*arg6,(VectorXd const &)*arg7,(VectorXd const &)*arg8);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -82932,7 +82932,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_optdelta(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (limix::mfloat_t)limix::CKroneckerLMM::optdelta(*arg1,(std::vector< MatrixXd,std::allocator< MatrixXd > > const &)*arg2,(std::vector< MatrixXd,std::allocator< MatrixXd > > const &)*arg3,(MatrixXd const &)*arg4,(VectorXd const &)*arg5,(VectorXd const &)*arg6,(VectorXd const &)*arg7,(VectorXd const &)*arg8,arg9,arg10,arg11);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83074,7 +83074,7 @@ SWIGINTERN PyObject *_wrap_new_nLLevalKronFunctor(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (limix::nLLevalKronFunctor *)new limix::nLLevalKronFunctor(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83106,7 +83106,7 @@ SWIGINTERN PyObject *_wrap_delete_nLLevalKronFunctor(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       delete arg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83148,7 +83148,7 @@ SWIGINTERN PyObject *_wrap_nLLevalKronFunctor___call__(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (limix::mfloat_t)(arg1)->operator ()(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83199,7 +83199,7 @@ SWIGINTERN PyObject *_wrap_delete_AVarianceTerm(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83244,7 +83244,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getName(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83289,7 +83289,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getInfo(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       result = (arg1)->getInfo();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83345,7 +83345,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_setSampleFilter(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->setSampleFilter((MatrixXb const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83390,7 +83390,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getNumberTraits(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = (limix::muint_t)(arg1)->getNumberTraits();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83435,7 +83435,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getNumberIndividuals(PyObject *SWIGUNUS
   {
     try {
       result = (limix::muint_t)((limix::AVarianceTerm const *)arg1)->getNumberIndividuals();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83551,7 +83551,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_setK(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       (arg1)->setK((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83601,7 +83601,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getK(PyObject *SWIGUNUSEDPARM(self), Py
   {
     try {
       ((limix::AVarianceTerm const *)arg1)->agetK(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83665,7 +83665,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getKcf(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (arg1)->getKcf();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83713,7 +83713,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getTraitCovar(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = ((limix::AVarianceTerm const *)arg1)->getTraitCovar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83832,7 +83832,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_setScales(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (arg1)->setScales((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83882,7 +83882,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getScales(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       ((limix::AVarianceTerm const *)arg1)->agetScales(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -83963,7 +83963,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getNumberScales(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = (limix::muint_t)((limix::AVarianceTerm const *)arg1)->getNumberScales();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84007,7 +84007,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_initTerm(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (arg1)->initTerm();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84052,7 +84052,7 @@ SWIGINTERN PyObject *_wrap_AVarianceTerm_getCovariance(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = ((limix::AVarianceTerm const *)arg1)->getCovariance();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84086,7 +84086,7 @@ SWIGINTERN PyObject *_wrap_new_CSingleTraitTerm__SWIG_0(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (limix::CSingleTraitTerm *)new limix::CSingleTraitTerm();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84185,7 +84185,7 @@ SWIGINTERN PyObject *_wrap_new_CSingleTraitTerm__SWIG_1(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (limix::CSingleTraitTerm *)new limix::CSingleTraitTerm((MatrixXd const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84264,7 +84264,7 @@ SWIGINTERN PyObject *_wrap_delete_CSingleTraitTerm(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84309,7 +84309,7 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getName(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84354,7 +84354,7 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getInfo(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (arg1)->getInfo();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84410,7 +84410,7 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_setSampleFilter(PyObject *SWIGUNUSED
   {
     try {
       (arg1)->setSampleFilter((MatrixXb const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84455,7 +84455,7 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getNumberTraits(PyObject *SWIGUNUSED
   {
     try {
       result = (limix::muint_t)(arg1)->getNumberTraits();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84500,7 +84500,7 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getTraitCovar(PyObject *SWIGUNUSEDPA
   {
     try {
       result = ((limix::CSingleTraitTerm const *)arg1)->getTraitCovar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84619,7 +84619,7 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_setScales(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->setScales((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84669,7 +84669,7 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getScales(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CSingleTraitTerm const *)arg1)->agetScales(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84750,7 +84750,7 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getNumberScales(PyObject *SWIGUNUSED
   {
     try {
       result = (limix::muint_t)((limix::CSingleTraitTerm const *)arg1)->getNumberScales();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84794,7 +84794,7 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_initTerm(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->initTerm();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84839,7 +84839,7 @@ SWIGINTERN PyObject *_wrap_CSingleTraitTerm_getCovariance(PyObject *SWIGUNUSEDPA
   {
     try {
       result = ((limix::CSingleTraitTerm const *)arg1)->getCovariance();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -84882,7 +84882,7 @@ SWIGINTERN PyObject *_wrap_new_CMultiTraitTerm__SWIG_0(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (limix::CMultiTraitTerm *)new limix::CMultiTraitTerm(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85003,7 +85003,7 @@ SWIGINTERN PyObject *_wrap_new_CMultiTraitTerm__SWIG_1(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (limix::CMultiTraitTerm *)new limix::CMultiTraitTerm(arg1,arg2,(MatrixXd const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85097,7 +85097,7 @@ SWIGINTERN PyObject *_wrap_delete_CMultiTraitTerm(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85142,7 +85142,7 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getName(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (arg1)->getName();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85187,7 +85187,7 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getInfo(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (arg1)->getInfo();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85243,7 +85243,7 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_setSampleFilter(PyObject *SWIGUNUSEDP
   {
     try {
       (arg1)->setSampleFilter((MatrixXb const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85288,7 +85288,7 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getNumberTraits(PyObject *SWIGUNUSEDP
   {
     try {
       result = (limix::muint_t)(arg1)->getNumberTraits();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85345,7 +85345,7 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_setTraitCovar(PyObject *SWIGUNUSEDPAR
   {
     try {
       (arg1)->setTraitCovar(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85390,7 +85390,7 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getTraitCovar(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = ((limix::CMultiTraitTerm const *)arg1)->getTraitCovar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85509,7 +85509,7 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_setScales(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (arg1)->setScales((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85559,7 +85559,7 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getScales(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       ((limix::CMultiTraitTerm const *)arg1)->agetScales(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85640,7 +85640,7 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getNumberScales(PyObject *SWIGUNUSEDP
   {
     try {
       result = (limix::muint_t)((limix::CMultiTraitTerm const *)arg1)->getNumberScales();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85684,7 +85684,7 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_initTerm(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (arg1)->initTerm();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85729,7 +85729,7 @@ SWIGINTERN PyObject *_wrap_CMultiTraitTerm_getCovariance(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = ((limix::CMultiTraitTerm const *)arg1)->getCovariance();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85835,7 +85835,7 @@ SWIGINTERN PyObject *_wrap_new_CVarianceDecomposition(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::CVarianceDecomposition *)new limix::CVarianceDecomposition((MatrixXd const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85882,7 +85882,7 @@ SWIGINTERN PyObject *_wrap_delete_CVarianceDecomposition(PyObject *SWIGUNUSEDPAR
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -85926,7 +85926,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_clear(PyObject *SWIGUNUSEDPARM
   {
     try {
       (arg1)->clear();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86042,7 +86042,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_setPheno(PyObject *SWIGUNUSEDP
   {
     try {
       (arg1)->setPheno((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86092,7 +86092,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getPheno(PyObject *SWIGUNUSEDP
   {
     try {
       ((limix::CVarianceDecomposition const *)arg1)->getPheno(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86156,7 +86156,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getNumberTraits(PyObject *SWIG
   {
     try {
       result = (limix::muint_t)((limix::CVarianceDecomposition const *)arg1)->getNumberTraits();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86201,7 +86201,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getNumberIndividuals(PyObject 
   {
     try {
       result = (limix::muint_t)((limix::CVarianceDecomposition const *)arg1)->getNumberIndividuals();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86389,7 +86389,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_addFixedEffTerm__SWIG_0(PyObje
   {
     try {
       (arg1)->addFixedEffTerm((MatrixXd const &)*arg2,(MatrixXd const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86505,7 +86505,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_addFixedEffTerm__SWIG_1(PyObje
   {
     try {
       (arg1)->addFixedEffTerm((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86615,7 +86615,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getFixed(PyObject *SWIGUNUSEDP
   {
     try {
       ((limix::CVarianceDecomposition const *)arg1)->getFixed(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86693,7 +86693,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getDesign(PyObject *SWIGUNUSED
   {
     try {
       ((limix::CVarianceDecomposition const *)arg1)->getDesign(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86756,7 +86756,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_clearFixedEffs(PyObject *SWIGU
   {
     try {
       (arg1)->clearFixedEffs();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86801,7 +86801,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getNumberFixedEffs(PyObject *S
   {
     try {
       result = (limix::muint_t)((limix::CVarianceDecomposition const *)arg1)->getNumberFixedEffs();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86858,7 +86858,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_addTerm__SWIG_0(PyObject *SWIG
   {
     try {
       (arg1)->addTerm(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -86974,7 +86974,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_addTerm__SWIG_1(PyObject *SWIG
   {
     try {
       (arg1)->addTerm((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -87103,7 +87103,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_addTerm__SWIG_2(PyObject *SWIG
   {
     try {
       (arg1)->addTerm(arg2,(MatrixXd const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -87220,7 +87220,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getTerm(PyObject *SWIGUNUSEDPA
   {
     try {
       result = ((limix::CVarianceDecomposition const *)arg1)->getTerm(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -87267,7 +87267,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_clearTerms(PyObject *SWIGUNUSE
   {
     try {
       (arg1)->clearTerms();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -87312,7 +87312,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getNumberTerms(PyObject *SWIGU
   {
     try {
       result = (limix::muint_t)((limix::CVarianceDecomposition const *)arg1)->getNumberTerms();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -87428,7 +87428,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_setScales__SWIG_0(PyObject *SW
   {
     try {
       ((limix::CVarianceDecomposition const *)arg1)->setScales((VectorXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -87553,7 +87553,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_setScales__SWIG_1(PyObject *SW
   {
     try {
       ((limix::CVarianceDecomposition const *)arg1)->setScales(arg2,(VectorXd const &)*arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -87661,7 +87661,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getScales__SWIG_0(PyObject *SW
   {
     try {
       ((limix::CVarianceDecomposition const *)arg1)->agetScales(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -87747,7 +87747,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getScales__SWIG_1(PyObject *SW
   {
     try {
       (arg1)->agetScales(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -87869,7 +87869,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getNumberScales(PyObject *SWIG
   {
     try {
       result = (limix::muint_t)(arg1)->getNumberScales();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -87914,7 +87914,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getGP(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (arg1)->getGP();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -87962,7 +87962,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getCovar(PyObject *SWIGUNUSEDP
   {
     try {
       result = (arg1)->getCovar();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88010,7 +88010,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getMean(PyObject *SWIGUNUSEDPA
   {
     try {
       result = (arg1)->getMean();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88057,7 +88057,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_initGPparams(PyObject *SWIGUNU
   {
     try {
       (arg1)->initGPparams();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88110,7 +88110,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_initGP__SWIG_0(PyObject *SWIGU
   {
     try {
       (arg1)->initGP(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88154,7 +88154,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_initGP__SWIG_1(PyObject *SWIGU
   {
     try {
       (arg1)->initGP();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88239,7 +88239,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_initGPbase(PyObject *SWIGUNUSE
   {
     try {
       (arg1)->initGPbase();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88283,7 +88283,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_initGPkronSum(PyObject *SWIGUN
   {
     try {
       (arg1)->initGPkronSum();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88328,7 +88328,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_trainGP(PyObject *SWIGUNUSEDPA
   {
     try {
       result = (bool)(arg1)->trainGP();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88378,7 +88378,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getFixedEffects(PyObject *SWIG
   {
     try {
       (arg1)->getFixedEffects(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88459,7 +88459,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getLML(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = (limix::mfloat_t)(arg1)->getLML();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88504,7 +88504,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getLMLgrad(PyObject *SWIGUNUSE
   {
     try {
       result = (limix::mfloat_t)(arg1)->getLMLgrad();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88549,7 +88549,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getLMLgradGPbase(PyObject *SWI
   {
     try {
       result = (limix::mfloat_t)(arg1)->getLMLgradGPbase();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88594,7 +88594,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_getLMLgradGPkronSum(PyObject *
   {
     try {
       result = (limix::mfloat_t)(arg1)->getLMLgradGPkronSum();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88839,7 +88839,7 @@ SWIGINTERN PyObject *_wrap_CVarianceDecomposition_aestimateHeritability(PyObject
   {
     try {
       limix::CVarianceDecomposition::aestimateHeritability(arg1,(MatrixXd const &)*arg2,(MatrixXd const &)*arg3,(MatrixXd const &)*arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -88935,7 +88935,7 @@ SWIGINTERN PyObject *_wrap_CHeaderMap_resize(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->resize(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89010,7 +89010,7 @@ SWIGINTERN PyObject *_wrap_CHeaderMap_setStr(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (arg1)->setStr(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89073,7 +89073,7 @@ SWIGINTERN PyObject *_wrap_CHeaderMap_copy__SWIG_0(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (arg1)->copy(arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89130,7 +89130,7 @@ SWIGINTERN PyObject *_wrap_CHeaderMap_copy__SWIG_1(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = (arg1)->copy(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89208,7 +89208,7 @@ SWIGINTERN PyObject *_wrap_new_CHeaderMap(PyObject *SWIGUNUSEDPARM(self), PyObje
   {
     try {
       result = (limix::CHeaderMap *)new limix::CHeaderMap();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89255,7 +89255,7 @@ SWIGINTERN PyObject *_wrap_delete_CHeaderMap(PyObject *SWIGUNUSEDPARM(self), PyO
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89286,7 +89286,7 @@ SWIGINTERN PyObject *_wrap_new_CRMemDataFrameXd__SWIG_0(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (limix::CRMemDataFrame< MatrixXd > *)new limix::CRMemDataFrame< MatrixXd >();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89335,7 +89335,7 @@ SWIGINTERN PyObject *_wrap_new_CRMemDataFrameXd__SWIG_1(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (limix::CRMemDataFrame< MatrixXd > *)new limix::CRMemDataFrame< MatrixXd >((limix::CRMemDataFrame< MatrixXd > const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89405,7 +89405,7 @@ SWIGINTERN PyObject *_wrap_new_CRMemDataFrameXd__SWIG_2(PyObject *SWIGUNUSEDPARM
   {
     try {
       result = (limix::CRMemDataFrame< MatrixXd > *)new limix::CRMemDataFrame< MatrixXd >(arg1,arg2,arg3);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89500,7 +89500,7 @@ SWIGINTERN PyObject *_wrap_delete_CRMemDataFrameXd(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89545,7 +89545,7 @@ SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_getRowHeader(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = ((limix::CRMemDataFrame< MatrixXd > const *)arg1)->getRowHeader();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89593,7 +89593,7 @@ SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_getColHeader(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = ((limix::CRMemDataFrame< MatrixXd > const *)arg1)->getColHeader();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89646,7 +89646,7 @@ SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_agetMatrix(PyObject *SWIGUNUSEDPARM(
   {
     try {
       ((limix::CRMemDataFrame< MatrixXd > const *)arg1)->agetMatrix(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89710,7 +89710,7 @@ SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_getMatrix(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = ((limix::CRMemDataFrame< MatrixXd > const *)arg1)->getMatrix();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89741,7 +89741,7 @@ SWIGINTERN PyObject *_wrap_new_CRWMemDataFrameXd__SWIG_0(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = (limix::CRWMemDataFrame< MatrixXd > *)new limix::CRWMemDataFrame< MatrixXd >();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89790,7 +89790,7 @@ SWIGINTERN PyObject *_wrap_new_CRWMemDataFrameXd__SWIG_1(PyObject *SWIGUNUSEDPAR
   {
     try {
       result = (limix::CRWMemDataFrame< MatrixXd > *)new limix::CRWMemDataFrame< MatrixXd >((limix::CRMemDataFrame< MatrixXd > const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89868,7 +89868,7 @@ SWIGINTERN PyObject *_wrap_delete_CRWMemDataFrameXd(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89925,7 +89925,7 @@ SWIGINTERN PyObject *_wrap_CRWMemDataFrameXd_setRowHeader(PyObject *SWIGUNUSEDPA
   {
     try {
       (arg1)->setRowHeader(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -89982,7 +89982,7 @@ SWIGINTERN PyObject *_wrap_CRWMemDataFrameXd_setColHeader(PyObject *SWIGUNUSEDPA
   {
     try {
       (arg1)->setColHeader(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90098,7 +90098,7 @@ SWIGINTERN PyObject *_wrap_CRWMemDataFrameXd_setMatrix__SWIG_0(PyObject *SWIGUNU
   {
     try {
       (arg1)->setMatrix((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90159,7 +90159,7 @@ SWIGINTERN PyObject *_wrap_CRWMemDataFrameXd_setMatrix__SWIG_1(PyObject *SWIGUNU
   {
     try {
       (arg1)->setMatrix(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90255,7 +90255,7 @@ SWIGINTERN PyObject *_wrap_delete_ARDataFrameXd(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90300,7 +90300,7 @@ SWIGINTERN PyObject *_wrap_ARDataFrameXd_getRowHeader(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = ((limix::ARDataFrame< MatrixXd > const *)arg1)->getRowHeader();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90348,7 +90348,7 @@ SWIGINTERN PyObject *_wrap_ARDataFrameXd_getColHeader(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = ((limix::ARDataFrame< MatrixXd > const *)arg1)->getColHeader();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90401,7 +90401,7 @@ SWIGINTERN PyObject *_wrap_ARDataFrameXd_agetMatrix(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       ((limix::ARDataFrame< MatrixXd > const *)arg1)->agetMatrix(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90465,7 +90465,7 @@ SWIGINTERN PyObject *_wrap_ARDataFrameXd_getMatrix(PyObject *SWIGUNUSEDPARM(self
   {
     try {
       result = ((limix::ARDataFrame< MatrixXd > const *)arg1)->getMatrix();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90504,7 +90504,7 @@ SWIGINTERN PyObject *_wrap_delete_AWDataFrameXd(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       delete arg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90549,7 +90549,7 @@ SWIGINTERN PyObject *_wrap_AWDataFrameXd_setRowHeader(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->setRowHeader(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90594,7 +90594,7 @@ SWIGINTERN PyObject *_wrap_AWDataFrameXd_setColHeader(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       (arg1)->setColHeader(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90698,7 +90698,7 @@ SWIGINTERN PyObject *_wrap_AWDataFrameXd_setMatrix__SWIG_0(PyObject *SWIGUNUSEDP
   {
     try {
       (arg1)->setMatrix((MatrixXd const &)*arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90747,7 +90747,7 @@ SWIGINTERN PyObject *_wrap_AWDataFrameXd_setMatrix__SWIG_1(PyObject *SWIGUNUSEDP
   {
     try {
       (arg1)->setMatrix(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90845,7 +90845,7 @@ SWIGINTERN PyObject *_wrap_delete_AGenotypeContainer(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90918,7 +90918,7 @@ SWIGINTERN PyObject *_wrap_AGenotypeContainer_setSNPFilter(PyObject *SWIGUNUSEDP
   {
     try {
       (arg1)->setSNPFilter(arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -90972,7 +90972,7 @@ SWIGINTERN PyObject *_wrap_AGenotypeContainer_read__SWIG_0(PyObject *SWIGUNUSEDP
   {
     try {
       result = (arg1)->read(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91020,7 +91020,7 @@ SWIGINTERN PyObject *_wrap_AGenotypeContainer_read__SWIG_1(PyObject *SWIGUNUSEDP
   {
     try {
       result = (arg1)->read();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91095,7 +91095,7 @@ SWIGINTERN PyObject *_wrap_new_CGenotypeBlock__SWIG_0(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::CGenotypeBlock *)new limix::CGenotypeBlock();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91184,7 +91184,7 @@ SWIGINTERN PyObject *_wrap_new_CGenotypeBlock__SWIG_1(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::CGenotypeBlock *)new limix::CGenotypeBlock((limix::stringVec const &)*arg1,(limix::stringVec const &)*arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91237,7 +91237,7 @@ SWIGINTERN PyObject *_wrap_new_CGenotypeBlock__SWIG_2(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::CGenotypeBlock *)new limix::CGenotypeBlock((limix::CGenotypeBlock const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91324,7 +91324,7 @@ SWIGINTERN PyObject *_wrap_new_CGenotypeBlock__SWIG_3(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       result = (limix::CGenotypeBlock *)new limix::CGenotypeBlock(arg1,arg2,arg3,arg4);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91446,7 +91446,7 @@ SWIGINTERN PyObject *_wrap_delete_CGenotypeBlock(PyObject *SWIGUNUSEDPARM(self),
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91491,7 +91491,7 @@ SWIGINTERN PyObject *_wrap_CGenotypeBlock_numSample(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (limix::muint_t)(arg1)->numSample();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91536,7 +91536,7 @@ SWIGINTERN PyObject *_wrap_CGenotypeBlock_numSNPs(PyObject *SWIGUNUSEDPARM(self)
   {
     try {
       result = (limix::muint_t)(arg1)->numSNPs();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91586,7 +91586,7 @@ SWIGINTERN PyObject *_wrap_CGenotypeBlock_getPosition(PyObject *SWIGUNUSEDPARM(s
   {
     try {
       ((limix::CGenotypeBlock const *)arg1)->agetPosition(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91659,7 +91659,7 @@ SWIGINTERN PyObject *_wrap_CGenotypeBlock_read__SWIG_0(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (arg1)->read(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91707,7 +91707,7 @@ SWIGINTERN PyObject *_wrap_CGenotypeBlock_read__SWIG_1(PyObject *SWIGUNUSEDPARM(
   {
     try {
       result = (arg1)->read();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91796,7 +91796,7 @@ SWIGINTERN PyObject *_wrap_new_CTextfileGenotypeContainer(PyObject *SWIGUNUSEDPA
   {
     try {
       result = (limix::CTextfileGenotypeContainer *)new limix::CTextfileGenotypeContainer((std::string const &)*arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91845,7 +91845,7 @@ SWIGINTERN PyObject *_wrap_delete_CTextfileGenotypeContainer(PyObject *SWIGUNUSE
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91899,7 +91899,7 @@ SWIGINTERN PyObject *_wrap_CTextfileGenotypeContainer_read__SWIG_0(PyObject *SWI
   {
     try {
       result = (arg1)->read(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -91947,7 +91947,7 @@ SWIGINTERN PyObject *_wrap_CTextfileGenotypeContainer_read__SWIG_1(PyObject *SWI
   {
     try {
       result = (arg1)->read();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -92035,7 +92035,7 @@ SWIGINTERN PyObject *_wrap_new_CMemGenotypeContainer(PyObject *SWIGUNUSEDPARM(se
   {
     try {
       result = (limix::CMemGenotypeContainer *)new limix::CMemGenotypeContainer(arg1);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -92082,7 +92082,7 @@ SWIGINTERN PyObject *_wrap_delete_CMemGenotypeContainer(PyObject *SWIGUNUSEDPARM
   {
     try {
       (void)arg1; delete smartarg1;
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -92136,7 +92136,7 @@ SWIGINTERN PyObject *_wrap_CMemGenotypeContainer_read__SWIG_0(PyObject *SWIGUNUS
   {
     try {
       result = (arg1)->read(arg2);
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -92184,7 +92184,7 @@ SWIGINTERN PyObject *_wrap_CMemGenotypeContainer_read__SWIG_1(PyObject *SWIGUNUS
   {
     try {
       result = (arg1)->read();
-    } catch (limix::CGPMixException& e) {
+    } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
       SWIG_exception(SWIG_RuntimeError, s.c_str());
@@ -93630,29 +93630,29 @@ static PyMethodDef SwigMethods[] = {
 		"    x: limix::mfloat_t\n"
 		"\n"
 		""},
-	 { (char *)"new_CGPMixException", _wrap_new_CGPMixException, METH_VARARGS, (char *)"\n"
-		"CGPMixException(std::string str=\"Unlabeled exception\")\n"
+	 { (char *)"new_CLimixException", _wrap_new_CLimixException, METH_VARARGS, (char *)"\n"
+		"CLimixException(std::string str=\"Unlabeled exception\")\n"
 		"\n"
 		"Parameters:\n"
 		"    str: std::string\n"
 		"\n"
-		"new_CGPMixException() -> CGPMixException\n"
+		"new_CLimixException() -> CLimixException\n"
 		""},
-	 { (char *)"CGPMixException_what", _wrap_CGPMixException_what, METH_VARARGS, (char *)"\n"
-		"CGPMixException_what(CGPMixException self) -> std::string\n"
+	 { (char *)"CLimixException_what", _wrap_CLimixException_what, METH_VARARGS, (char *)"\n"
+		"CLimixException_what(CLimixException self) -> std::string\n"
 		"\n"
 		"Parameters:\n"
-		"    self: limix::CGPMixException *\n"
+		"    self: limix::CLimixException *\n"
 		"\n"
 		""},
-	 { (char *)"delete_CGPMixException", _wrap_delete_CGPMixException, METH_VARARGS, (char *)"\n"
-		"delete_CGPMixException(CGPMixException self)\n"
+	 { (char *)"delete_CLimixException", _wrap_delete_CLimixException, METH_VARARGS, (char *)"\n"
+		"delete_CLimixException(CLimixException self)\n"
 		"\n"
 		"Parameters:\n"
-		"    self: limix::CGPMixException *\n"
+		"    self: limix::CLimixException *\n"
 		"\n"
 		""},
-	 { (char *)"CGPMixException_swigregister", CGPMixException_swigregister, METH_VARARGS, NULL},
+	 { (char *)"CLimixException_swigregister", CLimixException_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CParamObject", _wrap_new_CParamObject, METH_VARARGS, (char *)"new_CParamObject() -> CParamObject"},
 	 { (char *)"CParamObject_addSyncParent", _wrap_CParamObject_addSyncParent, METH_VARARGS, (char *)"\n"
 		"CParamObject_addSyncParent(CParamObject self, limix::Pbool l)\n"
@@ -101046,8 +101046,8 @@ static void *_p_std__shared_ptrT_limix__CGPkronSum_tTo_p_std__shared_ptrT_limix_
     *newmemory = SWIG_CAST_NEW_MEMORY;
     return (void *) new std::shared_ptr< limix::CGPbase >(*(std::shared_ptr< limix::CGPkronSum > *)x);
 }
-static void *_p_limix__CGPMixExceptionTo_p_std__exception(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((std::exception *)  ((limix::CGPMixException *) x));
+static void *_p_limix__CLimixExceptionTo_p_std__exception(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((std::exception *)  ((limix::CLimixException *) x));
 }
 static void *_p_limix__CSingleTraitTermTo_p_limix__AVarianceTerm(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::AVarianceTerm *)  ((limix::CSingleTraitTerm *) x));
@@ -101161,7 +101161,6 @@ static swig_type_info _swigt__p_limix__CFreeFormCF = {"_p_limix__CFreeFormCF", "
 static swig_type_info _swigt__p_limix__CGPCholCache = {"_p_limix__CGPCholCache", "limix::CGPCholCache *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CGPHyperParams = {"_p_limix__CGPHyperParams", "limix::CGPHyperParams *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CGPKroneckerCache = {"_p_limix__CGPKroneckerCache", "limix::CGPKroneckerCache *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_limix__CGPMixException = {"_p_limix__CGPMixException", "limix::CGPMixException *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CGPSum = {"_p_limix__CGPSum", "limix::CGPSum *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CGPSumCache = {"_p_limix__CGPSumCache", "limix::CGPSumCache *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CGPbase = {"_p_limix__CGPbase", "limix::CGPbase *", 0, 0, (void*)0, 0};
@@ -101181,6 +101180,7 @@ static swig_type_info _swigt__p_limix__CLMMKroneckerCore = {"_p_limix__CLMMKrone
 static swig_type_info _swigt__p_limix__CLikNormalIso = {"_p_limix__CLikNormalIso", "limix::CLikNormalIso *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CLikNormalNULL = {"_p_limix__CLikNormalNULL", "limix::CLikNormalNULL *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CLikNormalSVD = {"_p_limix__CLikNormalSVD", "limix::CLikNormalSVD *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_limix__CLimixException = {"_p_limix__CLimixException", "limix::CLimixException *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CLinCombCF = {"_p_limix__CLinCombCF", "limix::CLinCombCF *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CLinearMean = {"_p_limix__CLinearMean", "limix::CLinearMean *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CLowRankCF = {"_p_limix__CLowRankCF", "limix::CLowRankCF *", 0, 0, (void*)0, 0};
@@ -101343,7 +101343,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_limix__CGPCholCache,
   &_swigt__p_limix__CGPHyperParams,
   &_swigt__p_limix__CGPKroneckerCache,
-  &_swigt__p_limix__CGPMixException,
   &_swigt__p_limix__CGPSum,
   &_swigt__p_limix__CGPSumCache,
   &_swigt__p_limix__CGPbase,
@@ -101363,6 +101362,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_limix__CLikNormalIso,
   &_swigt__p_limix__CLikNormalNULL,
   &_swigt__p_limix__CLikNormalSVD,
+  &_swigt__p_limix__CLimixException,
   &_swigt__p_limix__CLinCombCF,
   &_swigt__p_limix__CLinearMean,
   &_swigt__p_limix__CLowRankCF,
@@ -101525,7 +101525,6 @@ static swig_cast_info _swigc__p_limix__CFreeFormCF[] = {  {&_swigt__p_limix__CFr
 static swig_cast_info _swigc__p_limix__CGPCholCache[] = {  {&_swigt__p_limix__CGPCholCache, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CGPHyperParams[] = {  {&_swigt__p_limix__CGPHyperParams, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CGPKroneckerCache[] = {  {&_swigt__p_limix__CGPKroneckerCache, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_limix__CGPMixException[] = {  {&_swigt__p_limix__CGPMixException, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CGPSum[] = {  {&_swigt__p_limix__CGPSum, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CGPSumCache[] = {  {&_swigt__p_limix__CGPSumCache, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CGPbase[] = {  {&_swigt__p_limix__CGPSum, _p_limix__CGPSumTo_p_limix__CGPbase, 0, 0},  {&_swigt__p_limix__CGPkronecker, _p_limix__CGPkroneckerTo_p_limix__CGPbase, 0, 0},  {&_swigt__p_limix__CGPkronSum, _p_limix__CGPkronSumTo_p_limix__CGPbase, 0, 0},  {&_swigt__p_limix__CGPbase, 0, 0, 0},{0, 0, 0, 0}};
@@ -101545,6 +101544,7 @@ static swig_cast_info _swigc__p_limix__CLMMKroneckerCore[] = {  {&_swigt__p_limi
 static swig_cast_info _swigc__p_limix__CLikNormalIso[] = {  {&_swigt__p_limix__CLikNormalIso, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CLikNormalNULL[] = {  {&_swigt__p_limix__CLikNormalNULL, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CLikNormalSVD[] = {  {&_swigt__p_limix__CLikNormalSVD, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_limix__CLimixException[] = {  {&_swigt__p_limix__CLimixException, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CLinCombCF[] = {  {&_swigt__p_limix__CLinCombCF, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CLinearMean[] = {  {&_swigt__p_limix__CLinearMean, 0, 0, 0},  {&_swigt__p_limix__CKroneckerMean, _p_limix__CKroneckerMeanTo_p_limix__CLinearMean, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CLowRankCF[] = {  {&_swigt__p_limix__CLowRankCF, 0, 0, 0},{0, 0, 0, 0}};
@@ -101578,7 +101578,7 @@ static swig_cast_info _swigc__p_std__allocatorT_MatrixXd_t[] = {  {&_swigt__p_st
 static swig_cast_info _swigc__p_std__allocatorT_VectorXi_t[] = {  {&_swigt__p_std__allocatorT_VectorXi_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t[] = {  {&_swigt__p_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__allocatorT_std__string_t[] = {  {&_swigt__p_std__allocatorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__exception[] = {  {&_swigt__p_std__exception, 0, 0, 0},  {&_swigt__p_limix__CGPMixException, _p_limix__CGPMixExceptionTo_p_std__exception, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__exception[] = {  {&_swigt__p_std__exception, 0, 0, 0},  {&_swigt__p_limix__CLimixException, _p_limix__CLimixExceptionTo_p_std__exception, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__invalid_argument[] = {  {&_swigt__p_std__invalid_argument, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__lessT_std__string_t[] = {  {&_swigt__p_std__lessT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t[] = {  {&_swigt__p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t, 0, 0, 0},  {&_swigt__p_limix__CGPHyperParams, _p_limix__CGPHyperParamsTo_p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t, 0, 0},{0, 0, 0, 0}};
@@ -101707,7 +101707,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_limix__CGPCholCache,
   _swigc__p_limix__CGPHyperParams,
   _swigc__p_limix__CGPKroneckerCache,
-  _swigc__p_limix__CGPMixException,
   _swigc__p_limix__CGPSum,
   _swigc__p_limix__CGPSumCache,
   _swigc__p_limix__CGPbase,
@@ -101727,6 +101726,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_limix__CLikNormalIso,
   _swigc__p_limix__CLikNormalNULL,
   _swigc__p_limix__CLikNormalSVD,
+  _swigc__p_limix__CLimixException,
   _swigc__p_limix__CLinCombCF,
   _swigc__p_limix__CLinearMean,
   _swigc__p_limix__CLowRankCF,

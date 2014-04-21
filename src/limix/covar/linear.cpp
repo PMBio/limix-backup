@@ -26,7 +26,7 @@ void CCovLinearISO::aKcross(MatrixXd* out,const CovarInput& Xstar) const
 	{
 		std::ostringstream os;
 		os << this->getName() <<": Xstar has wrong number of dimensions. Xstar.cols() = "<< Xstar.cols() <<". X.cols() = "<< this->X.cols() << ".";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	//kernel matrix is constant hyperparmeter and dot product
 	(*out).noalias() = std::pow(params(0),2)* Xstar*this->X.transpose();
@@ -51,14 +51,14 @@ void CCovLinearISO::aKgrad_param(MatrixXd* out, const muint_t i ) const
 	{
 		std::ostringstream os;
 		os << this->getName() <<": wrong index of hyperparameter. i = "<< i <<". this->params.cols() = "<< this->getNumberParams() << ".";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 }
     
 void CCovLinearISO::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
-		throw CGPMixException("Parameter index out of range.");
+		throw CLimixException("Parameter index out of range.");
     }
     (*out).noalias()=2*this->X*this->X.transpose();
 }
@@ -69,7 +69,7 @@ void CCovLinearISO::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const 
 	{
 		std::ostringstream os;
 		os << this->getName() <<": wrong dimension index";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 
 	//create empty matrix
@@ -85,7 +85,7 @@ void CCovLinearISO::aKdiag_grad_X(VectorXd* out, const muint_t d ) const
 	{
 		std::ostringstream os;
 		os << this->getName() <<": wrong dimension index";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	(*out) = VectorXd::Zero(this->X.rows());
 	(*out) = 2.0*std::pow(params(0),2)*this->X.col(d);
@@ -107,7 +107,7 @@ void CCovLinearISODelta::aKcross(MatrixXd* out,const CovarInput& Xstar) const
 	{
 		std::ostringstream os;
 		os << this->getName() <<": Xstar has wrong number of dimensions. Xstar.cols() = "<< Xstar.cols() <<". X.cols() = "<< this->X.cols() << ".";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	//kernel matrix is constant hyperparmeter and dot product
 	for (muint_t ir=0;ir< (muint_t)out->rows();++ir)
@@ -137,7 +137,7 @@ void CCovLinearISODelta::aKgrad_param(MatrixXd* out, const muint_t i ) const
 	{
 		std::ostringstream os;
 		os << this->getName() <<": wrong index of hyperparameter. i = "<< i <<". this->params.cols() = "<< this->getNumberParams() << ".";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
     
 	for (muint_t ir=0;ir< (muint_t)out->rows();++ir)
@@ -155,7 +155,7 @@ void CCovLinearISODelta::aKgrad_param(MatrixXd* out, const muint_t i ) const
 void CCovLinearISODelta::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
-        throw CGPMixException("Parameter index out of range.");
+        throw CLimixException("Parameter index out of range.");
     }
     (*out)=MatrixXd::Zero(this->X.rows(),this->X.rows());
 }
@@ -194,7 +194,7 @@ void CCovLinearARD::aKgrad_param(MatrixXd* out,const muint_t i) const
 {
 	//is the requested gradient within range?
 	if (i >= (muint_t)this->X.cols()) //WARNING: muint_t conversion
-		throw CGPMixException("unknown hyperparameter derivative requested in CLinearCFISO");
+		throw CLimixException("unknown hyperparameter derivative requested in CLinearCFISO");
 	//ok: calculcate:
 	//1. get row i from x1:
 	MatrixXd x1i = X.col(i);
@@ -205,7 +205,7 @@ void CCovLinearARD::aKgrad_param(MatrixXd* out,const muint_t i) const
 void CCovLinearARD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
-        throw CGPMixException("Parameter index out of range.");
+        throw CLimixException("Parameter index out of range.");
     }
     if (i==j) {
     	MatrixXd x1i = X.col(i);
@@ -218,7 +218,7 @@ void CCovLinearARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const 
 {
 	if (d>=numberDimensions)
 	{
-		throw CGPMixException("derivative for gradient outside specification requested.");
+		throw CLimixException("derivative for gradient outside specification requested.");
 	}
 	(*out) = MatrixXd::Zero(Xstar.rows(),this->X.rows());
 	(*out).rowwise() = std::pow(params(d),2)*Xstar.col(d).transpose();

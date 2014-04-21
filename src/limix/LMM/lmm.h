@@ -355,7 +355,7 @@ inline void ALMM::applyPermutation(const Eigen::MatrixBase<Derived1>& M_)
         return;
 
     if(perm.rows() != M.rows()){
-        throw CGPMixException("ALMM:Permutation vector has incompatible length");
+        throw CLimixException("ALMM:Permutation vector has incompatible length");
     }
     //create temporary copy
     MatrixXd Mc = M;

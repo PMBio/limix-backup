@@ -509,7 +509,7 @@ void CGPSum::updateParams()
 
  void CGPSum::apredictVar(MatrixXd* out,const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) 
  {
-	 throw CGPMixException("CGPSum: apredictVar not implemented yet!");
+	 throw CLimixException("CGPSum: apredictVar not implemented yet!");
  }
 
  */

@@ -26,14 +26,14 @@ AVarianceTerm::~AVarianceTerm() {
 muint_t AVarianceTerm::getNumberIndividuals() const 
 {
 	if (Knull)
-		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
+		throw CLimixException("CSingleTraitTerm: K needs to be set!");
 	return (muint_t)this->K.cols();
 }
 
 void AVarianceTerm::setK(const MatrixXd& K) 
 {
 	if(K.rows()!=K.cols())
-		throw CGPMixException("AVarianceTerm: K needs to be a squared matrix!");
+		throw CLimixException("AVarianceTerm: K needs to be a squared matrix!");
 	this->K=K;
 	Kcf = PFixedCF(new CFixedCF(this->K));
 	this->Knull = false;
@@ -55,7 +55,7 @@ CSingleTraitTerm::CSingleTraitTerm(const MatrixXd& K):AVarianceTerm() {
 
 void CSingleTraitTerm::setSampleFilter(const MatrixXb& filter) 
 {
-	throw CGPMixException("not implementation error: setSampleFilter");
+	throw CLimixException("not implementation error: setSampleFilter");
 }
 
 
@@ -64,40 +64,40 @@ CSingleTraitTerm::~CSingleTraitTerm() {
 
 PCovarianceFunction CSingleTraitTerm::getTraitCovar() const 
 {
-	throw CGPMixException("CSingleTraitTerm: Not implemented for SingleTraitTerm");
+	throw CLimixException("CSingleTraitTerm: Not implemented for SingleTraitTerm");
 }
 
 void CSingleTraitTerm::setScales(const VectorXd& scales) 
 {
 	if (Knull)
-		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
+		throw CLimixException("CSingleTraitTerm: K needs to be set!");
 	this->Kcf->setParams(scales);
 }
 
 void CSingleTraitTerm::agetScales(VectorXd* out) const 
 {
 	if (Knull)
-		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
+		throw CLimixException("CSingleTraitTerm: K needs to be set!");
 	(this->Kcf)->agetParams(out);
 }
 
 muint_t CSingleTraitTerm::getNumberScales() const 
 {
 	if (Knull)
-		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
+		throw CLimixException("CSingleTraitTerm: K needs to be set!");
 	return this->Kcf->getNumberParams();
 }
 
 void CSingleTraitTerm::initTerm() 
 {
 	if (Knull)
-		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
+		throw CLimixException("CSingleTraitTerm: K needs to be set!");
 	this->is_init=(bool)1;
 }
 
 PCovarianceFunction CSingleTraitTerm::getCovariance() const 
 {
-	if (!is_init)	throw CGPMixException("CSingleTraitTerm: the term is not initialised!");
+	if (!is_init)	throw CLimixException("CSingleTraitTerm: the term is not initialised!");
 	return this->Kcf;
 }
 
@@ -134,28 +134,28 @@ PCovarianceFunction CMultiTraitTerm::getTraitCovar() const
 void CMultiTraitTerm::setScales(const VectorXd& scales) 
 {
 	if (isNull)
-		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
+		throw CLimixException("CMultiTraitTerm: traitCovariance needs to be set!");
 	this->traitCovariance->setParams(scales);
 }
 
 void CMultiTraitTerm::agetScales(VectorXd* out) const 
 {
 	if (isNull)
-		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
+		throw CLimixException("CMultiTraitTerm: traitCovariance needs to be set!");
 	this->traitCovariance->agetParams(out);
 }
 
 muint_t CMultiTraitTerm::getNumberScales() const 
 {
 	if (isNull)
-		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
+		throw CLimixException("CMultiTraitTerm: traitCovariance needs to be set!");
 	return this->traitCovariance->getNumberParams();
 }
 
 void CMultiTraitTerm::initTerm() 
 {
-	if (isNull)		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
-	if (Knull)		throw CGPMixException("CMultiTraitTerm: K needs to be set!");
+	if (isNull)		throw CLimixException("CMultiTraitTerm: traitCovariance needs to be set!");
+	if (Knull)		throw CLimixException("CMultiTraitTerm: K needs to be set!");
 	Kcf->setParams(VectorXd::Ones(1));
 	Kcf->setParamMask(VectorXd::Zero(1));
 	// InterTrait Covariance Matrix
@@ -166,9 +166,9 @@ void CMultiTraitTerm::initTerm()
 void CMultiTraitTerm::setSampleFilter(const MatrixXb& filter) 
 {
 	if (!is_init)
-		throw CGPMixException("sample Filter can only be aplied after the term is initialized");
+		throw CLimixException("sample Filter can only be aplied after the term is initialized");
 	if (filter.rows()!=this->getNumberIndividuals()*this->P)
-		throw CGPMixException("filter dimensions do not match sample covariance");
+		throw CLimixException("filter dimensions do not match sample covariance");
 
 	//linearize filter
 	MatrixXb filter_ = filter;
@@ -191,7 +191,7 @@ void CMultiTraitTerm::setSampleFilter(const MatrixXb& filter)
 
 PCovarianceFunction CMultiTraitTerm::getCovariance() const 
 {
-	if (!is_init)	throw CGPMixException("CMultiTraitTerm: the term is not initialised!");
+	if (!is_init)	throw CLimixException("CMultiTraitTerm: the term is not initialised!");
 	return this->covariance;
 }
 
@@ -218,9 +218,9 @@ void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& design, const Matri
 {
 	//if ((muint_t)fixed.cols()!=(muint_t)1 || (muint_t)fixed.rows()!=this->N)
 	if ((muint_t)fixed.cols()<(muint_t)1 || (muint_t)fixed.rows()!=this->N)
-		throw CGPMixException("CVarianceDecomposition: the fixed effect must have shape (N,1+)");
+		throw CLimixException("CVarianceDecomposition: the fixed effect must have shape (N,1+)");
 	if ((muint_t)design.cols()!=(muint_t)P || (muint_t)design.rows()>(muint_t)P)
-		throw CGPMixException("CVarianceDecomposition: the design must have P columns and cannot have more than P rows");
+		throw CLimixException("CVarianceDecomposition: the design must have P columns and cannot have more than P rows");
 	fixedEffs.push_back(fixed);
 	designs.push_back(design);
 	this->is_init=false;
@@ -235,14 +235,14 @@ void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& fixed)
 void CVarianceDecomposition::getFixed(MatrixXd *out, const muint_t i) const 
 {
 	if (i>=this->getNumberFixedEffs())
-		throw CGPMixException("CVarianceDecomposition: value out of range");
+		throw CLimixException("CVarianceDecomposition: value out of range");
 	(*out)=this->fixedEffs[i];
 }
 
 void CVarianceDecomposition::getDesign(MatrixXd *out, const muint_t i) const 
 {
 	if (i>=this->getNumberFixedEffs())
-		throw CGPMixException("CVarianceDecomposition: value out of range");
+		throw CLimixException("CVarianceDecomposition: value out of range");
 	(*out)=this->designs[i];
 }
 
@@ -279,12 +279,12 @@ void CVarianceDecomposition::addTerm(PVarianceTerm term)
 
 	if (term->getName()=="CMultiTraitTerm")
 		if (term->getNumberTraits()!=this->P)
-			throw CGPMixException("CVarianceDecomposition: the term has incompatible number of traits");
+			throw CLimixException("CVarianceDecomposition: the term has incompatible number of traits");
 		if (term->getNumberIndividuals()!=this->N)
-			throw CGPMixException("CVarianceDecomposition: the term has incompatible number of individual");
+			throw CLimixException("CVarianceDecomposition: the term has incompatible number of individual");
 	else if (term->getName()=="CSingleTraitTerm")
 		if (term->getNumberIndividuals()!=this->N*this->P)
-			throw CGPMixException("CVarianceDecomposition: the single trait term must have dimensions NP");
+			throw CLimixException("CVarianceDecomposition: the single trait term must have dimensions NP");
 	terms.push_back(term);
 	this->is_init=false;
 }
@@ -302,7 +302,7 @@ void CVarianceDecomposition::addTerm(PCovarianceFunction traitCovar, const Matri
 PVarianceTerm CVarianceDecomposition::getTerm(muint_t i) const 
 {
 	if (i>=this->getNumberTerms())
-		throw CGPMixException("CVarianceDecomposition: value out of range");
+		throw CLimixException("CVarianceDecomposition: value out of range");
 	return this->terms[i];
 }
 
@@ -319,21 +319,21 @@ muint_t CVarianceDecomposition::getNumberTerms() const
 void CVarianceDecomposition::setScales(const VectorXd& scales) const 
 {
 	if (this->is_init==0)
-		throw CGPMixException("CVarianceDecomposition: CVarianceDecomposition needs to be initialised");
+		throw CLimixException("CVarianceDecomposition: CVarianceDecomposition needs to be initialised");
 	this->covar->setParams(scales);
 }
 
 void CVarianceDecomposition::setScales(muint_t i,const VectorXd& scales) const 
 {
 	if (i>=this->getNumberTerms())
-		throw CGPMixException("CVarianceDecomposition: value out of range");
+		throw CLimixException("CVarianceDecomposition: value out of range");
 	this->terms[i]->setScales(scales);
 }
 
 void CVarianceDecomposition::agetScales(muint_t i, VectorXd* out) const 
 {
 	if (i>=this->getNumberTerms())
-		throw CGPMixException("CVarianceDecomposition: value out of range");
+		throw CLimixException("CVarianceDecomposition: value out of range");
 	this->terms[i]->agetScales(out);
 }
 
@@ -374,7 +374,7 @@ void CVarianceDecomposition::initGPparams()
 	/* get params from covariance matrices and set them to the GP object
  	*/
     if (is_init!=1)
-		throw CGPMixException("CVarianceDecomposition:: initGP before initGPparams");
+		throw CLimixException("CVarianceDecomposition:: initGP before initGPparams");
     CGPHyperParams params;
 	if (fast) {
         params["covarr1"] = static_pointer_cast<CGPkronSum>(gp)->getCovarr1()->getParams();
@@ -469,12 +469,12 @@ void CVarianceDecomposition::initGPkronSum()
 {
 	//check whether exact Kronecker structure?
 	if (phenoNANany)
-			throw CGPMixException("GPKronSum (fast inference) can only be used for full kronecker structured data");
+			throw CLimixException("GPKronSum (fast inference) can only be used for full kronecker structured data");
 
     if (getNumberTerms()!=2)
-        throw CGPMixException("CVarianceDecomposition: fastGP only works for two terms");
+        throw CLimixException("CVarianceDecomposition: fastGP only works for two terms");
     if (getNumberTraits()<2)
-        throw CGPMixException("CVarianceDecomposition: supported only for multiple traits");
+        throw CLimixException("CVarianceDecomposition: supported only for multiple traits");
 
     if (is_init && fast) {
         gp->setY(pheno);
@@ -544,14 +544,14 @@ void CVarianceDecomposition::getFixedEffects(VectorXd* out)
 mfloat_t CVarianceDecomposition::getLML() 
 {
 	if (!this->is_init)
-		throw CGPMixException("CVarianceDecomposition: the term is not initialised!");
+		throw CLimixException("CVarianceDecomposition: the term is not initialised!");
 	return -1.*this->gp->LML();
 }
 
 mfloat_t CVarianceDecomposition::getLMLgrad() 
 {
 	if (!this->is_init)
-		throw CGPMixException("CVarianceDecomposition: the term is not initialised!");
+		throw CLimixException("CVarianceDecomposition: the term is not initialised!");
 	float out;
 	if (this->fast) 	out = getLMLgradGPkronSum();
 	else				out = getLMLgradGPbase();
@@ -561,7 +561,7 @@ mfloat_t CVarianceDecomposition::getLMLgrad()
 mfloat_t CVarianceDecomposition::getLMLgradGPbase() 
 {
 	if (!this->is_init)
-		throw CGPMixException("CVarianceDecomposition: the term is not initialised!");
+		throw CLimixException("CVarianceDecomposition: the term is not initialised!");
 	mfloat_t out = 0;
 	// Squared Norm of LMLgrad["covar"]
 	VectorXd grad = this->gp->LMLgrad()["covar"];

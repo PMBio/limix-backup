@@ -61,7 +61,7 @@ void CFreeFormCF::setParamsCovariance(const MatrixXd& K0)
     //0. check that the matrix has the correct size
     if(((muint_t)K0.rows()!=numberGroups) || ((muint_t)K0.cols()!=numberGroups))
     {
-        throw CGPMixException("aK0Covar2Params: rows and columns need to be compatiable with the number of groups");
+        throw CLimixException("aK0Covar2Params: rows and columns need to be compatiable with the number of groups");
     }
     MatrixXd L;
     MatrixXdChol chol(K0);
@@ -124,7 +124,7 @@ void CFreeFormCF::setParamsVarCorr(const CovarParams& paramsVC)
     // No correlation must be <1 && >-1 or otherwise the initialization would fail
     for (muint_t i=numberGroups;i<getNumberParams();++i)
         if (paramsVC(i)>=1 || paramsVC(i)<=-1)
-            throw CGPMixException("Correlation must be in (-1,+1)");
+            throw CLimixException("Correlation must be in (-1,+1)");
     
     //0. check that the matrix has the correct size
     checkParamDimensions(paramsVC);
@@ -348,7 +348,7 @@ CFixedCF::CFixedCF(const MatrixXd & K0) : ACovarianceFunction(1)
 {
     if((muint_t)K0.rows()!=((muint_t)K0.cols()))
     {
-        throw CGPMixException("K0 must be a square Matrix");
+        throw CLimixException("K0 must be a square Matrix");
     }
     this->numberGroups=K0.cols();
     this->numberDimensions = 0;
@@ -574,7 +574,7 @@ void CRank1diagCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const
 void CRank1diagCF::aKgrad_param(MatrixXd* out,muint_t i) const 
 {
     if (i>=this->numberParams)
-        throw CGPMixException("Index exceeds the number of parameters");
+        throw CLimixException("Index exceeds the number of parameters");
 
     if (i<this->numberGroups) {
         MatrixXd L = this->params.segment(0,this->numberGroups);
@@ -596,7 +596,7 @@ void CRank1diagCF::aKgrad_param(MatrixXd* out,muint_t i) const
 void CRank1diagCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const 
 {
     if (j>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)
-        throw CGPMixException("Index exceeds the number of parameters");
+        throw CLimixException("Index exceeds the number of parameters");
     
     if (i<this->numberGroups && j<this->numberGroups) {
         MatrixXd Lgrad_parami = MatrixXd::Zero(this->numberGroups,1);

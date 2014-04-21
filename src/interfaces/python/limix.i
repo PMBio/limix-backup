@@ -61,7 +61,7 @@ using namespace limix;
 %exception{
 	try {
 	$action
-	} catch (limix::CGPMixException& e) {
+	} catch (limix::CLimixException& e) {
 	std::string s("LIMIX error: "), s2(e.what());
 	s = s + s2;
 	SWIG_exception(SWIG_RuntimeError, s.c_str());

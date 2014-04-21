@@ -51,7 +51,7 @@ inline void CKroneckerMean::checkDimensions(const MatrixXd& Y, const bool checkS
 	{
 		std::ostringstream os;
 		os << this->getName() << ": Number of number samples and number of targets specified do not match with given Y. Y.rows() = " << Y.rows() << ", Y.cols() = " << Y.cols() << ", nSamples = " << fixedEffects.rows() << ", nTargets = " << this->getNTargets();
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	//this->checkDimensions(this->fixedEffects, this->weights, this->A, true, checkStrictWeights, true);
 }

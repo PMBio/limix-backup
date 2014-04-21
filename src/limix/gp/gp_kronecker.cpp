@@ -136,7 +136,7 @@ MatrixXd& CGPKroneckerCache::rgetSi()
        		this->lik = PLikNormalSVD(new CLikNormalSVD());
        	}
        	if (typeid(*(this->lik))!=typeid(CLikNormalSVD))
-       	    throw CGPMixException("CGPLMM requires a SVD likelihood term");
+       	    throw CLimixException("CGPLMM requires a SVD likelihood term");
        	cache = PGPKroneckerCache(new CGPKroneckerCache(this));
     }
 
@@ -513,7 +513,7 @@ MatrixXd& CGPKroneckerCache::rgetSi()
 
  void CGPkronecker::apredictVar(MatrixXd* out,const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) 
  {
-	 throw CGPMixException("CGPKronecker: apredictVar not implemented yet!");
+	 throw CLimixException("CGPKronecker: apredictVar not implemented yet!");
  }
 
 

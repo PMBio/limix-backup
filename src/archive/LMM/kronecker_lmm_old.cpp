@@ -33,11 +33,11 @@ void CKroneckerLMM_old::initTestingK()
 	//additional checks for Kr and Kc
 	if(Kr.rows()!=snps.rows())
 	{
-		throw CGPMixException("KroneckerLMM: row covariance size missmatch");
+		throw CLimixException("KroneckerLMM: row covariance size missmatch");
 	}
 	if (Kc.rows()!=pheno.cols())
 	{
-		throw CGPMixException("KroneckerLMM: column covariance size missmatch!");
+		throw CLimixException("KroneckerLMM: column covariance size missmatch!");
 	}
 	//carry out decomposition for caches
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolverR(Kr);

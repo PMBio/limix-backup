@@ -79,7 +79,7 @@ void CGPHyperParams::setParamArray(const VectorXd& param,const CGPHyperParams& m
 	{
 		std::ostringstream os;
 		os << "Wrong number of params HyperParams structure (HyperParams structure:"<<getNumberParams()<<", paramArray:"<<param.rows()<<")!";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 
 	muint_t nc;
@@ -399,7 +399,7 @@ void CGPbase::updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions
 	{
 		std::ostringstream os;
 		os << "CGPLvm X param update dimension missmatch. X("<<X.rows()<<","<<X.cols()<<") <-> gplvm_dimensions:"<<gplvmDimensions.rows()<<"!";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	//update
 	for (muint_t ic=0;ic<(muint_t)X.cols();ic++)
@@ -672,7 +672,7 @@ void CGPbase::aLMLhess(MatrixXd* out, stringVec vecLabels)
     for(muint_t i=0; i<(muint_t) vecLabels.size(); i++)
         for(muint_t j=i+1; j<(muint_t) vecLabels.size(); j++)
             if (vecLabels.at(i)==vecLabels.at(j)) redundancy=1;
-    if (redundancy==1)   throw CGPMixException("Ripetition not allowed");
+    if (redundancy==1)   throw CLimixException("Ripetition not allowed");
         
         
     //Checks if the labels are appropriate and extabilish the dimensions of the hessian
@@ -683,9 +683,9 @@ void CGPbase::aLMLhess(MatrixXd* out, stringVec vecLabels)
         sp1 = iter[0];
         if (sp1=="covar")           hess_dimens+=covar->getNumberParams();
         else if (sp1=="lik")        hess_dimens+=lik->getNumberParams();
-        else if (sp1=="X")          throw CGPMixException("Not implemented");
-        else if (sp1=="dataTerm")   throw CGPMixException("Not implemented");
-        else                        throw CGPMixException("Hyperparameter list not valid");
+        else if (sp1=="X")          throw CLimixException("Not implemented");
+        else if (sp1=="dataTerm")   throw CLimixException("Not implemented");
+        else                        throw CLimixException("Hyperparameter list not valid");
     }
         
     (*out).resize(hess_dimens,hess_dimens);
