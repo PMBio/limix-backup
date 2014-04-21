@@ -363,6 +363,16 @@ void CKroneckerLMM::updateDecomposition()  {
     this->num_snps = snps.cols();
     this->num_pheno = pheno.cols();
     //this->num_covs = covs.cols();
+
+    if (num_samples==0)
+        throw CGPMixException("LMM requires a non-zero sample size");
+
+    if (num_snps==0)
+        throw CGPMixException("LMM requires non-zero SNPs");
+
+    if (num_pheno==0)
+        throw CGPMixException("LMM requires non-zero phenotypes");
+
     if(!(num_samples == (muint_t) pheno.rows()) || !(num_samples == (muint_t) snps.rows()) )
         throw CGPMixException("phenotypes and SNP dimensions inconsistent");
 
