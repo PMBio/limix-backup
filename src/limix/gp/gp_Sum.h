@@ -65,15 +65,6 @@ public:
 typedef sptr<CGPSumCache> PGPSumCache;
 
 
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%ignore CGPSum::predictMean;
-%ignore CGPSum::predictVar;
-
-%rename(predictMean) CGPSum::apredictMean;
-%rename(predictVar) CGPSum::apredictVar;
-#endif
-
 class CGPSum: public CGPbase {
 	friend class CGPSumCache;
 	virtual void updateParams() throw (CGPMixException);

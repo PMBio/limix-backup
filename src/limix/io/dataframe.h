@@ -350,17 +350,6 @@ public:
 };
 
 
-//implementation for in-memory handling READ ONLY
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%ignore CMemDataFrame::getMatrix;
-%ignore CMemDataFrame::getColHeader;
-%ignore CMemDataFrame::getRowHeader;
-
-%rename(getMatrix) CMemDataFrame::agetMatrix;
-%rename(getRowHeader) CMemDataFrame::aetRowHeader;
-%rename(getColHeader) CMemDataFrame::aetColHeader;
-#endif
-
 /*!
  * In memory implementation of read only dataframe
  */
@@ -448,15 +437,6 @@ public:
 		}
 
 };
-
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%template(CRMemDataFrameXd) CRMemDataFrame<MatrixXd>;
-%template(CRWMemDataFrameXd) CRWMemDataFrame<MatrixXd>;
-%template(ARDataFrameXd) ARDataFrame< MatrixXd >;
-%template(AWDataFrameXd) AWDataFrame< MatrixXd >;
-#endif
-
 
 }
 		//end: namespace limix

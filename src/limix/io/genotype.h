@@ -91,12 +91,6 @@ public:
 /*CGenotypeBlock
  * In-memory representation of a genotype structure, which is also a container
  */
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%ignore CGenotypeBlock::getPosition;
-%ignore CGenotypeBlock::getMatrix;
-%rename(getMatrix) CGenotypeBlock::agetMatrix;
-%rename(getPosition) CGenotypeBlock::agetPosition;
-#endif
 class CGenotypeBlock : public CRMemDataFrame<MatrixXd> //,public AGenotypeContainer
 {
 	friend class AGenotypeContainer;

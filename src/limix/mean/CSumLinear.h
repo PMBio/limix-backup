@@ -13,10 +13,6 @@
 
 namespace limix {
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CSumLinear)
-#endif
-
 typedef std::vector<PLinearMean> VecLinearMean;
 class CSumLinear: public ADataTerm {
 	VecLinearMean terms;

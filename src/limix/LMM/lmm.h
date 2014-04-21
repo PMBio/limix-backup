@@ -15,25 +15,6 @@
 
 namespace limix {
 
-//rename argout operators for swig interface
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-%ignore ALMM::getPheno;
-%ignore ALMM::getPv;
-%ignore ALMM::getSnps;
-%ignore ALMM::getCovs;
-%ignore ALMM::getK;
-%ignore ALMM::getPermutation;
-//rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getPheno) ALMM::agetPheno;
-%rename(getPv) ALMM::agetPv;
-%rename(getSnps) ALMM::agetSnps;
-%rename(getCovs) ALMM::agetCovs;
-%rename(getK) ALMM::agetK;
-%rename(getPermutation) ALMM::agetPermutation;
-//%sptr(gpmix::ALMM)
-#endif
-
 //Abstract base class for LMM models*/
 class ALMM
 {
@@ -142,11 +123,6 @@ public:
     void setTestStatistics(int testStatistics);
 };
 
-//rename argout operators for swig interface
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-%ignore CLMMCore;
-#endif
 class CLMMCore
 {
 protected:
@@ -181,33 +157,6 @@ public:
 	inline void optdeltaEx(const Eigen::MatrixBase<Derived1> & AO_delta_,const Eigen::MatrixBase<Derived2> & AO_NLL_, const Eigen::MatrixBase<Derived3>& UY,const Eigen::MatrixBase<Derived4>& UX,const Eigen::MatrixBase<Derived5>& S,muint_t numintervals,mfloat_t ldeltamin,mfloat_t ldeltamax,bool REML = false);
 };
 
-
-
-
-
-//rename argout operators for swig interface
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-%ignore CLMM::getNLL0;
-%ignore CLMM::getNLLAlt;
-%ignore CLMM::getLdeltaAlt;
-%ignore CLMM::getLdelta0;
-%ignore CLMM::getFtests;
-%ignore CLMM::getLSigma;
-%ignore CLMM::getBetaSNP;
-%ignore CLMM::getBetaSNPste;
-
-
-//rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getNLL0) CLMM::agetNLL0;
-%rename(getNLLAlt) CLMM::agetNLLAlt;
-%rename(getLdeltaAlt) CLMM::agetLdeltaAlt;
-%rename(getLdelta0) CLMM::agetLdelta0;
-%rename(getFtests) CLMM::agetFtests;
-%rename(getLSigma) CLMM::agetLSigma;
-%rename(getBetaSNP) CLMM::agetBetaSNP;
-%rename(getBetaSNPste) CLMM::agetBetaSNPste;
-#endif
 //Standard mixed liner model
 class CLMM :  public CLMMCore, public ALMM
 {
@@ -335,18 +284,6 @@ public:
 };
 typedef sptr<CLMM> PLMM;
 
-
-
-
-//interaction tests
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-%ignore CInteractLMM::getInter;
-
-//rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getInter) CInteractLMM::agetInter;
-//%sptr(gpmix::CInteractLMM)
-#endif
 
 class CInteractLMM : public CLMM
 {

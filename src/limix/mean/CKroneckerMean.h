@@ -12,9 +12,6 @@
 #include "limix/utils/matrix_helper.h"
 namespace limix {
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CKroneckerMean)
-#endif
 
 class CKroneckerMean : public CLinearMean {
 protected:

@@ -18,11 +18,6 @@ namespace limix {
 #define solver NLOPT_LD_LBFGS
 #define DEFAULT_TOL 1E-4
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//list of CGPHyperParams
-//%template(HyperParmasVec) std::vector<gpmix::CGPHyperParams>;
-#endif
-
 class CGPopt {
 protected:
 	//gp object which is optimized:

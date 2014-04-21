@@ -28,24 +28,6 @@ class CGPbase;
 class CGPKroneckerCache;
 typedef sptr<CGPbase> PGPbase;
 
-
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%ignore CGPHyperParams::get;
-%ignore CGPHyperParams::getParamArray;
-
-%rename(get) CGPHyperParams::aget;
-%rename(getParamArray) CGPHyperParams::agetParamArray;
-//%template(StringVec) std::vector<std::string>;
-//PYTHON:
-#ifdef SWIGPYTHON
-%rename(__getitem__) CGPHyperParams::aget;
-%rename(__setitem__) CGPHyperParams::set;
-%rename(__str__) CGPHyperParams::toString;
-#endif
-#endif
-//typedef map<string,MatrixXd> CGPHyperParamsMap;
-
 /*!
 * CGHyperParams:
 * helper class to handle different types of paramters
@@ -168,33 +150,6 @@ public:
 	virtual MatrixXd& getDKEffInv_KEffInvYYKinv();	//!< returns a term required for the derivative of the covariance ( K^{-1}*YY'*K^{-1} )
 };
 typedef sptr<CGPCholCache> PGPCholCache;
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%ignore CGPbase::getX;
-%ignore CGPbase::getY;
-%ignore CGPbase::LMLgrad_covar;
-%ignore CGPbase::LMLgrad_lik;
-%ignore CGPbase::getParamArray;
-%ignore CGPbase::predictMean;
-%ignore CGPbase::predictVar;
-
-%rename(getParamArray) CGPbase::agetParamArray;
-%rename(getX) CGPbase::agetX;
-%rename(getY) CGPbase::agetY;
-%rename(LMLgrad_covar) CGPbase::aLMLgrad_covar;
-%rename(LMLgrad_lik) CGPbase::aLMLgrad_lik;
-%rename(LMLhess) CGPbase::aLMLhess;
-%rename(LMLhess_covar) CGPbase::aLMLhess_covar;
-%rename(LMLhess_lik) CGPbase::aLMLhess_lik;
-%rename(LMLhess_covarlik) CGPbase::aLMLhess_covarlik;
-%rename(getCov_laplace) CGPbase::agetCov_laplace;
-%rename(getStd_laplace) CGPbase::agetStd_laplace;
-%rename(predictMean) CGPbase::apredictMean;
-%rename(predictVar) CGPbase::apredictVar;
-//
-//%sptr(gpmix::CGPbase)
-#endif
-
 
 
 class CGPbase : public enable_shared_from_this<CGPbase> {

@@ -12,14 +12,6 @@
 namespace limix {
 
     
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-%ignore CFreeFormCF::getIparamDiag;
-%ignore CFreeFormCF::K0Covar2Params;
-//rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getIparamDiag) CFreeFormCF::agetIparamDiag;
-#endif
-
 /*! \brief Base class for free form covariances that do not depend on the input X
  *
  * Note: as a hack until we implement appropriate handling of non-X covariances, the input dimension is 0
@@ -159,16 +151,6 @@ public:
 typedef sptr<CLowRankCF> PLowRankCF;
 
 
-//rename argout operators for swig interface
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//rename functions and select the visible component for SWIG
-%rename(getK0) CFixedCF::agetK0;
-%rename(getK0cross) CFixedCF::agetK0cross;
-%rename(getK0cross_diag) CFixedCF::agetK0cross_diag;
-//%sptr(gpmix::CFixedCF)
-#endif
-
-
 class CFixedCF: public ACovarianceFunction {
 
 protected:
@@ -254,11 +236,6 @@ public:
 };
 typedef sptr<CDiagonalCF> PDiagonalCF;
     
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%rename(getRank1)    CRank1diagCF::agetRank1;
-%rename(getDiag) CRank1diagCF::agetDiag;
-#endif
 
 
 class CRank1diagCF: public ACovarianceFunction {

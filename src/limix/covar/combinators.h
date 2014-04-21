@@ -15,12 +15,6 @@ namespace limix {
 
 //!> Define a vector of covariances which is needed to represent the sum and product CF
 typedef std::vector<PCovarianceFunction> ACovarVec;
-//SWIG template declaration:
-//TODO: swig vector
-#if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
-//%template(ACovarVec) std::vector<gpmix::PCovarianceFunction>;
-//%sptr(gpmix::AMultiCF)
-#endif
 
 class AMultiCF : public ACovarianceFunction
 {
@@ -81,10 +75,6 @@ public:
 	virtual void setParamBounds(const CovarParams& lower, const CovarParams& upper)  throw (CGPMixException);
 };
 
-#if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
-//%sptr(gpmix::CSumCF)
-#endif
-
 class CSumCF : public AMultiCF {
 public:
 	CSumCF(const ACovarVec& covariances);
@@ -107,9 +97,6 @@ public:
 };
 typedef sptr<CSumCF> PSumCF;
 
-#if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
-%rename(getParams) CLinCombCF::agetParams;
-#endif
 /*!
 * Kronecker function for pairs of covariances
 */
@@ -141,10 +128,6 @@ typedef sptr<CLinCombCF> PLinCombCF;
 
 
 
-
-#if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
-//%sptr(gpmix::CProductCF)
-#endif
 /*!
 Product combinator of a pair of covariances
 */
@@ -174,10 +157,6 @@ typedef sptr<CProductCF> PProductCF;
 /*
  * Kronecker function for pairs of covariances
 */
-    
-#if (!defined(SWIG_FILE_WITH_INIT) && defined(SWIG))
-//%sptr(gpmix::CKroneckerCF)
-#endif
     
 /*!
  * \brief Kronecker structure combinator for two covariances

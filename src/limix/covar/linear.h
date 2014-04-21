@@ -11,9 +11,6 @@
 
 namespace limix {
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CCovLinearISO)
-#endif
 class CCovLinearISO: public ACovarianceFunction  {
 public:
 	CCovLinearISO(muint_t numberDimensions=1) : ACovarianceFunction(1)
@@ -39,9 +36,6 @@ public:
 };
 typedef sptr<CCovLinearISO> PCovLinearISO;
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CCovLinearARD)
-#endif
 class CCovLinearARD: public ACovarianceFunction  {
 public:
 	CCovLinearARD(muint_t numberDimensions=1) : ACovarianceFunction(1)

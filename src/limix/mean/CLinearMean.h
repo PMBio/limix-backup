@@ -12,8 +12,6 @@
 
 namespace limix {
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-#endif
 class CLinearMean: public ADataTerm {
 	//friend class CKroneckerMean;
 protected:
