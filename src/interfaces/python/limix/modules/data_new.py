@@ -1,11 +1,12 @@
 import scipy as SP
-import h5py
 import copy
 
 import data_util as du
 
 import genotype_reader as gr
 import phenotype_reader as pr
+
+import pandas as pd
 
 class QTLData(object):
     """
@@ -15,108 +16,150 @@ class QTLData(object):
     def __init__(self,geno_reader=None,pheno_reader=None):
         self.geno_reader = geno_reader
         self.pheno_reader = pheno_reader
-        self.geno_chrom = None
-        self.geno_pos = None
-        self.geno_id = None
-        self.phenotype_id = None
+        self.geno_chrom = self.geno_reader.geno_chrom
+        self.geno_pos = self.geno_reader.geno_pos
+        self.geno_ID = self.geno_reader.geno_ID
+        self.phenotype_ID = self.pheno_reader.phenotype_ID
         self.geno_snp_idx = None      #SNP indices
-        self.geno_snp_idx_reverse = None  #SNP indices in original array
-        self.geno_ind_idx = None      #index of individuals
-        self.pheno_ind_idx = None     #index of individuals
-        self.sample_ID = None
+        self.sample_idx = du.merge_indices([self.geno_reader.sample_ID, self.pheno_reader.sample_ID],header=["geno","pheno"],join="inner")      #index of individuals
+        self.sample_ID = self.geno_reader.sample_ID[self.sample_idx["geno"]]
+        self.num_snps = self.geno_reader.num_snps
+        
 
-    def range_query_pos(self, chrom, pos_start=None, pos_stop=None):
+    def range_query_geno_local(self, idx_start=None, idx_end=None, chrom=None, pos_start=None, pos_end=None, pos_cum_start=None, pos_cum_end=None):
         """
         return an index for a range query on the genotypes
         """
-        idx_chr = self.genoChrom==chrom
-        if pos_start is None and pos_stop is None:
-            self.pass
+        if idx_start==None and idx_end==None and pos_start==None and pos_end==None and chrom==None and pos_cum_start==None and pos_cum_end==None:
+            return SP.arange(0,self.num_snps)
+        elif idx_start is not None or idx_end is not None:
+            if idx_start is None:
+                idx_start = 0
+            if idx_end is None:
+                idx_end = self.num_snps
+            res = SP.arange(idx_start,idx_end)
+            return res
+        elif chrom is not None:
+            idx_chr = self.geno_chrom==chrom
+            if pos_start is None:
+                idx_larger = SP.ones(self.num_snps,dtype=bool)
+            else:
+                idx_larger = self.geno_pos>=pos_start
+            if pos_end is None:
+                idx_smaller = SP.ones(self.num_snps,dtype=bool)
+            else:
+                idx_smaller = self.geno_pos<=pos_end
+            res = idx_chr & idx_smaller & idx_larger
 
+        elif pos_cum_start is not None or pos_cum_end is not None:
+            if pos_cum_start is None:
+                idx_larger = SP.ones(self.num_snps,dtype=bool)
+            else:
+                idx_larger = self.geno_pos>=pos_cum_start
+            if pos_cum_end is None:
+                idx_smaller = SP.ones(self.num_snps,dtype=bool)
+            else:
+                idx_smaller = self.geno_pos<=pos_cum_end
+            res = idx_smaller & idx_larger
         else:
-            pass
- 
-    def getGenotypes(self,i0=None,i1=None,pos0=None,pos1=None,chrom=None,center=True,unit=True,pos_cum0=None,pos_cum1=None,impute_missing=True):
+            raise Exception("This should not be triggered")#res = SP.ones(self.geno_pos.shape,dtype=bool)
+        return SP.where(res)[0]
+        
+
+    def range_query_geno(self, idx_start=None, idx_end=None, chrom=None, pos_start=None, pos_end=None, pos_cum_start=None, pos_cum_end=None):
+        """
+        return an index for a range query on the genotypes
+        """
+        if idx_start==None and idx_end==None and pos_start==None and pos_end==None and chrom==None and pos_cum_start==None and pos_cum_end==None:
+            return self.geno_snp_idx
+        else:
+            res = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
+        if self.geno_snp_idx is None:
+            return SP.where(res)[0]
+        else:    
+            return self.geno_snp_idx[res]
+
+            
+    def getGenotypes(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,impute_missing=True):
         """return genotypes. 
         Optionally the indices for loading subgroups the genotypes for all people
         can be given in one out of three ways: 
-        - 0-based indexing (i0-i1)
-        - position (pos0-pos1 on chrom)
-        - cumulative position (pos_cum0-pos_cum1)
+        - 0-based indexing (idx_start-idx_end)
+        - position (pos_start-pos_end on chrom)
+        - cumulative position (pos_cum_start-pos_cum_end)
         If all these are None (default), then all genotypes are returned
 
         Args:
-            i0:         genotype index based selection (start index)
-            i1:         genotype index based selection (stop index)
-            pos0:       position based selection (start position)
-            pos1:       position based selection (stop position)
+            idx_start:         genotype index based selection (start index)
+            idx_end:         genotype index based selection (end index)
+            pos_start:       position based selection (start position)
+            pos_end:       position based selection (end position)
             chrom:      position based selection (chromosome)
-            pos_cum0:   cumulative position based selection (start position)
-            pos_cum1:   cumulative position based selection (stop position)
+            pos_cum_start:   cumulative position based selection (start position)
+            pos_cum_end:   cumulative position based selection (end position)
             impute_missing: Boolean indicator variable if missing values should be imputed
         
         Returns:
             X:          scipy.array of genotype values
         """
-
-        query_idx = self.intersect_index(self.geno_snp_idx)
-        if self.geno_snp_idx is None:
-            #index based matching?
-            X = self.geno_reader.read(i0=i0,i1=i1,pos0=pos0,pos1=pos1,chrom=chrom,pos_cum0=pos_cum0,pos_cum1=pos_cum1)
-        elif i0==None and i1==None and pos0==None and pos1==None and chrom==None and pos_cum0==None and pos_cum1==None:
-            X = self.geno_reader.read(snp_idx=query_idx)
-        else:
-            #TODO: intersect mask with index
-            raise NotImplementedError("not implemented yet")
+        query_idx = self.range_query_geno(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
+        X = self.geno_reader.getGenotypes(sample_idx=self.sample_idx["geno"],snp_idx=query_idx) 
         if impute_missing:
             X = du.imputeMissing(X,center=center,unit=unit)
         return X
 
-    def getCovariance(self,normalize=True,i0=None,i1=None,pos0=None,pos1=None,chrom=None,center=True,unit=True,pos_cum0=None,pos_cum1=None,blocksize=None,X=None,**kw_args):
+    def getCovariance(self,normalize=True,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,blocksize=None,X=None,**kw_args):
         """calculate the empirical genotype covariance in a region"""
-        raise NotImplementedError("not implemented yet")
+        return self.geno_reader.getCovariance(sample_idx=self.sample_idx["geno"],normalize=normalize,idx_start=idx_start,idx_end=idx_end,pos_start=pos_start,pos_end=pos_end,chrom=chrom,center=center,unit=unit,pos_cum_start=pos_cum_start,pos_cum_end=pos_cum_end,blocksize=blocksize,X=X,**kw_args)
 
-    def getGenoID(self,i0=None,i1=None,pos0=None,pos1=None,chrom=None,pos_cum0=None,pos_cum1=None):
+    def getGenoID(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
         """get genotype IDs. 
         Optionally the indices for loading subgroups the genotype IDs for all people
         can be given in one out of three ways: 
-        - 0-based indexing (i0-i1)
-        - position (pos0-pos1 on chrom)
-        - cumulative position (pos_cum0-pos_cum1)
+        - 0-based indexing (idx_start-idx_end)
+        - position (pos_start-pos_end on chrom)
+        - cumulative position (pos_cum_start-pos_cum_end)
         If all these are None (default), then all genotypes are returned
 
         Args:
-            i0:         genotype index based selection (start index)
-            i1:         genotype index based selection (stop index)
-            pos0:       position based selection (start position)
-            pos1:       position based selection (stop position)
+            idx_start:         genotype index based selection (start index)
+            idx_end:         genotype index based selection (end index)
+            pos_start:       position based selection (start position)
+            pos_end:       position based selection (end position)
             chrom:      position based selection (chromosome)
-            pos_cum0:   cumulative position based selection (start position)
-            pos_cum1:   cumulative position based selection (stop position)
+            pos_cum_start:   cumulative position based selection (start position)
+            pos_cum_end:   cumulative position based selection (end position)
            
         Returns:
             ID:         scipy.array of genotype IDs (e.g. rs IDs)
         """
-        #position based matching?
-        raise NotImplementedError("TODO")
+        query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
+        if query_idx is None:
+            return self.geno_ID
+        else:
+            return self.geno_ID[query_idx]
+
+       
 
     def getPhenotypes(self,phenotype_IDs=None,center=True,impute=True,intersection=False):
         """load Phenotypes
         
         Args:
-            i0:             phenotype indices to load (start individual index)
-            i1:             phenotype indices to load (stop individual index)
+            idx_start:      phenotype indices to load (start individual index)
+            idx_end:       phenotype indices to load (end individual index)
             phenotype_IDs:  names of phenotypes to load
             impute:         imputation of missing values (default: True)
-            intersection:   restrict observation to those obseved in all phenotypes? (default: False)
+            intersection:   restrict observation to those obseved in all phenotypes (true) or at least in one phenotype (false)? (default: False)
         
         Returns:
-            Y:              phenotype values
-            Ikeep:          index of individuals in Y
+            phenotypes:     phenotype values
+            sample_idx_intersect:        index of individuals in phenotypes after filtering missing values
         """
-        raise NotImplementedError("TODO")
 
-    def getPos(self):
+        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx=self.sample_idx["pheno"],phenotype_IDs=phenotype_IDs,center=center,impute=impute,intersection=intersection)
+        return phenotypes, sample_idx_intersect
+
+    def getPos(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
         """
         get the positions of the genotypes
 
@@ -125,35 +168,72 @@ class QTLData(object):
             position
             cumulative_position
         """
-        return [self.genoChrom,self.genoPos,self.genoPos_cum]
+        query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
+        if query_idx is None:
+            pos = {
+                "chrom":    pd.Series(data=self.geno_chrom,index=self.geno_ID),
+                "pos":      pd.Series(data=self.geno_pos,index=self.geno_ID),
+                }
+            return pd.DataFrame(pos)
+        else:
+            pos = {
+                "chrom":    pd.Series(data=self.geno_chrom[query_idx],index=self.geno_ID[query_idx],name="chrom"),
+                "pos":      pd.Series(data=self.geno_pos[query_idx],index=self.geno_ID[query_idx],name="pos"),
+                }
+            return pd.DataFrame(pos)
 
-    def subSample(self,Irow=None,Icol_geno=None,Icol_pheno=None):
-        """sample a particular set of individuals (Irow) or phenotypes (Icol_pheno) or genotypes (Icol_geno)
+    def subsample(self,rows=None,cols_pheno=None,cols_geno=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
+        """sample a particular set of individuals (rows) or phenotypes (cols_pheno) or genotypes (cols_geno)
         
         Args:
-            Irow:           indices for a set of individuals
-            Icol_pheno:     indices for a set of phenotypes
-            Icol_geno:      indices for a set of SNPs
+            rows:           indices for a set of individuals
+            cols_pheno:     indices for a set of phenotypes
+            cols_geno:      indices for a set of SNPs
         
         Returns:
-            QTLdata opject holding the specified subset of the data
+            QTLdata object holding the specified subset of the data
         """
+        if not (idx_start==None and idx_end==None and pos_start==None and pos_end==None and chrom==None and pos_cum_start==None and pos_cum_end==None):
+            query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
+            return self.subsample(rows=rows,cols_pheno=cols_pheno,cols_geno=res,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None)
         C = copy.copy(self)
-        if Irow is not None:
-            C.sample_ID = C.sample_ID[Irow]   #IDs of individuals
-            C.geno_ind_idx = C.geno_ind_idx   #index of individuals
-            C.pheno_ind_idx = C.pheno_ind_idx #index of individuals
-            
-        if Icol_geno is not None:
-            C.genoPos = C.genoPos[Icol_geno]
-            C.genoChrom = C.genoChrom[Icol_geno]
-            C.genoID=C.genoID[Icol_geno]
-            C.genoPos_cum = C.genoPos_cum[Icol_geno]
+        
+        if rows is not None:
+            C.sample_ID = C.sample_ID[rows]         #IDs of individuals
+            C.sample_idx = C.sample_idx.iloc[rows]   #index of individuals
+        
+        if cols_geno is not None:
+            assert cols_geno.dtype=="int"
+            C.geno_pos = C.geno_pos[cols_geno]
+            C.geno_chrom = C.geno_chrom[cols_geno]
+            C.geno_ID = C.geno_ID[cols_geno]
+            C.geno_pos_cum = C.geno_pos_cum[cols_geno]
             if C.geno_snp_idx is not None:
-                C.geno_snp_idx[~C.self.geno_snp_idx_reverse[IcolGeno]]=False
+                C.geno_snp_idx = C.geno_snp_idx[cols_geno]
             else:
-                 C.geno_snp_idx=SP.zeros(C.genoPos.shape[1])
-            C.self.geno_snp_idx_reverse = self.geno_snp_idx_reverse[IcolGeno]
-        if Icol_pheno is not None:
-            C.phenotype_ID = C.phenotype_ID[Icol_pheno]
+                 C.geno_snp_idx = cols_geno
+            C.num_snps=len(C.geno_snp_idx)
+
+        if cols_pheno is not None:
+            C.phenotype_ID = C.phenotype_ID[cols_pheno]
+
         return C
+
+    def subsample_phenotypes(self,phenotype_IDs=None,center=True,impute=True,intersection=False):
+        """load Phenotypes
+        
+        Args:
+            idx_start:      phenotype indices to load (start individual index)
+            idx_end:       phenotype indices to load (end individual index)
+            phenotype_IDs:  names of phenotypes to load
+            impute:         imputation of missing values (default: True)
+            intersection:   restrict observation to those obseved in all phenotypes (true) or at least in one phenotype (false)? (default: False)
+        
+        Returns:
+            phenotypes:     phenotype values
+            sample_idx_intersect:        index of individuals in phenotypes after filtering missing values
+        """
+
+        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx=self.sample_idx["pheno"],phenotype_IDs=phenotype_IDs,center=center,impute=impute,intersection=intersection)
+        return self.subsample(rows=sample_idx_intersect,cols_pheno=None,cols_geno=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None)
+            

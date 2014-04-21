@@ -269,7 +269,7 @@ class CVarianceDecomposition:
 
         Args:
             F: fixed effect matrix [N,1]
-            A: design matrix [K,P] (e.g. SP.ones((1,P)) common effect; SP.eye(P) any effect))
+            A: design matrix [K,P] (e.g. SP.ones((1,P)) common effect; SP.eye(P) any effect)
         """
         if A==None:
             A = SP.eye(self.P)

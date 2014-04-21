@@ -10,6 +10,7 @@ import h5py
 import scipy as sp
 import limix
 from optparse import OptionParser
+import pandas as pd
 
 sys.path.append("./../../")
 
@@ -35,6 +36,7 @@ class LIMIX_runner(object):
         parser.add_option('--experiment_script', metavar='experiment_script', type=str, help='A python script for running the experiment', default=r"example_scripts/gwas_example.py")
         parser.add_option('--outfile', metavar='outfile', type=str, help='The output file', default="example_out.txt")
         parser.add_option('--seed', metavar='seed', type=int, help='The random seed', default=123123)
+        parser.add_option('--delimiter', metavar='delimiter',type=str, help="The delimiter between output values", default="\t")
         (self.options, self.args) = parser.parse_args()
         return (self.options,self.args)
 
@@ -71,16 +73,17 @@ class LIMIX_runner(object):
         """
         Write the outout to disk
         """
-        data=self.data
-        options=self.options
-        result=self.result
-        command = open(self.options.output_script).read()
+        #data=self.data
+        #options=self.options
+        #result=self.result
+        #command = open(self.options.output_script).read()
         t0=time.time()
-        output=None     #fallback output
-        exec(command)   #creates variable output
+        self.result.to_csv(self.options.outfile,sep=self.options.delimiter,index=True,header=True,na_rep="NAN")
+        #output=None     #fallback output
+        #exec(command)   #creates variable output
         t1=time.time()
         print ("Elapsed time for running the experiment is %.2f seconds" % (t1-t0)) 
-        return output
+        
         
 
 if __name__ == "__main__":
@@ -90,5 +93,5 @@ if __name__ == "__main__":
     (options,args) =runner.parse_args()
     data = runner.load_data()
     result = runner.run_experiment()
-    output = runner.write_resultfile()
+    runner.write_resultfile()
 

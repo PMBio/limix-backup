@@ -1,4 +1,6 @@
 import scipy as SP
+import pandas as pd
+
 
 try:
     #see if fastlmm is in the path for the fast C-based parser
@@ -103,3 +105,32 @@ def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.
             stdX[stdX==0.0]=1.0
             X/=stdX
     return X
+
+
+def merge_indices(indices,header=None,join="inner"):
+    """
+    returns a merged index
+
+    Args:
+        indices:    list of indices (e.g. individual IDs)
+        header:     list with name of each element of indices (e.g. ["pheno","geno","covars"])
+        join:       type of join to perform (standard is "inner"
+
+    Returns:
+        pandas DataFrame with merged indices
+    """
+    indexpd = []
+    for i, index in enumerate(indices):
+        if header is None:
+            header_=[i]
+        else:
+            header_=[header[i]]
+        indexpd.append(pd.DataFrame(data=SP.arange(len(index)),index=index,columns=header_) )
+    ret = pd.concat(objs=indexpd, axis=1, join=join)
+    return ret
+
+if __name__ == "__main__":
+    lists=[["a","b"],["a","c","b"],["d","a","b"]]
+    header = [["bl"],["n"],["s"]]
+    merge=merge_indices(lists, header=None, join="outer")
+    
