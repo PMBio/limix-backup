@@ -64,13 +64,11 @@ using namespace limix;
 	try {
 	$action
 	} catch (limix::CGPMixException& e) {
-	std::cout << "caught LIMIX exception: " << e.what() << "\n";
 	std::string s("LIMIX error: "), s2(e.what());
 	s = s + s2;
 	SWIG_exception(SWIG_RuntimeError, s.c_str());
 	return NULL;
 	} catch (...) {
-	std::cout << "caught: unknown exception"<< "\n";
 	SWIG_exception(SWIG_RuntimeError,"Unknown exception");
 	}
 }

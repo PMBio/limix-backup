@@ -212,7 +212,6 @@ class CGPMixException : public std::exception
 	CGPMixException(std::string str="Unlabeled exception")
       : What(str)
     {
-		std::cout <<"GPMIX Exception: " << str << "\n";
     }
     std::string what()
     {

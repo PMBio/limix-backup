@@ -105,7 +105,7 @@ public:
     void setPheno(const MatrixXd & pheno);
     void setSNPs(const MatrixXd & snps);
     //abstract function
-    virtual void process() throw (CGPMixException) =0;
+    virtual void process()=0; //throw (CGPMixException) =0;
 
 	virtual void agetK(MatrixXd* out) const;
 	virtual void setK(const MatrixXd& K);
@@ -228,7 +228,7 @@ public:
 	//function to add testing kernel
 
 	/*! process asssociation test*/
-	virtual void process() throw(CGPMixException);
+	virtual void process();// throw(CGPMixException);
 	/*! public function to update the covaraince decomposition*/
 	virtual void updateDecomposition() throw(CGPMixException);
 
@@ -374,7 +374,7 @@ public:
 
 
 	//processing;
-	virtual void process() throw(CGPMixException);
+	virtual void process(); //throw(CGPMixException);
 	virtual void updateDecomposition() throw(CGPMixException);
 
 
