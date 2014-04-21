@@ -22,7 +22,7 @@ class QTLData(object):
         self.phenotype_ID = self.pheno_reader.phenotype_ID
         self.geno_snp_idx = None      #SNP indices
         self.sample_idx = du.merge_indices([self.geno_reader.sample_ID, self.pheno_reader.sample_ID],header=["geno","pheno"],join="inner")      #index of individuals
-        self.sample_ID = self.geno_reader.sample_ID[SP.array(self.sample_idx["geno"])]
+        self.sample_ID = self.geno_reader.sample_ID[self.sample_idx["geno"]]
         self.num_snps = self.geno_reader.num_snps
         
 
@@ -103,14 +103,14 @@ class QTLData(object):
             X:          scipy.array of genotype values
         """
         query_idx = self.range_query_geno(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
-        X = self.geno_reader.getGenotypes(sample_idx=SP.array(self.sample_idx["geno"]),snp_idx=query_idx) 
+        X = self.geno_reader.getGenotypes(sample_idx=self.sample_idx["geno"],snp_idx=query_idx) 
         if impute_missing:
             X = du.imputeMissing(X,center=center,unit=unit)
         return X
 
     def getCovariance(self,normalize=True,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,blocksize=None,X=None,**kw_args):
         """calculate the empirical genotype covariance in a region"""
-        return self.geno_reader.getCovariance(sample_idx=SP.array(self.sample_idx["geno"]),normalize=normalize,idx_start=idx_start,idx_end=idx_end,pos_start=pos_start,pos_end=pos_end,chrom=chrom,center=center,unit=unit,pos_cum_start=pos_cum_start,pos_cum_end=pos_cum_end,blocksize=blocksize,X=X,**kw_args)
+        return self.geno_reader.getCovariance(sample_idx=self.sample_idx["geno"],normalize=normalize,idx_start=idx_start,idx_end=idx_end,pos_start=pos_start,pos_end=pos_end,chrom=chrom,center=center,unit=unit,pos_cum_start=pos_cum_start,pos_cum_end=pos_cum_end,blocksize=blocksize,X=X,**kw_args)
 
     def getGenoID(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
         """get genotype IDs. 
@@ -156,7 +156,7 @@ class QTLData(object):
             sample_idx_intersect:        index of individuals in phenotypes after filtering missing values
         """
 
-        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx=SP.array(self.sample_idx["pheno"]),phenotype_IDs=phenotype_IDs,center=center,impute=impute,intersection=intersection)
+        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx=self.sample_idx["pheno"],phenotype_IDs=phenotype_IDs,center=center,impute=impute,intersection=intersection)
         return phenotypes, sample_idx_intersect
 
     def getPos(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
@@ -234,6 +234,6 @@ class QTLData(object):
             sample_idx_intersect:        index of individuals in phenotypes after filtering missing values
         """
 
-        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx=SP.array(self.sample_idx["pheno"]),phenotype_IDs=phenotype_IDs,center=center,impute=impute,intersection=intersection)
+        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx=self.sample_idx["pheno"],phenotype_IDs=phenotype_IDs,center=center,impute=impute,intersection=intersection)
         return self.subsample(rows=sample_idx_intersect,cols_pheno=None,cols_geno=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None)
             
