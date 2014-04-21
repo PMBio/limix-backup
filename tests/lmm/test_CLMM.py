@@ -5,6 +5,7 @@ import pdb
 import limix
 import data
 import os
+import sys
 
 
 class CLMM_test(unittest.TestCase):
@@ -35,6 +36,23 @@ class CLMM_test(unittest.TestCase):
             RV = RV & (D2BetaSte.mean()<1E-6)
             self.assertTrue(RV)
 
+    def test_exceptions(self):
+        D = data.load(os.path.join(self.dir_name,self.datasets[0]))
+        lmm  = limix.CLMM()
+        N = 100
+        K = SP.eye(N)
+        X = SP.randn(N,100)
+        Y = SP.randn(N+1,1)
+        Cov = SP.randn(N,1)
+        lmm.setK(K)
+        lmm.setSNPs(X)
+        lmm.setCovs(Cov)
+        lmm.setPheno(Y)
+        try:
+            lmm.process()
+        except Exception,e:
+            self.assertTrue(1==1)
+            pass
 
     def test_permutation(self):
         #test permutation function

@@ -169,7 +169,7 @@ int main() {
 #endif
 
 	//}
-	//catch(CGPMixException& e) {
+	//catch(CLimixException& e) {
 	//	cout <<"Exception : "<< e.what() << endl;
 	//}
 

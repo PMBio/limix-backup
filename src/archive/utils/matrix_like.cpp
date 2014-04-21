@@ -17,12 +17,12 @@ AMatrixLike::~AMatrixLike()
 
 }
 
-void AMatrixLike::agetCholK(MatrixXdChol* out) throw (CGPMixException)
+void AMatrixLike::agetCholK(MatrixXdChol* out) 
 		{
 		(*out) = MatrixXdChol(*this->getMatrix());
 		}
 
-void AMatrixLike::agetEigHK(MatrixXdEIgenSolver* out) throw(CGPMixException)
+void AMatrixLike::agetEigHK(MatrixXdEIgenSolver* out) 
 		{
 		(*out) = MatrixXdEIgenSolver(*this->getMatrix());
 		}

@@ -145,18 +145,9 @@ public:
 typedef sptr<CGPkronSumCache> PGPkronSumCache;
 
 
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%ignore CGPkronSum::predictMean;
-%ignore CGPkronSum::predictVar;
-
-%rename(predictMean) CGPkronSum::apredictMean;
-%rename(predictVar) CGPkronSum::apredictVar;
-#endif
-
 class CGPkronSum: public CGPbase {
 	friend class CGPkronSumCache;
-	virtual void updateParams() throw (CGPMixException);
+	virtual void updateParams() ;
 
 protected:
 	//row and column covariance functions:
@@ -233,30 +224,30 @@ public:
 	PCovarianceFunction getCovarc1() {return covarc1;};
 	PCovarianceFunction getCovarc2() {return covarc2;};
 	//get from cache
-	virtual void agetKEffInvYCache(MatrixXd* out) throw (CGPMixException);
+	virtual void agetKEffInvYCache(MatrixXd* out) ;
 
 	// LML
-	mfloat_t LML() throw (CGPMixException);
+	mfloat_t LML() ;
 
 	// Gradient
-	CGPHyperParams LMLgrad() throw (CGPMixException);
-	virtual void aLMLgrad_covarc1(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_covarc2(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_covarr1(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_covarr2(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);
+	CGPHyperParams LMLgrad() ;
+	virtual void aLMLgrad_covarc1(VectorXd* out) ;
+	virtual void aLMLgrad_covarc2(VectorXd* out) ;
+	virtual void aLMLgrad_covarr1(VectorXd* out) ;
+	virtual void aLMLgrad_covarr2(VectorXd* out) ;
+	virtual void aLMLgrad_dataTerm(MatrixXd* out) ;
 
 	// Hessian
-	virtual void aLMLhess_c1c1(MatrixXd* out) throw (CGPMixException);
-	//virtual void aLMLhess_c1r1(MatrixXd* out) throw (CGPMixException);
-	//virtual void aLMLhess_c1c2(MatrixXd* out) throw (CGPMixException);
-	//virtual void aLMLhess_c1r2(MatrixXd* out) throw (CGPMixException);
-	//virtual void aLMLhess_r1r1(MatrixXd* out) throw (CGPMixException);
-	//virtual void aLMLhess_r1c2(MatrixXd* out) throw (CGPMixException);
-	//virtual void aLMLhess_r1r2(MatrixXd* out) throw (CGPMixException);
-	//virtual void aLMLhess_c2c2(MatrixXd* out) throw (CGPMixException);
-	//virtual void aLMLhess_c2r2(MatrixXd* out) throw (CGPMixException);
-	//virtual void aLMLhess_r2r2(MatrixXd* out) throw (CGPMixException);
+	virtual void aLMLhess_c1c1(MatrixXd* out) ;
+	//virtual void aLMLhess_c1r1(MatrixXd* out) ;
+	//virtual void aLMLhess_c1c2(MatrixXd* out) ;
+	//virtual void aLMLhess_c1r2(MatrixXd* out) ;
+	//virtual void aLMLhess_r1r1(MatrixXd* out) ;
+	//virtual void aLMLhess_r1c2(MatrixXd* out) ;
+	//virtual void aLMLhess_r1r2(MatrixXd* out) ;
+	//virtual void aLMLhess_c2c2(MatrixXd* out) ;
+	//virtual void aLMLhess_c2r2(MatrixXd* out) ;
+	//virtual void aLMLhess_r2r2(MatrixXd* out) ;
 
 
 	/* DEBUGGING */

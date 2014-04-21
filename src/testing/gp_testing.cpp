@@ -167,7 +167,7 @@ int main() {
 
 
 	}
-	catch(CGPMixException& e) {
+	catch(CLimixException& e) {
 		cout << e.what() << endl;
 	}
 
