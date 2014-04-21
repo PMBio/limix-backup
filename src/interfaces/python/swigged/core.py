@@ -1862,7 +1862,7 @@ def inverse(*args):
 
     """
   return _core.inverse(*args)
-class CGPMixException(Exception):
+class CGPMixException(_object):
     """Proxy of C++ limix::CGPMixException class"""
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, CGPMixException, name, value)

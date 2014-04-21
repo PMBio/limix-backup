@@ -275,11 +275,26 @@ int ALMM::getTestStatistics() const
         this->num_snps = snps.cols();
         this->num_pheno = pheno.cols();
         this->num_covs = covs.cols();
+        if (num_samples==0)
+            throw CGPMixException("LMM requires a non-zero sample size");
+
+        if (num_snps==0)
+            throw CGPMixException("LMM requires non-zero SNPs");
+
+        if (num_pheno==0)
+            throw CGPMixException("LMM requires non-zero phenotypes");
+
         if(!(num_samples == (muint_t)pheno.rows()))
             throw CGPMixException("phenotypes and SNP dimensions inconsistent");
 
         if(!(num_samples == (muint_t)covs.rows()))
             throw CGPMixException("covariates and SNP dimensions inconsistent");
+
+        if(isnull(K))
+        {
+            //no covariance? assume we perform linear regression
+            K = VectorXd::Ones(this->num_samples).asDiagonal();
+        }
 
         if(!(this->UK_cached)){
             //decomposition of K
