@@ -43,7 +43,7 @@ protected:
 	 * typeCheck operates in two modes. By defatul we assume we access the dataset (set=False)
 	 * If data access (setting) is requested, set =true.
 	 */
-	void typeCheck(FlexType type,bool set=false) throw (CGPMixException)
+	void typeCheck(FlexType type,bool set=false) 
 	{
 		if(set)
 		{
@@ -132,43 +132,43 @@ public:
 	bool isType(FlexType type)
 	{ return this->type==type;}
 
-	void AgetM(IntMatrix* out) throw (CGPMixException)
+	void AgetM(IntMatrix* out) 
 	{
 		typeCheck(INT);
 		(*out) =(*static_pointer_cast<IntMatrix>(this->array));
 	}
-	void AgetM(FloatMatrix* out) throw (CGPMixException)
+	void AgetM(FloatMatrix* out) 
 	{
 		typeCheck(FLOAT);
 		(*out) =(*static_pointer_cast<FloatMatrix>(this->array));
 	}
-	void AgetM(StringMatrix* out) throw (CGPMixException)
+	void AgetM(StringMatrix* out) 
 	{
 		typeCheck(STRING);
 		(*out) =(*static_pointer_cast<StringMatrix>(this->array));
 	}
 
-	operator PIntMatrix() throw (CGPMixException)
+	operator PIntMatrix() 
 	{
 		typeCheck(INT);
 		return static_pointer_cast<IntMatrix>(this->array);
 	}
 
-	operator IntMatrix() throw (CGPMixException)
+	operator IntMatrix() 
 	{
 		typeCheck(INT);
 		return *static_pointer_cast<IntMatrix>(this->array);
 	}
 
 
-	operator FloatMatrix() throw (CGPMixException)
+	operator FloatMatrix() 
 	{
 		typeCheck(FLOAT);
 		return *static_pointer_cast<FloatMatrix>(this->array);
 	}
 
 
-	operator PFloatMatrix() throw (CGPMixException)
+	operator PFloatMatrix() 
 	{
 		typeCheck(FLOAT);
 		return static_pointer_cast<FloatMatrix>(this->array);
@@ -176,71 +176,71 @@ public:
 
 
 
-	operator PStringMatrix() throw (CGPMixException)
+	operator PStringMatrix() 
 	{
 		typeCheck(STRING);
 		return static_pointer_cast<StringMatrix>(this->array);
 	}
 
-	operator StringMatrix() throw (CGPMixException)
+	operator StringMatrix() 
 	{
 		typeCheck(STRING);
 		return *static_pointer_cast<StringMatrix>(this->array);
 	}
 
-	void operator= (PIntMatrix array) throw (CGPMixException)
+	void operator= (PIntMatrix array) 
 	{
 		setM(array);
 	}
-	void operator= (const IntMatrix& array) throw (CGPMixException)
-	{
-		setM(array);
-	}
-
-	void operator= (PFloatMatrix array) throw (CGPMixException)
-	{
-		setM(array);
-	}
-	void operator= (const FloatMatrix& array) throw (CGPMixException)
+	void operator= (const IntMatrix& array) 
 	{
 		setM(array);
 	}
 
-	void operator= (PStringMatrix array) throw (CGPMixException)
+	void operator= (PFloatMatrix array) 
 	{
 		setM(array);
 	}
-	void operator= (const StringMatrix& array) throw (CGPMixException)
+	void operator= (const FloatMatrix& array) 
 	{
 		setM(array);
 	}
 
-	void setM(PIntMatrix array) throw (CGPMixException)
+	void operator= (PStringMatrix array) 
+	{
+		setM(array);
+	}
+	void operator= (const StringMatrix& array) 
+	{
+		setM(array);
+	}
+
+	void setM(PIntMatrix array) 
 	{
 		typeCheck(INT,true);
 		this->array =array;
 	}
-	void setM(PFloatMatrix array) throw (CGPMixException)
+	void setM(PFloatMatrix array) 
 	{
 		typeCheck(FLOAT,true);
 		this->array =array;
 	}
-	void setM(PStringMatrix array) throw (CGPMixException)
+	void setM(PStringMatrix array) 
 	{
 		typeCheck(STRING,true);
 		this->array =array;
 	}
-	void setM(const FloatMatrix& array) throw (CGPMixException)
+	void setM(const FloatMatrix& array) 
 	{
 		typeCheck(FLOAT,true);
 		this->array = new PFloatMatrix(new FloatMatrix(array));
 	}
-	void setM(const IntMatrix& array) throw (CGPMixException)
+	void setM(const IntMatrix& array) 
 	{
 		typeCheck(INT,true);
 		this->array = new PIntMatrix(new IntMatrix(array));
 	}
-	void setM(const StringMatrix& array) throw (CGPMixException)
+	void setM(const StringMatrix& array) 
 	{
 		typeCheck(STRING,true);
 		this->array = new PStringMatrix(new StringMatrix(array));
@@ -320,14 +320,14 @@ public:
 	virtual ~ARDataFrame()
 	{};
 
-	//virtual void agetRowHeader(VectorXs* out) const throw(CGPMixException) = 0;
-	virtual PHeaderMap getRowHeader() const throw(CGPMixException) = 0;
+	//virtual void agetRowHeader(VectorXs* out) const  = 0;
+	virtual PHeaderMap getRowHeader() const  = 0;
 
-	//virtual void agetColHeader(VectorXs* out) const throw(CGPMixException) = 0;
-	virtual PHeaderMap getColHeader() const throw(CGPMixException) = 0;
+	//virtual void agetColHeader(VectorXs* out) const  = 0;
+	virtual PHeaderMap getColHeader() const  = 0;
 
-	virtual void agetMatrix(MatrixType* out) const throw (CGPMixException) = 0;
-	virtual sptr<MatrixType> getMatrix() const throw (CGPMixException) =0;
+	virtual void agetMatrix(MatrixType* out) const  = 0;
+	virtual sptr<MatrixType> getMatrix() const  =0;
 
 };
 
@@ -342,11 +342,11 @@ public:
 	virtual ~AWDataFrame()
 	{};
 
-	virtual void setRowHeader(PHeaderMap in) throw (CGPMixException) = 0;
-	virtual void setColHeader(PHeaderMap in) throw (CGPMixException) = 0;
+	virtual void setRowHeader(PHeaderMap in)  = 0;
+	virtual void setColHeader(PHeaderMap in)  = 0;
 
-	virtual void setMatrix(const MatrixType& in) throw (CGPMixException) = 0;
-	virtual void setMatrix(sptr<MatrixType> in) throw (CGPMixException) = 0;
+	virtual void setMatrix(const MatrixType& in)  = 0;
+	virtual void setMatrix(sptr<MatrixType> in)  = 0;
 };
 
 
@@ -387,20 +387,20 @@ public:
 
 	virtual ~CRMemDataFrame()
 	{};
-	virtual PHeaderMap getRowHeader() const throw(CGPMixException)
+	virtual PHeaderMap getRowHeader() const 
 	{
 		return rowHeader;
 	}
-	virtual PHeaderMap getColHeader() const throw(CGPMixException)
+	virtual PHeaderMap getColHeader() const 
 	{
 			return colHeader;
 	}
 
-	virtual void agetMatrix(MatrixType* out) const throw (CGPMixException)
+	virtual void agetMatrix(MatrixType* out) const 
 	{
 		(*out) = *M;
 	}
-	virtual sptr<MatrixType> getMatrix() const throw (CGPMixException)
+	virtual sptr<MatrixType> getMatrix() const 
 	{
 		return M;
 	}
@@ -418,20 +418,20 @@ public:
 	virtual ~CRWMemDataFrame()
 	{};
 
-	virtual void setRowHeader(PHeaderMap in) throw (CGPMixException)
+	virtual void setRowHeader(PHeaderMap in) 
 		{
 		(this->rowHeader) = in;
 		}
-	virtual void setColHeader(PHeaderMap in) throw (CGPMixException)
+	virtual void setColHeader(PHeaderMap in) 
 		{
 		(this->colHeader) = in;
 		}
 
-	virtual void setMatrix(const MatrixType& in) throw (CGPMixException)
+	virtual void setMatrix(const MatrixType& in) 
 		{
 		(*this->M) = in;
 		}
-	virtual void setMatrix(sptr<MatrixType> in) throw (CGPMixException)
+	virtual void setMatrix(sptr<MatrixType> in) 
 		{
 		this->M = in;
 		}

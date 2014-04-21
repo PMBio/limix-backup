@@ -19,22 +19,22 @@ ALikelihood::~ALikelihood() {
 	// TODO Auto-generated destructor stub
 }
 
-void ALikelihood::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void ALikelihood::aKcross(MatrixXd* out, const CovarInput& Xstar ) const 
 {
 	(*out) = MatrixXd::Zero(Xstar.rows(),X.rows());
 }
 
-void ALikelihood::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void ALikelihood::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
     (*out) = VectorXd::Zero(Xstar.rows());
 }
 
-void ALikelihood::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException)
+void ALikelihood::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const 
 {
 	(*out) = MatrixXd::Zero(Xstar.rows(),X.rows());
 }
 
-void ALikelihood::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException)
+void ALikelihood::aKdiag_grad_X(VectorXd* out,const muint_t d) const 
 {
 	(*out) = VectorXd::Zero(X.rows());
 }
@@ -50,35 +50,35 @@ CLikNormalNULL::~CLikNormalNULL()
 {
 }
 
-void CLikNormalNULL::setX(const CovarInput& X) throw (CGPMixException)
+void CLikNormalNULL::setX(const CovarInput& X) 
 {
 	this->numRows = X.rows();
 }
 
 
-void CLikNormalNULL::aK(MatrixXd* out) const throw (CGPMixException)
+void CLikNormalNULL::aK(MatrixXd* out) const 
 {
 	(*out) = MatrixXd::Zero(numRows,numRows);
 }
 
-void CLikNormalNULL::aKdiag(VectorXd* out) const throw (CGPMixException)
+void CLikNormalNULL::aKdiag(VectorXd* out) const 
 {
 	(*out).resize(numRows);
 	(*out).setConstant(0);
 }
 
-void CLikNormalNULL::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CLikNormalNULL::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
 		(*out).setConstant(Xstar.rows(),0.0);
 }
 
 
-void CLikNormalNULL::aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException)
+void CLikNormalNULL::aKgrad_param(MatrixXd* out, const muint_t row) const 
 {
 	throw CGPMixException("CLikNormalNULL has no hyperparameters!");
 }
     
-void CLikNormalNULL::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException)
+void CLikNormalNULL::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     throw CGPMixException("CLikNormalNULL has no hyperparameters!");
 }
@@ -95,41 +95,41 @@ CLikNormalIso::~CLikNormalIso()
 {
 }
 
-void CLikNormalIso::setX(const CovarInput& X) throw (CGPMixException)
+void CLikNormalIso::setX(const CovarInput& X) 
 {
 	this->numRows = X.rows();
 }
 
 
 
-void CLikNormalIso::aK(MatrixXd* out) const throw (CGPMixException)
+void CLikNormalIso::aK(MatrixXd* out) const 
 {
 	(*out) = MatrixXd::Zero(numRows,numRows);
 	assert(getParams().rows() * getParams().cols() > 0);
 	(*out).diagonal().setConstant(std::pow((mfloat_t)this->getParams()(0),2));//WARNING: mfloat_t conversion
 }
 
-void CLikNormalIso::aKdiag(VectorXd* out) const throw (CGPMixException)
+void CLikNormalIso::aKdiag(VectorXd* out) const 
 {
 	(*out).resize(numRows);
 	(*out).setConstant(std::pow(this->getParams()(0),2));
 }
 
-void CLikNormalIso::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CLikNormalIso::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
     (*out).resize(Xstar.rows());
     (*out).setConstant(std::pow(this->getParams()(0),2));
 }
 
 
-void CLikNormalIso::aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException)
+void CLikNormalIso::aKgrad_param(MatrixXd* out, const muint_t row) const 
 {
 	(*out).setConstant(numRows,numRows,0.0);
     //(*out) = MatrixXd::Identity(numRows,numRows);
 	(*out).diagonal().setConstant(2*this->getParams()(0));
 }
     
-void CLikNormalIso::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException)
+void CLikNormalIso::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
         throw CGPMixException("Parameter index out of range.");
@@ -147,34 +147,34 @@ CLikNormalSVD::~CLikNormalSVD()
 {
 }
 
-void CLikNormalSVD::setX(const CovarInput& X) throw (CGPMixException)
+void CLikNormalSVD::setX(const CovarInput& X) 
 {
 	this->numRows = X.rows();
 }
 
 
-void CLikNormalSVD::aK(MatrixXd* out) const throw (CGPMixException)
+void CLikNormalSVD::aK(MatrixXd* out) const 
 {
 	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
 }
 
-void CLikNormalSVD::aKdiag(VectorXd* out) const throw (CGPMixException)
+void CLikNormalSVD::aKdiag(VectorXd* out) const 
 {
 	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
 }
 
-void CLikNormalSVD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CLikNormalSVD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
 	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
 }
 
 
-void CLikNormalSVD::aKgrad_param(MatrixXd* out, const muint_t row) const throw (CGPMixException)
+void CLikNormalSVD::aKgrad_param(MatrixXd* out, const muint_t row) const 
 {
 	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
 }
     
-void CLikNormalSVD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException)
+void CLikNormalSVD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
 	throw CGPMixException("CLinkNormalSVD cannot be evaluated directly");
 }

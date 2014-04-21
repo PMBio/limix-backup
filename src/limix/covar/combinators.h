@@ -38,30 +38,30 @@ public:
 
 	//destructors
 	virtual ~AMultiCF();
-	virtual muint_t Kdim() const throw(CGPMixException);
+	virtual muint_t Kdim() const ;
 
 	//sync stuff
 	void addSyncChild(Pbool l);
 	void delSyncChild(Pbool l);
 
 	//access to covariance arrays
-	void addCovariance(PCovarianceFunction covar) throw (CGPMixException);
-	void setCovariance(muint_t i,PCovarianceFunction covar) throw (CGPMixException);
-	PCovarianceFunction getCovariance(muint_t i) throw (CGPMixException);
+	void addCovariance(PCovarianceFunction covar) ;
+	void setCovariance(muint_t i,PCovarianceFunction covar) ;
+	PCovarianceFunction getCovariance(muint_t i) ;
 
-	virtual muint_t getNumberDimensions() const throw (CGPMixException);
-	virtual void setNumberDimensions(muint_t numberDimensions) throw (CGPMixException);
+	virtual muint_t getNumberDimensions() const ;
+	virtual void setNumberDimensions(muint_t numberDimensions) ;
 	virtual muint_t getNumberParams() const;
 
 	//setX and getX
-	virtual void setX(const CovarInput& X) throw (CGPMixException);				//!< setter for covariance input matrix X
-	virtual void agetX(CovarInput* Xout) const throw (CGPMixException);			//!< getter for covariance input matrix X
+	virtual void setX(const CovarInput& X) ;				//!< setter for covariance input matrix X
+	virtual void agetX(CovarInput* Xout) const ;			//!< getter for covariance input matrix X
 	/*!
 	setter for a single column of CovarInput X
 	@param X	single column of a CovarInput
 	@param col	index of the column
 	*/
-	virtual void setXcol(const CovarInput& X,muint_t col) throw (CGPMixException);
+	virtual void setXcol(const CovarInput& X,muint_t col) ;
 
 	//set and get Params
 	virtual void setParams(const CovarParams& params);
@@ -72,7 +72,7 @@ public:
 	//get parameter bounds
 	virtual void agetParamBounds0(CovarParams* lower,CovarParams* upper) const;
     virtual void agetParamBounds(CovarParams* lower,CovarParams* upper) const;
-	virtual void setParamBounds(const CovarParams& lower, const CovarParams& upper)  throw (CGPMixException);
+	virtual void setParamBounds(const CovarParams& lower, const CovarParams& upper)  ;
 };
 
 class CSumCF : public AMultiCF {
@@ -83,16 +83,16 @@ public:
 	virtual ~CSumCF();
 
 	//overloaded pure virtual members
-	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
-	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
-	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const ;
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const ;
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const ;
 	//optional overloadings:
-	virtual void aK(MatrixXd* out) const throw (CGPMixException);
-	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
-	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
+	virtual void aK(MatrixXd* out) const ;
+	virtual void aKdiag(VectorXd* out) const ;
+	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const ;
 	virtual std::string getName() const;
 };
 typedef sptr<CSumCF> PSumCF;
@@ -112,16 +112,16 @@ public:
 	virtual void setCoeff(const VectorXd& coeff);
 	virtual void agetCoeff(VectorXd* out) const;
 	//overloaded pure virtual members
-	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
-	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
-	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const ;
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const ;
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const ;
 	//optional overloadings:
-	virtual void aK(MatrixXd* out) const throw (CGPMixException);
-	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
-	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
+	virtual void aK(MatrixXd* out) const ;
+	virtual void aKdiag(VectorXd* out) const ;
+	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const ;
 	virtual std::string getName() const;
 };
 typedef sptr<CLinCombCF> PLinCombCF;
@@ -139,16 +139,16 @@ public:
 	virtual ~CProductCF();
 
 	//overloaded pure virtual members
-	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
-	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
-	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const ;
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const ;
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const ;
 	//optional overloadings:
-	virtual void aK(MatrixXd* out) const throw (CGPMixException);
-	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
-	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
+	virtual void aK(MatrixXd* out) const ;
+	virtual void aKdiag(VectorXd* out) const ;
+	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const ;
 	virtual std::string getName() const;
 };
 typedef sptr<CProductCF> PProductCF;
@@ -173,13 +173,13 @@ public:
 	CKroneckerCF();
 	CKroneckerCF(PCovarianceFunction col,PCovarianceFunction row);
 	virtual ~CKroneckerCF();
-	virtual muint_t Kdim() const throw(CGPMixException);
+	virtual muint_t Kdim() const ;
 
 	//Access to vecCovariances
 	virtual void setRowCovariance(PCovarianceFunction cov);
 	virtual void setColCovariance(PCovarianceFunction cov);
-	PCovarianceFunction getRowCovariance() throw (CGPMixException);
-	PCovarianceFunction getColCovariance() throw (CGPMixException);
+	PCovarianceFunction getRowCovariance() ;
+	PCovarianceFunction getColCovariance() ;
 
 	/*!
 	 * set KronecekerIndicator, which needs to be N x 2 with indicse for row & column of individual elements
@@ -198,23 +198,23 @@ public:
 	bool isKronecker() const;
 
 	//X handling
-	virtual void setX(const CovarInput& X) throw (CGPMixException) {};					//!< No function as Combinator has no X of its own. See .setXr() and .setXc() instead for setters of the row and column covariance inputs.
-	virtual void agetX(CovarInput* Xout) const throw (CGPMixException) {};				//!< No function as Combinator has no X of its own. See .getXr() and .getXc() instead for getters of the row and column covariance inputs.
-	virtual void setXcol(const CovarInput& X,muint_t col) throw (CGPMixException) {};	//!< No function as Combinator has no X of its own. See .setXr() and .setXc() instead for setters of the row and column covariance inputs.
-	virtual void setXr(const CovarInput& Xr) throw (CGPMixException);	//!< setter of the covariance input of the row covariance
-	virtual void setXc(const CovarInput& Xc) throw (CGPMixException);	//!< setter of the covariance input of the column covariance
+	virtual void setX(const CovarInput& X)  {};					//!< No function as Combinator has no X of its own. See .setXr() and .setXc() instead for setters of the row and column covariance inputs.
+	virtual void agetX(CovarInput* Xout) const  {};				//!< No function as Combinator has no X of its own. See .getXr() and .getXc() instead for getters of the row and column covariance inputs.
+	virtual void setXcol(const CovarInput& X,muint_t col)  {};	//!< No function as Combinator has no X of its own. See .setXr() and .setXc() instead for setters of the row and column covariance inputs.
+	virtual void setXr(const CovarInput& Xr) ;	//!< setter of the covariance input of the row covariance
+	virtual void setXc(const CovarInput& Xc) ;	//!< setter of the covariance input of the column covariance
 
 	//overloaded pure virtual members
-	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
-	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
-	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const ;
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const ;
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const ;
 	//optional overloaded functions for efficiency:
-	virtual void aK(MatrixXd* out) const throw (CGPMixException);
-	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
-	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
+	virtual void aK(MatrixXd* out) const ;
+	virtual void aKdiag(VectorXd* out) const ;
+	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const ;
 
 	virtual std::string getName() const;
 

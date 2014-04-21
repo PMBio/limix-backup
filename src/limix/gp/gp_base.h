@@ -58,11 +58,11 @@ public:
 	{
 	}
 
-	void agetParamArray(VectorXd* out) const throw(CGPMixException);	//< returns the 1-D paramter vector without applying a mask
-	void setParamArray(const VectorXd& param) throw (CGPMixException);	//< sets a 1-D paramter Vector without applying a mask
+	void agetParamArray(VectorXd* out) const ;	//< returns the 1-D paramter vector without applying a mask
+	void setParamArray(const VectorXd& param) ;	//< sets a 1-D paramter Vector without applying a mask
 
-	void agetParamArray(VectorXd* out,const CGPHyperParams& mask) const throw(CGPMixException);		//< returns the 1-D paramter vector after applying a mask
-	void setParamArray(const VectorXd& param,const CGPHyperParams& mask) throw (CGPMixException);	//< sets a 1-D paramter Vector after applying a mask
+	void agetParamArray(VectorXd* out,const CGPHyperParams& mask) const ;		//< returns the 1-D paramter vector after applying a mask
+	void setParamArray(const VectorXd& param,const CGPHyperParams& mask) ;	//< sets a 1-D paramter Vector after applying a mask
 
 	muint_t getNumberParams() const; //!< returns the number of parameters without applying a mask.
 	muint_t getNumberParams(const CGPHyperParams& mask) const; //!< returns the number of parameters after applying a mask.
@@ -86,7 +86,7 @@ public:
 	//convenience functions for C++ access
 	inline MatrixXd get(const std::string& name);	//!< returns a specific set of parameters indexed by name.
 	inline VectorXd getParamArray() const;			//!< returns the complete parameter vector
-	inline VectorXd getParamArray(const CGPHyperParams& mask) const throw (CGPMixException);	//!< returns the parameter vector after applying the mask
+	inline VectorXd getParamArray(const CGPHyperParams& mask) const ;	//!< returns the parameter vector after applying the mask
 };
 typedef sptr<CGPHyperParams> PGPHyperParams;
 
@@ -104,7 +104,7 @@ inline VectorXd CGPHyperParams::getParamArray() const
 	return rv;
 }
 
-inline VectorXd CGPHyperParams::getParamArray(const CGPHyperParams& mask) const throw (CGPMixException)
+inline VectorXd CGPHyperParams::getParamArray(const CGPHyperParams& mask) const 
 {
 	VectorXd rv;
 	agetParamArray(&rv,mask);
@@ -168,8 +168,8 @@ protected:
 
 	VectorXi gplvmDimensions;	//!< gplvm dimensions (X for covar)
 
-	virtual void updateParams() throw (CGPMixException);	//!< update the parameters of lik, dataterm, covar, X
-	void updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions,const MatrixXd& X) throw (CGPMixException);	//!< update covar X accorsing to gplvmDimensions
+	virtual void updateParams() ;	//!< update the parameters of lik, dataterm, covar, X
+	void updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions,const MatrixXd& X) ;	//!< update covar X accorsing to gplvmDimensions
 
 public:
 	CGPbase(PCovarianceFunction covar, PLikelihood lik=PLikelihood(),PDataTerm data=PDataTerm());
@@ -188,11 +188,11 @@ public:
 	virtual void setLambda(CGPHyperParams lambda) {};
 
 	//getter and setter for Parameters:
-	virtual void setParams(const CGPHyperParams& hyperparams) throw(CGPMixException);					//!< sets the parameters without a mask
-	virtual void setParams(const CGPHyperParams& hyperparams,const CGPHyperParams& mask) throw(CGPMixException);	//!< sets the parameters with a mask
+	virtual void setParams(const CGPHyperParams& hyperparams) ;					//!< sets the parameters without a mask
+	virtual void setParams(const CGPHyperParams& hyperparams,const CGPHyperParams& mask) ;	//!< sets the parameters with a mask
 	virtual CGPHyperParams getParams() const;															//!< returns all the parameters in the form of a CGPHyperparams object
-	virtual void setParamArray(const VectorXd& hyperparams) throw (CGPMixException);					//!< sets the 1-D parameter vector without a mask
-	virtual void setParamArray(const VectorXd& param,const CGPHyperParams& mask) throw (CGPMixException);	//!< sets the 1-D parameter vector with a mask
+	virtual void setParamArray(const VectorXd& hyperparams) ;					//!< sets the 1-D parameter vector without a mask
+	virtual void setParamArray(const VectorXd& param,const CGPHyperParams& mask) ;	//!< sets the 1-D parameter vector with a mask
 	virtual void agetParamArray(VectorXd* out) const;
 
 	//getter for parameter bounds and hyperparam Mask
@@ -203,7 +203,7 @@ public:
 	void setY(const MatrixXd& Y);
 
 	void agetX(CovarInput* out) const;
-	void setX(const CovarInput& X) throw (CGPMixException);
+	void setX(const CovarInput& X) ;
 
 	inline muint_t getNumberSamples(){return this->cache->rgetYeffective().rows();} //!< get the number of training data samples
 	inline muint_t getNumberDimension(){return this->cache->rgetYeffective().cols();} //!< get the dimension of the target data
@@ -216,74 +216,74 @@ public:
 	PDataTerm getDataTerm() {return dataTerm;}
 
 	//get from cache
-	virtual void agetKEffInvYCache(MatrixXd* out) throw (CGPMixException);
+	virtual void agetKEffInvYCache(MatrixXd* out) ;
 
 	//!> likelihood evaluation of current object
-	virtual mfloat_t LML() throw (CGPMixException);
+	virtual mfloat_t LML() ;
 	//!> likelihood evaluation for new parameters
-	virtual mfloat_t LML(const CGPHyperParams& params) throw (CGPMixException);
+	virtual mfloat_t LML(const CGPHyperParams& params) ;
 	//!> likelihood evaluationfor concatenated list (1-D vector) of parameters
-	virtual mfloat_t LML(const VectorXd& params) throw (CGPMixException);
+	virtual mfloat_t LML(const VectorXd& params) ;
 
 	//!>overall gradient:
-	virtual CGPHyperParams LMLgrad() throw (CGPMixException);
-	virtual CGPHyperParams LMLgrad(const CGPHyperParams& params) throw (CGPMixException);	//!< overall gradient for parameter object
-	virtual CGPHyperParams LMLgrad(const VectorXd& paramArray) throw (CGPMixException);		//!< overall gradient for parameter 1-D vector
+	virtual CGPHyperParams LMLgrad() ;
+	virtual CGPHyperParams LMLgrad(const CGPHyperParams& params) ;	//!< overall gradient for parameter object
+	virtual CGPHyperParams LMLgrad(const VectorXd& paramArray) ;		//!< overall gradient for parameter 1-D vector
 
 	//!>overall gradient:
-	virtual void aLMLgrad(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad(VectorXd* out,const CGPHyperParams& params) throw (CGPMixException);	//!< overall gradient for parameter object
-	virtual void aLMLgrad(VectorXd* out,const VectorXd& paramArray) throw (CGPMixException);	//!< overall gradient for parameter 1-D vector
+	virtual void aLMLgrad(VectorXd* out) ;
+	virtual void aLMLgrad(VectorXd* out,const CGPHyperParams& params) ;	//!< overall gradient for parameter object
+	virtual void aLMLgrad(VectorXd* out,const VectorXd& paramArray) ;	//!< overall gradient for parameter 1-D vector
 
 	//gradient components:
-	virtual void aLMLgrad_covar(VectorXd* out) throw (CGPMixException);		//!< gradient component: gradient of covariance
-	virtual void aLMLgrad_lik(VectorXd* out) throw (CGPMixException);		//!< gradient component: gradient of likelihood term
-	virtual void aLMLgrad_X(MatrixXd* out) throw (CGPMixException);			//!< gradient component: gradient of X (GPLVM dimensions)
-	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);	//!< gradient component: gradient of the data term
+	virtual void aLMLgrad_covar(VectorXd* out) ;		//!< gradient component: gradient of covariance
+	virtual void aLMLgrad_lik(VectorXd* out) ;		//!< gradient component: gradient of likelihood term
+	virtual void aLMLgrad_X(MatrixXd* out) ;			//!< gradient component: gradient of X (GPLVM dimensions)
+	virtual void aLMLgrad_dataTerm(MatrixXd* out) ;	//!< gradient component: gradient of the data term
     
     //!> overall hessian
-	virtual void aLMLhess(MatrixXd* out, stringVec vecLabels) throw (CGPMixException);
+	virtual void aLMLhess(MatrixXd* out, stringVec vecLabels) ;
     
     //hessian components:
-    virtual void aLMLhess_covar(MatrixXd* out) throw (CGPMixException);		//!< Hessian component: for covariance
-    virtual void aLMLhess_lik(MatrixXd* out) throw (CGPMixException);		//!< Hessian component: for likelihood term
-    virtual void aLMLhess_covarlik(MatrixXd* out) throw (CGPMixException);	//!< Hessian component: between covariance and likelihood parameters
+    virtual void aLMLhess_covar(MatrixXd* out) ;		//!< Hessian component: for covariance
+    virtual void aLMLhess_lik(MatrixXd* out) ;		//!< Hessian component: for likelihood term
+    virtual void aLMLhess_covarlik(MatrixXd* out) ;	//!< Hessian component: between covariance and likelihood parameters
     
     //laplace approximation stuff
-    virtual void agetCov_laplace(MatrixXd* out, stringVec vecLabels) throw (CGPMixException);	//!< Laplace approximation stuff: Inverse HEssian
-    virtual CGPHyperParams agetStd_laplace() throw (CGPMixException);	//!< Laplace approximation stuff: standard deviation of parameters (sqrt of diagonal of inverse Hessian)
+    virtual void agetCov_laplace(MatrixXd* out, stringVec vecLabels) ;	//!< Laplace approximation stuff: Inverse HEssian
+    virtual CGPHyperParams agetStd_laplace() ;	//!< Laplace approximation stuff: standard deviation of parameters (sqrt of diagonal of inverse Hessian)
     
 	//interface for optimization:
 
 	//predictions:
-	virtual void apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException);	//!< Conditional mean prediction at covariance input parameters Xstar, a.k.a Best Linear Unbiased Prediction (BLUP)
-	virtual void apredictVar(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException);		//!< Predictive variances around the BLUP. Note that Variances are coomputed independently (no co-variances)
+	virtual void apredictMean(MatrixXd* out, const MatrixXd& Xstar) ;	//!< Conditional mean prediction at covariance input parameters Xstar, a.k.a Best Linear Unbiased Prediction (BLUP)
+	virtual void apredictVar(MatrixXd* out, const MatrixXd& Xstar) ;		//!< Predictive variances around the BLUP. Note that Variances are coomputed independently (no co-variances)
 
 	//!>class factory for LMM instances:
 	template <class lmmType>
 	lmmType* getLMMInstance();	//!< creates an LMM object for GWAS testing
 
 	//convenience function
-	inline VectorXd LMLgrad_covar() throw (CGPMixException);		//!< gradient component: gradient of covariance
-	inline VectorXd LMLgrad_lik() throw (CGPMixException);			//!< gradient component: gradient of likelihood term
-	inline MatrixXd LMLgrad_X() throw (CGPMixException);			//!< gradient component: gradient of X (GPLVM dimensions)
-	inline MatrixXd LMLgrad_dataTerm() throw (CGPMixException);		//!< gradient component: gradient of the data term
+	inline VectorXd LMLgrad_covar() ;		//!< gradient component: gradient of covariance
+	inline VectorXd LMLgrad_lik() ;			//!< gradient component: gradient of likelihood term
+	inline MatrixXd LMLgrad_X() ;			//!< gradient component: gradient of X (GPLVM dimensions)
+	inline MatrixXd LMLgrad_dataTerm() ;		//!< gradient component: gradient of the data term
 	inline MatrixXd getY();									//!< returns Y
 	inline MatrixXd getX() const;							//!< returns X (the covariance inputs)
 	inline VectorXd getParamArray() const;					//!< returns the parameters as 1-D vector
-	inline MatrixXd predictMean(const MatrixXd& Xstar) throw (CGPMixException);	//!< Conditional mean prediction at covariance input parameters Xstar, a.k.a Best Linear Unbiased Prediction (BLUP)
-	inline MatrixXd predictVar(const MatrixXd& Xstar) throw (CGPMixException);	//!< Predictive variances around the BLUP. Note that Variances are coomputed independently (no co-variances)
+	inline MatrixXd predictMean(const MatrixXd& Xstar) ;	//!< Conditional mean prediction at covariance input parameters Xstar, a.k.a Best Linear Unbiased Prediction (BLUP)
+	inline MatrixXd predictVar(const MatrixXd& Xstar) ;	//!< Predictive variances around the BLUP. Note that Variances are coomputed independently (no co-variances)
     
 	/* Static methods*/
     //numerical gradient and hessian
-    static double LMLgrad_num(CGPbase& gp, const muint_t i) throw(CGPMixException);						//!< numerical evaluation of gradient for parameter i in the 1-D vector (slow! for debuging purposes)
-    static double LMLhess_num(CGPbase& gp, const muint_t i, const muint_t j) throw(CGPMixException);	//!< numerical evaluation of Hessian between parameters i and j in the 1-D vector (slow! for debuging purposes)
+    static double LMLgrad_num(CGPbase& gp, const muint_t i) ;						//!< numerical evaluation of gradient for parameter i in the 1-D vector (slow! for debuging purposes)
+    static double LMLhess_num(CGPbase& gp, const muint_t i, const muint_t j) ;	//!< numerical evaluation of Hessian between parameters i and j in the 1-D vector (slow! for debuging purposes)
     
 };
 typedef sptr<CGPbase> PGPbase;
 
 
-inline MatrixXd CGPbase::predictMean(const MatrixXd& Xstar) throw (CGPMixException)
+inline MatrixXd CGPbase::predictMean(const MatrixXd& Xstar) 
 {
     MatrixXd rv;
     apredictMean(&rv,Xstar);
@@ -291,7 +291,7 @@ inline MatrixXd CGPbase::predictMean(const MatrixXd& Xstar) throw (CGPMixExcepti
 }
 
 inline MatrixXd CGPbase::predictVar(const MatrixXd& Xstar)
-		throw (CGPMixException)
+		
 		{
 		MatrixXd rv;
 		apredictVar(&rv,Xstar);
@@ -313,7 +313,7 @@ inline CovarInput CGPbase::getX() const
 	return rv;
 }
 
-inline VectorXd CGPbase::LMLgrad_covar() throw (CGPMixException)
+inline VectorXd CGPbase::LMLgrad_covar() 
 {
 	VectorXd rv;
 	aLMLgrad_covar(&rv);
@@ -321,21 +321,21 @@ inline VectorXd CGPbase::LMLgrad_covar() throw (CGPMixException)
 }
 
 
-inline VectorXd CGPbase::LMLgrad_lik() throw (CGPMixException)
+inline VectorXd CGPbase::LMLgrad_lik() 
 {
 	VectorXd rv;
 	aLMLgrad_lik(&rv);
 	return rv;
 }
 
-inline MatrixXd CGPbase::LMLgrad_X() throw (CGPMixException)
+inline MatrixXd CGPbase::LMLgrad_X() 
 {
 	MatrixXd rv;
 	aLMLgrad_X(&rv);
 	return rv;
 }
 
-inline MatrixXd CGPbase::LMLgrad_dataTerm() throw (CGPMixException)
+inline MatrixXd CGPbase::LMLgrad_dataTerm() 
 {
 	MatrixXd rv;
 	aLMLgrad_dataTerm(&rv);

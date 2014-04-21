@@ -145,7 +145,7 @@ MatrixXd& CGPKroneckerCache::rgetSi()
         // TODO Auto-generated destructor stub
     }
 
-    void CGPkronecker::updateParams() throw (CGPMixException)
+    void CGPkronecker::updateParams() 
     {
     	//std::cout << params << "\n";
 
@@ -170,14 +170,14 @@ MatrixXd& CGPKroneckerCache::rgetSi()
         }
     }
 
-    void CGPkronecker::setX_r(const CovarInput & X) throw (CGPMixException)
+    void CGPkronecker::setX_r(const CovarInput & X) 
     {
         this->covar_r->setX(X);
         if(isnull(gplvmDimensions_r))
             this->gplvmDimensions_r = VectorXi::LinSpaced(X.cols(), 0, X.cols() - 1);
 
     }
-    void CGPkronecker::setX_c(const CovarInput & X) throw (CGPMixException)
+    void CGPkronecker::setX_c(const CovarInput & X) 
     {
         this->covar_c->setX(X);
         if(isnull(gplvmDimensions_c))
@@ -202,7 +202,7 @@ MatrixXd& CGPKroneckerCache::rgetSi()
 
 
 
-    mfloat_t CGPkronecker::LML() throw (CGPMixException)
+    mfloat_t CGPkronecker::LML() 
     {
         //update the covariance parameters
         MatrixXd& Si = cache->rgetSi();
@@ -226,7 +226,7 @@ MatrixXd& CGPKroneckerCache::rgetSi()
         return lml_quad + lml_det + lml_const;
     };
 
-    CGPHyperParams CGPkronecker::LMLgrad() throw (CGPMixException)
+    CGPHyperParams CGPkronecker::LMLgrad() 
     {
         CGPHyperParams rv;
         //calculate gradients for parameter components in params:
@@ -355,7 +355,7 @@ MatrixXd& CGPKroneckerCache::rgetSi()
         }
     }
 
-    void CGPkronecker::aLMLgrad_covar(VectorXd *out, bool columns) throw (CGPMixException)
+    void CGPkronecker::aLMLgrad_covar(VectorXd *out, bool columns) 
     {
         PCovarianceFunction covar;
         if(columns)
@@ -383,7 +383,7 @@ MatrixXd& CGPKroneckerCache::rgetSi()
     }
 
     // this should be the new code...
-    void CGPkronecker::aLMLgrad_lik(VectorXd *out) throw (CGPMixException)
+    void CGPkronecker::aLMLgrad_lik(VectorXd *out) 
       {
           out->resize(lik->getNumberParams());
           //inner derivatives w.r.t Sigma and Delta
@@ -408,17 +408,17 @@ MatrixXd& CGPKroneckerCache::rgetSi()
           (*out)(1) = grad_delta_logdet + grad_delta_quad;
       }
 
-    void CGPkronecker::aLMLgrad_covar_r(VectorXd *out) throw (CGPMixException)
+    void CGPkronecker::aLMLgrad_covar_r(VectorXd *out) 
     {
         aLMLgrad_covar(out, false);
     }
 
-    void CGPkronecker::aLMLgrad_covar_c(VectorXd *out) throw (CGPMixException)
+    void CGPkronecker::aLMLgrad_covar_c(VectorXd *out) 
     {
         aLMLgrad_covar(out, true);
     }
 
-    void CGPkronecker::aLMLgrad_X_r(MatrixXd *out) throw (CGPMixException)
+    void CGPkronecker::aLMLgrad_X_r(MatrixXd *out) 
     {
         //0. set output dimensions
         (*out).resize(CGPbase::dataTerm->evaluate().rows(), this->gplvmDimensions_r.rows());
@@ -435,7 +435,7 @@ MatrixXd& CGPKroneckerCache::rgetSi()
         }
     }
 
-    void CGPkronecker::aLMLgrad_X_c(MatrixXd *out) throw (CGPMixException)
+    void CGPkronecker::aLMLgrad_X_c(MatrixXd *out) 
      {
     	//0. set output dimensions
     	(*out).resize(CGPbase::dataTerm->evaluate().cols(), this->gplvmDimensions_c.rows());
@@ -490,14 +490,14 @@ MatrixXd& CGPKroneckerCache::rgetSi()
     }
 
 
- void CGPkronecker::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
+ void CGPkronecker::aLMLgrad_dataTerm(MatrixXd* out) 
 {
  	//0. set output dimensions
 	 (*out) = this->dataTerm->gradParams(this->cache->rgetKinvY());
 }
 
 
- void CGPkronecker::apredictMean(MatrixXd* out, const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) throw (CGPMixException)
+ void CGPkronecker::apredictMean(MatrixXd* out, const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) 
  {
 	//1. calc cross variances for row and columns
  	MatrixXd Kstar_r,Kstar_c;
@@ -511,7 +511,7 @@ MatrixXd& CGPKroneckerCache::rgetSi()
  	(*out) *= this->getLik()->getSigmaK2();
  }
 
- void CGPkronecker::apredictVar(MatrixXd* out,const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) throw (CGPMixException)
+ void CGPkronecker::apredictVar(MatrixXd* out,const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) 
  {
 	 throw CGPMixException("CGPKronecker: apredictVar not implemented yet!");
  }

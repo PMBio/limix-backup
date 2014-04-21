@@ -226,7 +226,7 @@ int ALMM::getTestStatistics() const
     }
 
     /*
-    void ALMM::applyPermutation(MatrixXd & M) throw (CGPMixException)
+    void ALMM::applyPermutation(MatrixXd & M) 
     {
         if(isnull(perm))
             return;
@@ -268,7 +268,7 @@ int ALMM::getTestStatistics() const
     }
 
     /*CLMM*/
-    void CLMM::updateDecomposition() throw (CGPMixException)
+    void CLMM::updateDecomposition() 
     {
         //check that dimensions match
         this->num_samples = snps.rows();
@@ -302,7 +302,7 @@ int ALMM::getTestStatistics() const
         }
     }
 
-    void CLMM::process()// throw (CGPMixException)
+    void CLMM::process()// 
     {
         //get decomposition
         updateDecomposition();
@@ -445,7 +445,7 @@ int ALMM::getTestStatistics() const
     }
 
     //processing;
-    void CInteractLMM::process() //throw (CGPMixException)
+    void CInteractLMM::process() //
     {
     	//TODO: Ftest is not correct for simple cases where I0=0 as ftest_rows yields the wrong answer.
     	if((num_inter > 1) && (this->testStatistics == ALMM::TEST_F)){
@@ -549,7 +549,7 @@ int ALMM::getTestStatistics() const
         	} //end for SNP
 	}
     }
-    void CInteractLMM::updateDecomposition() throw (CGPMixException)
+    void CInteractLMM::updateDecomposition() 
     {
         CLMM::updateDecomposition();
     }

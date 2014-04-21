@@ -20,13 +20,13 @@ CGPHyperParams::CGPHyperParams(const CGPHyperParams &_param) : std::map<std::str
 
 }
 
-void CGPHyperParams::agetParamArray(VectorXd* out) const throw(CGPMixException)
+void CGPHyperParams::agetParamArray(VectorXd* out) const 
 {
 	CGPHyperParams mask;
 	agetParamArray(out,mask);
 }
 
-void CGPHyperParams::setParamArray(const VectorXd& param) throw (CGPMixException)
+void CGPHyperParams::setParamArray(const VectorXd& param) 
 {
 	CGPHyperParams mask;
 	setParamArray(param,mask);
@@ -47,7 +47,7 @@ void CGPHyperParams::expandMask(MatrixXd& out, const MatrixXd& array,const Matri
 	AexpandMask(out,array,mask.col(0),VectorXd::Ones(array.cols()));
 }
 
-void CGPHyperParams::agetParamArray(VectorXd* out,const CGPHyperParams& mask) const throw(CGPMixException)
+void CGPHyperParams::agetParamArray(VectorXd* out,const CGPHyperParams& mask) const 
 {
 	//1. get size
 	(*out).resize(this->getNumberParams(mask));
@@ -72,7 +72,7 @@ void CGPHyperParams::agetParamArray(VectorXd* out,const CGPHyperParams& mask) co
 	}
 }
 
-void CGPHyperParams::setParamArray(const VectorXd& param,const CGPHyperParams& mask) throw (CGPMixException)
+void CGPHyperParams::setParamArray(const VectorXd& param,const CGPHyperParams& mask) 
 {
 	//1. check that param has correct shape
 	if ((muint_t)param.rows()!=getNumberParams(mask))
@@ -393,7 +393,7 @@ void CGPbase::set_data(MatrixXd& Y)
 	this->dataTerm->setY(Y);
 }
 
-void CGPbase::updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions,const MatrixXd& X) throw (CGPMixException)
+void CGPbase::updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions,const MatrixXd& X) 
 {
 	if (X.cols()!=gplvmDimensions.rows())
 	{
@@ -409,7 +409,7 @@ void CGPbase::updateX(ACovarianceFunction& covar,const VectorXi& gplvmDimensions
 }
 
 
-void CGPbase::updateParams() throw(CGPMixException)
+void CGPbase::updateParams() 
 {
 	if (this->params.exists("covar"))
 		this->covar->setParams(this->params["covar"]);
@@ -421,13 +421,13 @@ void CGPbase::updateParams() throw(CGPMixException)
 		this->dataTerm->setParams(this->params["dataTerm"]);
 }
 
-void CGPbase::setParams(const CGPHyperParams& hyperparams) throw(CGPMixException)
+void CGPbase::setParams(const CGPHyperParams& hyperparams) 
 {
 	this->params = hyperparams;
 	updateParams();
 }
 
-void CGPbase::setParams(const CGPHyperParams& hyperparams,const CGPHyperParams& mask) throw(CGPMixException)
+void CGPbase::setParams(const CGPHyperParams& hyperparams,const CGPHyperParams& mask) 
 {
 	//TODO: implemenation missing
 	//std::cout << "implement me" << "\n";
@@ -442,13 +442,13 @@ CGPHyperParams CGPbase::getParams() const
 	return this->params;
 }
 
-void CGPbase::setParamArray(const VectorXd& hyperparams) throw (CGPMixException)
+void CGPbase::setParamArray(const VectorXd& hyperparams) 
 {
 	this->params.setParamArray(hyperparams);
 	updateParams();
 }
 
-void CGPbase::setParamArray(const VectorXd& hyperparams,const CGPHyperParams& mask) throw (CGPMixException)
+void CGPbase::setParamArray(const VectorXd& hyperparams,const CGPHyperParams& mask) 
 {
 	this->params.setParamArray(hyperparams,mask);
 	updateParams();
@@ -476,7 +476,7 @@ void CGPbase::agetX(CovarInput* out) const
 {
 	this->covar->agetX(out);
 }
-void CGPbase::setX(const CovarInput& X) throw (CGPMixException)
+void CGPbase::setX(const CovarInput& X) 
 {
 	//use covariance to set everything
 	this->covar->setX(X);
@@ -491,7 +491,7 @@ void CGPbase::setX(const CovarInput& X) throw (CGPMixException)
 	}
 }
 
-void CGPbase::agetKEffInvYCache(MatrixXd* out) throw (CGPMixException)
+void CGPbase::agetKEffInvYCache(MatrixXd* out) 
 {
 	(*out) = this->cache->rgetKEffInvY();
 }
@@ -499,20 +499,20 @@ void CGPbase::agetKEffInvYCache(MatrixXd* out) throw (CGPMixException)
 /* Marginal likelihood */
 
 //wrappers:
-mfloat_t CGPbase::LML(const CGPHyperParams& params) throw (CGPMixException)
+mfloat_t CGPbase::LML(const CGPHyperParams& params) 
 {
 	setParams(params);
 	return LML();
 }
 
 
-mfloat_t CGPbase::LML(const VectorXd& params) throw (CGPMixException)
+mfloat_t CGPbase::LML(const VectorXd& params) 
 {
 	setParamArray(params);
 	return LML();
 }
 
-mfloat_t CGPbase::LML() throw (CGPMixException)
+mfloat_t CGPbase::LML() 
 {
 	//update the covariance parameters
 	MatrixXdChol& chol = cache->rgetKEffChol();
@@ -539,38 +539,38 @@ mfloat_t CGPbase::LML() throw (CGPMixException)
 
 
 /* Gradient interface functions:*/
-void CGPbase::aLMLgrad(VectorXd* out,const CGPHyperParams& params) throw (CGPMixException)
+void CGPbase::aLMLgrad(VectorXd* out,const CGPHyperParams& params) 
 {
 	setParams(params);
 	aLMLgrad(out);
 }
 
-void CGPbase::aLMLgrad(VectorXd* out,const VectorXd& paramArray) throw (CGPMixException)
+void CGPbase::aLMLgrad(VectorXd* out,const VectorXd& paramArray) 
 {
 	setParamArray(paramArray);
 	aLMLgrad(out);
 }
 
-void CGPbase::aLMLgrad(VectorXd* out) throw (CGPMixException)
+void CGPbase::aLMLgrad(VectorXd* out) 
 {
 	CGPHyperParams rv = LMLgrad();
 	rv.agetParamArray(out);
 }
 
-CGPHyperParams CGPbase::LMLgrad(const CGPHyperParams& params) throw (CGPMixException)
+CGPHyperParams CGPbase::LMLgrad(const CGPHyperParams& params) 
 {
 	setParams(params);
 	return LMLgrad();
 }
 
-CGPHyperParams CGPbase::LMLgrad(const VectorXd& paramArray) throw (CGPMixException)
+CGPHyperParams CGPbase::LMLgrad(const VectorXd& paramArray) 
 {
 	setParamArray(paramArray);
 	return LMLgrad();
 }
 
 /* Main routine: gradient calculation*/
-CGPHyperParams CGPbase::LMLgrad() throw (CGPMixException)
+CGPHyperParams CGPbase::LMLgrad() 
 {
 	CGPHyperParams rv;
 	//calculate gradients for parameter components in params:
@@ -602,7 +602,7 @@ CGPHyperParams CGPbase::LMLgrad() throw (CGPMixException)
 }
 
 
-void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
+void CGPbase::aLMLgrad_covar(VectorXd* out) 
 {
 	//vector with results
 	VectorXd grad_covar(covar->getNumberParams());
@@ -618,7 +618,7 @@ void CGPbase::aLMLgrad_covar(VectorXd* out) throw (CGPMixException)
 }
 
 
-void CGPbase::aLMLgrad_lik(VectorXd* out) throw (CGPMixException)
+void CGPbase::aLMLgrad_lik(VectorXd* out) 
 {
 	LikParams grad_lik(lik->getNumberParams());
 	MatrixXd& W = cache->getDKEffInv_KEffInvYYKinv();
@@ -631,7 +631,7 @@ void CGPbase::aLMLgrad_lik(VectorXd* out) throw (CGPMixException)
 	(*out) = grad_lik;
 }
 
-void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
+void CGPbase::aLMLgrad_X(MatrixXd* out) 
 {
 	//0. set output dimensions
 	(*out).resize(this->getNumberSamples(),this->gplvmDimensions.rows());
@@ -656,7 +656,7 @@ void CGPbase::aLMLgrad_X(MatrixXd* out) throw (CGPMixException)
 	}
 }
 
-void CGPbase::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
+void CGPbase::aLMLgrad_dataTerm(MatrixXd* out) 
 {
 	//0. set output dimensions
 	(*out) = dataTerm->gradParams(this->cache->rgetKEffInvY());
@@ -664,7 +664,7 @@ void CGPbase::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
     
 
 /* Main routine: Hessian calculation*/
-void CGPbase::aLMLhess(MatrixXd* out, stringVec vecLabels) throw (CGPMixException)
+void CGPbase::aLMLhess(MatrixXd* out, stringVec vecLabels) 
 {
         
     //Checks whether there are ripetions
@@ -731,7 +731,7 @@ void CGPbase::aLMLhess(MatrixXd* out, stringVec vecLabels) throw (CGPMixExceptio
     
 }
     
-void CGPbase::aLMLhess_covar(MatrixXd* out) throw (CGPMixException)
+void CGPbase::aLMLhess_covar(MatrixXd* out) 
 {
     //set output dimensions
     (*out).resize(covar->getNumberParams(),covar->getNumberParams());
@@ -759,7 +759,7 @@ void CGPbase::aLMLhess_covar(MatrixXd* out) throw (CGPMixException)
     (*out)*=0.5;
 }
     
-void CGPbase::aLMLhess_lik(MatrixXd* out) throw (CGPMixException)
+void CGPbase::aLMLhess_lik(MatrixXd* out) 
 {
     //set output dimensions
     (*out).resize(lik->getNumberParams(),lik->getNumberParams());
@@ -787,7 +787,7 @@ void CGPbase::aLMLhess_lik(MatrixXd* out) throw (CGPMixException)
     (*out)*=0.5;
 }
     
-void CGPbase::aLMLhess_covarlik(MatrixXd* out) throw (CGPMixException)
+void CGPbase::aLMLhess_covarlik(MatrixXd* out) 
 {
     //set output dimensions
     (*out).resize(covar->getNumberParams(),lik->getNumberParams());
@@ -812,14 +812,14 @@ void CGPbase::aLMLhess_covarlik(MatrixXd* out) throw (CGPMixException)
     (*out)*=0.5;
 }
     
-void CGPbase::agetCov_laplace(MatrixXd* out, stringVec vecLabels) throw (CGPMixException)
+void CGPbase::agetCov_laplace(MatrixXd* out, stringVec vecLabels) 
 {
     MatrixXd hess;
     aLMLhess(&hess,vecLabels);
     (*out)=hess.inverse();
 }
     
-CGPHyperParams CGPbase::agetStd_laplace() throw (CGPMixException)
+CGPHyperParams CGPbase::agetStd_laplace() 
 {
     MatrixXd Sigma;
     stringVec sv;
@@ -834,7 +834,7 @@ CGPHyperParams CGPbase::agetStd_laplace() throw (CGPMixException)
 }
     
 
-void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixException)
+void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) 
 {
 	MatrixXd KstarCross;
 	this->covar->aKcross(&KstarCross,Xstar);
@@ -842,7 +842,7 @@ void CGPbase::apredictMean(MatrixXd* out, const MatrixXd& Xstar) throw (CGPMixEx
 	(*out).noalias() = KstarCross * KinvY;
 }
 
-void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) throw (CGPMixException)
+void CGPbase::apredictVar(MatrixXd* out,const MatrixXd& Xstar) 
 {
 	MatrixXd KstarCross;
 	this->covar->aKcross(&KstarCross,Xstar);
@@ -890,7 +890,7 @@ CGPHyperParams CGPbase::getParamMask() const {
 }
 
     
-double CGPbase::LMLgrad_num(CGPbase& gp, const muint_t i) throw (CGPMixException)
+double CGPbase::LMLgrad_num(CGPbase& gp, const muint_t i) 
 {
 
     double out, LML_plus, LML_minus;
@@ -938,7 +938,7 @@ double CGPbase::LMLgrad_num(CGPbase& gp, const muint_t i) throw (CGPMixException
 }
     
     
-double CGPbase::LMLhess_num(CGPbase& gp, const muint_t i, const muint_t j) throw (CGPMixException)
+double CGPbase::LMLhess_num(CGPbase& gp, const muint_t i, const muint_t j) 
 {
     
     double out, LMLgrad_plus, LMLgrad_minus;

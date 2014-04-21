@@ -59,7 +59,7 @@ public:
 	virtual inline MatrixXd getFixedEffects(){MatrixXd outFixedEffects; this->aGetFixedEffects(&outFixedEffects); return outFixedEffects;};
 	virtual inline std::string getName() const {return "CLinearMean";};
 	virtual inline void checkDimensions(const MatrixXd& Y){checkDimensions(this->weights, this->fixedEffects, Y, false, false, true);};
-	virtual inline void checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights = false, const bool checkStrictFixedEffects = false, const bool checkStrictY = false) const throw (CGPMixException);
+	virtual inline void checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights = false, const bool checkStrictFixedEffects = false, const bool checkStrictY = false) const ;
 	inline virtual MatrixXd predictY() const {MatrixXd out = MatrixXd(); aPredictY(&out); return out;};
 	inline virtual MatrixXd predictY(const MatrixXd& fixedEffects) const {MatrixXd out = MatrixXd(); aPredictYstar(&out, &fixedEffects); return out;};
 	virtual void setWeightsOLS();
@@ -67,7 +67,7 @@ public:
 	virtual inline muint_t getNTargets() const {return nTargets;}
 };
 
-inline void CLinearMean::checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights, const bool checkStrictFixedEffects, const bool checkStrictY) const throw (CGPMixException)
+inline void CLinearMean::checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights, const bool checkStrictFixedEffects, const bool checkStrictY) const 
 {
 	bool notIsnullweights = false;
 	bool notIsnullFixed = false;

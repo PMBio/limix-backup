@@ -35,7 +35,7 @@ public:
 	virtual void aPredictY(MatrixXd* outY) const;
 	virtual void aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY);
 	inline virtual void setWeightsOLS(){setWeightsOLS(this->Y);};
-	inline void checkDimensions(const MatrixXd& Y, const bool checkStrictWeights) const throw (CGPMixException);
+	inline void checkDimensions(const MatrixXd& Y, const bool checkStrictWeights) const ;
 	virtual inline std::string getName() const { return "CKoneckerFixedTerm"; };
 	inline muint_t getDimFixedEffects() const { return this->fixedEffects.cols(); };
 	virtual muint_t getColsParams()
@@ -45,7 +45,7 @@ public:
 };
 typedef sptr<CKroneckerMean> PKroneckerMean;
 
-inline void CKroneckerMean::checkDimensions(const MatrixXd& Y, const bool checkStrictWeights = true) const throw (CGPMixException)
+inline void CKroneckerMean::checkDimensions(const MatrixXd& Y, const bool checkStrictWeights = true) const 
 {
 	if (Y.rows() != this->fixedEffects.rows() && (muint_t)Y.cols() != this->getNTargets())
 	{

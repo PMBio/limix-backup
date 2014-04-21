@@ -26,7 +26,7 @@ template <typename DerivedX>
 /*!
  * slice matirx m1 according index Iselect and return to out
  */
-void slice(const Eigen::PlainObjectBase<DerivedX> & m1,const MatrixXb& Iselect, Eigen::PlainObjectBase<DerivedX> & out) throw(CGPMixException)
+void slice(const Eigen::PlainObjectBase<DerivedX> & m1,const MatrixXb& Iselect, Eigen::PlainObjectBase<DerivedX> & out) 
 {
 
 	//Eigen::DenseBase<DerivedX>& out = const_cast< Eigen::DenseBase<DerivedX>& >(out_);
@@ -160,7 +160,7 @@ inline void pow2InPlace(const Eigen::MatrixBase<Derived>& m_)
 
 
 template <typename Derived1,typename Derived2,typename Derived3,typename Derived4>
-inline void AexpandMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::MatrixBase<Derived2>& m,const Eigen::MatrixBase<Derived3>& filter_row, const Eigen::MatrixBase<Derived4>& filter_col) throw (CGPMixException)
+inline void AexpandMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::MatrixBase<Derived2>& m,const Eigen::MatrixBase<Derived3>& filter_row, const Eigen::MatrixBase<Derived4>& filter_col) 
 {
 	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
 	//0. check consistencey
@@ -189,7 +189,7 @@ inline void AexpandMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::Mat
 }
 
 template <typename Derived1,typename Derived3,typename Derived4>
-inline void AfilterMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::MatrixBase<Derived1>& m,const Eigen::MatrixBase<Derived3>& filter_row, const Eigen::MatrixBase<Derived4>& filter_col) throw (CGPMixException)
+inline void AfilterMask(const Eigen::MatrixBase<Derived1>& out_,const Eigen::MatrixBase<Derived1>& m,const Eigen::MatrixBase<Derived3>& filter_row, const Eigen::MatrixBase<Derived4>& filter_col) 
 {
 	Eigen::MatrixBase<Derived1>& out = const_cast< Eigen::MatrixBase<Derived1>& >(out_);
 	if ((filter_row.rows()!=m.rows()) || (filter_col.rows()!=m.cols()))
@@ -454,7 +454,7 @@ inline MatrixXd kron_diag(const Eigen::MatrixBase<Derived2>& v1,const Eigen::Mat
 
 
 template <typename Derived1>
-inline mfloat_t getVarianceK(const Eigen::MatrixBase<Derived1> & K_) throw(CGPMixException)
+inline mfloat_t getVarianceK(const Eigen::MatrixBase<Derived1> & K_) 
 {
 	//cast out arguments
 	//Eigen::MatrixBase<Derived1>& K = const_cast< Eigen::MatrixBase<Derived1>& >(K);
@@ -472,7 +472,7 @@ inline mfloat_t getVarianceK(const Eigen::MatrixBase<Derived1> & K_) throw(CGPMi
 
 
 template <typename Derived1>
-inline void VarianceScaleK(const Eigen::MatrixBase<Derived1> & K_) throw(CGPMixException)
+inline void VarianceScaleK(const Eigen::MatrixBase<Derived1> & K_) 
 {
 	//cast out arguments
 	Eigen::MatrixBase<Derived1>& K = const_cast< Eigen::MatrixBase<Derived1>& >(K);

@@ -23,14 +23,14 @@ AVarianceTerm::AVarianceTerm() {
 AVarianceTerm::~AVarianceTerm() {
 }
 
-muint_t AVarianceTerm::getNumberIndividuals() const throw(CGPMixException)
+muint_t AVarianceTerm::getNumberIndividuals() const 
 {
 	if (Knull)
 		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
 	return (muint_t)this->K.cols();
 }
 
-void AVarianceTerm::setK(const MatrixXd& K) throw(CGPMixException)
+void AVarianceTerm::setK(const MatrixXd& K) 
 {
 	if(K.rows()!=K.cols())
 		throw CGPMixException("AVarianceTerm: K needs to be a squared matrix!");
@@ -39,7 +39,7 @@ void AVarianceTerm::setK(const MatrixXd& K) throw(CGPMixException)
 	this->Knull = false;
 }
 
-void AVarianceTerm::agetK(MatrixXd *out) const throw(CGPMixException)
+void AVarianceTerm::agetK(MatrixXd *out) const 
 {
 	(*out) = this->K;
 }
@@ -53,7 +53,7 @@ CSingleTraitTerm::CSingleTraitTerm(const MatrixXd& K):AVarianceTerm() {
 	this->setK(K);
 }
 
-void CSingleTraitTerm::setSampleFilter(const MatrixXb& filter) throw (CGPMixException)
+void CSingleTraitTerm::setSampleFilter(const MatrixXb& filter) 
 {
 	throw CGPMixException("not implementation error: setSampleFilter");
 }
@@ -62,40 +62,40 @@ void CSingleTraitTerm::setSampleFilter(const MatrixXb& filter) throw (CGPMixExce
 CSingleTraitTerm::~CSingleTraitTerm() {
 }
 
-PCovarianceFunction CSingleTraitTerm::getTraitCovar() const throw(CGPMixException)
+PCovarianceFunction CSingleTraitTerm::getTraitCovar() const 
 {
 	throw CGPMixException("CSingleTraitTerm: Not implemented for SingleTraitTerm");
 }
 
-void CSingleTraitTerm::setScales(const VectorXd& scales) throw(CGPMixException)
+void CSingleTraitTerm::setScales(const VectorXd& scales) 
 {
 	if (Knull)
 		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
 	this->Kcf->setParams(scales);
 }
 
-void CSingleTraitTerm::agetScales(VectorXd* out) const throw(CGPMixException)
+void CSingleTraitTerm::agetScales(VectorXd* out) const 
 {
 	if (Knull)
 		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
 	(this->Kcf)->agetParams(out);
 }
 
-muint_t CSingleTraitTerm::getNumberScales() const throw(CGPMixException)
+muint_t CSingleTraitTerm::getNumberScales() const 
 {
 	if (Knull)
 		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
 	return this->Kcf->getNumberParams();
 }
 
-void CSingleTraitTerm::initTerm() throw(CGPMixException)
+void CSingleTraitTerm::initTerm() 
 {
 	if (Knull)
 		throw CGPMixException("CSingleTraitTerm: K needs to be set!");
 	this->is_init=(bool)1;
 }
 
-PCovarianceFunction CSingleTraitTerm::getCovariance() const throw(CGPMixException)
+PCovarianceFunction CSingleTraitTerm::getCovariance() const 
 {
 	if (!is_init)	throw CGPMixException("CSingleTraitTerm: the term is not initialised!");
 	return this->Kcf;
@@ -120,39 +120,39 @@ CMultiTraitTerm::~CMultiTraitTerm()
 {
 }
 
-void CMultiTraitTerm::setTraitCovar(PCovarianceFunction traitCovar) throw(CGPMixException)
+void CMultiTraitTerm::setTraitCovar(PCovarianceFunction traitCovar) 
 {
 	this->traitCovariance=traitCovar;
 	isNull=false;
 }
 
-PCovarianceFunction CMultiTraitTerm::getTraitCovar() const throw(CGPMixException)
+PCovarianceFunction CMultiTraitTerm::getTraitCovar() const 
 {
 	return this->traitCovariance;
 }
 
-void CMultiTraitTerm::setScales(const VectorXd& scales) throw(CGPMixException)
+void CMultiTraitTerm::setScales(const VectorXd& scales) 
 {
 	if (isNull)
 		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
 	this->traitCovariance->setParams(scales);
 }
 
-void CMultiTraitTerm::agetScales(VectorXd* out) const throw(CGPMixException)
+void CMultiTraitTerm::agetScales(VectorXd* out) const 
 {
 	if (isNull)
 		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
 	this->traitCovariance->agetParams(out);
 }
 
-muint_t CMultiTraitTerm::getNumberScales() const throw(CGPMixException)
+muint_t CMultiTraitTerm::getNumberScales() const 
 {
 	if (isNull)
 		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
 	return this->traitCovariance->getNumberParams();
 }
 
-void CMultiTraitTerm::initTerm() throw(CGPMixException)
+void CMultiTraitTerm::initTerm() 
 {
 	if (isNull)		throw CGPMixException("CMultiTraitTerm: traitCovariance needs to be set!");
 	if (Knull)		throw CGPMixException("CMultiTraitTerm: K needs to be set!");
@@ -163,7 +163,7 @@ void CMultiTraitTerm::initTerm() throw(CGPMixException)
 	this->is_init=(bool)1;
 }
 
-void CMultiTraitTerm::setSampleFilter(const MatrixXb& filter) throw (CGPMixException)
+void CMultiTraitTerm::setSampleFilter(const MatrixXb& filter) 
 {
 	if (!is_init)
 		throw CGPMixException("sample Filter can only be aplied after the term is initialized");
@@ -189,7 +189,7 @@ void CMultiTraitTerm::setSampleFilter(const MatrixXb& filter) throw (CGPMixExcep
 }
 
 
-PCovarianceFunction CMultiTraitTerm::getCovariance() const throw(CGPMixException)
+PCovarianceFunction CMultiTraitTerm::getCovariance() const 
 {
 	if (!is_init)	throw CGPMixException("CMultiTraitTerm: the term is not initialised!");
 	return this->covariance;
@@ -214,7 +214,7 @@ void CVarianceDecomposition::clear()
 	this->is_init=(bool)0;
 }
 
-void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& design, const MatrixXd& fixed) throw(CGPMixException)
+void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& design, const MatrixXd& fixed) 
 {
 	//if ((muint_t)fixed.cols()!=(muint_t)1 || (muint_t)fixed.rows()!=this->N)
 	if ((muint_t)fixed.cols()<(muint_t)1 || (muint_t)fixed.rows()!=this->N)
@@ -226,20 +226,20 @@ void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& design, const Matri
 	this->is_init=false;
 }
 
-void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& fixed) throw(CGPMixException)
+void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& fixed) 
 {
 	MatrixXd design = MatrixXd::Identity(P,P);
 	addFixedEffTerm(fixed,design);
 }
 
-void CVarianceDecomposition::getFixed(MatrixXd *out, const muint_t i) const throw(CGPMixException)
+void CVarianceDecomposition::getFixed(MatrixXd *out, const muint_t i) const 
 {
 	if (i>=this->getNumberFixedEffs())
 		throw CGPMixException("CVarianceDecomposition: value out of range");
 	(*out)=this->fixedEffs[i];
 }
 
-void CVarianceDecomposition::getDesign(MatrixXd *out, const muint_t i) const throw(CGPMixException)
+void CVarianceDecomposition::getDesign(MatrixXd *out, const muint_t i) const 
 {
 	if (i>=this->getNumberFixedEffs())
 		throw CGPMixException("CVarianceDecomposition: value out of range");
@@ -258,7 +258,7 @@ muint_t CVarianceDecomposition::getNumberFixedEffs() const
 	return (muint_t)(this->fixedEffs.size());
 }
 
-void CVarianceDecomposition::setPheno(const MatrixXd& pheno) throw(CGPMixException)
+void CVarianceDecomposition::setPheno(const MatrixXd& pheno) 
 {
 	// Set Phenoa and dimensions
 	this->pheno = pheno;
@@ -269,12 +269,12 @@ void CVarianceDecomposition::setPheno(const MatrixXd& pheno) throw(CGPMixExcepti
 	this->phenoNANany = phenoNAN.any();
 }
 
-void CVarianceDecomposition::getPheno(MatrixXd *out) const throw(CGPMixException)
+void CVarianceDecomposition::getPheno(MatrixXd *out) const 
 {
 	(*out)=this->pheno;
 }
 
-void CVarianceDecomposition::addTerm(PVarianceTerm term) throw(CGPMixException)
+void CVarianceDecomposition::addTerm(PVarianceTerm term) 
 {
 
 	if (term->getName()=="CMultiTraitTerm")
@@ -289,17 +289,17 @@ void CVarianceDecomposition::addTerm(PVarianceTerm term) throw(CGPMixException)
 	this->is_init=false;
 }
 
-void CVarianceDecomposition::addTerm(const MatrixXd& K) throw(CGPMixException)
+void CVarianceDecomposition::addTerm(const MatrixXd& K) 
 {
 //TODO
 }
 
-void CVarianceDecomposition::addTerm(PCovarianceFunction traitCovar, const MatrixXd& K) throw(CGPMixException)
+void CVarianceDecomposition::addTerm(PCovarianceFunction traitCovar, const MatrixXd& K) 
 {
 	this->addTerm(PMultiTraitTerm(new CMultiTraitTerm(traitCovar->Kdim(),traitCovar,K)));
 }
 
-PVarianceTerm CVarianceDecomposition::getTerm(muint_t i) const throw(CGPMixException)
+PVarianceTerm CVarianceDecomposition::getTerm(muint_t i) const 
 {
 	if (i>=this->getNumberTerms())
 		throw CGPMixException("CVarianceDecomposition: value out of range");
@@ -316,28 +316,28 @@ muint_t CVarianceDecomposition::getNumberTerms() const
 	return (muint_t)(terms.size());
 }
 
-void CVarianceDecomposition::setScales(const VectorXd& scales) const throw(CGPMixException)
+void CVarianceDecomposition::setScales(const VectorXd& scales) const 
 {
 	if (this->is_init==0)
 		throw CGPMixException("CVarianceDecomposition: CVarianceDecomposition needs to be initialised");
 	this->covar->setParams(scales);
 }
 
-void CVarianceDecomposition::setScales(muint_t i,const VectorXd& scales) const throw(CGPMixException)
+void CVarianceDecomposition::setScales(muint_t i,const VectorXd& scales) const 
 {
 	if (i>=this->getNumberTerms())
 		throw CGPMixException("CVarianceDecomposition: value out of range");
 	this->terms[i]->setScales(scales);
 }
 
-void CVarianceDecomposition::agetScales(muint_t i, VectorXd* out) const throw(CGPMixException)
+void CVarianceDecomposition::agetScales(muint_t i, VectorXd* out) const 
 {
 	if (i>=this->getNumberTerms())
 		throw CGPMixException("CVarianceDecomposition: value out of range");
 	this->terms[i]->agetScales(out);
 }
 
-void CVarianceDecomposition::agetScales(VectorXd* out) throw(CGPMixException)
+void CVarianceDecomposition::agetScales(VectorXd* out) 
 {
 	(*out).resize(this->getNumberScales(),1);
 	muint_t row=0;
@@ -351,7 +351,7 @@ void CVarianceDecomposition::agetScales(VectorXd* out) throw(CGPMixException)
 	}
 }
 
-muint_t CVarianceDecomposition::getNumberScales() throw(CGPMixException)
+muint_t CVarianceDecomposition::getNumberScales() 
 {
 	muint_t out=0;
 	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
@@ -363,13 +363,13 @@ muint_t CVarianceDecomposition::getNumberScales() throw(CGPMixException)
 }
 
 
-void CVarianceDecomposition::initGP(bool fast) throw(CGPMixException)
+void CVarianceDecomposition::initGP(bool fast) 
 {
 	if (fast)	initGPkronSum();
 	else		initGPbase();
 }
 
-void CVarianceDecomposition::initGPparams() throw(CGPMixException)
+void CVarianceDecomposition::initGPparams() 
 {
 	/* get params from covariance matrices and set them to the GP object
  	*/
@@ -392,7 +392,7 @@ void CVarianceDecomposition::initGPparams() throw(CGPMixException)
 	}
 }
 
-void CVarianceDecomposition::initGPbase() throw(CGPMixException)
+void CVarianceDecomposition::initGPbase() 
 {
 	covar = PSumCF(new CSumCF());
 	// Init Covariances and sum them
@@ -465,7 +465,7 @@ void CVarianceDecomposition::initGPbase() throw(CGPMixException)
 	opt = PGPopt(new CGPopt(gp));
 }
 
-void CVarianceDecomposition::initGPkronSum() throw(CGPMixException)
+void CVarianceDecomposition::initGPkronSum() 
 {
 	//check whether exact Kronecker structure?
 	if (phenoNANany)
@@ -518,7 +518,7 @@ void CVarianceDecomposition::initGPkronSum() throw(CGPMixException)
 }
 
 
-bool CVarianceDecomposition::trainGP() throw(CGPMixException)
+bool CVarianceDecomposition::trainGP() 
 {
 
 	bool conv = false;
@@ -536,19 +536,19 @@ bool CVarianceDecomposition::trainGP() throw(CGPMixException)
 	return conv;
 }
 
-void CVarianceDecomposition::getFixedEffects(VectorXd* out) throw(CGPMixException)
+void CVarianceDecomposition::getFixedEffects(VectorXd* out) 
 {
 	(*out)=this->gp->getParams()["dataTerm"];
 }
 
-mfloat_t CVarianceDecomposition::getLML() throw(CGPMixException)
+mfloat_t CVarianceDecomposition::getLML() 
 {
 	if (!this->is_init)
 		throw CGPMixException("CVarianceDecomposition: the term is not initialised!");
 	return -1.*this->gp->LML();
 }
 
-mfloat_t CVarianceDecomposition::getLMLgrad() throw(CGPMixException)
+mfloat_t CVarianceDecomposition::getLMLgrad() 
 {
 	if (!this->is_init)
 		throw CGPMixException("CVarianceDecomposition: the term is not initialised!");
@@ -558,7 +558,7 @@ mfloat_t CVarianceDecomposition::getLMLgrad() throw(CGPMixException)
 	return out;
 }
 
-mfloat_t CVarianceDecomposition::getLMLgradGPbase() throw(CGPMixException)
+mfloat_t CVarianceDecomposition::getLMLgradGPbase() 
 {
 	if (!this->is_init)
 		throw CGPMixException("CVarianceDecomposition: the term is not initialised!");
@@ -576,7 +576,7 @@ mfloat_t CVarianceDecomposition::getLMLgradGPbase() throw(CGPMixException)
 	return out;
 }
 
-mfloat_t CVarianceDecomposition::getLMLgradGPkronSum() throw(CGPMixException)
+mfloat_t CVarianceDecomposition::getLMLgradGPkronSum() 
 {
 	mfloat_t out = 0;
 

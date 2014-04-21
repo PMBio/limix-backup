@@ -70,7 +70,7 @@ CGenotypeBlock::~CGenotypeBlock()
 {
 }
 
-void CGenotypeBlock::agetPosition(VectorXi* out) const throw(CGPMixException)
+void CGenotypeBlock::agetPosition(VectorXi* out) const 
 {
 	(*out) = (*pos);
 }
@@ -82,7 +82,7 @@ void CGenotypeBlock::resizeMatrices(muint_t num_samples, muint_t num_snps)
 	this->pos->conservativeResize(num_snps);
 }
 
-PGenotypeBlock CGenotypeBlock::read(mint_t num_snps) throw(CGPMixException)
+PGenotypeBlock CGenotypeBlock::read(mint_t num_snps) 
 {
 	//build sub matrices:
 	PMatrixXd new_geno = PMatrixXd(new MatrixXd(this->M->block(0,i_snp_read,this->numSample(),i_snp_read+num_snps)));
@@ -94,7 +94,7 @@ PGenotypeBlock CGenotypeBlock::read(mint_t num_snps) throw(CGPMixException)
 }
 
 
-PVectorXi CGenotypeBlock::getPosition() const throw(CGPMixException)
+PVectorXi CGenotypeBlock::getPosition() const 
 {
 	return pos;
 }
@@ -109,7 +109,7 @@ limix::CTextfileGenotypeContainer::CTextfileGenotypeContainer(const std::string&
 limix::CTextfileGenotypeContainer::~CTextfileGenotypeContainer() {
 }
 
-void CTextfileGenotypeContainer::openFile() throw (CGPMixException)
+void CTextfileGenotypeContainer::openFile() 
 {
 	//take filename apart and check whether ending is .gzip
     std::vector<std::string> filenameParts = split(in_filename, ".");
@@ -172,7 +172,7 @@ void CTextfileGenotypeContainer::openFile() throw (CGPMixException)
 }
 
 
-PGenotypeBlock CTextfileGenotypeContainer::read(mint_t num_snps) throw (CGPMixException)
+PGenotypeBlock CTextfileGenotypeContainer::read(mint_t num_snps) 
 {
 	//open file
 	if (!is_open)
@@ -194,7 +194,7 @@ void CTextfileGenotypeContainer::read_header_GEN()
 /*
  * read num_snps lines from .bed file
  */
-PGenotypeBlock CTextfileGenotypeContainer::read_BED(muint_t num_snps) throw (CGPMixException)
+PGenotypeBlock CTextfileGenotypeContainer::read_BED(muint_t num_snps) 
 {
 	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock());
 	throw CGPMixException("BED readder not implemented");
@@ -202,7 +202,7 @@ PGenotypeBlock CTextfileGenotypeContainer::read_BED(muint_t num_snps) throw (CGP
 }
 
 
-PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) throw (CGPMixException)
+PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) 
 {
 
 	//creat result Structure
@@ -312,7 +312,7 @@ CMemGenotypeContainer::CMemGenotypeContainer(PGenotypeBlock block) {
 CMemGenotypeContainer::~CMemGenotypeContainer() {
 }
 
-PGenotypeBlock CMemGenotypeContainer::read(mint_t num_snps) throw(CGPMixException)
+PGenotypeBlock CMemGenotypeContainer::read(mint_t num_snps) 
 	{
 
 	throw CGPMixException("fix block to allow reading from a position");

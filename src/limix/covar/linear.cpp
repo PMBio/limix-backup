@@ -17,7 +17,7 @@ namespace limix {
 CCovLinearISO::~CCovLinearISO() {
 }
 
-void CCovLinearISO::aKcross(MatrixXd* out,const CovarInput& Xstar) const throw(CGPMixException)
+void CCovLinearISO::aKcross(MatrixXd* out,const CovarInput& Xstar) const 
 {
 	//create result matrix:
 	out->resize(this->X.rows(),Xstar.rows());
@@ -33,14 +33,14 @@ void CCovLinearISO::aKcross(MatrixXd* out,const CovarInput& Xstar) const throw(C
 }
 
 
-void CCovLinearISO::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CCovLinearISO::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
 	out->resize(Xstar.rows());
 	(*out) = std::pow(params(0),2)* (Xstar*Xstar.transpose()).diagonal();
 }
 
 
-void CCovLinearISO::aKgrad_param(MatrixXd* out, const muint_t i ) const throw(CGPMixException)
+void CCovLinearISO::aKgrad_param(MatrixXd* out, const muint_t i ) const 
 {
 	if (i==0)
 	{
@@ -55,7 +55,7 @@ void CCovLinearISO::aKgrad_param(MatrixXd* out, const muint_t i ) const throw(CG
 	}
 }
     
-void CCovLinearISO::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException)
+void CCovLinearISO::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
 		throw CGPMixException("Parameter index out of range.");
@@ -63,7 +63,7 @@ void CCovLinearISO::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j
     (*out).noalias()=2*this->X*this->X.transpose();
 }
 
-void CCovLinearISO::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException)
+void CCovLinearISO::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const 
 {
 	if (d>this->numberDimensions)
 	{
@@ -79,7 +79,7 @@ void CCovLinearISO::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const 
 
 }
 
-void CCovLinearISO::aKdiag_grad_X(VectorXd* out, const muint_t d ) const throw (CGPMixException)
+void CCovLinearISO::aKdiag_grad_X(VectorXd* out, const muint_t d ) const 
 {
 	if (d>=this->numberDimensions)
 	{
@@ -98,7 +98,7 @@ void CCovLinearISO::aKdiag_grad_X(VectorXd* out, const muint_t d ) const throw (
 CCovLinearISODelta::~CCovLinearISODelta() {
 }
 
-void CCovLinearISODelta::aKcross(MatrixXd* out,const CovarInput& Xstar) const throw(CGPMixException)
+void CCovLinearISODelta::aKcross(MatrixXd* out,const CovarInput& Xstar) const 
 {
 	//create result matrix:
 	out->resize(this->X.rows(),Xstar.rows());
@@ -122,14 +122,14 @@ void CCovLinearISODelta::aKcross(MatrixXd* out,const CovarInput& Xstar) const th
 }
 
 
-void CCovLinearISODelta::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CCovLinearISODelta::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
 	out->resize(Xstar.rows());
 	out->setConstant(std::pow(params(0),2)* Xstar.cols());
 }
 
 
-void CCovLinearISODelta::aKgrad_param(MatrixXd* out, const muint_t i ) const throw(CGPMixException)
+void CCovLinearISODelta::aKgrad_param(MatrixXd* out, const muint_t i ) const 
 {
     out->resize(this->X.rows(),X.rows());
 
@@ -152,7 +152,7 @@ void CCovLinearISODelta::aKgrad_param(MatrixXd* out, const muint_t i ) const thr
     
 }
     
-void CCovLinearISODelta::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException)
+void CCovLinearISODelta::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
         throw CGPMixException("Parameter index out of range.");
@@ -177,20 +177,20 @@ void CCovLinearARD::setNumberDimensions(muint_t numberDimensions)
 
 
 //overloaded pure virtual functions:
-void CCovLinearARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw (CGPMixException)
+void CCovLinearARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const 
 {
 	//get all amplitude parameters, one per dimension
 	VectorXd L = params.unaryExpr(std::bind2nd(std::ptr_fun<double,double,double>(pow),2));
 	(*out).noalias() = Xstar*L.asDiagonal()*this->X.transpose();
 }
 
-void CCovLinearARD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CCovLinearARD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
     VectorXd L = params.unaryExpr(std::bind2nd(std::ptr_fun<double,double,double>(pow),2));
     (*out).noalias() = (Xstar*L.asDiagonal()*Xstar.transpose()).diagonal();
 }
 
-void CCovLinearARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGPMixException)
+void CCovLinearARD::aKgrad_param(MatrixXd* out,const muint_t i) const 
 {
 	//is the requested gradient within range?
 	if (i >= (muint_t)this->X.cols()) //WARNING: muint_t conversion
@@ -202,7 +202,7 @@ void CCovLinearARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGP
 	(*out).noalias() =  2*params(i)*x1i*x1i.transpose();
 }
     
-void CCovLinearARD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException)
+void CCovLinearARD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     if (i>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)   {
         throw CGPMixException("Parameter index out of range.");
@@ -214,7 +214,7 @@ void CCovLinearARD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j
     else		(*out)=MatrixXd::Zero(this->X.rows(),this->X.rows());
 }
 
-void CCovLinearARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw (CGPMixException)
+void CCovLinearARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const 
 {
 	if (d>=numberDimensions)
 	{
@@ -224,7 +224,7 @@ void CCovLinearARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const 
 	(*out).rowwise() = std::pow(params(d),2)*Xstar.col(d).transpose();
 }
 
-void CCovLinearARD::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw (CGPMixException)
+void CCovLinearARD::aKdiag_grad_X(VectorXd* out,const muint_t d) const 
 {
 	(*out) = VectorXd::Zero(X.rows());
 	(*out).noalias() = 2.0*std::pow(params(d),2)*X.col(d);

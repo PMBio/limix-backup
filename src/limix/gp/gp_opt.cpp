@@ -41,7 +41,7 @@ void CGPopt::completeConstraints(CGPHyperParams& constraints, const CGPHyperPara
 
 
 
-bool CGPopt::opt() throw (CGPMixException)
+bool CGPopt::opt() 
 {
 	//0. set evaluation counter to 0:
 	numEvaluations = 0;

@@ -76,8 +76,8 @@ public:
 	CKroneckerLMM();
 	virtual ~CKroneckerLMM();
 
-	virtual void process() throw (CGPMixException);
-	virtual void updateDecomposition() throw (CGPMixException);
+	virtual void process() ;
+	virtual void updateDecomposition() ;
 
 	/* getters and setters*/
 

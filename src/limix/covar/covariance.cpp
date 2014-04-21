@@ -24,7 +24,7 @@ ACovarianceFunction::~ACovarianceFunction()
 }
 
 
-muint_t ACovarianceFunction::Kdim() const throw(CGPMixException)
+muint_t ACovarianceFunction::Kdim() const 
 {
 	if(isnull(X))
 		throw CGPMixException("ACovarianceFunction: cannot query covariance dimension without X!");
@@ -96,7 +96,7 @@ muint_t ACovarianceFunction::getNumberDimensions() const
 
 
 
-void ACovarianceFunction::setX(const CovarInput & X) throw (CGPMixException)
+void ACovarianceFunction::setX(const CovarInput & X) 
 {
 	checkXDimensions(X);
 	this->X = X;
@@ -104,7 +104,7 @@ void ACovarianceFunction::setX(const CovarInput & X) throw (CGPMixException)
 	propagateSync(false);
 }
 
-void ACovarianceFunction::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
+void ACovarianceFunction::setXcol(const CovarInput& X,muint_t col) 
 {
 	//1. check dimensions etc.
 	if(((col+X.cols())>(muint_t)this->X.cols()) || (X.rows()!=this->X.rows()))
@@ -116,26 +116,26 @@ void ACovarianceFunction::setXcol(const CovarInput& X,muint_t col) throw (CGPMix
 	this->X.block(0,col,X.rows(),X.cols()) = X;
 }
 
-void ACovarianceFunction::agetX(CovarInput *Xout) const throw(CGPMixException)
+void ACovarianceFunction::agetX(CovarInput *Xout) const 
 {
 	(*Xout) = this->X;
 }
 
 
 
-void ACovarianceFunction::aK(MatrixXd* out) const throw (CGPMixException)
+void ACovarianceFunction::aK(MatrixXd* out) const 
 {
 	aKcross(out,X);
 }
 
-void ACovarianceFunction::aKdiag(VectorXd *out) const throw (CGPMixException)
+void ACovarianceFunction::aKdiag(VectorXd *out) const 
 {
 	MatrixXd Kfull = K();
 	(*out) = Kfull.diagonal();
 	return;
 }
 
-void ACovarianceFunction::aKgrad_X(MatrixXd *out, const muint_t d) const throw(CGPMixException)
+void ACovarianceFunction::aKgrad_X(MatrixXd *out, const muint_t d) const 
 {
 	aKcross_grad_X(out,X,d);
 }
@@ -203,7 +203,7 @@ void ACovarianceFunction::initParams()
 
 
 void ACovarianceFunction::setParamBounds(const CovarParams& lower,
-		const CovarParams& upper) throw (CGPMixException) {
+		const CovarParams& upper)  {
 	if(((muint_t)lower.rows()!=this->numberParams) || ((muint_t)upper.rows()!=this->numberParams)) {
         throw CGPMixException("Entry lengths do not coincide with the number of parameters.");
     }
@@ -254,7 +254,7 @@ bool ACovarianceFunction::check_covariance_Kgrad_x(ACovarianceFunction& covar,mf
 	return (RV < threshold);
 }
 
-void ACovarianceFunction::aKhess_param_num(ACovarianceFunction& covar, MatrixXd* out, const muint_t i, const muint_t j) throw (CGPMixException)
+void ACovarianceFunction::aKhess_param_num(ACovarianceFunction& covar, MatrixXd* out, const muint_t i, const muint_t j) 
 {
     mfloat_t relchange=1E-5;
     
