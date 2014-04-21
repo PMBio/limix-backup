@@ -13,7 +13,7 @@ void sq_dist(MatrixXd* out,const MatrixXd& x1, const MatrixXd& x2)
 
 	//1. check everything is aligned
 	if (x1.cols()!=x2.cols())
-		throw CGPMixException("columns of x1 and x2 not aligned");
+		throw CLimixException("columns of x1 and x2 not aligned");
 	//2. iterate and calculate distances
 	(*out).resize(x1.rows(),x2.rows());
 	for (int i=0;i<x1.rows();i++)
@@ -28,7 +28,7 @@ void lin_dist(MatrixXd* out,const MatrixXd& x1, const MatrixXd& x2,muint_t d)
 {
 	//1. check everything is aligned
 	if (x1.cols()!=x2.cols())
-		throw CGPMixException("columns of x1 and x2 not aligned");
+		throw CLimixException("columns of x1 and x2 not aligned");
 	//2. iterate and calculate distances
 	(*out).resize(x1.rows(),x2.rows());
 	for (int i=0;i<x1.rows();i++)

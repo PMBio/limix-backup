@@ -82,7 +82,7 @@ public:
 	/*!
 	read num_snp from the current stream and return as GenotypeBlock
 	*/
-	virtual PGenotypeBlock read(mint_t num_snps=-1) throw (CGPMixException) = 0;
+	virtual PGenotypeBlock read(mint_t num_snps=-1)  = 0;
 };
 
 
@@ -91,12 +91,6 @@ public:
 /*CGenotypeBlock
  * In-memory representation of a genotype structure, which is also a container
  */
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%ignore CGenotypeBlock::getPosition;
-%ignore CGenotypeBlock::getMatrix;
-%rename(getMatrix) CGenotypeBlock::agetMatrix;
-%rename(getPosition) CGenotypeBlock::agetPosition;
-#endif
 class CGenotypeBlock : public CRMemDataFrame<MatrixXd> //,public AGenotypeContainer
 {
 	friend class AGenotypeContainer;
@@ -131,11 +125,11 @@ public:
 	}
 
 	//virtual functions: CMemDataFrame
-	virtual void agetPosition(VectorXi* out) const throw(CGPMixException);
-	virtual PVectorXi getPosition() const throw(CGPMixException);
+	virtual void agetPosition(VectorXi* out) const ;
+	virtual PVectorXi getPosition() const ;
 
 	//virtual function: AGenotypeContainer
-	virtual PGenotypeBlock read(mint_t num_snps=-1) throw (CGPMixException);
+	virtual PGenotypeBlock read(mint_t num_snps=-1) ;
 
 };
 
@@ -160,10 +154,10 @@ protected:
 	std::string in_filename;
 	bool is_open;
 	//open files
-	void openFile() throw (CGPMixException);
+	void openFile() ;
 	void read_header_GEN();
-	PGenotypeBlock read_GEN(muint_t num_snps) throw (CGPMixException);
-	PGenotypeBlock read_BED(muint_t num_snps) throw (CGPMixException);
+	PGenotypeBlock read_GEN(muint_t num_snps) ;
+	PGenotypeBlock read_BED(muint_t num_snps) ;
 
 	std::istream& getStream()
 	{
@@ -175,7 +169,7 @@ public:
 	virtual ~CTextfileGenotypeContainer();
 
 	//virtual functions
-	PGenotypeBlock read(mint_t num_snps=-1) throw (CGPMixException);
+	PGenotypeBlock read(mint_t num_snps=-1) ;
 };
 typedef sptr<CTextfileGenotypeContainer> PTextfileGenotypeContainer;
 
@@ -195,7 +189,7 @@ public:
 	virtual ~CMemGenotypeContainer();
 
 	//virtual functions
-	PGenotypeBlock read(mint_t num_snps=-1) throw (CGPMixException);
+	PGenotypeBlock read(mint_t num_snps=-1) ;
 };
 typedef sptr<CMemGenotypeContainer> PMemGenotypeContainer;
 

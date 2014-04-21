@@ -12,10 +12,6 @@
 namespace limix {
 
 
-//rename argout operators for swig interface
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CData)
-#endif
 class CData: public ADataTerm
 {
 public:

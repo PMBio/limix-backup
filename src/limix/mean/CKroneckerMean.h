@@ -12,9 +12,6 @@
 #include "limix/utils/matrix_helper.h"
 namespace limix {
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CKroneckerMean)
-#endif
 
 class CKroneckerMean : public CLinearMean {
 protected:
@@ -38,7 +35,7 @@ public:
 	virtual void aPredictY(MatrixXd* outY) const;
 	virtual void aGradParams(MatrixXd* outGradParams, const MatrixXd* KinvY);
 	inline virtual void setWeightsOLS(){setWeightsOLS(this->Y);};
-	inline void checkDimensions(const MatrixXd& Y, const bool checkStrictWeights) const throw (CGPMixException);
+	inline void checkDimensions(const MatrixXd& Y, const bool checkStrictWeights) const ;
 	virtual inline std::string getName() const { return "CKoneckerFixedTerm"; };
 	inline muint_t getDimFixedEffects() const { return this->fixedEffects.cols(); };
 	virtual muint_t getColsParams()
@@ -48,13 +45,13 @@ public:
 };
 typedef sptr<CKroneckerMean> PKroneckerMean;
 
-inline void CKroneckerMean::checkDimensions(const MatrixXd& Y, const bool checkStrictWeights = true) const throw (CGPMixException)
+inline void CKroneckerMean::checkDimensions(const MatrixXd& Y, const bool checkStrictWeights = true) const 
 {
 	if (Y.rows() != this->fixedEffects.rows() && (muint_t)Y.cols() != this->getNTargets())
 	{
 		std::ostringstream os;
 		os << this->getName() << ": Number of number samples and number of targets specified do not match with given Y. Y.rows() = " << Y.rows() << ", Y.cols() = " << Y.cols() << ", nSamples = " << fixedEffects.rows() << ", nTargets = " << this->getNTargets();
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	//this->checkDimensions(this->fixedEffects, this->weights, this->A, true, checkStrictWeights, true);
 }
