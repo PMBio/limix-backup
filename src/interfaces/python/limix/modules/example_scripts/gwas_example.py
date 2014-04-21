@@ -1,5 +1,6 @@
 import limix.modules.qtl as QTL
 import scipy as SP
+import pandas as pd
 
 pheno_names_complete = SP.array(['Calcium_Chloride', 'Cisplatin', 'Cobalt_Chloride', 'Congo_red',
        'Copper', 'Cycloheximide', 'Diamide', 'E6_Berbamine', 'Ethanol',
@@ -11,34 +12,41 @@ pheno_names_complete = SP.array(['Calcium_Chloride', 'Cisplatin', 'Cobalt_Chlori
        'x5-Fluorouracil', 'x6-Azauracil', 'Xylose', 'YNB', 'YNB:ph3',
        'YNB:ph8', 'YPD:15C', 'YPD:37C', 'YPD:4C'])
 
+pheno_names = [pheno_names_complete[0]]
+
+data_subsample = data.subsample_phenotypes(phenotype_IDs=pheno_names,intersection=True)
 
 #get variables we need from data
-X = data.getGenotypes()
-K = data.getCovariance()
-pos = data.getPos()
+snps = data_subsample.getGenotypes()
+phenotypes,sample_idx = data_subsample.getPhenotypes(phenotype_IDs=pheno_names,intersection=True); assert sample_idx.all()
 
-[Y,Ikeep] = data.getPhenotypes(phenotype_IDs=pheno_names_complete,intersection=True)
-X = X[Ikeep].copy()
-K = K[Ikeep,:][:,Ikeep].copy()
+K = data_subsample.getCovariance()
+pos = data_subsample.getPos()
 
 #set parameters for the analysis
-phenos=Y                    #phenotypes
-covs=None                   #covariates
-Acovs=None                  #the design matrix for the covariates   
-Asnps1=SP.eye(P)            #the alternative model design matrix for the SNPs
-Asnps0=SP.ones((1,P))       #the null model design matrix for the SNPs
-K1r=K                       #the first sample-sample covariance matrix (non-noise)
-K2r=SP.eye(N)               #the second sample-sample covariance matrix (noise)
-K1c=None                    #the first phenotype-phenotype covariance matrix (non-noise)
-K2c=None                    #the second phenotype-phenotype covariance matrix (noise)
-covar_type='lowrank_diag'   #the type of covariance matrix to be estimated for unspecified covariances 
-rank=1                      #the rank of covariance matrix to be estimated for unspecified covariances (in case of lowrank)
-searchDelta=False           #specify if delta should be optimized for each SNP
+N, P = phenotypes.shape          
+
+covs = None                 #covariates
+Acovs = None                #the design matrix for the covariates   
+Asnps1 = SP.eye(P)          #the alternative model design matrix for the SNPs
+Asnps0 = SP.ones((1,P))     #the null model design matrix for the SNPs
+K1r = K                     #the first sample-sample covariance matrix (non-noise)
+K2r = SP.eye(N)             #the second sample-sample covariance matrix (noise)
+K1c = None                  #the first phenotype-phenotype covariance matrix (non-noise)
+K2c = None                  #the second phenotype-phenotype covariance matrix (noise)
+covar_type = 'lowrank_diag' #the type of covariance matrix to be estimated for unspecified covariances 
+rank = 1                    #the rank of covariance matrix to be estimated for unspecified covariances (in case of lowrank)
+searchDelta = False         #specify if delta should be optimized for each SNP
+test="lrt"                  #specify type of statistical test
 
 #run the analysis
-result = {}     #create result dictionary
-result['pvalues']=QTL.simple_interaction_kronecker(snps=snps,phenos=phenos,covs=covs,Acovs=Acovs,Asnps1=Asnps1,Asnps0=Asnps0,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covar_type=covar_type,rank=rank,searchDelta=searchDelta)
-result['a']=a
+#pvalues = QTL.simple_interaction_kronecker(snps=snps,phenos=phenotypes,covs=covs,Acovs=Acovs,Asnps1=Asnps1,Asnps0=Asnps0,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covar_type=covar_type,rank=rank,searchDelta=searchDelta)
 
-#import pandas as pd
-#result['pvalues']=pd.DataFrame(data=pvalues.T,index=data.,columns=['pv', 'pv0', 'pvAlt'])
+#lmm = QTL.simple_lmm(snps=snps,pheno=phenotypes,K=K,covs=covs, test=test)
+#pvalues =  data=lmm.getPv().T
+pvalues = SP.randn(len(pheno_names),data.num_snps)
+pvalues =  pd.DataFrame(data=pvalues.T,index=data_subsample.geno_ID,columns=pheno_names)
+
+#create result DataFrame
+result = pd.concat([pos,pvalues],join="outer",axis=1)
+
