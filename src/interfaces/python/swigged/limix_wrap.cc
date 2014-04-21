@@ -79152,13 +79152,7 @@ SWIGINTERN PyObject *_wrap_ALMM_process(PyObject *SWIGUNUSEDPARM(self), PyObject
   }
   {
     try {
-      try {
-        (arg1)->process();
-      }
-      catch(limix::CGPMixException &_e) {
-        SWIG_Python_Raise(SWIG_NewPointerObj((new limix::CGPMixException(static_cast< const limix::CGPMixException& >(_e))),SWIGTYPE_p_limix__CGPMixException,SWIG_POINTER_OWN), "limix::CGPMixException", SWIGTYPE_p_limix__CGPMixException); SWIG_fail;
-      }
-      
+      (arg1)->process();
     } catch (limix::CGPMixException& e) {
       std::cout << "caught LIMIX exception: " << e.what() << "\n";
       std::string s("LIMIX error: "), s2(e.what());
@@ -80420,13 +80414,7 @@ SWIGINTERN PyObject *_wrap_CLMM_process(PyObject *SWIGUNUSEDPARM(self), PyObject
   }
   {
     try {
-      try {
-        (arg1)->process();
-      }
-      catch(limix::CGPMixException &_e) {
-        SWIG_Python_Raise(SWIG_NewPointerObj((new limix::CGPMixException(static_cast< const limix::CGPMixException& >(_e))),SWIGTYPE_p_limix__CGPMixException,SWIG_POINTER_OWN), "limix::CGPMixException", SWIGTYPE_p_limix__CGPMixException); SWIG_fail;
-      }
-      
+      (arg1)->process();
     } catch (limix::CGPMixException& e) {
       std::cout << "caught LIMIX exception: " << e.what() << "\n";
       std::string s("LIMIX error: "), s2(e.what());
@@ -82453,13 +82441,7 @@ SWIGINTERN PyObject *_wrap_CInteractLMM_process(PyObject *SWIGUNUSEDPARM(self), 
   }
   {
     try {
-      try {
-        (arg1)->process();
-      }
-      catch(limix::CGPMixException &_e) {
-        SWIG_Python_Raise(SWIG_NewPointerObj((new limix::CGPMixException(static_cast< const limix::CGPMixException& >(_e))),SWIGTYPE_p_limix__CGPMixException,SWIG_POINTER_OWN), "limix::CGPMixException", SWIGTYPE_p_limix__CGPMixException); SWIG_fail;
-      }
-      
+      (arg1)->process();
     } catch (limix::CGPMixException& e) {
       std::cout << "caught LIMIX exception: " << e.what() << "\n";
       std::string s("LIMIX error: "), s2(e.what());

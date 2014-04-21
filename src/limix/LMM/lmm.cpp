@@ -302,7 +302,7 @@ int ALMM::getTestStatistics() const
         }
     }
 
-    void CLMM::process() throw (CGPMixException)
+    void CLMM::process()// throw (CGPMixException)
     {
         //get decomposition
         updateDecomposition();
@@ -445,7 +445,7 @@ int ALMM::getTestStatistics() const
     }
 
     //processing;
-    void CInteractLMM::process() throw (CGPMixException)
+    void CInteractLMM::process() //throw (CGPMixException)
     {
     	//TODO: Ftest is not correct for simple cases where I0=0 as ftest_rows yields the wrong answer.
     	if((num_inter > 1) && (this->testStatistics == ALMM::TEST_F)){
