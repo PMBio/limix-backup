@@ -183,7 +183,7 @@ class build_py_cmd(distutils.cmd.Command):
         FL.extend(file_list_recursive('./tests'))
         FL.extend(file_list_recursive('./site_scons'))
         FL.extend(file_list_recursive('./doc/pages'))
-        FL.extend(['SConstruct','README','license.txt','MANIFEST','doc/doxy.cfg'])
+        FL.extend(['SConstruct','README','license.txt','doc/doxy.cfg'])
         return FL
     #data files
     #data_files=[('', ['license.txt'])]
