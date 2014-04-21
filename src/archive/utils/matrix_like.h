@@ -27,10 +27,10 @@ public:
 	/*!
 	 * get Choleksy decompositions of K
 	 */
-	virtual void agetCholK(MatrixXdChol* out) throw (CGPMixException);
+	virtual void agetCholK(MatrixXdChol* out) ;
 	/*! get eigenvalue decomposition of K
 	 */
-	virtual void agetEigHK(MatrixXdEIgenSolver* out) throw(CGPMixException);
+	virtual void agetEigHK(MatrixXdEIgenSolver* out) ;
 };
 
 

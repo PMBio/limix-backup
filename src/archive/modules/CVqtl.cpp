@@ -11,7 +11,7 @@
 namespace limix {
 /*
 template <typename Derived1>
-inline void scale_K(const Eigen::MatrixBase<Derived1> & K_) throw(CGPMixException)
+inline void scale_K(const Eigen::MatrixBase<Derived1> & K_) 
 {
 	//cast out arguments
 	Eigen::MatrixBase<Derived1>& K = const_cast< Eigen::MatrixBase<Derived1>& >(K);
@@ -61,12 +61,12 @@ void CVqtl::setCovs(const MatrixXd& covs)
 	this->covs = covs;
 }
 
-void CVqtl::setSNPs(const MatrixXd& snps) throw (CGPMixException)
+void CVqtl::setSNPs(const MatrixXd& snps) 
 {
 	this->snps = snps;
 }
 
-void CVqtl::setPheno(const MatrixXd& pheno) throw (CGPMixException)
+void CVqtl::setPheno(const MatrixXd& pheno) 
 {
 	if (pheno.cols()!=1)
 	{
@@ -86,7 +86,7 @@ void CVqtl::initGP()
 
 }
 
-void CVqtl::fitVariances(MatrixXd* out,const MatrixXi& snp_index) throw(CGPMixException)
+void CVqtl::fitVariances(MatrixXd* out,const MatrixXi& snp_index) 
 {
 	if ((snp_index.cols()!=2) || (snp_index.rows()==0))
 	{
@@ -135,7 +135,7 @@ void CVqtl::fitVariances(MatrixXd* out,const MatrixXi& snp_index) throw(CGPMixEx
 }
 
 mfloat_t CVqtl::testComponent(const MatrixXi snp_index_test,
-		const MatrixXi& snp_index_covar) throw (CGPMixException)
+		const MatrixXi& snp_index_covar) 
 {
 	return 1.0;
 }

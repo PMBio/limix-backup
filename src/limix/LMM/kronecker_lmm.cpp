@@ -18,7 +18,7 @@ CKroneckerLMM::CKroneckerLMM() {
 CKroneckerLMM::~CKroneckerLMM() {
 }
 
-void CKroneckerLMM::process() throw (CGPMixException){
+void CKroneckerLMM::process() {
 	//1. check dimensions
 	muint_t num_snps = this->snps.cols();
 	muint_t P = this->snpcoldesign.cols();
@@ -357,7 +357,7 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 }
 
 
-void CKroneckerLMM::updateDecomposition() throw(CGPMixException) {
+void CKroneckerLMM::updateDecomposition()  {
     //check that dimensions match
     this->num_samples = snps.rows();
     this->num_snps = snps.cols();

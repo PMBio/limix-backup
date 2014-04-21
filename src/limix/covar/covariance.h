@@ -37,19 +37,19 @@ protected:
 	/*!
 	 * check that the the index is within the permitted dimensions
 	 */
-	inline void checkWithinDimensions(muint_t d) const throw (CGPMixException);
+	inline void checkWithinDimensions(muint_t d) const ;
 	/*!
 	 * check that the the index is within the permitted dimensions
 	 */
-	inline void checkWithinParams(muint_t i) const throw (CGPMixException);
+	inline void checkWithinParams(muint_t i) const ;
 	/*!
 	 * check that the covariance input X has the matching dimensions
 	 */
-	inline void checkXDimensions(const CovarInput& X) const throw (CGPMixException);
+	inline void checkXDimensions(const CovarInput& X) const ;
 	/*!
 	 * check that the covariance parameters has the matching dimensions
 	 */
-	inline void checkParamDimensions(const CovarParams& params) const throw (CGPMixException);
+	inline void checkParamDimensions(const CovarParams& params) const ;
 	/*!
 	 *\brief return the parameter Mask as out object.
 	 *
@@ -98,7 +98,7 @@ public:
 	/*!
 	 * set Userdefined bounds. These are combined with the intrinsic bounds (see @agetParamBounds0).
 	 */
-	virtual void setParamBounds(const CovarParams& lower, const CovarParams& upper)  throw (CGPMixException);
+	virtual void setParamBounds(const CovarParams& lower, const CovarParams& upper)  ;
 	/*!
 	 * return the parameter mask for optimization(argout, see also @getParamMask)
 	 */
@@ -118,19 +118,19 @@ public:
 	 * set new X value
 	 * \param is an N x D matrix. The dimensionality needs to match the internal dimensnion (\sa getDimX).
 	 */
-	virtual void setX(const CovarInput& X) throw (CGPMixException);
+	virtual void setX(const CovarInput& X) ;
 	/*!
 	 * set a column of X
 	 * \param X column matri N x 1
 	 * \param col is the column to be set (0..D)
 	 */
-	virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException);
+	virtual void setXcol(const CovarInput& X, muint_t col) ;
 
 	/*!
 	 * get the current X (argout version)
 	 * \param out denotes the out argument
 	 */
-	virtual void agetX(CovarInput* Xout) const throw (CGPMixException);
+	virtual void agetX(CovarInput* Xout) const ;
 	/*!
 	 * get the dimensionality of the input
 	 */
@@ -153,18 +153,18 @@ public:
 	/*!
 	 * TODO?
 	 */
-	virtual muint_t Kdim() const throw(CGPMixException);
+	virtual muint_t Kdim() const ;
 
 	/*!
 	 * calculate the covaraince matrix
 	 * \param out points to the target matrix
 	 */
-	virtual void aK(MatrixXd* out) const throw (CGPMixException);
+	virtual void aK(MatrixXd* out) const ;
 	/*!
 	 * calculate the diagonal of the covariance matrix
 	 * \param out points to the target matrix
 	 */
-	virtual void aKdiag(VectorXd* out) const throw (CGPMixException);
+	virtual void aKdiag(VectorXd* out) const ;
 	/*!
 	 * \brief calculate the gradient of the covariance with respect to all entries X[:,d]
 	 * \param out points to the target matrix
@@ -175,46 +175,46 @@ public:
 	 * To safe computation, the function calculates the gradient with respect to all X[:,d] simultaneously where the entries reflect the
 	 * non-zero row in each.
 	 */
-	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException);
+	virtual void aKgrad_X(MatrixXd* out,const muint_t d) const ;
 
 	/*!
 	 * calculate the cross covariance K(X,X*)
 	 * \param out points to the target matrix
 	 * \param Xstar is the test covriance matrix X*
 	 */
-	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException) = 0;
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const  = 0;
 	/*!
 	 * calculate the diagonal of the self covariance K(X*,X*)
 	 * \param out points to the target matrix
 	 * \param Xstar is the test covariance matrix X*
 	 */
-	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException) = 0;
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const  = 0;
 	/*!
 	 * calculate the gradient of the covariance w.r.t. parameter i
 	 * \prarm out points to the target matrix (N x N)
 	 * \param i denotes the index of the hyperparameter (see @setParams and @getParams)
 	 */
-	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException) =0;
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const  =0;
 	/*!
 	 * calculate the second derivative of the covariance matrix w.r.t. parameter i and j
 	 * \param out points to the target matrix (N x N)
 	 * \param i is the first derivative index
 	 * \param j is the second derivative index
 	 */
-    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException) =0;
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const  =0;
     /*!
      *calculate the gradient of the cross covariance K(X,X*) w.r.t. to a column of X*
      * \param out points to the target matrix (N x N')
      * \param Xstar is the test covariance
      * \param d is the dimension
      */
-	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) = 0;
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const  = 0;
 	/*!
 	 * calculate the diagonal of the graident matrix w.r.t. X
 	 *\param out poinst to the target marix (N x N)
 	 *\param d denotes the dimension of X
 	 */
-	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) = 0;
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const  = 0;
 
 	//Inline convenience functions:
 	/*!
@@ -236,31 +236,31 @@ public:
 	/*!
 	 * \see aKcross
 	 */
-	inline MatrixXd Kcross( const CovarInput& Xstar ) const throw(CGPMixException);
+	inline MatrixXd Kcross( const CovarInput& Xstar ) const ;
 	/*!
 	 * \see aKcross_diag
 	 */
-	inline VectorXd Kcross_diag(const CovarInput& Xstar) const throw(CGPMixException);
+	inline VectorXd Kcross_diag(const CovarInput& Xstar) const ;
 	/*!
 	 * \see aKgrad_param
 	 */
-	inline MatrixXd Kgrad_param(const muint_t i) const throw(CGPMixException);
+	inline MatrixXd Kgrad_param(const muint_t i) const ;
 	/*!
 	 * \see aKhess_param
 	 */
-    inline MatrixXd Khess_param(const muint_t i, const muint_t j) const throw(CGPMixException);
+    inline MatrixXd Khess_param(const muint_t i, const muint_t j) const ;
 	/*!
 	 * \see aKcross_grad_X
 	 */
-	inline MatrixXd Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
+	inline MatrixXd Kcross_grad_X(const CovarInput& Xstar, const muint_t d) const ;
 	/*!
 	 * \see aKgrad_X
 	 */
-	inline MatrixXd Kgrad_X(const muint_t d) const throw(CGPMixException);
+	inline MatrixXd Kgrad_X(const muint_t d) const ;
 	/*!
 	 * \see aKdiag_grad_X
 	 */
-	inline VectorXd Kdiag_grad_X(const muint_t d) const throw(CGPMixException);
+	inline VectorXd Kdiag_grad_X(const muint_t d) const ;
 
 	/* Static methods*/
 	/*!
@@ -286,7 +286,7 @@ public:
 	 * \param i is the first parameter index
 	 * \param j is the second parameter index
 	 */
-    static void aKhess_param_num(ACovarianceFunction& covar, MatrixXd* out, const muint_t i, const muint_t j) throw(CGPMixException);
+    static void aKhess_param_num(ACovarianceFunction& covar, MatrixXd* out, const muint_t i, const muint_t j) ;
 	//covariance normalization
 	//template <typename Derived1, typename Derived2,typename Derived3,typename Derived4,typename Derived5>
 	//inline static void scale_K(const Eigen::MatrixBase<Derived1> & K_);
@@ -382,42 +382,42 @@ inline  VectorXd ACovarianceFunction::Kdiag() const
 	return RV;
 }
 
-inline  MatrixXd ACovarianceFunction::Kcross( const CovarInput& Xstar ) const throw(CGPMixException)
+inline  MatrixXd ACovarianceFunction::Kcross( const CovarInput& Xstar ) const 
 {
 	MatrixXd RV;
 	aKcross(&RV,Xstar);
 	return RV;
 }
 
-inline VectorXd ACovarianceFunction::Kcross_diag(const CovarInput& Xstar) const throw (CGPMixException)
+inline VectorXd ACovarianceFunction::Kcross_diag(const CovarInput& Xstar) const 
 {
 	VectorXd RV;
 	aKcross_diag(&RV,Xstar);
 	return RV;
 }
 
-inline MatrixXd ACovarianceFunction::Kgrad_param(const muint_t i) const throw(CGPMixException)
+inline MatrixXd ACovarianceFunction::Kgrad_param(const muint_t i) const 
 {
 	MatrixXd RV;
 	aKgrad_param(&RV,i);
 	return RV;
 }
     
-inline MatrixXd ACovarianceFunction::Khess_param(const muint_t i, const muint_t j) const throw(CGPMixException)
+inline MatrixXd ACovarianceFunction::Khess_param(const muint_t i, const muint_t j) const 
 {
     MatrixXd RV;
     aKhess_param(&RV,i,j);
     return RV;
 }
 
-inline MatrixXd ACovarianceFunction::Kcross_grad_X(const CovarInput & Xstar, const muint_t d) const throw(CGPMixException)
+inline MatrixXd ACovarianceFunction::Kcross_grad_X(const CovarInput & Xstar, const muint_t d) const 
 {
 	MatrixXd RV;
 	aKcross_grad_X(&RV,Xstar,d);
 	return RV;
 }
 
-inline MatrixXd ACovarianceFunction::Kgrad_X(const muint_t d) const throw(CGPMixException)
+inline MatrixXd ACovarianceFunction::Kgrad_X(const muint_t d) const 
 {
 	MatrixXd RV;
 	aKgrad_X(&RV,d);
@@ -425,7 +425,7 @@ inline MatrixXd ACovarianceFunction::Kgrad_X(const muint_t d) const throw(CGPMix
 }
 
 
-inline VectorXd ACovarianceFunction::Kdiag_grad_X(const muint_t d) const throw(CGPMixException)
+inline VectorXd ACovarianceFunction::Kdiag_grad_X(const muint_t d) const 
 {
 	VectorXd RV;
 	aKdiag_grad_X(&RV,d);
@@ -435,7 +435,7 @@ inline VectorXd ACovarianceFunction::Kdiag_grad_X(const muint_t d) const throw(C
 
 
 
-inline void ACovarianceFunction::checkWithinDimensions(muint_t d) const throw (CGPMixException)
+inline void ACovarianceFunction::checkWithinDimensions(muint_t d) const 
 {
 	if (d>=getNumberDimensions())
 	{
@@ -444,7 +444,7 @@ inline void ACovarianceFunction::checkWithinDimensions(muint_t d) const throw (C
 		throw CGPMixException(os.str());
 	}
 }
-inline void ACovarianceFunction::checkWithinParams(muint_t i) const throw (CGPMixException)
+inline void ACovarianceFunction::checkWithinParams(muint_t i) const 
 {
 	if (i>=getNumberParams())
 	{
@@ -455,7 +455,7 @@ inline void ACovarianceFunction::checkWithinParams(muint_t i) const throw (CGPMi
 }
 
 
-inline void ACovarianceFunction::checkXDimensions(const CovarInput& X) const throw (CGPMixException)
+inline void ACovarianceFunction::checkXDimensions(const CovarInput& X) const 
 {
 	if ((muint_t)X.cols()!=this->getNumberDimensions())
 	{
@@ -464,7 +464,7 @@ inline void ACovarianceFunction::checkXDimensions(const CovarInput& X) const thr
 		throw CGPMixException(os.str());
 	}
 }
-inline void ACovarianceFunction::checkParamDimensions(const CovarParams& params) const throw (CGPMixException)
+inline void ACovarianceFunction::checkParamDimensions(const CovarParams& params) const 
 {
 	if ((muint_t)(params.rows()) != this->getNumberParams()){
 		std::ostringstream os;

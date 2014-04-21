@@ -22,13 +22,13 @@ public:
 	~CCovLinearISO();
 
 	//overloaded pure virtual functions:
-	void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
+	void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
 
-	void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
-	void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
-	void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
+	void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const ;
+	void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const ;
+	void aKdiag_grad_X(VectorXd* out,const muint_t d) const ;
 
 	//class information
 	inline std::string getName() const {return "CCovLinearISO";};
@@ -49,12 +49,12 @@ public:
 	virtual void setNumberDimensions(muint_t numberDimensions);
 
 	//overloaded pure virtual functions:
-	void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-	void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
-	void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
-	void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
+	void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+	void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const ;
+	void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const ;
+	void aKdiag_grad_X(VectorXd* out,const muint_t d) const ;
 
 	//class information
 	inline std::string getName() const{ return "CovLinearARD";}
@@ -75,11 +75,11 @@ public:
 	~CCovLinearISODelta();
 
 	//overloaded pure virtual functions:
-	void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
+	void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
 
-	void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
+	void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const ;
 
 
 	//class information

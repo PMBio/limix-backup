@@ -16,7 +16,7 @@ CGPLMM::CGPLMM(PGPkronecker gp) : gp(gp)
 }
 
 
-void CGPLMM::checkConsistency() throw (CGPMixException)
+void CGPLMM::checkConsistency() 
 {
 	//check that data term is correct type
 	/*
@@ -45,7 +45,7 @@ void CGPLMM::checkConsistency() throw (CGPMixException)
 
 
 
-void CGPLMM::initTesting() throw (CGPMixException)
+void CGPLMM::initTesting() 
 {
 	//initialize testing basedon A and A0
 	checkConsistency();
@@ -131,7 +131,7 @@ void CGPLMM::setGp(PGPkronecker gp)
 }
 
 
-void CGPLMM::process() throw (CGPMixException)
+void CGPLMM::process() 
 {
 	//1. init testing engine
 	initTesting();

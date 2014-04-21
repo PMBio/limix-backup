@@ -194,7 +194,7 @@ mfloat_t CKroneckerLMM_old::optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,
     return nllmin;
 }
 
-void CKroneckerLMM_old::process() throw (CGPMixException)
+void CKroneckerLMM_old::process() 
 {
 	//1. init testing engine
 	//do we have a gp object?
@@ -311,7 +311,7 @@ void CKroneckerLMM_old::process() throw (CGPMixException)
     {
     }
 
-    void CKroneckerLMM::updateDecomposition() throw (CGPMixException)
+    void CKroneckerLMM::updateDecomposition() 
     {
         //TODO: think about caching procedures:
     }
@@ -347,7 +347,7 @@ void CKroneckerLMM_old::process() throw (CGPMixException)
     }
 
 
-    void CKroneckerLMM::process() throw (CGPMixException)
+    void CKroneckerLMM::process() 
     {
         this->Usnps = this->U_R.transpose() * this->snps;
         this->Upheno = this->U_R.transpose() * this->pheno * this->U_C;

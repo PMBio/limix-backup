@@ -63,8 +63,8 @@ public:
 
 	//fit a kinship model with an arbitrary number of terms as denoted
 	//in the std vector
-	void fitVariances(MatrixXd* out, const MatrixXi& snp_index) throw(CGPMixException);
-	mfloat_t testComponent(const MatrixXi snp_index_test, const MatrixXi& snp_index_covar) throw(CGPMixException);
+	void fitVariances(MatrixXd* out, const MatrixXi& snp_index) ;
+	mfloat_t testComponent(const MatrixXi snp_index_test, const MatrixXi& snp_index_covar) ;
 
 
 	//setters and getters
@@ -73,8 +73,8 @@ public:
     void agetSnps(MatrixXd *out) const;
     void agetCovs(MatrixXd *out) const;
     void setCovs(const MatrixXd & covs);
-    void setPheno(const MatrixXd & pheno) throw(CGPMixException);
-    void setSNPs(const MatrixXd & snps) throw(CGPMixException);
+    void setPheno(const MatrixXd & pheno) ;
+    void setSNPs(const MatrixXd & snps) ;
     void setPosition(const VectorXi& position);
     void setChrom(const VectorXi& chrom);
 

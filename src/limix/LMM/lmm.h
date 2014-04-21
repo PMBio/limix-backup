@@ -51,7 +51,7 @@ protected:
 
 	virtual void clearCache();
 	template <typename Derived1>
-	inline void applyPermutation(const Eigen::MatrixBase<Derived1> & M_) throw (CGPMixException);
+	inline void applyPermutation(const Eigen::MatrixBase<Derived1> & M_) ;
 public:
 	ALMM();
 	virtual ~ALMM();
@@ -86,7 +86,7 @@ public:
     void setPheno(const MatrixXd & pheno);
     void setSNPs(const MatrixXd & snps);
     //abstract function
-    virtual void process()=0; //throw (CGPMixException) =0;
+    virtual void process()=0; // =0;
 
 	virtual void agetK(MatrixXd* out) const;
 	virtual void setK(const MatrixXd& K);
@@ -177,9 +177,9 @@ public:
 	//function to add testing kernel
 
 	/*! process asssociation test*/
-	virtual void process();// throw(CGPMixException);
+	virtual void process();// ;
 	/*! public function to update the covaraince decomposition*/
-	virtual void updateDecomposition() throw(CGPMixException);
+	virtual void updateDecomposition() ;
 
 	/*! set the decompsotion elemnts of K directly \param U: eigenvectors, \param S: eigen vectors*/
 	void setKUS(const MatrixXd& K,const MatrixXd& U, const VectorXd& S)
@@ -311,8 +311,8 @@ public:
 
 
 	//processing;
-	virtual void process(); //throw(CGPMixException);
-	virtual void updateDecomposition() throw(CGPMixException);
+	virtual void process(); //;
+	virtual void updateDecomposition() ;
 
 
 	//convenience
@@ -346,7 +346,7 @@ void nLLevalAllY(MatrixXd* out, double ldelta,const MatrixXd& UY,const MatrixXd&
 
 /* Inline functions */
 template <typename Derived1>
-inline void ALMM::applyPermutation(const Eigen::MatrixBase<Derived1>& M_) throw (CGPMixException)
+inline void ALMM::applyPermutation(const Eigen::MatrixBase<Derived1>& M_) 
 {
 	//cast out arguments
 	Eigen::MatrixBase<Derived1>& M = const_cast< Eigen::MatrixBase<Derived1>& >(M_);
