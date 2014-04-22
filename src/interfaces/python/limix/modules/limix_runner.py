@@ -8,7 +8,7 @@ import subprocess, sys, os
 import time
 import h5py
 import scipy as sp
-import limix
+#import limix
 from optparse import OptionParser
 import pandas as pd
 

@@ -16,8 +16,8 @@ class QTLData(object):
     def __init__(self,geno_reader=None,pheno_reader=None):
         self.geno_reader = geno_reader
         self.pheno_reader = pheno_reader
-        self.geno_chrom = self.geno_reader.geno_chrom
-        self.geno_pos = self.geno_reader.geno_pos
+        #self.geno_pos["chrom"] = self.geno_reader.geno_chrom
+        self.geno_pos = self.geno_reader.position
         self.geno_ID = self.geno_reader.geno_ID
         self.phenotype_ID = self.pheno_reader.phenotype_ID
         self.geno_snp_idx = None      #SNP indices
@@ -40,7 +40,7 @@ class QTLData(object):
             res = SP.arange(idx_start,idx_end)
             return res
         elif chrom is not None:
-            idx_chr = self.geno_chrom==chrom
+            idx_chr = self.geno_pos["chrom"]==chrom
             if pos_start is None:
                 idx_larger = SP.ones(self.num_snps,dtype=bool)
             else:
@@ -169,18 +169,10 @@ class QTLData(object):
             cumulative_position
         """
         query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
-        if query_idx is None:
-            pos = {
-                "chrom":    pd.Series(data=self.geno_chrom,index=self.geno_ID),
-                "pos":      pd.Series(data=self.geno_pos,index=self.geno_ID),
-                }
-            return pd.DataFrame(pos)
+        if query_idx is None:            
+            return self.geno_pos
         else:
-            pos = {
-                "chrom":    pd.Series(data=self.geno_chrom[query_idx],index=self.geno_ID[query_idx],name="chrom"),
-                "pos":      pd.Series(data=self.geno_pos[query_idx],index=self.geno_ID[query_idx],name="pos"),
-                }
-            return pd.DataFrame(pos)
+            return self.geno_pos.iloc[query_idx]
 
     def subsample(self,rows=None,cols_pheno=None,cols_geno=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
         """sample a particular set of individuals (rows) or phenotypes (cols_pheno) or genotypes (cols_geno)
@@ -204,10 +196,8 @@ class QTLData(object):
         
         if cols_geno is not None:
             assert cols_geno.dtype=="int"
-            C.geno_pos = C.geno_pos[cols_geno]
-            C.geno_chrom = C.geno_chrom[cols_geno]
+            C.geno_pos = C.geno_pos.iloc[cols_geno]
             C.geno_ID = C.geno_ID[cols_geno]
-            C.geno_pos_cum = C.geno_pos_cum[cols_geno]
             if C.geno_snp_idx is not None:
                 C.geno_snp_idx = C.geno_snp_idx[cols_geno]
             else:
