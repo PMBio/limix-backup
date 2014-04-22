@@ -6,7 +6,7 @@
 // Test file for kronecker LMM test
 //============================================================================
 
-#if 1
+#if 0
 
 //#define debugkron 1
 
@@ -130,7 +130,7 @@ int main() {
 		std::cout << "done.\n" ;
 		
 		}
-		catch(CGPMixException& e) {
+		catch(CLimixException& e) {
 			cout <<"Exception : "<< e.what() << endl;
 		}
 

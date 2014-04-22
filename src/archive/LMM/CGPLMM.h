@@ -47,8 +47,8 @@ protected:
 	PGPkronecker gp;
 	//pointer to optimization engine
 	PGPopt opt;
-	void checkConsistency() throw (CGPMixException);
-	void initTesting() throw (CGPMixException);
+	void checkConsistency() ;
+	void initTesting() ;
 
 	//design matrices for foreground and background model
 	MatrixXd AAlt;
@@ -77,7 +77,7 @@ public:
 	virtual ~CGPLMM()
 	{};
 	//overload pure virtual functions:
-	virtual void process() throw (CGPMixException);
+	virtual void process() ;
 
 
 

@@ -226,13 +226,13 @@ int ALMM::getTestStatistics() const
     }
 
     /*
-    void ALMM::applyPermutation(MatrixXd & M) throw (CGPMixException)
+    void ALMM::applyPermutation(MatrixXd & M) 
     {
         if(isnull(perm))
             return;
 
         if(perm.rows() != M.rows()){
-            throw CGPMixException("ALMM:Permutation vector has incompatible length");
+            throw CLimixException("ALMM:Permutation vector has incompatible length");
         }
         //create temporary copy
         MatrixXd Mc = M;
@@ -268,18 +268,33 @@ int ALMM::getTestStatistics() const
     }
 
     /*CLMM*/
-    void CLMM::updateDecomposition() throw (CGPMixException)
+    void CLMM::updateDecomposition() 
     {
         //check that dimensions match
         this->num_samples = snps.rows();
         this->num_snps = snps.cols();
         this->num_pheno = pheno.cols();
         this->num_covs = covs.cols();
-        if(!(num_samples == pheno.rows()))
-            throw new CGPMixException("phenotypes and SNP dimensions inconsistent");
+        if (num_samples==0)
+            throw CLimixException("LMM requires a non-zero sample size");
 
-        if(!(num_samples == covs.rows()))
-            throw CGPMixException("covariates and SNP dimensions inconsistent");
+        if (num_snps==0)
+            throw CLimixException("LMM requires non-zero SNPs");
+
+        if (num_pheno==0)
+            throw CLimixException("LMM requires non-zero phenotypes");
+
+        if(!(num_samples == (muint_t)pheno.rows()))
+            throw CLimixException("phenotypes and SNP dimensions inconsistent");
+
+        if(!(num_samples == (muint_t)covs.rows()))
+            throw CLimixException("covariates and SNP dimensions inconsistent");
+
+        if(isnull(K))
+        {
+            //no covariance? assume we perform linear regression
+            K = VectorXd::Ones(this->num_samples).asDiagonal();
+        }
 
         if(!(this->UK_cached)){
             //decomposition of K
@@ -302,7 +317,7 @@ int ALMM::getTestStatistics() const
         }
     }
 
-    void CLMM::process() throw (CGPMixException)
+    void CLMM::process()// 
     {
         //get decomposition
         updateDecomposition();
@@ -445,11 +460,11 @@ int ALMM::getTestStatistics() const
     }
 
     //processing;
-    void CInteractLMM::process() throw (CGPMixException)
+    void CInteractLMM::process() //
     {
     	//TODO: Ftest is not correct for simple cases where I0=0 as ftest_rows yields the wrong answer.
     	if((num_inter > 1) && (this->testStatistics == ALMM::TEST_F)){
-            throw CGPMixException("CInteractLMM:: cannot use Ftest for more than 1 interaction dimension!");
+            throw CLimixException("CInteractLMM:: cannot use Ftest for more than 1 interaction dimension!");
         }
         //get decomposition
         updateDecomposition();
@@ -549,7 +564,7 @@ int ALMM::getTestStatistics() const
         	} //end for SNP
 	}
     }
-    void CInteractLMM::updateDecomposition() throw (CGPMixException)
+    void CInteractLMM::updateDecomposition() 
     {
         CLMM::updateDecomposition();
     }
@@ -600,7 +615,7 @@ int ALMM::getTestStatistics() const
             ldelta += ldeltaD;
         } //end for all intervals
 		nLLevalFunctor func(UY, UX, S, REML);
-		for(muint_t i=1;i<(numintervals-1);i++){
+		for(muint_t i=1;i<(muint_t)(numintervals-1);i++){
 		  if (nllgrid(i,0)<nllgrid(i+1,0) && nllgrid(i,0)<nllgrid(i-1,0)){
 			  //check wether a local optimum exists in this triplet
 			 mfloat_t current_nLL=std::numeric_limits<mfloat_t>::infinity();

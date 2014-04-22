@@ -37,7 +37,7 @@ CFreeFormCF::~CFreeFormCF()
 {
 }
 
-void CFreeFormCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CFreeFormCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
 	MatrixXd K;
 	aKcross(&K,Xstar);
@@ -56,12 +56,12 @@ void CFreeFormCF::aK0Covar2Params(VectorXd* out,const MatrixXd& K0)
 {
 }
 
-void CFreeFormCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CFreeFormCF::setParamsCovariance(const MatrixXd& K0) 
 {
     //0. check that the matrix has the correct size
     if(((muint_t)K0.rows()!=numberGroups) || ((muint_t)K0.cols()!=numberGroups))
     {
-        throw CGPMixException("aK0Covar2Params: rows and columns need to be compatiable with the number of groups");
+        throw CLimixException("aK0Covar2Params: rows and columns need to be compatiable with the number of groups");
     }
     MatrixXd L;
     MatrixXdChol chol(K0);
@@ -78,7 +78,7 @@ void CFreeFormCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
         }
 }
 
-void CFreeFormCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const  throw(CGPMixException)
+void CFreeFormCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const  
 {
     //create template matrix K
     MatrixXd L;
@@ -86,7 +86,7 @@ void CFreeFormCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const  throw(
     (*out).noalias() = L*L.transpose();
 }
     
-void CFreeFormCF::aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException)
+void CFreeFormCF::aKgrad_param(MatrixXd* out,const muint_t i) const 
 {
     MatrixXd L;
     MatrixXd Lgrad_parami;
@@ -99,7 +99,7 @@ void CFreeFormCF::aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMix
 }
 
 
-void CFreeFormCF::aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException)
+void CFreeFormCF::aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const 
 {
 
     MatrixXd Lgrad_parami;
@@ -118,13 +118,13 @@ void CFreeFormCF::agetParamMask0(CovarParams* out) const {
 }
     
     
-void CFreeFormCF::setParamsVarCorr(const CovarParams& paramsVC) throw(CGPMixException)
+void CFreeFormCF::setParamsVarCorr(const CovarParams& paramsVC) 
 {
     
     // No correlation must be <1 && >-1 or otherwise the initialization would fail
     for (muint_t i=numberGroups;i<getNumberParams();++i)
         if (paramsVC(i)>=1 || paramsVC(i)<=-1)
-            throw CGPMixException("Correlation must be in (-1,+1)");
+            throw CLimixException("Correlation must be in (-1,+1)");
     
     //0. check that the matrix has the correct size
     checkParamDimensions(paramsVC);
@@ -161,7 +161,7 @@ void CFreeFormCF::agetL0(MatrixXd* out) const
         }
 }
     
-void CFreeFormCF::agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CFreeFormCF::agetL0grad_param(MatrixXd* out,muint_t i) const 
 {
     /*construct cholesky factors from hyperparameters*/
     (*out).setConstant(numberGroups,numberGroups,0);
@@ -212,7 +212,7 @@ CRankOneCF::~CRankOneCF()
 {
 }
 
-void CRankOneCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CRankOneCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
 	MatrixXd K;
 	aKcross(&K,Xstar);
@@ -226,7 +226,7 @@ void CRankOneCF::agetScales(CovarParams* out) {
     (*out).segment(0,this->numberParams)=sign*(*out).segment(0,this->numberParams);
 }
 
-void CRankOneCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CRankOneCF::setParamsCovariance(const MatrixXd& K0) 
 {
     this->params.resize(this->numberParams);
     //loop over groups
@@ -236,14 +236,14 @@ void CRankOneCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
     }
 }
 
-void CRankOneCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CRankOneCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const 
 {
     //create template matrix K
     MatrixXd L = this->params;
     (*out).noalias() = L*L.transpose();
 }
     
-void CRankOneCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CRankOneCF::aKgrad_param(MatrixXd* out,muint_t i) const 
 {
     MatrixXd L = this->params;
     MatrixXd Lgrad_parami = MatrixXd::Zero(this->numberParams,1);
@@ -251,7 +251,7 @@ void CRankOneCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixExcepti
     (*out).noalias() = Lgrad_parami*L.transpose()+L*Lgrad_parami.transpose();
 }
     
-void CRankOneCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+void CRankOneCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const 
 {
     MatrixXd Lgrad_parami = MatrixXd::Zero(this->numberParams,1);
     MatrixXd Lgrad_paramj = MatrixXd::Zero(this->numberParams,1);
@@ -283,7 +283,7 @@ CLowRankCF::~CLowRankCF()
 {
 }
 
-void CLowRankCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CLowRankCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
     MatrixXd K;
     aKcross(&K,Xstar);
@@ -298,7 +298,7 @@ void CLowRankCF::agetScales(CovarParams* out) {
     (*out)*=sign;
 }
 
-void CLowRankCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CLowRankCF::setParamsCovariance(const MatrixXd& K0) 
 {
     //IMPLEMENT ME
     //1. U, S = eigh(K0)
@@ -306,7 +306,7 @@ void CLowRankCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
     //2. params = (a_1,a_2,...)
 }
 
-void CLowRankCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CLowRankCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const 
 {
     //create template matrix K
     MatrixXd L = this->params;
@@ -314,7 +314,7 @@ void CLowRankCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CG
     (*out).noalias() = L*L.transpose();
 }
 
-void CLowRankCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CLowRankCF::aKgrad_param(MatrixXd* out,muint_t i) const 
 {
     MatrixXd L = this->params;
     MatrixXd Lgrad_parami = MatrixXd::Zero(this->numberParams,1);
@@ -324,7 +324,7 @@ void CLowRankCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixExcepti
     (*out).noalias() = Lgrad_parami*L.transpose()+L*Lgrad_parami.transpose();
 }
 
-void CLowRankCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+void CLowRankCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const 
 {
     MatrixXd Lgrad_parami = MatrixXd::Zero(this->numberParams,1);
     MatrixXd Lgrad_paramj = MatrixXd::Zero(this->numberParams,1);
@@ -348,7 +348,7 @@ CFixedCF::CFixedCF(const MatrixXd & K0) : ACovarianceFunction(1)
 {
     if((muint_t)K0.rows()!=((muint_t)K0.cols()))
     {
-        throw CGPMixException("K0 must be a square Matrix");
+        throw CLimixException("K0 must be a square Matrix");
     }
     this->numberGroups=K0.cols();
     this->numberDimensions = 0;
@@ -365,43 +365,43 @@ void CFixedCF::agetScales(CovarParams* out) {
     (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
 }
     
-void CFixedCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CFixedCF::setParamsCovariance(const MatrixXd& K0) 
 {
     this->params.resize(this->numberParams);
     params(0) = std::sqrt(K0.maxCoeff());
 }
 
-void CFixedCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CFixedCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const 
 {
 	(*out) = std::pow(params(0),2)*K0cross;
 }
 
-void CFixedCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CFixedCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
 	(*out) = std::pow(params(0),2)*K0cross_diag;
 }
     
-void CFixedCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CFixedCF::aKgrad_param(MatrixXd* out,muint_t i) const 
 {
     (*out) = 2*params(0)*this->K0;
 }
 
-void CFixedCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+void CFixedCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const 
 {
     (*out) = 2*this->K0;
 }
 
-void CFixedCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const throw(CGPMixException)
+void CFixedCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const 
 {
 	(*out) = MatrixXd::Zero(X.rows(),Xstar.rows());
 }
 
-void CFixedCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMixException)
+void CFixedCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const 
 {
 	(*out) = VectorXd::Zero(X.rows());
 }
 
-void CFixedCF::aK(MatrixXd* out) const throw(CGPMixException)
+void CFixedCF::aK(MatrixXd* out) const 
 {
     (*out) = std::pow(params(0),2)*this->K0;
 }
@@ -458,7 +458,7 @@ CDiagonalCF::~CDiagonalCF()
 {
 }
 
-void CDiagonalCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CDiagonalCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
 	MatrixXd K;
 	aKcross(&K,Xstar);
@@ -470,7 +470,7 @@ void CDiagonalCF::agetScales(CovarParams* out) {
     (*out)=(*out).unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).unaryExpr(std::ptr_fun(sqrt));
 }
     
-void CDiagonalCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CDiagonalCF::setParamsCovariance(const MatrixXd& K0) 
 {
     this->params.resize(this->numberParams);
     //loop over groups
@@ -479,18 +479,18 @@ void CDiagonalCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
     }
 }
 
-void CDiagonalCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CDiagonalCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const 
 {
   (*out) = params.unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).asDiagonal();
 }
     
-void CDiagonalCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CDiagonalCF::aKgrad_param(MatrixXd* out,muint_t i) const 
 {
     (*out)=MatrixXd::Zero(numberGroups,numberGroups);
     (*out)(i,i)=2*params(i);
 }
 
-void CDiagonalCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+void CDiagonalCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const 
 {
     (*out)=MatrixXd::Zero(numberGroups,numberGroups);
     if (i==j)   (*out)(i,i)=2;
@@ -520,20 +520,20 @@ CRank1diagCF::~CRank1diagCF()
 {
 }
 
-void CRank1diagCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CRank1diagCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
 	MatrixXd K;
 	aKcross(&K,Xstar);
 	(*out)=K.diagonal();
 }
 
-void CRank1diagCF::agetRank1(MatrixXd* out) const throw(CGPMixException)
+void CRank1diagCF::agetRank1(MatrixXd* out) const 
 {
     MatrixXd L = this->params.segment(0,this->numberGroups);
     (*out).noalias() = L*L.transpose();
 }
     
-void CRank1diagCF::agetDiag(MatrixXd* out) const throw(CGPMixException)
+void CRank1diagCF::agetDiag(MatrixXd* out) const 
 {
     if (numberGroups==2)
         (*out) = std::pow(params(2),2)*MatrixXd::Identity(2,2);
@@ -556,12 +556,12 @@ void CRank1diagCF::agetScales(CovarParams* out) {
     }
 }
     
-void CRank1diagCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CRank1diagCF::setParamsCovariance(const MatrixXd& K0) 
 {
     //TO DO
 }
 
-void CRank1diagCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CRank1diagCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const 
 {
     MatrixXd out1;
 
@@ -571,10 +571,10 @@ void CRank1diagCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(
     (*out)+=out1;
 }
 
-void CRank1diagCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CRank1diagCF::aKgrad_param(MatrixXd* out,muint_t i) const 
 {
     if (i>=this->numberParams)
-        throw CGPMixException("Index exceeds the number of parameters");
+        throw CLimixException("Index exceeds the number of parameters");
 
     if (i<this->numberGroups) {
         MatrixXd L = this->params.segment(0,this->numberGroups);
@@ -593,10 +593,10 @@ void CRank1diagCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixExcep
     }
 }
 
-void CRank1diagCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+void CRank1diagCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const 
 {
     if (j>=(muint_t)this->numberParams || j>=(muint_t)this->numberParams)
-        throw CGPMixException("Index exceeds the number of parameters");
+        throw CLimixException("Index exceeds the number of parameters");
     
     if (i<this->numberGroups && j<this->numberGroups) {
         MatrixXd Lgrad_parami = MatrixXd::Zero(this->numberGroups,1);
@@ -641,7 +641,7 @@ CSqExpCF::~CSqExpCF()
 {
 }
 
-void CSqExpCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CSqExpCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
     MatrixXd K;
     aKcross(&K,Xstar);
@@ -656,12 +656,12 @@ void CSqExpCF::agetScales(CovarParams* out) {
     (*out)*=sign;
 }
 
-void CSqExpCF::setParamsCovariance(const MatrixXd& K0) throw(CGPMixException)
+void CSqExpCF::setParamsCovariance(const MatrixXd& K0) 
 {
     //IMPLEMENT ME
 }
 
-void CSqExpCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException)
+void CSqExpCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const 
 {
     //create template matrix K
     MatrixXd X = this->params.block(numberGroups,0,dim*numberGroups,1);
@@ -678,7 +678,7 @@ void CSqExpCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPM
 	(*out).array()*=A.array();
 }
 
-void CSqExpCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException)
+void CSqExpCF::aKgrad_param(MatrixXd* out,muint_t i) const 
 {
     //exponential part
     MatrixXd X = this->params.block(numberGroups,0,dim*numberGroups,1);
@@ -719,7 +719,7 @@ void CSqExpCF::aKgrad_param(MatrixXd* out,muint_t i) const throw(CGPMixException
 	(*out).array()*=A.array();
 }
 
-void CSqExpCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const throw(CGPMixException)
+void CSqExpCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const 
 {
     //TODO
 	(*out)=MatrixXd::Zero(numberGroups,numberGroups);

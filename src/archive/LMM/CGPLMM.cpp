@@ -16,12 +16,12 @@ CGPLMM::CGPLMM(PGPkronecker gp) : gp(gp)
 }
 
 
-void CGPLMM::checkConsistency() throw (CGPMixException)
+void CGPLMM::checkConsistency() 
 {
 	//check that data term is correct type
 	/*
 	if (typeid(gp.getDataTerm())!=typeid(CKroneckerMean))
-		throw CGPMixException("CGPLMM requires a CKroneckerMean data term");
+		throw CLimixException("CGPLMM requires a CKroneckerMean data term");
 	*/
 	//check dimensionality of data structures
 	this->num_samples = snps.rows();
@@ -29,23 +29,23 @@ void CGPLMM::checkConsistency() throw (CGPMixException)
 	this->num_pheno = pheno.cols();
 	this->num_covs = covs.cols();
 	if(!num_samples == pheno.rows())
-		throw new CGPMixException("phenotypes and SNP dimensions inconsistent");
+		throw CLimixException("phenotypes and SNP dimensions inconsistent");
 
 	if(!num_samples == covs.rows())
-		throw CGPMixException("covariates and SNP dimensions inconsistent");
+		throw CLimixException("covariates and SNP dimensions inconsistent");
 
 	if (gp)
 	{
 		//check that SNPs have consisten dimension:
 		if(this->num_samples!=gp->getNumberSamples())
-			throw CGPMixException("GP and kroneckerLMM sample inconsitency");
+			throw CLimixException("GP and kroneckerLMM sample inconsitency");
 	}
 }
 
 
 
 
-void CGPLMM::initTesting() throw (CGPMixException)
+void CGPLMM::initTesting() 
 {
 	//initialize testing basedon A and A0
 	checkConsistency();
@@ -131,7 +131,7 @@ void CGPLMM::setGp(PGPkronecker gp)
 }
 
 
-void CGPLMM::process() throw (CGPMixException)
+void CGPLMM::process() 
 {
 	//1. init testing engine
 	initTesting();
