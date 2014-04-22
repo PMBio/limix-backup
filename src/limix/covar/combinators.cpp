@@ -28,36 +28,36 @@ AMultiCF::~AMultiCF()
 }
 
 
-muint_t AMultiCF::Kdim() const throw(CGPMixException)
+muint_t AMultiCF::Kdim() const 
 {
 	return vecCovariances.begin()[0]->Kdim();
 }
 
-void AMultiCF::setCovariance(muint_t i, PCovarianceFunction covar) throw (CGPMixException)
+void AMultiCF::setCovariance(muint_t i, PCovarianceFunction covar) 
 {
 	//check this is witin ther permitted range:
 	if(i>numMaxCovariances)
 	{
-		throw CGPMixException("AMultiCF: number of covariances limited.");
+		throw CLimixException("AMultiCF: number of covariances limited.");
 	}
 	vecCovariances[i] = covar;
 }
 
-PCovarianceFunction AMultiCF::getCovariance(muint_t i) throw (CGPMixException)
+PCovarianceFunction AMultiCF::getCovariance(muint_t i) 
 {
 	return vecCovariances[i];
 }
 
-void AMultiCF::addCovariance(PCovarianceFunction covar) throw (CGPMixException)
+void AMultiCF::addCovariance(PCovarianceFunction covar) 
 {
 	if(vecCovariances.size()+1>numMaxCovariances)
 	{
-		throw CGPMixException("AMultiCF: number of covariances limited.");
+		throw CLimixException("AMultiCF: number of covariances limited.");
 	}
 	vecCovariances.push_back(covar);
 }
 
-muint_t AMultiCF::getNumberDimensions() const throw (CGPMixException)
+muint_t AMultiCF::getNumberDimensions() const 
 {
 	muint_t rv=0;
 	for(ACovarVec::const_iterator iter = vecCovariances.begin(); iter!=vecCovariances.end();iter++)
@@ -83,13 +83,13 @@ muint_t AMultiCF::getNumberParams() const
 	return rv;
 }
 
-void AMultiCF::setNumberDimensions(muint_t numberDimensions) throw (CGPMixException)
+void AMultiCF::setNumberDimensions(muint_t numberDimensions) 
 		{
-	throw CGPMixException("Multiple covariance functions do not support setting X dimensions. Set dimensions of member covariance functions instead.");
+	throw CLimixException("Multiple covariance functions do not support setting X dimensions. Set dimensions of member covariance functions instead.");
 		}
 
 
-void AMultiCF::setX(const CovarInput& X) throw (CGPMixException)
+void AMultiCF::setX(const CovarInput& X) 
 {
 	checkXDimensions(X);
 	//current column index in X:
@@ -109,19 +109,19 @@ void AMultiCF::setX(const CovarInput& X) throw (CGPMixException)
 	}
 }
 
-void AMultiCF::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
+void AMultiCF::setXcol(const CovarInput& X,muint_t col) 
 {
 	if(((col+(muint_t)X.cols())>getNumberDimensions()) || ((muint_t)X.rows()!=this->Kdim()))
 	{
 		std::ostringstream os;
 		os << "setXcol out of range. Current X:"<<col<< "..."<<col+X.cols()<<" own:"<<this->getNumberDimensions() <<")";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	if (X.cols()>1)
 	{
 		std::ostringstream os;
 		os << "setXcol (Combinator CF) only suports setting individual columns" << "\n";
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	muint_t c0=0;
 	muint_t cols;
@@ -145,7 +145,7 @@ void AMultiCF::setXcol(const CovarInput& X,muint_t col) throw (CGPMixException)
 	}
 }
 
-void AMultiCF::agetX(CovarInput* Xout) const throw (CGPMixException)
+void AMultiCF::agetX(CovarInput* Xout) const 
 {
 	//1. determine size of Xout
 	muint_t trows = Kdim();
@@ -328,7 +328,7 @@ void AMultiCF::agetParamBounds(CovarParams* lower, CovarParams* upper) const
 }
 
     
-void AMultiCF::setParamBounds(const CovarParams& lower, const CovarParams& upper) throw (CGPMixException) {
+void AMultiCF::setParamBounds(const CovarParams& lower, const CovarParams& upper)  {
     //1. check dimensionality
     checkParamDimensions(lower);
     checkParamDimensions(upper);
@@ -372,7 +372,7 @@ std::string CSumCF::getName() const
 
 
 
-void CSumCF::aK(MatrixXd* out) const throw (CGPMixException)
+void CSumCF::aK(MatrixXd* out) const 
 {
 	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,trows,0);
@@ -387,7 +387,7 @@ void CSumCF::aK(MatrixXd* out) const throw (CGPMixException)
 }
 
 
-void CSumCF::aKdiag(VectorXd* out) const throw (CGPMixException)
+void CSumCF::aKdiag(VectorXd* out) const 
 {
 	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,0);
@@ -402,11 +402,11 @@ void CSumCF::aKdiag(VectorXd* out) const throw (CGPMixException)
 }
 
 
-void CSumCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CGPMixException)
+void CSumCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const 
 				{
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),this->Kdim(),0);
 	muint_t c0=0;
@@ -426,11 +426,11 @@ void CSumCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CGPMix
 	}
 }
 
-void CSumCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CSumCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 	{
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),0);
 	muint_t c0=0;
@@ -454,7 +454,7 @@ void CSumCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CG
 	}
 
 
-void CSumCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMixException)
+void CSumCF::aKgrad_param(MatrixXd *out, const muint_t i) const 
 						{
 	//1. check that i is within the available range
 	this->checkWithinParams(i);
@@ -479,7 +479,7 @@ void CSumCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMixExce
 	}
 }
     
-void CSumCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw (CGPMixException)
+void CSumCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     //1. check that i is within the available range
     this->checkWithinParams(i);
@@ -512,7 +512,7 @@ void CSumCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const
     }
 }
 
-void CSumCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException)
+void CSumCF::aKgrad_X(MatrixXd* out,const muint_t d) const 
 {
 	//1. check that d is in range
 	this->checkWithinDimensions(d);
@@ -536,7 +536,7 @@ void CSumCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException
 	}
 }
 
-void CSumCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMixException)
+void CSumCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const 
 {
 	//1. check that d is in range
 	this->checkWithinDimensions(d);
@@ -560,7 +560,7 @@ void CSumCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMixExc
 }
 
 
-void CSumCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const throw(CGPMixException)
+void CSumCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const 
 {
 	//1. check that d is in range
 	this->checkWithinDimensions(d);
@@ -621,7 +621,7 @@ std::string CLinCombCF::getName() const
 
 
 
-void CLinCombCF::aK(MatrixXd* out) const throw(CGPMixException)
+void CLinCombCF::aK(MatrixXd* out) const 
 {
 	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,trows,0);
@@ -637,7 +637,7 @@ void CLinCombCF::aK(MatrixXd* out) const throw(CGPMixException)
 }
 
 
-void CLinCombCF::aKdiag(VectorXd* out) const throw(CGPMixException)
+void CLinCombCF::aKdiag(VectorXd* out) const 
 {
 	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,0);
@@ -653,11 +653,11 @@ void CLinCombCF::aKdiag(VectorXd* out) const throw(CGPMixException)
 }
 
 
-void CLinCombCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CGPMixException)
+void CLinCombCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const 
 {
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),this->Kdim(),0);
 	muint_t c0=0;
@@ -678,11 +678,11 @@ void CLinCombCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CG
 	}
 }
 
-void CLinCombCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CLinCombCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 	{
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),0);
 	muint_t c0=0;
@@ -707,7 +707,7 @@ void CLinCombCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const thro
 	}
 
 
-void CLinCombCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMixException)
+void CLinCombCF::aKgrad_param(MatrixXd *out, const muint_t i) const 
 						{
 	//1. check that i is within the available range
 	this->checkWithinParams(i);
@@ -734,7 +734,7 @@ void CLinCombCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMix
 	}
 }
 
-void CLinCombCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw (CGPMixException)
+void CLinCombCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     //1. check that i is within the available range
     this->checkWithinParams(i);
@@ -769,7 +769,7 @@ void CLinCombCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) c
     }
 }
 
-void CLinCombCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException)
+void CLinCombCF::aKgrad_X(MatrixXd* out,const muint_t d) const 
 {
 	//1. check that d is in range
 	this->checkWithinDimensions(d);
@@ -795,7 +795,7 @@ void CLinCombCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixExcep
 	}
 }
 
-void CLinCombCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMixException)
+void CLinCombCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const 
 {
 	//1. check that d is in range
 	this->checkWithinDimensions(d);
@@ -821,7 +821,7 @@ void CLinCombCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMi
 }
 
 
-void CLinCombCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const throw(CGPMixException)
+void CLinCombCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const 
 {
 	//1. check that d is in range
 	this->checkWithinDimensions(d);
@@ -877,7 +877,7 @@ std::string CProductCF::getName() const
 
 
 
-void CProductCF::aK(MatrixXd* out) const throw (CGPMixException)
+void CProductCF::aK(MatrixXd* out) const 
 {
 	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,trows,1);
@@ -892,7 +892,7 @@ void CProductCF::aK(MatrixXd* out) const throw (CGPMixException)
 }
 
 
-void CProductCF::aKdiag(VectorXd* out) const throw (CGPMixException)
+void CProductCF::aKdiag(VectorXd* out) const 
 {
 	muint_t trows = this->Kdim();
 	(*out).setConstant(trows,1.0);
@@ -907,11 +907,11 @@ void CProductCF::aKdiag(VectorXd* out) const throw (CGPMixException)
 }
 
 
-void CProductCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CGPMixException)
+void CProductCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const 
 {
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),this->Kdim(),1.0);
 	muint_t c0=0;
@@ -931,11 +931,11 @@ void CProductCF::aKcross(MatrixXd *out, const CovarInput & Xstar) const throw(CG
 	}
 }
 
-void CProductCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CProductCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 	{
 	//1. check that Xstar has consistent dimension
 	if((muint_t)Xstar.cols()!=this->getNumberDimensions())
-		throw CGPMixException("Kcross: col dimension of Xstar inconsistent!");
+		throw CLimixException("Kcross: col dimension of Xstar inconsistent!");
 	//2. loop through covariances and add up
 	(*out).setConstant(Xstar.rows(),1.0);
 	muint_t c0=0;
@@ -957,7 +957,7 @@ void CProductCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const thro
 	}
 
 
-void CProductCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMixException)
+void CProductCF::aKgrad_param(MatrixXd *out, const muint_t i) const 
 {
 	//1. check that i is within the available range
 	this->checkWithinParams(i);
@@ -983,7 +983,7 @@ void CProductCF::aKgrad_param(MatrixXd *out, const muint_t i) const throw(CGPMix
 	}
 }
     
-void CProductCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw (CGPMixException)
+void CProductCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
     //1. check that i and j are within the available range
     this->checkWithinParams(i);
@@ -1015,7 +1015,7 @@ void CProductCF::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) c
     }
 }
 
-void CProductCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixException)
+void CProductCF::aKgrad_X(MatrixXd* out,const muint_t d) const 
 {
 	//1. check that d is in range
 	this->checkWithinDimensions(d);
@@ -1039,7 +1039,7 @@ void CProductCF::aKgrad_X(MatrixXd* out,const muint_t d) const throw(CGPMixExcep
 	}
 }
 
-void CProductCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMixException)
+void CProductCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const 
 {
 	//1. check that d is in range
 	this->checkWithinDimensions(d);
@@ -1063,7 +1063,7 @@ void CProductCF::aKdiag_grad_X(VectorXd *out, const muint_t d) const throw(CGPMi
 }
 
 
-void CProductCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const throw(CGPMixException)
+void CProductCF::aKcross_grad_X(MatrixXd *out, const CovarInput & Xstar, const muint_t d) const 
 {
 	//1. check that d is in range
 	this->checkWithinDimensions(d);
@@ -1110,7 +1110,7 @@ CKroneckerCF::CKroneckerCF(PCovarianceFunction col,
 CKroneckerCF::~CKroneckerCF() {
 }
 
-muint_t CKroneckerCF::Kdim() const throw(CGPMixException)
+muint_t CKroneckerCF::Kdim() const 
 {
 	//do we have a Kronecker index?
 	if(!isnull(kroneckerIndicator))
@@ -1131,22 +1131,22 @@ void CKroneckerCF::setColCovariance(PCovarianceFunction cov) {
 	setCovariance(0,cov);
 }
 
-PCovarianceFunction CKroneckerCF::getRowCovariance() throw (CGPMixException)
+PCovarianceFunction CKroneckerCF::getRowCovariance() 
 {
 	return vecCovariances[0];
 }
 
-PCovarianceFunction CKroneckerCF::getColCovariance() throw (CGPMixException)
+PCovarianceFunction CKroneckerCF::getColCovariance() 
 {
 	return vecCovariances[1];
 }
 
-void CKroneckerCF::setXr(const CovarInput& Xr) throw (CGPMixException)
+void CKroneckerCF::setXr(const CovarInput& Xr) 
 {
 	vecCovariances[0]->setX(Xr);
 }
 
-void CKroneckerCF::setXc(const CovarInput& Xc) throw (CGPMixException)
+void CKroneckerCF::setXc(const CovarInput& Xc) 
 {
 	vecCovariances[1]->setX(Xc);
 }
@@ -1171,15 +1171,15 @@ bool CKroneckerCF::isKronecker() const
 	return isnull(this->kroneckerIndicator);
 }
 
-void CKroneckerCF::aKcross(MatrixXd* out, const CovarInput& Xstar) const throw (CGPMixException)
+void CKroneckerCF::aKcross(MatrixXd* out, const CovarInput& Xstar) const 
 {
 }
 
-void CKroneckerCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw (CGPMixException)
+void CKroneckerCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
 }
 
-void CKroneckerCF::aKgrad_param(MatrixXd* out, const muint_t i) const throw (CGPMixException)
+void CKroneckerCF::aKgrad_param(MatrixXd* out, const muint_t i) const 
 {
 	//1. check that i is within the available range
 	checkWithinParams(i);
@@ -1193,7 +1193,7 @@ void CKroneckerCF::aKgrad_param(MatrixXd* out, const muint_t i) const throw (CGP
 }
 
 void CKroneckerCF::aKhess_param(MatrixXd* out, const muint_t i,
-		const muint_t j) const throw (CGPMixException)
+		const muint_t j) const 
 {
 	//1. check that i is within the available range
 	checkWithinParams(i);
@@ -1215,15 +1215,15 @@ void CKroneckerCF::aKhess_param(MatrixXd* out, const muint_t i,
 
 
 void CKroneckerCF::aKcross_grad_X(MatrixXd* out, const CovarInput& Xstar,
-		const muint_t d) const throw (CGPMixException)
+		const muint_t d) const 
 {
 }
 
-void CKroneckerCF::aKdiag_grad_X(VectorXd* out, const muint_t d) const throw (CGPMixException)
+void CKroneckerCF::aKdiag_grad_X(VectorXd* out, const muint_t d) const 
 {
 }
 
-void CKroneckerCF::aK(MatrixXd* out) const throw (CGPMixException)
+void CKroneckerCF::aK(MatrixXd* out) const 
 {
 	MatrixXd Kc;
 	vecCovariances[0]->aK(&Kc);
@@ -1232,7 +1232,7 @@ void CKroneckerCF::aK(MatrixXd* out) const throw (CGPMixException)
 	aMatrixIndexProduct((*out),Kc,Kr,kroneckerIndicator);
 }
 
-void CKroneckerCF::aKdiag(VectorXd* out) const throw (CGPMixException)
+void CKroneckerCF::aKdiag(VectorXd* out) const 
 {
   MatrixXd Kc;
   vecCovariances[0]->aK(&Kc);
@@ -1243,7 +1243,7 @@ void CKroneckerCF::aKdiag(VectorXd* out) const throw (CGPMixException)
   akron_diag(*out,Kc,Kr);
 }
 
-void CKroneckerCF::aKgrad_X(MatrixXd* out, const muint_t d) const throw (CGPMixException)
+void CKroneckerCF::aKgrad_X(MatrixXd* out, const muint_t d) const 
 {
 }
  

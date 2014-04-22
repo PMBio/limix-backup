@@ -15,25 +15,6 @@
 
 namespace limix {
 
-//rename argout operators for swig interface
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-%ignore ALMM::getPheno;
-%ignore ALMM::getPv;
-%ignore ALMM::getSnps;
-%ignore ALMM::getCovs;
-%ignore ALMM::getK;
-%ignore ALMM::getPermutation;
-//rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getPheno) ALMM::agetPheno;
-%rename(getPv) ALMM::agetPv;
-%rename(getSnps) ALMM::agetSnps;
-%rename(getCovs) ALMM::agetCovs;
-%rename(getK) ALMM::agetK;
-%rename(getPermutation) ALMM::agetPermutation;
-//%sptr(gpmix::ALMM)
-#endif
-
 //Abstract base class for LMM models*/
 class ALMM
 {
@@ -70,7 +51,7 @@ protected:
 
 	virtual void clearCache();
 	template <typename Derived1>
-	inline void applyPermutation(const Eigen::MatrixBase<Derived1> & M_) throw (CGPMixException);
+	inline void applyPermutation(const Eigen::MatrixBase<Derived1> & M_) ;
 public:
 	ALMM();
 	virtual ~ALMM();
@@ -105,7 +86,7 @@ public:
     void setPheno(const MatrixXd & pheno);
     void setSNPs(const MatrixXd & snps);
     //abstract function
-    virtual void process() throw (CGPMixException) =0;
+    virtual void process()=0; // =0;
 
 	virtual void agetK(MatrixXd* out) const;
 	virtual void setK(const MatrixXd& K);
@@ -142,11 +123,6 @@ public:
     void setTestStatistics(int testStatistics);
 };
 
-//rename argout operators for swig interface
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-%ignore CLMMCore;
-#endif
 class CLMMCore
 {
 protected:
@@ -181,33 +157,6 @@ public:
 	inline void optdeltaEx(const Eigen::MatrixBase<Derived1> & AO_delta_,const Eigen::MatrixBase<Derived2> & AO_NLL_, const Eigen::MatrixBase<Derived3>& UY,const Eigen::MatrixBase<Derived4>& UX,const Eigen::MatrixBase<Derived5>& S,muint_t numintervals,mfloat_t ldeltamin,mfloat_t ldeltamax,bool REML = false);
 };
 
-
-
-
-
-//rename argout operators for swig interface
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-%ignore CLMM::getNLL0;
-%ignore CLMM::getNLLAlt;
-%ignore CLMM::getLdeltaAlt;
-%ignore CLMM::getLdelta0;
-%ignore CLMM::getFtests;
-%ignore CLMM::getLSigma;
-%ignore CLMM::getBetaSNP;
-%ignore CLMM::getBetaSNPste;
-
-
-//rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getNLL0) CLMM::agetNLL0;
-%rename(getNLLAlt) CLMM::agetNLLAlt;
-%rename(getLdeltaAlt) CLMM::agetLdeltaAlt;
-%rename(getLdelta0) CLMM::agetLdelta0;
-%rename(getFtests) CLMM::agetFtests;
-%rename(getLSigma) CLMM::agetLSigma;
-%rename(getBetaSNP) CLMM::agetBetaSNP;
-%rename(getBetaSNPste) CLMM::agetBetaSNPste;
-#endif
 //Standard mixed liner model
 class CLMM :  public CLMMCore, public ALMM
 {
@@ -228,9 +177,9 @@ public:
 	//function to add testing kernel
 
 	/*! process asssociation test*/
-	virtual void process() throw(CGPMixException);
+	virtual void process();// ;
 	/*! public function to update the covaraince decomposition*/
-	virtual void updateDecomposition() throw(CGPMixException);
+	virtual void updateDecomposition() ;
 
 	/*! set the decompsotion elemnts of K directly \param U: eigenvectors, \param S: eigen vectors*/
 	void setKUS(const MatrixXd& K,const MatrixXd& U, const VectorXd& S)
@@ -336,18 +285,6 @@ public:
 typedef sptr<CLMM> PLMM;
 
 
-
-
-//interaction tests
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-%ignore CInteractLMM::getInter;
-
-//rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getInter) CInteractLMM::agetInter;
-//%sptr(gpmix::CInteractLMM)
-#endif
-
 class CInteractLMM : public CLMM
 {
 protected:
@@ -374,8 +311,8 @@ public:
 
 
 	//processing;
-	virtual void process() throw(CGPMixException);
-	virtual void updateDecomposition() throw(CGPMixException);
+	virtual void process(); //;
+	virtual void updateDecomposition() ;
 
 
 	//convenience
@@ -409,7 +346,7 @@ void nLLevalAllY(MatrixXd* out, double ldelta,const MatrixXd& UY,const MatrixXd&
 
 /* Inline functions */
 template <typename Derived1>
-inline void ALMM::applyPermutation(const Eigen::MatrixBase<Derived1>& M_) throw (CGPMixException)
+inline void ALMM::applyPermutation(const Eigen::MatrixBase<Derived1>& M_) 
 {
 	//cast out arguments
 	Eigen::MatrixBase<Derived1>& M = const_cast< Eigen::MatrixBase<Derived1>& >(M_);
@@ -418,7 +355,7 @@ inline void ALMM::applyPermutation(const Eigen::MatrixBase<Derived1>& M_) throw 
         return;
 
     if(perm.rows() != M.rows()){
-        throw CGPMixException("ALMM:Permutation vector has incompatible length");
+        throw CLimixException("ALMM:Permutation vector has incompatible length");
     }
     //create temporary copy
     MatrixXd Mc = M;

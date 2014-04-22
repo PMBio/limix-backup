@@ -18,7 +18,8 @@ def estCumPos(pos,chrom,offset = 20000000):
         pos:        scipy.array of basepair positions (on the chromosome)
         chrom:      scipy.array of chromosomes
         offset:     offset between chromosomes for cumulative position (default 20000000 bp)
-    Returns:
+    
+        Returns:
         cum_pos:    scipy.array of cumulative positions
         chrom_pos:  scipy.array of starting cumulative positions for each chromosme
     '''
@@ -51,6 +52,7 @@ def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.
                                     (only with C-based parser) (default: False)
             betaA:  shape parameter for Beta(betaA,betaB) standardization (only with C-based parser)
             betaB:  scale parameter for Beta(betaA,betaB) standardization (only with C-based parser)
+
         Returns:
             X:      scipy.array of standardized SNPs with scipy.float64 values
         '''
@@ -108,6 +110,7 @@ class QTLData():
         self.file_name = file_name
         self.load()
 
+
     def load(self,cache_genotype=False,cache_phenotype=True):
         """load data file
         
@@ -119,9 +122,10 @@ class QTLData():
         self.pheno = self.f['phenotype']
         self.geno  = self.f['genotype']
         #TODO: load all row and column headers for genotype and phenotype
-        
+
         #parse out thse we alwasy need for convenience
         self.genoM = self.geno['matrix']
+
         self.phenoM = self.pheno['matrix']
         self.sample_ID = self.geno['row_header']['sample_ID'][:]
         self.genoChrom = self.geno['col_header']['chrom'][:]
@@ -263,13 +267,51 @@ class QTLData():
             K/=Nsnp
         return K
 
-    def getPhenotypes(self,i0=None,i1=None,phenotype_IDs=None,center=True,impute=True,intersection=False):
+    def getGenoID(self,i0=None,i1=None,pos0=None,pos1=None,chrom=None,pos_cum0=None,pos_cum1=None):
+        """get genotype IDs. 
+        Optionally the indices for loading subgroups the genotype IDs for all people
+        can be given in one out of three ways: 
+        - 0-based indexing (i0-i1)
+        - position (pos0-pos1 on chrom)
+        - cumulative position (pos_cum0-pos_cum1)
+        If all these are None (default), then all genotypes are returned
+
+        Args:
+            i0:         genotype index based selection (start index)
+            i1:         genotype index based selection (stop index)
+            pos0:       position based selection (start position)
+            pos1:       position based selection (stop position)
+            chrom:      position based selection (chromosome)
+            pos_cum0:   cumulative position based selection (start position)
+            pos_cum1:   cumulative position based selection (stop position)
+           
+        Returns:
+            ID:         scipy.array of genotype IDs (e.g. rs IDs)
+        """
+        #position based matching?
+        if (i0 is None) and (i1 is None) and ((pos0 is not None) & (pos1 is not None) & (chrom is not None)) or ((pos_cum0 is not None) & (pos_cum1 is not None)):
+            i0,i1=self.getGenoIndex(pos0=pos0,pos1=pos1,chrom=chrom,pos_cum0=pos_cum0,pos_cum1=pose_cum1)
+        if "genotype_id" in self.geno.keys():
+            if (i0 is not None) & (i1 is not None):
+                return self.geno["genotype_id"][i0:i1]
+            else:
+                return self.geno["genotype_id"][i0:i1]
+        else:
+            if (i0 is not None) & (i1 is not None):
+                return SP.arange(i0,i0)
+            else:
+                return SP.arange(self.genoM.shape[1])
+        pass
+
+    def getPhenotypes(self,i0=None,i1=None,phenotype_IDs=None,geneIDs=None,environments=None,center=True,impute=True,intersection=False):
         """load Phenotypes
         
         Args:
             i0:             phenotype indices to load (start individual index)
             i1:             phenotype indices to load (stop individual index)
             phenotype_IDs:  names of phenotypes to load
+            geneIDs:        names of genes to load
+            environments:   names of environments to load
             impute:         imputation of missing values (default: True)
             intersection:   restrict observation to those obseved in all phenotypes? (default: False)
         
@@ -277,6 +319,20 @@ class QTLData():
             Y:              phenotype values
             Ikeep:          index of individuals in Y
         """
+        if phenotype_IDs is None and (geneIDs is not None or environments is not None):
+           if geneIDs is None:
+               geneIDs = self.geneIDs
+           elif type(geneIDs)!=list:
+               geneIDs = [geneIDs]
+           if environments is None:
+               environments = self.Es
+           elif type(environments)!=list:
+               environments = [environments]
+           phenotype_IDs = []
+           for env in environments:
+               for gene in geneIDs:
+                   phenotype_IDs.append('%s:%d'%(gene,env))
+
         if phenotype_IDs is not None:
             I = SP.array([SP.nonzero(self.phenotype_ID==n)[0][0] for n in phenotype_IDs])
         else:

@@ -380,7 +380,7 @@ CGPkronSum::~CGPkronSum()
 {
 }
 
-void CGPkronSum::updateParams() throw (CGPMixException)
+void CGPkronSum::updateParams() 
 {
 
 	//is this needed?
@@ -438,7 +438,7 @@ CGPHyperParams CGPkronSum::getParamMask() const {
 	return rv;
 }
 
-void CGPkronSum::agetKEffInvYCache(MatrixXd* out) throw (CGPMixException)
+void CGPkronSum::agetKEffInvYCache(MatrixXd* out) 
 {
 	//Computing Kinv
 	MatrixXd& Yrot = cache->rgetYrot();
@@ -456,7 +456,7 @@ void CGPkronSum::agetKEffInvYCache(MatrixXd* out) throw (CGPMixException)
 }
 
 
-mfloat_t CGPkronSum::LML() throw (CGPMixException)
+mfloat_t CGPkronSum::LML() 
 {
 	clock_t beg = clock();
     //get stuff from cache
@@ -528,7 +528,7 @@ mfloat_t CGPkronSum::LML() throw (CGPMixException)
 };
 
 
-CGPHyperParams CGPkronSum::LMLgrad() throw (CGPMixException)
+CGPHyperParams CGPkronSum::LMLgrad() 
 {
     CGPHyperParams rv;
     //calculate gradients for parameter components in params:
@@ -538,7 +538,7 @@ CGPHyperParams CGPkronSum::LMLgrad() throw (CGPMixException)
         aLMLgrad_covarc1(&grad_covar);
         if (lambda>0) {
             MatrixXd C1, C1grad;
-            for (muint_t i=0; i<params["covarc1"].rows(); i++) {
+            for (muint_t i=0; i<(muint_t)params["covarc1"].rows(); i++) {
                 C1     = covarc1->K();
                 C1grad = covarc1->Kgrad_param(i);
                 for (muint_t ir=0; ir<C1.rows(); ir++)
@@ -592,7 +592,7 @@ CGPHyperParams CGPkronSum::LMLgrad() throw (CGPMixException)
     return rv;
 }
 
-void CGPkronSum::aLMLgrad_covarc1(VectorXd *out) throw (CGPMixException)
+void CGPkronSum::aLMLgrad_covarc1(VectorXd *out) 
 {
 	clock_t beg = clock();
     //get stuff from cache
@@ -643,7 +643,7 @@ void CGPkronSum::aLMLgrad_covarc1(VectorXd *out) throw (CGPMixException)
     this->rtCC1part2+=te1(beg);
 }
 
-void CGPkronSum::aLMLgrad_covarc2(VectorXd *out) throw (CGPMixException)
+void CGPkronSum::aLMLgrad_covarc2(VectorXd *out) 
 {
 	clock_t beg = clock();
     //get stuff from cache
@@ -684,7 +684,7 @@ void CGPkronSum::aLMLgrad_covarc2(VectorXd *out) throw (CGPMixException)
     this->rtCC2part2+=te1(beg);
 }
 
-void CGPkronSum::aLMLgrad_covarr1(VectorXd *out) throw (CGPMixException)
+void CGPkronSum::aLMLgrad_covarr1(VectorXd *out) 
 {
 	clock_t beg = clock();
     //get stuff from cache
@@ -730,7 +730,7 @@ void CGPkronSum::aLMLgrad_covarr1(VectorXd *out) throw (CGPMixException)
     this->rtCR1part2+=te1(beg);
 }
 
-void CGPkronSum::aLMLgrad_covarr2(VectorXd *out) throw (CGPMixException)
+void CGPkronSum::aLMLgrad_covarr2(VectorXd *out) 
 {
 	clock_t beg = clock();
     //get stuff from cache
@@ -774,7 +774,7 @@ void CGPkronSum::aLMLgrad_covarr2(VectorXd *out) throw (CGPMixException)
     this->rtCR2part2+=te1(beg);
 }
 
-void CGPkronSum::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
+void CGPkronSum::aLMLgrad_dataTerm(MatrixXd* out) 
 {
 	//Computing Kinv
 	MatrixXd& Yrot = cache->rgetYrot();
@@ -792,7 +792,7 @@ void CGPkronSum::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
 	(*out) = this->dataTerm->gradParams(KinvY);
 }
 
-void CGPkronSum::aLMLhess_c1c1(MatrixXd *out) throw (CGPMixException)
+void CGPkronSum::aLMLhess_c1c1(MatrixXd *out) 
 {
 	/* TO DO
 

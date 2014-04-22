@@ -12,8 +12,6 @@
 
 namespace limix {
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-#endif
 class CLinearMean: public ADataTerm {
 	//friend class CKroneckerMean;
 protected:
@@ -61,7 +59,7 @@ public:
 	virtual inline MatrixXd getFixedEffects(){MatrixXd outFixedEffects; this->aGetFixedEffects(&outFixedEffects); return outFixedEffects;};
 	virtual inline std::string getName() const {return "CLinearMean";};
 	virtual inline void checkDimensions(const MatrixXd& Y){checkDimensions(this->weights, this->fixedEffects, Y, false, false, true);};
-	virtual inline void checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights = false, const bool checkStrictFixedEffects = false, const bool checkStrictY = false) const throw (CGPMixException);
+	virtual inline void checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights = false, const bool checkStrictFixedEffects = false, const bool checkStrictY = false) const ;
 	inline virtual MatrixXd predictY() const {MatrixXd out = MatrixXd(); aPredictY(&out); return out;};
 	inline virtual MatrixXd predictY(const MatrixXd& fixedEffects) const {MatrixXd out = MatrixXd(); aPredictYstar(&out, &fixedEffects); return out;};
 	virtual void setWeightsOLS();
@@ -69,7 +67,7 @@ public:
 	virtual inline muint_t getNTargets() const {return nTargets;}
 };
 
-inline void CLinearMean::checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights, const bool checkStrictFixedEffects, const bool checkStrictY) const throw (CGPMixException)
+inline void CLinearMean::checkDimensions(const MatrixXd& weights, const MatrixXd& fixedEffects, const MatrixXd& Y, const bool checkStrictWeights, const bool checkStrictFixedEffects, const bool checkStrictY) const 
 {
 	bool notIsnullweights = false;
 	bool notIsnullFixed = false;
@@ -92,17 +90,17 @@ inline void CLinearMean::checkDimensions(const MatrixXd& weights, const MatrixXd
 	if (notIsnullweights && notIsnullFixed && (weights.rows()) != fixedEffects.cols() ){
 		std::ostringstream os;
 		os << this->getName() << ": Number of weights and fixed effects do not match. number fixed effects = " << fixedEffects.cols() << ", number weights = " << weights.rows();
-		throw CGPMixException(os.str());
+		throw CLimixException(os.str());
 	}
 	if (notIsnullFixed && notIsnullY && (fixedEffects.rows()) != Y.rows() ){
 			std::ostringstream os;
 			os << this->getName() << ": Number of samples in fixedEffects and Y do not match. fixed effects : " << fixedEffects.rows() << ", Y = " << Y.rows();
-			throw CGPMixException(os.str());
+			throw CLimixException(os.str());
 		}
 	if ( notIsnullweights && notIsnullY && (weights.cols()) != Y.cols() ){
 			std::ostringstream os;
 			os << this->getName() << ": Number of target dimensions do not match in Y and weights. Y: " << Y.cols() << ", weights = " << weights.cols();
-			throw CGPMixException(os.str());
+			throw CLimixException(os.str());
 		}
 }
 typedef sptr<CLinearMean> PLinearMean;

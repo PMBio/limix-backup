@@ -45,13 +45,11 @@ def estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None
     print ".. Training the backgrond covariance with a GP model"
     vc = VAR.CVarianceDecomposition(phenos)
     if K1r is not None:
-        vc.addMultiTraitTerm(K1r,covar_type=covar_type,rank=rank)
+        vc.addRandomEffect(K1r,covar_type=covar_type,rank=rank)
     if K2r is not None:
-        vc.addMultiTraitTerm(K2r,covar_type=covar_type,rank=rank)
-    
+        vc.addRandomEffect(K2r,covar_type=covar_type,rank=rank)
     for ic  in xrange(len(Acovs)):
-        vc.addFixedTerm(covs[ic],Acovs[ic])
-    vc.setScales()
+        vc.addFixedEffect(covs[ic],Acovs[ic])
     start = time.time()
     conv = vc.findLocalOptimum(fast=True)
     assert conv, "CVariance Decomposition has not converged"

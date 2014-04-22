@@ -1,0 +1,1279 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass{article}
+
+    
+    
+    \usepackage{graphicx} % Used to insert images
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{color} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    
+
+    
+    
+    \definecolor{orange}{cmyk}{0,0.4,0.8,0.2}
+    \definecolor{darkorange}{rgb}{.71,0.21,0.01}
+    \definecolor{darkgreen}{rgb}{.12,.54,.11}
+    \definecolor{myteal}{rgb}{.26, .44, .56}
+    \definecolor{gray}{gray}{0.45}
+    \definecolor{lightgray}{gray}{.95}
+    \definecolor{mediumgray}{gray}{.8}
+    \definecolor{inputbackground}{rgb}{.95, .95, .85}
+    \definecolor{outputbackground}{rgb}{.95, .95, .95}
+    \definecolor{traceback}{rgb}{1, .95, .95}
+    % ansi colors
+    \definecolor{red}{rgb}{.6,0,0}
+    \definecolor{green}{rgb}{0,.65,0}
+    \definecolor{brown}{rgb}{0.6,0.6,0}
+    \definecolor{blue}{rgb}{0,.145,.698}
+    \definecolor{purple}{rgb}{.698,.145,.698}
+    \definecolor{cyan}{rgb}{0,.698,.698}
+    \definecolor{lightgray}{gray}{0.5}
+    
+    % bright ansi colors
+    \definecolor{darkgray}{gray}{0.25}
+    \definecolor{lightred}{rgb}{1.0,0.39,0.28}
+    \definecolor{lightgreen}{rgb}{0.48,0.99,0.0}
+    \definecolor{lightblue}{rgb}{0.53,0.81,0.92}
+    \definecolor{lightpurple}{rgb}{0.87,0.63,0.87}
+    \definecolor{lightcyan}{rgb}{0.5,1.0,0.83}
+    
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{demo\_yeast}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=blue,
+      linkcolor=darkorange,
+      citecolor=darkgreen,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    \tableofcontents
+    \newpage
+    
+    In this demo we show how to use LIMIX to build genetic models and
+perform different anlysis of single and multiple traits. We consider a
+yeast dataset (Smith et al, 2008, PLoS Biology) consisting of 109
+individuals with 2,956 marker SNPs and expression levels for 5,493 in
+glucose and ethanol growth media respectively. Such a dataset is ideal
+to showcase LIMIX and multiple trait analysis, containing two different
+axis of multi-trait variation (multiple genes and multiple
+environments). In particular, in these demos, we focus on the subset of
+the 11 genes in the Lysine Biosynthesis KEEG pathway considered in the
+paper.
+
+    We start discussing GWAS, multi locus models and variance decomposition
+models for single trait analysis and then we show how there models are
+extended for joint analysis of multiple traits. Then we go on to discuss
+how the prediction tool made available by LIMIX can be used to monitor
+overfitting and perform model selection. Finally, we show how LIMIX can
+be used to build model that infer and account for hidden confounders
+from high-dimensional phenotype data both in single trait and multi
+trait analysis.
+
+
+    \section{Setting up}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{o}{\PYZpc{}}\PY{k}{matplotlib} \PY{n}{inline}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k+kn}{import} \PY{n+nn}{scipy} \PY{k+kn}{as} \PY{n+nn}{SP}
+        \PY{k+kn}{import} \PY{n+nn}{pylab} \PY{k+kn}{as} \PY{n+nn}{PL}
+        \PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{cm}
+        \PY{k+kn}{import} \PY{n+nn}{h5py}
+        \PY{k+kn}{import} \PY{n+nn}{pdb}
+        \PY{n}{SP}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{c}{\PYZsh{} import limix}
+        \PY{k+kn}{import} \PY{n+nn}{sys}
+        \PY{n}{sys}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{./../build/release.darwin/interfaces/python}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+        \PY{k+kn}{import} \PY{n+nn}{limix.modules.varianceDecomposition} \PY{k+kn}{as} \PY{n+nn}{VAR}
+        \PY{k+kn}{import} \PY{n+nn}{limix.modules.qtl} \PY{k+kn}{as} \PY{n+nn}{QTL}
+        \PY{k+kn}{import} \PY{n+nn}{limix.modules.data} \PY{k+kn}{as} \PY{n+nn}{DATA}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{c}{\PYZsh{} temporary}
+        \PY{k+kn}{from} \PY{n+nn}{include.utils} \PY{k+kn}{import} \PY{o}{*}
+        \PY{k+kn}{from} \PY{n+nn}{include.manhattan\PYZus{}script} \PY{k+kn}{import} \PY{n}{plot\PYZus{}manhattan}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c}{\PYZsh{}genes from lysine biosynthesis pathway}
+        \PY{n}{lysine\PYZus{}group} \PY{o}{=} \PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{YIL094C}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{YDL182W}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{YDL131W}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{YER052C}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{YBR115C}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{YDR158W}\PY{l+s}{\PYZsq{}}\PY{p}{,}
+                        \PY{l+s}{\PYZsq{}}\PY{l+s}{YNR050C}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{YJR139C}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{YIR034C}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{YGL202W}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{YDR234W}\PY{l+s}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c}{\PYZsh{}import data}
+        \PY{n}{fname} \PY{o}{=} \PY{l+s}{\PYZsq{}}\PY{l+s}{./data/smith\PYZus{}2008/smith08.hdf5}\PY{l+s}{\PYZsq{}}
+        \PY{n}{data} \PY{o}{=} \PY{n}{DATA}\PY{o}{.}\PY{n}{QTLData}\PY{p}{(}\PY{n}{fname}\PY{p}{)}
+        \PY{c}{\PYZsh{}getting genotypes}
+        \PY{n}{X} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getGenotypes}\PY{p}{(}\PY{p}{)}
+        \PY{n}{cumPos} \PY{o}{=} \PY{n}{getCumPos}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+        \PY{n}{chromBounds} \PY{o}{=} \PY{n}{getChromBounds}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+        \PY{c}{\PYZsh{} non\PYZhy{}normalized and normalized sample relatedeness matrix}
+        \PY{n}{R0} \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+        \PY{n}{R}  \PY{o}{=} \PY{n}{R0}\PY{o}{/}\PY{n}{R0}\PY{o}{.}\PY{n}{diagonal}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{c}{\PYZsh{} plot sample relatedeness matrix}
+        \PY{n}{plt} \PY{o}{=} \PY{n}{PL}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{PL}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{genetic kinship}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{PL}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{R}\PY{p}{,}\PY{n}{vmin}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{vmax}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{interpolation}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{none}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{n}{cm}\PY{o}{.}\PY{n}{afmhot}\PY{p}{)}
+        \PY{n}{PL}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{ticks}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mf}{0.5}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{orientation}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{horizontal}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} []
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{demo_yeast_files/demo_yeast_9_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \section{Single Trait Analysis}
+
+
+
+    \subsection{Single Locus Analysis}
+
+
+
+    \subsubsection{The Genetic Model}
+
+
+    Indicating with $N$ the number of samples, the standard LMM considered
+by LIMIX is
+
+\begin{equation}
+\mathbf{y} = \mathbf{F}\boldsymbol{\alpha} + \mathbf{x}\beta + \mathbf{g}+\boldsymbol{\psi},\;\;\;
+\mathbf{g}\sim\mathcal{N}\left(\mathbf{0},\sigma_g^2\mathbf{R}\right),\;
+\boldsymbol{\psi}\sim\mathcal{N}\left(\mathbf{0},\sigma_e^2\mathbf{I}_N\right)
+\end{equation}
+
+where
+
+\begin{eqnarray}
+\mathbf{y}   &=& \text{phenotype vector} \in \mathcal{R}^{N,1} \\
+\mathbf{F}   &=& \text{matrix of $K$ covariates} \in \mathcal{R}^{N,K} \\
+\boldsymbol{\alpha} &=& \text{effect of covariates} \in \mathcal{R}^{K,1} \\
+\mathbf{x}   &=& \text{genetic profile of the SNP being tested} \in \mathcal{R}^{N,1} \\
+\boldsymbol{\beta}   &=& \text{effect size of the SNP} \in \mathcal{R} \\
+\mathbf{R}   &=& \text{sample relatedeness matrix} \in \mathcal{R}^{N,N} \\
+\end{eqnarray}
+
+Association between phenotypic changes and the genetic markers is tested
+by testing $\beta\neq0$.
+
+The model can be rewritten using the delta-representation
+
+\begin{equation}
+\mathbf{y}\sim
+\mathcal{N}\left(\mathbf{W}\boldsymbol{\alpha}+\mathbf{x}\beta,
+\sigma_g^2\left(\mathbf{R}+\delta\mathbf{I}\right)\right)
+\end{equation}
+
+where $\delta={\sigma_e^2}/{\sigma_g^2}$ is the signal-to-noise ratio.
+and is refitted SNP-by-SNP during the scan.
+
+
+    \subsubsection{Example: Single-trait eQTL mapping for gene YBR115C in environment 0}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{c}{\PYZsh{} getting data}
+        \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getPhenotypes}\PY{p}{(}\PY{n}{geneIDs}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{YBR115C}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{environments}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+        \PY{n}{N}\PY{p}{,}\PY{n}{G} \PY{o}{=} \PY{n}{Y}\PY{o}{.}\PY{n}{shape}
+        
+        \PY{c}{\PYZsh{} Running the analysis}
+        \PY{c}{\PYZsh{} when cov are not set, LIMIX considers an intercept (F=SP.ones((N,1)))}
+        \PY{n}{lmm} \PY{o}{=} \PY{n}{QTL}\PY{o}{.}\PY{n}{simple\PYZus{}lmm}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{Y}\PY{p}{,}\PY{n}{K}\PY{o}{=}\PY{n}{R}\PY{p}{,}\PY{n}{covs}\PY{o}{=}\PY{n+nb+bp}{None}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} get p\PYZhy{}values}
+        \PY{n}{pv} \PY{o}{=} \PY{n}{lmm}\PY{o}{.}\PY{n}{getPv}\PY{p}{(}\PY{p}{)}         \PY{c}{\PYZsh{} 1xS vector of p\PYZhy{}values (S=X.shape[1])}
+        \PY{n}{beta} \PY{o}{=} \PY{n}{lmm}\PY{o}{.}\PY{n}{getBetaSNP}\PY{p}{(}\PY{p}{)}  \PY{c}{\PYZsh{} 1xS vector of effect sizes (S=X.shape[1])}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+finished GWAS testing in 0.04 seconds
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{plt} \PY{o}{=} \PY{n}{PL}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{plot\PYZus{}manhattan}\PY{p}{(}\PY{n}{plt}\PY{p}{,}\PY{n}{cumPos}\PY{p}{,}\PY{n}{pv}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{chromBounds}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{demo_yeast_files/demo_yeast_16_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \subsubsection{Example: Single-trait eQTL mapping for all genes in the pathways in
+environment 0}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{c}{\PYZsh{} getting data}
+         \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getPhenotypes}\PY{p}{(}\PY{n}{geneIDs}\PY{o}{=}\PY{n}{lysine\PYZus{}group}\PY{p}{,}\PY{n}{environments}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{n}{N}\PY{p}{,}\PY{n}{G} \PY{o}{=} \PY{n}{Y}\PY{o}{.}\PY{n}{shape}
+         
+         \PY{c}{\PYZsh{} Running the analysis}
+         \PY{c}{\PYZsh{} when a matrix phenotype si given}
+         \PY{c}{\PYZsh{} LIMIX performs single\PYZhy{}trait GWAS on all columns (traits) one\PYZhy{}by\PYZhy{}one}
+         \PY{n}{lmm} \PY{o}{=} \PY{n}{QTL}\PY{o}{.}\PY{n}{simple\PYZus{}lmm}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{Y}\PY{p}{,}\PY{n}{K}\PY{o}{=}\PY{n}{R}\PY{p}{,}\PY{n}{covs}\PY{o}{=}\PY{n+nb+bp}{None}\PY{p}{)}
+         
+         \PY{c}{\PYZsh{} get p\PYZhy{}values}
+         \PY{n}{pv} \PY{o}{=} \PY{n}{lmm}\PY{o}{.}\PY{n}{getPv}\PY{p}{(}\PY{p}{)}         \PY{c}{\PYZsh{} GxS vector of p\PYZhy{}values (G=Y.shape[1]=\PYZsh{}genes,S=X.shape[1],\PYZsh{}SNPs)}
+         \PY{n}{beta} \PY{o}{=} \PY{n}{lmm}\PY{o}{.}\PY{n}{getBetaSNP}\PY{p}{(}\PY{p}{)}  \PY{c}{\PYZsh{} GxS vector of effect sizes}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+finished GWAS testing in 0.27 seconds
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{c}{\PYZsh{} plotting all manhattan plots}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}
+         \PY{n}{lim} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mf}{1.2}\PY{o}{*}\PY{n}{SP}\PY{o}{.}\PY{n}{log10}\PY{p}{(}\PY{n}{pv}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+         \PY{k}{for} \PY{n}{g} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{G}\PY{p}{)}\PY{p}{:}
+             \PY{n}{plt} \PY{o}{=} \PY{n}{PL}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{G}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{g}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+             \PY{n}{PL}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{n}{lysine\PYZus{}group}\PY{p}{[}\PY{n}{g}\PY{p}{]}\PY{p}{)}
+             \PY{k}{if} \PY{n}{g}\PY{o}{!=}\PY{n}{G}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}   \PY{n}{xticklabels} \PY{o}{=} \PY{n+nb+bp}{False}
+             \PY{k}{else}\PY{p}{:}        \PY{n}{xticklabels} \PY{o}{=} \PY{n+nb+bp}{True}
+             \PY{n}{plot\PYZus{}manhattan}\PY{p}{(}\PY{n}{plt}\PY{p}{,}\PY{n}{cumPos}\PY{p}{,}\PY{n}{pv}\PY{p}{[}\PY{n}{g}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{chromBounds}\PY{p}{,}\PY{n}{lim}\PY{o}{=}\PY{n}{lim}\PY{p}{,}\PY{n}{xticklabels}\PY{o}{=}\PY{n}{xticklabels}\PY{p}{)}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{demo_yeast_files/demo_yeast_19_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{c}{\PYZsh{} plotting minimum pv across genes}
+         \PY{n}{pv\PYZus{}min} \PY{o}{=} \PY{n}{pv}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{plt} \PY{o}{=} \PY{n}{PL}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{plot\PYZus{}manhattan}\PY{p}{(}\PY{n}{plt}\PY{p}{,}\PY{n}{cumPos}\PY{p}{,}\PY{n}{pv\PYZus{}min}\PY{p}{,}\PY{n}{chromBounds}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{demo_yeast_files/demo_yeast_20_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \subsection{Multi locus Single Trait Model}
+
+
+
+    \subsubsection{The Genetic Model}
+
+
+    The model LIMIX emplys for standard GWAS can be extended to include
+multiple loci by step-wise forward selection. This is done by performing
+the following two steps: - a genome-wide scan is performed using the
+standard linear mixed model - if the most associated marker has P-value
+lower than a certain threshold the marker is added as covariate and the
+algorithm return to step 1, otherwise it stops here.
+
+LIMIX allows the user to set - a threshold either over the P-value or
+the Q-value of the most associated SNP as stopping criterion; - a
+maximum number of iterations as stopping criterion;
+
+
+    \subsubsection{Example: Single-trait eQTL mapping for gene YBR115C in environment 0}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{c}{\PYZsh{} getting data}
+         \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getPhenotypes}\PY{p}{(}\PY{n}{geneIDs}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{YBR115C}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{environments}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{n}{N}\PY{p}{,}\PY{n}{G} \PY{o}{=} \PY{n}{Y}\PY{o}{.}\PY{n}{shape}
+         
+         \PY{c}{\PYZsh{} Running the analysis}
+         \PY{n}{thr} \PY{o}{=} \PY{l+m+mf}{0.01}\PY{o}{/}\PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{c}{\PYZsh{} threshold on pvalues (Bonferroni corrected significance level of 1\PYZpc{})}
+         \PY{n}{maxiter} \PY{o}{=} \PY{l+m+mi}{10} \PY{c}{\PYZsh{} maximum number of iterations}
+         \PY{n}{lmm}\PY{p}{,} \PY{n}{RV} \PY{o}{=} \PY{n}{QTL}\PY{o}{.}\PY{n}{forward\PYZus{}lmm}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{Y}\PY{p}{,}\PY{n}{K}\PY{o}{=}\PY{n}{R}\PY{p}{,}\PY{n}{qvalues}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{,}\PY{n}{threshold}\PY{o}{=}\PY{n}{thr}\PY{p}{,}\PY{n}{maxiter}\PY{o}{=}\PY{n}{maxiter}\PY{p}{)}
+         \PY{c}{\PYZsh{} RV contains:}
+         \PY{c}{\PYZsh{} \PYZhy{} iadded:   array of indices of SNPs included in order of inclusion}
+         \PY{c}{\PYZsh{} \PYZhy{} pvadded:  array of Pvalues obtained by the included SNPs in iteration before inclusion}
+         \PY{c}{\PYZsh{} \PYZhy{} pvall:   [maxiter x S] SP.array of Pvalues for all iterations}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+finished GWAS testing in 0.04 seconds
+finished GWAS testing in 0.03 seconds
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{c}{\PYZsh{} TODO: plotting}
+\end{Verbatim}
+
+
+    \subsection{Variance Component Models}
+
+
+    Here we show how the LIMIX variance decomposition module can be used in
+genetic anlysis of variance for single trait analysis.
+
+
+    \subsubsection{The Genetic Model}
+
+
+    The model considered by the LIMIX variance decomposition module is an
+extension of the genetic model employed in standard GWAS in to include
+different random effects terms:
+
+\begin{equation}
+\mathbf{y} = \mathbf{F}\boldsymbol{\alpha} + \sum_{x}\mathbf{u}^{(x)} + \boldsymbol{\psi},\;\;\;\;
+\mathbf{u}^{(x)}\sim\mathcal{N}\left(\mathbf{0},{\sigma^{(x)}}^2\mathbf{R}^{(x)}\right),\;
+\boldsymbol{\Psi}\sim\mathcal{N}\left(\mathbf{0},\sigma_e^2\mathbf{I}_N\right)
+\end{equation}
+
+where
+
+\begin{eqnarray}
+\mathbf{y}   &=& \text{phenotype vector} \in \mathcal{R}^{N,1} \\
+\mathbf{F}   &=& \text{matrix of $K$ covariates} \in \mathcal{R}^{N,K} \\
+\boldsymbol{\alpha} &=& \text{effect of covariates} \in \mathcal{R}^{K,1} \\
+\mathbf{R}^{(x)}   &=& \text{is the sample covariance matrix for contribution $x$} \in \mathcal{R}^{N,N} \\
+\end{eqnarray}
+
+If $\mathbf{R}$ is a genetic contribution from set of SNPs
+$\mathcal{S}$, with a bit of abuse of notation we can write
+$\mathbf{R}= \frac{1}{C}\mathbf{X}_{:,\,\mathcal{S}}{\mathbf{X}_{:,\,\mathcal{S}}}^T$
+where
+$C=\frac{1}{N}\text{trace}\left(\mathbf{X}_{:,\,\mathcal{S}_i}{\mathbf{X}_{:,\,\mathcal{S}_i}}^T\right)$.
+
+LIMIX allows the user to flexibly build the model by adding fixed and
+random effect terms.
+
+
+    \subsubsection{Example: Cis/Trans Variance Decomposition in environment 0}
+
+
+    Here we use the LIMIX variance decomposition module to quantify the
+variability in gene expression explained by proximal (cis) and distal
+(trans) genetic variation. To do so, we build a linear mixed model with
+a fixed effect intercept, two random effects for cis and trans genetic
+effects and a noise random effect:
+
+\begin{equation}
+\mathbf{y} = \mathbf{1}_N\mu + \mathbf{u}^{(cis)} + \mathbf{u}^{(trans)} + \boldsymbol{\psi},\;\;\;\;
+\mathbf{u}^{(cis)}\sim\mathcal{N}\left(\mathbf{0},{\sigma^{(x)}}^2\mathbf{R}^{(cis)}\right),\;
+\mathbf{u}^{(trans)}\sim\mathcal{N}\left(\mathbf{0},{\sigma^{(x)}}^2\mathbf{R}^{(trans)}\right),\;
+\boldsymbol{\Psi}\sim\mathcal{N}\left(\mathbf{0},\sigma_e^2\mathbf{I}_N\right)
+\end{equation}
+
+where $\mathbf{R}^\text{(cis)}$ and $\mathbf{R}^\text{(trans)}$ are the
+local and distal relatedeness matrices, built considering all SNPs in
+cis and trans (i.e., not in cis) respectively. As cis region we
+considered a window of 500kb downstream and upstream the gene.
+
+The gene-model is fitted to gene expression in environment 0 for all
+genes in the Lysine Biosynthesis pathway and variance components are
+averaged thereafter to obtain pathway based variance components.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{c}{\PYZsh{} loop over genes and fit variance component model}
+         \PY{n}{var} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+         \PY{n}{G} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{lysine\PYZus{}group}\PY{p}{)}
+         \PY{k}{for} \PY{n}{g} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{G}\PY{p}{)}\PY{p}{:}
+             
+             \PY{k}{print} \PY{l+s}{\PYZsq{}}\PY{l+s}{.. fit gene }\PY{l+s+si}{\PYZpc{}d}\PY{l+s}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{g}
+             
+             \PY{c}{\PYZsh{}get phenotype for gene g and environment 0}
+             \PY{n}{geneID} \PY{o}{=} \PY{n}{lysine\PYZus{}group}\PY{p}{[}\PY{n}{g}\PY{p}{]}
+             \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getPhenotypes}\PY{p}{(}\PY{n}{geneIDs}\PY{o}{=}\PY{n}{geneID}\PY{p}{,}\PY{n}{environments}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         
+             \PY{c}{\PYZsh{}build kinships}
+             \PY{n}{Icis} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getIcis\PYZus{}geno}\PY{p}{(}\PY{n}{lysine\PYZus{}group}\PY{p}{[}\PY{n}{g}\PY{p}{]}\PY{p}{,}\PY{l+m+mf}{5e5}\PY{p}{)}
+             \PY{k}{if} \PY{n}{Icis}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{:}      \PY{k}{continue}
+             \PY{n}{Xcis} \PY{o}{=} \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{Icis}\PY{p}{]}
+             \PY{n}{Rcis}    \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{Xcis}\PY{p}{,}\PY{n}{Xcis}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+             \PY{n}{Rtrans}  \PY{o}{=} \PY{n}{R0}\PY{o}{\PYZhy{}}\PY{n}{Rcis} \PY{c}{\PYZsh{} R0 = XX.T = non\PYZhy{}normalized relatedness matrix}
+             \PY{n}{Rcis}   \PY{o}{/}\PY{o}{=} \PY{n}{Rcis}\PY{o}{.}\PY{n}{diagonal}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+             \PY{n}{Rtrans} \PY{o}{/}\PY{o}{=} \PY{n}{Rtrans}\PY{o}{.}\PY{n}{diagonal}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         
+             \PY{c}{\PYZsh{} variance component model}
+             \PY{n}{vc} \PY{o}{=} \PY{n}{VAR}\PY{o}{.}\PY{n}{CVarianceDecomposition}\PY{p}{(}\PY{n}{Y}\PY{p}{)}
+             \PY{n}{vc}\PY{o}{.}\PY{n}{addFixedEffect}\PY{p}{(}\PY{p}{)}
+             \PY{n}{vc}\PY{o}{.}\PY{n}{addRandomEffect}\PY{p}{(}\PY{n}{K}\PY{o}{=}\PY{n}{Rcis}\PY{p}{)}
+             \PY{n}{vc}\PY{o}{.}\PY{n}{addRandomEffect}\PY{p}{(}\PY{n}{K}\PY{o}{=}\PY{n}{Rtrans}\PY{p}{)}
+             \PY{n}{vc}\PY{o}{.}\PY{n}{addRandomEffect}\PY{p}{(}\PY{n}{is\PYZus{}noise}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+             \PY{n}{vc}\PY{o}{.}\PY{n}{findLocalOptimum}\PY{p}{(}\PY{p}{)}
+             
+             \PY{c}{\PYZsh{} get variances}
+             \PY{c}{\PYZsh{} vc.getVariances() returs a vector of variances explained}
+             \PY{c}{\PYZsh{} by the three random effects in order of addition (cis,trans,noise)}
+             \PY{n}{\PYZus{}var} \PY{o}{=} \PY{n}{vc}\PY{o}{.}\PY{n}{getVariances}\PY{p}{(}\PY{p}{)}
+             
+             \PY{n}{var}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{\PYZus{}var}\PY{p}{)}
+             
+         \PY{n}{var} \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{var}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+.. fit gene 0
+Local minimum found at iteration 0
+.. fit gene 1
+Local minimum found at iteration 0
+.. fit gene 2
+Local minimum found at iteration 0
+.. fit gene 3
+Local minimum found at iteration 0
+.. fit gene 4
+Local minimum found at iteration 0
+.. fit gene 5
+Local minimum found at iteration 0
+.. fit gene 6
+Local minimum found at iteration 0
+.. fit gene 7
+Local minimum found at iteration 1
+.. fit gene 8
+Local minimum found at iteration 0
+.. fit gene 9
+Local minimum found at iteration 0
+.. fit gene 10
+Local minimum found at iteration 0
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{c}{\PYZsh{}normalize variance component and average}
+         \PY{n}{var}\PY{o}{/}\PY{o}{=}\PY{n}{var}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{SP}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}
+         \PY{n}{var\PYZus{}mean} \PY{o}{=} \PY{n}{var}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{labels} \PY{o}{=} \PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{cis}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{trans}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{noise}\PY{l+s}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{colors} \PY{o}{=} \PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{Green}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{MediumBlue}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{Gray}\PY{l+s}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{pie}\PY{p}{(}\PY{n}{var\PYZus{}mean}\PY{p}{,}\PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{autopct}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}1.1f}\PY{l+s+si}{\PYZpc{}\PYZpc{}}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{colors}\PY{o}{=}\PY{n}{colors}\PY{p}{,}\PY{n}{shadow}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{startangle}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}16}]:} ([<matplotlib.patches.Wedge at 0x1156fe610>,
+           <matplotlib.patches.Wedge at 0x116398510>,
+           <matplotlib.patches.Wedge at 0x1155ae410>],
+          [<matplotlib.text.Text at 0x1163986d0>,
+           <matplotlib.text.Text at 0x116398e10>,
+           <matplotlib.text.Text at 0x1155aec10>],
+          [<matplotlib.text.Text at 0x116398990>,
+           <matplotlib.text.Text at 0x1155ae190>,
+           <matplotlib.text.Text at 0x1155aec90>])
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{demo_yeast_files/demo_yeast_34_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \section{Multi Trait Analysis}
+
+
+    Denoting with $N$ and $P$ the number of samples and phenotypes in the
+analysis, LIMIX models the $N \times P$ matrix-variate phenotype
+$\mathbf{Y}$ as a sum of fixed and random effects in a multivariate
+mixed model framework.
+
+Single-trait models only consider the across-sample axis of variation
+and thus - fixed effects need only specification of a sample design
+(denoted by $\mathbf{F}$ so far) - random effects need only
+specification of a sample covariance matrix (denoted by $\mathbf{R}$ so
+far), which describes the correlation across samples induced by the
+random effect
+
+Conversely, multi-trait models also consider the across-trait axis of
+variation and thus - fixed effects also require a sample design (denoted
+with $\mathbf{A}$ in the following) - random effects also require a
+trait covariance matrix (denoted with $\mathbf{C}$ in the following),
+which describes the correlation across traits induced by the random
+effect
+
+Different forms of trait designs for fixed effects and trait covariances
+for random effects reflect different hypothesis on how these
+contributions affect phenotypes (e.g., shared and trait-specific
+effects). In the following, we will show how LIMIX can be used for
+different analysis of multiple traits wisely choosing trait designs and
+covariances.
+
+We decided to start with multi-trait variance components models before
+going to multi-trait GWAS analysis, including single-locus and
+multi-locus analysis. In the next section we will be discussing more
+subtle problems as regularization and model selection.
+
+
+    \subsection{Variance decomposition}
+
+
+
+    \subsubsection{Genetic Model}
+
+
+    The general multi-trait linear mixed models considered in the LIMIX
+variance decomposition module can be written as
+
+\begin{equation}
+\mathbf{Y} = \sum_i\mathbf{F}_i\boldsymbol{W}_i\boldsymbol{A}^\text{(cov)}_i + \sum_{x}\mathbf{U}^{(x)} + \boldsymbol{\Psi},\;\;\;\;
+\mathbf{U}^{(x)}\sim\text{MVN}\left(\mathbf{0},\mathbf{R}^{(x)},\mathbf{C}^{(x)}\right),\;
+\boldsymbol{\Psi}\sim\text{MVN}\left(\mathbf{0},\mathbf{I}_N,\mathbf{C}^\text{(noise)}\right)
+\end{equation}
+
+where
+
+\begin{eqnarray}
+\mathbf{Y}   &=& \text{phenotype vector} \in \mathcal{R}^{N,P} \\
+\mathbf{F}_i   &=& \text{sample designs for fixed effects} \in \mathcal{R}^{N,K} \\
+\mathbf{W}_i   &=& \text{effect size matrix of covariates} \in \mathcal{R}^{K,L} \\
+\mathbf{A}^\text{(cov)} &=& \text{trait design for the fixed effect} \in \mathcal{R}^{L,P} \\
+\mathbf{R}^{(x)}   &=& \text{sample covariance matrix for contribution $x$} \in \mathcal{R}^{N,N} \\
+\mathbf{C}^{(x)}   &=& \text{trait covariance matrix for contribution $x$} \in \mathcal{R}^{P,P} \\
+\mathbf{C}^\text{(noise)}   &=& \text{residual trait covariance matrix} \in \mathcal{R}^{P,P} \\
+\end{eqnarray}
+
+The variance decomposition module in LIMIX allows the user to build the
+model by adding any number of fixed and random effects, specify
+different designs for fixed effects and choose covariance models for
+random effects. In case of only two random effects LIMIX uses speedups
+beaking the $O(N^3P^3)$ complexity in $O(N^3+P^3)$.
+
+In the following we show two different example. In the first example we
+construct interpretable trait covariances for random effects and build a
+model that dissects gene expression variability across environmental and
+cis and trans genetic effects, and their interactions (cis GxE, trans
+GxE). In the second example we show how to use the fast implementation
+for a two-random-effect model, one for genetic effects and the other for
+residuals. Such a model is the natural extention to multi-trait analysis
+of the null model in single-trait GWAS and it is the first step of any
+multi-trait GWAS analysis performed in LIMIX.
+
+
+    \subsubsection{Example 1: GxE variance decomposition for Lysine Biosynthesis}
+
+
+    Indicating with $N$ and $E=2$ respectively the number of samples and the
+number of environments, we considered for each gene a model consisting
+of an envoronment-specific intercept term, a random effect for cis
+genetic effects, a random effect for trans genetic effects, and a noise
+random effect term.
+
+The model can be written
+
+\begin{equation}
+\mathbf{Y}=\mathbf{FWA}+\mathbf{U}^\text{(cis)}+\mathbf{U}^\text{(trans)}+\boldsymbol{\Psi},\;\;\;\;\;
+\mathbf{U}^\text{(cis)}\sim\text{MVN}(\mathbf{0},\mathbf{R}^\text{(cis)},\mathbf{C}^\text{(cis)}),\;
+\mathbf{U}^\text{(trans)}\sim\text{MVN}(\mathbf{0},\mathbf{R}^\text{(trans)},\mathbf{C}^\text{(trans)}),\;
+\boldsymbol{\Psi}\sim\text{MVN}(\mathbf{0},\mathbf{I}_N,\mathbf{C}_n),
+\end{equation}
+
+where $\mathbf{R}^\text{(cis)}$ and $\mathbf{R}^\text{(trans)}$ are the
+local and distal kinships, built considering all SNPs in cis and trans
+(i.e., not in cis) respectively. As in the single-trait analysis, we
+considered as cis region the region of 500kb downstream and upstream the
+gene.
+
+To dissect persistent and specific variance compoents we considered a
+`block+diagonal' form for $C^{(x)}$:
+
+\begin{equation}
+C^{(x)} =
+{a^{(x)}}^2
+\left[
+\begin{array}{cc}
+1 & 1\\
+1 & 1
+\end{array}
+\right]
++
+\left[
+\begin{array}{cc}
+{c^{(x)}_1}^2 & 0\\
+0 & {c^{(x)}_2}^2
+\end{array}
+\right]
+=
+\left[
+\begin{array}{cc}
+{a^{(x)}}^2+{c^{(x)}_1}^2 & {a^{(x)}}^2\\
+{a^{(x)}}^2 & {a^{(x)}}^2+{c^{(x)}_2}^2
+\end{array}
+\right]
+\end{equation}
+
+Variance of persistent and specific (GxE) effects from term $x$ are
+${a^{(x)}}^2$ and $\frac{1}{2}\left({c_1^{(x)}}^2+{c_2^{(x)}}^2\right)$
+while the variance explained by pure environmental shift can be
+calculated as $\text{var}\left(W\right)$.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{c}{\PYZsh{} loop over genes and fit variance component model}
+         \PY{n}{var} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+         \PY{n}{G} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{lysine\PYZus{}group}\PY{p}{)}
+         \PY{k}{for} \PY{n}{g} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{G}\PY{p}{)}\PY{p}{:}
+             
+             \PY{k}{print} \PY{l+s}{\PYZsq{}}\PY{l+s}{.. fit gene }\PY{l+s+si}{\PYZpc{}d}\PY{l+s}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{g}
+             
+             \PY{c}{\PYZsh{}get phenotype for gene g}
+             \PY{n}{geneID} \PY{o}{=} \PY{n}{lysine\PYZus{}group}\PY{p}{[}\PY{n}{g}\PY{p}{]}
+             \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getPhenotypes}\PY{p}{(}\PY{n}{geneIDs}\PY{o}{=}\PY{n}{geneID}\PY{p}{,}\PY{n}{center}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{,}\PY{n}{impute}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{n}{Y} \PY{o}{/}\PY{o}{=} \PY{n}{Y}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}
+         
+             \PY{c}{\PYZsh{}build kinships}
+             \PY{n}{Icis} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getIcis\PYZus{}geno}\PY{p}{(}\PY{n}{lysine\PYZus{}group}\PY{p}{[}\PY{n}{g}\PY{p}{]}\PY{p}{,}\PY{l+m+mf}{5e5}\PY{p}{)}
+             \PY{k}{if} \PY{n}{Icis}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{:}      \PY{k}{continue}
+             \PY{n}{Xcis} \PY{o}{=} \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{Icis}\PY{p}{]}
+             \PY{n}{Rcis}    \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{Xcis}\PY{p}{,}\PY{n}{Xcis}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+             \PY{n}{Rtrans}  \PY{o}{=} \PY{n}{R0}\PY{o}{\PYZhy{}}\PY{n}{Rcis} \PY{c}{\PYZsh{} R0 = XX.T = non\PYZhy{}normalized relatedness matrix}
+             \PY{n}{Rcis}   \PY{o}{/}\PY{o}{=} \PY{n}{Rcis}\PY{o}{.}\PY{n}{diagonal}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+             \PY{n}{Rtrans} \PY{o}{/}\PY{o}{=} \PY{n}{Rtrans}\PY{o}{.}\PY{n}{diagonal}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         
+             \PY{c}{\PYZsh{} variance component model}
+             \PY{n}{vc} \PY{o}{=} \PY{n}{VAR}\PY{o}{.}\PY{n}{CVarianceDecomposition}\PY{p}{(}\PY{n}{Y}\PY{p}{)}
+             \PY{n}{vc}\PY{o}{.}\PY{n}{addFixedEffect}\PY{p}{(}\PY{p}{)}
+             \PY{n}{vc}\PY{o}{.}\PY{n}{addRandomEffect}\PY{p}{(}\PY{n}{K}\PY{o}{=}\PY{n}{Rcis}\PY{p}{,}\PY{n}{covar\PYZus{}type}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{block\PYZus{}diag}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{vc}\PY{o}{.}\PY{n}{addRandomEffect}\PY{p}{(}\PY{n}{K}\PY{o}{=}\PY{n}{Rtrans}\PY{p}{,}\PY{n}{covar\PYZus{}type}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{block\PYZus{}diag}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{vc}\PY{o}{.}\PY{n}{addRandomEffect}\PY{p}{(}\PY{n}{is\PYZus{}noise}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,}\PY{n}{covar\PYZus{}type}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{block\PYZus{}diag}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{vc}\PY{o}{.}\PY{n}{findLocalOptimum}\PY{p}{(}\PY{p}{)}
+             
+             \PY{c}{\PYZsh{} environmental variance component}
+             \PY{n}{vEnv} \PY{o}{=} \PY{n}{vc}\PY{o}{.}\PY{n}{getFixed}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{p}{)}
+             \PY{c}{\PYZsh{} cis and cisGxE variance components}
+             \PY{n}{Ccis}  \PY{o}{=} \PY{n}{vc}\PY{o}{.}\PY{n}{getEstTraitCovar}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+             \PY{n}{a2cis} \PY{o}{=} \PY{n}{Ccis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+             \PY{n}{c2cis} \PY{o}{=} \PY{n}{Ccis}\PY{o}{.}\PY{n}{diagonal}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{a2cis}
+             \PY{c}{\PYZsh{} trans and cisGxE variance components}
+             \PY{n}{Ctrans}  \PY{o}{=} \PY{n}{vc}\PY{o}{.}\PY{n}{getEstTraitCovar}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+             \PY{n}{a2trans} \PY{o}{=} \PY{n}{Ctrans}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+             \PY{n}{c2trans} \PY{o}{=} \PY{n}{Ctrans}\PY{o}{.}\PY{n}{diagonal}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{a2trans}
+             \PY{c}{\PYZsh{} noise variance components}
+             \PY{n}{Cnois} \PY{o}{=} \PY{n}{vc}\PY{o}{.}\PY{n}{getEstTraitCovar}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+             \PY{n}{vNois} \PY{o}{=} \PY{n}{Cnois}\PY{o}{.}\PY{n}{diagonal}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+             
+             \PY{c}{\PYZsh{} Append}
+             \PY{n}{var}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{n}{vEnv}\PY{p}{,}\PY{n}{a2cis}\PY{p}{,}\PY{n}{c2cis}\PY{p}{,}\PY{n}{a2trans}\PY{p}{,}\PY{n}{c2trans}\PY{p}{,}\PY{n}{vNois}\PY{p}{]}\PY{p}{)}
+             
+         \PY{n}{var} \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{var}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+.. fit gene 0
+Local minimum found at iteration 0
+.. fit gene 1
+Local minimum found at iteration 0
+.. fit gene 2
+Local minimum found at iteration 0
+.. fit gene 3
+Local minimum found at iteration 0
+.. fit gene 4
+Local minimum found at iteration 0
+.. fit gene 5
+Local minimum found at iteration 0
+.. fit gene 6
+Local minimum found at iteration 0
+.. fit gene 7
+Local minimum found at iteration 0
+.. fit gene 8
+Local minimum found at iteration 0
+.. fit gene 9
+Local minimum found at iteration 0
+.. fit gene 10
+Local minimum found at iteration 0
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{c}{\PYZsh{}normalize variance component and average}
+         \PY{n}{var}\PY{o}{/}\PY{o}{=}\PY{n}{var}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{SP}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}
+         \PY{n}{var\PYZus{}mean} \PY{o}{=} \PY{n}{var}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{labels} \PY{o}{=} \PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{env}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{cis}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{cisGxE}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{trans}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{transGxE}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{noise}\PY{l+s}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{colors} \PY{o}{=} \PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{Gold}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{DarkGreen}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{YellowGreen}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{DarkBlue}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{RoyalBlue}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{Gray}\PY{l+s}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{pie}\PY{p}{(}\PY{n}{var\PYZus{}mean}\PY{p}{,}\PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{autopct}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}1.1f}\PY{l+s+si}{\PYZpc{}\PYZpc{}}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{colors}\PY{o}{=}\PY{n}{colors}\PY{p}{,}\PY{n}{shadow}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{startangle}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}18}]:} ([<matplotlib.patches.Wedge at 0x1156cc490>,
+           <matplotlib.patches.Wedge at 0x11564c310>,
+           <matplotlib.patches.Wedge at 0x11564c550>,
+           <matplotlib.patches.Wedge at 0x114264650>,
+           <matplotlib.patches.Wedge at 0x114268e90>,
+           <matplotlib.patches.Wedge at 0x114268d10>],
+          [<matplotlib.text.Text at 0x1156c8890>,
+           <matplotlib.text.Text at 0x11564c250>,
+           <matplotlib.text.Text at 0x114264550>,
+           <matplotlib.text.Text at 0x114268650>,
+           <matplotlib.text.Text at 0x114268990>,
+           <matplotlib.text.Text at 0x1156e9650>],
+          [<matplotlib.text.Text at 0x11564cf10>,
+           <matplotlib.text.Text at 0x11564c890>,
+           <matplotlib.text.Text at 0x114264a50>,
+           <matplotlib.text.Text at 0x114268dd0>,
+           <matplotlib.text.Text at 0x114268790>,
+           <matplotlib.text.Text at 0x1156e97d0>])
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{demo_yeast_files/demo_yeast_43_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \subsubsection{Example 2: fast variance decomposition}
+
+
+    In this example we consider a model with only two random effects: one
+genetic and a noise term and show how to perform fast inference to learn
+the trait covariance matrices.
+
+We apply the model to the expression in environoment 0 of the 11 genes
+of the lysine biosynthesis pathway.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getPhenotypes}\PY{p}{(}\PY{n}{geneIDs}\PY{o}{=}\PY{n}{lysine\PYZus{}group}\PY{p}{,}\PY{n}{environments}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{c}{\PYZsh{} variance component model}
+         \PY{n}{vc} \PY{o}{=} \PY{n}{VAR}\PY{o}{.}\PY{n}{CVarianceDecomposition}\PY{p}{(}\PY{n}{Y}\PY{p}{)}
+         \PY{n}{vc}\PY{o}{.}\PY{n}{addFixedEffect}\PY{p}{(}\PY{p}{)}
+         \PY{n}{vc}\PY{o}{.}\PY{n}{addRandomEffect}\PY{p}{(}\PY{n}{K}\PY{o}{=}\PY{n}{R}\PY{p}{,}\PY{n}{covar\PYZus{}type}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{lowrank\PYZus{}diag}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{rank}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{)}
+         \PY{n}{vc}\PY{o}{.}\PY{n}{addRandomEffect}\PY{p}{(}\PY{n}{is\PYZus{}noise}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,}\PY{n}{covar\PYZus{}type}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{lowrank\PYZus{}diag}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{rank}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{)}
+         \PY{n}{vc}\PY{o}{.}\PY{n}{findLocalOptimum}\PY{p}{(}\PY{n}{fast}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,}\PY{n}{init\PYZus{}method}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{diagonal}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+         \PY{c}{\PYZsh{} retrieve geno and noise covariance matrix}
+         \PY{n}{Cg} \PY{o}{=} \PY{n}{vc}\PY{o}{.}\PY{n}{getEstTraitCovar}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{Cn} \PY{o}{=} \PY{n}{vc}\PY{o}{.}\PY{n}{getEstTraitCovar}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Local minimum found at iteration 0
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{c}{\PYZsh{} plot trait covariance matrices}
+         \PY{n}{plt} \PY{o}{=} \PY{n}{PL}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{Geno trait covariance}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Cg}\PY{p}{,}\PY{n}{vmin}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.2}\PY{p}{,}\PY{n}{vmax}\PY{o}{=}\PY{l+m+mf}{0.8}\PY{p}{,}\PY{n}{interpolation}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{none}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{n}{cm}\PY{o}{.}\PY{n}{afmhot}\PY{p}{)}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{ticks}\PY{o}{=}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.2}\PY{p}{,}\PY{l+m+mf}{0.}\PY{p}{,}\PY{l+m+mf}{0.4}\PY{p}{,}\PY{l+m+mf}{0.8}\PY{p}{]}\PY{p}{,}\PY{n}{orientation}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{horizontal}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{)}
+         \PY{n}{plt} \PY{o}{=} \PY{n}{PL}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{Noise trait covariance}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Cn}\PY{p}{,}\PY{n}{vmin}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.2}\PY{p}{,}\PY{n}{vmax}\PY{o}{=}\PY{l+m+mf}{0.8}\PY{p}{,}\PY{n}{interpolation}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{none}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{n}{cm}\PY{o}{.}\PY{n}{afmhot}\PY{p}{)}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{ticks}\PY{o}{=}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.2}\PY{p}{,}\PY{l+m+mf}{0.}\PY{p}{,}\PY{l+m+mf}{0.4}\PY{p}{,}\PY{l+m+mf}{0.8}\PY{p}{]}\PY{p}{,}\PY{n}{orientation}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{horizontal}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}22}]:} []
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{demo_yeast_files/demo_yeast_47_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \subsection{Multi Trait GWAS}
+
+
+    The genetic model considered by LIMIX for multivariate GWAS consists of
+fixed effects for covariates, a fixed effect for the SNP being tested, a
+random effect for the polygenic effect and a noisy random effect term.
+
+The model can be written
+
+\begin{equation}
+\mathbf{Y}=
+\sum_i\mathbf{F}_i\boldsymbol{W}_i\boldsymbol{A}^\text{(cov)}_i
++\mathbf{XBA}_1^\text{(snp)}+\mathbf{G}+\boldsymbol{\Psi},\;\;\;\;\;
+\mathbf{G}\sim\text{MVN}(\mathbf{0},\mathbf{K},\mathbf{C}_g),\;
+\boldsymbol{\Psi}\sim\text{MVN}(\mathbf{0},\mathbf{I}_N,\mathbf{C}_n),
+\end{equation}
+
+where
+
+\begin{eqnarray}
+\mathbf{Y}   &=& \text{matrix-variate phenotype} \in \mathcal{R}^{N,P} \\
+\mathbf{F_i}   &=& \text{sample design for covariates} \in \mathcal{R}^{N,K} \\
+\mathbf{W_i}   &=& \text{effect size matrix of covariates} \in \mathcal{R}^{K,L} \\
+\mathbf{A_i}^\text{(cov)} &=& \text{trait design for the fixed effect} \in \mathcal{R}^{L,P} \\
+\mathbf{X}   &=& \text{genetic profile of the SNP} \in \mathcal{R}^{N,1} \\
+\mathbf{B}   &=& \text{effect sizes of the SNP} \in \mathcal{R}^{1,M} \\
+\mathbf{A}_1^\text{(snp)} &=& \text{trait design for the fixed effect} \in \mathcal{R}^{M,P} \\
+\mathbf{K}   &=& \text{sample relatedeness matrix} \in \mathcal{R}^{N,N} \\
+\mathbf{C}_g &=& \text{genetic trait covariance matrix} \in \mathcal{R}^{P,P} \\
+\mathbf{I}_N &=& \text{sample noise matrix} \in \mathcal{R}^{N,N} \\
+\mathbf{C}_n &=& \text{noise trait covariance matrix} \in \mathcal{R}^{P,P}
+\end{eqnarray}
+
+Prior to any multi-trait GWAS analysis, LIMIX learns the trait
+covariates matrices on the mixed model without the fixed effect from the
+SNP. However, LIMIX allows the user to set refitting of the
+signal-to-noise ratio $\delta$ SNP-by-SNP during the GWAS as in
+single-trait analysis.
+
+In general, LIMIX tests for particular trait designs of the fixed effect
+$\mathbf{A}_1^\text{(snp)}\neq\mathbf{A}_0^\text{(snp)}$. As shown
+extensively below, specifying opportunately $\mathbf{A}_1^\text{(snp)}$
+and $\mathbf{A}_0^\text{(snp)}$ different biological hypothesis can be
+tested.
+
+
+    \subsubsection{Any effect test}
+
+
+    Association between any of the phenotypes and the genetic marker can be
+tested by setting
+
+\begin{equation}
+\mathbf{A}_1^\text{(snp)} = \mathbf{I}_P,\;\;\;
+\mathbf{A}_0^\text{(snp)} = \mathbf{0}
+\end{equation}
+
+This is a $P$ degrees of freedom test.
+
+In this context, multi-trait modelling is considered just to empower
+detection of genetic loci while there is no interest in the specific
+design of the association.
+
+
+    \paragraph{Example: any effect test for gene YJR139C across environments}
+
+
+    Here we test for genetic effects on expression of one gene either in
+environment 0 or in environment 1.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{c}{\PYZsh{} Get data}
+         \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getPhenotypes}\PY{p}{(}\PY{n}{geneIDs}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{YJR139C}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{n}{N}\PY{p}{,}\PY{n}{P} \PY{o}{=} \PY{n}{Y}\PY{o}{.}\PY{n}{shape}
+         \PY{c}{\PYZsh{} Any effect test}
+         \PY{n}{F}    \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+         \PY{n}{Acov} \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{n}{P}\PY{p}{)}
+         \PY{n}{Asnp} \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{n}{P}\PY{p}{)}
+         \PY{n}{K1r}  \PY{o}{=} \PY{n}{R}             \PY{c}{\PYZsh{} sample relatedness matrix}
+         \PY{n}{ct}   \PY{o}{=} \PY{l+s}{\PYZsq{}}\PY{l+s}{freeform}\PY{l+s}{\PYZsq{}}    \PY{c}{\PYZsh{} model for trait covariance matrix}
+         \PY{n}{lmm}\PY{p}{,} \PY{n}{pv} \PY{o}{=} \PY{n}{QTL}\PY{o}{.}\PY{n}{kronecker\PYZus{}lmm}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{Y}\PY{p}{,}\PY{n}{covs}\PY{o}{=}\PY{n}{F}\PY{p}{,}\PY{n}{Acovs}\PY{o}{=}\PY{n}{Acov}\PY{p}{,}\PY{n}{Asnps}\PY{o}{=}\PY{n}{Asnp}\PY{p}{,}\PY{n}{K1r}\PY{o}{=}\PY{n}{R}\PY{p}{,}\PY{n}{covar\PYZus{}type}\PY{o}{=}\PY{n}{ct}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.05 s
+    \end{Verbatim}
+
+    REMARKS: - kronecker\_lmm always considers Asnp0=0 thus only Asnp1 needs
+to be specified - if trait covariance matrices (arguments K1c and K2c
+are not specified) kronecker\_lmm implements the variance decomposition
+module to estimate them. In this case, the user can specify the trait
+covariance model to considered (covar\_type and rank).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n}{plt} \PY{o}{=} \PY{n}{PL}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{plot\PYZus{}manhattan}\PY{p}{(}\PY{n}{plt}\PY{p}{,}\PY{n}{cumPos}\PY{p}{,}\PY{n}{pv}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{chromBounds}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{demo_yeast_files/demo_yeast_56_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \subsubsection{Common effect test}
+
+
+    A common effect test is a 1 degree of freedom test and can be done by
+setting
+
+\begin{equation}
+\mathbf{A}_1^\text{(snp)} = \mathbf{1}_{1,P},\;\;\;
+\mathbf{A}_0^\text{(snp)} = \mathbf{0}
+\end{equation}
+
+
+    \paragraph{Example: common effect test for gene YJR139C across environments}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{c}{\PYZsh{} Get data}
+         \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getPhenotypes}\PY{p}{(}\PY{n}{geneIDs}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{YJR139C}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{n}{N}\PY{p}{,}\PY{n}{P} \PY{o}{=} \PY{n}{Y}\PY{o}{.}\PY{n}{shape}
+         \PY{c}{\PYZsh{} Common effect test}
+         \PY{n}{F}    \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+         \PY{n}{Acov} \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{n}{P}\PY{p}{)}
+         \PY{n}{Asnp} \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{P}\PY{p}{)}\PY{p}{)}
+         \PY{n}{K1r}  \PY{o}{=} \PY{n}{R}             \PY{c}{\PYZsh{} sample relatedness matrix}
+         \PY{n}{ct}   \PY{o}{=} \PY{l+s}{\PYZsq{}}\PY{l+s}{freeform}\PY{l+s}{\PYZsq{}}    \PY{c}{\PYZsh{} model for trait covariance matrix}
+         \PY{n}{lmm}\PY{p}{,} \PY{n}{pv} \PY{o}{=} \PY{n}{QTL}\PY{o}{.}\PY{n}{kronecker\PYZus{}lmm}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{Y}\PY{p}{,}\PY{n}{covs}\PY{o}{=}\PY{n}{F}\PY{p}{,}\PY{n}{Acovs}\PY{o}{=}\PY{n}{Acov}\PY{p}{,}\PY{n}{Asnps}\PY{o}{=}\PY{n}{Asnp}\PY{p}{,}\PY{n}{K1r}\PY{o}{=}\PY{n}{R}\PY{p}{,}\PY{n}{covar\PYZus{}type}\PY{o}{=}\PY{n}{ct}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.09 s
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{plt} \PY{o}{=} \PY{n}{PL}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{plot\PYZus{}manhattan}\PY{p}{(}\PY{n}{plt}\PY{p}{,}\PY{n}{cumPos}\PY{p}{,}\PY{n}{pv}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{chromBounds}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{demo_yeast_files/demo_yeast_61_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \subsubsection{Specific effect test}
+
+
+    For a specifc effect test for trait $p$ the alternative model is set to
+have both a common and a specific effect for transcript $p$ from the SNP
+while the null model has only a common effect.
+
+It is a 1 degree of freedom test and, in the particular case of $P=3$
+traits and for $p=0$, it can be done by setting
+
+\begin{equation}
+\mathbf{A}_1^\text{(snp)} =
+\begin{pmatrix}
+  1 & 0 & 0 \\
+  1 & 1 & 1
+ \end{pmatrix}
+\;\;\;,
+\mathbf{A}_0^\text{(snp)} = \mathbf{1}_{1,3}
+\end{equation}
+
+
+    \paragraph{Example: specific effect test for gene YJR139C across
+environmentsExample}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getPhenotypes}\PY{p}{(}\PY{n}{geneIDs}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{YJR139C}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{c}{\PYZsh{} Any effect test}
+         \PY{n}{F}     \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+         \PY{n}{Acov}  \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{n}{P}\PY{p}{)}
+         \PY{n}{Asnp}  \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{n}{P}\PY{p}{)}
+         \PY{n}{Asnp1} \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{n}{P}\PY{p}{)}
+         \PY{n}{Asnp0} \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{P}\PY{p}{)}\PY{p}{)}
+         \PY{n}{K1r}   \PY{o}{=} \PY{n}{R}             \PY{c}{\PYZsh{} sample relatedness matrix}
+         \PY{n}{ct}    \PY{o}{=} \PY{l+s}{\PYZsq{}}\PY{l+s}{freeform}\PY{l+s}{\PYZsq{}}    \PY{c}{\PYZsh{} model for trait covariance matrix}
+         \PY{n}{pv\PYZus{}spec}\PY{p}{,}\PY{n}{pv\PYZus{}comm}\PY{p}{,}\PY{n}{pv\PYZus{}any}\PY{o}{=}\PY{n}{QTL}\PY{o}{.}\PY{n}{simple\PYZus{}interaction\PYZus{}kronecker}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{Y}\PY{p}{,}\PY{n}{covs}\PY{o}{=}\PY{n}{F}\PY{p}{,}\PY{n}{Acovs}\PY{o}{=}\PY{n}{Acov}\PY{p}{,}\PY{n}{Asnps1}\PY{o}{=}\PY{n}{Asnp1}\PY{p}{,}\PY{n}{Asnps0}\PY{o}{=}\PY{n}{Asnp0}\PY{p}{,}\PY{n}{K1r}\PY{o}{=}\PY{n}{K1r}\PY{p}{,}\PY{n}{covar\PYZus{}type}\PY{o}{=}\PY{n}{ct}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.05 s
+    \end{Verbatim}
+
+    Simple\_interaction\_kronecker not only compares the alternative model
+(where the trait design of the SNP is Asnp=Asnp1) versus the null model
+(where the trait design of the SNP is Asnp=Asnp0) but also compares the
+alternative model and the null models versus the no association model
+(Asnp=0). Three pvalues are then retured: - pv for alternative vs null
+(specific effect test) - pv for null vs noAssociation (common effect
+test) - pv for alternative vs noAssociation (any effect test)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}53}]:} \PY{n}{tests} \PY{o}{=} \PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{Any effect test}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{Interaction effect test}\PY{l+s}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{lim} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mf}{1.2}\PY{o}{*}\PY{n}{SP}\PY{o}{.}\PY{n}{log10}\PY{p}{(}\PY{n}{SP}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{pv\PYZus{}any}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{pv\PYZus{}comm}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{pv\PYZus{}spec}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+         \PY{n}{plt} \PY{o}{=} \PY{n}{PL}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{plot\PYZus{}manhattan}\PY{p}{(}\PY{n}{plt}\PY{p}{,}\PY{n}{cumPos}\PY{p}{,}\PY{n}{pv\PYZus{}any}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{chromBounds}\PY{p}{,}\PY{n}{colorS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{k}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{colorNS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{k}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{lim}\PY{o}{=}\PY{n}{lim}\PY{p}{,}\PY{n}{alphaNS}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{)}
+         \PY{n}{plot\PYZus{}manhattan}\PY{p}{(}\PY{n}{plt}\PY{p}{,}\PY{n}{cumPos}\PY{p}{,}\PY{n}{pv\PYZus{}comm}\PY{p}{,}\PY{n}{chromBounds}\PY{p}{,}\PY{n}{colorS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{colorNS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{lim}\PY{o}{=}\PY{n}{lim}\PY{p}{,}\PY{n}{alphaNS}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{)}
+         \PY{n}{plot\PYZus{}manhattan}\PY{p}{(}\PY{n}{plt}\PY{p}{,}\PY{n}{cumPos}\PY{p}{,}\PY{n}{pv\PYZus{}spec}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{chromBounds}\PY{p}{,}\PY{n}{colorS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{colorNS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{lim}\PY{o}{=}\PY{n}{lim}\PY{p}{,}\PY{n}{alphaNS}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{demo_yeast_files/demo_yeast_67_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    \subsubsection{Example: any, common and specific effect tests across environments for
+all genes in the pathway}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}61}]:} \PY{n}{G} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{lysine\PYZus{}group}\PY{p}{)}
+         \PY{n}{pv\PYZus{}any}  \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{G}\PY{p}{,}\PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+         \PY{n}{pv\PYZus{}comm} \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{G}\PY{p}{,}\PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+         \PY{n}{pv\PYZus{}spec} \PY{o}{=} \PY{n}{SP}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{G}\PY{p}{,}\PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+         \PY{c}{\PYZsh{} for loop over genes}
+         \PY{k}{for} \PY{n}{g} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{G}\PY{p}{)}\PY{p}{:}
+             \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{getPhenotypes}\PY{p}{(}\PY{n}{geneIDs}\PY{o}{=}\PY{n}{lysine\PYZus{}group}\PY{p}{[}\PY{n}{g}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{c}{\PYZsh{} any, common and specific effect tests for gene g}
+             \PY{n}{\PYZus{}pv\PYZus{}spec}\PY{p}{,}\PY{n}{\PYZus{}pv\PYZus{}comm}\PY{p}{,}\PY{n}{\PYZus{}pv\PYZus{}any}\PY{o}{=}\PY{n}{QTL}\PY{o}{.}\PY{n}{simple\PYZus{}interaction\PYZus{}kronecker}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{Y}\PY{p}{,}\PY{n}{covs}\PY{o}{=}\PY{n}{SP}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{Acovs}\PY{o}{=}\PY{n}{SP}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{n}{P}\PY{p}{)}\PY{p}{,}\PY{n}{Asnps1}\PY{o}{=}\PY{n}{SP}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{n}{P}\PY{p}{)}\PY{p}{,}\PY{n}{Asnps0}\PY{o}{=}\PY{n}{SP}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{P}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{K1r}\PY{o}{=}\PY{n}{R}\PY{p}{,}\PY{n}{covar\PYZus{}type}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{freeform}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{pv\PYZus{}any}\PY{p}{[}\PY{n}{g}\PY{p}{,}\PY{p}{:}\PY{p}{]}  \PY{o}{=} \PY{n}{\PYZus{}pv\PYZus{}any}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}
+             \PY{n}{pv\PYZus{}comm}\PY{p}{[}\PY{n}{g}\PY{p}{,}\PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{\PYZus{}pv\PYZus{}comm}
+             \PY{n}{pv\PYZus{}spec}\PY{p}{[}\PY{n}{g}\PY{p}{,}\PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{\PYZus{}pv\PYZus{}spec}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.04 s
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.12 s
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.04 s
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.06 s
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.04 s
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.10 s
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.04 s
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.05 s
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.05 s
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.41 s
+.. Training the backgrond covariance with a GP model
+Local minimum found at iteration 0
+Background model trained in 0.04 s
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}62}]:} \PY{c}{\PYZsh{} plotting all manhattan plots}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}
+         \PY{n}{lim} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mf}{1.2}\PY{o}{*}\PY{n}{SP}\PY{o}{.}\PY{n}{log10}\PY{p}{(}\PY{n}{SP}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{pv\PYZus{}any}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{pv\PYZus{}comm}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{pv\PYZus{}spec}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+         \PY{k}{for} \PY{n}{g} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{G}\PY{p}{)}\PY{p}{:}
+             \PY{n}{plt} \PY{o}{=} \PY{n}{PL}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{G}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{g}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+             \PY{n}{PL}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{n}{lysine\PYZus{}group}\PY{p}{[}\PY{n}{g}\PY{p}{]}\PY{p}{)}
+             \PY{k}{if} \PY{n}{g}\PY{o}{!=}\PY{n}{G}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}   \PY{n}{xticklabels} \PY{o}{=} \PY{n+nb+bp}{False}
+             \PY{k}{else}\PY{p}{:}        \PY{n}{xticklabels} \PY{o}{=} \PY{n+nb+bp}{True}
+             \PY{n}{plot\PYZus{}manhattan}\PY{p}{(}\PY{n}{plt}\PY{p}{,}\PY{n}{cumPos}\PY{p}{,}\PY{n}{pv\PYZus{}any}\PY{p}{[}\PY{n}{g}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{chromBounds}\PY{p}{,}\PY{n}{colorS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{k}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{colorNS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{k}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{lim}\PY{o}{=}\PY{n}{lim}\PY{p}{,}\PY{n}{alphaNS}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{,}\PY{n}{xticklabels}\PY{o}{=}\PY{n}{xticklabels}\PY{p}{)}
+             \PY{n}{plot\PYZus{}manhattan}\PY{p}{(}\PY{n}{plt}\PY{p}{,}\PY{n}{cumPos}\PY{p}{,}\PY{n}{pv\PYZus{}comm}\PY{p}{[}\PY{n}{g}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{chromBounds}\PY{p}{,}\PY{n}{colorS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{colorNS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{lim}\PY{o}{=}\PY{n}{lim}\PY{p}{,}\PY{n}{alphaNS}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{,}\PY{n}{xticklabels}\PY{o}{=}\PY{n}{xticklabels}\PY{p}{)}
+             \PY{n}{plot\PYZus{}manhattan}\PY{p}{(}\PY{n}{plt}\PY{p}{,}\PY{n}{cumPos}\PY{p}{,}\PY{n}{pv\PYZus{}spec}\PY{p}{[}\PY{n}{g}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{chromBounds}\PY{p}{,}\PY{n}{colorS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{colorNS}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{n}{lim}\PY{o}{=}\PY{n}{lim}\PY{p}{,}\PY{n}{alphaNS}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{,}\PY{n}{xticklabels}\PY{o}{=}\PY{n}{xticklabels}\PY{p}{)}
+         \PY{n}{PL}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{demo_yeast_files/demo_yeast_70_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    All any-effect eQTL are explained by environmental persistent signal
+with the exception of the peak on chromosome 2 for gene YNR050C that has
+an almost significant specific component. These results together with
+those obtained from the GxE variance decomposition analysis suggest that
+the strong transGxE signal of the genes in the pathway is due to
+interaction of the poligenic effect with the environment.
+
+
+    \subsection{Multi trait Multi locus}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}57}]:} 
+\end{Verbatim}
+
+
+    \section{Predictions and Model Selection}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}}]:} 
+\end{Verbatim}
+
+
+    \section{PANAMA}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}}]:} 
+\end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
