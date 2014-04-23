@@ -1,7 +1,18 @@
 /*! 
 \page installation Installation
 
-\section compiling from scratch
-Test 
+
+# Installing as python module
+
+The simplest way to install LIMIX is to use the pypi install module. On most system a simple
+
+> pip install limix
+
+will be sufficient. 
+
+# Manual compilation from source
+
+Alternative, the most recent version of LIMIX can be downloaded as a source package from github 
+<A href="http://www.google.de"> github </A>
 
 */
