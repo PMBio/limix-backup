@@ -418,7 +418,7 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
     return lmm,pv
 
 
-def simple_lmm(snps,pheno,K=None,covs=None, test='lrt'):
+def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervals0=None,NumIntervalsAlt=None):
     """
     Univariate fixed effects linear mixed model test for all SNPs
     
@@ -429,6 +429,8 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt'):
                         If not provided, then linear regression analysis is performed
         covs:   [N x D] SP.array of D covariates for N individuals
         test:   'lrt' for likelihood ratio test (default) or 'f' for F-test
+        NumIntervals0:  number of steps for delta optimization on the null model
+        NumIntervalsAlt:number of steps for delta optimization on the alt. model
     
     Returns:
         limix LMM object
@@ -450,6 +452,11 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt'):
     else:
         print test
         raise NotImplementedError("only f or lrt are implemented")
+    #set number of delta grid optimizations?
+    if NumIntervals0:
+        lmm.setNumIntervals0(NumIntervals0)
+    if NumIntervalsAlt:
+        lmm.setNumIntervalsAlt(NumIntervalsAlt)
     lm.process()
     t1=time.time()
     print ("finished GWAS testing in %.2f seconds" %(t1-t0))
