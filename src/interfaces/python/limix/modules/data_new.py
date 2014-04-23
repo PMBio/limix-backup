@@ -44,22 +44,22 @@ class QTLData(object):
             if pos_start is None:
                 idx_larger = SP.ones(self.num_snps,dtype=bool)
             else:
-                idx_larger = self.geno_pos>=pos_start
+                idx_larger = self.geno_pos["pos"]>=pos_start
             if pos_end is None:
                 idx_smaller = SP.ones(self.num_snps,dtype=bool)
             else:
-                idx_smaller = self.geno_pos<=pos_end
+                idx_smaller = self.geno_pos["pos"]<=pos_end
             res = idx_chr & idx_smaller & idx_larger
 
         elif pos_cum_start is not None or pos_cum_end is not None:
             if pos_cum_start is None:
                 idx_larger = SP.ones(self.num_snps,dtype=bool)
             else:
-                idx_larger = self.geno_pos>=pos_cum_start
+                idx_larger = self.geno_pos["pos_cum"]>=pos_cum_start
             if pos_cum_end is None:
                 idx_smaller = SP.ones(self.num_snps,dtype=bool)
             else:
-                idx_smaller = self.geno_pos<=pos_cum_end
+                idx_smaller = self.geno_pos["pos_cum"]<=pos_cum_end
             res = idx_smaller & idx_larger
         else:
             raise Exception("This should not be triggered")#res = SP.ones(self.geno_pos.shape,dtype=bool)
