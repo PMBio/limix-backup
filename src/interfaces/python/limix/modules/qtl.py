@@ -47,7 +47,8 @@ def estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None
     if K1r is not None:
         vc.addRandomEffect(K1r,covar_type=covar_type,rank=rank)
     if K2r is not None:
-        vc.addRandomEffect(K2r,covar_type=covar_type,rank=rank)
+        #TODO: fix this; forces second term to be the noise covariance
+        vc.addRandomEffect(is_noise=True,K=K2r,covar_type=covar_type,rank=rank)
     for ic  in xrange(len(Acovs)):
         vc.addFixedEffect(covs[ic],Acovs[ic])
     start = time.time()
