@@ -80,7 +80,7 @@ class QTLData(object):
             return self.geno_snp_idx[res]
 
             
-    def getGenotypes(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,impute_missing=True):
+    def getGenotypes(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,impute_missing=False):
         """return genotypes. 
         Optionally the indices for loading subgroups the genotypes for all people
         can be given in one out of three ways: 
@@ -108,7 +108,7 @@ class QTLData(object):
             X = du.imputeMissing(X,center=center,unit=unit)
         return X
 
-    def getCovariance(self,normalize=True,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,blocksize=None,X=None,**kw_args):
+    def getCovariance(self,normalize=False,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,blocksize=None,X=None,**kw_args):
         """calculate the empirical genotype covariance in a region"""
         return self.geno_reader.getCovariance(sample_idx=SP.array(self.sample_idx["geno"]),normalize=normalize,idx_start=idx_start,idx_end=idx_end,pos_start=pos_start,pos_end=pos_end,chrom=chrom,center=center,unit=unit,pos_cum_start=pos_cum_start,pos_cum_end=pos_cum_end,blocksize=blocksize,X=X,**kw_args)
 

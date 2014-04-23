@@ -160,7 +160,6 @@
     <ClInclude Include="src\limix\gp\gp_Sum.h" />
     <ClInclude Include="src\limix\io\dataframe.h" />
     <ClInclude Include="src\limix\io\genotype.h" />
-    <ClInclude Include="src\limix\io\gzstream.h" />
     <ClInclude Include="src\limix\io\plink\CCovariatesData.h" />
     <ClInclude Include="src\limix\io\plink\CKernelData.h" />
     <ClInclude Include="src\limix\io\plink\CLexer.h" />

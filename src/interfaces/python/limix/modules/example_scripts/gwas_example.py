@@ -1,4 +1,4 @@
-#import limix.modules.qtl as QTL
+import limix.modules.qtl as QTL
 import scipy as SP
 import pandas as pd
 
@@ -12,12 +12,12 @@ pheno_names_complete = SP.array(['Calcium_Chloride', 'Cisplatin', 'Cobalt_Chlori
        'x5-Fluorouracil', 'x6-Azauracil', 'Xylose', 'YNB', 'YNB:ph3',
        'YNB:ph8', 'YPD:15C', 'YPD:37C', 'YPD:4C'])
 
-pheno_names = [pheno_names_complete[0]]
+pheno_names = pheno_names_complete[0:2]
 
 data_subsample = data.subsample_phenotypes(phenotype_IDs=pheno_names,intersection=True)
 
 #get variables we need from data
-snps = data_subsample.getGenotypes()
+snps = data_subsample.getGenotypes(impute_missing=True)
 phenotypes,sample_idx = data_subsample.getPhenotypes(phenotype_IDs=pheno_names,intersection=True); assert sample_idx.all()
 
 K = data_subsample.getCovariance()
@@ -42,10 +42,10 @@ test="lrt"                  #specify type of statistical test
 #run the analysis
 #pvalues = QTL.simple_interaction_kronecker(snps=snps,phenos=phenotypes,covs=covs,Acovs=Acovs,Asnps1=Asnps1,Asnps0=Asnps0,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covar_type=covar_type,rank=rank,searchDelta=searchDelta)
 
-#lmm = QTL.simple_lmm(snps=snps,pheno=phenotypes,K=K,covs=covs, test=test)
-#pvalues =  data=lmm.getPv()
-pvalues = SP.randn(len(pheno_names),data.num_snps)
-pvalues =  pd.DataFrame(data=pvalues.T,index=data_subsample.geno_ID,columns=pheno_names)
+lmm = QTL.simple_lmm(snps=snps,pheno=phenotypes,K=K,covs=covs, test=test)
+pvalues = lmm.getPv()
+#pvalues = SP.randn(len(pheno_names),data.num_snps)
+pvalues = pd.DataFrame(data=pvalues.T,index=data_subsample.geno_ID,columns=pheno_names)
 
 #create result DataFrame
 result = pd.concat([pos,pvalues],join="outer",axis=1)

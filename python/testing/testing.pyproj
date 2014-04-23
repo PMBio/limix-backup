@@ -7,7 +7,7 @@
     <ProjectHome>
     </ProjectHome>
     <StartupFile>covariance_test.py</StartupFile>
-    <SearchPath>..\..\debug.win32\interfaces\python\limix\</SearchPath>
+    <SearchPath>C:\Users\lippert\Projects\limix\build\debug.win32\interfaces\python</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <InterpreterId>00000000-0000-0000-0000-000000000000</InterpreterId>
@@ -19,7 +19,7 @@
     <CommandLineArguments />
     <InterpreterPath />
     <InterpreterArguments />
-    <EnableNativeCodeDebugging>True</EnableNativeCodeDebugging>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
