@@ -1,0 +1,3 @@
+[submodule "tutorials"]
+	path = tutorials
+	url = https://scm.ebi.ac.uk/git/Limix-tutorials.git
