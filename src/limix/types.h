@@ -213,6 +213,8 @@ class CLimixException : public std::exception
       : What(str)
     {
     }
+    virtual ~CLimixException() throw ()
+    {}
     std::string what()
     {
       return What;
