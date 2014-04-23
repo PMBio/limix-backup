@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{c562839d-e28a-403c-8331-4024a1b467ef}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>__init__.py</StartupFile>
+    <StartupFile>modules\limix_runner.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>

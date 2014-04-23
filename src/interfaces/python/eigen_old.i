@@ -33,7 +33,7 @@
          const MatrixXd,
          MatrixXd &,
          const MatrixXd & {
-  $1 = (array_type($input) == NPY_FLOAT) || (array_type($input) == NPY_DOUBLE);
+  $1 = (array_type($input) == PyArray_FLOAT) || (array_type($input) == PyArray_DOUBLE);
 }
 
 
@@ -49,13 +49,13 @@
     
     switch ( array_type($input) ) {
 
-    case NPY_LONG:
-    case NPY_DOUBLE:
-      in_array = obj_to_array_contiguous_allow_conversion($input, NPY_DOUBLE, &newObject);
+    case PyArray_LONG:
+    case PyArray_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion($input, PyArray_DOUBLE, &newObject);
       break;
 
-    case NPY_INT:
-    case NPY_FLOAT:
+    case PyArray_INT:
+    case PyArray_FLOAT:
 
     default:
       PyErr_SetString(PyExc_ValueError,
@@ -93,12 +93,12 @@
     // prepare the input array
     switch( array_type($input) ) {
 
-    case NPY_LONG:
-    case NPY_DOUBLE:
+    case PyArray_LONG:
+    case PyArray_DOUBLE:
       (*$1) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
       break;
-    case NPY_INT:
-    case NPY_FLOAT:
+    case PyArray_INT:
+    case PyArray_FLOAT:
 
     default:
       PyErr_SetString(PyExc_ValueError,
@@ -125,7 +125,7 @@ MatrixXd* (MatrixXd temp) {
 
   // prepare resulting array
   npy_intp dims[] = {$1->rows(), $1->cols()};
-  PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+  PyObject * out_array = PyArray_SimpleNew(2, dims, PyArray_DOUBLE);
 
   if (out_array == NULL){
     PyErr_SetString(PyExc_ValueError,
@@ -154,14 +154,14 @@ const MatrixXi & (MatrixXi temp) {
     
     switch ( array_type($input) ) {
 			
-		case NPY_LONG:
-		case NPY_DOUBLE:
-			in_array = obj_to_array_contiguous_allow_conversion($input, NPY_INT64, &newObject);
+		case PyArray_LONG:
+		case PyArray_DOUBLE:
+			in_array = obj_to_array_contiguous_allow_conversion($input, PyArray_INT64, &newObject);
 			break;
-		case NPY_INT:
-			in_array = obj_to_array_contiguous_allow_conversion($input, NPY_INT64, &newObject);
+		case PyArray_INT:
+			in_array = obj_to_array_contiguous_allow_conversion($input, PyArray_INT64, &newObject);
 			break;
-		case NPY_FLOAT:
+		case PyArray_FLOAT:
 			
 		default:
 			PyErr_SetString(PyExc_ValueError,
@@ -199,12 +199,12 @@ const MatrixXi & (MatrixXi temp) {
     // prepare the input array
     switch( array_type($input) ) {
 			
-		case NPY_LONG:
-		case NPY_DOUBLE:
-		case NPY_INT:
+		case PyArray_LONG:
+		case PyArray_DOUBLE:
+		case PyArray_INT:
 			(*$1) = Eigen::Map<MatrixXiscipy>((mint_t*)array_data( in_array ), in_rows, in_cols).cast<mint_t>();
 			break;
-		case NPY_FLOAT:
+		case PyArray_FLOAT:
 			
 		default:
 			PyErr_SetString(PyExc_ValueError,
@@ -231,7 +231,7 @@ MatrixXi* {
 	
 	// prepare resulting array
 	npy_intp dims[] = {$1->rows(), $1->cols()};
-	PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_INT64);
+	PyObject * out_array = PyArray_SimpleNew(2, dims, PyArray_INT64);
 	
 	if (out_array == NULL){
 		PyErr_SetString(PyExc_ValueError,
@@ -263,13 +263,13 @@ MatrixXi* {
     
     switch ( array_type($input) ) {
 
-    case NPY_LONG:
-    case NPY_DOUBLE:
-      in_array = obj_to_array_contiguous_allow_conversion($input, NPY_DOUBLE, &newObject);
+    case PyArray_LONG:
+    case PyArray_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion($input, PyArray_DOUBLE, &newObject);
       break;
 
-    case NPY_INT:
-    case NPY_FLOAT:
+    case PyArray_INT:
+    case PyArray_FLOAT:
 
     default:
       PyErr_SetString(PyExc_ValueError,
@@ -309,12 +309,12 @@ MatrixXi* {
     // prepare the input array
     switch( array_type($input) ) {
 
-    case NPY_LONG:
-    case NPY_DOUBLE:
+    case PyArray_LONG:
+    case PyArray_DOUBLE:
       (*$1) = Eigen::Map<VectorXdscipy>((double*)array_data( in_array ), in_rows).cast<mfloat_t>();
       break;
-    case NPY_INT:
-    case NPY_FLOAT:
+    case PyArray_INT:
+    case PyArray_FLOAT:
 
     default:
       PyErr_SetString(PyExc_ValueError,
@@ -344,7 +344,7 @@ MatrixXi* {
   // prepare resulting array
   /*
   npy_intp dims[] = {$1->rows(), $1->cols()};
-  PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+  PyObject * out_array = PyArray_SimpleNew(2, dims, PyArray_DOUBLE);
 
   if (out_array == NULL){
     PyErr_SetString(PyExc_ValueError,
@@ -360,7 +360,7 @@ MatrixXi* {
   */
   //Vector types in eigen have rows only:
   npy_intp dims[] = {$1->rows()};
-  PyObject * out_array = PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+  PyObject * out_array = PyArray_SimpleNew(1, dims, PyArray_DOUBLE);
 
   if (out_array == NULL){
     PyErr_SetString(PyExc_ValueError,
@@ -392,12 +392,12 @@ const VectorXi& (VectorXi temp) {
     
     switch ( array_type($input) ) {
 			
-		case NPY_LONG:
-		case NPY_DOUBLE:
-		case NPY_INT:
-			in_array = obj_to_array_contiguous_allow_conversion($input, NPY_INT64, &newObject);
+		case PyArray_LONG:
+		case PyArray_DOUBLE:
+		case PyArray_INT:
+			in_array = obj_to_array_contiguous_allow_conversion($input, PyArray_INT64, &newObject);
 			break;
-		case NPY_FLOAT:
+		case PyArray_FLOAT:
 			
 		default:
 			PyErr_SetString(PyExc_ValueError,
@@ -437,12 +437,12 @@ const VectorXi& (VectorXi temp) {
     // prepare the input array
     switch( array_type($input) ) {
 			
-		case NPY_LONG:
-		case NPY_DOUBLE:
-		case NPY_INT:
+		case PyArray_LONG:
+		case PyArray_DOUBLE:
+		case PyArray_INT:
 			(*$1) = Eigen::Map<VectorXiscipy>((mint_t*)array_data( in_array ), in_rows)	.cast<mint_t>();
 			break;
-		case NPY_FLOAT:
+		case PyArray_FLOAT:
 			
 		default:
 			PyErr_SetString(PyExc_ValueError,
@@ -471,7 +471,7 @@ VectorXi* (VectorXi temp) {
 VectorXi* {
 	//Vector types in eigen have rows only:
 	npy_intp dims[] = {$1->rows()};
-	PyObject * out_array = PyArray_SimpleNew(1, dims, NPY_INT64);
+	PyObject * out_array = PyArray_SimpleNew(1, dims, PyArray_INT64);
 	
 	if (out_array == NULL){
 		PyErr_SetString(PyExc_ValueError,

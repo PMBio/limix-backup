@@ -489,9 +489,6 @@
     <ClInclude Include="src\limix\io\genotype.h">
       <Filter>src\limix\io</Filter>
     </ClInclude>
-    <ClInclude Include="src\limix\io\gzstream.h">
-      <Filter>src\limix\io</Filter>
-    </ClInclude>
     <ClInclude Include="src\limix\io\split.h">
       <Filter>src\limix\io</Filter>
     </ClInclude>
