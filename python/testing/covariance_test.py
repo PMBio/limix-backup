@@ -7,7 +7,7 @@
 import sys
 sys.path.append(r'./..')
 sys.path.append(r'./../../../pygp')
-sys.path.append(r'./../../debug.win32/interfaces/python')
+#sys.path.append(r'./../../build/debug.win32/interfaces/python')
 
 
 import limix

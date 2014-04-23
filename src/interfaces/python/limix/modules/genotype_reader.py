@@ -119,9 +119,11 @@ class genotype_reader_h5py():
             idx_end=None
         return idx_start,idx_end
 
-    def getCovariance(self,sample_idx=None,normalize=True,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,blocksize=None,X=None,snp_idx=None,**kw_args):
+    def getCovariance(self,sample_idx=None,normalize=False,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,blocksize=None,X=None,snp_idx=None,**kw_args):
         """calculate the empirical genotype covariance in a region"""
         if X is not None:
+            if X.dtype!=SP.float64:
+                X=SP.array(X,dtype=SP.float64)
             K=X.dot(X.T)
             Nsnp=X.shape[1]
         else:
@@ -140,7 +142,9 @@ class genotype_reader_h5py():
             Nsnp=idx_end-idx_start
             while nread<idx_end:
                 thisblock=min(blocksize,idx_end-nread)
-                X=self.getGenotypes(sample_idx=sample_idx,idx_start=nread,idx_end=(nread+thisblock),center=center,unit=unit,**kw_args)    
+                X=self.getGenotypes(sample_idx=sample_idx,idx_start=nread,idx_end=(nread+thisblock),center=center,unit=unit,impute_missing=True,**kw_args)    
+                if X.dtype!=SP.float64:
+                    X=SP.array(X,dtype=SP.float64)
                 if K is None:
                     K=X.dot(X.T)
                 else:
@@ -337,9 +341,11 @@ class genotype_reader_tables():
             idx_end=None
         return idx_start,idx_end
 
-    def getCovariance(self,sample_idx=None,normalize=True,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,blocksize=None,X=None,snp_idx=None,**kw_args):
+    def getCovariance(self,sample_idx=None,normalize=False,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,blocksize=5000,X=None,snp_idx=None,**kw_args):
         """calculate the empirical genotype covariance in a region"""
         if X is not None:
+            if X.dtype!=SP.float64:
+                X=SP.array(X,dtype=SP.float64)
             K=X.dot(X.T)
             Nsnp=X.shape[1]
         else:
@@ -358,7 +364,9 @@ class genotype_reader_tables():
             Nsnp=idx_end-idx_start
             while nread<idx_end:
                 thisblock=min(blocksize,idx_end-nread)
-                X=self.getGenotypes(sample_idx=sample_idx,idx_start=nread,idx_end=(nread+thisblock),center=center,unit=unit,**kw_args)    
+                X=self.getGenotypes(sample_idx=sample_idx,idx_start=nread,idx_end=(nread+thisblock),center=center,unit=unit,impute_missing=True,**kw_args)    
+                if X.dtype!=SP.float64:
+                    X=SP.array(X,dtype=SP.float64)                
                 if K is None:
                     K=X.dot(X.T)
                 else:
@@ -435,3 +443,17 @@ class genotype_reader_tables():
         [_chrom,_gene_start,_gene_start] = self.gene_pos[index][0,:]
         Icis = (self.geno_chrom==_chrom)*(self.geno_pos>=_gene_start-cis_window)*(self.geno_pos<=_gene_start+cis_window)
         return Icis
+
+"""
+    def to_table(self, filename):
+        file = tables.open 
+        pass
+
+class Genotype(tables.IsDescription):
+    index       = tables.UInt64Col()    # running index (64-bit integer)
+    id          = tables.StringCol(16)  # e.g. rs-id  (16-character String)
+    chromosome  = tables.UInt8Col()     # Unsigned short integer
+    bp_position = tables.UInt32Col()    # unsigned byte
+    values      = tables.CArray()
+
+"""   
