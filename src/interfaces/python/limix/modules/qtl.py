@@ -454,9 +454,9 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervals0=None,NumInt
         raise NotImplementedError("only f or lrt are implemented")
     #set number of delta grid optimizations?
     if NumIntervals0:
-        lmm.setNumIntervals0(NumIntervals0)
+        lm.setNumIntervals0(NumIntervals0)
     if NumIntervalsAlt:
-        lmm.setNumIntervalsAlt(NumIntervalsAlt)
+        lm.setNumIntervalsAlt(NumIntervalsAlt)
     lm.process()
     t1=time.time()
     print ("finished GWAS testing in %.2f seconds" %(t1-t0))
