@@ -63,20 +63,25 @@ def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.
     else:
         iNanX = X==-9
     if iNanX.any() or betaNotUnitVariance:
-        if cparser:
+        if cparser and center and (unit or betaNotUnitVariance):
             print "using C-based imputer"
-            if X.flags["C_CONTIGUOUS"] or typeX!=SP.float32:
-                X = SP.array(X, order="F", dtype=SP.float32)
-                if typeX==SP.int8:
-                    X[iNanX]=SP.nan
-                parser.standardize(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
+            if X.flags["C_CONTIGUOUS"] and typeX==SP.float32:
+                parser.standardizefloatCAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
                 X=SP.array(X,dtype=SP.float64)
+            elif X.flags["C_CONTIGUOUS"] and typeX==SP.float64:
+                parser.standardizedoubleCAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
+            elif X.flags["F_CONTIGUOUS"] and typeX==SP.float32:
+                parser.standardizefloatFAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
+                X=SP.array(X,dtype=SP.float64)
+            elif X.flags["F_CONTIGUOUS"] and typeX==SP.float64:
+                parser.standardizedoubleFAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
             else:
-                parser.standardize(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
-            X=SP.array(X,dtype=SP.float64)
-        else:
-            if betaNotUnitVariance:
+                X=SP.array(X,order="F",dtype=SP.float64)
+                X[iNanX]=SP.nan
+                parser.standardizedoubleFAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
+        elif betaNotUnitVariance:
                 raise NotImplementedError("Beta(betaA,betaB) standardization only in C-based parser, but not found")
+        else:
             nObsX = (~iNanX).sum(0)
             if typeX!=SP.float64:
                 X=SP.array(X,dtype=SP.float64)
