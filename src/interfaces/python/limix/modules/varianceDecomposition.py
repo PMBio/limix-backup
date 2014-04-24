@@ -452,7 +452,6 @@ class CVarianceDecomposition:
                 scales1 = scales0
                 fixed1  = fixed0
             conv = self.trainGP(scales0=scales1,fixed0=fixed1,lambd=lambd)
-            pdb.set_trace()        
             if conv:    break
     
         if verbose:
