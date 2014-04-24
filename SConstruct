@@ -134,7 +134,7 @@ for key in copy_env:
        ENV[key] = os.environ[key]
 
 #TOOL_SUST
-env = Environment(SHLIBPREFIX="",ENV=ENV,tools = [build_options['build_tool'],'doxygen',TOOL_SUBST])
+env = Environment(SHLIBPREFIX="",ENV=ENV,tools = [build_options['build_tool'],TOOL_SUBST])
 #env = Environment(SHLIBPREFIX="",ENV=ENV,tools = [build_options['build_tool'],TOOL_SUBST])
 
 #Microsoft Visual Studio compiler selected?
@@ -220,9 +220,8 @@ if build_options['with_developcpp']:
    
 #build documentation?
 if build_options['with_documentation']:	
-   doxy=env.Doxygen("./doc/doxy.cfg")
-   AlwaysBuild([doxy])
-   pass
+   print "option is obsolete. Update documentaiton manually using \"doc/update_doc.sh\""
+   sys.exit(0)
 
 #run unit tests?
 if build_options['with_tests']:		
