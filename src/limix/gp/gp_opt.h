@@ -18,11 +18,6 @@ namespace limix {
 #define solver NLOPT_LD_LBFGS
 #define DEFAULT_TOL 1E-4
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//list of CGPHyperParams
-//%template(HyperParmasVec) std::vector<gpmix::CGPHyperParams>;
-#endif
-
 class CGPopt {
 protected:
 	//gp object which is optimized:
@@ -51,7 +46,7 @@ public:
 	CGPopt(PGPbase gp);
 	virtual ~CGPopt();
 	virtual bool gradCheck(mfloat_t relchange=1E-5,mfloat_t threshold=1E-2);
-	virtual bool opt() throw (CGPMixException);
+	virtual bool opt() ;
 
 	CGPHyperParams getParamMask() const;
 	void setParamMask(CGPHyperParams filter);

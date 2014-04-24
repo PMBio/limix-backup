@@ -159,11 +159,15 @@ sys.path = libs + sys.path
 
 import SCons.Script
 
-def file_list_recursive(dir_name):
+def file_list_recursive(dir_name,exclude_list=[]):
+    """create a recursive file list"""
     FL = []
     for root, dirs, files in os.walk(dir_name):
         FL_ = [os.path.join(root,fn) for fn in files]
-        FL.extend(FL_)
+        #filter and append
+        for fn in FL_:
+            if not any([ex in fn for ex in exclude_list]):
+                FL.append(fn)
     return FL
 
 class build_py_cmd(distutils.cmd.Command):
@@ -178,12 +182,12 @@ class build_py_cmd(distutils.cmd.Command):
         pbs.scons()
     def get_source_files(self):
         FL = []
-        FL.extend(file_list_recursive('./src'))
+        FL.extend(file_list_recursive('./src',exclude_list=['src/archive','src/testing']))
         FL.extend(file_list_recursive('./External'))
         FL.extend(file_list_recursive('./tests'))
         FL.extend(file_list_recursive('./site_scons'))
-        FL.extend(file_list_recursive('./doc/pages'))
-        FL.extend(['SConstruct','README','license.txt','MANIFEST','doc/doxy.cfg'])
+        FL.extend(file_list_recursive('./doc/tutorials'))
+        FL.extend(['SConstruct','README','license.txt','doc/doxy.cfg'])
         return FL
     #data files
     #data_files=[('', ['license.txt'])]

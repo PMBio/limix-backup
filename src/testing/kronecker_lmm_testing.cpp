@@ -130,7 +130,7 @@ int main() {
 		std::cout << "done.\n" ;
 		
 		}
-		catch(CGPMixException& e) {
+		catch(CLimixException& e) {
 			cout <<"Exception : "<< e.what() << endl;
 		}
 

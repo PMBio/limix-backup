@@ -206,14 +206,15 @@ typedef sptr<stringVec> PstringVec;
 
 
 //GpMix Exception Class
-class CGPMixException : public std::exception
+class CLimixException : public std::exception
 {
   public:
-	CGPMixException(std::string str="Unlabeled exception")
+	CLimixException(std::string str="Unlabeled exception")
       : What(str)
     {
-		std::cout <<"GPMIX Exception: " << str << "\n";
     }
+    virtual ~CLimixException() throw ()
+    {}
     std::string what()
     {
       return What;
