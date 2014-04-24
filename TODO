@@ -1,8 +1,0 @@
-1) unit tests
-2) Class factories for mixed model tests needs to be tested.
-3) masking not working 
-4) Logging framework needed
-
-BUG:
-If we use getParams() on a MultiCF things go wrong.
-agetParams() does work though!
