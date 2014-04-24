@@ -1,6 +1,5 @@
 """@package fdr
 FDR estimation using Benjamini Hochberg and Stories method
-
 """
 
 import numpy as np
@@ -161,11 +160,3 @@ def LOD2PV(lods):
     PV = (st.chi2.sf(2*lods, 1))
     return PV
         
-if __name__ == '__main__':
-    qv1, pvalues = pickle.load(open("../experiments_limmi/simulation/results_001_nocorr_0/PANAMA.pickle", "r"))
-    # pvalues = pvalues[:20, :100]
-    qv = qvalues(pvalues, lowmem = True)
-    Rqv, Rpi0 = R_qvalues(pvalues)
-
-    print np.sqrt(sp.power((qv - Rqv), 2).mean())
-

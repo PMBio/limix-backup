@@ -123,7 +123,7 @@ CGPSum::~CGPSum()
 {
 }
 
-void CGPSum::updateParams() throw (CGPMixException)
+void CGPSum::updateParams() 
 {
 
 	//std::cout << params << "\n";
@@ -150,13 +150,13 @@ void CGPSum::updateParams() throw (CGPMixException)
 
 }
 
-    void CGPSum::setX1(const CovarInput & X) throw (CGPMixException)
+    void CGPSum::setX1(const CovarInput & X) 
     {
         this->covar1->setX(X);
         //if(isnull(gplvmDimensions_r))
             //this->gplvmDimensions_r = VectorXi::LinSpaced(X.cols(), 0, X.cols() - 1);
     }
-    void CGPSum::setX2(const CovarInput & X) throw (CGPMixException)
+    void CGPSum::setX2(const CovarInput & X) 
     {
         this->covar2->setX(X);
         //if(isnull(gplvmDimensions_c))
@@ -214,7 +214,7 @@ void CGPSum::updateParams() throw (CGPMixException)
     }
 
 
-    mfloat_t CGPSum::LML() throw (CGPMixException)
+    mfloat_t CGPSum::LML() 
     {
         //get stuff from cache
         MatrixXd Ssigma = this->cache->covar2->rgetSK();
@@ -240,7 +240,7 @@ void CGPSum::updateParams() throw (CGPMixException)
         return lml_quad + lml_det + lml_const;
     };
 
-    CGPHyperParams CGPSum::LMLgrad() throw (CGPMixException)
+    CGPHyperParams CGPSum::LMLgrad() 
     {
         CGPHyperParams rv;
         //calculate gradients for parameter components in params:
@@ -275,7 +275,7 @@ void CGPSum::updateParams() throw (CGPMixException)
         return rv;
     }
 
-    void CGPSum::aLMLgrad_covar(VectorXd *out, bool cov1) throw (CGPMixException)
+    void CGPSum::aLMLgrad_covar(VectorXd *out, bool cov1) 
     {
         //get stuff from cache
         MatrixXd ScstarP1i = cache->rgetScstar();
@@ -311,17 +311,17 @@ void CGPSum::updateParams() throw (CGPMixException)
         }
     }
 
-    void CGPSum::aLMLgrad_covar1(VectorXd *out) throw (CGPMixException)
+    void CGPSum::aLMLgrad_covar1(VectorXd *out) 
     {
         aLMLgrad_covar(out,true);
     }
 
-    void CGPSum::aLMLgrad_covar2(VectorXd *out) throw (CGPMixException)
+    void CGPSum::aLMLgrad_covar2(VectorXd *out) 
     {
         aLMLgrad_covar(out,false);
     }
 
-    void CGPSum::aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException)
+    void CGPSum::aLMLgrad_dataTerm(MatrixXd* out) 
    {
      //0. set output dimensions
    	 //(*out) = this->dataTerm->gradParams(this->cache->rgetKinvY());
@@ -421,7 +421,7 @@ void CGPSum::updateParams() throw (CGPMixException)
     }
 
 
-    void CGPSum::aLMLgrad_X_r(MatrixXd *out) throw (CGPMixException)
+    void CGPSum::aLMLgrad_X_r(MatrixXd *out) 
     {
         //0. set output dimensions
         (*out).resize(CGPbase::dataTerm->evaluate().rows(), this->gplvmDimensions_r.rows());
@@ -438,7 +438,7 @@ void CGPSum::updateParams() throw (CGPMixException)
         }
     }
 
-    void CGPSum::aLMLgrad_X_c(MatrixXd *out) throw (CGPMixException)
+    void CGPSum::aLMLgrad_X_c(MatrixXd *out) 
      {
     	//0. set output dimensions
     	(*out).resize(CGPbase::dataTerm->evaluate().cols(), this->gplvmDimensions_c.rows());
@@ -493,7 +493,7 @@ void CGPSum::updateParams() throw (CGPMixException)
     }
 
 
- void CGPSum::apredictMean(MatrixXd* out, const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) throw (CGPMixException)
+ void CGPSum::apredictMean(MatrixXd* out, const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) 
  {
 	//1. calc cross variances for row and columns
  	MatrixXd Kstar_r,Kstar_c;
@@ -507,9 +507,9 @@ void CGPSum::updateParams() throw (CGPMixException)
  	(*out) *= this->getLik()->getSigmaK2();
  }
 
- void CGPSum::apredictVar(MatrixXd* out,const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) throw (CGPMixException)
+ void CGPSum::apredictVar(MatrixXd* out,const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) 
  {
-	 throw CGPMixException("CGPSum: apredictVar not implemented yet!");
+	 throw CLimixException("CGPSum: apredictVar not implemented yet!");
  }
 
  */

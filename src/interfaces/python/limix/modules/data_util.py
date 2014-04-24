@@ -1,4 +1,6 @@
 import scipy as SP
+import pandas as pd
+
 
 try:
     #see if fastlmm is in the path for the fast C-based parser
@@ -61,20 +63,25 @@ def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.
     else:
         iNanX = X==-9
     if iNanX.any() or betaNotUnitVariance:
-        if cparser:
+        if cparser and center and (unit or betaNotUnitVariance):
             print "using C-based imputer"
-            if X.flags["C_CONTIGUOUS"] or typeX!=SP.float32:
-                X = SP.array(X, order="F", dtype=SP.float32)
-                if typeX==SP.int8:
-                    X[iNanX]=SP.nan
-                parser.standardize(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
+            if X.flags["C_CONTIGUOUS"] and typeX==SP.float32:
+                parser.standardizefloatCAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
                 X=SP.array(X,dtype=SP.float64)
+            elif X.flags["C_CONTIGUOUS"] and typeX==SP.float64:
+                parser.standardizedoubleCAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
+            elif X.flags["F_CONTIGUOUS"] and typeX==SP.float32:
+                parser.standardizefloatFAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
+                X=SP.array(X,dtype=SP.float64)
+            elif X.flags["F_CONTIGUOUS"] and typeX==SP.float64:
+                parser.standardizedoubleFAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
             else:
-                parser.standardize(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
-            X=SP.array(X,dtype=SP.float64)
-        else:
-            if betaNotUnitVariance:
+                X=SP.array(X,order="F",dtype=SP.float64)
+                X[iNanX]=SP.nan
+                parser.standardizedoubleFAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
+        elif betaNotUnitVariance:
                 raise NotImplementedError("Beta(betaA,betaB) standardization only in C-based parser, but not found")
+        else:
             nObsX = (~iNanX).sum(0)
             if typeX!=SP.float64:
                 X=SP.array(X,dtype=SP.float64)
@@ -103,3 +110,32 @@ def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.
             stdX[stdX==0.0]=1.0
             X/=stdX
     return X
+
+
+def merge_indices(indices,header=None,join="inner"):
+    """
+    returns a merged index
+
+    Args:
+        indices:    list of indices (e.g. individual IDs)
+        header:     list with name of each element of indices (e.g. ["pheno","geno","covars"])
+        join:       type of join to perform (standard is "inner"
+
+    Returns:
+        pandas DataFrame with merged indices
+    """
+    indexpd = []
+    for i, index in enumerate(indices):
+        if header is None:
+            header_=[i]
+        else:
+            header_=[header[i]]
+        indexpd.append(pd.DataFrame(data=SP.arange(len(index)),index=index,columns=header_) )
+    ret = pd.concat(objs=indexpd, axis=1, join=join)
+    return ret
+
+if __name__ == "__main__":
+    lists=[["a","b"],["a","c","b"],["d","a","b"]]
+    header = [["bl"],["n"],["s"]]
+    merge=merge_indices(lists, header=None, join="outer")
+    

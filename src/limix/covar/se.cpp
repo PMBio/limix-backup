@@ -25,7 +25,7 @@ void CCovSqexpARD::setNumberDimensions(muint_t numberDimensions)
 }
 
 
-void CCovSqexpARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw (CGPMixException)
+void CCovSqexpARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const 
 {
 	//lengthscales
 	MatrixXd L = params.block(1,0,params.rows()-1,1);
@@ -39,13 +39,13 @@ void CCovSqexpARD::aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw 
 	(*out) = std::pow(params(0),2)*RV.unaryExpr(std::ptr_fun(exp));
 } // end :: K
 
-void CCovSqexpARD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException)
+void CCovSqexpARD::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
 {
     (*out) = params(0)*VectorXd::Ones(Xstar.rows());
 }
 
 
-void CCovSqexpARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGPMixException)
+void CCovSqexpARD::aKgrad_param(MatrixXd* out,const muint_t i) const 
 {
 	//lengthscales
 	MatrixXd L = params.block(1,0,params.rows()-1,1);
@@ -72,12 +72,12 @@ void CCovSqexpARD::aKgrad_param(MatrixXd* out,const muint_t i) const throw (CGPM
 	}
 	else
 	{
-		throw CGPMixException("Parameter outside range");
+		throw CLimixException("Parameter outside range");
 	}
 }
    
     
-void CCovSqexpARD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw (CGPMixException)
+void CCovSqexpARD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const 
 {
 
     muint_t i0, j0;
@@ -125,15 +125,15 @@ void CCovSqexpARD::aKhess_param(MatrixXd* out, const muint_t i, const muint_t j)
     }
     else
     {
-        throw CGPMixException("Parameter outside range");
+        throw CLimixException("Parameter outside range");
     }
 }
 
 
-void CCovSqexpARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw (CGPMixException)
+void CCovSqexpARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const 
 {
     //Check d not outside range
-    if (d>=(muint_t)this->numberDimensions) throw CGPMixException("Dimension outside range");
+    if (d>=(muint_t)this->numberDimensions) throw CLimixException("Dimension outside range");
     
     this->aKcross(out,Xstar);
     //lengthscales: now we need to squre explicitly
@@ -145,7 +145,7 @@ void CCovSqexpARD::aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const m
     (*out).array() *= dist.array();
 }
 
-void CCovSqexpARD::aKdiag_grad_X(VectorXd* out,const muint_t d) const throw (CGPMixException)
+void CCovSqexpARD::aKdiag_grad_X(VectorXd* out,const muint_t d) const 
 {
 	(*out) = VectorXd::Zero(X.rows());
 }

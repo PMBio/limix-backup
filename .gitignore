@@ -27,6 +27,7 @@ build/
 *.ilk
 *.meta
 *.obj
+*.pyc
 *.pch
 *.pdb
 *.pgc

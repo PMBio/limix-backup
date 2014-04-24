@@ -41,7 +41,7 @@ void CGPopt::completeConstraints(CGPHyperParams& constraints, const CGPHyperPara
 
 
 
-bool CGPopt::opt() throw (CGPMixException)
+bool CGPopt::opt() 
 {
 	//0. set evaluation counter to 0:
 	numEvaluations = 0;
@@ -93,7 +93,7 @@ bool CGPopt::opt() throw (CGPMixException)
 	//3. check that they have the same shape than X
 	if ((x_min.rows()!=x_max.rows()) || (numOptParams!=(muint_t)x_max.rows()))
 	{
-			throw CGPMixException("Constraints and parameters of gp optimization have incompatible shape.");
+			throw CLimixException("Constraints and parameters of gp optimization have incompatible shape.");
 	}
 	nlopt_set_lower_bounds(optimizer, x_min.data());
 	nlopt_set_upper_bounds(optimizer, x_max.data());

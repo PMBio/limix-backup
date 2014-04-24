@@ -12,14 +12,6 @@
 namespace limix {
 
     
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-%ignore CFreeFormCF::getIparamDiag;
-%ignore CFreeFormCF::K0Covar2Params;
-//rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getIparamDiag) CFreeFormCF::agetIparamDiag;
-#endif
-
 /*! \brief Base class for free form covariances that do not depend on the input X
  *
  * Note: as a hack until we implement appropriate handling of non-X covariances, the input dimension is 0
@@ -38,13 +30,13 @@ public:
     ~CFreeFormCF();
     
 	//Block X functions: X is fixed and set in the constructor
-	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
-	virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException) {};
-	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) {};
-	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
+	virtual void setX(const CovarInput& X)  {};
+	virtual void setXcol(const CovarInput& X, muint_t col)  {};
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const  {};
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const  {};
 	//override handling of K dimensions
-	virtual muint_t Kdim() const throw(CGPMixException)
+	virtual muint_t Kdim() const 
 		{
 			return this->numberGroups;
 		}
@@ -52,22 +44,22 @@ public:
 
 
     virtual void agetScales(CovarParams* out);
-    virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+    virtual void setParamsCovariance(const MatrixXd& K0) ;
 
     //Covariance pure functions
 	//pure functions that need to be implemented
-	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException);
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const ;
     virtual void agetParamMask0(CovarParams* out) const;
     
     //class information
     inline std::string getName() const {return "CFreeFormCF";};
     
     //FreeForm-specific functions
-    virtual void setParamsVarCorr(const CovarParams& paramsVC) throw(CGPMixException);
+    virtual void setParamsVarCorr(const CovarParams& paramsVC) ;
     virtual void agetL0(MatrixXd* out) const;
-    virtual void agetL0grad_param(MatrixXd* out,muint_t i) const throw(CGPMixException);
+    virtual void agetL0grad_param(MatrixXd* out,muint_t i) const ;
     //information on parameter settings
     void agetIparamDiag(VectorXi* out) const;
     VectorXi getIparamDiag() const
@@ -92,25 +84,25 @@ public:
     ~CRankOneCF();
 
 	//Block X functions: X is fixed and set in the constructor
-	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
-	virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException) {};
-	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) {};
-	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
-	virtual muint_t Kdim() const throw(CGPMixException)
+	virtual void setX(const CovarInput& X)  {};
+	virtual void setXcol(const CovarInput& X, muint_t col)  {};
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const  {};
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const  {};
+	virtual muint_t Kdim() const 
 		{
 			return this->numberGroups;
 		}
 
 
     virtual void agetScales(CovarParams* out);
-    virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+    virtual void setParamsCovariance(const MatrixXd& K0) ;
 
     //Covariance pure functions
 	//pure functions that need to be implemented
-	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException);
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const ;
     virtual void agetParamMask0(CovarParams* out) const;
 
     //class information
@@ -131,25 +123,25 @@ public:
     ~CLowRankCF();
 
     //Block X functions: X is fixed and set in the constructor
-    virtual void setX(const CovarInput& X) throw (CGPMixException) {};
-    virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException) {};
-    virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-    virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) {};
-    virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
-	virtual muint_t Kdim() const throw(CGPMixException)
+    virtual void setX(const CovarInput& X)  {};
+    virtual void setXcol(const CovarInput& X, muint_t col)  {};
+    virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+    virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const  {};
+    virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const  {};
+	virtual muint_t Kdim() const 
 		{
 			return this->numberGroups;
 		}
 
 
     virtual void agetScales(CovarParams* out);
-    virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+    virtual void setParamsCovariance(const MatrixXd& K0) ;
 
     //Covariance pure functions
     //pure functions that need to be implemented
-    virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-    virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException);
+    virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+    virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const ;
     virtual void agetParamMask0(CovarParams* out) const;
 
     //class information
@@ -157,16 +149,6 @@ public:
 
 };
 typedef sptr<CLowRankCF> PLowRankCF;
-
-
-//rename argout operators for swig interface
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//rename functions and select the visible component for SWIG
-%rename(getK0) CFixedCF::agetK0;
-%rename(getK0cross) CFixedCF::agetK0cross;
-%rename(getK0cross_diag) CFixedCF::agetK0cross_diag;
-//%sptr(gpmix::CFixedCF)
-#endif
 
 
 class CFixedCF: public ACovarianceFunction {
@@ -182,19 +164,19 @@ public:
     ~CFixedCF();
 
     virtual void agetScales(CovarParams* out);
-    virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+    virtual void setParamsCovariance(const MatrixXd& K0) ;
 
 	//overloaded pure virtual functions:
-	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
-	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
-	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const ;
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const ;
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const ;
 	//other overloads
-	virtual void aK(MatrixXd* out) const throw (CGPMixException);
+	virtual void aK(MatrixXd* out) const ;
 
-	virtual muint_t Kdim() const throw(CGPMixException)
+	virtual muint_t Kdim() const 
 		{
 			return K0.rows();
 		}
@@ -226,16 +208,16 @@ public:
     ~CDiagonalCF();
 
 	//Block X functions: X is fixed and set in the constructor
-	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
-	virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException) {};
-	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) {};
-	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
+	virtual void setX(const CovarInput& X)  {};
+	virtual void setXcol(const CovarInput& X, muint_t col)  {};
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const  {};
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const  {};
 
     virtual void agetScales(CovarParams* out);
-    virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+    virtual void setParamsCovariance(const MatrixXd& K0) ;
 
-	virtual muint_t Kdim() const throw(CGPMixException)
+	virtual muint_t Kdim() const 
 		{
 			return this->numberGroups;
 		}
@@ -243,9 +225,9 @@ public:
 
     //Covariance pure functions
 	//pure functions that need to be implemented
-	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException);
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const ;
     virtual void agetParamMask0(CovarParams* out) const;
 
     //class information
@@ -254,11 +236,6 @@ public:
 };
 typedef sptr<CDiagonalCF> PDiagonalCF;
     
-
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%rename(getRank1)    CRank1diagCF::agetRank1;
-%rename(getDiag) CRank1diagCF::agetDiag;
-#endif
 
 
 class CRank1diagCF: public ACovarianceFunction {
@@ -271,29 +248,29 @@ public:
     ~CRank1diagCF();
 
 	//Block X functions: X is fixed and set in the constructor
-	virtual void setX(const CovarInput& X) throw (CGPMixException) {};
-	virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException) {};
-	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) {};
-	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
+	virtual void setX(const CovarInput& X)  {};
+	virtual void setXcol(const CovarInput& X, muint_t col)  {};
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const  {};
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const  {};
 
     virtual void agetScales(CovarParams* out);
-    virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+    virtual void setParamsCovariance(const MatrixXd& K0) ;
 
-	virtual muint_t Kdim() const throw(CGPMixException)
+	virtual muint_t Kdim() const 
 		{
 			return this->numberGroups;
 		}
 
 
-    virtual void agetRank1(MatrixXd* out) const throw(CGPMixException);
-    virtual void agetDiag(MatrixXd* out) const throw(CGPMixException);
+    virtual void agetRank1(MatrixXd* out) const ;
+    virtual void agetDiag(MatrixXd* out) const ;
     
     //Covariance pure functions
 	//pure functions that need to be implemented
-	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException);
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const ;
     virtual void agetParamMask0(CovarParams* out) const;
 
     //class information
@@ -315,16 +292,16 @@ public:
     ~CSqExpCF();
 
     //Block X functions: X is fixed and set in the constructor
-    virtual void setX(const CovarInput& X) throw (CGPMixException) {};
-    virtual void setXcol(const CovarInput& X, muint_t col) throw (CGPMixException) {};
-    virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-    virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException) {};
-    virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException) {};
+    virtual void setX(const CovarInput& X)  {};
+    virtual void setXcol(const CovarInput& X, muint_t col)  {};
+    virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+    virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const  {};
+    virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const  {};
 
     virtual void agetScales(CovarParams* out);
-    virtual void setParamsCovariance(const MatrixXd& K0) throw(CGPMixException);
+    virtual void setParamsCovariance(const MatrixXd& K0) ;
 
-	virtual muint_t Kdim() const throw(CGPMixException)
+	virtual muint_t Kdim() const 
 		{
 			return this->numberGroups;
 		}
@@ -332,9 +309,9 @@ public:
 
     //Covariance pure functions
     //pure functions that need to be implemented
-    virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-    virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const throw(CGPMixException);
+    virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+    virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const ;
     virtual void agetParamMask0(CovarParams* out) const;
 
     //class information

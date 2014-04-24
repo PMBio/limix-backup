@@ -28,20 +28,6 @@ class CLMMKroneckerCore : public CLMMCore
 };
 
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//ignore C++ versions
-%ignore CKroneckerLMM::getNLL0;
-%ignore CKroneckerLMM::getNLLAlt;
-%ignore CKroneckerLMM::getLdeltaAlt;
-%ignore CKroneckerLMM::getLdelta0;
-
-//rename argout versions for python; this overwrites the C++ convenience functions
-%rename(getNLL0) CKroneckerLMM::agetNLL0;
-%rename(getNLLAlt) CKroneckerLMM::agetNLLAlt;
-%rename(getLdeltaAlt) CKroneckerLMM::agetLdeltaAlt;
-%rename(getLdelta0) CKroneckerLMM::agetLdelta0;
-#endif
-
 /*! \brief Kronecker mixed model inference for pre-fitted covariance matrices
  *
  * Class is derived from CLMM, however provides special functions for Kronecker phenotypes
@@ -90,8 +76,8 @@ public:
 	CKroneckerLMM();
 	virtual ~CKroneckerLMM();
 
-	virtual void process() throw (CGPMixException);
-	virtual void updateDecomposition() throw (CGPMixException);
+	virtual void process() ;
+	virtual void updateDecomposition() ;
 
 	/* getters and setters*/
 

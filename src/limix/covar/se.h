@@ -11,9 +11,6 @@
 
 namespace limix {
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-//%sptr(gpmix::CCovSqexpARD)
-#endif
 class CCovSqexpARD: public ACovarianceFunction {
 public:
 	CCovSqexpARD(muint_t numberDimensions=1): ACovarianceFunction(1)
@@ -28,12 +25,12 @@ public:
 
 
 	//overloaded pure virtual functions:
-	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const throw(CGPMixException);
-	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const throw(CGPMixException);
-	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const throw(CGPMixException);
-    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const throw(CGPMixException);
-	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const throw(CGPMixException);
-	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const throw(CGPMixException);
+	virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+	virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+	virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out, const muint_t i, const muint_t j) const ;
+	virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const ;
+	virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const ;
 
 	//class information
 	inline std::string getName() const{ return "CovSEARD";}

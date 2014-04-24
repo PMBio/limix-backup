@@ -60,17 +60,10 @@ public:
 };
 typedef sptr<CGPKroneckerCache> PGPKroneckerCache;
 
-#if (defined(SWIG) && !defined(SWIG_FILE_WITH_INIT))
-%ignore CGPkronecker::predictMean;
-%ignore CGPkronecker::predictVar;
-
-%rename(predictMean) CGPkronecker::apredictMean;
-%rename(predictVar) CGPkronecker::apredictVar;
-#endif
 
 class CGPkronecker: public CGPbase {
 	friend class CGPKroneckerCache;
-	virtual void updateParams() throw (CGPMixException);
+	virtual void updateParams() ;
 
 protected:
 	//row and column covariance functions:
@@ -92,20 +85,20 @@ public:
 	CGPkronecker(PCovarianceFunction covar_r, PCovarianceFunction covar_c, PLikelihood lik=PLikelihood(),PDataTerm mean=PDataTerm());
 	virtual ~CGPkronecker();
 
-	void setX_r(const CovarInput& X) throw (CGPMixException);
-	void setX_c(const CovarInput& X) throw (CGPMixException);
+	void setX_r(const CovarInput& X) ;
+	void setX_c(const CovarInput& X) ;
 	void setY(const MatrixXd& Y);
 	void setCovar_r(PCovarianceFunction covar);
 	void setCovar_c(PCovarianceFunction covar);
 
 
-	mfloat_t LML() throw (CGPMixException);
-	virtual mfloat_t LML(const CGPHyperParams& params) throw (CGPMixException)
+	mfloat_t LML() ;
+	virtual mfloat_t LML(const CGPHyperParams& params) 
 	{
 		return CGPbase::LML(params);
 	}
 	//same for concatenated list of parameters
-	virtual mfloat_t LML(const VectorXd& params) throw (CGPMixException)
+	virtual mfloat_t LML(const VectorXd& params) 
 	{
 		return CGPbase::LML(params);
 	}
@@ -118,18 +111,18 @@ public:
 
 
 	//predictions:
-	virtual void apredictMean(MatrixXd* out, const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) throw (CGPMixException);
-	virtual void apredictVar(MatrixXd* out, const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) throw (CGPMixException);
+	virtual void apredictMean(MatrixXd* out, const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) ;
+	virtual void apredictVar(MatrixXd* out, const MatrixXd& Xstar_r,const MatrixXd& Xstar_c) ;
 
 
-	CGPHyperParams LMLgrad() throw (CGPMixException);
-	virtual void aLMLgrad_covar(VectorXd* out,bool columns) throw (CGPMixException);
-	virtual void aLMLgrad_covar_r(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_covar_c(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_lik(VectorXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_X_r(MatrixXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_X_c(MatrixXd* out) throw (CGPMixException);
-	virtual void aLMLgrad_dataTerm(MatrixXd* out) throw (CGPMixException);
+	CGPHyperParams LMLgrad() ;
+	virtual void aLMLgrad_covar(VectorXd* out,bool columns) ;
+	virtual void aLMLgrad_covar_r(VectorXd* out) ;
+	virtual void aLMLgrad_covar_c(VectorXd* out) ;
+	virtual void aLMLgrad_lik(VectorXd* out) ;
+	virtual void aLMLgrad_X_r(MatrixXd* out) ;
+	virtual void aLMLgrad_X_c(MatrixXd* out) ;
+	virtual void aLMLgrad_dataTerm(MatrixXd* out) ;
     PGPKroneckerCache getCache();
     PCovarianceFunction  getCovarC() const;
     PCovarianceFunction  getCovarR() const;
