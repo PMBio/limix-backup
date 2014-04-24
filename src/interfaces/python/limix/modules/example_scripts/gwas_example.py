@@ -40,10 +40,10 @@ searchDelta = False         #specify if delta should be optimized for each SNP
 test="lrt"                  #specify type of statistical test
 
 #run the analysis
-#pvalues = QTL.simple_interaction_kronecker(snps=snps,phenos=phenotypes,covs=covs,Acovs=Acovs,Asnps1=Asnps1,Asnps0=Asnps0,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covar_type=covar_type,rank=rank,searchDelta=searchDelta)
+pvalues = QTL.simple_interaction_kronecker(snps=snps,phenos=phenotypes,covs=covs,Acovs=Acovs,Asnps1=Asnps1,Asnps0=Asnps0,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covar_type=covar_type,rank=rank,searchDelta=searchDelta)
 
-lmm = QTL.simple_lmm(snps=snps,pheno=phenotypes,K=K,covs=covs, test=test)
-pvalues = lmm.getPv()
+#lmm = QTL.simple_lmm(snps=snps,pheno=phenotypes,K=K,covs=covs, test=test)
+#pvalues = lmm.getPv()
 #pvalues = SP.randn(len(pheno_names),data.num_snps)
 pvalues = pd.DataFrame(data=pvalues.T,index=data_subsample.geno_ID,columns=pheno_names)
 
