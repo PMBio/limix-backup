@@ -230,7 +230,7 @@ public:
 	virtual void setDataTerm(PDataTerm data);
 
 	//set penalization
-	virtual void setLambda(CGPHyperParams lambda) {};
+	virtual void setLambda(mfloat_t lambda) {};
 
 	//getter and setter for Parameters:
 	virtual void setParams(const CGPHyperParams& hyperparams) throw(CGPMixException);					//!< sets the parameters without a mask

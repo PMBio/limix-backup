@@ -374,17 +374,21 @@ class CVarianceDecomposition:
             scales = SP.randn(self.vd.getNumberScales())
         return scales
  
-    def trainGP(self,fast=False,scales0=None,fixed0=None):
+    def trainGP(self,fast=False,scales0=None,fixed0=None,lambd=None):
         """
         Train the gp
        
         Args:
+            fast:       if true and the gp has not been initialized, initializes a kronSum gp
             scales0:	initial variance components params
             fixed0:     initial fixed effect params
         """
         assert self.n_terms>0, 'CVarianceDecomposition:: No variance component terms'
 
         if not self.init:		self.initGP(fast=fast)
+
+        # set lambda
+        if lambd!=None:		self.gp.setLambda(lambd)
 
         # set scales0
         if scales0!=None:
@@ -396,7 +400,7 @@ class CVarianceDecomposition:
             params = self.gp.getParams()
             params['dataTerm'] = fixed0
             self.gp.setParams(params)
-        
+
         # LIMIX CVARIANCEDECOMPOSITION TRAINING
         conv =self.vd.trainGP()
         
@@ -406,7 +410,7 @@ class CVarianceDecomposition:
         return conv
 
     
-    def findLocalOptimum(self,fast=False,scales0=None,fixed0=None,init_method=None,termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=True):
+    def findLocalOptimum(self,fast=False,scales0=None,fixed0=None,init_method=None,termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=True,lambd=None):
         """
         Train the model using the specified initialization strategy
         
@@ -428,7 +432,7 @@ class CVarianceDecomposition:
 
         if not self.init:		self.initGP(fast=fast)
 
-        if scales0!=None: 	init_method = 'manual'
+        if scales0!=None and ~perturb: 	init_method = 'manual'
         
         if init_method=='diagonal':
             scales0 = self._getScalesDiag(termx=termx)
@@ -446,7 +450,11 @@ class CVarianceDecomposition:
             elif perturb:
                 scales1 = scales0+pertSize*self._perturbation()
                 fixed1  = fixed0+pertSize*SP.randn(fixed0.shape[0],fixed0.shape[1])
-            conv = self.trainGP(scales0=scales1,fixed0=fixed1)
+            else:
+                scales1 = scales0
+                fixed1  = fixed0
+            conv = self.trainGP(scales0=scales1,fixed0=fixed1,lambd=lambd)
+            pdb.set_trace()        
             if conv:    break
     
         if verbose:
@@ -458,7 +466,7 @@ class CVarianceDecomposition:
         return conv
 
 
-    def findLocalOptima(self,fast=False,verbose=True,n_times=10):
+    def findLocalOptima(self,fast=False,verbose=True,n_times=10,lambd=None):
         """
         Train the model repeadly up to a number specified by the users with random restarts and
         return a list of all relative minima that have been found 
@@ -479,7 +487,7 @@ class CVarianceDecomposition:
             
             scales1 = self._getScalesRand()
             fixed1  = 1e-1*SP.randn(fixed0.shape[0],fixed0.shape[1])
-            conv = self.trainGP(fast=fast,scales0=scales1,fixed0=fixed1)
+            conv = self.trainGP(fast=fast,scales0=scales1,fixed0=fixed1,lambd=lambd)
 
             if conv:
                 # compare with previous minima
