@@ -31,8 +31,6 @@ class genotype_reader_h5py():
             }
         if 'pos_cum' in self.geno['col_header'].keys():
             position['pos_cum']   = self.geno['col_header']['pos_cum'][:]
-        #else:
-        #    self.geno_pos_cum = None
         
         if 'geno_ID' in self.geno['col_header'].keys():
             self.geno_ID   = self.geno['col_header']['geno_ID'][:]
