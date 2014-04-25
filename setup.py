@@ -1,6 +1,11 @@
 import distutils.cmd
 import sys,os
-from distutils.core import setup
+
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+
 import pdb
 import glob
 
@@ -209,6 +214,6 @@ setup(
     #use manual build system building on scons
     cmdclass = {'build_py': build_py_cmd},
     #dependencies
-    requires = ['scipy','numpy','scons','pylab','h5py'],
-   
+    requires = ['scipy','numpy','pylab','h5py','scons'],
+    install_requires = ['scons>=2.3.0']
     )
