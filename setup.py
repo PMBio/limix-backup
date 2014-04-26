@@ -1,5 +1,6 @@
 import distutils.cmd
-import sys,os
+import sys,os,re
+
 
 try:
     from setuptools import setup
@@ -162,7 +163,6 @@ sys.path = libs + sys.path
 # END STANDARD SCons SCRIPT HEADER
 ##############################################################################
 
-import SCons.Script
 
 def file_list_recursive(dir_name,exclude_list=[]):
     """create a recursive file list"""
@@ -174,6 +174,61 @@ def file_list_recursive(dir_name,exclude_list=[]):
             if not any([ex in fn for ex in exclude_list]):
                 FL.append(fn)
     return FL
+
+def strip_rc(version):
+    return re.sub(r"rc\d+$", "", version)
+
+def check_versions(min_versions):
+    """
+    Check versions of dependency packages
+    """
+    from distutils.version import StrictVersion
+
+    try:
+        import scipy
+        spversion = scipy.__version__
+    except ImportError:
+        raise ImportError("LIMIX requires scipy")
+
+    try:
+        import numpy
+        npversion = numpy.__version__
+    except ImportError:
+        raise ImportError("LIMIX requires numpy")
+ 
+    try:
+        import h5py
+        h5pyversion = h5py.__version__
+    except ImportError:
+        raise ImportError("LIMIX requires h5py")
+    try:
+        import SCons
+        sconsversion = SCons.__version__
+    except ImportError:
+        raise ImportError("LIMIX requires scons")
+
+    #match version numbers
+    try:
+        assert StrictVersion(strip_rc(npversion)) >= min_versions['numpy']
+    except AssertionError:
+        raise ImportError("Numpy version is %s. Requires >= %s" %
+                (npversion, min_versions['numpy']))
+    try:
+        assert StrictVersion(strip_rc(spversion)) >= min_versions['scipy']
+    except AssertionError:
+        raise ImportError("Scipy version is %s. Requires >= %s" %
+                (spversion, min_versions['scipy']))
+    try:
+        assert StrictVersion(strip_rc(h5pyversion)) >= min_versions['h5py']
+    except AssertionError:
+        raise ImportError("h5py version is %s. Requires >= %s" %
+                (h5pyersion, min_versions['h5py']))
+    try:
+        assert StrictVersion(strip_rc(sconsversion)) >= min_versions['scons']
+    except AssertionError:
+        raise ImportError("scons version is %s. Requires >= %s" %
+                (sconsversion, min_versions['scons']))
+
 
 class build_py_cmd(distutils.cmd.Command):
     def initialize_options(self):
@@ -198,22 +253,33 @@ class build_py_cmd(distutils.cmd.Command):
     #data_files=[('', ['license.txt'])]
     data_files= []
 
-setup(
-    name = 'limix',
-    version = '0.5',
-    author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
-    author_email = "stegle@ebi.ac.uk",
-    description = ('A flexible and fest mixed model toolbox written in C++/python'),
-    url = "http://",
-    long_description = read('README'),
-    license = 'BSD',
-    keywords = 'linear mixed models, GWAS, QTL',
-    scripts = ['src/interfaces/python/limix/modules/limix_runner.py'],
-    packages = ['limix'],
-    package_dir = {'': 'build/release'},
-    #use manual build system building on scons
-    cmdclass = {'build_py': build_py_cmd},
-    #dependencies
-    requires = ['scipy','numpy','pylab','h5py','scons'],
-    install_requires = ['scons>=2.3.0']
-    )
+
+if __name__ == '__main__':
+    min_versions = {
+        'numpy' : '1.6.0',
+        'scipy' : '0.9.0',
+        'h5py' : '2.0.0',
+        'scons' : '2.3.0',
+                   }
+    check_versions(min_versions)
+
+    import SCons.Script
+    setup(
+        name = 'limix',
+        version = '0.5.2',
+        author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
+        author_email = "stegle@ebi.ac.uk",
+        description = ('A flexible and fest mixed model toolbox written in C++/python'),
+        url = "http://",
+        long_description = read('README'),
+        license = 'BSD',
+        keywords = 'linear mixed models, GWAS, QTL',
+        scripts = ['src/interfaces/python/limix/modules/limix_runner.py'],
+        packages = ['limix'],
+        #package_dir = {'': 'build/release'},
+        #use manual build system building on scons
+        cmdclass = {'build_py': build_py_cmd},
+        #dependencies
+        requires = ['scipy','numpy','pylab','h5py','scons'],
+        install_requires = ['scons>=2.3.0']
+        )
