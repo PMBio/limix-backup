@@ -23,7 +23,6 @@ localenv.Append(CPPPATH = [python_inc_path,numpy_inc_path])
 localenv.Append(SWIGFLAGS=['-python','-c++'])
 localenv.Append(SWIGPATH =[limix_include,external_include,'#/src/interfaces/python'])
 localenv.Append(LIBS=['limix','nlopt'])
-#localenv.Append(LIBS=['limix'])
 LIBPATH = [python_lib_path,os.path.join(abs_build_prefix,'limix'),os.path.join(abs_build_prefix,'nlopt')]
 #add python lib path, windows needs this..
 LIBPATH.append(os.path.join(sys.prefix,'libs'))
@@ -90,22 +89,5 @@ if build_options['reswig']:
 
 copy=Command(target="limix",source=limixlib_swig,action = copy_commands)
 
-# copy=Command(target="limix",source=limixlib_swig,action = [Delete("$TARGET"), 
-# 	Copy("$TARGET",limix_in),
-# 	Copy("$TARGET",wrapper_in_swigged),
-#    Copy("$TARGET",libnlopt[0]),
-#    Copy(os.path.join("$TARGET",module_out),limixlib_swig[0])
-# 	])
-# copy_builds.append(copy)
-
-# #reswig? if yes, we update the source wrappers and copy the correct core.py
-# swigged_dir = os.path.join(build_prefix,"interfaces","python","swigged")
-# if build_options['reswig']:
-#    pass
-#    copy2=Command(target="limix",source=limixlib_swig,action = [Copy("$TARGET",wrapper_in), 
-#       Copy(os.path.join('src','interfaces','python','swigged'),wrapper_in),
-#       Copy(os.path.join('src','interfaces','python','swigged'),wrapper_cc_in)
-#       ])
-#    copy_builds.append(copy2)
 AlwaysBuild(copy)
 Return('limixlib_swig')

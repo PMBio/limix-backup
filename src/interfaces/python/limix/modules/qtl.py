@@ -10,6 +10,8 @@ import limix.modules.varianceDecomposition as VAR
 import limix.utils.fdr as FDR
 import time
 
+#TODO: externally visible function?
+#I propose to make this internal using _
 def estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,covar_type='lowrank_diag',rank=1):
     """
     estimates the background covariance model before testing
@@ -58,7 +60,8 @@ def estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None
     print "Background model trained in %.2f s" % time_el
     return vc
 
-
+#TODO: externally visible function?
+#what does this do?
 def updateKronCovs(covs,Acovs,N,P):
     """
     make sure that covs and Acovs are lists
@@ -200,7 +203,9 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
         pv[iA,:] = ST.chi2.sf(lrt[iA,:],dof)
     return pv,lrt0,pv0,lrt,lrtAlt,pvAlt
 
-def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,covar_type='lowrank_diag',rank=1,searchDelta=False):
+#TODO: (O.S), I have changed the parametrization of delta optimization steps. Happy with that?
+#TODO: Do we really want to keep these "simple_XXX" names? Which functions are simple, which ones are not? I don't like it.
+def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
     
@@ -234,8 +239,9 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
                         'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
                         'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,         
         rank:           rank of a possible lowrank component (default 1)
-        searchDelta:    Boolean indicator if delta is optimized during SNP testing (default False)
-    
+        NumIntervalsDelta0:  number of steps for delta optimization on the null model (100)
+        NumIntervalsDeltaAlt:number of steps for delta optimization on the alt. model (0 - no optimization)
+        searchDelta:     Carry out delta optimization on the alternative model? if yes We use NumIntervalsDeltaAlt steps
     Returns:
         pv:     P-values of the interaction test
         pv0:    P-values of the null model
@@ -299,13 +305,17 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
     for ic  in xrange(len(Acovs)):
         lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
+
+    #delta serch on alt. model?
     if searchDelta:      
-        lmm.setNumIntervalsAlt(100)
-        lmm.setNumIntervals0_inter(100)
+        lmm.setNumIntervalsAlt(NumIntervalsDeltaAlt)
+        lmm.setNumIntervals0_inter(NumIntervalsDeltaAlt)
     else:                
         lmm.setNumIntervalsAlt(0)
         lmm.setNumIntervals0_inter(0)
-    lmm.setNumIntervals0(100)
+
+
+    lmm.setNumIntervals0(NumIntervalsDelta0)
     #add SNP design
     lmm.setSNPcoldesign0_inter(Asnps0[0])
     for iA in xrange(len(Asnps1)):
@@ -319,7 +329,7 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
 
 ## KroneckerLMM functions
 
-def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,K2r=None,K2c=None,covar_type='lowrank_diag',rank=1,searchDelta=False):
+def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,K2r=None,K2c=None,covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
     """
     simple wrapper for kroneckerLMM code
 
@@ -351,6 +361,8 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
                         'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
                         'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,         
         rank:           rank of a possible lowrank component (default 1)
+        NumIntervalsDelta0:  number of steps for delta optimization on the null model (100)
+        NumIntervalsDeltaAlt:number of steps for delta optimization on the alt. model (0 - no optimization)
         searchDelta:    Boolean indicator if delta is optimized during SNP testing (default False)
 
     Returns:
@@ -408,9 +420,15 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
     for ic  in xrange(len(Acovs)):
         lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
-    if searchDelta:      lmm.setNumIntervalsAlt(100)
-    else:                   lmm.setNumIntervalsAlt(0)
-    lmm.setNumIntervals0(100)
+
+
+    #delta serch on alt. model?
+    if searchDelta:      
+        lmm.setNumIntervalsAlt(NumIntervalsDeltaAlt)
+    else:                
+        lmm.setNumIntervalsAlt(0)
+    lmm.setNumIntervals0(NumIntervalsDelta0)
+
     for iA in xrange(len(Asnps)):
         #add SNP design
         lmm.setSNPcoldesign(Asnps[iA])
@@ -419,7 +437,7 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
     return lmm,pv
 
 
-def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervals0=None,NumIntervalsAlt=None):
+def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
     """
     Univariate fixed effects linear mixed model test for all SNPs
     
@@ -430,8 +448,9 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervals0=None,NumInt
                         If not provided, then linear regression analysis is performed
         covs:   [N x D] SP.array of D covariates for N individuals
         test:   'lrt' for likelihood ratio test (default) or 'f' for F-test
-        NumIntervals0:  number of steps for delta optimization on the null model
-        NumIntervalsAlt:number of steps for delta optimization on the alt. model
+        NumIntervalsDelta0:  number of steps for delta optimization on the null model (100)
+        NumIntervalsDeltaAlt:number of steps for delta optimization on the alt. model (0 - no optimization)
+        searchDelta:     Carry out delta optimization on the alternative model? if yes We use NumIntervalsDeltaAlt steps
     
     Returns:
         limix LMM object
@@ -454,16 +473,18 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervals0=None,NumInt
         print test
         raise NotImplementedError("only f or lrt are implemented")
     #set number of delta grid optimizations?
-    if NumIntervals0:
-        lm.setNumIntervals0(NumIntervals0)
-    if NumIntervalsAlt:
-        lm.setNumIntervalsAlt(NumIntervalsAlt)
+    lm.setNumIntervals0(NumIntervalsDelta0)
+    if searchDelta:
+        lm.setNumIntervalsAlt(NumIntervalsDeltaAlt)
+    else:
+        lm.setNumIntervalsAlt(0)
     lm.process()
     t1=time.time()
     print ("finished GWAS testing in %.2f seconds" %(t1-t0))
     return lm
 
-
+#TODO: we need to fix. THis does not work as interact_GxE is not existing
+#I vote we also use **kw_args to forward parameters to interact_Gxe?
 def interact_GxG(pheno,snps1,snps2=None,K=None,covs=None):
     """
     Epistasis test between two sets of SNPs
@@ -607,7 +628,8 @@ def simple_interaction(snps,pheno,Inter,Inter0=None,covs = None,K=None,test='lrt
     return lmi
 
 
-def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,threshold = 5e-8, maxiter = 2,qvalues=False, update_covariances = False,covar_type='lowrank_diag',rank=1):
+#TOOD: use **kw_args to forward params.. see below
+def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,threshold = 5e-8, maxiter = 2,qvalues=False, update_covariances = False,**kw_args):
     """
     Kronecker fixed effects test with forward selection
     
@@ -622,17 +644,6 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
                         without inclusion, so maxiter-1 inclusions can be performed. (default 2)
         qvalues:        Use q-value threshold and return q-values in addition (default False)
         update_covar:   Boolean indicator if covariances should be re-estimated after each forward step (default False)
-        covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
-                        'freeform': free form optimization, 
-                        'fixed': use a fixed matrix specified in covar_K0,
-                        'diag': optimize a diagonal matrix, 
-                        'lowrank': optimize a low rank matrix. The rank of the lowrank part is specified in the variable rank,
-                        'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                        'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                        'block': optimize the weight of a constant P x P block matrix of ones,
-                        'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
-                        'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,         
-        rank:           rank of a possible lowrank component (default 1)
     
     Returns:
         lm:             lmix LMMi object
@@ -678,7 +689,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
 
     #1. run GP model to infer suitable covariance structure
     if K1c==None or K2c==None:
-        vc = estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, covar_type=covar_type, rank=rank)
+        vc = estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, **kw_args)
         K1c = vc.getEstTraitCovar(0)
         K2c = vc.getEstTraitCovar(1)
     else:
@@ -755,7 +766,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
     return lm,RV
 
 
-def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxiter = 2,test='lrt'):
+def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxiter = 2,test='lrt',**kw_args):
     """
     univariate fixed effects test with forward selection
     
@@ -783,7 +794,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxi
     if covs is None:
         covs = SP.ones((snps.shape[0],1))
     
-    lm = simple_lmm(snps,pheno,K=K,covs=covs,test=test)
+    lm = simple_lmm(snps,pheno,K=K,covs=covs,test=test,**kw_args)
     pvall = SP.zeros((maxiter,snps.shape[1]))
     pv = lm.getPv()
     pvall[0:1,:]=pv

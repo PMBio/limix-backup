@@ -38,8 +38,8 @@ AddOption('--mode',dest='mode',
    type='string',nargs=1,action='store',default='release',help='Build mode: debug/release')
 
 #support for vcflib?
-AddOption('--with-vcflib', dest='with_vcf', action='store_true',
-help='Build VCFlib?', default=True)
+AddOption('--with-zlib', dest='with_zlib', action='store_true',
+help='Support for compressed files (zlib)', default=False)
 
 #build python interface?
 AddOption('--without-python', dest='with_python', action='store_false',
@@ -93,7 +93,7 @@ SetOption('num_jobs', n_jobs)
 
 #3. parse build options:
 build_options= {}
-build_options['with_vcf'] = GetOption('with_vcf')
+build_options['with_zlib'] = GetOption('with_zlib')
 build_options['with_python'] = GetOption('with_python')
 build_options['with_developcpp'] = GetOption('with_developcpp')
 build_options['with_tests'] = GetOption('with_tests')
@@ -135,7 +135,8 @@ for key in copy_env:
 
 #TOOL_SUST
 env = Environment(SHLIBPREFIX="",ENV=ENV,tools = [build_options['build_tool'],TOOL_SUBST])
-#env = Environment(SHLIBPREFIX="",ENV=ENV,tools = [build_options['build_tool'],TOOL_SUBST])
+
+
 
 #Microsoft Visual Studio compiler selected?
 if(env['CC']=='cl'):
@@ -148,12 +149,15 @@ else:
    #we require c++0x for smart pointers but presently not more than this.
    cxxflags.extend(['-std=c++0x'])
    #cxxflags.extend(['-stdlib=libc++'])
-   # releasecflags.extend(['-msse','-msse2','-fopenmp'])         #extra compile flags for release
    releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
-   # releaselinkflags.extend(['-lgomp'])
    releaselinkflags.extend(['-lstdc++'])
    debuglinkflags.extend(['-lstdc++'])
    debugcflags.extend(['-g','-Wextra'])
+
+#compile with zlib?
+if build_options['with_zlib']:
+  env.Append(LIBS=['z'])
+  cflags.extend(['-DZLIB'])
 
 env.Append(CCFLAGS=cflags)
 env.Append(CXXFLAGS=cxxflags)

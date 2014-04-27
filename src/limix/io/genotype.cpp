@@ -13,7 +13,7 @@
 #include <numeric>
 
 #ifdef ZLIB
-#include "gzstream.h"
+#include "zipstream.hpp"
 #endif
 
 //namespace io = boost::iostreams;
@@ -120,7 +120,8 @@ void CTextfileGenotypeContainer::openFile()
     if (filenameParts.back() == "gz")
     {
       #ifdef ZLIB
-    	in_stream = new igzstream(in_filename.c_str());
+    	bin_in_stream = new ifstream(in_filename.c_str(),ios::in | ios::binary);
+    	in_stream = new funzipper(*bin_in_stream);
     	ext = filenameParts.at(filenameParts.size()-2);
       #else
 	throw CLimixException("not compiled with zlib");

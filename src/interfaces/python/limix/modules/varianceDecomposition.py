@@ -11,9 +11,11 @@ import copy
 
 class CVarianceDecomposition:
     """
-    helper function for variance decomposition in limix
-    This class mainly takes care of initialization and interpreation of results
+    Variance decomposition module in LIMIX
+    This class mainly takes care of initialization and eases the interpretation of complex variance decompositions
 
+    #TODO: change documentation. Python modules explain what the functions do but a list of function is not needed, I think?
+    #A 3 line example how to use it would be good to have here... perhaps.
     Methods:
         __init__(self,Y):            Constructor
         addSingleTraitTerm:          Add Single Trait Term
@@ -76,7 +78,7 @@ class CVarianceDecomposition:
         
         Args:
             Y:              phenotype matrix [N, P]
-            standardize:	if True, phenotype is standardized
+            standardize:	if True, phenotype is standardized (zero mean, unit variance)
         """
         assert Y.shape[0]==self.N, 'CVarianceDecomposition:: Incompatible shape'
         assert Y.shape[1]==self.P, 'CVarianceDecomposition:: Incompatible shape'
@@ -153,10 +155,11 @@ class CVarianceDecomposition:
         self.cache['paramsST']= None
 
     
-    
+    #TODO: rename offset. Perhaps we can call it regularization or whiteNoise or something. 
     def addMultiTraitTerm(self,K=None,covar_type='freeform',is_noise=False,normalize=True,Ks=None,offset=1e-4,rank=1,covar_K0=None):
         """
-        add multi trait random effects term (inter-trait covariance matrix is optimized)
+        add multi trait random effects term.
+        The inter-trait covariance is parametrized by covar_type, where parameters are optimized.
         
         Args:
             K:      Individual-individual (Intra-Trait) Covariance Matrix [N, N]
@@ -176,13 +179,13 @@ class CVarianceDecomposition:
             Ks:			NxNtest cross covariance for predictions
             offset:		diagonal contribution added to trait-to-trait covariance matrices for regularization
             rank:       rank of a possible lowrank component (default 1)
-            covar_K0:   PxP matrix for trait-to-trait covariance matrix if fixed type is used
+            covar_K0:   PxP matrix for the (predefined) trait-to-trait covariance matrix if fixed type is used
         """
         assert self.P > 1, 'CVarianceDecomposition:: Incompatible number of traits'
-        
         assert K!=None or is_noise, 'CVarianceDecomposition:: Specify covariance structure'
-        
         assert offset>=0, 'CVarianceDecomposition:: offset must be >=0'
+
+        #TODO: check that covar_K0 is correct if fixed typeCF is used..
 
         if is_noise:
             assert self.noisPos==None, 'CVarianceDecomposition:: noise term already exists'
@@ -263,7 +266,7 @@ class CVarianceDecomposition:
     
     def addFixedEffect(self,F=None,A=None):
         """
-        set the fixed effect term
+        add fixed effect to the model
 
         Args:
             F: fixed effect matrix [N,1]
@@ -282,7 +285,8 @@ class CVarianceDecomposition:
                 self.vd.addFixedEffTerm(A,F[:,m:m+1])
         else:
             self.vd.addFixedEffTerm(A,F)
-    
+
+        #TODO: what is this gp object doing, is this initialization correct?
         self.gp      = None
         self.init    = False
         self.fast    = False
@@ -293,7 +297,8 @@ class CVarianceDecomposition:
         self.cache['Lparams'] = None
         self.cache['paramsST']= None
 
-
+    #TODO: automatically select the fast inference method if applicable. 
+    #We can create a method "isFast()" to check whether the model is compatible with the fast version but really this can be automated.
     def initGP(self,fast=False):
         """
         Initialize GP objetct
@@ -311,6 +316,7 @@ class CVarianceDecomposition:
         self.init=True
         self.fast=fast
 
+    #TODO: move all internal function to the end and flag them as such
     def _getScalesDiag(self,termx=0):
         """
         Uses 2 term single trait model to get covar params for initialization
@@ -407,7 +413,8 @@ class CVarianceDecomposition:
             
         return conv
 
-    
+    #TOOD: auto select of fast (see initGP)
+    #Q: is initGP not an internal method? Is the user going to call this himself? 
     def findLocalOptimum(self,fast=False,scales0=None,fixed0=None,init_method=None,termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=True,lambd=None):
         """
         Train the model using the specified initialization strategy
@@ -462,7 +469,10 @@ class CVarianceDecomposition:
  
         return conv
 
-
+    #TODO: this function and the above seem redundant. 
+    #Don't you want this function to wrap the above, i.e. write the above as internal function and have this as the autside interface?
+    #having multiple restarts is a simple add on. You can pass arguments automatically using the **kw_args keyword, which avoids having to redefine options here that are used again in the
+    #internal function
     def findLocalOptima(self,fast=False,verbose=True,n_times=10,lambd=None):
         """
         Train the model repeadly up to a number specified by the users with random restarts and
@@ -518,7 +528,7 @@ class CVarianceDecomposition:
 
         return out
 
-
+    #TODO: Q: externally visible function?
     def getLML(self):
         """
         Return log marginal likelihood
@@ -527,6 +537,7 @@ class CVarianceDecomposition:
         return self.vd.getLML()
 
 
+    #TODO: Q: externally visible function?
     def getLMLgrad(self):
         """
         Return gradient of log-marginal likelihood
@@ -534,7 +545,7 @@ class CVarianceDecomposition:
         assert self.init, 'GP not initialised'
         return self.vd.getLMLgrad()
 
-
+    #TODO: text not clear get random ....
     def setScales(self,scales=None,term_num=None):
         """
         get random initialization of variances based on the empirical trait variance
@@ -559,7 +570,7 @@ class CVarianceDecomposition:
             assert scales.shape[0]==self.vd.getTerm(term_num).getNumberScales(), 'incompatible shape'
             self.vd.getTerm(term_num).setScales(scales)
 
-    
+    #TODO: needs more text
     def getScales(self,term_i=None):
         """
         Returns the Parameters
@@ -576,6 +587,7 @@ class CVarianceDecomposition:
         return RV
 
 
+    #TODO: naming? We use addFixedEffect. and getFixed. 
     def getFixed(self):
         """
         Return dataTerm params
@@ -586,7 +598,7 @@ class CVarianceDecomposition:
 
     def getEstTraitCovar(self,term_i=None):
         """
-        Returns the estimated trait covariance matrix
+        Returns explicitly the estimated trait covariance matrix
 
         Args:
             term_i:     index of the term we are interested in
@@ -602,6 +614,8 @@ class CVarianceDecomposition:
         return RV
 
 
+    #TODO: naming? suggests that this calculates one correlation coefficient rather than a matrix.
+    #Add references between getEstTraitCorrCoeff and getEstTraitCovar
     def getEstTraitCorrCoef(self,term_i=None):
         """
         Returns the estimated trait correlation matrix
@@ -615,6 +629,7 @@ class CVarianceDecomposition:
         return RV
     
 
+    #TODO: naming? How does this relate to getScales?
     def getVariances(self):
         """
         Returns the estimated variances as a n_terms x P matrix
@@ -629,6 +644,7 @@ class CVarianceDecomposition:
         return RV
 
 
+    #TODO: naming? How does this relate to getScales and getVariances?
     def getVarComponents(self):
         """
         Returns the estimated variance components as a n_terms x P matrix
@@ -638,7 +654,7 @@ class CVarianceDecomposition:
         RV /= RV.sum(0)
         return RV
 
-
+    #TODO: externally visible function? THe external interface needs to be as static as possible. We should minimize this.
     def getHessian(self):
         """
         COMPUTES OF HESSIAN OF E(\theta) = - log L(\theta | X, y)
@@ -655,6 +671,7 @@ class CVarianceDecomposition:
         
         return self.cache['Hessian']
     
+    #TODO: externally visible function? THe external interface needs to be as static as possible. We should minimize this.
     def getLaplaceCovar(self):
         """
         USES LAPLACE APPROXIMATION TO CALCULATE THE COVARIANCE MATRIX OF THE OPTIMIZED PARAMETERS
@@ -666,6 +683,7 @@ class CVarianceDecomposition:
             self.cache['Sigma'] = SP.linalg.inv(self.getHessian())
         return self.cache['Sigma']
 
+    #TODO: externally visible function? THe external interface needs to be as static as possible. We should minimize this.
     def getFisher(self):
         """
         Return the fisher information matrix over the parameters
@@ -682,6 +700,8 @@ class CVarianceDecomposition:
                 out[n,m]=out[m,n]
         return out
     
+    #TODO: naming. not clear what the standard errors refer to. I want getVarianceParams, getVarainceParamsSTtd() or similar.
+    #one could also consider having std calculation as argument in the getVarianceParams.
     def getStdErrors(self,term_i):
         """
         RETURNS THE STANDARD DEVIATIONS ON VARIANCES AND CORRELATIONS BY PROPRAGATING THE UNCERTAINTY ON LAMBDAS
@@ -709,6 +729,7 @@ class CVarianceDecomposition:
         out = SP.sqrt(out)
         return out
     
+    #TODO: externally visible function? THe external interface needs to be as static as possible. We should minimize this.
     def getModelPosterior(self,min):
         """
         USES LAPLACE APPROXIMATION TO CALCULATE THE BAYESIAN MODEL POSTERIOR
@@ -720,6 +741,7 @@ class CVarianceDecomposition:
         return RV
 
 
+    #TODO: externally visible function? THe external interface needs to be as static as possible. We should minimize this.
     def getEmpTraitCovar(self):
         """
         Returns the empirical trait covariance matrix
@@ -731,6 +753,7 @@ class CVarianceDecomposition:
         return out
 
 
+    #TODO: externally visible function? THe external interface needs to be as static as possible. We should minimize this.
     def getEmpTraitCorrCoef(self):
         """
         Returns the empirical trait correlation matrix
@@ -741,6 +764,7 @@ class CVarianceDecomposition:
         return RV
     
     
+    #TODO: externally visible function? THe external interface needs to be as static as possible. We should minimize this.
     def estimateHeritabilities(self, K, verbose=False):
         """
         estimate variance components and fixed effects
@@ -781,6 +805,7 @@ class CVarianceDecomposition:
     CODE FOR PREDICTIONS
     """
     
+    #TODO: naming. not nice... needs also quite a few more checks, I think.
     def setKstar(self,term_i,Ks):
         """
         Set the kernel for predictions
@@ -798,6 +823,7 @@ class CVarianceDecomposition:
         self.vd.getTerm(term_i).getKcf().setK0cross(Ks)
 
 
+    #TODO: naming. not nice... needs also quite a few more checks, I think.
     def predictMean(self):
         """
         predict the conditional mean (BLUP)

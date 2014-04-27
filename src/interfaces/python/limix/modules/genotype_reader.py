@@ -2,6 +2,9 @@ import scipy as SP
 import data_util as du
 import pandas as pd
 
+#TODO: needs documentation
+#probably in Christoph's hands right now....
+
 class genotype_reader_h5py():
     def __init__(self,file_name):
         self.file_name = file_name

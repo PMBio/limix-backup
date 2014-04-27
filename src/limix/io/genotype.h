@@ -149,6 +149,7 @@ protected:
 	//stream for incoming files using the boost library
 	//boost::iostreams::filtering_istream in_stream;
 	//std::istream in_stream;
+	std::ifstream* bin_in_stream;
 	std::istream* in_stream;
 	//filename
 	std::string in_filename;

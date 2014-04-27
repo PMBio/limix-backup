@@ -8,6 +8,9 @@ import limix
 import pdb
 import time
 
+#TODO: what is this script? Can we remove for the release?
+#development stuff should go into separate branches
+
 
 def kroneckerApprox(S,K,Gamma):
     
