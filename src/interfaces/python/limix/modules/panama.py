@@ -46,9 +46,12 @@ class PANAMA:
             self.Y = Y
         if Kpop is not None:
             self.Kpop = Kpop
-        else:
+        elif self.X is not None:
             self.Kpop = SP.dot(self.X,self.X.T)
             self.Kpop /= self.Kpop.diagonal().mean()
+	else:
+	    assert use_Kpop==False, 'no Kpop'
+	    
         if standardize:
             self.Y -= self.Y.mean(axis=0)
             self.Y /= self.Y.std(axis=0)
