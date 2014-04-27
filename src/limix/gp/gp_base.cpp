@@ -6,7 +6,6 @@
 
 #include "gp_base.h"
 #include "limix/utils/matrix_helper.h"
-#include "limix/utils/logging.h"
 #include <sstream>
 
 namespace limix {

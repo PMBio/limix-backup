@@ -13,7 +13,10 @@
 #include <numeric>
 
 #ifdef ZLIB
-#include "zipstream.hpp"
+//#include "zipstream.hpp"
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
 #endif
 
 //namespace io = boost::iostreams;
@@ -195,7 +198,7 @@ void CTextfileGenotypeContainer::read_header_GEN()
 /*
  * read num_snps lines from .bed file
  */
-PGenotypeBlock CTextfileGenotypeContainer::read_BED(muint_t num_snps) 
+PGenotypeBlock CTextfileGenotypeContainer::read_BED(mint_t num_snps) 
 {
 	PGenotypeBlock RV = PGenotypeBlock(new CGenotypeBlock());
 	throw CLimixException("BED readder not implemented");
@@ -203,7 +206,7 @@ PGenotypeBlock CTextfileGenotypeContainer::read_BED(muint_t num_snps)
 }
 
 
-PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps) 
+PGenotypeBlock CTextfileGenotypeContainer::read_GEN(mint_t num_snps) 
 {
 
 	//creat result Structure
@@ -229,7 +232,7 @@ PGenotypeBlock CTextfileGenotypeContainer::read_GEN(muint_t num_snps)
 	muint_t snp_pos;
 	while(std::getline(getStream(),line))
 	{
-		if((i_snp>=(muint_t)num_snps) && ((muint_t)num_snps>-1))
+		if((i_snp>=(muint_t)num_snps) && (num_snps>-1))
 				break;
 
 		//std::cout << line;

@@ -126,6 +126,11 @@ releasecflags.extend(['-DRELEASE'])         #extra compile flags for release
 debuglinkflags = []
 releaselinkflags = []
 
+#libraries to be included in binaries or fully linked libraries (names)
+limix_LIBS_str = ['nlopt','limix']
+#library handles
+limix_LIBS = []
+
 #build environment
 copy_env = ['PATH','INCLUDE','LIB','TMP']
 ENV = {}
@@ -156,7 +161,6 @@ else:
 
 #compile with zlib?
 if build_options['with_zlib']:
-  env.Append(LIBS=['z'])
   cflags.extend(['-DZLIB'])
 
 env.Append(CCFLAGS=cflags)
@@ -198,28 +202,32 @@ if build_options['record']:
 
 ### 4. conf tests
 conf = Configure(env)
-#hader checks
-
 #make sure the sconscripts can get to the variables
-Export('env', 'conf','mymode','build_prefix','build_options','limix_include','external_include')
+Export('env', 'conf','mymode','build_prefix','build_options','limix_include','external_include','limix_LIBS','limix_LIBS_str')
 
 #put all .sconsign files in one place
 env.SConsignFile()
 
 #build external libraries
 libnlopt=SConscript('External/nlopt/SConscript', variant_dir=os.path.join(build_prefix,'nlopt'),duplicate=0)
-
-Export('libnlopt')
 liblimix=SConscript('src/limix/SConscript',variant_dir=os.path.join(build_prefix,'limix'),duplicate=0)
+limix_LIBS =  {'nlopt':libnlopt,'limix':liblimix}
+limix_LIBS_str = ['limix','nlopt']
+
+if build_options['with_zlib']:
+   libzlib=SConscript('External/zlib/SConscript',variant_dir=os.path.join(build_prefix,'zlib'),duplicate=0)
+   limix_LIBS['z'] = libzlib
+   limix_LIBS_str.append('z')
+
+#re-export to update libraries:
+Export('limix_LIBS','limix_LIBS_str')
 
 #build python interface?
 if build_options['with_python']:
-   Export('liblimix','libnlopt')
    python_interface=SConscript('src/interfaces/python/SConscript',variant_dir=os.path.join(build_prefix,'interfaces','python'),duplicate=0)
 
 #build development cpp scripts
 if build_options['with_developcpp']:
-   Export('liblimix','libnlopt')
    command_line=SConscript('src/testing/SConscript',variant_dir=os.path.join(build_prefix,'testing'),duplicate=0)
    
 #build documentation?

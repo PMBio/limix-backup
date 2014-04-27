@@ -4,7 +4,7 @@ import os
 import sys
 import pdb
 #get all the build variables we need
-Import('env','mymode','build_prefix','external_include','limix_include','liblimix','libnlopt','build_options')
+Import('env','mymode','build_prefix','external_include','limix_include','build_options','limix_LIBS','limix_LIBS_str'),
 localenv = env.Clone()
 
 print "Python site-packages directory: %s" % distutils.sysconfig.get_python_lib()
@@ -52,7 +52,7 @@ if build_options['reswig']:
    #build from .i file
    srclst = ['limix.i']
    #srclst = ['limix.i',ibnlopt]
-   localenv.Depends(srclst, [libnlopt,liblimix])
+   localenv.Depends(srclst, limix_libs)
 else:
    #use precompiled python wrapper
    srclst = ['swigged/limix_wrap.cc']
@@ -77,7 +77,8 @@ copy_builds = []
 copy_commands = [Delete("$TARGET"), 
    Copy("$TARGET",limix_in),
    Copy("$TARGET",wrapper_in_swigged),
-   Copy("$TARGET",libnlopt[0]),
+   #Copy("$TARGET",libnlopt[0]),
+   Copy("$TARGET",limix_LIBS['nlopt'][0]),
    Copy(os.path.join("$TARGET",module_out),limixlib_swig[0])
    ]
 

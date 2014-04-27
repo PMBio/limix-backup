@@ -215,7 +215,7 @@ class CLimixException : public std::exception
     }
     virtual ~CLimixException() throw ()
     {}
-    std::string what()
+    virtual std::string what()
     {
       return What;
     }
