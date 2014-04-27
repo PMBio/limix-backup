@@ -10879,39 +10879,9 @@ class CRMemDataFrameXd(_object):
         except: self.this = this
     __swig_destroy__ = _core.delete_CRMemDataFrameXd
     __del__ = lambda self : None;
-    def getRowHeader(self):
-        """
-        getRowHeader(CRMemDataFrameXd self) -> limix::PHeaderMap
-
-        Parameters:
-            self: limix::CRMemDataFrame< MatrixXd > const *
-
-        """
-        return _core.CRMemDataFrameXd_getRowHeader(self)
-
-    def getColHeader(self):
-        """
-        getColHeader(CRMemDataFrameXd self) -> limix::PHeaderMap
-
-        Parameters:
-            self: limix::CRMemDataFrame< MatrixXd > const *
-
-        """
-        return _core.CRMemDataFrameXd_getColHeader(self)
-
-    def agetMatrix(self):
-        """
-        agetMatrix(CRMemDataFrameXd self)
-
-        Parameters:
-            self: limix::CRMemDataFrame< MatrixXd > const *
-
-        """
-        return _core.CRMemDataFrameXd_agetMatrix(self)
-
     def getMatrix(self):
         """
-        getMatrix(CRMemDataFrameXd self) -> std::shared_ptr< MatrixXd >
+        getMatrix(CRMemDataFrameXd self)
 
         Parameters:
             self: limix::CRMemDataFrame< MatrixXd > const *
@@ -10993,39 +10963,9 @@ class ARDataFrameXd(_object):
     __repr__ = _swig_repr
     __swig_destroy__ = _core.delete_ARDataFrameXd
     __del__ = lambda self : None;
-    def getRowHeader(self):
-        """
-        getRowHeader(ARDataFrameXd self) -> limix::PHeaderMap
-
-        Parameters:
-            self: limix::ARDataFrame< MatrixXd > const *
-
-        """
-        return _core.ARDataFrameXd_getRowHeader(self)
-
-    def getColHeader(self):
-        """
-        getColHeader(ARDataFrameXd self) -> limix::PHeaderMap
-
-        Parameters:
-            self: limix::ARDataFrame< MatrixXd > const *
-
-        """
-        return _core.ARDataFrameXd_getColHeader(self)
-
-    def agetMatrix(self):
-        """
-        agetMatrix(ARDataFrameXd self)
-
-        Parameters:
-            self: limix::ARDataFrame< MatrixXd > const *
-
-        """
-        return _core.ARDataFrameXd_agetMatrix(self)
-
     def getMatrix(self):
         """
-        getMatrix(ARDataFrameXd self) -> std::shared_ptr< MatrixXd >
+        getMatrix(ARDataFrameXd self)
 
         Parameters:
             self: limix::ARDataFrame< MatrixXd > const *

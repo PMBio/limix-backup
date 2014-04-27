@@ -89541,103 +89541,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_getRowHeader(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  limix::CRMemDataFrame< MatrixXd > *arg1 = (limix::CRMemDataFrame< MatrixXd > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::shared_ptr< limix::CRMemDataFrame< MatrixXd > const > tempshared1 ;
-  std::shared_ptr< limix::CRMemDataFrame< MatrixXd > const > *smartarg1 = 0 ;
-  PyObject * obj0 = 0 ;
-  limix::PHeaderMap result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:CRMemDataFrameXd_getRowHeader",&obj0)) SWIG_fail;
-  {
-    int newmem = 0;
-    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t, 0 |  0 , &newmem);
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CRMemDataFrameXd_getRowHeader" "', argument " "1"" of type '" "limix::CRMemDataFrame< MatrixXd > const *""'"); 
-    }
-    if (newmem & SWIG_CAST_NEW_MEMORY) {
-      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CRMemDataFrame< MatrixXd > > * >(argp1);
-      delete reinterpret_cast< std::shared_ptr< const limix::CRMemDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::CRMemDataFrame< MatrixXd > * >(tempshared1.get());
-    } else {
-      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CRMemDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::CRMemDataFrame< MatrixXd > * >((smartarg1 ? smartarg1->get() : 0));
-    }
-  }
-  {
-    try {
-      result = ((limix::CRMemDataFrame< MatrixXd > const *)arg1)->getRowHeader();
-    } catch (limix::CLimixException& e) {
-      std::string s("LIMIX error: "), s2(e.what());
-      s = s + s2;
-      SWIG_exception(SWIG_RuntimeError, s.c_str());
-      return NULL;
-    } catch (...) {
-      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
-    }
-  }
-  {
-    std::shared_ptr<  limix::CHeaderMap > *smartresult = result ? new std::shared_ptr<  limix::CHeaderMap >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_limix__CHeaderMap_t, SWIG_POINTER_OWN);
-  }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_getColHeader(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  limix::CRMemDataFrame< MatrixXd > *arg1 = (limix::CRMemDataFrame< MatrixXd > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::shared_ptr< limix::CRMemDataFrame< MatrixXd > const > tempshared1 ;
-  std::shared_ptr< limix::CRMemDataFrame< MatrixXd > const > *smartarg1 = 0 ;
-  PyObject * obj0 = 0 ;
-  limix::PHeaderMap result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:CRMemDataFrameXd_getColHeader",&obj0)) SWIG_fail;
-  {
-    int newmem = 0;
-    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t, 0 |  0 , &newmem);
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CRMemDataFrameXd_getColHeader" "', argument " "1"" of type '" "limix::CRMemDataFrame< MatrixXd > const *""'"); 
-    }
-    if (newmem & SWIG_CAST_NEW_MEMORY) {
-      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CRMemDataFrame< MatrixXd > > * >(argp1);
-      delete reinterpret_cast< std::shared_ptr< const limix::CRMemDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::CRMemDataFrame< MatrixXd > * >(tempshared1.get());
-    } else {
-      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CRMemDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::CRMemDataFrame< MatrixXd > * >((smartarg1 ? smartarg1->get() : 0));
-    }
-  }
-  {
-    try {
-      result = ((limix::CRMemDataFrame< MatrixXd > const *)arg1)->getColHeader();
-    } catch (limix::CLimixException& e) {
-      std::string s("LIMIX error: "), s2(e.what());
-      s = s + s2;
-      SWIG_exception(SWIG_RuntimeError, s.c_str());
-      return NULL;
-    } catch (...) {
-      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
-    }
-  }
-  {
-    std::shared_ptr<  limix::CHeaderMap > *smartresult = result ? new std::shared_ptr<  limix::CHeaderMap >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_limix__CHeaderMap_t, SWIG_POINTER_OWN);
-  }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_agetMatrix(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_getMatrix(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   limix::CRMemDataFrame< MatrixXd > *arg1 = (limix::CRMemDataFrame< MatrixXd > *) 0 ;
   MatrixXd *arg2 = (MatrixXd *) 0 ;
@@ -89652,12 +89556,12 @@ SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_agetMatrix(PyObject *SWIGUNUSEDPARM(
     arg2 = &temp2;
     
   }
-  if (!PyArg_ParseTuple(args,(char *)"O:CRMemDataFrameXd_agetMatrix",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:CRMemDataFrameXd_getMatrix",&obj0)) SWIG_fail;
   {
     int newmem = 0;
     res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t, 0 |  0 , &newmem);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CRMemDataFrameXd_agetMatrix" "', argument " "1"" of type '" "limix::CRMemDataFrame< MatrixXd > const *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CRMemDataFrameXd_getMatrix" "', argument " "1"" of type '" "limix::CRMemDataFrame< MatrixXd > const *""'"); 
     }
     if (newmem & SWIG_CAST_NEW_MEMORY) {
       tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CRMemDataFrame< MatrixXd > > * >(argp1);
@@ -89700,51 +89604,6 @@ SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_agetMatrix(PyObject *SWIGUNUSEDPARM(
     
     resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
   }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_CRMemDataFrameXd_getMatrix(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  limix::CRMemDataFrame< MatrixXd > *arg1 = (limix::CRMemDataFrame< MatrixXd > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::shared_ptr< limix::CRMemDataFrame< MatrixXd > const > tempshared1 ;
-  std::shared_ptr< limix::CRMemDataFrame< MatrixXd > const > *smartarg1 = 0 ;
-  PyObject * obj0 = 0 ;
-  SwigValueWrapper< std::shared_ptr< MatrixXd > > result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:CRMemDataFrameXd_getMatrix",&obj0)) SWIG_fail;
-  {
-    int newmem = 0;
-    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t, 0 |  0 , &newmem);
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CRMemDataFrameXd_getMatrix" "', argument " "1"" of type '" "limix::CRMemDataFrame< MatrixXd > const *""'"); 
-    }
-    if (newmem & SWIG_CAST_NEW_MEMORY) {
-      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CRMemDataFrame< MatrixXd > > * >(argp1);
-      delete reinterpret_cast< std::shared_ptr< const limix::CRMemDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::CRMemDataFrame< MatrixXd > * >(tempshared1.get());
-    } else {
-      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CRMemDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::CRMemDataFrame< MatrixXd > * >((smartarg1 ? smartarg1->get() : 0));
-    }
-  }
-  {
-    try {
-      result = ((limix::CRMemDataFrame< MatrixXd > const *)arg1)->getMatrix();
-    } catch (limix::CLimixException& e) {
-      std::string s("LIMIX error: "), s2(e.what());
-      s = s + s2;
-      SWIG_exception(SWIG_RuntimeError, s.c_str());
-      return NULL;
-    } catch (...) {
-      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
-    }
-  }
-  resultobj = SWIG_NewPointerObj((new std::shared_ptr< MatrixXd >(static_cast< const std::shared_ptr< MatrixXd >& >(result))), SWIGTYPE_p_std__shared_ptrT_MatrixXd_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -90296,103 +90155,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_ARDataFrameXd_getRowHeader(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  limix::ARDataFrame< MatrixXd > *arg1 = (limix::ARDataFrame< MatrixXd > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::shared_ptr< limix::ARDataFrame< MatrixXd > const > tempshared1 ;
-  std::shared_ptr< limix::ARDataFrame< MatrixXd > const > *smartarg1 = 0 ;
-  PyObject * obj0 = 0 ;
-  limix::PHeaderMap result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:ARDataFrameXd_getRowHeader",&obj0)) SWIG_fail;
-  {
-    int newmem = 0;
-    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__ARDataFrameT_MatrixXd_t_t, 0 |  0 , &newmem);
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ARDataFrameXd_getRowHeader" "', argument " "1"" of type '" "limix::ARDataFrame< MatrixXd > const *""'"); 
-    }
-    if (newmem & SWIG_CAST_NEW_MEMORY) {
-      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::ARDataFrame< MatrixXd > > * >(argp1);
-      delete reinterpret_cast< std::shared_ptr< const limix::ARDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::ARDataFrame< MatrixXd > * >(tempshared1.get());
-    } else {
-      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::ARDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::ARDataFrame< MatrixXd > * >((smartarg1 ? smartarg1->get() : 0));
-    }
-  }
-  {
-    try {
-      result = ((limix::ARDataFrame< MatrixXd > const *)arg1)->getRowHeader();
-    } catch (limix::CLimixException& e) {
-      std::string s("LIMIX error: "), s2(e.what());
-      s = s + s2;
-      SWIG_exception(SWIG_RuntimeError, s.c_str());
-      return NULL;
-    } catch (...) {
-      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
-    }
-  }
-  {
-    std::shared_ptr<  limix::CHeaderMap > *smartresult = result ? new std::shared_ptr<  limix::CHeaderMap >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_limix__CHeaderMap_t, SWIG_POINTER_OWN);
-  }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ARDataFrameXd_getColHeader(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  limix::ARDataFrame< MatrixXd > *arg1 = (limix::ARDataFrame< MatrixXd > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::shared_ptr< limix::ARDataFrame< MatrixXd > const > tempshared1 ;
-  std::shared_ptr< limix::ARDataFrame< MatrixXd > const > *smartarg1 = 0 ;
-  PyObject * obj0 = 0 ;
-  limix::PHeaderMap result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:ARDataFrameXd_getColHeader",&obj0)) SWIG_fail;
-  {
-    int newmem = 0;
-    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__ARDataFrameT_MatrixXd_t_t, 0 |  0 , &newmem);
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ARDataFrameXd_getColHeader" "', argument " "1"" of type '" "limix::ARDataFrame< MatrixXd > const *""'"); 
-    }
-    if (newmem & SWIG_CAST_NEW_MEMORY) {
-      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::ARDataFrame< MatrixXd > > * >(argp1);
-      delete reinterpret_cast< std::shared_ptr< const limix::ARDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::ARDataFrame< MatrixXd > * >(tempshared1.get());
-    } else {
-      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::ARDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::ARDataFrame< MatrixXd > * >((smartarg1 ? smartarg1->get() : 0));
-    }
-  }
-  {
-    try {
-      result = ((limix::ARDataFrame< MatrixXd > const *)arg1)->getColHeader();
-    } catch (limix::CLimixException& e) {
-      std::string s("LIMIX error: "), s2(e.what());
-      s = s + s2;
-      SWIG_exception(SWIG_RuntimeError, s.c_str());
-      return NULL;
-    } catch (...) {
-      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
-    }
-  }
-  {
-    std::shared_ptr<  limix::CHeaderMap > *smartresult = result ? new std::shared_ptr<  limix::CHeaderMap >(result) : 0;
-    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_limix__CHeaderMap_t, SWIG_POINTER_OWN);
-  }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ARDataFrameXd_agetMatrix(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_ARDataFrameXd_getMatrix(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   limix::ARDataFrame< MatrixXd > *arg1 = (limix::ARDataFrame< MatrixXd > *) 0 ;
   MatrixXd *arg2 = (MatrixXd *) 0 ;
@@ -90407,12 +90170,12 @@ SWIGINTERN PyObject *_wrap_ARDataFrameXd_agetMatrix(PyObject *SWIGUNUSEDPARM(sel
     arg2 = &temp2;
     
   }
-  if (!PyArg_ParseTuple(args,(char *)"O:ARDataFrameXd_agetMatrix",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:ARDataFrameXd_getMatrix",&obj0)) SWIG_fail;
   {
     int newmem = 0;
     res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__ARDataFrameT_MatrixXd_t_t, 0 |  0 , &newmem);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ARDataFrameXd_agetMatrix" "', argument " "1"" of type '" "limix::ARDataFrame< MatrixXd > const *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ARDataFrameXd_getMatrix" "', argument " "1"" of type '" "limix::ARDataFrame< MatrixXd > const *""'"); 
     }
     if (newmem & SWIG_CAST_NEW_MEMORY) {
       tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::ARDataFrame< MatrixXd > > * >(argp1);
@@ -90455,51 +90218,6 @@ SWIGINTERN PyObject *_wrap_ARDataFrameXd_agetMatrix(PyObject *SWIGUNUSEDPARM(sel
     
     resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
   }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ARDataFrameXd_getMatrix(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  limix::ARDataFrame< MatrixXd > *arg1 = (limix::ARDataFrame< MatrixXd > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::shared_ptr< limix::ARDataFrame< MatrixXd > const > tempshared1 ;
-  std::shared_ptr< limix::ARDataFrame< MatrixXd > const > *smartarg1 = 0 ;
-  PyObject * obj0 = 0 ;
-  SwigValueWrapper< std::shared_ptr< MatrixXd > > result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:ARDataFrameXd_getMatrix",&obj0)) SWIG_fail;
-  {
-    int newmem = 0;
-    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__ARDataFrameT_MatrixXd_t_t, 0 |  0 , &newmem);
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ARDataFrameXd_getMatrix" "', argument " "1"" of type '" "limix::ARDataFrame< MatrixXd > const *""'"); 
-    }
-    if (newmem & SWIG_CAST_NEW_MEMORY) {
-      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::ARDataFrame< MatrixXd > > * >(argp1);
-      delete reinterpret_cast< std::shared_ptr< const limix::ARDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::ARDataFrame< MatrixXd > * >(tempshared1.get());
-    } else {
-      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::ARDataFrame< MatrixXd > > * >(argp1);
-      arg1 = const_cast< limix::ARDataFrame< MatrixXd > * >((smartarg1 ? smartarg1->get() : 0));
-    }
-  }
-  {
-    try {
-      result = ((limix::ARDataFrame< MatrixXd > const *)arg1)->getMatrix();
-    } catch (limix::CLimixException& e) {
-      std::string s("LIMIX error: "), s2(e.what());
-      s = s + s2;
-      SWIG_exception(SWIG_RuntimeError, s.c_str());
-      return NULL;
-    } catch (...) {
-      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
-    }
-  }
-  resultobj = SWIG_NewPointerObj((new std::shared_ptr< MatrixXd >(static_cast< const std::shared_ptr< MatrixXd >& >(result))), SWIGTYPE_p_std__shared_ptrT_MatrixXd_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -100256,29 +99974,8 @@ static PyMethodDef SwigMethods[] = {
 		"    self: limix::CRMemDataFrame< MatrixXd > *\n"
 		"\n"
 		""},
-	 { (char *)"CRMemDataFrameXd_getRowHeader", _wrap_CRMemDataFrameXd_getRowHeader, METH_VARARGS, (char *)"\n"
-		"CRMemDataFrameXd_getRowHeader(CRMemDataFrameXd self) -> limix::PHeaderMap\n"
-		"\n"
-		"Parameters:\n"
-		"    self: limix::CRMemDataFrame< MatrixXd > const *\n"
-		"\n"
-		""},
-	 { (char *)"CRMemDataFrameXd_getColHeader", _wrap_CRMemDataFrameXd_getColHeader, METH_VARARGS, (char *)"\n"
-		"CRMemDataFrameXd_getColHeader(CRMemDataFrameXd self) -> limix::PHeaderMap\n"
-		"\n"
-		"Parameters:\n"
-		"    self: limix::CRMemDataFrame< MatrixXd > const *\n"
-		"\n"
-		""},
-	 { (char *)"CRMemDataFrameXd_agetMatrix", _wrap_CRMemDataFrameXd_agetMatrix, METH_VARARGS, (char *)"\n"
-		"CRMemDataFrameXd_agetMatrix(CRMemDataFrameXd self)\n"
-		"\n"
-		"Parameters:\n"
-		"    self: limix::CRMemDataFrame< MatrixXd > const *\n"
-		"\n"
-		""},
 	 { (char *)"CRMemDataFrameXd_getMatrix", _wrap_CRMemDataFrameXd_getMatrix, METH_VARARGS, (char *)"\n"
-		"CRMemDataFrameXd_getMatrix(CRMemDataFrameXd self) -> std::shared_ptr< MatrixXd >\n"
+		"CRMemDataFrameXd_getMatrix(CRMemDataFrameXd self)\n"
 		"\n"
 		"Parameters:\n"
 		"    self: limix::CRMemDataFrame< MatrixXd > const *\n"
@@ -100337,29 +100034,8 @@ static PyMethodDef SwigMethods[] = {
 		"    self: limix::ARDataFrame< MatrixXd > *\n"
 		"\n"
 		""},
-	 { (char *)"ARDataFrameXd_getRowHeader", _wrap_ARDataFrameXd_getRowHeader, METH_VARARGS, (char *)"\n"
-		"ARDataFrameXd_getRowHeader(ARDataFrameXd self) -> limix::PHeaderMap\n"
-		"\n"
-		"Parameters:\n"
-		"    self: limix::ARDataFrame< MatrixXd > const *\n"
-		"\n"
-		""},
-	 { (char *)"ARDataFrameXd_getColHeader", _wrap_ARDataFrameXd_getColHeader, METH_VARARGS, (char *)"\n"
-		"ARDataFrameXd_getColHeader(ARDataFrameXd self) -> limix::PHeaderMap\n"
-		"\n"
-		"Parameters:\n"
-		"    self: limix::ARDataFrame< MatrixXd > const *\n"
-		"\n"
-		""},
-	 { (char *)"ARDataFrameXd_agetMatrix", _wrap_ARDataFrameXd_agetMatrix, METH_VARARGS, (char *)"\n"
-		"ARDataFrameXd_agetMatrix(ARDataFrameXd self)\n"
-		"\n"
-		"Parameters:\n"
-		"    self: limix::ARDataFrame< MatrixXd > const *\n"
-		"\n"
-		""},
 	 { (char *)"ARDataFrameXd_getMatrix", _wrap_ARDataFrameXd_getMatrix, METH_VARARGS, (char *)"\n"
-		"ARDataFrameXd_getMatrix(ARDataFrameXd self) -> std::shared_ptr< MatrixXd >\n"
+		"ARDataFrameXd_getMatrix(ARDataFrameXd self)\n"
 		"\n"
 		"Parameters:\n"
 		"    self: limix::ARDataFrame< MatrixXd > const *\n"

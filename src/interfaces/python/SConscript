@@ -51,11 +51,11 @@ else:
 if build_options['reswig']:
    #build from .i file
    srclst = ['limix.i']
-   #srclst = ['limix.i',ibnlopt]
-   localenv.Depends(srclst, limix_libs)
 else:
    #use precompiled python wrapper
    srclst = ['swigged/limix_wrap.cc']
+#add dependencies
+localenv.Depends(srclst, limix_LIBS.values())
 
 #build:
 limixlib_swig=localenv.LoadableModule('_core',srclst)

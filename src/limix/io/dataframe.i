@@ -1,13 +1,13 @@
 namespace limix {
 //CMemDataFram
 
-%ignore CMemDataFrame::getMatrix;
-%ignore CMemDataFrame::getColHeader;
-%ignore CMemDataFrame::getRowHeader;
+%ignore ARDataFrame::getMatrix;
+%ignore ARDataFrame::getColHeader;
+%ignore ARDataFrame::getRowHeader;
 
-%rename(getMatrix) CMemDataFrame::agetMatrix;
-%rename(getRowHeader) CMemDataFrame::aetRowHeader;
-%rename(getColHeader) CMemDataFrame::aetColHeader;
+%rename(getMatrix) ARDataFrame::agetMatrix;
+%rename(getRowHeader) ARDataFrame::aetRowHeader;
+%rename(getColHeader) ARDataFrame::aetColHeader;
 }
 
 //raw include
