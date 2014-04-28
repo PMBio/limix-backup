@@ -21,7 +21,7 @@ class VarianceDecomposition:
     vc.addRandomEffectTerm(is_noise=True) # set noisy random effect
     vc.findLocalOptimum() # train the gaussian process 
     vc.getEstTraitCovar(0) # get estimated trait covariance for random effect 1 [P,P]
-    vc.getVarComps() # get variance components of the different terms for different traits as [P,n_randEffs]
+    vc.getVarianceComps() # get variance components of the different terms for different traits as [P,n_randEffs]
     """
     
     def __init__(self,Y,standardize=False):
@@ -172,9 +172,6 @@ class VarianceDecomposition:
 
         self.cache['Sigma']   = None
         self.cache['Hessian'] = None
-        self.cache['Lparams'] = None
-        self.cache['paramsST']= None
-
 
     def addFixedEffect(self,F=None,A=None,Fstar=None):
         """
@@ -213,9 +210,6 @@ class VarianceDecomposition:
 
         self.cache['Sigma']   = None
         self.cache['Hessian'] = None
-        self.cache['Lparams'] = None
-        self.cache['paramsST']= None
-
 
     def trainGP(self,fast=False,scales0=None,fixed0=None,lambd=None):
         """
@@ -327,7 +321,7 @@ class VarianceDecomposition:
 
         fixed0 = SP.zeros_like(self.gp.getParams()['dataTerm'])    
 
-        # minimises n_times
+        # minimize n_times
         for i in range(n_times):
             
             scales1 = self._getScalesRand()
@@ -386,10 +380,10 @@ class VarianceDecomposition:
 
     def setScales(self,scales=None,term_num=None):
         """
-        set values for variance parameters (scales)
+        set Cholesky parameters (scales)
 
         Args:
-            scales:     variance parameters to be set
+            scales:     values of Cholesky parameters
                         if scales is None, sample them randomly from a gaussian distribution with mean 0 and std 1,
             term_num:   index of the term whose variance paraments are to be set
                         if None, scales is interpreted as the stack vector of the variance parameters from all terms
@@ -411,14 +405,14 @@ class VarianceDecomposition:
 
     def getScales(self,term_i=None):
         """
-        Returns the cholesky parameters
+        Returns cholesky parameters
         To retrieve proper variances and covariances \see getVarComps and \see getEstTraitCovar
         
         Args:
             term_i:     index of the term of which we want to retrieve the variance paramenters
         Returns:
             vector of cholesky parameters of term_i
-            if term_i is None, the stack vector of the variance parameters from all terms is returned
+            if term_i is None, the stack vector of the cholesky parameters from all terms is returned
         """
         if term_i==None:
             RV = self.vd.getScales()
@@ -430,18 +424,21 @@ class VarianceDecomposition:
 
     def getWeights(self):
         """
-        Return dataTerm params
+        Return stack vector of the weight of all fixed effects
         """
         assert self.init, 'GP not initialised'
         return self.gp.getParams()['dataTerm']
 
 
-    def getEstTraitCovar(self,term_i=None):
+    def getTraitCovar(self,term_i=None):
         """
-        Returns explicitly the estimated trait covariance matrix
+        Return the estimated trait covariance matrix for term_i (or the total if term_i is None)
+            To retrieve the matrix of correlation coefficient use \see getEstTraitCorrCoef
 
         Args:
-            term_i:     index of the term we are interested in
+            term_i:     index of the random effect term we want to retrieve the covariance matrix
+        Returns:
+            estimated trait correlation coefficie
         """
         assert self.P>1, 'Trait covars not defined for single trait analysis'
         
@@ -455,14 +452,16 @@ class VarianceDecomposition:
 
 
     #TODO: naming? suggests that this calculates one correlation coefficient rather than a matrix.
-    #Add references between getEstTraitCorrCoeff and getEstTraitCovar
     # PAOLO: the method scipy.corrcoef returns the matrix of correlation coefficients
-    def getEstTraitCorrCoef(self,term_i=None):
+    def getTraitCorrCoef(self,term_i=None):
         """
-        Returns the estimated trait correlation matrix
+        Return the estimated trait correlation coefficient matrix for term_i (or the total if term_i is None)
+            To retrieve the trait covariance matrix use \see getEstTraitCovar
 
         Args:
-            term_i:     index of the term we are interested in
+            term_i:     index of the random effect term we want to retrieve the correlation coefficients
+        Returns:
+            estimated trait correlation coefficient matrix
         """
         cov = self.getEstTraitCovar(term_i)
         stds=SP.sqrt(cov.diagonal())[:,SP.newaxis]
@@ -470,36 +469,33 @@ class VarianceDecomposition:
         return RV
     
 
-    #TODO: naming? How does this relate to getScales?
-    def getVariances(self):
+    def getVarianceComps(self,univariance=False):
         """
-        Returns the estimated variances as a n_randEffs x P matrix
-        each row of the output represents a term and its P values represent the variance corresponding variance in each trait
+        Return the estimated variance components
+
+        Args:
+            univariance:   Boolean indicator, if True variance components are normalized to sum up to 1 for each trait
+        Returns:
+            variance components of all random effects on all phenotypes [P, n_randEffs matrix]
         """
         if self.P>1:
             RV=SP.zeros((self.n_randEffs,self.P))
             for term_i in range(self.n_randEffs):
-                RV[term_i,:]=self.vd.getTerm(term_i).getTraitCovar().K().diagonal()
+                RV[:,term_i]=self.vd.getTerm(term_i).getTraitCovar().K().diagonal()
         else:
-            RV=self.getScales()**2
+            RV=self.getScales()[SP.newaxis,:]**2
+        if univariance:
+            RV /= RV.sum(1)[:,SP.newaxis]
         return RV
 
 
-    #TODO: naming? How does this relate to getScales and getVariances?
-    def getVarComponents(self):
-        """
-        Returns the estimated variance components as a n_randEffs x P matrix
-        each row of the output represents a term and its P values represent the variance component corresponding variance in each trait
-        """
-        RV = self.getVariances()
-        RV /= RV.sum(0)
-        return RV
+    """ standard errors """
 
     #TODO: naming. not clear what the standard errors refer to. I want getVarianceParams, getVarainceParamsSTtd() or similar.
     #one could also consider having std calculation as argument in the getVarianceParams.
-    def getStdErrors(self,term_i):
+    def getTraitCovarStdErrors(self,term_i):
         """
-        RETURNS THE STANDARD DEVIATIONS ON VARIANCES AND CORRELATIONS BY PROPRAGATING THE UNCERTAINTY ON LAMBDAS
+        Returns standard errors on trait covariances from term_i (for the covariance estimate \see getTraitCovar)
 
         Args:
             term_i:     index of the term we are interested in
@@ -523,6 +519,30 @@ class VarianceDecomposition:
                     out += 2*abs(C.Kgrad_param(param_i)*C.Kgrad_param(param_j))*Sigma1[param_i,param_j]
         out = SP.sqrt(out)
         return out
+
+    # TODO!!!
+    def getVarianceCompStdErrs(self,univariance=False):
+        """
+        Return the standard errors on the estimated variance components (for variance component estimates \see getVarianceComps)
+
+        Args:
+            univariance:   Boolean indicator, if True variance components are normalized to sum up to 1 for each trait
+        Returns:
+            standard errors on variance components [P, n_randEffs matrix]
+        """
+
+        # TODO TODO TODO TODO
+        if self.P>1:
+            RV=SP.zeros((self.n_randEffs,self.P))
+            for term_i in range(self.n_randEffs):
+                RV[:,term_i]=self.vd.getTerm(term_i).getTraitCovar().K().diagonal()
+        else:
+            RV=self.getScales()[SP.newaxis,:]**2
+        if univariance:
+            RV /= RV.sum(1)[:,SP.newaxis]
+        return RV
+
+
     
 
     """
