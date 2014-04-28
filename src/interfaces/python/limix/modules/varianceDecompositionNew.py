@@ -8,28 +8,21 @@ import limix.utils.preprocess as preprocess
 import pdb
 import time
 import copy
+import warnings
 
 class VarianceDecomposition:
     """
     Variance decomposition module in LIMIX
     This class mainly takes care of initialization and eases the interpretation of complex variance decompositions
 
-    #TODO: change documentation. Python modules explain what the functions do but a list of function is not needed, I think?
-    #A 3 line example how to use it would be good to have here... perhaps.
-    Methods:
-        __init__(self,Y):            Constructor
-        addSingleTraitTerm:          Add Single Trait Term
-        addMultiTraitTerm:           Add Multi Trait Term (form of trait-to-trait covariance matrix need to be set as well)
-        addFixedTerm:                Add Fixed Effect Term
-        fit:                         Fit phenos and returns the minimum with some info
-        setScales:                   Set the vector of covar parameterss
-        getScales:                   Return the vector of the covar parameters
-        getFixed:                    Return the vector of the dataTerm parameters
-        getEmpTraitCovar:            Return the empirical trait covariance
-        getEstTraitCovar:            Return the estimated trait-to-trait covariance matrix for term i
-        estimateHeritabilities:      Given K, it fits the model with 1 global fixed effects and covariance matrix hg[p]*K+hn[p] for each trait p and returns the vectors hg and hn
+    vc = varianceDecomposition(Y) # set phenotype matrix Y [N,P]
+    vc.addFixedEffect() # set intercept
+    vc.addRandomEffectTerm(K=K) # set genetic random effect with genetic kinship as sample covariance matrix [N,N]
+    vc.addRandomEffectTerm(is_noise=True) # set noisy random effect
+    vc.findLocalOptimum() # train the gaussian process 
+    vc.getEstTraitCovar(0) # get estimated trait covariance for random effect 1 [P,P]
+    vc.getVarComps() # get variance components of the different terms for different traits as [P,n_randEffs]
     """
-    
     
     def __init__(self,Y,standardize=False):
         """
@@ -204,6 +197,7 @@ class VarianceDecomposition:
        
         for m in range(F.shape[1]):
             self.vd.addFixedEffTerm(A,F[:,m:m+1])
+            self.n_fixedEffs += 1
 
         if Fstar!=None:
             assert self.Ntest!=None, 'VarianceDecomposition:: specify Ntest for predictions (method VarianceDecomposition::setTestSampleSize)'
@@ -317,10 +311,6 @@ class VarianceDecomposition:
  
         return conv
 
-    #TODO: this function and the above seem redundant. 
-    #Don't you want this function to wrap the above, i.e. write the above as internal function and have this as the autside interface?
-    #having multiple restarts is a simple add on. You can pass arguments automatically using the **kw_args keyword, which avoids having to redefine options here that are used again in the
-    #internal function
     def findLocalOptima(self,fast=None,verbose=True,n_times=10,lambd=None):
         """
         Train the model repeadly up to a number specified by the users with random restarts and
@@ -421,12 +411,13 @@ class VarianceDecomposition:
 
     def getScales(self,term_i=None):
         """
-        Returns the variance parameters
+        Returns the cholesky parameters
+        To retrieve proper variances and covariances \see getVarComps and \see getEstTraitCovar
         
         Args:
             term_i:     index of the term of which we want to retrieve the variance paramenters
         Returns:
-            vector of variance parameters of term_i
+            vector of cholesky parameters of term_i
             if term_i is None, the stack vector of the variance parameters from all terms is returned
         """
         if term_i==None:
@@ -465,6 +456,7 @@ class VarianceDecomposition:
 
     #TODO: naming? suggests that this calculates one correlation coefficient rather than a matrix.
     #Add references between getEstTraitCorrCoeff and getEstTraitCovar
+    # PAOLO: the method scipy.corrcoef returns the matrix of correlation coefficients
     def getEstTraitCorrCoef(self,term_i=None):
         """
         Returns the estimated trait correlation matrix
@@ -537,8 +529,7 @@ class VarianceDecomposition:
     CODE FOR PREDICTIONS
     """
     
-    #TODO: naming. not nice... needs also quite a few more checks, I think.
-    def predictMean(self):
+    def predictPhenos(self):
         """
         predict the conditional mean (BLUP)
 
@@ -547,26 +538,43 @@ class VarianceDecomposition:
         """
         assert self.noisPos!=None,      'No noise element'
         assert self.init,               'GP not initialised'
-                
+        assert self.Ntest==None,        'VarianceDecomposition:: specify Ntest for predictions (method VarianceDecomposition::setTestSampleSize)'
+ 
         KiY = self.gp.agetKEffInvYCache()
                 
         if self.fast==False:
             KiY = KiY.reshape(self.P,self.N).T
                 
-        Ymean = None
+        Ypred = SP.zeros((self.Ntest,self.P))
+
+        # predicting from random effects
         for term_i in range(self.n_randEffs):
             if term_i!=self.noisPos:
-                Kstar = self.vd.getTerm(term_i).getKcf().Kcross(SP.zeros(1))
+                Kstar = self.Kstar[term_i]
+                if Kstar==None:
+                    warnings.warn('warning: random effect term %d not used for predictions as it has None cross covariance'%term_i)
+                    continue 
                 term  = SP.dot(Kstar.T,KiY)
                 if self.P>1:
                     C    = self.getEstTraitCovar(term_i)
                     term = SP.dot(term,C)
-                if Ymean==None:     Ymean  = term
-                else:               Ymean += term
-            
-        # to generalise to more fixed effect terms
-        Ymean+=self.getFixed()[:,0]
-                
+                Ypred += term
+
+        # predicting from fixed effects
+        weights = self.getWeights()
+        w_i = 0
+        for term_i in range(self.n_fixedEffects):
+            Fstar = self.Fstar[term_i]
+            if Fstar==None:
+                warnings.warn('warning: fixed effect term %d not used for predictions as it has None test sample design'%term_i)
+                continue 
+            if P==1:	A = SP.eye(1)
+            else:		A = self.vd.getDesign(term_i)
+            Fstar = self.Fstar[term_i]
+            W = weights[0:1,w_i:w_i+A.shape[0]] 
+            term = SP.dot(Fstar,SP.dot(W,A))
+            w_i += A.shape[0]
+
         return Ymean
 
    """ GP initialization """
@@ -695,10 +703,10 @@ class VarianceDecomposition:
         assert self.P>1, 'VarianceDecomposition:: diagonal init_method allowed only for multi trait models' 
         assert self.noisPos!=None, 'VarianceDecomposition:: noise term has to be set'
         assert termx<self.n_randEffs-1, 'VarianceDecomposition:: termx>=n_randEffs-1'
-        assert self.covar_type[self.noisPos] not in ['lowrank','block','fixed'], 'VarianceDecimposition:: diagonal initializaiton not posible for such a parametrization'
+        assert self.covar_type[self.noisPos] not in ['lowrank','block','fixed'], 'VarianceDecomposition:: diagonal initializaiton not posible for such a parametrization'
         assert self.covar_type[termx] not in ['lowrank','block','fixed'], 'VarianceDecimposition:: diagonal initializaiton not posible for such a parametrization'
         scales = []
-        res = self.estimateHeritabilities(self.vd.getTerm(termx).getK())
+        res = self._getH2singleTrait(self.vd.getTerm(termx).getK())
         scaleg = SP.sqrt(res['varg'].mean())
         scalen = SP.sqrt(res['varn'].mean())
         for term_i in range(self.n_randEffs):
@@ -728,7 +736,6 @@ class VarianceDecomposition:
             scales = SP.concatenate(scales)
         else:
             scales=SP.randn(self.vd.getNumberScales())
-
         return scales
 
     def _perturbation(self):
