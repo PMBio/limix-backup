@@ -66,6 +66,8 @@ AddOption('--CXX',dest='CXX',type='string',nargs=1,action='store',default=cxx,he
 AddOption('--CC',dest='CC',type='string',nargs=1,action='store',default=cc,help='Manual specified CC')
 #override  build tool
 AddOption('--build_tool',dest='build_tool',type='string',nargs=1,action='store',default=build_tool,help='Manual specification of build tool')
+#additional cxx flags
+AddOption('--CXXflags',dest='CXXflags',type='string',nargs=1,action='store',default=None,help='additional cxx build flags')
 #use static bind?
 #note: if enabled, the library is effectively GPL as nlopt is lesser GPL and hence we require dynamic binding
 AddOption('--static-bind',dest='static_bind',action='store_true',help='Enforce static binding of external libs',default=static_bind_default)
@@ -99,6 +101,7 @@ build_options['with_developcpp'] = GetOption('with_developcpp')
 build_options['with_tests'] = GetOption('with_tests')
 build_options['with_documentation'] = GetOption('with_documentation')
 build_options['CXX'] = GetOption('CXX')
+build_options['CXXflags'] = GetOption('CXXflags')
 build_options['CC'] = GetOption('CC')
 build_options['build_tool'] = GetOption('build_tool')
 build_options['reswig'] = GetOption('reswig')
@@ -153,6 +156,8 @@ else:
    cflags.extend(['-fPIC'])
    #we require c++0x for smart pointers but presently not more than this.
    cxxflags.extend(['-std=c++0x'])
+   if (build_options['CXXflags']):
+    cxxflags.extend([build_options['CXXflags']])
    #cxxflags.extend(['-stdlib=libc++'])
    releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
    releaselinkflags.extend(['-lstdc++'])
