@@ -156,13 +156,15 @@ else:
    cflags.extend(['-fPIC'])
    #we require c++0x for smart pointers but presently not more than this.
    cxxflags.extend(['-std=c++0x'])
-   if (build_options['CXXflags']):
-    cxxflags.extend([build_options['CXXflags']])
-   #cxxflags.extend(['-stdlib=libc++'])
    releasecflags.extend(['-msse','-msse2'])         #extra compile flags for release
    releaselinkflags.extend(['-lstdc++'])
    debuglinkflags.extend(['-lstdc++'])
    debugcflags.extend(['-g','-Wextra'])
+   if (build_options['CXXflags']):
+    cxxflags.extend([build_options['CXXflags']])
+    releaselinkflags.extend([build_options['CXXflags']])
+    debuglinkflags.extend([build_options['CXXflags']])
+   #cxxflags.extend(['-stdlib=libc++'])
 
 #compile with zlib?
 if build_options['with_zlib']:
