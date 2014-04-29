@@ -58,7 +58,7 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,Nu
     return lm
 
 
-def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,K2r=None,K2c=None,covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
+def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
     """
     simple wrapper for kroneckerLMM code
 
@@ -79,7 +79,7 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
                         If not provided, then linear regression analysis is performed
         K2c:    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
                         If not provided, then linear regression analysis is performed
-        covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
+        trait_covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
                         'freeform': free form optimization, 
                         'fixed': use a fixed matrix specified in covar_K0,
                         'diag': optimize a diagonal matrix, 
@@ -128,9 +128,9 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
     
     #1. run GP model to infer suitable covariance structure
     if K1c==None or K2c==None:
-        vc = _estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, covar_type=covar_type, rank=rank)
-        K1c = vc.getEstTraitCovar(0)
-        K2c = vc.getEstTraitCovar(1)
+        vc = _estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, trait_covar_type=trait_covar_type, rank=rank)
+        K1c = vc.getTraitCovar(0)
+        K2c = vc.getTraitCovar(1)
     else:
         assert K1c.shape[0]==P, 'K1c: dimensions dismatch'
         assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
@@ -168,7 +168,7 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
 
 #TODO: (O.S), I have changed the parametrization of delta optimization steps. Happy with that?
 #TODO: Do we really want to keep these "simple_XXX" names? Which functions are simple, which ones are not? I don't like it.
-def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
+def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
     
@@ -191,7 +191,7 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
                         If not provided, then linear regression analysis is performed
         K2c:    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
                         If not provided, then linear regression analysis is performed
-        covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
+        trait_covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
                         'freeform': free form optimization, 
                         'fixed': use a fixed matrix specified in covar_K0,
                         'diag': optimize a diagonal matrix, 
@@ -248,9 +248,9 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
     
     #1. run GP model to infer suitable covariance structure
     if K1c==None or K2c==None:
-        vc = _estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, covar_type=covar_type, rank=rank)
-        K1c = vc.getEstTraitCovar(0)
-        K2c = vc.getEstTraitCovar(1)
+        vc = _estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, trait_covar_type=trait_covar_type, rank=rank)
+        K1c = vc.getTraitCovar(0)
+        K2c = vc.getTraitCovar(1)
     else:
         assert K1c.shape[0]==P, 'K1c: dimensions dismatch'
         assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
@@ -479,8 +479,8 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
     #1. run GP model to infer suitable covariance structure
     if K1c==None or K2c==None:
         vc = _estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, **kw_args)
-        K1c = vc.getEstTraitCovar(0)
-        K2c = vc.getEstTraitCovar(1)
+        K1c = vc.getTraitCovar(0)
+        K2c = vc.getTraitCovar(1)
     else:
         vc = None
         assert K1c.shape[0]==P, 'K1c: dimensions dismatch'
@@ -522,8 +522,8 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
             vc.addFixedTerm(snps[:,imin[1]:(imin[1]+1)],Acond[imin[0]])
             vc.setScales()#CL: don't know what this does, but findLocalOptima crashes becahuse vc.noisPos=None
             vc.findLocalOptima(fast=True)
-            K1c = vc.getEstTraitCovar(0)
-            K2c = vc.getEstTraitCovar(1)
+            K1c = vc.getTraitCovar(0)
+            K2c = vc.getTraitCovar(1)
             lm.setK1c(K1c)
             lm.setK2c(K2c)
         lm.addCovariates(snps[:,imin[1]:(imin[1]+1)],Acond[imin[0]])
@@ -558,7 +558,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
 
 """ INTERNAL """
 
-def _estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,covar_type='lowrank_diag',rank=1):
+def _estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,trait_covar_type='lowrank_diag',rank=1):
     """
     estimates the background covariance model before testing
 
@@ -575,7 +575,7 @@ def _estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=Non
         covs:           list of SP.arrays holding covariates. Each covs[i] has one corresponding Acovs[i]
         Acovs:          list of SP.arrays holding the phenotype design matrices for covariates.
                         Each covs[i] has one corresponding Acovs[i].
-        covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
+        trait_covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
                         'freeform': free form optimization, 
                         'fixed': use a fixed matrix specified in covar_K0,
                         'diag': optimize a diagonal matrix, 
@@ -588,20 +588,20 @@ def _estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=Non
         rank:           rank of a possible lowrank component (default 1)
     
     Returns:
-        CVarianceDecomposition object
+        VarianceDecomposition object
     """
     print ".. Training the backgrond covariance with a GP model"
-    vc = VAR.CVarianceDecomposition(phenos)
+    vc = VAR.VarianceDecomposition(phenos)
     if K1r is not None:
-        vc.addRandomEffect(K1r,covar_type=covar_type,rank=rank)
+        vc.addRandomEffect(K1r,trait_covar_type=trait_covar_type,rank=rank)
     if K2r is not None:
         #TODO: fix this; forces second term to be the noise covariance
-        vc.addRandomEffect(is_noise=True,K=K2r,covar_type=covar_type,rank=rank)
+        vc.addRandomEffect(is_noise=True,K=K2r,trait_covar_type=trait_covar_type,rank=rank)
     for ic  in xrange(len(Acovs)):
         vc.addFixedEffect(covs[ic],Acovs[ic])
     start = time.time()
     conv = vc.optimize(fast=True)
-    assert conv, "CVariance Decomposition has not converged"
+    assert conv, "Variance Decomposition has not converged"
     time_el = time.time()-start
     print "Background model trained in %.2f s" % time_el
     return vc
@@ -628,7 +628,7 @@ def _updateKronCovs(covs,Acovs,N,P):
 
 """ DEPRECATED AND/OR NOT USED"""
 
-def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,covar_type='lowrank_diag',rank=1,searchDelta=False):
+def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,searchDelta=False):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects. 
     (Runs multiple likelihood ratio tests and computes the P-values in python from the likelihood ratios)
@@ -652,7 +652,7 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
                         If not provided, then linear regression analysis is performed
         K2c:    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
                         If not provided, then linear regression analysis is performed
-        covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
+        trait_covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
                         'freeform': free form optimization, 
                         'fixed': use a fixed matrix specified in covar_K0,
                         'diag': optimize a diagonal matrix, 
@@ -711,9 +711,9 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
     
     #1. run GP model to infer suitable covariance structure
     if K1c==None or K2c==None:
-        vc = _estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, covar_type=covar_type, rank=rank)
-        K1c = vc.getEstTraitCovar(0)
-        K2c = vc.getEstTraitCovar(1)
+        vc = _estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, trait_covar_type=trait_covar_type, rank=rank)
+        K1c = vc.getTraitCovar(0)
+        K2c = vc.getTraitCovar(1)
     else:
         assert K1c.shape[0]==P, 'K1c: dimensions dismatch'
         assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
