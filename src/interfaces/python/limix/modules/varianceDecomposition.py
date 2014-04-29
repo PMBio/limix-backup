@@ -10,7 +10,7 @@ import time
 import copy
 import warnings
 
-class VarianceDecompositionNew:
+class VarianceDecomposition:
     """
     Variance decomposition module in LIMIX
     This class mainly takes care of initialization and eases the interpretation of complex variance decompositions
@@ -104,34 +104,29 @@ class VarianceDecompositionNew:
         self.Ntest = Ntest
 
 
-    def addRandomEffect(self,K=None,is_noise=False,trait_covar_type='lowrank_diag',normalize=True,Kcross=None,jitter=1e-4,rank=1,fixed_trait_covar=None):
+    def addRandomEffect(self,K=None,is_noise=False,normalize=True,Kcross=None,trait_covar_type='freeform',rank=1,fixed_trait_covar=None,jitter=1e-4):
         """
         Add random effects term.
         
         Args:
             K:      Sample Covariance Matrix [N, N]
-            trait_covar_type: type of covaraince to use. Default 'freeform'. possible values are 
-                            'freeform': general semi-definite positive matrix, 
-                            'fixed': use a fixed matrix specified in fixed_trait_covar,
-                            'diag': optimize a diagonal matrix, 
-                            'lowrank': optimize a low rank matrix. The rank of the lowrank part is specified in the variable rank,
-                            'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                            'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                            'block': optimize the weight of a constant P x P block matrix of ones,
-                            'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
-                            'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,                            
             is_noise:   Boolean indicator specifying if the matrix is homoscedastic noise (weighted identity covariance) (default False)
             normalize:  Boolean indicator specifying if K has to be normalized such that K.trace()=N.
             Kcross:			NxNtest cross covariance for predictions
-            jitter:		diagonal contribution added to trait-to-trait covariance matrices for regularization
+            trait_covar_type: type of covaraince to use. Default 'freeform'. possible values are 
+                            'freeform':  general semi-definite positive matrix, 
+                            'fixed': fixed matrix specified in fixed_trait_covar,
+                            'diag': diagonal matrix, 
+                            'lowrank': low rank matrix. The rank of the lowrank part is specified in the variable rank,
+                            'lowrank_id': sum of a lowrank matrix and a multiple of the identity. The rank of the lowrank part is specified in the variable rank, 
+                            'lowrank_diag': sum of a lowrank and a diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+                            'block': multiple of a matrix of ones,
+                            'block_id': sum of a multiple of a matrix of ones and a multiple of the idenity,
+                            'block_diag': sum of a multiple of a matrix of ones and a diagonal matrix,
             rank:       rank of a possible lowrank component (default 1)
             fixed_trait_covar:   PxP matrix for the (predefined) trait-to-trait covariance matrix if fixed type is used
+            jitter:		diagonal contribution added to trait-to-trait covariance matrices for regularization
         """
-        # single trait specifc
-        assert self.P == 1, 'VarianceDecomposition:: Incompatible number of traits'
-        # multi trait specific
-        assert self.P > 1, 'VarianceDecomposition:: Incompatible number of traits'
-        
         assert K!=None or is_noise, 'VarianceDecomposition:: Specify covariance structure'
         
         if is_noise:
@@ -156,11 +151,11 @@ class VarianceDecompositionNew:
             self.vd.addTerm(limix.CSingleTraitTerm(K))
         else:
             assert jitter>=0, 'VarianceDecomposition:: jitter must be >=0'
-            self.jitter.append(jitter)
+            cov,diag = self._buildTraitCovar(trait_covar_type=trait_covar_type,rank=rank,fixed_trait_covar=fixed_trait_covar,jitter=jitter)
+            self.vd.addTerm(cov,K)
             self.trait_covar_type.append(trait_covar_type)
             self.diag.append(diag)
-            cov = self._buildTraitCovar(trait_covar_type,jitter)
-            self.vd.addTerm(cov,K)
+            self.jitter.append(jitter)
 
         self.Kstar.append(Kcross)
         self.n_randEffs+=1
@@ -211,7 +206,7 @@ class VarianceDecompositionNew:
         self.cache['Sigma']   = None
         self.cache['Hessian'] = None
 
-    def trainGP(self,fast=False,scales0=None,fixed0=None,lambd=None):
+    def trainGP(self,fast=None,scales0=None,fixed0=None,lambd=None):
         """
         Train the gp
        
@@ -266,7 +261,6 @@ class VarianceDecompositionNew:
             perturbSize:    std of the gassian noise used to perturb the initial point
             verbose:        print if convergence is achieved and how many restarted were needed 
         """
-
         if init_method==None:
             if self.P==1:	init_method = 'random'
             else:           init_method = 'diagonal'
@@ -610,26 +604,30 @@ class VarianceDecompositionNew:
             fast:   Boolean indicator denoting if fast implementation is to consider
                     if fast is None (default) and possible in the specifc situation, fast implementation is considered
         """
-        if fast==None:		fast = (self.n_randEffs==2)*(self.P>1)*(~SP.isnan(self.Y).any())
+        if fast==None:		fast = (self.n_randEffs==2) and (self.P>1) and (~SP.isnan(self.Y).any())
         elif fast:
             assert self.n_randEffs==2, 'VarianceDecomposition: for fast inference number of random effect terms must be == 2'
             assert self.P>1, 'VarianceDecomposition: for fast inference number of traits must be > 1'
             assert not SP.isnan(self.Y).any(), 'VarianceDecomposition: fast inference available only for complete phenotype designs'
         if fast:	self.vd.initGPkronSum()
-        else:		self.vd.initGP()
+        else:		self.vd.initGPbase()
         self.gp=self.vd.getGP()
         self.init=True
         self.fast=fast
 
 
-    def _buildTraitCovar():
+    def _buildTraitCovar(self,trait_covar_type='lowrank_diag',rank=1,fixed_trait_covar=None,jitter=1e-4):
         """
         Internal functions that builds the trait covariance matrix using the LIMIX framework
 
         Args:
-
+            trait_covar_type: type of covaraince to use. Default 'freeform'. possible values are 
+            rank:       rank of a possible lowrank component (default 1)
+            fixed_trait_covar:   PxP matrix for the (predefined) trait-to-trait covariance matrix if fixed type is used
+            jitter:		diagonal contribution added to trait-to-trait covariance matrices for regularization
         Returns:
-            Trait covariance matrix
+            LIMIX::PCovarianceFunction for Trait covariance matrix
+            vector labelling Cholesky parameters for different initializations
         """
         cov = limix.CSumCF()
         if trait_covar_type=='freeform':
@@ -637,6 +635,7 @@ class VarianceDecompositionNew:
             L = SP.eye(self.P)
             diag = SP.concatenate([L[i,:(i+1)] for i in range(self.P)])
         elif trait_covar_type=='fixed':
+            assert fixed_trait_covar!=None, 'VarianceDecomposition:: set fixed_trait_covar'
             assert fixed_trait_covar.shape[0]==self.N, 'VarianceDecomposition:: Incompatible shape for fixed_trait_covar'
             assert fixed_trait_covar.shape[1]==self.N, 'VarianceDecomposition:: Incompatible shape for fixed_trait_covar'
             cov.addCovariance(limix.CFixedCF(fixed_trait_covar))
@@ -673,6 +672,8 @@ class VarianceDecompositionNew:
             _cov.setParams(SP.array([SP.sqrt(jitter)]))
             _cov.setParamMask(SP.zeros(1))
             cov.addCovariance(_cov)
+        return cov,diag
+        
 
 
 
@@ -692,11 +693,18 @@ class VarianceDecompositionNew:
         
         for p in range(self.P):
             y = self.Y[:,p:p+1]
+            # check if some sull value
+            I  = SP.isnan(y[:,0])
+            if I.sum()>0:
+                y  = y[~I,:]
+                _K = K[~I,:][:,~I]
+            else:
+                _K  = copy.copy(K)
             lmm = limix.CLMM()
-            lmm.setK(K)
-            lmm.setSNPs(SP.ones((K.shape[0],1)))
+            lmm.setK(_K)
+            lmm.setSNPs(SP.ones((y.shape[0],1)))
             lmm.setPheno(y)
-            lmm.setCovs(SP.zeros((K.shape[0],1)))
+            lmm.setCovs(SP.zeros((y.shape[0],1)))
             lmm.setVarcompApprox0(-20, 20, 1000)
             lmm.process()
             delta = SP.exp(lmm.getLdelta0()[0,0])
@@ -778,7 +786,7 @@ class VarianceDecompositionNew:
             scales = SP.randn(self.vd.getNumberScales())
         return scales
 
-   """ INTERNAL FUNCIONS FOR ESTIMATING PARAMETERS UNCERTAINTY """
+    """ INTERNAL FUNCIONS FOR ESTIMATING PARAMETERS UNCERTAINTY """
 
     def _getHessian(self):
         """

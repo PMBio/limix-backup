@@ -10,8 +10,8 @@ import limix.modules.varianceDecomposition as VAR
 import data
 
 
-class CVarianceDecompositionKronecker_test(unittest.TestCase):
-    """test class for CVarianceDecomposition
+class VarianceDecompoitionKronecker_test(unittest.TestCase):
+    """test class for VarianceDecomposition
          THis testing class assumes everything is Kronecker.
     """
 
@@ -64,14 +64,14 @@ class CVarianceDecompositionKronecker_test(unittest.TestCase):
         self.Kg = SP.dot(self.D['X'],self.D['X'].T)
         self.Kg = self.Kg/self.Kg.diagonal().mean()
 
-        self.vc = VAR.CVarianceDecomposition(self.D['Y'])
-        self.vc.addRandomEffect(self.Kg,offset=0)
-        self.vc.addRandomEffect(is_noise=True,offset=0)
+        self.vc = VAR.VarianceDecomposition(self.D['Y'])
+        self.vc.addRandomEffect(self.Kg,jitter=0)
+        self.vc.addRandomEffect(is_noise=True,jitter=0)
         self.vc.addFixedEffect()
         
     def test_fit(self):
         """ optimization test """
-        self.vc.findLocalOptimum(verbose=False)
+        self.vc.optimize(verbose=False)
         params = self.vc.getScales()
         if self.generate:
             self.D['params_true'] = params
@@ -83,7 +83,7 @@ class CVarianceDecompositionKronecker_test(unittest.TestCase):
 
     def test_fitFast(self):
         """ optimization test """
-        self.vc.findLocalOptimum(fast=True,verbose=False)
+        self.vc.optimize(fast=True,verbose=False)
         params = self.vc.getScales()
         if self.generate:
             self.D['params_true'] = params
@@ -95,8 +95,8 @@ class CVarianceDecompositionKronecker_test(unittest.TestCase):
         RV = ((SP.absolute(params)-SP.absolute(params_true))**2).max()<1e-6
         self.assertTrue(RV)
 
-class CVarianceDecompositionSoftKronecker_test(unittest.TestCase):
-    """test class for CVarianceDecomposition
+class VarianceDecompositionSoftKronecker_test(unittest.TestCase):
+    """test class for VarianceDecomposition
          THis testing class assumes tests the ability to 
     """
 
@@ -153,14 +153,14 @@ class CVarianceDecompositionSoftKronecker_test(unittest.TestCase):
             self.D['Y'][1,1] = SP.nan
             self.D['Y'][10,0] = SP.nan
             self.D['Y'][100,1] = SP.nan
-        self.vc = VAR.CVarianceDecomposition(self.D['Y'])
-        self.vc.addRandomEffect(self.Kg,offset=0)
-        self.vc.addRandomEffect(is_noise=True,offset=0)
+        self.vc = VAR.VarianceDecomposition(self.D['Y'])
+        self.vc.addRandomEffect(self.Kg,jitter=0)
+        self.vc.addRandomEffect(is_noise=True,jitter=0)
         self.vc.addFixedEffect()
         
     def test_fit(self):
         """ optimization test """
-        self.vc.findLocalOptimum(verbose=False)
+        self.vc.optimize(verbose=False)
         params = self.vc.getScales()
         if self.generate:
             self.D['params_true'] = params
