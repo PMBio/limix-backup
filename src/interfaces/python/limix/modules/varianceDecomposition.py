@@ -9,7 +9,7 @@ import pdb
 import time
 import copy
 
-class CVarianceDecomposition:
+class VarianceDecomposition:
     """
     Variance decomposition module in LIMIX
     This class mainly takes care of initialization and eases the interpretation of complex variance decompositions
