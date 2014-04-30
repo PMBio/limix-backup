@@ -31,11 +31,12 @@
     <Compile Include="modules\FastVDMM.py" />
     <Compile Include="modules\limix_runner.py" />
     <Compile Include="modules\genotype_reader.py" />
-    <Compile Include="modules\multiTraitQTL.py" />
+    <Compile Include="modules\output_writer.py" />
     <Compile Include="modules\panama.py" />
     <Compile Include="modules\phenotype_reader.py" />
     <Compile Include="modules\qtl.py" />
     <Compile Include="modules\varianceDecomposition.py" />
+    <Compile Include="modules\varianceDecompositionNew.py" />
     <Compile Include="modules\__init__.py" />
     <Compile Include="utils\fastlmm.py" />
     <Compile Include="utils\fdr.py" />
