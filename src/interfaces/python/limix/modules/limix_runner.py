@@ -100,7 +100,7 @@ if __name__ == "__main__":
     print (infostring)
     
     runner = LIMIX_runner(infostring=infostring)
-    (options,args) =runner.parse_args()
+    (options,args) = runner.parse_args()
     data = runner.load_data()
     result = runner.run_experiment()
     runner.write_resultfiles()
