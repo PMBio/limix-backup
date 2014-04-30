@@ -26,7 +26,6 @@
     <Compile Include="modules\data_new.py" />
     <Compile Include="modules\data_util.py" />
     <Compile Include="modules\example_scripts\example_data.py" />
-    <Compile Include="modules\example_scripts\example_output.py" />
     <Compile Include="modules\example_scripts\gwas_example.py" />
     <Compile Include="modules\FastVDMM.py" />
     <Compile Include="modules\limix_runner.py" />
@@ -36,7 +35,6 @@
     <Compile Include="modules\phenotype_reader.py" />
     <Compile Include="modules\qtl.py" />
     <Compile Include="modules\varianceDecomposition.py" />
-    <Compile Include="modules\varianceDecompositionNew.py" />
     <Compile Include="modules\__init__.py" />
     <Compile Include="utils\fastlmm.py" />
     <Compile Include="utils\fdr.py" />
