@@ -30,6 +30,7 @@
     <Compile Include="modules\FastVDMM.py" />
     <Compile Include="modules\limix_runner.py" />
     <Compile Include="modules\genotype_reader.py" />
+    <Compile Include="modules\multitrait_lmm.py" />
     <Compile Include="modules\output_writer.py" />
     <Compile Include="modules\panama.py" />
     <Compile Include="modules\phenotype_reader.py" />

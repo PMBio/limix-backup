@@ -49,4 +49,4 @@ pvalues = pd.DataFrame(data=pvalues.T,index=data_subsample.geno_ID,columns=pheno
 pvalues = pd.concat([pos,pvalues],join="outer",axis=1)
 #create result DataFrame
 result["pvalues"] = pvalues
-
+    
