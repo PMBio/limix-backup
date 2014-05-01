@@ -63,7 +63,7 @@ void slice(const Eigen::PlainObjectBase<DerivedX> & m1,const MatrixXb& Iselect, 
 			throw CLimixException("Slicing operator needs to be N x 1 or 1 x M if m1 is an N x M matrix");
 		muint_t cc = 0;
 		for (muint_t ic=0;ic<(muint_t)Iselect.cols();++ic)
-			if(Iselect(0,ic)>0)
+			if(Iselect(0,ic))
 			{
 				out.col(cc) = m1.col(ic);
 				cc+=1;

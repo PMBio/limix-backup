@@ -16,8 +16,8 @@ namespace limix {
 /* AVarianceTerm */
 AVarianceTerm::AVarianceTerm() {
 	this->Knull=true;
-	this->fitted=(bool)0;
-	this->is_init=(bool)0;
+	this->fitted=false;
+	this->is_init=false;
 }
 
 AVarianceTerm::~AVarianceTerm() {
@@ -92,7 +92,7 @@ void CSingleTraitTerm::initTerm()
 {
 	if (Knull)
 		throw CLimixException("CSingleTraitTerm: K needs to be set!");
-	this->is_init=(bool)1;
+	this->is_init=true;
 }
 
 PCovarianceFunction CSingleTraitTerm::getCovariance() const 
@@ -160,7 +160,7 @@ void CMultiTraitTerm::initTerm()
 	Kcf->setParamMask(VectorXd::Zero(1));
 	// InterTrait Covariance Matrix
 	covariance = PKroneckerCF(new CKroneckerCF(traitCovariance,Kcf));
-	this->is_init=(bool)1;
+	this->is_init=true;
 }
 
 void CMultiTraitTerm::setSampleFilter(const MatrixXb& filter) 
@@ -211,7 +211,7 @@ void CVarianceDecomposition::clear()
 	this->fixedEffs.clear();
 	this->designs.clear();
 	this->terms.clear();
-	this->is_init=(bool)0;
+	this->is_init=false;
 }
 
 void CVarianceDecomposition::addFixedEffTerm(const MatrixXd& design, const MatrixXd& fixed) 
@@ -394,27 +394,27 @@ void CVarianceDecomposition::initGPparams()
 
 void CVarianceDecomposition::initGPbase() 
 {
-	covar = PSumCF(new CSumCF());
+	this->covar = PSumCF(new CSumCF());
 	// Init Covariances and sum them
 	for(PVarianceTermVec::iterator iter = this->terms.begin(); iter!=this->terms.end();iter++)
 	{
 		PVarianceTerm term = iter[0];
 		term->initTerm();
-		covar->addCovariance(iter[0]->getCovariance());
+		this->covar->addCovariance(iter[0]->getCovariance());
 	}
 	//Build Fixed Effect Term
 	// count number of cols
 	muint_t numberCols = 0;
-	MatrixXdVec::const_iterator design_iter = designs.begin();
-	MatrixXdVec::const_iterator fixed_iter  = fixedEffs.begin();
-	for( ; design_iter!=designs.end(); design_iter++, fixed_iter++)
+	MatrixXdVec::const_iterator design_iter = this->designs.begin();
+	MatrixXdVec::const_iterator fixed_iter = this->fixedEffs.begin();
+	for (; design_iter != this->designs.end(); design_iter++, fixed_iter++)
 		numberCols += design_iter[0].rows()*fixed_iter[0].cols();
 	//define fixed for CLinearMean
 	MatrixXd fixed(this->N*this->P,numberCols);
-	design_iter = designs.begin();
-	fixed_iter  = fixedEffs.begin();
+	design_iter = this->designs.begin();
+	fixed_iter = this->fixedEffs.begin();
 	muint_t ncols = 0;
-	for(; design_iter!=designs.end(); design_iter++, fixed_iter++)
+	for (; design_iter != this->designs.end(); design_iter++, fixed_iter++)
 	{
 		MatrixXd part;
 		akron(part,design_iter[0].transpose(),fixed_iter[0]);
@@ -440,7 +440,7 @@ void CVarianceDecomposition::initGPbase()
 		MatrixXd _y;
 		slice(y,Iselect,_y);
 		y  = _y;
-		//3 fixzed effecfs
+		//3 fixed effecfs
 		MatrixXd _fixed;
 		slice(fixed,Iselect,_fixed);
 		fixed = _fixed;
@@ -455,50 +455,50 @@ void CVarianceDecomposition::initGPbase()
 	//Define Likelihood, LinearMean and GP
 	PLikNormalNULL lik(new CLikNormalNULL());
 	PLinearMean mean(new CLinearMean(y,fixed));
-	gp = PGPbase(new CGPbase(covar,lik,mean));
-	gp->setY(y);
+	this->gp = PGPbase(new CGPbase(covar, lik, mean));
+	this->gp->setY(y);
 	this->fast=false;
 	this->is_init=1;
 	//Initialize Params
-	initGPparams();
+	this->initGPparams();
 	//optimizer
-	opt = PGPopt(new CGPopt(gp));
+	this->opt = PGPopt(new CGPopt(gp));
 }
 
 void CVarianceDecomposition::initGPkronSum() 
 {
 	//check whether exact Kronecker structure?
-	if (phenoNANany)
+	if (this->phenoNANany)
 			throw CLimixException("GPKronSum (fast inference) can only be used for full kronecker structured data");
 
-    if (getNumberTerms()!=2)
+    if (this->getNumberTerms()!=2)
         throw CLimixException("CVarianceDecomposition: fastGP only works for two terms");
-    if (getNumberTraits()<2)
+    if (this->getNumberTraits()<2)
         throw CLimixException("CVarianceDecomposition: supported only for multiple traits");
 
-    if (is_init && fast) {
-        gp->setY(pheno);
+    if (this->is_init && this->fast) {
+        this->gp->setY(pheno);
         CGPHyperParams params = this->gp->getParams();
         VectorXd covarParams;
-        agetScales(0,&covarParams); params["covarc1"]=covarParams;
-        agetScales(1,&covarParams); params["covarc2"]=covarParams;
+        this->agetScales(0,&covarParams); params["covarc1"]=covarParams;
+        this->agetScales(1,&covarParams); params["covarc2"]=covarParams;
         params["dataTerm"] = MatrixXd::Zero(params["dataTerm"].rows(),params["dataTerm"].cols());
-        gp->setParams(params);
+        this->gp->setParams(params);
     }
     else
     {
         //init covars
-        terms[0]->initTerm();
-        terms[1]->initTerm();
-        PCovarianceFunction covarr1 = terms[0]->getKcf();
-        PCovarianceFunction covarr2 = terms[1]->getKcf();
-        PCovarianceFunction covarc1 = terms[0]->getTraitCovar();
-        PCovarianceFunction covarc2 = terms[1]->getTraitCovar();
+        this->terms[0]->initTerm();
+        this->terms[1]->initTerm();
+		PCovarianceFunction covarr1 = this->terms[0]->getKcf();
+		PCovarianceFunction covarr2 = this->terms[1]->getKcf();
+		PCovarianceFunction covarc1 = this->terms[0]->getTraitCovar();
+		PCovarianceFunction covarc2 = this->terms[1]->getTraitCovar();
         //init dataTerm
-        MatrixXdVec::const_iterator fixed_iter   = fixedEffs.begin();
-        MatrixXdVec::const_iterator design_iter  = designs.begin();
+		MatrixXdVec::const_iterator fixed_iter = this->fixedEffs.begin();
+        MatrixXdVec::const_iterator design_iter  = this->designs.begin();
         PSumLinear mean(new CSumLinear());
-        for(; design_iter!=designs.end(); design_iter++, fixed_iter++) {
+		for (; design_iter != this->designs.end(); design_iter++, fixed_iter++) {
             MatrixXd A = design_iter[0];
             MatrixXd F = fixed_iter[0];
             MatrixXd W = MatrixXd::Zero(F.cols(),A.rows());
@@ -507,13 +507,13 @@ void CVarianceDecomposition::initGPkronSum()
         // init lik
         PLikNormalNULL lik(new CLikNormalNULL());
         //define gpKronSum
-        gp = PGPkronSum(new CGPkronSum(pheno,covarr1,covarc1,covarr2,covarc2,lik,mean));
+		this->gp = PGPkronSum(new CGPkronSum(pheno, covarr1, covarc1, covarr2, covarc2, lik, mean));
         this->fast=true;
         this->is_init=1;
         //Initialize Params
-        initGPparams();
+		this->initGPparams();
 		//Optimizer GP
-        opt = PGPopt(new CGPopt(gp));
+        this->opt = PGPopt(new CGPopt(gp));
     }
 }
 
@@ -531,7 +531,7 @@ bool CVarianceDecomposition::trainGP()
 	//check convergence
     VectorXd scales;
     this->agetScales(&scales);
-    conv *= (scales.unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).maxCoeff()<(mfloat_t)10.0);
+    conv &= (scales.unaryExpr(std::bind2nd( std::ptr_fun<double,double,double>(pow), 2) ).maxCoeff()<(mfloat_t)10.0);
 
 	return conv;
 }

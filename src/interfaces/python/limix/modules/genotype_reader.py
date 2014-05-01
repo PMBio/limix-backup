@@ -1,11 +1,18 @@
+# Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+# All rights reserved.
+#
+# LIMIX is provided under a 2-clause BSD license.
+# See license.txt for the complete license.
+
 import scipy as SP
 import data_util as du
 import pandas as pd
 
-#TODO: needs documentation
-#probably in Christoph's hands right now....
-
 class genotype_reader_h5py():
+    """
+    a genotype reader using the HDF5 interface.
+    """
+
     def __init__(self,file_name):
         self.file_name = file_name
         self.load()

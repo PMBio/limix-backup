@@ -11,7 +11,7 @@ import limix.utils.fdr as FDR
 import time
 
 
-def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
+def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False):
     """
     Univariate fixed effects linear mixed model test for all SNPs
     
@@ -22,8 +22,8 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,Nu
                         If not provided, then linear regression analysis is performed
         covs:   [N x D] SP.array of D covariates for N individuals
         test:   'lrt' for likelihood ratio test (default) or 'f' for F-test
-        NumIntervalsDelta0:  number of steps for delta optimization on the null model (100)
-        NumIntervalsDeltaAlt:number of steps for delta optimization on the alt. model (0 - no optimization)
+        NumIntervalsDelta0:     number of steps for delta optimization on the null model (100)
+        NumIntervalsDeltaAlt:   number of steps for delta optimization on the alt. model (100), requires searchDelta=True to have an effect.
         searchDelta:     Carry out delta optimization on the alternative model? if yes We use NumIntervalsDeltaAlt steps
     
     Returns:
@@ -58,7 +58,7 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,Nu
     return lm
 
 
-def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
+def test_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False):
     """
     simple wrapper for kroneckerLMM code
 
@@ -91,7 +91,7 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
                         'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,         
         rank:           rank of a possible lowrank component (default 1)
         NumIntervalsDelta0:  number of steps for delta optimization on the null model (100)
-        NumIntervalsDeltaAlt:number of steps for delta optimization on the alt. model (0 - no optimization)
+        NumIntervalsDeltaAlt:number of steps for delta optimization on the alt. model (100), requires searchDelta=True to have an effect.
         searchDelta:    Boolean indicator if delta is optimized during SNP testing (default False)
 
     Returns:
@@ -168,7 +168,7 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
 
 #TODO: (O.S), I have changed the parametrization of delta optimization steps. Happy with that?
 #TODO: Do we really want to keep these "simple_XXX" names? Which functions are simple, which ones are not? I don't like it.
-def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
+def test_interaction_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
     
@@ -203,7 +203,7 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
                         'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,         
         rank:           rank of a possible lowrank component (default 1)
         NumIntervalsDelta0:  number of steps for delta optimization on the null model (100)
-        NumIntervalsDeltaAlt:number of steps for delta optimization on the alt. model (0 - no optimization)
+        NumIntervalsDeltaAlt:number of steps for delta optimization on the alt. model (100), requires searchDelta=True to have an effect.
         searchDelta:     Carry out delta optimization on the alternative model? if yes We use NumIntervalsDeltaAlt steps
     Returns:
         pv:     P-values of the interaction test
@@ -291,7 +291,7 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
     return pv,pv0,pvAlt
 
 
-def simple_interaction(snps,pheno,Inter,Inter0=None,covs = None,K=None,test='lrt'):
+def test_interaction_lmm(snps,pheno,Inter,Inter0=None,covs=None,K=None,test='lrt'):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
     
@@ -340,7 +340,7 @@ def simple_interaction(snps,pheno,Inter,Inter0=None,covs = None,K=None,test='lrt
 """ MULTI LOCUS MODEL """
 
 
-def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxiter = 2,test='lrt',**kw_args):
+def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter=2,test='lrt',**kw_args):
     """
     univariate fixed effects test with forward selection
     
@@ -368,7 +368,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxi
     if covs is None:
         covs = SP.ones((snps.shape[0],1))
     
-    lm = simple_lmm(snps,pheno,K=K,covs=covs,test=test,**kw_args)
+    lm = test_lmm(snps,pheno,K=K,covs=covs,test=test,**kw_args)
     pvall = SP.zeros((maxiter,snps.shape[1]))
     pv = lm.getPv()
     pvall[0:1,:]=pv
@@ -418,7 +418,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxi
 
 
 #TOOD: use **kw_args to forward params.. see below
-def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,threshold = 5e-8, maxiter = 2,qvalues=False, update_covariances = False,**kw_args):
+def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,threshold=5e-8,maxiter=2,qvalues=False, update_covariances = False,**kw_args):
     """
     Kronecker fixed effects test with forward selection
     
@@ -488,7 +488,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
         assert K2c.shape[0]==P, 'K2c: dimensions dismatch'
         assert K2c.shape[1]==P, 'K2c: dimensions dismatch'    
     t0 = time.time()
-    lm,pv = kronecker_lmm(snps=snps,phenos=phenos,Asnps=Asnps,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covs=covs,Acovs=Acovs)
+    lm,pv = test_lmm_kronecker(snps=snps,phenos=phenos,Asnps=Asnps,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covs=covs,Acovs=Acovs)
     
     #get pv
     #start stuff
@@ -628,7 +628,7 @@ def _updateKronCovs(covs,Acovs,N,P):
 
 """ DEPRECATED AND/OR NOT USED"""
 
-def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,searchDelta=False):
+def test_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,searchDelta=False):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects. 
     (Runs multiple likelihood ratio tests and computes the P-values in python from the likelihood ratios)
@@ -753,7 +753,7 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
 
 #TODO: we need to fix. THis does not work as interact_GxE is not existing
 #I vote we also use **kw_args to forward parameters to interact_Gxe?
-def interact_GxG(pheno,snps1,snps2=None,K=None,covs=None):
+def test_interaction_GxG(pheno,snps1,snps2=None,K=None,covs=None,test='lrt'):
     """
     Epistasis test between two sets of SNPs
     
@@ -764,6 +764,7 @@ def interact_GxG(pheno,snps1,snps2=None,K=None,covs=None):
         K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
                         If not provided, then linear regression analysis is performed
         covs:   [N x D] SP.array of D covariates for N individuals
+        test:    'lrt' for likelihood ratio test (default) or 'f' for F-test
     
     Returns:
         pv:     [S2 x S1] SP.array of P values for epistasis tests beten all SNPs in 
@@ -774,10 +775,10 @@ def interact_GxG(pheno,snps1,snps2=None,K=None,covs=None):
     N=snps1.shape[0]
     if snps2 is None:
         snps2 = snps1
-    return interact_GxE(snps=snps1,pheno=pheno,env=snps2,covs=covs,K=K)
+    return test_interaction_GxE_1dof(snps=snps1,pheno=pheno,env=snps2,covs=covs,K=K,test=test)
 
 
-def interact_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
+def test_interaction_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
     """
     Univariate GxE fixed effects interaction linear mixed model test for all 
     pairs of SNPs and environmental variables.
@@ -808,7 +809,7 @@ def interact_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
     for i in xrange(env.shape[1]):
         t0_i = time.time()
         cov_i = SP.concatenate((covs,env[:,i:(i+1)]),1)
-        lm_i = simple_interaction(snps=snps,pheno=pheno,covs=cov_i,Inter=env[:,i:(i+1)],Inter0=Inter0, test=test)
+        lm_i = test_interaction_lmm(snps=snps,pheno=pheno,covs=cov_i,Inter=env[:,i:(i+1)],Inter0=Inter0,test=test)
         pv[i,:]=lm_i.getPv()[0,:]
         t1_i = time.time()
         print ("Finished %i out of %i interaction scans in %.2f seconds."%((i+1),env.shape[1],(t1_i-t0_i)))
@@ -846,7 +847,7 @@ def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None,test='lrt'):
     Yinter=SP.concatenate((pheno1,pheno2),0)
     Xinter = SP.tile(snps,(2,1))
     Covitner= SP.tile(covs(2,1))
-    lm = simple_interaction(snps=Xinter,pheno=Yinter,covs=Covinter,Inter=Inter,Inter0=Inter0,test=test)
+    lm = test_interaction_lmm(snps=Xinter,pheno=Yinter,covs=Covinter,Inter=Inter,Inter0=Inter0,test=test)
     return lm
 
 
