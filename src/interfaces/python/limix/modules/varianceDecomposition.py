@@ -221,6 +221,8 @@ class VarianceDecomposition:
 
         if not self.init:		self._initGP(fast=fast)
 
+        assert lambd=None or self.fast, 'VarianceDecomposition:: Penalization not available for non-fast inference'
+
         # set lambda
         if lambd!=None:		self.gp.setLambda(lambd)
 
