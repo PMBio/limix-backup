@@ -22,13 +22,15 @@
     <VSToolsPath Condition=" '$(VSToolsPath)' == '' ">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="bin\example_scripts\example_data.py" />
+    <Compile Include="bin\example_scripts\gwas_example.py" />
+    <Compile Include="bin\limix_runner.py" />
+    <Compile Include="bin\yeast_data.py" />
+    <Compile Include="bin\yeast_experiment.py" />
     <Compile Include="modules\data.py" />
     <Compile Include="modules\data_new.py" />
     <Compile Include="modules\data_util.py" />
-    <Compile Include="modules\example_scripts\example_data.py" />
-    <Compile Include="modules\example_scripts\gwas_example.py" />
     <Compile Include="modules\FastVDMM.py" />
-    <Compile Include="modules\limix_runner.py" />
     <Compile Include="modules\genotype_reader.py" />
     <Compile Include="modules\multitrait_lmm.py" />
     <Compile Include="modules\output_writer.py" />
@@ -45,9 +47,10 @@
     <Compile Include="__init__.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\example_scripts\" />
     <Folder Include="modules" />
     <Folder Include="modules\example_data\" />
-    <Folder Include="modules\example_scripts\" />
+    <Folder Include="bin\" />
     <Folder Include="utils" />
   </ItemGroup>
   <ItemGroup>
