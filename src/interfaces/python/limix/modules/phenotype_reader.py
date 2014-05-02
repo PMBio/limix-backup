@@ -33,6 +33,9 @@ class pheno_reader_tables():
         
         # Additional pheno col header
         headers = self.pheno.col_header
+
+        #TODO: create pandas.MultiIndex from headers
+
         if 'gene_ID' in headers:
             self.eqtl = True
             self.gene_ID = self.pheno.col_header.gene_ID[:]
