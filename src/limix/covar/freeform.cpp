@@ -6,7 +6,6 @@
 
 #include "freeform.h"
 #include <math.h>
-#include <cmath>
 #include "dist.h"
 //#ifdef _WIN32
 //#include <tgmath.h>
@@ -47,9 +46,9 @@ void CFreeFormCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const
 void CFreeFormCF::agetScales(CovarParams* out) {
     (*out) = this->params;
     double sign=1;
-    if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
+    if ((*out)(0)!=0) 	sign = std::fabs((*out)(0))/((*out)(0));
     (*out)=sign*(*out);
-    (*out)(this->numberParams-1)=std::abs((*out)(this->numberParams-1));
+    (*out)(this->numberParams-1)=std::fabs((*out)(this->numberParams-1));
 }
     
 void CFreeFormCF::aK0Covar2Params(VectorXd* out,const MatrixXd& K0)
@@ -222,7 +221,7 @@ void CRankOneCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const
 void CRankOneCF::agetScales(CovarParams* out) {
     (*out) = this->params;
     double sign=1;
-    if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
+    if ((*out)(0)!=0) 	sign = std::fabs((*out)(0))/((*out)(0));
     (*out).segment(0,this->numberParams)=sign*(*out).segment(0,this->numberParams);
 }
 
@@ -232,7 +231,7 @@ void CRankOneCF::setParamsCovariance(const MatrixXd& K0)
     //loop over groups
     for(muint_t i=0;i<numberGroups;++i)  {
         params(i) = std::sqrt(K0(i,i));
-        params(i)*= K0(i,0)/std::abs(K0(i,0));
+        params(i)*= K0(i,0)/std::fabs(K0(i,0));
     }
 }
 
@@ -294,7 +293,7 @@ void CLowRankCF::agetScales(CovarParams* out) {
     //to implement properly
     (*out) = this->params;
     double sign=1;
-    if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
+    if ((*out)(0)!=0) 	sign = std::fabs((*out)(0))/((*out)(0));
     (*out)*=sign;
 }
 
@@ -544,11 +543,11 @@ void CRank1diagCF::agetDiag(MatrixXd* out) const
 void CRank1diagCF::agetScales(CovarParams* out) {
     (*out) = this->params;
     double sign=1;
-    if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
+    if ((*out)(0)!=0) 	sign = std::fabs((*out)(0))/((*out)(0));
     if (this->numberGroups==2) {
         (*out)(0)=sign*((*out)(0));
         (*out)(1)=sign*((*out)(1));
-        (*out)(2)=std::abs((*out)(2));
+        (*out)(2)=std::fabs((*out)(2));
     }
     else {
         (*out).segment(0,this->numberGroups)=sign*(*out).segment(0,this->numberGroups);
@@ -652,7 +651,7 @@ void CSqExpCF::agetScales(CovarParams* out) {
     //to implement properly
     (*out) = this->params;
     double sign=1;
-    if ((*out)(0)!=0) 	sign = std::abs((*out)(0))/((*out)(0));
+    if ((*out)(0)!=0) 	sign = std::fabs((*out)(0))/((*out)(0));
     (*out)*=sign;
 }
 

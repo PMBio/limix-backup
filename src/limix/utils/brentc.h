@@ -1,10 +1,9 @@
 #if !defined( BrentC_h )
 #define BrentC_h
 #include <stdlib.h>
-#include <math.h>
 #include <iostream>
 #include <stdio.h>
-#include <cmath>
+#include <math.h>
 
 /*
  *******************************************************************

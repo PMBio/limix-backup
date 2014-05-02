@@ -9,7 +9,7 @@
 
 #include "limix/types.h"
 #include "limix/utils/matrix_helper.h"
-#include <cmath>
+#include <math.h>
 #include "limix/utils/brentc.h"
 
 

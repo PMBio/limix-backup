@@ -8,8 +8,8 @@
 #ifndef MATRIX_HELPER_H_
 #define MATRIX_HELPER_H_
 
+
 #include <math.h>
-#include <cmath>
 #include "limix/types.h"
 
 namespace limix{

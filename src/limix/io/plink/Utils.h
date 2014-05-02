@@ -70,7 +70,7 @@ namespace plink {
 #if !defined( _MSC_VER )
 #include <linux/limits.h>
 
-	inline limix::mfloat_t abs(limix::mfloat_t x) { return(fabs(x)); }
+	//inline limix::mfloat_t abs(limix::mfloat_t x) { return(std::fabs(x)); }
 	inline int min( int m1, int m2 ) { return( ( m1 < m2 ) ? m1 : m2 ); }
 	inline limix::mfloat_t min( real m1, real m2 ) { return( (m1 < m2 ) ? m1 : m2 ); }
 	inline int max( int m1, int m2 ) { return( ( m1 > m2 ) ? m1 : m2 ); }

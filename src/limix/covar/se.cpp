@@ -6,7 +6,6 @@
 
 #include "se.h"
 #include <math.h>
-#include <cmath>
 #include "limix/utils/matrix_helper.h"
 #include "dist.h"
 

@@ -17,10 +17,9 @@
 
 
 #include <stdlib.h>
-#include <math.h>
 #include <iostream>
 #include <stdio.h>
-#include <cmath>
+#include <math.h>
 namespace stats {
 	// This is gammainc(x,a,'upper') in Matlab
 	/// <summary>q-gamma function</summary>
@@ -62,7 +61,7 @@ namespace stats {
 			sum += frac;
 
 			// Stopping criterion: sum won't change
-			if (fabs(frac) < fabs(sum * EPS))
+			if (std::fabs(frac) < std::fabs(sum * EPS))
 				break;
 		}
 
@@ -86,14 +85,14 @@ namespace stats {
 		for (int i = 1; i <= MAXITER; ++i)
 		{
 			d = bj + aj * d;
-			if (fabs(d) < TINY) d = TINY;
+			if (std::fabs(d) < TINY) d = TINY;
 			c = bj + aj / c;
-			if (fabs(c) < TINY) c = TINY;
+			if (std::fabs(c) < TINY) c = TINY;
 			d = 1 / d;
 			double delta = c * d;
 			f *= delta;
 
-			if (fabs(delta - 1) < EPS)
+			if (std::fabs(delta - 1) < EPS)
 				break;
 
 			bj += 2;
@@ -168,7 +167,7 @@ namespace stats {
 			guess = (guesslo + guesshi) * (double)0.5;
 			pguess = Gamma::cdf(guess, k, theta);
 
-			if (fabs(p - pguess) < (double)1e-16)
+			if (std::fabs(p - pguess) < (double)1e-16)
 				break;
 
 			if (pguess > p)

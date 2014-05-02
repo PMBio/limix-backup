@@ -3,10 +3,10 @@
 #include "limix/utils/beta.h"
 
 #include <stdlib.h>
-#include <math.h>
 #include <iostream>
 #include <stdio.h>
-#include <cmath>
+#include <math.h>
+
 namespace stats {
 	// F distribution
 	// See: http://en.wikipedia.org/wiki/F-distribution

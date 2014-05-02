@@ -15,10 +15,9 @@
 #include "limix/utils/mathfunctions.h"
 
 #include <stdlib.h>
-#include <math.h>
 #include <iostream>
 #include <stdio.h>
-#include <cmath>
+#include <math.h>
 
 const double _PI = 2.0*acos(0.0);          // now defined in FastLmmC.h
 const double _halflog2pi=(double)0.5*log((double)2.0*_PI);

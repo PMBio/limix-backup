@@ -2,10 +2,9 @@
 #define MathFunctions_h
 
 #include <stdlib.h>
-#include <math.h>
 #include <iostream>
 #include <stdio.h>
-#include <cmath>
+#include <math.h>
 #include <limits>
 
 class MathFunctions

@@ -9,7 +9,6 @@
 #include "limix/utils/fisherf.h"
 #include "limix/utils/matrix_helper.h"
 #include <math.h>
-#include <cmath>
 //#include <omp.h>
 #include<Eigen/Core>
 

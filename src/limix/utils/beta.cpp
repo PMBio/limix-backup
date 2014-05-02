@@ -113,10 +113,10 @@ namespace stats {
 		else
 		{
 			double c = exp(MathFunctions::logGamma(a + b) - MathFunctions::logGamma(a) - MathFunctions::logGamma(b) +
-				a * log(x) + b * log(1 - x));
+				a * log(x) + b * log(1.0 - x));
 			double p;
 
-			if (x < (a + 1) / (a + b + 2))
+			if (x < (a + 1) / (a + b + 2.0))
 			{
 				double cf = BetaCF(x, a, b);
 				p = c * cf / a;
@@ -124,7 +124,7 @@ namespace stats {
 			else
 			{
 				// Use symmetry relation
-				double cf = BetaCF(1 - x, b, a);
+				double cf = BetaCF(1.0 - x, b, a);
 				p = 1 - c* cf / b;
 			}
 
@@ -138,12 +138,12 @@ namespace stats {
 	// Numerical Recipes
 	double Beta::BetaCF(double x, double a, double b)
 	{
-		double ap1 = a + 1;
-		double am1 = a - 1;
-		double m2 = 2;
+		double ap1 = a + 1.0;
+		double am1 = a - 1.0;
+		double m2 = 2.0;
 		double ab = a + b;
 
-		double d = 1 - ab * x / ap1;
+		double d = 1.0 - ab * x / ap1;
 		if (std::fabs(d) < TINY) d = TINY;
 		double c = 1;
 		d = 1.0 / d;
@@ -154,18 +154,18 @@ namespace stats {
 			double aj = m * (b - m) * x / ((am1 + m2) * (a + m2));
 			d = 1.0 + aj * d;
 			if (std::fabs(d) < TINY) d = TINY;
-			c = 1 + aj / c;
+			c = 1.0 + aj / c;
 			if (std::fabs(c) < TINY) c = TINY;
-			d = 1 / d;
+			d = 1.0 / d;
 			double delta = c * d;
 			cf *= delta;
 
 			aj = -(a + m) * (ab + m) * x / ((ap1 + m2) * (a + m2));
 			d = 1.0 + aj * d;
 			if (std::fabs(d) < TINY) d = TINY;
-			c = 1 + aj / c;
+			c = 1.0 + aj / c;
 			if (std::fabs(c) < TINY) c = TINY;
-			d = 1 / d;
+			d = 1.0 / d;
 			delta = c * d;
 			cf *= delta;
 

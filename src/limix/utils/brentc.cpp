@@ -15,10 +15,9 @@
 #include "limix/utils/brentc.h"
 
 #include <stdlib.h>
-#include <math.h>
 #include <iostream>
 #include <stdio.h>
-#include <cmath>
+#include <math.h>
 
 
 // Machine eps
@@ -59,11 +58,11 @@ double BrentC::minimize(BrentFunctor &f, double a, double b, double eps, double 
    while (true)
    {
       double m = (double)0.5 * (a + b);
-      double tol = MACHEPS_SQRT * fabs(x) + eps;
+      double tol = MACHEPS_SQRT * std::fabs(x) + eps;
       double tol2 = (double)2 * tol;
                 
       // Check the stopping criterion
-      if (fabs(x - m) <= tol2 - 0.5 * (b - a)){ break; }
+      if (std::fabs(x - m) <= tol2 - 0.5 * (b - a)){ break; }
 
       // Stop if we've exceeded the maximum number of iterations
       numiter++;
@@ -75,7 +74,7 @@ double BrentC::minimize(BrentFunctor &f, double a, double b, double eps, double 
       double d = 0.0;
       double u = 0.0;
 
-      if (fabs(e) > tol)
+	  if (std::fabs(e) > tol)
       {
          // Fit parabola
          r = (x - w) * (fx - fv);
@@ -90,7 +89,7 @@ double BrentC::minimize(BrentFunctor &f, double a, double b, double eps, double 
          e = d;
       }
 
-      if ((fabs(p) < fabs((double)0.5*q*r)) && (p < q*(a-x)) && (p < q*(b-x)))
+	  if ((std::fabs(p) < std::fabs((double)0.5*q*r)) && (p < q*(a - x)) && (p < q*(b - x)))
       {
          // Parabolic interpolation step
          d = p / q;
@@ -107,7 +106,7 @@ double BrentC::minimize(BrentFunctor &f, double a, double b, double eps, double 
       }
 
       // f must not be evaluated too close to x
-      if (fabs(d) >= tol)
+	  if (std::fabs(d) >= tol)
          u = x + d;
       else if (d > 0.0)
          u = x + tol;

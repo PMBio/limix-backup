@@ -56,6 +56,10 @@ help='Build doxygen documenation', default=False)
 AddOption('--with-tests', dest='with_tests', action='store_true',
 help='Run unit tests after build', default=False)
 
+#run unit tests?
+AddOption('--with-mkl', dest='with_mkl', action='store_true',
+help='Bind against MKL performance librabries', default=False)
+
 #build development tools for c++ (standalone snipsets)
 AddOption('--with-developcpp', dest='with_developcpp', action='store_true',
 help='Build development only commandline tools?', default=False)
@@ -96,6 +100,7 @@ SetOption('num_jobs', n_jobs)
 #3. parse build options:
 build_options= {}
 build_options['with_zlib'] = GetOption('with_zlib')
+build_options['with_mkl'] = GetOption('with_mkl')
 build_options['with_python'] = GetOption('with_python')
 build_options['with_developcpp'] = GetOption('with_developcpp')
 build_options['with_tests'] = GetOption('with_tests')
@@ -151,6 +156,10 @@ if(env['CC']=='cl'):
    cflags.extend(['-EHsc'])
    debugcflags.extend(['-Zi'])
    debuglinkflags.extend(['/debug','/ASSEMBLYDEBUG'])
+   if build_options['with_mkl']:
+      env.Append(CPPDEFINES = ["EIGEN_USE_BLAS"])
+      cflags.extend(["-IC:\Program Files (x86)\Intel\Composer XE\mkl\include"])
+      linkflags.extend(["mkl_intel_lp64.lib", "mkl_core.lib", "mkl_intel_thread.lib", "libiomp5md.lib", "-ldl"])
 else: 
    #slse? (clang / gcc settings are very similar)
    cflags.extend(['-fPIC'])
