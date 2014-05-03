@@ -11,9 +11,8 @@ import scipy as sp
 #import limix
 from optparse import OptionParser
 import pandas as pd
-import output_writer as ow
+import limix.modules.output_writer as ow
 
-sys.path.append("./../../")
 
 class LIMIX_runner(object):
     '''
@@ -43,7 +42,7 @@ class LIMIX_runner(object):
         #parser.add_option('--seed', metavar='seed', type=int, help='The random seed', default=123123)
         parser.add_option("-T","--timestamp",action="store_true", dest='timestamp', help="Append unique timestamp to output value", default=False)
         parser.add_option("-R","--delimiter", action="store", dest='delimiter',type=str, help="The delimiter between output values", default="\t")
-        parser.add_option("-F","--float_format", action="store", dest='float_format',type=str, help="Formating string for floating point output values", default="%.6f")
+        parser.add_option("-F","--float_format", action="store", dest='float_format',type=str, help="Formating string for floating point output values", default="%.6e")
         (self.options, self.args) = parser.parse_args()
         self.result["options"]=str(self.options)
         return (self.options,self.args)
@@ -99,9 +98,10 @@ if __name__ == "__main__":
     infostring = "limix_runner.py, Copyright(c) 2014, The LIMIX developers\nlast modified: %s" % time.ctime(os.path.getmtime(__file__))
     print (infostring)
     
+    
     runner = LIMIX_runner(infostring=infostring)
     (options,args) = runner.parse_args()
     data = runner.load_data()
     result = runner.run_experiment()
     runner.write_resultfiles()
-
+    

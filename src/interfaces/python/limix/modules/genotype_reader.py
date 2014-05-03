@@ -5,7 +5,7 @@
 # See license.txt for the complete license.
 
 import scipy as SP
-import data_util as du
+import limix.modules.data_util as du
 import pandas as pd
 
 class genotype_reader_h5py():

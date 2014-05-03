@@ -9,6 +9,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "testing", "python\testing\t
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "python_modules", "src\interfaces\python\limix\python_modules.pyproj", "{C562839D-E28A-403C-8331-4024A1B467EF}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "bin", "src\interfaces\python\bin\bin.pyproj", "{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug Python|Any CPU = Debug Python|Any CPU
@@ -61,6 +63,15 @@ Global
 		{C562839D-E28A-403C-8331-4024A1B467EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C562839D-E28A-403C-8331-4024A1B467EF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C562839D-E28A-403C-8331-4024A1B467EF}.Release|Win32.ActiveCfg = Release|Any CPU
+		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Debug Python|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Debug Python|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Debug Python|Win32.ActiveCfg = Debug|Any CPU
+		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

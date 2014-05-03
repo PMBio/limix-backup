@@ -10,9 +10,8 @@
     <SearchPath>C:\Users\lippert\Projects\limix\build\debug.win32\interfaces\python</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <InterpreterId>00000000-0000-0000-0000-000000000000</InterpreterId>
-    <InterpreterVersion>
-    </InterpreterVersion>
+    <InterpreterId>{9a7a9026-48c1-4688-9d5d-e5699d47d074}</InterpreterId>
+    <InterpreterVersion>2.7</InterpreterVersion>
     <Name>testing</Name>
     <RootNamespace>testing</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
@@ -46,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="limix\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\2.7" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>

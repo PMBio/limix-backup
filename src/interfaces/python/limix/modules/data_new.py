@@ -7,11 +7,9 @@
 import scipy as SP
 import copy
 
-import data_util as du
-
-import genotype_reader as gr
-import phenotype_reader as pr
-
+import limix.modules.data_util as du
+import limix.modules.genotype_reader as gr
+import limix.modules.phenotype_reader as pr
 import pandas as pd
 
 class QTLData(object):
@@ -147,7 +145,7 @@ class QTLData(object):
 
        
 
-    def getPhenotypes(self,phenotype_IDs=None,center=True,impute=True,intersection=False):
+    def getPhenotypes(self,phenotype_IDs=None,phenotype_query=None,center=True,intersection=False):
         """load Phenotypes
         
         Args:
@@ -162,7 +160,7 @@ class QTLData(object):
             sample_idx_intersect:        index of individuals in phenotypes after filtering missing values
         """
 
-        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx=SP.array(self.sample_idx["pheno"]),phenotype_IDs=phenotype_IDs,center=center,impute=impute,intersection=intersection)
+        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx=SP.array(self.sample_idx["pheno"]),phenotype_IDs=phenotype_IDs,phenotype_query=phenotype_query,center=center,intersection=intersection)
         return phenotypes, sample_idx_intersect
 
     def getPos(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
@@ -215,14 +213,14 @@ class QTLData(object):
 
         return C
 
-    def subsample_phenotypes(self,phenotype_IDs=None,center=True,impute=True,intersection=False):
+    def subsample_phenotypes(self,phenotype_IDs=None,phenotype_query=None,center=True,intersection=False):
         """load Phenotypes
         
         Args:
             idx_start:      phenotype indices to load (start individual index)
             idx_end:       phenotype indices to load (end individual index)
             phenotype_IDs:  names of phenotypes to load
-            impute:         imputation of missing values (default: True)
+            center:         imputation of missing values (default: True)
             intersection:   restrict observation to those obseved in all phenotypes (true) or at least in one phenotype (false)? (default: False)
         
         Returns:
@@ -230,6 +228,6 @@ class QTLData(object):
             sample_idx_intersect:        index of individuals in phenotypes after filtering missing values
         """
 
-        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx=SP.array(self.sample_idx["pheno"]),phenotype_IDs=phenotype_IDs,center=center,impute=impute,intersection=intersection)
+        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(phenotype_query=phenotype_query,sample_idx=SP.array(self.sample_idx["pheno"]),phenotype_IDs=phenotype_IDs,center=center,intersection=intersection)
         return self.subsample(rows=sample_idx_intersect,cols_pheno=None,cols_geno=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None)
             

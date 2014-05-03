@@ -6,13 +6,13 @@
     <ProjectGuid>{c562839d-e28a-403c-8331-4024a1b467ef}</ProjectGuid>
     <ProjectHome />
     <StartupFile>modules\limix_runner.py</StartupFile>
-    <SearchPath />
+    <SearchPath>..\..\..\..\build\release.win32\interfaces\python\;..\..\..\..\..\..\Workspaces\ERG01\src\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <InterpreterId />
-    <InterpreterVersion />
+    <InterpreterId>{9a7a9026-48c1-4688-9d5d-e5699d47d074}</InterpreterId>
+    <InterpreterVersion>2.7</InterpreterVersion>
     <PtvsTargetsFile>$(VSToolsPath)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
@@ -22,11 +22,6 @@
     <VSToolsPath Condition=" '$(VSToolsPath)' == '' ">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="bin\example_scripts\example_data.py" />
-    <Compile Include="bin\example_scripts\gwas_example.py" />
-    <Compile Include="bin\limix_runner.py" />
-    <Compile Include="bin\yeast_data.py" />
-    <Compile Include="bin\yeast_experiment.py" />
     <Compile Include="modules\data.py" />
     <Compile Include="modules\data_new.py" />
     <Compile Include="modules\data_util.py" />
@@ -47,14 +42,11 @@
     <Compile Include="__init__.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bin\example_scripts\" />
     <Folder Include="modules" />
-    <Folder Include="modules\example_data\" />
-    <Folder Include="bin\" />
     <Folder Include="utils" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="modules\example_data\kruglyak.hdf5" />
+    <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\2.7" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />

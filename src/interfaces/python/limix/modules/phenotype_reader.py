@@ -5,7 +5,8 @@
 # See license.txt for the complete license.
 
 import scipy as SP
-import data_util as du
+import limix.modules.data_util as du
+import pandas as pd
 
 class pheno_reader_tables():
     def __init__(self,file_name):
@@ -35,6 +36,14 @@ class pheno_reader_tables():
         headers = self.pheno.col_header
 
         #TODO: create pandas.MultiIndex from headers
+        child_names = []#headers._v_children.keys()
+        child_arrays = []
+
+        for child in headers:
+            child_names.append(child._v_name)
+            child_arrays.append(child[:])
+        multiindex = pd.MultiIndex.from_arrays(arrays=child_arrays,names=child_names)
+        self.index_frame = pd.DataFrame(data = SP.arange(self.pheno_matrix.shape[1]),index = multiindex)
 
         if 'gene_ID' in headers:
             self.eqtl = True
@@ -52,15 +61,19 @@ class pheno_reader_tables():
         #dimensions
         self.N = self.pheno_matrix.shape[0]
         self.P = self.pheno_matrix.shape[1]
-        #self.pheno_df = pd.DataFrame(data=self.pheno_matrix,index=self.sample_ID,columns=self.phenotype_ID)
 
-    def getPhenotypes_df(self,sample_idx=None,phenotype_IDs=None,center=True,impute=True,intersection=False):
+   
+    def getPhenotypes(self,phenotype_IDs=None,phenotype_query=None,sample_idx=None,center=True,intersection=False):
         """load Phenotypes
         
         Args:
-            phenotype_IDs:  names of phenotypes to load
-            impute:         imputation of missing values (default: True)
-            intersection:   restrict observation to those obseved in all phenotypes? (default: False)
+            phenotype_IDs:      names of phenotypes to load
+            phenotype_query:    string hoding a pandas query (e.g. "(environment==1) & (phenotype_ID=='growth')" 
+                                selects all phenotypes that have a phenotype_ID equal to growth under environment 1.          
+            sample_idx:         Boolean sample index for subsetting individuals
+            center:             Boolean: mean center (and mean-fill in missing values if intersection==False)? (default True)
+            impute:             imputation of missing values (default: True)
+            intersection:       restrict observation to those obseved in all phenotypes? (default: False)
         
         Returns:
             phenotypes:     [N x P] scipy.array of phenotype values for P phenotypes
@@ -68,6 +81,8 @@ class pheno_reader_tables():
         """
         if phenotype_IDs is not None:
             I = SP.array([SP.nonzero(self.phenotype_ID==n)[0][0] for n in phenotype_IDs])
+        elif phenotype_query is not None:
+            I = self.index_frame.query(phenotype_query).values[:,0]
         else:
             I = SP.arange(self.phenotype_ID.shape[0])
         phenotypes = SP.array(self.pheno_matrix[:,I],dtype='float')
@@ -82,49 +97,13 @@ class pheno_reader_tables():
         phenotypes = phenotypes[sample_idx_intersect]
         Iok = Iok[sample_idx_intersect]
 
-        if center | impute:
+        if center:
             for i in xrange(phenotypes.shape[1]):
                 ym = phenotypes[Iok[:,i],i].mean()
                 phenotypes[:,i] -= ym
                 phenotypes[~Iok[:,i],i] = ym
                 phenotypes[:,i] /= phenotypes[:,i].std()
-        #calculate overlap of missing values
-        return phenotypes, sample_idx_intersect
-
-    def getPhenotypes(self,sample_idx=None,phenotype_IDs=None,center=True,impute=True,intersection=False):
-        """load Phenotypes
-        
-        Args:
-            phenotype_IDs:  names of phenotypes to load
-            impute:         imputation of missing values (default: True)
-            intersection:   restrict observation to those obseved in all phenotypes? (default: False)
-        
-        Returns:
-            phenotypes:     [N x P] scipy.array of phenotype values for P phenotypes
-            sample_idx_intersect:        index of individuals in phenotypes after filtering missing valuesS
-        """
-        if phenotype_IDs is not None:
-            I = SP.array([SP.nonzero(self.phenotype_ID==n)[0][0] for n in phenotype_IDs])
-        else:
-            I = SP.arange(self.phenotype_ID.shape[0])
-        phenotypes = SP.array(self.pheno_matrix[:,I],dtype='float')
-        phenotypes = phenotypes[sample_idx]
-        Iok = (~SP.isnan(phenotypes))
-
-        if intersection:
-            sample_idx_intersect = Iok.all(axis=1)
-        else:
-            sample_idx_intersect = Iok.any(axis=1)
-
-        phenotypes = phenotypes[sample_idx_intersect]
-        Iok = Iok[sample_idx_intersect]
-
-        if center | impute:
-            for i in xrange(phenotypes.shape[1]):
-                ym = phenotypes[Iok[:,i],i].mean()
-                phenotypes[:,i] -= ym
-                phenotypes[~Iok[:,i],i] = ym
-                phenotypes[:,i] /= phenotypes[:,i].std()
+        phenotypes = pd.DataFrame(data=phenotypes, index=self.sample_ID[sample_idx_intersect],columns=self.phenotype_ID[I])
         #calculate overlap of missing values
         return phenotypes, sample_idx_intersect
 

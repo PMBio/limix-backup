@@ -53,7 +53,7 @@ def _depth_first_hdf5(dictionary, outfile, root=None, filters=None):
         else:
             raise IOError("unsupported IO type in output dictionary: "+str(type(dictionary)))
 
-def _depth_first_text(dictionary, outdir=".", delimiter=" ",float_format="%.6f"):
+def _depth_first_text(dictionary, outdir=".", delimiter=" ",float_format="%.6e"):
     """
     performs a depth first search on a dict object and creates a directory 
     structure that mirrors the dictionaries. The leafs of the dictionaries are text files
