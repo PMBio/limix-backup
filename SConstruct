@@ -140,7 +140,7 @@ limix_LIBS_str = ['nlopt','limix']
 limix_LIBS = []
 
 #build environment
-copy_env = ['PATH','INCLUDE','LIB','TMP']
+copy_env = ['PATH','INCLUDE','LIB','TMP','MKLROOT']
 ENV = {}
 for key in copy_env:
     if key in os.environ.keys():
@@ -157,9 +157,9 @@ if(env['CC']=='cl'):
    debugcflags.extend(['-Zi'])
    debuglinkflags.extend(['/debug','/ASSEMBLYDEBUG'])
    if build_options['with_mkl']:
-      env.Append(CPPDEFINES = ["EIGEN_USE_BLAS"])
-      cflags.extend(["-IC:\Program Files (x86)\Intel\Composer XE\mkl\include"])
-      linkflags.extend(["mkl_intel_lp64.lib", "mkl_core.lib", "mkl_intel_thread.lib", "libiomp5md.lib", "-ldl"])
+      env.Append(CPPDEFINES = ["EIGEN_USE_MKL_ALL"])
+      cflags.extend([r"-IC:\Program Files (x86)\Intel\Composer XE\mkl\include"])
+      linkflags.extend(["C:\Program Files (x86)\Intel\Composer XE\mkl\lib\intel64\mkl_intel_lp64.lib", "C:\Program Files (x86)\Intel\Composer XE\mkl\lib\intel64\mkl_core.lib", "C:\Program Files (x86)\Intel\Composer XE\mkl\lib\intel64\mkl_intel_thread.lib", "C:\Program Files (x86)\Intel\Composer XE\compiler\lib\intel64\libiomp5md.lib", "-ldl"])
 else: 
    #slse? (clang / gcc settings are very similar)
    cflags.extend(['-fPIC'])
