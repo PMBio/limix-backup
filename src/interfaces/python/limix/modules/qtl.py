@@ -285,7 +285,7 @@ def test_interaction_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,
         
         pvAlt[iA,:] = lmm.getPv()[0]
         pv[iA,:] = lmm.getPv()[1]
-        pv0 = lmm.getPv()[2]
+        pv0 = lmm.getPv()[2][SP.newaxis,:]
     return pv,pv0,pvAlt
 
 
