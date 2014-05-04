@@ -302,7 +302,7 @@ class VarianceDecomposition:
             if conv==False:
                 print 'No local minimum found for the tested initialization points'
             else:
-                print 'Local minimum found in run %d' % (i+1)
+                print 'Local minimum found in run %d out of %i' % ((i+1),n_times)
  
         return conv
 
