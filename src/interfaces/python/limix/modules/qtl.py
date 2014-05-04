@@ -166,8 +166,6 @@ def test_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=
     return lmm,pv
 
 
-#TODO: (O.S), I have changed the parametrization of delta optimization steps. Happy with that?
-#TODO: Do we really want to keep these "simple_XXX" names? Which functions are simple, which ones are not? I don't like it.
 def test_interaction_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
@@ -356,11 +354,12 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter
         test:           'lrt' for likelihood ratio test (default) or 'f' for F-test
     
     Returns:
-        lm:             limix LMM object
-        iadded:         array of indices of SNPs included in order of inclusion
-        pvadded:        array of Pvalues obtained by the included SNPs in iteration
-                        before inclusion
-        pvall:   [maxiter x S] SP.array of Pvalues for all iterations
+        lm:     limix LMM object
+        RV:     dictionary
+                RV['iadded']:   array of indices of SNPs included in order of inclusion
+                RV['pvadded']:  array of Pvalues obtained by the included SNPs in iteration
+                                before inclusion
+                RV['pvall']:    [maxiter x S] SP.array of Pvalues for all iterations
     """
 
     if K is None:

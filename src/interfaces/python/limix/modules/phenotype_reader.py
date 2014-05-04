@@ -40,15 +40,19 @@ class pheno_reader_tables():
         child_arrays = []
 
         for child in headers:
+            if child._v_name=="phenotype_ID":
+                continue
             child_names.append(child._v_name)
             child_arrays.append(child[:])
         multiindex = pd.MultiIndex.from_arrays(arrays=child_arrays,names=child_names)
-        self.index_frame = pd.DataFrame(data = SP.arange(self.pheno_matrix.shape[1]),index = multiindex)
+        self.index_frame = pd.DataFrame(data=SP.arange(self.pheno_matrix.shape[1]),index = multiindex)
+        self.headers_frame = pd.DataFrame(data=SP.array(child_arrays).T,index=self.phenotype_ID,columns=child_names)
 
         if 'gene_ID' in headers:
             self.eqtl = True
             self.gene_ID = self.pheno.col_header.gene_ID[:]
-            self.gene_pos = SP.array([self.pheno.col_header.gene_chrom[:],self.pheno.col_header.gene_start[:],self.pheno.col_header.gene_end],dtype='int').T
+            self.gene_pos_start = SP.array([self.pheno.col_header.gene_chrom[:],self.pheno.col_header.gene_start[:]],dtype='int').T
+            self.gene_pos_end = SP.array([self.pheno.col_header.gene_chrom[:],self.pheno.col_header.gene_end[:]],dtype='int').T
             self.gene_ID_list= list(set(self.gene_ID))
         else:
             self.eqtl = False
@@ -82,7 +86,13 @@ class pheno_reader_tables():
         if phenotype_IDs is not None:
             I = SP.array([SP.nonzero(self.phenotype_ID==n)[0][0] for n in phenotype_IDs])
         elif phenotype_query is not None:
-            I = self.index_frame.query(phenotype_query).values[:,0]
+            try:
+                I = self.index_frame.query(phenotype_query).values[:,0]
+            except Exception, arg:
+                
+                print "query '%s' yielded no results: %s"%phenotype_query, str(arg) 
+                                
+                I = SP.zeros([0],dtype="int") 
         else:
             I = SP.arange(self.phenotype_ID.shape[0])
         phenotypes = SP.array(self.pheno_matrix[:,I],dtype='float')
@@ -107,7 +117,30 @@ class pheno_reader_tables():
         #calculate overlap of missing values
         return phenotypes, sample_idx_intersect
 
-class pheno_reader_h5py():
+    def get_pos(self,phenotype_query=None):
+        """
+        get the positions of the genotypes
+
+        Returns:
+            chromosome
+            position
+            cumulative_position
+        """
+        assert self.eqtl == True, 'Only for eqtl data'
+        if phenotype_query is not None:
+            try:
+                I = self.index_frame.query(phenotype_query).values[:,0]
+            except Exception, arg:
+                
+                print "query '%s' yielded no results: %s"%phenotype_query, str(arg) 
+                                
+                I = SP.zeros([0],dtype="int")             
+            return {"start" : self.gene_pos_start[I], "end" : self.gene_pos_start[I]}
+        else:
+            return {"start" : self.gene_pos_start, "end" : self.gene_pos_start}
+        
+
+class pheno_reader_h5py_deprecated():
     def __init__(self,file_name):
         self.file_name = file_name
         self.load()

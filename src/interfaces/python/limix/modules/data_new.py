@@ -30,11 +30,11 @@ class QTLData(object):
         self.num_snps = self.geno_reader.num_snps
         
 
-    def range_query_geno_local(self, idx_start=None, idx_end=None, chrom=None, pos_start=None, pos_end=None, pos_cum_start=None, pos_cum_end=None):
+    def range_query_geno_local(self, idx_start=None, idx_end=None, chrom=None,pos_start=None, pos_end=None,windowsize=0):
         """
         return an index for a range query on the genotypes
         """
-        if idx_start==None and idx_end==None and pos_start==None and pos_end==None and chrom==None and pos_cum_start==None and pos_cum_end==None:
+        if idx_start==None and idx_end==None and pos_start==None and pos_end==None and chrom==None:
             return SP.arange(0,self.num_snps)
         elif idx_start is not None or idx_end is not None:
             if idx_start is None:
@@ -44,47 +44,40 @@ class QTLData(object):
             res = SP.arange(idx_start,idx_end)
             return res
         elif chrom is not None:
-            idx_chr = self.geno_pos["chrom"]==chrom
+            res = self.geno_pos["chrom"]==chrom
+        elif pos_start is not None or pos_end is not None:
+            if pos_start is not None and pos_end is not None:
+                assert pos_start[0] == pos_end[0], "chromosomes have to match"
+            
             if pos_start is None:
                 idx_larger = SP.ones(self.num_snps,dtype=bool)
             else:
-                idx_larger = self.geno_pos["pos"]>=pos_start
+                idx_larger = (self.geno_pos["pos"]>=(pos_start[1]-windowsize)) & (self.geno_pos["chrom"]==pos_start[0])
             if pos_end is None:
                 idx_smaller = SP.ones(self.num_snps,dtype=bool)
             else:
-                idx_smaller = self.geno_pos["pos"]<=pos_end
-            res = idx_chr & idx_smaller & idx_larger
-
-        elif pos_cum_start is not None or pos_cum_end is not None:
-            if pos_cum_start is None:
-                idx_larger = SP.ones(self.num_snps,dtype=bool)
-            else:
-                idx_larger = self.geno_pos["pos_cum"]>=pos_cum_start
-            if pos_cum_end is None:
-                idx_smaller = SP.ones(self.num_snps,dtype=bool)
-            else:
-                idx_smaller = self.geno_pos["pos_cum"]<=pos_cum_end
+                idx_smaller = (self.geno_pos["pos"]<=(pos_end[1]+windowsize)) & (self.geno_pos["chrom"]==pos_end[0])
             res = idx_smaller & idx_larger
         else:
             raise Exception("This should not be triggered")#res = SP.ones(self.geno_pos.shape,dtype=bool)
         return SP.where(res)[0]
         
 
-    def range_query_geno(self, idx_start=None, idx_end=None, chrom=None, pos_start=None, pos_end=None, pos_cum_start=None, pos_cum_end=None):
+    def range_query_geno(self, idx_start=None, idx_end=None, chrom=None, pos_start=None, pos_end=None,windowsize=0):
         """
         return an index for a range query on the genotypes
         """
-        if idx_start==None and idx_end==None and pos_start==None and pos_end==None and chrom==None and pos_cum_start==None and pos_cum_end==None:
+        if idx_start==None and idx_end==None and pos_start==None and pos_end==None:
             return self.geno_snp_idx
         else:
-            res = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
+            res = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end,windowsize=windowsize)
         if self.geno_snp_idx is None:
             return SP.where(res)[0]
         else:    
             return self.geno_snp_idx[res]
 
             
-    def getGenotypes(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,impute_missing=False):
+    def getGenotypes(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,windowsize=0,chrom=None,center=True,unit=True,impute_missing=False):
         """return genotypes. 
         Optionally the indices for loading subgroups the genotypes for all people
         can be given in one out of three ways: 
@@ -106,17 +99,17 @@ class QTLData(object):
         Returns:
             X:          scipy.array of genotype values
         """
-        query_idx = self.range_query_geno(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
+        query_idx = self.range_query_geno(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start,windowsize=windowsize)
         X = self.geno_reader.getGenotypes(sample_idx=SP.array(self.sample_idx["geno"]),snp_idx=query_idx) 
         if impute_missing:
             X = du.imputeMissing(X,center=center,unit=unit)
         return X
 
-    def getCovariance(self,normalize=False,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,blocksize=None,X=None,**kw_args):
+    def getCovariance(self,normalize=True,idx_start=None,idx_end=None,pos_start=None,pos_end=None,windowsize=0,chrom=None,center=True,unit=True,blocksize=None,X=None,**kw_args):
         """calculate the empirical genotype covariance in a region"""
-        return self.geno_reader.getCovariance(sample_idx=SP.array(self.sample_idx["geno"]),normalize=normalize,idx_start=idx_start,idx_end=idx_end,pos_start=pos_start,pos_end=pos_end,chrom=chrom,center=center,unit=unit,pos_cum_start=pos_cum_start,pos_cum_end=pos_cum_end,blocksize=blocksize,X=X,**kw_args)
+        return self.geno_reader.getCovariance(sample_idx=SP.array(self.sample_idx["geno"]),normalize=normalize,idx_start=idx_start,idx_end=idx_end,pos_start=pos_start,pos_end=pos_end,chrom=chrom,center=center,unit=unit,windowsize=windowsize,blocksize=blocksize,X=X,**kw_args)
 
-    def getGenoID(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
+    def getGenoID(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,windowsize=0):
         """get genotype IDs. 
         Optionally the indices for loading subgroups the genotype IDs for all people
         can be given in one out of three ways: 
@@ -137,7 +130,7 @@ class QTLData(object):
         Returns:
             ID:         scipy.array of genotype IDs (e.g. rs IDs)
         """
-        query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
+        query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, windowsize=windowsize)
         if query_idx is None:
             return self.geno_ID
         else:
@@ -196,8 +189,8 @@ class QTLData(object):
         
         if rows is not None:
             C.sample_ID = C.sample_ID[rows]         #IDs of individuals
-            C.sample_idx = C.sample_idx.iloc[rows]   #index of individuals
-        
+            C.sample_idx = C.sample_idx.iloc[rows]  #index of individuals
+            
         if cols_geno is not None:
             assert cols_geno.dtype=="int"
             C.geno_pos = C.geno_pos.iloc[cols_geno]
