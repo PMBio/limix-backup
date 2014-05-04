@@ -156,7 +156,7 @@ class QTLData(object):
         phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx=SP.array(self.sample_idx["pheno"]),phenotype_IDs=phenotype_IDs,phenotype_query=phenotype_query,center=center,intersection=intersection)
         return phenotypes, sample_idx_intersect
 
-    def getPos(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
+    def getPos(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,windowsize=0.0):
         """
         get the positions of the genotypes
 
@@ -165,13 +165,13 @@ class QTLData(object):
             position
             cumulative_position
         """
-        query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
+        query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, windowsize=windowsize)
         if query_idx is None:            
             return self.geno_pos
         else:
             return self.geno_pos.iloc[query_idx]
 
-    def subsample(self,rows=None,cols_pheno=None,cols_geno=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
+    def subsample(self,rows=None,cols_pheno=None,cols_geno=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,windowsize=0.0):
         """sample a particular set of individuals (rows) or phenotypes (cols_pheno) or genotypes (cols_geno)
         
         Args:
@@ -182,9 +182,9 @@ class QTLData(object):
         Returns:
             QTLdata object holding the specified subset of the data
         """
-        if not (idx_start==None and idx_end==None and pos_start==None and pos_end==None and chrom==None and pos_cum_start==None and pos_cum_end==None):
-            query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, pos_cum_start=pos_cum_start, pos_cum_end=pos_cum_end)
-            return self.subsample(rows=rows,cols_pheno=cols_pheno,cols_geno=res,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None)
+        if not (idx_start==None and idx_end==None and pos_start==None and pos_end==None and chrom==None):
+            query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, windowsize=windowsize)
+            return self.subsample(rows=rows,cols_pheno=cols_pheno,cols_geno=res,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None)
         C = copy.copy(self)
         
         if rows is not None:
@@ -222,5 +222,5 @@ class QTLData(object):
         """
 
         phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(phenotype_query=phenotype_query,sample_idx=SP.array(self.sample_idx["pheno"]),phenotype_IDs=phenotype_IDs,center=center,intersection=intersection)
-        return self.subsample(rows=sample_idx_intersect,cols_pheno=None,cols_geno=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None)
+        return self.subsample(rows=sample_idx_intersect,cols_pheno=None,cols_geno=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None)
             
