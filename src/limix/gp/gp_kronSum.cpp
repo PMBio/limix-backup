@@ -551,7 +551,6 @@ CGPHyperParams CGPkronSum::LMLgrad()
     if(params.exists("covarc2")){
         VectorXd grad_covar;
         aLMLgrad_covarc2(&grad_covar);
-        rv.set("covarc2", grad_covar);
         if (lambda>0) {
             MatrixXd C2, C2grad;
             for (muint_t i=0; i<params["covarc2"].rows(); i++) {
@@ -562,6 +561,7 @@ CGPHyperParams CGPkronSum::LMLgrad()
                         grad_covar(i)+= 2*lambda*C2(ir,ic)*C2grad(ir,ic);
             }
         }
+        rv.set("covarc2", grad_covar);
     }
     if(params.exists("covarr1")){
         VectorXd grad_covar;
@@ -614,31 +614,38 @@ void CGPkronSum::aLMLgrad_covarc1(VectorXd *out)
 	//covar
 	MatrixXd& Rrot = cache->rgetRrot();
     this->rtCC1part1f+=te1(beg);
+	//param mask
+	VectorXd paramMask = this->covarc1->getParamMask();
 
 	beg = clock();
     //start loop trough covariance paramenters
     (*out).resize(covarc1->getNumberParams(),1);
     MatrixXd CgradRot(this->getY().rows(),this->getY().rows());
 	for (muint_t i=0; i<covarc1->getNumberParams(); i++) {
-		CgradRot=Lambdac*covarc1->Kgrad_param(i)*Lambdac.transpose();
-		//1. grad logdet
-		mfloat_t grad_det = 0;
-	    for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
-	        for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
-	        	grad_det+=CgradRot(p,p)*Rrot(n,n)/(Scstar(p,0)*Srstar(n,0)+1);
+		if (paramMask(i)==0) {
+			(*out)(i,0)=0;
+		}
+		else {
+			CgradRot=Lambdac*covarc1->Kgrad_param(i)*Lambdac.transpose();
+			//1. grad logdet
+			mfloat_t grad_det = 0;
+	    	for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
+	        	for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
+	        		grad_det+=CgradRot(p,p)*Rrot(n,n)/(Scstar(p,0)*Srstar(n,0)+1);
+	    		}
 	    	}
-	    }
-	    grad_det*=0.5;
-		//2. grad quadratic term
-	    // Decomposition in columns and row
-	    MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
-	    MatrixXd YtildeR(Yrot.rows(),Yrot.cols());
-		for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
-			_Ytilde.block(0,p,Yrot.rows(),1).noalias()=Rrot*Ytilde.block(0,p,Yrot.rows(),1);
-		for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
-			YtildeR.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*CgradRot.transpose();
-		mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
-		(*out)(i,0)=grad_det+grad_quad;
+	    	grad_det*=0.5;
+			//2. grad quadratic term
+	    	// Decomposition in columns and row
+	   		MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
+	    	MatrixXd YtildeR(Yrot.rows(),Yrot.cols());
+			for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
+				_Ytilde.block(0,p,Yrot.rows(),1).noalias()=Rrot*Ytilde.block(0,p,Yrot.rows(),1);
+			for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
+				YtildeR.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*CgradRot.transpose();
+			mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
+			(*out)(i,0)=grad_det+grad_quad;
+		}
     }
     this->rtCC1part2+=te1(beg);
 }
@@ -655,31 +662,38 @@ void CGPkronSum::aLMLgrad_covarc2(VectorXd *out)
 	//covar
 	MatrixXd& OmegaRot = cache->rgetOmegaRot();
     this->rtCC2part1+=te1(beg);
+	//param mask
+	VectorXd paramMask = this->covarc1->getParamMask();
 
 	beg = clock();
     //start loop trough covariance paramenters
     (*out).resize(covarc2->getNumberParams(),1);
     MatrixXd SigmaGradRot(this->getY().rows(),this->getY().rows());
 	for (muint_t i=0; i<covarc2->getNumberParams(); i++) {
-		SigmaGradRot=Lambdac*covarc2->Kgrad_param(i)*Lambdac.transpose();
-		//1. grad logdet
-		mfloat_t grad_det = 0;
-	    for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
-	        for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
-	        	grad_det+=SigmaGradRot(p,p)*OmegaRot(n,n)/(Scstar(p,0)*Srstar(n,0)+1);
+		if (paramMask(i)==0) {
+			(*out)(i,0)=0;
+		}
+		else {
+			SigmaGradRot=Lambdac*covarc2->Kgrad_param(i)*Lambdac.transpose();
+			//1. grad logdet
+			mfloat_t grad_det = 0;
+	    	for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
+	        	for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
+	        		grad_det+=SigmaGradRot(p,p)*OmegaRot(n,n)/(Scstar(p,0)*Srstar(n,0)+1);
+	    		}
 	    	}
-	    }
-	    grad_det*=0.5;
-		//2. grad quadratic term
-	    // Decomposition in columns and row
-	    MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
-	    MatrixXd YtildeR(Yrot.rows(),Yrot.cols());
-		for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
-			_Ytilde.block(0,p,Yrot.rows(),1).noalias()=OmegaRot*Ytilde.block(0,p,Yrot.rows(),1);
-		for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
-			YtildeR.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*SigmaGradRot.transpose();
-		mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
-		(*out)(i,0)=grad_det+grad_quad;
+	    	grad_det*=0.5;
+			//2. grad quadratic term
+	    	// Decomposition in columns and row
+	    	MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
+	    	MatrixXd YtildeR(Yrot.rows(),Yrot.cols());
+			for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
+				_Ytilde.block(0,p,Yrot.rows(),1).noalias()=OmegaRot*Ytilde.block(0,p,Yrot.rows(),1);
+			for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
+				YtildeR.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*SigmaGradRot.transpose();
+			mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
+			(*out)(i,0)=grad_det+grad_quad;
+		}
     }
     this->rtCC2part2+=te1(beg);
 }

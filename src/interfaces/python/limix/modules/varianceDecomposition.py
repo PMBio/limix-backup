@@ -226,7 +226,7 @@ class VarianceDecomposition:
 
         if not self.init:		self._initGP(fast=fast)
 
-        assert lambd is None or self.fast, 'VarianceDecomposition:: Penalization not available for non-fast inference'
+        assert lambd==None or self.fast, 'VarianceDecomposition:: Penalization not available for non-fast inference'
 
         # set lambda
         if lambd!=None:		self.gp.setLambda(lambd)
@@ -302,7 +302,7 @@ class VarianceDecomposition:
             if conv==False:
                 print 'No local minimum found for the tested initialization points'
             else:
-                print 'Local minimum found in run %d out of %i' % ((i+1),n_times)
+                print 'Local minimum found at iteration %d' % i
  
         return conv
 
