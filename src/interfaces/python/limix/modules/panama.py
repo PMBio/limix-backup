@@ -5,6 +5,7 @@ import limix.modules.qtl as qtl
 import limix.utils.fdr as fdr
 import limix
 import scipy as SP
+import scipy.linalg as LA
 import pdb
 import pylab as PL
 import scipy.linalg as linalg
@@ -23,17 +24,38 @@ def PCA(Y, components):
     w0 *= v;
     return [s0, w0]
 
+def PC_varExplained(Y,standardized=True):
+    """
+    Run PCA and calculate the cumulative fraction of variance
+    Args:
+        Y: phenotype values
+        standardize: if True, phenotypes are standardized
+    Returns:
+        var: cumulative distribution of variance explained
+    """
+    # figuring out the number of latent factors
+    if standardized:
+        Y-=Y.mean(0)
+        Y/=Y.std(0)
+    covY = SP.cov(Y)
+    S,U = LA.eigh(covY+1e-6*SP.eye(covY.shape[0]))
+    S = S[::-1]
+    rv = SP.array([S[0:i].sum() for i in range(1,S.shape[0])])
+    rv/= S.sum()
+    return rv
+
 
 class PANAMA:
     """PANAMA class"""
     def __init__(self,data=None,X=None,Y=None,Kpop=None,use_Kpop=True,standardize=True):
         """
-        data: data object to feed form
-        X: alternatively SNP data
-        Y: alternativel expression data 
-        Kpop: Kpop
-        use_Kpop: use Kpop kernel? (True)
-        standardize (True)
+        Args:
+            data: data object to feed form
+            X: alternatively SNP data
+            Y: alternativel expression data 
+            Kpop: Kpop
+            use_Kpop: if True (default), Kpop is considered in the model
+            standardize: if True, phenotypes are standardized
         """
         self.use_Kpop = use_Kpop
 
@@ -49,9 +71,9 @@ class PANAMA:
         elif self.X is not None:
             self.Kpop = SP.dot(self.X,self.X.T)
             self.Kpop /= self.Kpop.diagonal().mean()
-	else:
-	    assert use_Kpop==False, 'no Kpop'
-	    
+        else:
+            assert use_Kpop==False, 'no Kpop'
+        
         if standardize:
             self.Y -= self.Y.mean(axis=0)
             self.Y /= self.Y.std(axis=0)
@@ -62,14 +84,14 @@ class PANAMA:
             assert self.X.shape[0]==self.Y.shape[0], 'data size missmatch'
         pass
 
-    def train(self,K=20,Kpop=True):
+    def train(self,rank=20,Kpop=True):
         """train panama module"""
         if 0:
-            covar  = limix.CCovLinearISO(K)
+            covar  = limix.CCovLinearISO(rank)
             ll  = limix.CLikNormalIso()
-            X0 = SP.random.randn(self.N,K)
-            X0 = PCA(self.Y,K)[0]
-            X0 /= SP.sqrt(K)
+            X0 = SP.random.randn(self.N,rank)
+            X0 = PCA(self.Y,rank)[0]
+            X0 /= SP.sqrt(rank)
             covar_params = SP.array([1.0])
             lik_params = SP.array([1.0])
 
@@ -87,7 +109,7 @@ class PANAMA:
 
         if 1:
             covar  = limix.CSumCF()
-            covar_1 =  limix.CCovLinearISO(K)
+            covar_1 =  limix.CCovLinearISO(rank)
             covar.addCovariance(covar_1)
             covar_params = [1.0]
 
@@ -97,9 +119,9 @@ class PANAMA:
                 covar_params.append(1.0)
 
             ll  = limix.CLikNormalIso()
-            X0 = SP.random.randn(self.N,K)
-            X0 = PCA(self.Y,K)[0]
-            X0 /= SP.sqrt(K)
+            X0 = SP.random.randn(self.N,rank)
+            X0 = PCA(self.Y,rank)[0]
+            X0 /= SP.sqrt(rank)
             covar_params = SP.array(covar_params)
             lik_params = SP.array([1.0])
 
@@ -111,7 +133,7 @@ class PANAMA:
             constrainU = limix.CGPHyperParams()
             constrainL = limix.CGPHyperParams()
             constrainU['covar'] = +5*SP.ones_like(covar_params);
-            constrainL['covar'] = 0*SP.ones_like(covar_params);
+            constrainL['covar'] = -5*SP.ones_like(covar_params);
             constrainU['lik'] = +5*SP.ones_like(lik_params);
 
             
@@ -127,16 +149,51 @@ class PANAMA:
         t1 = time.time()
         gpopt.opt()
         t2 = time.time()
-        self.Kconfounder = covar.K()
-        #normalize
-        self.Kconfounder/= self.Kconfounder.trace()/self.Kconfounder.shape[0]
-        self.Xconfounder = gp.getParams()['X']
-        #store relative variance of Kpop XX
+
+        #Kpanama
+        self.Xpanama = gp.getParams()['X']
+        self.Kpanama = covar_1.K()
+        self.Kpanama/= self.Kpanama.diagonal().mean()
+
+        # Ktot
+        self.Ktot = covar_1.K()
+        if self.use_Kpop:
+            self.Ktot += covar_2.K()
+        self.Ktot/= self.Ktot.diagonal().mean()
+
+        #store variances
         V = SP.zeros([3])
         V[0] = covar_1.K().diagonal().mean()
         if self.use_Kpop:
             V[1] = covar_2.K().diagonal().mean()
         V[2] = gp.getParams()['lik'][0]**2
-        V/=V.sum()
-        self.Vconfounder = V
+        self.varianceComps = V
+
+    def get_Xpanama(self):
+        """
+        Returns:
+            matrix of Xs
+        """
+        return self.Xpanama
     
+    def get_Kpanama(self):
+        """
+        Returns:
+            Kpanama (normalized XX.T)
+        """
+        return self.Kpanama
+    
+    def get_Ktot(self):
+        """
+        Returns:
+            Ktot (normalized Kpanama+Kpop)
+        """
+        return self.Ktot
+    
+    def get_varianceComps(self):
+        """
+        Returns:
+            vector of variance components of the PANAMA, Kpop and noise contributions
+        """
+        return self.varianceComps
+ 

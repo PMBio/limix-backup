@@ -613,7 +613,7 @@ class VarianceDecomposition:
         """
 
         # split samples into training and test
-        SP.random.seed(0)
+        SP.random.seed(seed)
         r = SP.random.permutation(self.Y.shape[0])
         nfolds = 10
         Icv = SP.floor(((SP.ones((self.Y.shape[0]))*nfolds)*r)/self.Y.shape[0])
