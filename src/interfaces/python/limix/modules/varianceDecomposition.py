@@ -64,8 +64,10 @@ class VarianceDecomposition:
 
         # for multi trait models 
         self.trait_covar_type = []
-        self.diag   = []
-        self.jitter = []
+        self.rank     = []
+        self.fixed_tc = []
+        self.diag     = []
+        self.jitter   = []
         
         self.cache = {}
         self.cache['Sigma']   = None
@@ -99,7 +101,7 @@ class VarianceDecomposition:
         self.cache['Sigma']   = None
         self.cache['Hessian'] = None
 
-    def setTestSampleSize(Ntest):
+    def setTestSampleSize(self,Ntest):
         """
         set sample size of the test dataset
 
@@ -159,6 +161,8 @@ class VarianceDecomposition:
             cov,diag = self._buildTraitCovar(trait_covar_type=trait_covar_type,rank=rank,fixed_trait_covar=fixed_trait_covar,jitter=jitter)
             self.vd.addTerm(cov,K)
             self.trait_covar_type.append(trait_covar_type)
+            self.rank.append(rank)
+            self.fixed_tc.append(fixed_trait_covar)
             self.diag.append(diag)
             self.jitter.append(jitter)
 
@@ -405,7 +409,7 @@ class VarianceDecomposition:
     def getScales(self,term_i=None):
         """
         Returns Cholesky parameters
-        To retrieve proper variances and covariances \see getVarComps and \see getEstTraitCovar
+        To retrieve proper variances and covariances \see getVarComps and \see getTraitCovar
         
         Args:
             term_i:     index of the term of which we want to retrieve the variance paramenters
@@ -432,7 +436,7 @@ class VarianceDecomposition:
     def getTraitCovar(self,term_i=None):
         """
         Return the estimated trait covariance matrix for term_i (or the total if term_i is None)
-            To retrieve the matrix of correlation coefficient use \see getEstTraitCorrCoef
+            To retrieve the matrix of correlation coefficient use \see getTraitCorrCoef
 
         Args:
             term_i:     index of the random effect term we want to retrieve the covariance matrix
@@ -453,14 +457,14 @@ class VarianceDecomposition:
     def getTraitCorrCoef(self,term_i=None):
         """
         Return the estimated trait correlation coefficient matrix for term_i (or the total if term_i is None)
-            To retrieve the trait covariance matrix use \see getEstTraitCovar
+            To retrieve the trait covariance matrix use \see getTraitCovar
 
         Args:
             term_i:     index of the random effect term we want to retrieve the correlation coefficients
         Returns:
             estimated trait correlation coefficient matrix
         """
-        cov = self.getEstTraitCovar(term_i)
+        cov = self.getTraitCovar(term_i)
         stds=SP.sqrt(cov.diagonal())[:,SP.newaxis]
         RV = cov/stds/stds.T
         return RV
@@ -536,17 +540,23 @@ class VarianceDecomposition:
     CODE FOR PREDICTIONS
     """
     
-    def predictiPhenos(self):
+    def predictPhenos(self,use_fixed=None,use_random=None):
         """
         predict the conditional mean (BLUP)
 
+        Args:
+            use_fixed:		list of fixed effect indeces to use for predictions
+            use_random:		list of random effect indeces to use for predictions
         Returns:
             predictions (BLUP)
         """
         assert self.noisPos!=None,      'No noise element'
         assert self.init,               'GP not initialised'
-        assert self.Ntest==None,        'VarianceDecomposition:: specify Ntest for predictions (method VarianceDecomposition::setTestSampleSize)'
+        assert self.Ntest!=None,        'VarianceDecomposition:: specify Ntest for predictions (method VarianceDecomposition::setTestSampleSize)'
  
+        use_fixed  = range(self.n_fixedEffs)
+        use_random = range(self.n_randEffs)
+
         KiY = self.gp.agetKEffInvYCache()
                 
         if self.fast==False:
@@ -555,7 +565,7 @@ class VarianceDecomposition:
         Ypred = SP.zeros((self.Ntest,self.P))
 
         # predicting from random effects
-        for term_i in range(self.n_randEffs):
+        for term_i in use_random:
             if term_i!=self.noisPos:
                 Kstar = self.Kstar[term_i]
                 if Kstar==None:
@@ -563,42 +573,99 @@ class VarianceDecomposition:
                     continue 
                 term  = SP.dot(Kstar.T,KiY)
                 if self.P>1:
-                    C    = self.getEstTraitCovar(term_i)
+                    C    = self.getTraitCovar(term_i)
                     term = SP.dot(term,C)
+                else:
+                    term *= self.getVarianceComps()[0,term_i]
                 Ypred += term
 
         # predicting from fixed effects
         weights = self.getWeights()
         w_i = 0
-        for term_i in range(self.n_fixedEffects):
+        for term_i in use_fixed:
             Fstar = self.Fstar[term_i]
             if Fstar==None:
                 warnings.warn('warning: fixed effect term %d not used for predictions as it has None test sample design'%term_i)
                 continue 
-            if P==1:	A = SP.eye(1)
-            else:		A = self.vd.getDesign(term_i)
+            if self.P==1:	A = SP.eye(1)
+            else:			A = self.vd.getDesign(term_i)
             Fstar = self.Fstar[term_i]
-            W = weights[0:1,w_i:w_i+A.shape[0]] 
+            W = weights[w_i:w_i+A.shape[0],0:1].T 
             term = SP.dot(Fstar,SP.dot(W,A))
             w_i += A.shape[0]
+            Ypred += term
 
-        return Ymean
+        return Ypred
 
 
-    def crossValidation(self,n_folds=10,fullVector=True,**keywords):
+    def crossValidation(self,seed=0,n_folds=10,fullVector=True,verbose=True,**keywords):
         """
         Split the dataset in n folds, predict each fold after training the model on all the others
 
         Args:
+            seed:        seed
             n_folds:	 number of folds to train the model on
-            fullVector:  Bolean indicator, if true it stops if no convergence is observed for one of folds, otherwise goes through and returns a pheno matrix with missing values
+            fullVector:  Bolean indicator, if true it stops if no convergence is observed for one of the folds, otherwise goes through and returns a pheno matrix with missing values
+            verbose:     if true, prints the fold that is being used for predicitons
             **keywords:  params to pass to the function optimize
         Returns:
             Matrix of phenotype predictions [N,P]
         """
-        # TODO
-        pass
 
+        # split samples into training and test
+        SP.random.seed(0)
+        r = SP.random.permutation(self.Y.shape[0])
+        nfolds = 10
+        Icv = SP.floor(((SP.ones((self.Y.shape[0]))*nfolds)*r)/self.Y.shape[0])
+
+        RV = SP.zeros_like(self.Y)
+
+        for fold_j in range(n_folds):
+
+            if verbose:
+                print ".. predict fold %d"%fold_j
+
+            Itrain  = Icv!=fold_j
+            Itest   = Icv==fold_j
+            Ytrain  = self.Y[Itrain,:]
+            Ytest   = self.Y[Itest,:]
+            vc = VarianceDecomposition(Ytrain)
+            vc.setTestSampleSize(Itest.sum())
+            for term_i in range(self.n_fixedEffs):
+                F      = self.vd.getFixed(term_i)
+                Ftest  = F[Itest,:]
+                Ftrain = F[Itrain,:]
+                if self.P>1:	A = self.vd.getDesign(term_i)
+                else:           A = None
+                vc.addFixedEffect(F=Ftrain,Ftest=Ftest,A=A)
+            for term_i in range(self.n_randEffs):
+                if self.P>1:
+                    tct  = self.trait_covar_type[term_i]
+                    rank = self.rank[term_i]
+                    ftc  = self.fixed_tc[term_i]
+                    jitt = self.jitter[term_i]
+                else:
+                    tct  = None
+                    rank = None
+                    ftc  = None
+                    jitt = None
+                if term_i==self.noisPos:
+                    vc.addRandomEffect(is_noise=True,trait_covar_type=tct,rank=rank,jitter=jitt,fixed_trait_covar=ftc)
+                else:
+                    R = self.vd.getTerm(term_i).getK()
+                    Rtrain = R[Itrain,:][:,Itrain]
+                    Rcross = R[Itrain,:][:,Itest]
+                    vc.addRandomEffect(K=Rtrain,Kcross=Rcross,trait_covar_type=tct,jitter=jitt)
+            conv = vc.optimize(**keywords)
+            if fullVector:
+                assert conv, 'VarianceDecompositon:: not converged for fold %d. Stopped here' % fold_j
+            if conv: 
+                RV[Itest,:] = vc.predictPhenos()
+            else:
+                warnings.warn('not converged for fold %d' % fold_j)
+                RV[Itest,:] = SP.nan
+
+        return RV
 
 
     """ GP initialization """
