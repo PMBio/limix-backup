@@ -655,7 +655,7 @@ class VarianceDecomposition:
                     R = self.vd.getTerm(term_i).getK()
                     Rtrain = R[Itrain,:][:,Itrain]
                     Rcross = R[Itrain,:][:,Itest]
-                    vc.addRandomEffect(K=Rtrain,Kcross=Rcross,trait_covar_type=tct,jitter=jitt)
+                    vc.addRandomEffect(K=Rtrain,Kcross=Rcross,trait_covar_type=tct,rank=rank,jitter=jitt,fixed_trait_covar=ftc)
             conv = vc.optimize(**keywords)
             if fullVector:
                 assert conv, 'VarianceDecompositon:: not converged for fold %d. Stopped here' % fold_j
