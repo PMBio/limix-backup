@@ -32,5 +32,7 @@ A good starting point is our package Vignettes. These tutorials can are availabl
 The main package vignette can also be viewed using the ipython notebook viewer:
 http://nbviewer.ipython.org/github/pmbio/limix-tutorials/blob/master/demo_yeast.ipynb
 
+More extensive documentation will be available soon.
+
 ## License
 See [LICENSE] https://github.com/PMBio/limix/blob/master/license.txt
