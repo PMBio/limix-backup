@@ -17,8 +17,9 @@
 #include <stdlib.h>
 #include <iostream>
 #include <stdio.h>
-#include <math.h>
-
+//#include <math.h>
+//does tis work on windows?
+#include <cmath>
 
 // Machine eps
 double BrentC::MACHEPS = (double)2.2204460492503131e-016;

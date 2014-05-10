@@ -1,7 +1,9 @@
 
 #include "limix/utils/beta.h"
 #include "limix/utils/gamma.h"
-
+//#include <math.h>
+//does tis work on windows?
+#include <cmath>
 
 namespace stats {
 

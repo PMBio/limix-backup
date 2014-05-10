@@ -19,7 +19,9 @@
 #include <stdlib.h>
 #include <iostream>
 #include <stdio.h>
-#include <math.h>
+//#include <math.h>
+//TOOD: check this still works on windows
+#include <cmath>
 namespace stats {
 	// This is gammainc(x,a,'upper') in Matlab
 	/// <summary>q-gamma function</summary>
