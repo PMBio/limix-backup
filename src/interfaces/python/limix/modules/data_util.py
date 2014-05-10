@@ -10,31 +10,34 @@ except:
     cparser=False
     pass
 
-def estCumPos(pos,chrom,offset = 20000000):
+def estCumPos(position,offset=1000000):
     '''
     compute the cumulative position of each variant given the position and the chromosome
     Also return the starting cumulativeposition of each chromosome
 
     Args:
-        pos:        scipy.array of basepair positions (on the chromosome)
-        chrom:      scipy.array of chromosomes
+        position:   pandas DataFrame of basepair positions (key='pos') and chromosome values (key='chrom')
+                    The DataFrame will be updated with field 'pos_cum'
         offset:     offset between chromosomes for cumulative position (default 20000000 bp)
     
     Returns:
-        cum_pos:    scipy.array of cumulative positions
-        chrom_pos:  scipy.array of starting cumulative positions for each chromosme
+        chrom_pos:  numpy.array of starting cumulative positions for each chromosme
     '''
-    chromvals = SP.unique(chrom)#SP.unique is always sorted
+    chromvals = SP.unique(position['chrom'])#SP.unique is always sorted
     chrom_pos=SP.zeros_like(chromvals)#get the starting position of each Chrom
-    cum_pos = SP.zeros_like(pos)#get the cum_pos of each variant.
+    pos_cum=SP.zeros_like(position.shape[0])
+    if not 'pos_cum' in position:
+        position["pos_cum"]=SP.zeros_like(position['pos'])#get the cum_pos of each variant.
+    pos_cum=position['pos_cum'].values
     maxpos_cum=0
     for i,mychrom in enumerate(chromvals):
         chrom_pos[i] = maxpos_cum
-        i_chr=chrom==mychrom
-        maxpos = pos[i_chr].max()+offset
-        maxpos_cum+=maxpos
-        cum_pos[i_chr]=chrom_pos[i]+pos[i_chr]
-    return cum_pos,chrom_pos
+        i_chr=position['chrom']==mychrom
+        maxpos = position['pos'][i_chr].max()+offset
+        pos_cum[i_chr.values]=maxpos_cum+position.loc[i_chr,'pos']
+        maxpos_cum+=maxpos      
+    
+    return chrom_pos
         
         
 def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.0, betaB=1.0):

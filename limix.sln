@@ -11,6 +11,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "python_modules", "src\inter
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "bin", "src\interfaces\python\bin\bin.pyproj", "{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "example_scripts", "..\Source\Repos\limix\example\example_scripts\example_scripts.pyproj", "{A27503A3-0027-4C95-B037-950776E949C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug Python|Any CPU = Debug Python|Any CPU
@@ -72,6 +74,15 @@ Global
 		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{4EA724CD-C5DF-4187-86A8-7F3889D6DB27}.Release|Win32.ActiveCfg = Release|Any CPU
+		{A27503A3-0027-4C95-B037-950776E949C4}.Debug Python|Any CPU.ActiveCfg = Debug|Any CPU
+		{A27503A3-0027-4C95-B037-950776E949C4}.Debug Python|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A27503A3-0027-4C95-B037-950776E949C4}.Debug Python|Win32.ActiveCfg = Debug|Any CPU
+		{A27503A3-0027-4C95-B037-950776E949C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A27503A3-0027-4C95-B037-950776E949C4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A27503A3-0027-4C95-B037-950776E949C4}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{A27503A3-0027-4C95-B037-950776E949C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A27503A3-0027-4C95-B037-950776E949C4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A27503A3-0027-4C95-B037-950776E949C4}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
