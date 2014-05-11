@@ -21,7 +21,7 @@ for gene_idx,gene in enumerate(lysine_group):
     
     snps = data_subsample.getGenotypes(impute_missing=True)
     
-    K = data_subsample.getCovariance()
+    sample_relatedness = data_subsample.getCovariance()
     pos = data_subsample.getPos()
 
     #set parameters for the analysis
@@ -33,7 +33,7 @@ for gene_idx,gene in enumerate(lysine_group):
     Asnps1 = SP.zeros((2,P))    #the alternative model design matrix for the SNPs
     Asnps1[0,:] = 1.0           
     Asnps1[1,0] = 1.0       
-    K1r = K                     #the first sample-sample covariance matrix (non-noise)
+    K1r = sample_relatedness    #the first sample-sample covariance matrix (non-noise)
     K2r = SP.eye(N)             #the second sample-sample covariance matrix (noise)
     K1c = None                  #the first phenotype-phenotype covariance matrix (non-noise)
     K2c = None                  #the second phenotype-phenotype covariance matrix (noise)

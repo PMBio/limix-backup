@@ -11,7 +11,7 @@ data_subsample = data.subsample_phenotypes(phenotype_query=phenotype_query,inter
 snps = data_subsample.getGenotypes(impute_missing=True)
 phenotypes,sample_idx = data_subsample.getPhenotypes(phenotype_query=phenotype_query,intersection=True); assert sample_idx.all()
 
-K = data_subsample.getCovariance()
+sample_relatedmess = data_subsample.getCovariance()
 pos = data_subsample.getPos()
 
 #set parameters for the analysis
@@ -23,7 +23,7 @@ Asnps0 = SP.ones((1,P))     #the null model design matrix for the SNPs
 Asnps1 = SP.zeros((2,P))    #the alternative model design matrix for the SNPs
 Asnps1[0,:] = 1.0           
 Asnps1[1,0] = 1.0       
-K1r = K                     #the first sample-sample covariance matrix (non-noise)
+K1r = sample_relatedmess    #the first sample-sample covariance matrix (non-noise)
 K2r = SP.eye(N)             #the second sample-sample covariance matrix (noise)
 K1c = None                  #the first phenotype-phenotype covariance matrix (non-noise)
 K2c = None                  #the second phenotype-phenotype covariance matrix (noise)

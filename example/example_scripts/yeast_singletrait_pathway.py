@@ -28,7 +28,7 @@ test="lrt"                  #specify type of statistical test
 
 # Running the analysis
 # when cov are not set (None), LIMIX considers an intercept (covs=SP.ones((N,1)))
-lmm = QTL.test_lmm(snps=snps,pheno=phenotypes.values,K=K,covs=covs,test=test)
+lmm = QTL.test_lmm(snps=snps,pheno=phenotypes.values,K=sample_relatedness,covs=covs,test=test)
 
 pvalues = lmm.getPv()       # 1xS vector of p-values (S=X.shape[1])
 #convert P-values to a DataFrame for nice output writing:
