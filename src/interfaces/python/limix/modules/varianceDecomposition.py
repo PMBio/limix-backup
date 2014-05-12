@@ -656,7 +656,7 @@ class VarianceDecomposition:
                     Rtrain = R[Itrain,:][:,Itrain]
                     Rcross = R[Itrain,:][:,Itest]
                     vc.addRandomEffect(K=Rtrain,Kcross=Rcross,trait_covar_type=tct,rank=rank,jitter=jitt,fixed_trait_covar=ftc)
-            conv = vc.optimize(**keywords)
+            conv = vc.optimize(verbose=False,**keywords)
             if fullVector:
                 assert conv, 'VarianceDecompositon:: not converged for fold %d. Stopped here' % fold_j
             if conv: 
