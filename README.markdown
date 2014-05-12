@@ -30,7 +30,7 @@ Python:
 A good starting point is our package Vignettes. These tutorials can are available in this repository: https://github.com/PMBio/limix-tutorials.
 
 The main package vignette can also be viewed using the ipython notebook viewer:
-http://nbviewer.ipython.org/github/pmbio/limix-tutorials/blob/master/demo_yeast.ipynb
+http://nbviewer.ipython.org/github/pmbio/limix-tutorials/blob/master/tutorial_yeast.ipynb or by downloading the PDF equivalent: https://github.com/PMBio/limix-tutorials/blob/master/tutorial_yeast.pdf.
 
 More extensive documentation will be available soon.
 
