@@ -32,7 +32,7 @@ ALMM::ALMM()
 	Upheno_cached = false;
 	Ucovs_cached = false;
 	//standard: using likelihood ratios:
-	testStatistics = ALMM::TEST_LLR;
+	testStatistics = ALMM::TEST_LRT;
 }
 
 ALMM::~ALMM()
@@ -381,7 +381,7 @@ int ALMM::getTestStatistics() const
             		beta_snp_ste(ip,is) = AObeta_ste_(0,0);
 
             	//3.2 evaluate test statistics (background)
-                if(this->testStatistics == ALMM::TEST_LLR)
+                if(this->testStatistics == ALMM::TEST_LRT)
                 {
                 	mfloat_t DL = nLL0(ip, 0) - nLLAlt(ip, is);
                 	if (DL<0)
@@ -499,7 +499,7 @@ int ALMM::getTestStatistics() const
         }
 
         //fit delta0 on full null model without any SNP in there (EmmaX)
-        if (!refitDelta0Pheno && (testStatistics==ALMM::TEST_LLR))
+        if (!refitDelta0Pheno && (testStatistics==ALMM::TEST_LRT))
         {
         	MatrixXd ldelta00;
         	MatrixXd nLL00;
@@ -524,7 +524,7 @@ int ALMM::getTestStatistics() const
         	//construct full foreground SNP set
         	UXps.block(0,0,num_samples,num_inter+num_inter0) = UXi;
 
-    		if (refitDelta0Pheno && (testStatistics==ALMM::TEST_LLR))
+    		if (refitDelta0Pheno && (testStatistics==ALMM::TEST_LRT))
     		{
     			//refit delta on new null model which has changed due to I0:
     			optdeltaEx(ldelta0.col(is),nLL0.col(is),Upheno, UXps.block(0,num_inter,num_samples,num_inter0+num_covs), S, num_intervals0, ldeltamin0, ldeltamax0);
@@ -548,7 +548,7 @@ int ALMM::getTestStatistics() const
 
 
         		//4. calc p-value
-        		if (this->testStatistics==ALMM::TEST_LLR)
+        		if (this->testStatistics==ALMM::TEST_LRT)
         		{
         			//for likelihood ratios, we require evaluation on the new null model due to I0:
         			nLLevalEx(AObeta_,AObeta_ste_,AOsigma_,f_tests_,nLL0.block(ip,is,1,1),Upheno.col(ip), UXps.block(0,num_inter,num_samples,num_inter0+num_covs), S,ldelta0(ip, is),false);

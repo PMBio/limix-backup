@@ -254,7 +254,7 @@ class VarianceDecomposition:
             
         return conv
 
-    def optimize(self,fast=None,scales0=None,fixed0=None,init_method=None,termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=True,lambd=None):
+    def optimize(self,fast=None,scales0=None,fixed0=None,init_method=None,termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=None,lambd=None):
         """
         Train the model using the specified initialization strategy
         
@@ -272,6 +272,9 @@ class VarianceDecomposition:
             perturbSize:    std of the gassian noise used to perturb the initial point
             verbose:        print if convergence is achieved and how many restarted were needed 
         """
+        verbose = limix.getVerbose(verbose)
+
+
         if init_method==None:
             if self.P==1:	init_method = 'random'
             else:           init_method = 'diagonal'
@@ -310,7 +313,7 @@ class VarianceDecomposition:
  
         return conv
 
-    def optimize_with_repeates(self,fast=None,verbose=True,n_times=10,lambd=None):
+    def optimize_with_repeates(self,fast=None,verbose=None,n_times=10,lambd=None):
         """
         Train the model repeadly up to a number specified by the users with random restarts and
         return a list of all relative minima that have been found 
@@ -320,6 +323,8 @@ class VarianceDecomposition:
             verbose:    Boolean. If set to True, verbose output is produced. (default True)
             n_times:    number of re-starts of the optimization. (default 10)
         """
+        verbose = limix.getVerbose(verbose)
+
         if not self.init:       self._initGP(fast)
         
         opt_list = []
@@ -598,7 +603,7 @@ class VarianceDecomposition:
         return Ypred
 
 
-    def crossValidation(self,seed=0,n_folds=10,fullVector=True,verbose=True,**keywords):
+    def crossValidation(self,seed=0,n_folds=10,fullVector=True,verbose=None,**keywords):
         """
         Split the dataset in n folds, predict each fold after training the model on all the others
 
@@ -611,6 +616,7 @@ class VarianceDecomposition:
         Returns:
             Matrix of phenotype predictions [N,P]
         """
+        verbose = limix.getVerbose(verbose)
 
         # split samples into training and test
         SP.random.seed(seed)
@@ -656,7 +662,7 @@ class VarianceDecomposition:
                     Rtrain = R[Itrain,:][:,Itrain]
                     Rcross = R[Itrain,:][:,Itest]
                     vc.addRandomEffect(K=Rtrain,Kcross=Rcross,trait_covar_type=tct,rank=rank,jitter=jitt,fixed_trait_covar=ftc)
-            conv = vc.optimize(**keywords)
+            conv = vc.optimize(verbose=False,**keywords)
             if fullVector:
                 assert conv, 'VarianceDecompositon:: not converged for fold %d. Stopped here' % fold_j
             if conv: 
@@ -753,13 +759,14 @@ class VarianceDecomposition:
 
     """ INTERNAL FUNCIONS FOR PARAMETER INITIALIZATION """
 
-    def _getH2singleTrait(self, K, verbose=False):
+    def _getH2singleTrait(self, K, verbose=None):
         """
         Internal function for parameter initialization
         estimate variance components and fixed effect using a linear mixed model with an intercept and 2 random effects (one is noise)
         Args:
             K:        covariance matrix of the non-noise random effect term 
         """
+        verbose = limix.getVerbose(verbose)
         # Fit single trait model
         varg  = SP.zeros(self.P)
         varn  = SP.zeros(self.P)

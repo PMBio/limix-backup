@@ -9,9 +9,11 @@ import limix.utils.preprocess as preprocess
 import limix.modules.varianceDecomposition as VAR
 import limix.utils.fdr as FDR
 import time
+#import qtl module for self referencing
+import qtl
 
 
-def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False):
+def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False,verbose=None):
     """
     Univariate fixed effects linear mixed model test for all SNPs
     
@@ -25,10 +27,13 @@ def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumI
         NumIntervalsDelta0:     number of steps for delta optimization on the null model (100)
         NumIntervalsDeltaAlt:   number of steps for delta optimization on the alt. model (100), requires searchDelta=True to have an effect.
         searchDelta:     Carry out delta optimization on the alternative model? if yes We use NumIntervalsDeltaAlt steps
+        verbose: print verbose output? (False)
     
     Returns:
         limix LMM object
     """
+    verbose = limix.getVerbose(verbose)
+
     t0=time.time()
     if K is None:
         K=SP.eye(snps.shape[0])
@@ -40,9 +45,9 @@ def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumI
         covs = SP.ones((snps.shape[0],1))
     lm.setCovs(covs)
     if test=='lrt':
-        lm.setTestStatistics(0)
+        lm.setTestStatistics(lm.TEST_LRT)
     elif test=='f':
-        lm.setTestStatistics(1)
+        lm.setTestStatistics(lm.TEST_F)
     else:
         print test
         raise NotImplementedError("only f or lrt are implemented")
@@ -54,7 +59,8 @@ def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumI
         lm.setNumIntervalsAlt(0)
     lm.process()
     t1=time.time()
-    print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+    if verbose:
+        print ("finished GWAS testing in %.2f seconds" %(t1-t0))
     return lm
 
 
@@ -325,9 +331,9 @@ def test_interaction_lmm(snps,pheno,Inter,Inter0=None,covs=None,K=None,test='lrt
     lmi.setInter0(Inter0)
     lmi.setInter(Inter)
     if test=='lrt':
-        lmi.setTestStatistics(0)
+        lmi.setTestStatistics(lmi.TEST_LRT)
     elif test=='f':
-        lmi.setTestStatistics(1)
+        lmi.setTestStatistics(lmi.TEST_F)
     else:
         print test
         raise NotImplementedError("only f or lrt are implemented")
@@ -338,7 +344,7 @@ def test_interaction_lmm(snps,pheno,Inter,Inter0=None,covs=None,K=None,test='lrt
 """ MULTI LOCUS MODEL """
 
 
-def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter=2,test='lrt',**kw_args):
+def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter=2,test='lrt',verbose=None,**kw_args):
     """
     univariate fixed effects test with forward selection
     
@@ -352,6 +358,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter
         maxiter:        (int) maximum number of interaction scans. First scan is
                         without inclusion, so maxiter-1 inclusions can be performed. (default 2)
         test:           'lrt' for likelihood ratio test (default) or 'f' for F-test
+        verbose: print verbose output? (False)
     
     Returns:
         lm:     limix LMM object
@@ -359,18 +366,21 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter
                 RV['iadded']:   array of indices of SNPs included in order of inclusion
                 RV['pvadded']:  array of Pvalues obtained by the included SNPs in iteration
                                 before inclusion
-                RV['pvall']:    [maxiter x S] SP.array of Pvalues for all iterations
+                RV['pvall']:    [Nadded x S] SP.array of Pvalues for all iterations
     """
+    verbose = limix.getVerbose(verbose)
 
     if K is None:
         K=SP.eye(snps.shape[0])
     if covs is None:
         covs = SP.ones((snps.shape[0],1))
+    #assert single trait
+    assert pheno.shape[1]==1, 'forward_lmm only supports single phenotypes'
     
     lm = test_lmm(snps,pheno,K=K,covs=covs,test=test,**kw_args)
-    pvall = SP.zeros((maxiter,snps.shape[1]))
-    pv = lm.getPv()
-    pvall[0:1,:]=pv
+    pvall = []
+    pv = lm.getPv().ravel()
+    pvall.append(pv)
     imin= pv.argmin()
     niter = 1
     #start stuff
@@ -379,23 +389,23 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter
     qvadded = []
     if qvalues:
         assert pv.shape[0]==1, "This is untested with the fdr package. pv.shape[0]==1 failed"
-        qvall = SP.zeros((maxiter,snps.shape[1]))
+        qvall = []
         qv  = FDR.qvalues(pv)
-        qvall[0:1,:] = qv
+        qvall.append(qv)
         score=qv.min()
     else:
         score=pv.min()
     while (score<threshold) and niter<maxiter:
         t0=time.time()
         iadded.append(imin)
-        pvadded.append(pv[0,imin])
+        pvadded.append(pv[imin])
         if qvalues:
             qvadded.append(qv[0,imin])
         covs=SP.concatenate((covs,snps[:,imin:(imin+1)]),1)
         lm.setCovs(covs)
         lm.process()
-        pv = lm.getPv()
-        pvall[niter:niter+1,:]=pv
+        pv = lm.getPv().ravel()
+        pvall.append(pv)
         imin= pv.argmin()
         if qvalues:
             qv = FDR.qvalues(pv)
@@ -404,20 +414,21 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter
         else:
             score = pv.min()
         t1=time.time()
-        print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+        if verbose:
+            print ("finished GWAS testing in %.2f seconds" %(t1-t0))
         niter=niter+1
     RV = {}
     RV['iadded']  = iadded
     RV['pvadded'] = pvadded
-    RV['pvall']   = pvall
+    RV['pvall']   = SP.array(pvall)
     if qvalues:
-        RV['qvall'] = qvall
+        RV['qvall'] = SP.array(qvall)
         RV['qvadded'] = qvadded
     return lm,RV
 
 
 #TOOD: use **kw_args to forward params.. see below
-def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,threshold=5e-8,maxiter=2,qvalues=False, update_covariances = False,**kw_args):
+def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,threshold=5e-8,maxiter=2,qvalues=False, update_covariances = False,verbose=None,**kw_args):
     """
     Kronecker fixed effects test with forward selection
     
@@ -439,12 +450,12 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
             iadded:         array of indices of SNPs included in order of inclusion
             pvadded:        array of Pvalues obtained by the included SNPs in iteration
                             before inclusion
-            pvall:   [maxiter x S] SP.array of Pvalues for all iterations
+            pvall:     [Nadded x S] SP.array of Pvalues for all iterations.
         Optional:      corresponding q-values
             qvadded
             qvall
     """
-    
+    verbose = limix.getVerbose(verbose)
     #0. checks
     N  = phenos.shape[0]
     P  = phenos.shape[1]
@@ -495,20 +506,21 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
     pvadded = []
     qvadded = []
     time_el = []
-    pvall = SP.zeros((pv.shape[0]*maxiter,pv.shape[1]))
+    pvall = []
     qvall = None
     t1=time.time()
-    print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+    if verbose:
+        print ("finished GWAS testing in %.2f seconds" %(t1-t0))
     time_el.append(t1-t0)
-    pvall[0:pv.shape[0],:]=pv
+    pvall.append(pv)
     imin= SP.unravel_index(pv.argmin(),pv.shape)
     score=pv[imin].min()
     niter = 1
     if qvalues:
         assert pv.shape[0]==1, "This is untested with the fdr package. pv.shape[0]==1 failed"
-        qvall = SP.zeros((maxiter,snps.shape[1]))
+        qvall = []
         qv  = FDR.qvalues(pv)
-        qvall[0:1,:] = qv
+        qvall.append(qv)
         score=qv[imin]
     #loop:
     while (score<threshold) and niter<maxiter:
@@ -531,7 +543,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
             lm.setSNPcoldesign(Asnps[i])
             lm.process()
             pv[i,:] = lm.getPv()[0]
-        pvall[niter*pv.shape[0]:(niter+1)*pv.shape[0]]=pv
+        pvall.append(pv.ravel())
         imin= SP.unravel_index(pv.argmin(),pv.shape)
         if qvalues:
             qv = FDR.qvalues(pv)
@@ -540,13 +552,14 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
         else:
             score = pv[imin].min()
         t1=time.time()
-        print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+        if verbose:
+            print ("finished GWAS testing in %.2f seconds" %(t1-t0))
         time_el.append(t1-t0)
         niter=niter+1
     RV = {}
     RV['iadded']  = iadded
     RV['pvadded'] = pvadded
-    RV['pvall']   = pvall
+    RV['pvall']   = SP.array(pvall)
     RV['time_el'] = time_el
     if qvalues:
         RV['qvall'] = qvall
@@ -777,7 +790,7 @@ def test_interaction_GxG(pheno,snps1,snps2=None,K=None,covs=None,test='lrt'):
     return test_interaction_GxE_1dof(snps=snps1,pheno=pheno,env=snps2,covs=covs,K=K,test=test)
 
 
-def test_interaction_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
+def test_interaction_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt',verbose=None):
     """
     Univariate GxE fixed effects interaction linear mixed model test for all 
     pairs of SNPs and environmental variables.
@@ -790,11 +803,13 @@ def test_interaction_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
                         If not provided, then linear regression analysis is performed
         covs:   [N x D] SP.array of D covariates for N individuals
         test:    'lrt' for likelihood ratio test (default) or 'f' for F-test
+        verbose: print verbose output? (False)
     
     Returns:
         pv:     [E x S] SP.array of P values for interaction tests between all 
                 E environmental variables and all S SNPs
     """
+    verbose = limix.getVerbose(verbose)
     N=snps.shape[0]
     if K is None:
         K=SP.eye(N)
@@ -803,7 +818,8 @@ def test_interaction_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
     assert (env.shape[0]==N and pheno.shape[0]==N and K.shape[0]==N and K.shape[1]==N and covs.shape[0]==N), "shapes missmatch"
     Inter0 = SP.ones((N,1))
     pv = SP.zeros((env.shape[1],snps.shape[1]))
-    print ("starting %i interaction scans for %i SNPs each." % (env.shape[1], snps.shape[1]))
+    if verbose:
+        print ("starting %i interaction scans for %i SNPs each." % (env.shape[1], snps.shape[1]))
     t0=time.time()
     for i in xrange(env.shape[1]):
         t0_i = time.time()
@@ -811,7 +827,8 @@ def test_interaction_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
         lm_i = test_interaction_lmm(snps=snps,pheno=pheno,covs=cov_i,Inter=env[:,i:(i+1)],Inter0=Inter0,test=test)
         pv[i,:]=lm_i.getPv()[0,:]
         t1_i = time.time()
-        print ("Finished %i out of %i interaction scans in %.2f seconds."%((i+1),env.shape[1],(t1_i-t0_i)))
+        if verbose:
+            print ("Finished %i out of %i interaction scans in %.2f seconds."%((i+1),env.shape[1],(t1_i-t0_i)))
     t1 = time.time()
     print ("-----------------------------------------------------------\nFinished all %i interaction scans in %.2f seconds."%(env.shape[1],(t1-t0)))
     return pv

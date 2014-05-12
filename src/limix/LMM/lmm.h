@@ -57,7 +57,7 @@ public:
 	virtual ~ALMM();
 
 	//constants: test statistics
-	static const int TEST_LLR=0;
+	static const int TEST_LRT=0;
 	static const int TEST_F=1;
 	muint_t getNumIntervals0() const;
     void setNumIntervals0(muint_t num_intervals0);
