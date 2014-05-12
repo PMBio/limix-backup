@@ -4,8 +4,8 @@
 
 Limix is a flexible and efficient linear mixed model library with interfaces to Python and other scripting languages.
 
-By Oliver Stegle (stegle@ebi.ac.uk) Christoph Lippert (lippert@microsoft.com)
-Franceso Paolo Casale (casale@ebi.ac.uk)
+By Christoph Lippert (lippert@microsoft.com),
+Franceso Paolo Casale (casale@ebi.ac.uk), and Oliver Stegle (stegle@ebi.ac.uk) 
 
 
 ## Philosophy 
@@ -21,7 +21,7 @@ LIMIX is smart about how particular models are fit to safe computational cost.
 
 * If you want to install LIMIX from source you require:
 Python:
-- socns, scipy, numpy
+- scons, scipy, numpy
 
 * Swig:
 - swig 2.0 or higher
