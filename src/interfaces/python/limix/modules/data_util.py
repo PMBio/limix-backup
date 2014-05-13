@@ -10,7 +10,7 @@ except:
     cparser=False
     pass
 
-def estCumPos(position,offset=1000000):
+def estCumPos(position,offset=1000000,chrom_len=None):
     '''
     compute the cumulative position of each variant given the position and the chromosome
     Also return the starting cumulativeposition of each chromosome
@@ -24,20 +24,23 @@ def estCumPos(position,offset=1000000):
         chrom_pos:  numpy.array of starting cumulative positions for each chromosme
     '''
     chromvals = SP.unique(position['chrom'])#SP.unique is always sorted
-    chrom_pos=SP.zeros_like(chromvals)#get the starting position of each Chrom
+    chrom_pos_cum=SP.zeros_like(chromvals)#get the starting position of each Chrom
     pos_cum=SP.zeros_like(position.shape[0])
     if not 'pos_cum' in position:
         position["pos_cum"]=SP.zeros_like(position['pos'])#get the cum_pos of each variant.
     pos_cum=position['pos_cum'].values
     maxpos_cum=0
     for i,mychrom in enumerate(chromvals):
-        chrom_pos[i] = maxpos_cum
+        chrom_pos_cum[i] = maxpos_cum
         i_chr=position['chrom']==mychrom
-        maxpos = position['pos'][i_chr].max()+offset
+        if chrom_len is None:
+            maxpos = position['pos'][i_chr].max()+offset
+        else:
+            maxpos = chrom_len[i]+offset
         pos_cum[i_chr.values]=maxpos_cum+position.loc[i_chr,'pos']
         maxpos_cum+=maxpos      
     
-    return chrom_pos
+    return chrom_pos_cum
         
         
 def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.0, betaB=1.0):
