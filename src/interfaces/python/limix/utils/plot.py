@@ -55,8 +55,7 @@ def plot_manhattan(plt,posCum,pv,chromBounds,
 
 	PL.ylabel('-log$_{10}$pv')
 	PL.xlim(0,posCum.max())
-	chromBounds1 = SP.concatenate([SP.zeros(1),chromBounds])
-	xticks = SP.array([chromBounds1[i:i+2].mean() for i in range(chromBounds1.shape[0]-1)])
+	xticks = SP.array([chromBounds[i:i+2].mean() for i in range(chromBounds.shape[0]-1)])
 	plt.set_xticks(xticks)
 	PL.xticks(fontsize=6)
 
