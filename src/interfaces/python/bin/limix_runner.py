@@ -1,3 +1,4 @@
+#!python
 # Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
 # All rights reserved.
 #

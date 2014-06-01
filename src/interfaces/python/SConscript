@@ -67,6 +67,8 @@ wrapper_cc_in      = os.path.join(build_prefix,"interfaces","python","limix_wrap
 wrapper_in_swigged = os.path.join('src','interfaces','python','swigged',"core.py")
 #limix module in
 limix_in    = os.path.join('src','interfaces','python','limix')
+#limix script in
+limix_bin_in    = os.path.join('src','interfaces','python','bin')
 
 #copy files over for limix modules
 
@@ -74,6 +76,7 @@ limix_in    = os.path.join('src','interfaces','python','limix')
 #library as the output files will be "missing"
 copy_builds = []
 
+#limix module + so
 copy_commands = [Delete("$TARGET"), 
    Copy("$TARGET",limix_in),
    Copy("$TARGET",wrapper_in_swigged),
@@ -81,14 +84,16 @@ copy_commands = [Delete("$TARGET"),
    Copy("$TARGET",limix_LIBS['nlopt'][0]),
    Copy(os.path.join("$TARGET",module_out),limixlib_swig[0])
    ]
-
-
 if build_options['reswig']:
    copy_commands.extend([Copy("$TARGET",wrapper_in), 
       Copy(os.path.join('src','interfaces','python','swigged'),wrapper_in),
       Copy(os.path.join('src','interfaces','python','swigged'),wrapper_cc_in)])
 
-copy=Command(target="limix",source=limixlib_swig,action = copy_commands)
+copy_lib=Command(target="limix",source=limixlib_swig,action = copy_commands)
 
-AlwaysBuild(copy)
+#limix scripts
+copy_bin=Command(target="bin",source=limixlib_swig,action = [Delete("$TARGET"),Copy("$TARGET",limix_bin_in)])
+
+
+AlwaysBuild([copy_lib,copy_bin])
 Return('limixlib_swig')

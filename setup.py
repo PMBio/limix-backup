@@ -197,10 +197,10 @@ def check_versions(min_versions):
         raise ImportError("LIMIX requires numpy")
  
     try:
-        import h5py
-        h5pyversion = h5py.__version__
+        import pandas
+        pandasversion = pandas.__version__
     except ImportError:
-        raise ImportError("LIMIX requires h5py")
+        raise ImportError("LIMIX requires pandas")
     try:
         import SCons
         sconsversion = SCons.__version__
@@ -219,10 +219,10 @@ def check_versions(min_versions):
         raise ImportError("Scipy version is %s. Requires >= %s" %
                 (spversion, min_versions['scipy']))
     try:
-        assert StrictVersion(strip_rc(h5pyversion)) >= min_versions['h5py']
+        assert StrictVersion(strip_rc(pandasversion)) >= min_versions['pandas']
     except AssertionError:
-        raise ImportError("h5py version is %s. Requires >= %s" %
-                (h5pyersion, min_versions['h5py']))
+        raise ImportError("pandas version is %s. Requires >= %s" %
+                (pandasversion, min_versions['pandas']))
     try:
         assert StrictVersion(strip_rc(sconsversion)) >= min_versions['scons']
     except AssertionError:
@@ -258,7 +258,7 @@ if __name__ == '__main__':
     min_versions = {
         'numpy' : '1.6.0',
         'scipy' : '0.9.0',
-        'h5py' : '2.0.0',
+        'pandas' : '0.12.0',
         'scons' : '2.3.0',
                    }
     check_versions(min_versions)
@@ -274,12 +274,12 @@ if __name__ == '__main__':
         long_description = read('README'),
         license = 'BSD',
         keywords = 'linear mixed models, GWAS, QTL',
-        scripts = ['src/interfaces/python/limix/modules/limix_runner.py'],
+        scripts = ['src/interfaces/python/bin/limix_runner.py'],
         packages = ['limix'],
         #package_dir = {'': 'build/release'},
         #use manual build system building on scons
         cmdclass = {'build_py': build_py_cmd},
         #dependencies
-        requires = ['scipy','numpy','pylab','h5py','scons'],
+        requires = ['scipy','numpy','matplotlib','pandas','scons'],
         install_requires = ['scons>=2.3.0']
         )

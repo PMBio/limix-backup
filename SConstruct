@@ -259,6 +259,28 @@ if build_options['with_tests']:
 
 #install ?
 if build_options['with_python']:
-   python_inst = os.path.join(build_prefix,'interfaces','python','limix')
-   env.Depends(python_inst, [python_interface])
-   env.Alias('install',env.Install(distutils.sysconfig.get_python_lib(),python_inst))
+   #install limix module
+   python_inst_lib = os.path.join(build_prefix,'interfaces','python','limix')
+   python_inst_bin = os.path.join(build_prefix,'interfaces','python','bin')
+   env.Depends(python_inst_lib, [python_interface])
+
+   #install lib
+   #env.Install(distutils.sysconfig.get_python_lib(),python_inst)
+   #install bin
+   inst_bin = os.path.join(distutils.sysconfig.PREFIX)
+   inst_lib = distutils.sysconfig.get_python_lib()
+
+   env.Install(inst_bin,python_inst_bin)
+   ib = env.Alias('install-bin',inst_bin)
+   il = env.Alias('install-lib',inst_lib)
+   env.Alias('install',[ib,il])
+
+   #python_inst = os.path.join(build_prefix,'interfaces','python','limix')
+   #env.Depends(python_inst, [python_interface])
+   #env.Alias('install',env.Install(distutils.sysconfig.get_python_lib(),python_inst))
+   pass
+   #install limix scripts
+   #python_inst_bin = os.path.join(build_prefix,'interfaces','python','bin')
+   #env.Depends(python_inst_bin, [python_interface])
+   #env.Alias('install',env.Install(distutils.sysconfig.PREFIX,python_inst_bin))
+
