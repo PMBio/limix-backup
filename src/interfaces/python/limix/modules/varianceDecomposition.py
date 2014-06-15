@@ -533,7 +533,7 @@ class VarianceDecomposition:
         Returns:
             standard errors on variance components [P, n_randEffs matrix]
         """
-        RV=SP.zeros((self.n_randEffs,self.P))
+        RV=SP.zeros((self.P,self.n_randEffs))
         for term_i in range(self.n_randEffs):
             RV[:,term_i] = self.getTraitCovarStdErrors(term_i).diagonal()
         var = getVarianceComps()
