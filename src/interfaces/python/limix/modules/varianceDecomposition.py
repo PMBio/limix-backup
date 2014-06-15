@@ -485,7 +485,7 @@ class VarianceDecomposition:
             variance components of all random effects on all phenotypes [P, n_randEffs matrix]
         """
         if self.P>1:
-            RV=SP.zeros((self.n_randEffs,self.P))
+            RV=SP.zeros((self.P,self.n_randEffs))
             for term_i in range(self.n_randEffs):
                 RV[:,term_i] = self.getTraitCovar(term_i).diagonal()
         else:
