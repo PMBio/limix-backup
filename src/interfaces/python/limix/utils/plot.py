@@ -39,7 +39,7 @@ def plot_manhattan(plt,posCum,pv,chromBounds,
 
 	n_chroms = chromBounds.shape[0]
 	for chrom_i in range(0,n_chroms-1,2):
-		PL.fill_between(posCum,0,lim,where=(posCum>chromBounds[chrom_i])*(posCum<chromBounds[chrom_i+1]),facecolor='LightGray',linewidth=0,alpha=0.5)
+		PL.fill_between(posCum,0,lim,where=(posCum>chromBounds[chrom_i]) & (posCum<chromBounds[chrom_i+1]),facecolor='LightGray',linewidth=0,alpha=0.5)
 
 	if qv==None:
 		Isign = pv<thr

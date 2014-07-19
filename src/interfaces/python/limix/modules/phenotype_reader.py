@@ -41,7 +41,9 @@ class pheno_reader_tables():
 
         for child in headers:
             if child._v_name=="phenotype_ID":
-                continue
+                pass
+                #TODO: OS, I removed this as the whole things otherwise crashes if there are no headers
+                #continue
             child_names.append(child._v_name)
             child_arrays.append(child[:])
         multiindex = pd.MultiIndex.from_arrays(arrays=child_arrays,names=child_names)
