@@ -41,7 +41,7 @@ def test_lm(snps,pheno, covs=None, test='lrt',verbose=None):
 	Returns:
 		limix LMM object
 	"""
-	lm = test_lmm(snps=snps,pheno=pheno,K=SP.eye(snps.shape[0]),covs=covs, test=test,NumIntervalsDelta0=0,NumIntervalsDeltaAlt=0,searchDelta=False,verbose=verbose)
+	lm = test_lmm(snps=snps,pheno=pheno,K=None,covs=covs, test=test,verbose=verbose)
 	return lm
 
 def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False,verbose=None):
@@ -67,8 +67,8 @@ def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumI
 
 	t0=time.time()
 	if K is None:
-		NumIntervalsDelta0=0
-		NumIntervalsDeltaAlt=0
+		#NumIntervalsDelta0=1
+		#NumIntervalsDeltaAlt=1
 		searchDelta=False
 		K=SP.eye(snps.shape[0])
 	lm = limix.CLMM()
