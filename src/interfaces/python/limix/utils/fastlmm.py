@@ -16,6 +16,25 @@ os.putenv('FastLmmUseAnyMklLib', '1')
 plink_path = 'plink' # 'D:/users/lippert/code/plink.exe'
 fastlmm_path = 'fastlmmc' # 'D:/users/lippert/Projects/FaSTLMM/CPP/x64/MKL-Release/FastLmmC.exe'
 
+
+def get_column(filename, col, skiprows = 1, dtype = float):
+    import pdb
+    f = open(filename, 'r')
+    results = []
+    skipped = 0  
+    for line in f:
+        if skipped < skiprows:
+            skipped += 1
+            continue
+        data = sp.array(line.strip('\n').split('\t'))
+        results.append(data[col])
+        
+    try:
+        results = np.asarray(results, dtype = dtype)
+    except ValueError:
+        results = np.asarray(results, dtype = str)
+        results = np.asarray(results[results != 'NA'], dtype = dtype)
+    return results
         
 #1) determine covariance matrix 
 #1.1) full RRM

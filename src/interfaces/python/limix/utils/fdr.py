@@ -10,52 +10,6 @@ import scipy.interpolate
 import logging as LG
 
 
-def qvalues1(PV,m=None,pi=1.0):
-    """estimate q vlaues from a list of Pvalues
-    this algorihm is taken from Storey, significance testing for genomic ...
-    m: number of tests, (if not len(PV)), pi: fraction of expected true null (1.0 is a conservative estimate)
-    @param PV: pvalues
-    @param m:  total number of tests if PV is not the entire array.
-    @param pi: fraction of true null 
-    """
-          
-    S = PV.shape
-    PV = PV.flatten()
-    if m is None:
-        m = len(PV) * 1.0
-    else:
-        m*=1.0
-    lPV = len(PV)
-    
-    #1. sort pvalues
-    PV = PV.squeeze()
-    IPV = PV.argsort()
-    PV  = PV[IPV]
-
-    #2. estimate lambda
-    if pi is None:
-        lrange = sp.linspace(0.05,0.95,max(lPV/100.0,10))
-        pil    = sp.double((PV[:,sp.newaxis]>lrange).sum(axis=0))/lPV
-        pilr   = pil/(1.0-lrange)
-        #ok, I think for SNPs this is pretty useless, pi is close to 1!
-        pi =1.0
-        #if there is something useful in there use the something close to 1
-        if pilr[-1]<1.0:
-            pi = pilr[-1]
-            
-    #3. initialise q values
-    QV_ = pi * m/lPV* PV
-    QV_[-1] = min(QV_[-1],1.0)
-    #4. update estimate
-    for i in xrange(lPV-2,-1,-1):
-        QV_[i] = min(pi*m*PV[i]/(i+1.0),QV_[i+1])
-    #5. invert sorting
-    QV = sp.zeros_like(PV)
-    QV[IPV] = QV_
-
-    QV = QV.reshape(S)
-    return QV
-    
 def qvalues(pv, m = None, return_pi0 = False, lowmem = False, pi0 = None, fix_lambda = None):
 
     original_shape = pv.shape

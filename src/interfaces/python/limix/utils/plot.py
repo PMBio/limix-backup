@@ -70,3 +70,63 @@ def plot_manhattan(plt,posCum,pv,chromBounds,
 	plt.xaxis.set_ticks_position('bottom')
 	plt.yaxis.set_ticks_position('left')
 
+
+def qqplot_bar(M=1000000, alphaLevel = 0.05, distr = 'log10'):
+    #assumes 'log10'   
+    import scipy as SP
+    import pylab as PL
+    import scipy.stats as ST
+    #pdb.set_trace()
+    mRange=10**(SP.arange(SP.log10(0.5),SP.log10(M-0.5)+0.1,0.1));#should be exp or 10**?
+    numPts=len(mRange);
+    betaalphaLevel=SP.zeros(numPts);#down in the plot
+    betaOneMinusalphaLevel=SP.zeros(numPts);#up in the plot
+    betaInvHalf=SP.zeros(numPts);
+    for n in xrange(numPts):
+        m=mRange[n]; #numPLessThanThresh=m;
+        betaInvHalf[n]=ST.beta.ppf(0.5,m,M-m);
+        betaalphaLevel[n]=ST.beta.ppf(alphaLevel,m,M-m);
+        betaOneMinusalphaLevel[n]=ST.beta.ppf(1-alphaLevel,m,M-m);
+        pass
+    betaDown=betaInvHalf-betaalphaLevel;
+    betaUp=betaOneMinusalphaLevel-betaInvHalf;
+
+    theoreticalPvals=mRange/M;
+    return betaUp, betaDown, theoreticalPvals
+    
+
+def qqplot(pval, filename = None, distr = 'log10', alphaLevel = 0.05):
+    tests = pval.shape[0]
+    pnull = (0.5 + sp.arange(tests))/tests
+    # pnull = np.sort(np.random.uniform(size = tests))    
+    
+    if distr == 'chi2':    
+        qnull = sp.stats.chi2.isf(pnull, 1)   
+        qemp = (sp.stats.chi2.isf(sp.sort(pval),1))
+        xl = 'LOD scores'
+        yl = '$\chi^2$ quantiles'
+    
+    if distr == 'log10':
+        qnull = -sp.log10(pnull)
+        qemp = -sp.log10(sp.sort(pval))
+        
+        xl = '-log10(P) observed'
+        yl = '-log10(P) expected'
+
+    plt.figure()
+    plt.plot(qnull, qemp, '.')
+    #plt.plot([0,qemp.max()], [0,qemp.max()],'r')
+    plt.plot([0,qnull.max()], [0,qnull.max()],'r')
+    plt.ylabel(xl)
+    plt.xlabel(yl)
+    plt.title('Genomic control: %.3f' % estimate_lambda(pval.flatten()))
+    if alphaLevel is not None:
+        if distr == 'log10':
+            betaUp, betaDown, theoreticalPvals = qqplot_bar(M=tests,alphaLevel=alphaLevel,distr=distr)
+            lower = -sp.log10(theoreticalPvals-betaDown)
+            upper = -sp.log10(theoreticalPvals+betaUp)
+            plt.plot(-sp.log10(theoreticalPvals),lower,'g-.')
+            plt.plot(-sp.log10(theoreticalPvals),upper,'g-.')
+       
+    if filename != None:
+        plt.savefig(filename) 
