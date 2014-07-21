@@ -20,7 +20,7 @@ import scipy.stats as ST
 import limix
 import limix.utils.preprocess as preprocess
 import limix.modules.varianceDecomposition as VAR
-import limix.utils.fdr as FDR
+import limix.stats.fdr as FDR
 import time
 #import qtl module for self referencing
 import qtl
