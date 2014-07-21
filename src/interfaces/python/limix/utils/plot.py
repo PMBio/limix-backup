@@ -2,6 +2,8 @@ import sys
 import scipy as SP
 import pdb
 import pylab as PL
+import matplotlib.pylab as plt
+import scipy.stats as st
 import copy
 import os
 import cPickle
@@ -95,38 +97,43 @@ def qqplot_bar(M=1000000, alphaLevel = 0.05, distr = 'log10'):
     return betaUp, betaDown, theoreticalPvals
     
 
-def qqplot(pval, filename = None, distr = 'log10', alphaLevel = 0.05):
-    tests = pval.shape[0]
-    pnull = (0.5 + sp.arange(tests))/tests
-    # pnull = np.sort(np.random.uniform(size = tests))    
-    
-    if distr == 'chi2':    
-        qnull = sp.stats.chi2.isf(pnull, 1)   
-        qemp = (sp.stats.chi2.isf(sp.sort(pval),1))
-        xl = 'LOD scores'
-        yl = '$\chi^2$ quantiles'
-    
-    if distr == 'log10':
-        qnull = -sp.log10(pnull)
-        qemp = -sp.log10(sp.sort(pval))
-        
-        xl = '-log10(P) observed'
-        yl = '-log10(P) expected'
+def qqplot(pv, distr = 'log10', alphaLevel = 0.05):
+	"""
+	This script makes a QQ plot
+	-------------------------------------------
+	pv				pvalues
+	distr           scale of the distribution (log10 or chi2)
+	alphaLevel      significance bounds
+	"""
+	tests = pv.shape[0]
+	pnull = (0.5 + sp.arange(tests))/tests
+	# pnull = np.sort(np.random.uniform(size = tests))    
 
-    plt.figure()
-    plt.plot(qnull, qemp, '.')
-    #plt.plot([0,qemp.max()], [0,qemp.max()],'r')
-    plt.plot([0,qnull.max()], [0,qnull.max()],'r')
-    plt.ylabel(xl)
-    plt.xlabel(yl)
-    plt.title('Genomic control: %.3f' % estimate_lambda(pval.flatten()))
-    if alphaLevel is not None:
-        if distr == 'log10':
-            betaUp, betaDown, theoreticalPvals = qqplot_bar(M=tests,alphaLevel=alphaLevel,distr=distr)
-            lower = -sp.log10(theoreticalPvals-betaDown)
-            upper = -sp.log10(theoreticalPvals+betaUp)
-            plt.plot(-sp.log10(theoreticalPvals),lower,'g-.')
-            plt.plot(-sp.log10(theoreticalPvals),upper,'g-.')
-       
-    if filename != None:
-        plt.savefig(filename) 
+	if distr == 'chi2':    
+	    qnull = sp.stats.chi2.isf(pnull, 1)   
+	    qemp = (sp.stats.chi2.isf(sp.sort(pval),1))
+	    xl = 'LOD scores'
+	    yl = '$\chi^2$ quantiles'
+
+	if distr == 'log10':
+	    qnull = -sp.log10(pnull)
+	    qemp = -sp.log10(sp.sort(pval))
+	    
+	    xl = '-log10(P) observed'
+	    yl = '-log10(P) expected'
+
+	plt.figure()
+	plt.plot(qnull, qemp, '.')
+	#plt.plot([0,qemp.max()], [0,qemp.max()],'r')
+	plt.plot([0,qnull.max()], [0,qnull.max()],'r')
+	plt.ylabel(xl)
+	plt.xlabel(yl)
+	plt.title('Genomic control: %.3f' % estimate_lambda(pval.flatten()))
+	if alphaLevel is not None:
+	    if distr == 'log10':
+	        betaUp, betaDown, theoreticalPvals = qqplot_bar(M=tests,alphaLevel=alphaLevel,distr=distr)
+	        lower = -sp.log10(theoreticalPvals-betaDown)
+	        upper = -sp.log10(theoreticalPvals+betaUp)
+	        plt.fill_between(-sp.log10(theoreticalPvals),lower,upper,color='grey',alpha=0.5)
+	        #plt.plot(-sp.log10(theoreticalPvals),lower,'g-.')
+	        #plt.plot(-sp.log10(theoreticalPvals),upper,'g-.')
