@@ -19,6 +19,25 @@ import time
 import qtl
 
 
+
+def test_lm(snps,pheno, covs=None, test='lrt',verbose=None):
+    """
+    Univariate fixed effects linear model test for all SNPs
+    (wrapper around LMM, using identity kinship)
+    
+    Args:
+        snps:   [N x S] SP.array of S SNPs for N individuals
+        pheno:  [N x 1] SP.array of 1 phenotype for N individuals
+        covs:   [N x D] SP.array of D covariates for N individuals
+        test:   'lrt' for likelihood ratio test (default) or 'f' for F-test
+        verbose: print verbose output? (False)
+    
+    Returns:
+        limix LMM object
+    """
+    lm = test_lmm(snps=snps,pheno=pheno,K=SP.eye(snps.shape[0]),covs=covs, test=test,NumIntervalsDelta0=0,NumIntervalsDeltaAlt=0,searchDelta=False,verbose=verbose)
+    return lm
+
 def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False,verbose=None):
     """
     Univariate fixed effects linear mixed model test for all SNPs
@@ -68,7 +87,6 @@ def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumI
     if verbose:
         print ("finished GWAS testing in %.2f seconds" %(t1-t0))
     return lm
-
 
 def test_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False):
     """
