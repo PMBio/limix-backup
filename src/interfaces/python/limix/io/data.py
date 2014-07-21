@@ -7,9 +7,9 @@
 import scipy as sp 
 import copy
 
-import limix.modules.data_util as du
-import limix.modules.genotype_reader as gr
-import limix.modules.phenotype_reader as pr
+import limix.io.data_util as du
+import limix.io.genotype_reader as gr
+import limix.io.phenotype_reader as pr
 import pandas as pd
 
 class QTLData(object):

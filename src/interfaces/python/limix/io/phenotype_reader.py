@@ -5,7 +5,7 @@
 # See license.txt for the complete license.
 
 import scipy as SP
-import limix.modules.data_util as du
+import limix.io.data_util as du
 import pandas as pd
 
 class pheno_reader_tables():
