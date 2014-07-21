@@ -13,55 +13,76 @@ import time
 import qtl
 
 
-def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False,verbose=None):
-    """
-    Univariate fixed effects linear mixed model test for all SNPs
+def test_lm(snps,pheno, covs=None, test='lrt',verbose=None):
+	"""
+	Univariate fixed effects linear model test for all SNPs
+	(wrapper around LMM, using identity kinship)
     
-    Args:
-        snps:   [N x S] SP.array of S SNPs for N individuals
-        pheno:  [N x 1] SP.array of 1 phenotype for N individuals
-        K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
-                        If not provided, then linear regression analysis is performed
-        covs:   [N x D] SP.array of D covariates for N individuals
-        test:   'lrt' for likelihood ratio test (default) or 'f' for F-test
-        NumIntervalsDelta0:     number of steps for delta optimization on the null model (100)
-        NumIntervalsDeltaAlt:   number of steps for delta optimization on the alt. model (100), requires searchDelta=True to have an effect.
-        searchDelta:     Carry out delta optimization on the alternative model? if yes We use NumIntervalsDeltaAlt steps
-        verbose: print verbose output? (False)
+	Args:
+		snps:   [N x S] SP.array of S SNPs for N individuals
+		pheno:  [N x 1] SP.array of 1 phenotype for N individuals
+		covs:   [N x D] SP.array of D covariates for N individuals
+		test:   'lrt' for likelihood ratio test (default) or 'f' for F-test
+		verbose: print verbose output? (False)
     
-    Returns:
-        limix LMM object
-    """
-    verbose = limix.getVerbose(verbose)
+	Returns:
+		limix LMM object
+	"""
+	lm = test_lmm(snps=snps,pheno=pheno,K=SP.eye(snps.shape[0]),covs=covs, test=test,NumIntervalsDelta0=0,NumIntervalsDeltaAlt=0,searchDelta=False,verbose=verbose)
+	return lm
 
-    t0=time.time()
-    if K is None:
-        K=SP.eye(snps.shape[0])
-    lm = limix.CLMM()
-    lm.setK(K)
-    lm.setSNPs(snps)
-    lm.setPheno(pheno)
-    if covs is None:
-        covs = SP.ones((snps.shape[0],1))
-    lm.setCovs(covs)
-    if test=='lrt':
-        lm.setTestStatistics(lm.TEST_LRT)
-    elif test=='f':
-        lm.setTestStatistics(lm.TEST_F)
-    else:
-        print test
-        raise NotImplementedError("only f or lrt are implemented")
-    #set number of delta grid optimizations?
-    lm.setNumIntervals0(NumIntervalsDelta0)
-    if searchDelta:
-        lm.setNumIntervalsAlt(NumIntervalsDeltaAlt)
-    else:
-        lm.setNumIntervalsAlt(0)
-    lm.process()
-    t1=time.time()
-    if verbose:
-        print ("finished GWAS testing in %.2f seconds" %(t1-t0))
-    return lm
+def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False,verbose=None):
+	"""
+	Univariate fixed effects linear mixed model test for all SNPs
+    
+	Args:
+		snps:   [N x S] SP.array of S SNPs for N individuals
+		pheno:  [N x 1] SP.array of 1 phenotype for N individuals
+		K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
+						If not provided, then linear regression analysis is performed
+		covs:   [N x D] SP.array of D covariates for N individuals
+		test:   'lrt' for likelihood ratio test (default) or 'f' for F-test
+		NumIntervalsDelta0:     number of steps for delta optimization on the null model (100)
+		NumIntervalsDeltaAlt:   number of steps for delta optimization on the alt. model (100), requires searchDelta=True to have an effect.
+		searchDelta:     Carry out delta optimization on the alternative model? if yes We use NumIntervalsDeltaAlt steps
+		verbose: print verbose output? (False)
+    
+	Returns:
+		limix LMM object
+	"""
+	verbose = limix.getVerbose(verbose)
+
+	t0=time.time()
+	if K is None:
+		NumIntervalsDelta0=0
+		NumIntervalsDeltaAlt=0
+		searchDelta=False
+		K=SP.eye(snps.shape[0])
+	lm = limix.CLMM()
+	lm.setK(K)
+	lm.setSNPs(snps)
+	lm.setPheno(pheno)
+	if covs is None:
+		covs = SP.ones((snps.shape[0],1))
+	lm.setCovs(covs)
+	if test=='lrt':
+		lm.setTestStatistics(lm.TEST_LRT)
+	elif test=='f':
+		lm.setTestStatistics(lm.TEST_F)
+	else:
+		print test
+		raise NotImplementedError("only f or lrt are implemented")
+	#set number of delta grid optimizations?
+	lm.setNumIntervals0(NumIntervalsDelta0)
+	if searchDelta:
+		lm.setNumIntervalsAlt(NumIntervalsDeltaAlt)
+	else:
+		lm.setNumIntervalsAlt(0)
+	lm.process()
+	t1=time.time()
+	if verbose:
+		print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+	return lm
 
 
 def test_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False):
