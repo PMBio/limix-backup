@@ -32,9 +32,6 @@
     <Filter Include="src\limix\io">
       <UniqueIdentifier>{20cbfdab-4990-491d-88f7-e5219fcb700e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\limix\lasso">
-      <UniqueIdentifier>{a8488994-ce99-44ef-ad78-aa38ded4153d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\limix\covar">
       <UniqueIdentifier>{5260f52a-a159-49aa-a39a-507fd2560293}</UniqueIdentifier>
     </Filter>
@@ -120,9 +117,6 @@
     </ClCompile>
     <ClCompile Include="src\limix\lmm\lmm.cpp">
       <Filter>src\limix\LMM</Filter>
-    </ClCompile>
-    <ClCompile Include="src\limix\lasso\lasso.cpp">
-      <Filter>src\limix\lasso</Filter>
     </ClCompile>
     <ClCompile Include="src\limix\utils\beta.cpp">
       <Filter>src\limix\utils</Filter>
@@ -220,9 +214,6 @@
     <ClCompile Include="src\testing\vqtl_testing.cpp">
       <Filter>src\testing</Filter>
     </ClCompile>
-    <ClCompile Include="src\limix\LMM\kronecker_lmm_old.cpp">
-      <Filter>src\limix\LMM</Filter>
-    </ClCompile>
     <ClCompile Include="src\limix\io\plink\CPlinkBedFile.cpp">
       <Filter>src\limix\io\plink</Filter>
     </ClCompile>
@@ -303,9 +294,6 @@
     <ClInclude Include="src\limix\lmm\lmm.h">
       <Filter>src\limix\LMM</Filter>
     </ClInclude>
-    <ClInclude Include="src\limix\lasso\lasso.h">
-      <Filter>src\limix\lasso</Filter>
-    </ClInclude>
     <ClInclude Include="src\limix\utils\beta.h">
       <Filter>src\limix\utils</Filter>
     </ClInclude>
@@ -356,9 +344,6 @@
     </ClInclude>
     <ClInclude Include="src\limix\types.h">
       <Filter>src\limix</Filter>
-    </ClInclude>
-    <ClInclude Include="src\limix\LMM\kronecker_lmm_old.h">
-      <Filter>src\limix\LMM</Filter>
     </ClInclude>
     <ClInclude Include="src\limix\gp\gp_base.h">
       <Filter>src\limix\gp</Filter>

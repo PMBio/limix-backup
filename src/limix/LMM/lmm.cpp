@@ -1,8 +1,16 @@
-// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
-// All rights reserved.
+// Copyright(c) 2014, The LIMIX developers(Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
 //
-// LIMIX is provided under a 2-clause BSD license.
-// See license.txt for the complete license.
+//Licensed under the Apache License, Version 2.0 (the "License");
+//you may not use this file except in compliance with the License.
+//You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//Unless required by applicable law or agreed to in writing, software
+//distributed under the License is distributed on an "AS IS" BASIS,
+//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//See the License for the specific language governing permissions and
+//limitations under the License.
 
 #include "lmm.h"
 #include "limix/utils/gamma.h"
@@ -278,22 +286,29 @@ int ALMM::getTestStatistics() const
             throw CLimixException("LMM requires a non-zero sample size");
 
         if (num_snps==0)
-            throw CLimixException("LMM requires non-zero SNPs");
+            throw CLimixException("LMM requires non-zero number of SNPs");
 
         if (num_pheno==0)
-            throw CLimixException("LMM requires non-zero phenotypes");
+            throw CLimixException("LMM requires non-zero number of phenotypes");
 
         if(!(num_samples == (muint_t)pheno.rows()))
-            throw CLimixException("phenotypes and SNP dimensions inconsistent");
+            throw CLimixException("phenotypes and SNP number samples (rows) inconsistent");
 
         if(!(num_samples == (muint_t)covs.rows()))
-            throw CLimixException("covariates and SNP dimensions inconsistent");
+            throw CLimixException("covariates and SNP number samples (rows) inconsistent");
 
         if(isnull(K))
         {
             //no covariance? assume we perform linear regression
             K = VectorXd::Ones(this->num_samples).asDiagonal();
         }
+
+		if (!(num_samples == (muint_t)K.rows()))
+			throw CLimixException("number rows of kinship inconsistent");
+
+		if (!(num_samples == (muint_t)K.cols()))
+			throw CLimixException("number columns of kinship inconsistent");
+
 
         if(!(this->UK_cached)){
             //decomposition of K
@@ -331,7 +346,8 @@ int ALMM::getTestStatistics() const
         ldelta0.resize(num_pheno,1);
 		ldelta0.setConstant(this->ldeltaInit);
         ldeltaAlt.resize(num_pheno,num_snps);
-        nLL0.resize(num_pheno,1);
+		ldeltaAlt.setConstant(this->ldeltaInit);
+		nLL0.resize(num_pheno, 1);
         nLLAlt.resize(num_pheno,num_snps);
         lsigma.resize(num_pheno,num_snps);
         beta_snp.resize(num_pheno,num_snps);

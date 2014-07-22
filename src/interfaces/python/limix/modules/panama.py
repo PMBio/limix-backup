@@ -1,49 +1,28 @@
+# Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing, software
+#distributed under the License is distributed on an "AS IS" BASIS,
+#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#See the License for the specific language governing permissions and
+#limitations under the License.
+
 """
-PANAMA mododule in limix
+PANAMA module in limix
 """
 import limix.modules.qtl as qtl
-import limix.utils.fdr as fdr
+import limix.stats.fdr as fdr
+from limix.stats.pca import *
 import limix
-import scipy as SP
-import scipy.linalg as LA
+import scipy as sp 
 import pdb
-import pylab as PL
 import scipy.linalg as linalg
 import time
-
-def PCA(Y, components):
-    """run PCA, retrieving the first (components) principle components
-    return [s0, eig, w0]
-    s0: factors
-    w0: weights
-    """
-    sv = linalg.svd(Y, full_matrices=0);
-    [s0, w0] = [sv[0][:, 0:components], SP.dot(SP.diag(sv[1]), sv[2]).T[:, 0:components]]
-    v = s0.std(axis=0)
-    s0 /= v;
-    w0 *= v;
-    return [s0, w0]
-
-def PC_varExplained(Y,standardized=True):
-    """
-    Run PCA and calculate the cumulative fraction of variance
-    Args:
-        Y: phenotype values
-        standardize: if True, phenotypes are standardized
-    Returns:
-        var: cumulative distribution of variance explained
-    """
-    # figuring out the number of latent factors
-    if standardized:
-        Y-=Y.mean(0)
-        Y/=Y.std(0)
-    covY = SP.cov(Y)
-    S,U = LA.eigh(covY+1e-6*SP.eye(covY.shape[0]))
-    S = S[::-1]
-    rv = SP.array([S[0:i].sum() for i in range(1,S.shape[0])])
-    rv/= S.sum()
-    return rv
-
 
 class PANAMA:
     """PANAMA class"""
@@ -69,7 +48,7 @@ class PANAMA:
         if Kpop is not None:
             self.Kpop = Kpop
         elif self.X is not None:
-            self.Kpop = SP.dot(self.X,self.X.T)
+            self.Kpop = sp.dot(self.X,self.X.T)
             self.Kpop /= self.Kpop.diagonal().mean()
         else:
             assert use_Kpop==False, 'no Kpop'
@@ -89,11 +68,11 @@ class PANAMA:
         if 0:
             covar  = limix.CCovLinearISO(rank)
             ll  = limix.CLikNormalIso()
-            X0 = SP.random.randn(self.N,rank)
+            X0 = sp.random.randn(self.N,rank)
             X0 = PCA(self.Y,rank)[0]
-            X0 /= SP.sqrt(rank)
-            covar_params = SP.array([1.0])
-            lik_params = SP.array([1.0])
+            X0 /= sp.sqrt(rank)
+            covar_params = sp.array([1.0])
+            lik_params = sp.array([1.0])
 
             hyperparams = limix.CGPHyperParams()
             hyperparams['covar'] = covar_params
@@ -102,10 +81,10 @@ class PANAMA:
         
             constrainU = limix.CGPHyperParams()
             constrainL = limix.CGPHyperParams()
-            constrainU['covar'] = +5*SP.ones_like(covar_params);
-            constrainL['covar'] = 0*SP.ones_like(covar_params);
-            constrainU['lik'] = +5*SP.ones_like(lik_params);
-            constrainL['lik'] = 0*SP.ones_like(lik_params);
+            constrainU['covar'] = +5*sp.ones_like(covar_params);
+            constrainL['covar'] = 0*sp.ones_like(covar_params);
+            constrainU['lik'] = +5*sp.ones_like(lik_params);
+            constrainL['lik'] = 0*sp.ones_like(lik_params);
 
         if 1:
             covar  = limix.CSumCF()
@@ -119,11 +98,11 @@ class PANAMA:
                 covar_params.append(1.0)
 
             ll  = limix.CLikNormalIso()
-            X0 = SP.random.randn(self.N,rank)
+            X0 = sp.random.randn(self.N,rank)
             X0 = PCA(self.Y,rank)[0]
-            X0 /= SP.sqrt(rank)
-            covar_params = SP.array(covar_params)
-            lik_params = SP.array([1.0])
+            X0 /= sp.sqrt(rank)
+            covar_params = sp.array(covar_params)
+            lik_params = sp.array([1.0])
 
             hyperparams = limix.CGPHyperParams()
             hyperparams['covar'] = covar_params
@@ -132,9 +111,9 @@ class PANAMA:
         
             constrainU = limix.CGPHyperParams()
             constrainL = limix.CGPHyperParams()
-            constrainU['covar'] = +5*SP.ones_like(covar_params);
-            constrainL['covar'] = -5*SP.ones_like(covar_params);
-            constrainU['lik'] = +5*SP.ones_like(lik_params);
+            constrainU['covar'] = +5*sp.ones_like(covar_params);
+            constrainL['covar'] = -5*sp.ones_like(covar_params);
+            constrainU['lik'] = +5*sp.ones_like(lik_params);
 
             
         gp=limix.CGPbase(covar,ll)
@@ -162,7 +141,7 @@ class PANAMA:
         self.Ktot/= self.Ktot.diagonal().mean()
 
         #store variances
-        V = SP.zeros([3])
+        V = sp.zeros([3])
         V[0] = covar_1.K().diagonal().mean()
         if self.use_Kpop:
             V[1] = covar_2.K().diagonal().mean()

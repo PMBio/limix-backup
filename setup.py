@@ -266,7 +266,7 @@ if __name__ == '__main__':
     import SCons.Script
     setup(
         name = 'limix',
-        version = '0.5.4',
+        version = '0.5.6',
         author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
         author_email = "lippert@microsoft.com, stegle@ebi.ac.uk",
         description = ('A flexible and fast mixed model toolbox written in C++/python'),

@@ -1,3 +1,16 @@
+# Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing, software
+#distributed under the License is distributed on an "AS IS" BASIS,
+#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#See the License for the specific language governing permissions and
+#limitations under the License.
 import numpy as np
 import scipy as sp
 import glob
@@ -16,6 +29,25 @@ os.putenv('FastLmmUseAnyMklLib', '1')
 plink_path = 'plink' # 'D:/users/lippert/code/plink.exe'
 fastlmm_path = 'fastlmmc' # 'D:/users/lippert/Projects/FaSTLMM/CPP/x64/MKL-Release/FastLmmC.exe'
 
+
+def get_column(filename, col, skiprows = 1, dtype = float):
+    import pdb
+    f = open(filename, 'r')
+    results = []
+    skipped = 0  
+    for line in f:
+        if skipped < skiprows:
+            skipped += 1
+            continue
+        data = sp.array(line.strip('\n').split('\t'))
+        results.append(data[col])
+        
+    try:
+        results = np.asarray(results, dtype = dtype)
+    except ValueError:
+        results = np.asarray(results, dtype = str)
+        results = np.asarray(results[results != 'NA'], dtype = dtype)
+    return results
         
 #1) determine covariance matrix 
 #1.1) full RRM

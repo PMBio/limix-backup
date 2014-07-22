@@ -1,4 +1,4 @@
-import scipy as SP
+import scipy as sp 
 import pandas as pd
 
 
@@ -23,11 +23,11 @@ def estCumPos(position,offset=1000000,chrom_len=None):
     Returns:
         chrom_pos:  numpy.array of starting cumulative positions for each chromosme
     '''
-    chromvals = SP.unique(position['chrom'])#SP.unique is always sorted
-    chrom_pos_cum=SP.zeros_like(chromvals)#get the starting position of each Chrom
-    pos_cum=SP.zeros_like(position.shape[0])
+    chromvals =  sp.unique(position['chrom'])# sp.unique is always sorted
+    chrom_pos_cum= sp.zeros_like(chromvals)#get the starting position of each Chrom
+    pos_cum= sp.zeros_like(position.shape[0])
     if not 'pos_cum' in position:
-        position["pos_cum"]=SP.zeros_like(position['pos'])#get the cum_pos of each variant.
+        position["pos_cum"]= sp.zeros_like(position['pos'])#get the cum_pos of each variant.
     pos_cum=position['pos_cum'].values
     maxpos_cum=0
     for i,mychrom in enumerate(chromvals):
@@ -64,33 +64,33 @@ def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.
         X:      scipy.array of standardized SNPs with scipy.float64 values
     '''
     typeX=X.dtype
-    if typeX!=SP.int8:
+    if typeX!= sp.int8:
         iNanX = X!=X
     else:
         iNanX = X==-9
     if iNanX.any() or betaNotUnitVariance:
         if cparser and center and (unit or betaNotUnitVariance):
             print "using C-based imputer"
-            if X.flags["C_CONTIGUOUS"] and typeX==SP.float32:
+            if X.flags["C_CONTIGUOUS"] and typeX== sp.float32:
                 parser.standardizefloatCAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
-                X=SP.array(X,dtype=SP.float64)
-            elif X.flags["C_CONTIGUOUS"] and typeX==SP.float64:
+                X= sp.array(X,dtype= sp.float64)
+            elif X.flags["C_CONTIGUOUS"] and typeX== sp.float64:
                 parser.standardizedoubleCAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
-            elif X.flags["F_CONTIGUOUS"] and typeX==SP.float32:
+            elif X.flags["F_CONTIGUOUS"] and typeX== sp.float32:
                 parser.standardizefloatFAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
-                X=SP.array(X,dtype=SP.float64)
-            elif X.flags["F_CONTIGUOUS"] and typeX==SP.float64:
+                X= sp.array(X,dtype= sp.float64)
+            elif X.flags["F_CONTIGUOUS"] and typeX== sp.float64:
                 parser.standardizedoubleFAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
             else:
-                X=SP.array(X,order="F",dtype=SP.float64)
-                X[iNanX]=SP.nan
+                X= sp.array(X,order="F",dtype= sp.float64)
+                X[iNanX]= sp.nan
                 parser.standardizedoubleFAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
         elif betaNotUnitVariance:
                 raise NotImplementedError("Beta(betaA,betaB) standardization only in C-based parser, but not found")
         else:
             nObsX = (~iNanX).sum(0)
-            if typeX!=SP.float64:
-                X=SP.array(X,dtype=SP.float64)
+            if typeX!= sp.float64:
+                X= sp.array(X,dtype= sp.float64)
             X[iNanX] = 0.0
             sumX = (X).sum(0)                
             meanX = sumX/nObsX
@@ -99,16 +99,16 @@ def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.
                 X[iNanX] = 0.0
                 X_=X
             else:
-                mean=SP.tile(meanX,(X.shape[0],1))
+                mean= sp.tile(meanX,(X.shape[0],1))
                 X[iNanX]=mean[iNanX]
                 X_=X-mean
             if unit:
-                stdX = SP.sqrt((X_*X_).sum(0)/nObsX)
+                stdX =  sp.sqrt((X_*X_).sum(0)/nObsX)
                 stdX[stdX==0.0]=1.0
                 X/=stdX
     else:
-        if X.dtype!=SP.float64:
-            X=SP.array(X,dtype=SP.float64)
+        if X.dtype!= sp.float64:
+            X= sp.array(X,dtype= sp.float64)
         if center:
             X-= X.mean(axis=0)
         if unit:
@@ -136,7 +136,7 @@ def merge_indices(indices,header=None,join="inner"):
             header_=[i]
         else:
             header_=[header[i]]
-        indexpd.append(pd.DataFrame(data=SP.arange(len(index)),index=index,columns=header_) )
+        indexpd.append(pd.DataFrame(data= sp.arange(len(index)),index=index,columns=header_) )
     ret = pd.concat(objs=indexpd, axis=1, join=join)
     return ret
 
