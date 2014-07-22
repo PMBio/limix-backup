@@ -77,7 +77,7 @@ class QTLData(object):
             return self.geno_snp_idx[res]
 
             
-    def getGenotypes(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,windowsize=0,chrom=None,center=True,unit=True,impute_missing=False):
+    def getGenotypes(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,windowsize=0,chrom=None,center=True,unit=True,impute_missing=False,cast_float=True):
         """return genotypes. 
         Optionally the indices for loading subgroups the genotypes for all people
         can be given in one out of three ways: 
@@ -95,7 +95,7 @@ class QTLData(object):
             pos_cum_start:   cumulative position based selection (start position)
             pos_cum_end:   cumulative position based selection (end position)
             impute_missing: Boolean indicator variable if missing values should be imputed
-        
+            cast_float: Boolean indicator variable if output genotypes should be casted as float
         Returns:
             X:          scipy.array of genotype values
         """
@@ -103,6 +103,9 @@ class QTLData(object):
         X = self.geno_reader.getGenotypes(sample_idx= sp.array(self.sample_idx["geno"]),snp_idx=query_idx) 
         if impute_missing:
             X = du.imputeMissing(X,center=center,unit=unit)
+        if cast_float:
+            if X.dtype!='float64':
+                X = sp.array(X,dtype='float64')
         return X
 
     def getCovariance(self,normalize=True,idx_start=None,idx_end=None,pos_start=None,pos_end=None,windowsize=0,chrom=None,center=True,unit=True,blocksize=None,X=None,**kw_args):
