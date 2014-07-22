@@ -286,22 +286,29 @@ int ALMM::getTestStatistics() const
             throw CLimixException("LMM requires a non-zero sample size");
 
         if (num_snps==0)
-            throw CLimixException("LMM requires non-zero SNPs");
+            throw CLimixException("LMM requires non-zero number of SNPs");
 
         if (num_pheno==0)
-            throw CLimixException("LMM requires non-zero phenotypes");
+            throw CLimixException("LMM requires non-zero number of phenotypes");
 
         if(!(num_samples == (muint_t)pheno.rows()))
-            throw CLimixException("phenotypes and SNP dimensions inconsistent");
+            throw CLimixException("phenotypes and SNP number samples (rows) inconsistent");
 
         if(!(num_samples == (muint_t)covs.rows()))
-            throw CLimixException("covariates and SNP dimensions inconsistent");
+            throw CLimixException("covariates and SNP number samples (rows) inconsistent");
 
         if(isnull(K))
         {
             //no covariance? assume we perform linear regression
             K = VectorXd::Ones(this->num_samples).asDiagonal();
         }
+
+		if (!(num_samples == (muint_t)K.rows()))
+			throw CLimixException("number rows of kinship inconsistent");
+
+		if (!(num_samples == (muint_t)K.cols()))
+			throw CLimixException("number columns of kinship inconsistent");
+
 
         if(!(this->UK_cached)){
             //decomposition of K
@@ -339,7 +346,8 @@ int ALMM::getTestStatistics() const
         ldelta0.resize(num_pheno,1);
 		ldelta0.setConstant(this->ldeltaInit);
         ldeltaAlt.resize(num_pheno,num_snps);
-        nLL0.resize(num_pheno,1);
+		ldeltaAlt.setConstant(this->ldeltaInit);
+		nLL0.resize(num_pheno, 1);
         nLLAlt.resize(num_pheno,num_snps);
         lsigma.resize(num_pheno,num_snps);
         beta_snp.resize(num_pheno,num_snps);

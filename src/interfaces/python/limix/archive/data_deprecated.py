@@ -1,6 +1,7 @@
 import scipy as SP
 import h5py
 import copy
+import data_util as du
 try:
     #see if fastlmm is in the path for the fast C-based parser
     import fastlmm.pyplink.wrap_plink_parser as parser  
@@ -36,7 +37,7 @@ def estCumPos(pos,chrom,offset = 20000000):
     return cum_pos,chrom_pos
         
         
-def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.0, betaB=1.0):
+def _imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.0, betaB=1.0):
         '''
         fill in missing values in the SNP matrix by the mean value
         optionally center the data and unit-variance it
@@ -231,7 +232,7 @@ class QTLData():
         else:
             X = self.genoM[:,:]
         if impute_missing:
-            X = imputeMissing(X,center=center,unit=unit)
+            X = du.imputeMissing(X,center=center,unit=unit)
         return X
 
     def getCovariance(self,normalize=True,i0=None,i1=None,pos0=None,pos1=None,chrom=None,center=True,unit=True,pos_cum0=None,pos_cum1=None,blocksize=None,X=None,**kw_args):

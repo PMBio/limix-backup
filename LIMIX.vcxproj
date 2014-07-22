@@ -101,10 +101,8 @@
     <ClCompile Include="src\limix\io\plink\TsvLexer.cpp" />
     <ClCompile Include="src\limix\io\plink\Utils.cpp" />
     <ClCompile Include="src\limix\io\split.cpp" />
-    <ClCompile Include="src\limix\lasso\lasso.cpp" />
     <ClCompile Include="src\limix\likelihood\likelihood.cpp" />
     <ClCompile Include="src\limix\lmm\kronecker_lmm.cpp" />
-    <ClCompile Include="src\limix\LMM\kronecker_lmm_old.cpp" />
     <ClCompile Include="src\limix\lmm\lmm.cpp" />
     <ClCompile Include="src\limix\mean\ADataTerm.cpp" />
     <ClCompile Include="src\limix\mean\CData.cpp" />
@@ -160,10 +158,8 @@
     <ClInclude Include="src\limix\io\plink\TsvLexer.h" />
     <ClInclude Include="src\limix\io\plink\Utils.h" />
     <ClInclude Include="src\limix\io\split.h" />
-    <ClInclude Include="src\limix\lasso\lasso.h" />
     <ClInclude Include="src\limix\likelihood\likelihood.h" />
     <ClInclude Include="src\limix\lmm\kronecker_lmm.h" />
-    <ClInclude Include="src\limix\LMM\kronecker_lmm_old.h" />
     <ClInclude Include="src\limix\lmm\lmm.h" />
     <ClInclude Include="src\limix\mean\ADataTerm.h" />
     <ClInclude Include="src\limix\mean\CData.h" />
