@@ -8,7 +8,7 @@
 import time
 import h5py
 import pdb
-from limix.utils.conversion import *
+from limix.io.conversion import *
 
 
         

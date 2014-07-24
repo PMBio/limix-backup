@@ -6,7 +6,7 @@ import scipy as sp
 import os
 import pdb
 import subprocess, sys, os
-import limix.utils.plink as PLINK
+import limix.io.plink as PLINK
 
 
 class LIMIX_converter(object):
@@ -33,6 +33,7 @@ class LIMIX_converter(object):
         parser = OptionParser(usage=usage)
         parser.add_option("-O","--outfile", action="store", dest='outfile', type=str, help='The output hdf5 file wiht the resulting data', default="example_out")
         parser.add_option("-P","--plink",action="store", dest='plink', help="Read genotype from binary plink file (filename)", default=None)
+        parser.add_option("-G","--g012",action="store", dest='g012', help="Read genotype from 012 file generated using vcftools (filename)", default=None)
         parser.add_option("-c","--chrom",action="store", dest='chrom', help="Select specific chromosome for conversion (default: all)", default=None)
         parser.add_option("-s","--start",action="store", dest='start', help="Specify start position for conversion (default: all)", default=None)
         parser.add_option("-e","--end",action="store", dest='end', help="Specify start position for conversion (default: all)", default=None)
@@ -58,6 +59,8 @@ class LIMIX_converter(object):
         	self.convert_phenotype_csv(self.hdf,self.options.csv,self.options.csv_sep,self.options.csv_transpose,num_samples=self.options.csv_num_samples,num_phenotypes=self.options.csv_num_phenotypes)
         if self.options.plink is not None:
             self.convert_plink(self.hdf,self.options.plink,self.options.chrom,self.options.start,self.options.end)
+        if self.options.g012 is not None:
+            self.convert_g012(self.hdf,self.options.g012,self.options.chrom,self.options.start,self.options.end)
         pass
 
     def convert_phenotype_csv(self,hdf,csv_file,sep=None,transpose=False,num_samples=None,num_phenotypes=None,*args,**kw_args):
@@ -91,6 +94,39 @@ class LIMIX_converter(object):
         col_header.create_dataset(name='phenotype_ID',data=pheno_IDs)
     	pass
 
+
+    def convert_g012(self,hdf,g012_file,chrom,start,end):
+        """convert g012 file to LIMIX hdf5
+        hdf: handle for hdf5 file (target)
+        g012_file: filename of g012 file
+        chrom: select chromosome for conversion
+        start: select start position for conversion
+        end:  select end position for conversion
+        """
+        if ((start is not None) or (end is not None) or (chrom is not None)):
+            print "cannot handle start/stop/chrom boundaries for g012 file"
+            return
+        #store
+        if 'genotype' in hdf.keys():
+            del(hdf['genotype'])
+        genotype = hdf.create_group('genotype')
+        col_header = genotype.create_group('col_header')
+        row_header = genotype.create_group('row_header')
+        #load position and meta information
+        indv_file = g012_file + '.indv'
+        pos_file  = g012_file + '.pos'
+        sample_ID = sp.loadtxt(indv_file,dtype='str')
+        pos  = sp.loadtxt(pos_file,dtype='str')
+        chrom = pos[:,0]
+        pos   = sp.array(pos[:,1],dtype='int')
+
+        row_header.create_dataset(name='sample_ID',data=sample_ID)
+        col_header.create_dataset(name='chrom',data=chrom)
+        col_header.create_dataset(name='pos',data=pos)
+        M = sp.loadtxt(g012_file,dtype='uint8')
+        snps = M[:,1::]
+        genotype.create_dataset(name='matrix',data=snps,chunks=(snps.shape[0],min(10000,snps.shape[1])),compression='gzip')
+        pass
 
     def convert_plink(self,hdf,bed_file,chrom,start,end):
         """convert plink file to LIMIX hdf5
