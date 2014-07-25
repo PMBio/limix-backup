@@ -62,11 +62,17 @@ def plot_manhattan(posCum,pv,chromBounds,
 		pl.fill_between(posCum,0,lim,where=(posCum>chromBounds[chrom_i]) & (posCum<chromBounds[chrom_i+1]),facecolor='LightGray',linewidth=0,alpha=0.5)
 
 	if thr_plotting is not None:
-		i_small = pv<thr_plotting
+		if pv is not None:
+			i_small = pv<thr_plotting
+			pv = pv[i_small]
+		elif qv is not None:
+			i_small = qv<thr_plotting
 		if qv is not None:
-			qv = qv[i_thr]
-		pv = pv[i_th]
-		posCum=posCum[i_thr]
+			qv = qv[i_small]
+		if pv is not None:
+			pv = pv[i_small]
+		if posCum is not None:
+			posCum=posCum[i_small]
 
 	if qv==None:
 		Isign = pv<thr
