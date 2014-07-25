@@ -156,7 +156,7 @@ class QTLData(object):
             sample_idx_intersect:        index of individuals in phenotypes after filtering missing values
         """
 
-        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx= sp.array(self.sample_idx["pheno"]),phenotype_IDs=phenotype_IDs,phenotype_query=phenotype_query,center=center,intersection=intersection)
+        phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(sample_idx=sp.array(self.sample_idx["pheno"]),phenotype_IDs=phenotype_IDs,phenotype_query=phenotype_query,center=center,intersection=intersection)
         return phenotypes, sample_idx_intersect
 
     def getPos(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,windowsize=0.0):
