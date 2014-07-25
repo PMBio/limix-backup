@@ -1,5 +1,6 @@
 import sys
 import scipy as sp 
+import numpy as np
 import pdb
 import pylab as pl 
 import matplotlib.pylab as plt
@@ -11,7 +12,7 @@ import glob
 
 def plot_manhattan(posCum,pv,chromBounds,
 					thr=None,qv=None,lim=None,xticklabels=True,
-					alphaNS=0.1,alphaS=0.5,colorNS='DarkBlue',colorS='Orange',plt=None):
+					alphaNS=0.1,alphaS=0.5,colorNS='DarkBlue',colorS='Orange',plt=None,thr_plotting=None):
 	"""
 	This script makes a manhattan plot
 	-------------------------------------------
@@ -29,6 +30,7 @@ def plot_manhattan(posCum,pv,chromBounds,
 	alphaNS			transparency of non-significant SNPs
 	alphaS			transparency of significant SNPs
 	plt				matplotlib.axes.AxesSubplot, the target handle for this figure (otherwise current axes)
+	thr_plotting	plot only P-values that are smaller than thr_plotting to speed up plotting
 	"""
 	if plt is None:
 		plt = pl.gca()
@@ -40,10 +42,17 @@ def plot_manhattan(posCum,pv,chromBounds,
 		lim=-1.2*sp.log10(sp.minimum(pv.min(),thr))
 
 	chromBounds = sp.concatenate([chromBounds,sp.array([posCum.max()])])
-
+	
 	n_chroms = chromBounds.shape[0]
 	for chrom_i in range(0,n_chroms-1,2):
 		pl.fill_between(posCum,0,lim,where=(posCum>chromBounds[chrom_i]) & (posCum<chromBounds[chrom_i+1]),facecolor='LightGray',linewidth=0,alpha=0.5)
+
+	if thr_plotting is not None:
+		i_small = pv<thr_plotting
+		if qv is not None:
+			qv = qv[i_thr]
+			pv = pv[i_th]
+			posCum=posCum[i_thr]
 
 	if qv==None:
 		Isign = pv<thr
@@ -136,3 +145,51 @@ def qqplot(pv, distr = 'log10', alphaLevel = 0.05):
 	        plt.fill_between(-sp.log10(theoreticalPvals),lower,upper,color='grey',alpha=0.5)
 	        #plt.plot(-sp.log10(theoreticalPvals),lower,'g-.')
 	        #plt.plot(-sp.log10(theoreticalPvals),upper,'g-.')
+
+
+def plot_normal(x=None, mean_x=None,std_x=None,color='red',linewidth=2,alpha=1,bins=20,xlim=False,plot_mean=True,plot_std=False,plot_2std=True,figure=None,annotate=True,histogram=True):
+    """
+    plot a fit of a normal distribution to the data in x.
+    """
+    import pylab
+    if figure is None:
+        figure=pylab.figure()
+    if mean_x is None:
+        #fit maximum likelihood Normal distribution mean to samples X
+        mean_x = x.mean() #sample mean
+    if std_x is None:
+        #fit maximum likelihood Normal distribution standard deviation to samples X
+        std_x = x.std()   #sample standard deviation
+        
+    xvals=np.arange(mean_x-5*std_x,mean_x+5*std_x,.001)
+    yvals=st.norm.pdf(xvals,mean_x,std_x)
+    #plot normal distribution:
+    ax = pylab.plot(xvals,yvals,color=color,linewidth=linewidth,alpha=alpha)
+    if x is not None and histogram:
+        #plot histogram of x-values
+        pylab.hist(x,bins,normed=True)
+    
+    if plot_mean:
+        #evaluate distribution at the mean:
+        max_cdf=st.norm.pdf(mean_x,mean_x,std_x)
+        pylab.plot([mean_x,mean_x],[0,max_cdf],color=color,linewidth=linewidth,alpha=alpha,linestyle="--")
+        if annotate:
+            pylab.annotate('$\mu$', xy=(mean_x+0.6*std_x, 1.0*max_cdf),
+                horizontalalignment='center', verticalalignment='center',fontsize=15,color=color)
+    if plot_std:#plot mean +- 1*standard deviation (64% interval)
+        std_cdf=st.norm.pdf(mean_x+std_x,mean_x,std_x)
+        pylab.plot([mean_x+std_x,mean_x+std_x],[0,std_cdf],color=color,linewidth=linewidth,alpha=alpha,linestyle="--")
+        pylab.plot([mean_x-std_x,mean_x-std_x],[0,std_cdf],color=color,linewidth=linewidth,alpha=alpha,linestyle="--")
+        if annotate:
+            pylab.annotate('$\mu+\sigma$', xy=(mean_x+1.6*std_x, 1.5*std_cdf),
+                horizontalalignment='center', verticalalignment='center',fontsize=15,color=color)
+    if plot_2std:#plot mean +- 2*standard deviations (95% interval)
+        std2_cdf=st.norm.pdf(mean_x+2*std_x,mean_x,std_x)
+        pylab.plot([mean_x+2*std_x,mean_x+2*std_x],[0,std2_cdf],color=color,linewidth=linewidth,alpha=alpha,linestyle="--")
+        pylab.plot([mean_x-2*std_x,mean_x-2*std_x],[0,std2_cdf],color=color,linewidth=linewidth,alpha=alpha,linestyle="--")
+        if annotate:
+            pylab.annotate('$\mu+2\sigma$', xy=(mean_x+2.6*std_x, 1.5*std2_cdf),
+                horizontalalignment='center', verticalalignment='center',fontsize=15,color=color)
+    if xlim: #cut of unused space on y-axis
+        pylab.xlim([mean_x-4*std_x,mean_x+4*std_x])
+    return figure

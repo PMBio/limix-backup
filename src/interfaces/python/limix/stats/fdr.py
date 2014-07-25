@@ -17,110 +17,204 @@ FDR estimation using Benjamini Hochberg and Stories method
 """
 
 import numpy as np
-import scipy as sp
 import sys, pickle, pdb
 import scipy.stats as st
-import scipy.interpolate
-import logging as LG
+import scipy.interpolate as inter
+import logging as lg
 
 
-def qvalues(pv, m = None, return_pi0 = False, lowmem = False, pi0 = None, fix_lambda = None):
 
-    original_shape = pv.shape
+def lfdr(pv,pi0,eps=1e-8,trunc=True,monotone=True,bw_method=1.5):
+	"""
+	estimate local false discovery rate using logistic regression
 
-    assert(pv.min() >= 0 and pv.max() <= 1)
+	input:
+	pv        : p-values
+	p0        : prior of being null
+	eps       : p-value is squeezed into the inverval [eps, 1-eps]
+	trunc     : truncate lfdr
+	monotone  : ?
+	bw_method : used to calculate the estimator bandwidth (see
+				http://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gaussian_kde.html#scipy.stats.gaussian_kde
+				for more information)
+	"""
+	original_shape = pv.shape
+	assert(pv.min() >= 0 and pv.max() <= 1), 'p-values are not in a valid range.'
+	pv = pv.ravel() 
+	n  = pv.shape[0]
 
-    pv = pv.ravel() # flattens the array in place, more efficient than flatten() 
+	x   = np.log((pv+eps)/(1-pv+eps))
+	f_kde = st.gaussian_kde(x,bw_method=bw_method)
+	y_kde = f_kde.evaluate(x)
+	f_spline = inter.UnivariateSpline(x,y_kde,k=3)
+	y_spline = f_spline(x)
+	dx   = np.exp(x)/(1+np.exp(x))**2
+	#lfdr = pi0*dx/y_spline
+	lfdr  = pi0*dx/y_kde
+	#info = {'x':x,'y_kde':y_kde,'y_spline':y_spline,'lfdr_raw':lfdr,'dx':x}
+	info = {'x':x,'y_kde':y_kde,'lfdr_raw':lfdr,'dx':x}
 
-    if m == None:
-	m = float(len(pv))
+	if trunc:
+		"""
+		local false discovery rate must be between one and zero
+		"""
+		if np.any(lfdr>1):
+			lg.warning("#{lfdr>1}=%d, setting it to one." % np.sum(lfdr>1))
+			lfdr[lfdr>1] = 1
+		if np.any(lfdr<0):
+			lg.warning("#{lfdr<0}=%d, setting it to one." % np.sum(lfdr<0))
+			lfdr[lfdr<0] = 0
+
+	if monotone:
+		"""
+		the smaller the p-value, the smaller the posterior probabibility of being null
+		"""
+		order = np.argsort(pv)
+		lfdr = lfdr[order]
+		for i in range(1,n):
+			if lfdr[i]<lfdr[i-1]: lfdr[i] = lfdr[i-1]
+		rank = np.argsort(order)
+		lfdr = lfdr[rank]
+
+	return lfdr, info
+
+
+def qvalues(pv, lam=None, pi0 = None,cv=True):
+	"""
+	computing q-values
+
+	Input:
+		pv:  p-values
+		pi:  prior probability of being null (default: None)
+		lam: threshold array used for estimating pi if not provided
+	"""
+	original_shape = pv.shape
+	assert(pv.min() >= 0 and pv.max() <= 1), 'p-values are not in a valid range.'
+	pv = pv.ravel() 
+	n  = pv.shape[0]
+	info = {}
+
+	if pi0==None:
+		"""
+		setting lambda
+		"""
+		if lam==None:
+			lam = np.arange(0, 0.90, 0.05)
+		if len(lam)>1: assert len(lam)>4, 'if length of lambda greater than 1, you need at least 4 values.'
+		assert min(lam)>=0 or max(lam)<=1, 'lambda must be in [0,1)'
+		info['lam'] = lam
+
+		if len(lam)==1:
+			"""
+			lambda is fixed
+			"""
+			pi0 = np.mean(pv >= lam)/(1-lam)
+			pi0 = min(pi0,1)
+
+		else:
+			"""
+			evaluating for different lambdas
+			"""
+			pi0_arr = np.zeros(len(lam))
+			for i in range(len(lam)):
+				pi0_arr[i] = np.sum(pv>lam[i])/(n*(1-lam[i]))
+
+			"""
+			smoothing
+			"""
+			if cv:
+				smoothing_factor = [1e-3,1e-2,1e-1,1,10]
+				MSE = np.zeros(len(smoothing_factor))
+				for ismooth in range(len(smoothing_factor)):
+					f_spline = inter.UnivariateSpline(lam,pi0_arr,k=3,s=smoothing_factor[ismooth])
+
+					for itest in range(1,len(lam)-1):
+						idx      = np.ones(len(lam),dtype=bool)
+						idx[itest] = False
+						f_spline = inter.UnivariateSpline(lam[idx],pi0_arr[idx],k=3,s=smoothing_factor[ismooth])
+						MSE[ismooth] += (pi0_arr[itest] - f_spline(lam[itest]))**2
+
+				idx = np.argmin(MSE)
+				s = smoothing_factor[idx]
+			else:
+				s = None
+
+			f_spline = inter.UnivariateSpline(lam,pi0_arr,k=3,s=s)
+			pi0 = f_spline(lam[-1])
+			if pi0 > 1:
+				lg.warning("got pi0 > 1 (%.3f) while estimating qvalues, setting it to 1" % pi0)
+				pi0 = 1.0
+			info['pi0_arr'] = pi0_arr
+			info['pi0_est'] = f_spline(lam)
+			assert(pi0 <= 1), "estimated pi0 is greater than 1"
+
+		info['pi0'] = pi0
+
+		"""
+		computing q-values
+		"""
+		pv_ordered = np.argsort(pv)
+		pv = pv[pv_ordered]
+		qv = pi0 * pv
+		qv[-1] = min(qv[-1],1.0)
+		for i in xrange(len(pv)-2, -1, -1):
+			qv[i] = min(pi0*n*pv[i]/(i+1.0), qv[i+1])
+		qv_temp = qv.copy()
+		qv = np.zeros_like(qv)
+		qv[pv_ordered] = qv_temp
+		qv = qv.reshape(original_shape)
+
+		return qv,info
+
+
+def pvalues(stats,stats0,pooled=True):
+    """
+    compute pvalues out of observed and permuted test statistics. if pooled is true, pool permuted
+    test statiscs.
+    """
+
+    if pooled:
+        n_stats  = len(stats)
+        stats  = stats.ravel()
+        stats0 = stats0.ravel()
+        n_stats0 = len(stats0)
+        B = n_stats0/n_stats
+
+        indObs = np.zeros(n_stats + n_stats0,dtype=bool)
+        indObs[:n_stats] = True
+        v     = np.hstack([stats,stats0])
+        order = np.argsort(-v)
+        indObs= indObs[order]
+
+        u = np.arange(n_stats + n_stats0)
+        w = np.arange(n_stats)
+        pv = (1.*(u[indObs] -w))/n_stats0
+
+        order = np.argsort(-stats)
+        rank  = np.argsort(order)
+        pv    = pv[rank]
+
+        pv_min = 1./n_stats0
+        pv[pv<pv_min] = pv_min
+
+        return pv
+    
     else:
-	# the user has supplied an m, let's use it
-	m *= 1.0
+        B = stats0.shape[1]
 
-    # if the number of hypotheses is small, just set pi0 to 1
-    if len(pv) < 100:
-	pi0 = 1.0
-    elif pi0 != None:
-	pi0 = pi0
-    else:
-	# evaluate pi0 for different lambdas
-	pi0 = []
-	lam = sp.arange(0, 0.90, 0.01)
-	counts = sp.array([(pv > i).sum() for i in sp.arange(0, 0.9, 0.01)])
-	
-	if fix_lambda != None:
-	    interv_count = (pv > fix_lambda - 0.01).sum()
-	    uniform_sim = sp.array([(pv > fix_lambda-0.01).sum()*(i+1) for i in sp.arange(0, len(sp.arange(0, 0.90, 0.01)))][::-1])
-	    counts += uniform_sim
-	    
-	for l in range(len(lam)):
-	    pi0.append(counts[l]/(m*(1-lam[l])))
-
-	pi0 = sp.array(pi0)
-
-	# fit natural cubic spline
-	tck = sp.interpolate.splrep(lam, pi0, k = 3)
-	pi0 = sp.interpolate.splev(lam[-1], tck)
-	if pi0 > 1:
-	    LG.warning("got pi0 > 1 (%.3f) while estimating qvalues, setting it to 1" % pi0)
-	    pi0 = 1.0
-
-	assert(pi0 >= 0 and pi0 <= 1), "%f" % pi0
-
-
-    if lowmem:
-	# low memory version, only uses 1 pv and 1 qv matrices
-	qv = sp.zeros((len(pv),))
-	last_pv = pv.argmax()
-	qv[last_pv] = (pi0*pv[last_pv]*m)/float(m)
-	pv[last_pv] = -sp.inf
-	prev_qv = last_pv
-	for i in xrange(int(len(pv))-2, -1, -1):
-	    cur_max = pv.argmax()
-	    qv_i = (pi0*m*pv[cur_max]/float(i+1))
-	    pv[cur_max] = -sp.inf
-	    qv_i1 = prev_qv
-	    qv[cur_max] = min(qv_i, qv_i1)
-	    prev_qv = qv[cur_max]
-
-    else:
-	p_ordered = sp.argsort(pv)    
-	pv = pv[p_ordered]
-	# estimate qvalues
-# 	qv = pi0*m*pv/(sp.arange(len(pv))+1.0)
-	
-# 	for i in xrange(int(len(qv))-2, 0, -1):
-# 	    qv[i] = min([qv[i], qv[i+1]])
-
-
-	qv = pi0 * m/len(pv) * pv
-	qv[-1] = min(qv[-1],1.0)
-
-	for i in xrange(len(pv)-2, -1, -1):
-	    qv[i] = min(pi0*m*pv[i]/(i+1.0), qv[i+1])
-
-
-
-	# reorder qvalues
-	qv_temp = qv.copy()
-	qv = sp.zeros_like(qv)
-	qv[p_ordered] = qv_temp
-
-
-
-    # reshape qvalues
-    qv = qv.reshape(original_shape)
-
-    if return_pi0:
-	return qv, pi0
-    else:
-	return qv
+        if stats.ndim==1:
+            stats = stats[:,np.newaxis]
+        pv = (stats0 - np.repeat(stats,B,axis=1)) >= 0
+        pv = pv.mean(1)
+        pv_min = 1./B
+        pv[pv<pv_min] = pv_min
+        return pv
+   
 
 
 def estimate_lambda(pv):
     """estimate lambda form a set of PV"""
-    LOD2 = sp.median(st.chi2.isf(pv,1))
+    LOD2 = np.median(st.chi2.isf(pv,1))
     L = (LOD2/0.456)
     return (L)
 

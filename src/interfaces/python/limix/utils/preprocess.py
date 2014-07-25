@@ -11,7 +11,7 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
-"""preprocessing functions for ..."""
+"""preprocessing functions"""
 
 import scipy as SP
 import scipy.special as special
@@ -44,7 +44,7 @@ def scale_K(K, verbose=False,trace_method=True):
 def standardize(Y,in_place=False):
     """
     standardize Y in a way that is robust to missing values
-    in_plcase: create a copy or carry out inplace opreations?
+    in_place: create a copy or carry out inplace opreations?
     """
     if in_place:
         YY = Y
@@ -60,25 +60,46 @@ def standardize(Y,in_place=False):
     
 
 def rankStandardizeNormal(X):
-    """
-    standardize X: [samples x phenotypes]
-    - each phentoype is converted to ranks and transformed back to normal using the inverse CDF
-    """
-    Is = X.argsort(axis=0)
-    RV = SP.zeros_like(X)
-    rank = SP.zeros_like(X)
-    for i in xrange(X.shape[1]):
-        x =  X[:,i]
-        if 0:
-            Is = x.argsort()
-            rank = SP.zeros_like(x)
-            rank[Is] = SP.arange(X.shape[0])
-            #add one to ensure nothing = 0
-            rank +=1
-        else:
-            rank = st.rankdata(x)
-        #devide by (N+1) which yields uniform [0,1]
-        rank /= (X.shape[0]+1)
-        #apply inverse gaussian cdf
-        RV[:,i] = SP.sqrt(2) * special.erfinv(2*rank-1)
-    return RV
+	"""
+	Gaussianize X: [samples x phenotypes]
+	- each phentoype is converted to ranks and transformed back to normal using the inverse CDF
+	"""
+	Is = X.argsort(axis=0)
+	RV = SP.zeros_like(X)
+	rank = SP.zeros_like(X)
+	for i in xrange(X.shape[1]):
+		x =  X[:,i]
+		i_nan = SP.isnan(x)
+		if 0:
+			Is = x.argsort()
+			rank = SP.zeros_like(x)
+			rank[Is] = SP.arange(X.shape[0])
+			#add one to ensure nothing = 0
+			rank +=1
+		else:
+			rank = st.rankdata(x[~i_nan])
+		#devide by (N+1) which yields uniform [0,1]
+		rank /= ((~i_nan).sum()+1)
+		#apply inverse gaussian cdf
+		RV[~i_nan,i] = SP.sqrt(2) * special.erfinv(2*rank-1)
+		RV[i_nan,i] = x[i_nan]
+	return RV
+
+
+def boxcox(X):
+	"""
+    Gaussianize X using the Box-Cox transformation: [samples x phenotypes]
+
+    - each phentoype is brought to a positive schale, by first subtracting the minimum value and adding 1.
+    - Then each phenotype transformed by the boxcox transformation
+	"""
+	X_transformed = SP.zeros_like(X)
+	maxlog = SP.zeros(X.shape[1])
+	for i in xrange(X.shape[1]):
+		i_nan = SP.isnan(X[:,i])
+		values = X[~i_nan,i]
+		X_transformed[i_nan,i] = X[i_nan,i]
+		X_transformed[~i_nan,i], maxlog[i] = st.boxcox(values-values.min()+1.0)
+	return X_transformed, maxlog
+
+
