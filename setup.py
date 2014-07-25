@@ -259,14 +259,14 @@ if __name__ == '__main__':
         'numpy' : '1.6.0',
         'scipy' : '0.9.0',
         'pandas' : '0.12.0',
-        'scons' : '2.3.0',
+        'scons' : '2.1.0',
                    }
     check_versions(min_versions)
 
     import SCons.Script
     setup(
         name = 'limix',
-        version = '0.5.6',
+        version = '0.5.8',
         author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
         author_email = "lippert@microsoft.com, stegle@ebi.ac.uk",
         description = ('A flexible and fast mixed model toolbox written in C++/python'),

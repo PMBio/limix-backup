@@ -187,7 +187,7 @@ class QTLData(object):
         """
         if not (idx_start==None and idx_end==None and pos_start==None and pos_end==None and chrom==None):
             query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, windowsize=windowsize)
-            return self.subsample(rows=rows,cols_pheno=cols_pheno,cols_geno=res,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None)
+            return self.subsample(rows=rows,cols_pheno=cols_pheno,cols_geno=query_idx,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None)
         C = copy.copy(self)
         
         if rows is not None:

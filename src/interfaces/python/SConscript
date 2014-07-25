@@ -44,7 +44,8 @@ else:
    #LINUX
    module_in = "_core.so"
    module_out = "_core.so"
-   localenv.Append(LINKFLAGS = ['-Wl,-rpath=\'$$ORIGIN\'','--enable-new-dtags'])
+   #localenv.Append(LINKFLAGS = ['-Wl,-rpath=\'$$ORIGIN\'','--enable-new-dtags'])
+   localenv.Append(LINKFLAGS = ['-Wl,-rpath=\'$$ORIGIN\''])
 
 
 #run SWIG?
