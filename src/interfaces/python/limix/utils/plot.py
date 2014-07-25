@@ -1,3 +1,17 @@
+# Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing, software
+#distributed under the License is distributed on an "AS IS" BASIS,
+#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#See the License for the specific language governing permissions and
+#limitations under the License.
+
 import sys
 import scipy as sp 
 import numpy as np
@@ -51,8 +65,8 @@ def plot_manhattan(posCum,pv,chromBounds,
 		i_small = pv<thr_plotting
 		if qv is not None:
 			qv = qv[i_thr]
-			pv = pv[i_th]
-			posCum=posCum[i_thr]
+		pv = pv[i_th]
+		posCum=posCum[i_thr]
 
 	if qv==None:
 		Isign = pv<thr
@@ -101,15 +115,17 @@ def _qqplot_bar(M=1000000, alphaLevel = 0.05, distr = 'log10'):
 
 	theoreticalPvals=mRange/M;
 	return betaUp, betaDown, theoreticalPvals
-    
+
 
 def qqplot(pv, distr = 'log10', alphaLevel = 0.05):
 	"""
-	This script makes a QQ plot
-	-------------------------------------------
-	pv				pvalues (numpy array)
-	distr           scale of the distribution (log10 or chi2)
-	alphaLevel      significance bounds
+	This script makes a Quantile-Quantile plot of the observed
+	negative log P-value distribution against the theoretical one under the null.
+
+	Input:
+		pv				pvalues (numpy array)
+		distr           scale of the distribution (log10 or chi2)
+		alphaLevel      significance bounds
 	"""
 	shape_ok = (len(pv.shape)==1) or ((len(pv.shape)==2) and pv.shape[1]==1)
 	assert shape_ok, 'qqplot requires a 1D array of p-values'
