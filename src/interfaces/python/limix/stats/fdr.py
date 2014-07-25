@@ -219,6 +219,14 @@ def estimate_lambda(pv):
     return (L)
 
 def LOD2PV(lods):
-    PV = (st.chi2.sf(2*lods, 1))
-    return PV
-        
+	"""
+	compute P-values from log likelihood ratios
+	PV = (st.chi2.sf(2*lods, 1))
+
+	Input:
+		lods: log likelihood ratios
+	Returns:
+		P-values
+	"""
+	PV = (st.chi2.sf(2*lods, 1))
+	return PV
