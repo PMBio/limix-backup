@@ -195,7 +195,7 @@ class genotype_reader_h5py():
             else:
                 return  sp.arange(self.geno_matrix.shape[1])
 
-    def getPos(selfidx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
+    def getPos(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
         """
         get the positions of the genotypes
 
@@ -414,7 +414,7 @@ class genotype_reader_tables():
             else:
                 return  sp.arange(self.geno_matrix.shape[1])
 
-    def getPos(selfidx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,windowsize=0):
+    def getPos(self,idx_start=None,idx_end=None,snp_idx=None,pos_start=None,pos_end=None,chrom=None,windowsize=0):
         """
         get the positions of the genotypes
 
