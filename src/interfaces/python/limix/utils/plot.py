@@ -64,9 +64,9 @@ def plot_manhattan(posCum,pv,chromBounds,
 	if thr_plotting is not None:
 		if pv is not None:
 			i_small = pv<thr_plotting
-			pv = pv[i_small]
 		elif qv is not None:
 			i_small = qv<thr_plotting
+		
 		if qv is not None:
 			qv = qv[i_small]
 		if pv is not None:
