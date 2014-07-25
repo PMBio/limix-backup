@@ -28,15 +28,19 @@ def lfdr(pv,pi0,eps=1e-8,trunc=True,monotone=True,bw_method=1.5):
 	"""
 	estimate local false discovery rate using logistic regression
 
-	input:
-	pv        : p-values
-	p0        : prior of being null
-	eps       : p-value is squeezed into the inverval [eps, 1-eps]
-	trunc     : truncate lfdr
-	monotone  : ?
-	bw_method : used to calculate the estimator bandwidth (see
-				http://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gaussian_kde.html#scipy.stats.gaussian_kde
-				for more information)
+	Input:
+		pv        : p-values
+		p0        : prior of being null
+		eps       : p-value is squeezed into the inverval [eps, 1-eps]
+		trunc     : truncate lfdr
+		monotone  : ?
+		bw_method : used to calculate the estimator bandwidth (see
+					http://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gaussian_kde.html#scipy.stats.gaussian_kde
+					for more information)
+
+	Returns:
+		lfdr:	estimated local FDRs
+		info:	{'x':x,'y_kde':y_kde,'lfdr_raw':lfdr,'dx':x}
 	"""
 	original_shape = pv.shape
 	assert(pv.min() >= 0 and pv.max() <= 1), 'p-values are not in a valid range.'
@@ -87,6 +91,12 @@ def qvalues(pv, lam=None, pi0 = None,cv=True):
 		pv:  p-values
 		pi:  prior probability of being null (default: None)
 		lam: threshold array used for estimating pi if not provided
+
+	Returns:
+		qv:		estimated q-values
+		info:	'lam' estimated lambda parameter
+				'pi0_arr'
+				'pi0_est'	f_spline(lam)
 	"""
 	original_shape = pv.shape
 	assert(pv.min() >= 0 and pv.max() <= 1), 'p-values are not in a valid range.'
@@ -171,6 +181,13 @@ def pvalues(stats,stats0,pooled=True):
     """
     compute pvalues out of observed and permuted test statistics. if pooled is true, pool permuted
     test statiscs.
+	
+	Input:
+		stats:	unpermuted test statistics
+		stats0:	permuted test statistics
+		pooled:	(bool) pool the permutations? (default True)
+	Returns:
+		pv:	P-values
     """
 
     if pooled:
