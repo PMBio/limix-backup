@@ -23,7 +23,7 @@ except:
     cparser=False
     pass
 
-def estCumPos(position,offset=1000000,chrom_len=None):
+def estCumPos(position,offset=0,chrom_len=None):
     '''
     compute the cumulative position of each variant given the position and the chromosome
     Also return the starting cumulativeposition of each chromosome
@@ -31,17 +31,21 @@ def estCumPos(position,offset=1000000,chrom_len=None):
     Args:
         position:   pandas DataFrame of basepair positions (key='pos') and chromosome values (key='chrom')
                     The DataFrame will be updated with field 'pos_cum'
-        offset:     offset between chromosomes for cumulative position (default 20000000 bp)
+        chrom_len:  vector with predefined chromosome length
+        offset:     offset between chromosomes for cumulative position (default 0 bp)
     
     Returns:
-        chrom_pos:  numpy.array of starting cumulative positions for each chromosme
+        chrom_pos,position:
+        chrom_pos:  numpy.array of starting cumulative positions for each chromosome
+        position:   augmented position object where cumulative positions are defined
     '''
+    RV = position.copy()
     chromvals =  sp.unique(position['chrom'])# sp.unique is always sorted
     chrom_pos_cum= sp.zeros_like(chromvals)#get the starting position of each Chrom
     pos_cum= sp.zeros_like(position.shape[0])
     if not 'pos_cum' in position:
-        position["pos_cum"]= sp.zeros_like(position['pos'])#get the cum_pos of each variant.
-    pos_cum=position['pos_cum'].values
+        RV["pos_cum"]= sp.zeros_like(position['pos'])#get the cum_pos of each variant.
+    pos_cum=RV['pos_cum'].values
     maxpos_cum=0
     for i,mychrom in enumerate(chromvals):
         chrom_pos_cum[i] = maxpos_cum
@@ -53,7 +57,7 @@ def estCumPos(position,offset=1000000,chrom_len=None):
         pos_cum[i_chr.values]=maxpos_cum+position.loc[i_chr,'pos']
         maxpos_cum+=maxpos      
     
-    return chrom_pos_cum
+    return RV,chrom_pos_cum
         
         
 def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.0, betaB=1.0):

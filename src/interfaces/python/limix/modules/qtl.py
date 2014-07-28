@@ -47,6 +47,9 @@ class lmm:
 			verbose: print verbose output? (False)
 		"""
 		#create column of 1 for fixed if nothing provide
+		if len(pheno.shape)==1:
+			pheno = pheno[:,sp.newaxis]
+
 		self.verbose = limix.getVerbose(verbose)
 		self.snps = snps
 		self.pheno = pheno
