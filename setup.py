@@ -266,7 +266,7 @@ if __name__ == '__main__':
     import SCons.Script
     setup(
         name = 'limix',
-        version = '0.6.0',
+        version = '0.6.1',
         author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
         author_email = "lippert@microsoft.com, stegle@ebi.ac.uk",
         description = ('A flexible and fast mixed model toolbox written in C++/python'),
@@ -280,6 +280,7 @@ if __name__ == '__main__':
         #use manual build system building on scons
         cmdclass = {'build_py': build_py_cmd},
         #dependencies
-        requires = ['scipy','numpy','matplotlib','pandas','scons'],
+        #requires = ['scipy','numpy','matplotlib','pandas','scons'],
+        requires = ['scipy','numpy','matplotlib','pandas'],
         install_requires = ['scons>=2.3.0']
         )

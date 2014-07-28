@@ -24,7 +24,7 @@ import os
 import cPickle
 import glob
 
-def plot_manhattan(posCum,pv,chromBounds,
+def plot_manhattan(posCum,pv,chromBounds=None,
 					thr=None,qv=None,lim=None,xticklabels=True,
 					alphaNS=0.1,alphaS=0.5,colorNS='DarkBlue',colorS='Orange',plt=None,thr_plotting=None):
 	"""
@@ -32,7 +32,7 @@ def plot_manhattan(posCum,pv,chromBounds,
 	-------------------------------------------
 	posCum			cumulative position
 	pv				pvalues
-	chromBounds		chrom boundaries
+	chromBounds		chrom boundaries (optionally). If not supplied, everything will be plotted into a single chromosome
 	qv				qvalues
 					if provided, threshold for significance is set on qvalues but pvalues are plotted
 	thr				threshold for significance
@@ -55,7 +55,11 @@ def plot_manhattan(posCum,pv,chromBounds,
 	if lim==None:
 		lim=-1.2*sp.log10(sp.minimum(pv.min(),thr))
 
-	chromBounds = sp.concatenate([chromBounds,sp.array([posCum.max()])])
+	if chromBounds is None:
+		chromBounds = sp.array([[0,posCum.max()]])
+	else:
+		chromBounds = sp.concatenate([chromBounds,sp.array([posCum.max()])])
+
 	
 	n_chroms = chromBounds.shape[0]
 	for chrom_i in range(0,n_chroms-1,2):
