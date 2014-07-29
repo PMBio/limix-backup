@@ -69,22 +69,26 @@ class lmm:
 		if self.covs is None:
 			self.covs = np.ones((self.snps.shape[0],1))
 		
-		self._lmm = limix.CLMM()
+		self._lmm = None
+		#run
+		self.verbose = verbose
+		self.process()
 
-		if self.test=='lrt':
-			self._lmm.setTestStatistics(self._lmm.TEST_LRT)
-		elif self.test=='f':
-			self._lmm.setTestStatistics(self._lmm.TEST_F)
-		else:
-			print self.test
-			raise NotImplementedError("only f and lrt are implemented")
+	def process(self):
 		t0 = time.time()
-		if not np.isnan(self.pheno).any():
+		if self._lmm is None:
+			self._lmm = limix.CLMM()
 			self._lmm.setK(self.K)
 			self._lmm.setSNPs(self.snps)
 			self._lmm.setPheno(self.pheno)
 			self._lmm.setCovs(self.covs)
-
+			if self.test=='lrt':
+				self._lmm.setTestStatistics(self._lmm.TEST_LRT)
+			elif self.test=='f':
+				self._lmm.setTestStatistics(self._lmm.TEST_F)
+			else:
+				print self.test
+				raise NotImplementedError("only f and lrt are implemented")
 			#set number of delta grid optimizations?
 			self._lmm.setNumIntervals0(self.NumIntervalsDelta0)
 			if self.searchDelta:
@@ -92,7 +96,8 @@ class lmm:
 			else:
 				self._lmm.setNumIntervalsAlt(0)
 
-		
+		if not np.isnan(self.pheno).any():
+			#process
 			self._lmm.process()
 			self.pvalues = self._lmm.getPv()
 			self.beta_snp = self._lmm.getBetaSNP()
@@ -101,10 +106,11 @@ class lmm:
 			self.ldelta_alt = self._lmm.getLdeltaAlt()
 			self.NLL_0 = self._lmm.getNLL0()
 			self.NLL_alt = self._lmm.getNLLAlt()
-
-
-			
 		else:
+			if self._lmm is not None:
+				raise Exception('cannot reuse a CLMM object if missing variables are present')
+			else:
+				self._lmm = limix.CLMM()
 			#test all phenotypes separately
 			self.pvalues = np.zeros((self.phenos.shape[1],self.snps.shape[1]))
 			self.beta_snp = np.zeros((self.phenos.shape[1],self.snps.shape[1]))
@@ -143,8 +149,12 @@ class lmm:
 			self.test_statistics = 2.0 * (self.NLL_0 - self.NLL_alt)
 		t1=time.time()
 
-		if verbose:
+		if self.verbose:
 			print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+
+	def setCovs(self,covs):
+		self._lmm.setCovs(covs)
+
 
 	def getPv(self):
 		"""
