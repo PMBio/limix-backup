@@ -63,8 +63,9 @@ class PANAMA:
             assert self.X.shape[0]==self.Y.shape[0], 'data size missmatch'
         pass
 
-    def train(self,rank=20,Kpop=True):
+    def train(self,rank=20,Kpop=True,Sqexp=False):
         """train panama module"""
+
         if 0:
             covar  = limix.CCovLinearISO(rank)
             ll  = limix.CLikNormalIso()
@@ -88,9 +89,15 @@ class PANAMA:
 
         if 1:
             covar  = limix.CSumCF()
-            covar_1 =  limix.CCovLinearISO(rank)
+            if Sqexp:
+                covar_1 =  limix.CCovSqexpARD(rank)
+                covar_params = [1.0]
+                for d in range(rank):
+                    covar_params.append(sp.randn())
+            else:
+                covar_1 =  limix.CCovLinearISO(rank)
+                covar_params = [1.0]
             covar.addCovariance(covar_1)
-            covar_params = [1.0]
 
             if self.use_Kpop:
                 covar_2 =  limix.CFixedCF(self.Kpop)
@@ -98,9 +105,11 @@ class PANAMA:
                 covar_params.append(1.0)
 
             ll  = limix.CLikNormalIso()
-            X0 = sp.random.randn(self.N,rank)
-            X0 = PCA(self.Y,rank)[0]
-            X0 /= sp.sqrt(rank)
+            if Sqexp:
+                X0 = sp.random.randn(self.N,rank)
+            else:
+                X0 = PCA(self.Y,rank)[0]
+                X0 /= sp.sqrt(rank)
             covar_params = sp.array(covar_params)
             lik_params = sp.array([1.0])
 
