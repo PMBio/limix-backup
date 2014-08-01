@@ -64,12 +64,17 @@ class LIMIX_converter(object):
         pass
 
     def convert_phenotype_csv(self,hdf,csv_file,sep=None,transpose=False,num_samples=None,num_phenotypes=None,*args,**kw_args):
-    	"""convert phenotype csv file to LIMIX hdf5
-    	hdf: handle for hdf5 file (target)
-    	csv_file: filename of csv file with phenoyptes
-    	transpose: standard is rows - individuals unless transpose = True
+    	"""
+        convert phenotype csv file to LIMIX hdf5
+    	
+        Arguments:
+            hdf: handle for hdf5 file (target)
+    	    csv_file: filename of csv file with phenoyptes
+    	    transpose: standard is rows - individuals unless transpose = True
     	"""
     	C = pandas.io.parsers.read_csv(csv_file,sep=sep,header=None,index_col=False,*args,**kw_args)
+        import ipdb
+        ipdb.set_trace()
     	if transpose:
     		C = C.T
     	values = C.values
@@ -78,7 +83,9 @@ class LIMIX_converter(object):
 		if num_phenotypes is not None:
 			values = values[:,0:1+int(num_phenotypes)]
     	matrix = sp.array(values[1::,1::],dtype='float')
-    	sample_IDs = sp.array(values[1::,0],dtype='str')
+    	#TODO: check if sample_IDs are present, and if they may be 2 columns
+        sample_IDs = sp.array(values[1::,0],dtype='str')
+        #TODO: check if pheno_IDs are present
     	pheno_IDs  = sp.array(values[0,1::],dtype='str')
     	#store
     	if 'phenotype' in hdf.keys():

@@ -14,7 +14,7 @@
 
 __all__ = ['']
 
-__version__ = '0.6.2'
+__version__ = '0.6.3'
 
 #make core available on flat import
 import core

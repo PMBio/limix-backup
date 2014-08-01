@@ -155,6 +155,8 @@ class lmm:
 	def setCovs(self,covs):
 		self._lmm.setCovs(covs)
 
+	def getBetaSNP(self):
+		return self.beta_snp
 
 	def getPv(self):
 		"""
