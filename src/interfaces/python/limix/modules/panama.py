@@ -63,8 +63,9 @@ class PANAMA:
             assert self.X.shape[0]==self.Y.shape[0], 'data size missmatch'
         pass
 
-    def train(self,rank=20,Kpop=True):
+    def train(self,rank=20,Kpop=True,LinearARD=False):
         """train panama module"""
+
         if 0:
             covar  = limix.CCovLinearISO(rank)
             ll  = limix.CLikNormalIso()
@@ -88,9 +89,15 @@ class PANAMA:
 
         if 1:
             covar  = limix.CSumCF()
-            covar_1 =  limix.CCovLinearISO(rank)
+            if LinearARD:
+                covar_1 =  limix.CCovLinearARD(rank)
+                covar_params = []
+                for d in range(rank):
+                    covar_params.append(1/sp.sqrt(d+2))
+            else:
+                covar_1 =  limix.CCovLinearISO(rank)
+                covar_params = [1.0]
             covar.addCovariance(covar_1)
-            covar_params = [1.0]
 
             if self.use_Kpop:
                 covar_2 =  limix.CFixedCF(self.Kpop)
@@ -98,7 +105,6 @@ class PANAMA:
                 covar_params.append(1.0)
 
             ll  = limix.CLikNormalIso()
-            X0 = sp.random.randn(self.N,rank)
             X0 = PCA(self.Y,rank)[0]
             X0 /= sp.sqrt(rank)
             covar_params = sp.array(covar_params)
@@ -130,7 +136,9 @@ class PANAMA:
         t2 = time.time()
 
         #Kpanama
-        self.Xpanama = gp.getParams()['X']
+        self.Xpanama = covar_1.getX()
+        if LinearARD:
+            self.Xpanama /= self.Xpanama.std(0)
         self.Kpanama = covar_1.K()
         self.Kpanama/= self.Kpanama.diagonal().mean()
 
@@ -141,11 +149,14 @@ class PANAMA:
         self.Ktot/= self.Ktot.diagonal().mean()
 
         #store variances
-        V = sp.zeros([3])
-        V[0] = covar_1.K().diagonal().mean()
+        V = {}
+        if LinearARD:
+            V['LinearARD'] = covar_1.getParams()**2*covar_1.getX().var(0)
+        else:
+            V['Kpanama'] = sp.array([covar_1.K().diagonal().mean()])
         if self.use_Kpop:
-            V[1] = covar_2.K().diagonal().mean()
-        V[2] = gp.getParams()['lik'][0]**2
+            V['Kpop'] = sp.array([covar_2.K().diagonal().mean()])
+        V['noise'] = gp.getParams()['lik']**2
         self.varianceComps = V
 
     def get_Xpanama(self):
@@ -175,4 +186,4 @@ class PANAMA:
             vector of variance components of the PANAMA, Kpop and noise contributions
         """
         return self.varianceComps
- 
+
