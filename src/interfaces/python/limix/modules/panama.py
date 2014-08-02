@@ -63,7 +63,7 @@ class PANAMA:
             assert self.X.shape[0]==self.Y.shape[0], 'data size missmatch'
         pass
 
-    def train(self,rank=20,Kpop=True,LinearARD=False,Xard=None):
+    def train(self,rank=20,Kpop=True,LinearARD=False):
         """train panama module"""
 
         if 0:
@@ -90,7 +90,6 @@ class PANAMA:
         if 1:
             covar  = limix.CSumCF()
             if LinearARD:
-                rank = Xard.shape[1]
                 covar_1 =  limix.CCovLinearARD(rank)
                 covar_params = []
                 for d in range(rank):
@@ -106,19 +105,15 @@ class PANAMA:
                 covar_params.append(1.0)
 
             ll  = limix.CLikNormalIso()
-            if LinearARD:
-                X0 = Xard/Xard.std(0)
-            else:
-                X0 = PCA(self.Y,rank)[0]
-                X0 /= sp.sqrt(rank)
+            X0 = PCA(self.Y,rank)[0]
+            X0 /= sp.sqrt(rank)
             covar_params = sp.array(covar_params)
             lik_params = sp.array([1.0])
 
             hyperparams = limix.CGPHyperParams()
             hyperparams['covar'] = covar_params
             hyperparams['lik'] = lik_params
-            if not LinearARD:
-                hyperparams['X']   = X0
+            hyperparams['X']   = X0
         
             constrainU = limix.CGPHyperParams()
             constrainL = limix.CGPHyperParams()
@@ -142,6 +137,8 @@ class PANAMA:
 
         #Kpanama
         self.Xpanama = covar_1.getX()
+        if LinearARD:
+            self.Xpanama /= self.Xpanama.std(0)
         self.Kpanama = covar_1.K()
         self.Kpanama/= self.Kpanama.diagonal().mean()
 
@@ -154,7 +151,7 @@ class PANAMA:
         #store variances
         V = {}
         if LinearARD:
-            V['LinearARD'] = covar_1.getParams()**2
+            V['LinearARD'] = covar_1.getParams()**2*covar_1.getX().var(0)
         else:
             V['Kpanama'] = sp.array([covar_1.K().diagonal().mean()])
         if self.use_Kpop:
