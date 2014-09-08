@@ -18,10 +18,11 @@ LIMIX is smart about how particular models are fit to safe computational cost.
 
 * Recommended is an installation via pypi.
 * pip install limix will work on most systems.
+* LIMIX is particular easy to install using the anaconda python distribution: https://store.continuum.io/cshop/anaconda.
 
 * If you want to install LIMIX from source you require:
 Python:
-- scons, scipy, numpy
+- scons, scipy, numpy, pandas
 
 * Swig:
 - swig 2.0 or higher
@@ -30,9 +31,9 @@ Python:
 A good starting point is our package Vignettes. These tutorials can are available in this repository: https://github.com/PMBio/limix-tutorials.
 
 The main package vignette can also be viewed using the ipython notebook viewer:
-http://nbviewer.ipython.org/github/pmbio/limix-tutorials/blob/master/tutorial_yeast.ipynb or by downloading the PDF equivalent: https://github.com/PMBio/limix-tutorials/blob/master/tutorial_yeast.pdf?raw=true
-
-More extensive documentation will be available soon.
+http://nbviewer.ipython.org/github/pmbio/limix-tutorials/blob/master/index.ipynb.
+Alternative the sources file is available in the separate LIMIX tutorial repository:
+https://github.com/PMBio/limix-tutorials
 
 ## Problems ? 
 If you want to use LIMIX and encounter any issues, please contact us by email: limix@mixed-models.org
