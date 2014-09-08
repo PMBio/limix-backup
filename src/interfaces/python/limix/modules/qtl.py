@@ -18,6 +18,7 @@ qtl.py contains wrappers around C++ Limix objects to streamline common tasks in 
 import numpy as np
 import scipy.stats as st
 import limix
+import scipy as sp
 import limix.utils.preprocess as preprocess
 import limix.modules.varianceDecomposition as VAR
 import limix.stats.fdr as FDR

@@ -15,6 +15,12 @@
 import pdb
 import os
 import numpy as SP
+import csv
+
+def deduce_delimiter(filename):
+    with open(filename, 'r') as file:
+        dialect = csv.Sniffer().sniff(file.read())
+        return dialect.delimiter
 
 
 def which(vec):
@@ -227,9 +233,11 @@ def readBED(basefilename, blocksize = 1, start = 0, nSNPs = SP.inf, startpos = N
     --------------------------------------------------------------------------    
     '''
     fam = basefilename+ '.fam'
-    fam = SP.loadtxt(fam,delimiter = ' ',dtype = 'str',usecols=(0,1))
+    delimiter = deduce_delimiter(fam)
+    fam = SP.loadtxt(fam,delimiter = delimiter,dtype = 'str',usecols=(0,1))
     bim = basefilename+'.bim'
-    bim = SP.loadtxt(bim,delimiter = '\t',dtype = 'str',usecols = (0,1,2,3))
+    delimiter = deduce_delimiter(bim)
+    bim = SP.loadtxt(bim,delimiter = delimiter,dtype = 'str',usecols = (0,1,2,3))
     rs = bim[:,1]
     pos = SP.array(bim[:,(0,2,3)],dtype = 'float')
     #pdb.set_trace()

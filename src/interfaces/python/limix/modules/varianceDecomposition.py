@@ -93,7 +93,7 @@ class VarianceDecomposition:
         
         Args:
             Y:              phenotype matrix [N, P]
-            standardize:	if True, phenotype is standardized (zero mean, unit variance)
+            standardize:    if True, phenotype is standardized (zero mean, unit variance)
         """
         assert Y.shape[0]==self.N, 'VarianceDecomposition:: Incompatible shape'
         assert Y.shape[1]==self.P, 'VarianceDecomposition:: Incompatible shape'
@@ -108,6 +108,7 @@ class VarianceDecomposition:
         self.Y = Y
         self.vd.setPheno(Y)
 
+        self.init    = False
         self.optimum = None
     
         self.cache['Sigma']   = None
@@ -118,7 +119,7 @@ class VarianceDecomposition:
         set sample size of the test dataset
 
         Args:
-            Ntest:		sample size of the test set
+            Ntest:        sample size of the test set
         """
         self.Ntest = Ntest
 
@@ -131,7 +132,7 @@ class VarianceDecomposition:
             K:      Sample Covariance Matrix [N, N]
             is_noise:   Boolean indicator specifying if the matrix is homoscedastic noise (weighted identity covariance) (default False)
             normalize:  Boolean indicator specifying if K has to be normalized such that K.trace()=N.
-            Kcross:			NxNtest cross covariance for predictions
+            Kcross:            NxNtest cross covariance for predictions
             trait_covar_type: type of covaraince to use. Default 'freeform'. possible values are 
                             'freeform':  general semi-definite positive matrix, 
                             'fixed': fixed matrix specified in fixed_trait_covar,
@@ -144,7 +145,7 @@ class VarianceDecomposition:
                             'block_diag': sum of a multiple of a matrix of ones and a diagonal matrix,
             rank:       rank of a possible lowrank component (default 1)
             fixed_trait_covar:   PxP matrix for the (predefined) trait-to-trait covariance matrix if fixed type is used
-            jitter:		diagonal contribution added to trait-to-trait covariance matrices for regularization
+            jitter:        diagonal contribution added to trait-to-trait covariance matrices for regularization
         """
         assert K!=None or is_noise, 'VarianceDecomposition:: Specify covariance structure'
         
@@ -233,19 +234,19 @@ class VarianceDecomposition:
        
         Args:
             fast:       if true and the gp has not been initialized, initializes a kronSum gp
-            scales0:	initial variance components params
+            scales0:    initial variance components params
             fixed0:     initial fixed effect params
             lambd:      extent of the quadratic penalization on the off-diagonal elements of the trait-to-trait covariance matrix
                         if None (default), no penalization is considered
         """
         assert self.n_randEffs>0, 'VarianceDecomposition:: No variance component terms'
 
-        if not self.init:		self._initGP(fast=fast)
+        if not self.init:        self._initGP(fast=fast)
 
         assert lambd==None or self.fast, 'VarianceDecomposition:: Penalization not available for non-fast inference'
 
         # set lambda
-        if lambd!=None:		self.gp.setLambda(lambd)
+        if lambd!=None:        self.gp.setLambda(lambd)
 
         # set scales0
         if scales0!=None:
@@ -271,14 +272,14 @@ class VarianceDecomposition:
         Train the model using the specified initialization strategy
         
         Args:
-            fast:		    if true, fast gp is considered; if None (default), fast inference is considered if possible
+            fast:            if true, fast gp is considered; if None (default), fast inference is considered if possible
             scales0:        if not None init_method is set to manual
             fixed0:         initial weights for fixed effects
             init_method:    initialization strategy:
                                 'random': variance component parameters (scales) are sampled from a normal distribution with mean 0 and std 1,
                                 'diagonal': uses the a two-random-effect single trait model to initialize the parameters,
                                 'manual': the starting point is set manually,
-            termx:			term used for initialization in the diagonal strategy
+            termx:            term used for initialization in the diagonal strategy
             n_times:        number of restarts to converge
             perturb:        if true, the initial point (set manually opr through the single-trait model) is perturbed with gaussian noise
             perturbSize:    std of the gassian noise used to perturb the initial point
@@ -288,18 +289,26 @@ class VarianceDecomposition:
 
 
         if init_method==None:
-            if self.P==1:	init_method = 'random'
+            if self.P==1:    init_method = 'random'
             else:           init_method = 'diagonal'
 
-        if not self.init:		self._initGP(fast=fast)
+        if not self.init:        self._initGP(fast=fast)
 
-        if scales0!=None and ~perturb: 	init_method = 'manual'
+        if scales0!=None and ~perturb:     init_method = 'manual'
         
         if init_method=='diagonal':
             scales0 = self._getScalesDiag(termx=termx)
+
+        if init_method=='pairwise':
+            assert self.n_randEffs==2, 'VarianceDecomposition:: pairwise initialization possible only with 2 terms'
+            assert self.P>1, 'VarianceDecomposition:: pairwise initialization possible only with P>1'
+            i = (self.trait_covar_type[0]=='freeform')*(self.trait_covar_type[0]=='freeform')
+            assert i, 'VarianceDecomposition:: pairwise initialization possible only with freeform matrices'
+            scales0 = self._getScalesPairwise(verbose=verbose)
             
-        if init_method=='diagonal' or init_method=='manual':
-            if not perturb:		n_times = 1
+            
+        if init_method in ['diagonal','manual','pairwise']:
+            if not perturb:        n_times = 1
 
         if fixed0==None:
             fixed0 = sp.zeros_like(self.gp.getParams()['dataTerm'])
@@ -562,8 +571,8 @@ class VarianceDecomposition:
         predict the conditional mean (BLUP)
 
         Args:
-            use_fixed:		list of fixed effect indeces to use for predictions
-            use_random:		list of random effect indeces to use for predictions
+            use_fixed:        list of fixed effect indeces to use for predictions
+            use_random:        list of random effect indeces to use for predictions
         Returns:
             predictions (BLUP)
         """
@@ -604,8 +613,8 @@ class VarianceDecomposition:
             if Fstar==None:
                 warnings.warn('warning: fixed effect term %d not used for predictions as it has None test sample design'%term_i)
                 continue 
-            if self.P==1:	A = sp.eye(1)
-            else:			A = self.vd.getDesign(term_i)
+            if self.P==1:    A = sp.eye(1)
+            else:            A = self.vd.getDesign(term_i)
             Fstar = self.Fstar[term_i]
             W = weights[w_i:w_i+A.shape[0],0:1].T 
             term = sp.dot(Fstar,sp.dot(W,A))
@@ -621,7 +630,7 @@ class VarianceDecomposition:
 
         Args:
             seed:        seed
-            n_folds:	 number of folds to train the model on
+            n_folds:     number of folds to train the model on
             fullVector:  Bolean indicator, if true it stops if no convergence is observed for one of the folds, otherwise goes through and returns a pheno matrix with missing values
             verbose:     if true, prints the fold that is being used for predicitons
             **keywords:  params to pass to the function optimize
@@ -653,7 +662,7 @@ class VarianceDecomposition:
                 F      = self.vd.getFixed(term_i)
                 Ftest  = F[Itest,:]
                 Ftrain = F[Itrain,:]
-                if self.P>1:	A = self.vd.getDesign(term_i)
+                if self.P>1:    A = self.vd.getDesign(term_i)
                 else:           A = None
                 vc.addFixedEffect(F=Ftrain,Ftest=Ftest,A=A)
             for term_i in range(self.n_randEffs):
@@ -696,13 +705,13 @@ class VarianceDecomposition:
             fast:   Boolean indicator denoting if fast implementation is to consider
                     if fast is None (default) and possible in the specifc situation, fast implementation is considered
         """
-        if fast==None:		fast = (self.n_randEffs==2) and (self.P>1) and (~sp.isnan(self.Y).any())
+        if fast==None:        fast = (self.n_randEffs==2) and (self.P>1) and (~sp.isnan(self.Y).any())
         elif fast:
             assert self.n_randEffs==2, 'VarianceDecomposition: for fast inference number of random effect terms must be == 2'
             assert self.P>1, 'VarianceDecomposition: for fast inference number of traits must be > 1'
             assert not sp.isnan(self.Y).any(), 'VarianceDecomposition: fast inference available only for complete phenotype designs'
-        if fast:	self.vd.initGPkronSum()
-        else:		self.vd.initGPbase()
+        if fast:    self.vd.initGPkronSum()
+        else:        self.vd.initGPbase()
         self.gp=self.vd.getGP()
         self.init=True
         self.fast=fast
@@ -716,7 +725,7 @@ class VarianceDecomposition:
             trait_covar_type: type of covaraince to use. Default 'freeform'. possible values are 
             rank:       rank of a possible lowrank component (default 1)
             fixed_trait_covar:   PxP matrix for the (predefined) trait-to-trait covariance matrix if fixed type is used
-            jitter:		diagonal contribution added to trait-to-trait covariance matrices for regularization
+            jitter:        diagonal contribution added to trait-to-trait covariance matrices for regularization
         Returns:
             LIMIX::PCovarianceFunction for Trait covariance matrix
             vector labelling Cholesky parameters for different initializations
@@ -844,6 +853,74 @@ class VarianceDecomposition:
                 _scales = sp.concatenate((_scales,sp.array([sp.sqrt(self.jitter[term_i])])))
             scales.append(_scales)
         return sp.concatenate(scales)
+
+    def _getScalesPairwise(self,verbose=False):
+        """
+        Internal function for parameter initialization
+        Uses a single trait model for initializing variances and
+        a pairwise model to initialize correlations
+        """
+        #1. fit single trait model
+        if verbose:
+            print '.. fit single-trait model for initialization'
+        vc = VarianceDecomposition(self.Y[:,0:1])
+        for term_i in range(self.n_randEffs):
+            if term_i==self.noisPos:
+                vc.addRandomEffect(is_noise=True)
+            else:
+                K = self.vd.getTerm(term_i).getK()
+                vc.addRandomEffect(K=K)
+        scales0 = sp.sqrt(0.5)*sp.ones(2)
+        var = sp.zeros((self.P,2))
+        for p in range(self.P):
+            if verbose: print '   .. trait %d' % p
+            vc.setY(self.Y[:,p:p+1])
+            conv = vc.optimize(scales0=scales0)
+            if not conv:
+                print 'warning initialization not converged'
+            var[p,:] = vc.getVarianceComps()[0,:]
+        #2. fit pairwise model
+        if verbose:
+            print '.. fit pairwise model for initialization'
+        vc = VarianceDecomposition(self.Y[:,0:2])
+        for term_i in range(self.n_randEffs):
+            if term_i==self.noisPos:
+                vc.addRandomEffect(is_noise=True,trait_covar_type='freeform')
+            else:
+                K = self.vd.getTerm(term_i).getK()
+                vc.addRandomEffect(K=K,trait_covar_type='freeform')
+        rho_g = sp.ones((self.P,self.P))
+        rho_n = sp.ones((self.P,self.P))
+        for p1 in range(self.P):
+            for p2 in range(p1):
+                if verbose:
+                    print '   .. fit pair (%d,%d)'%(p1,p2)
+                vc.setY(self.Y[:,[p1,p2]])
+                scales0 = sp.sqrt(sp.array([var[p1,0],1e-4,var[p2,0],1e-4,var[p1,1],1e-4,var[p2,1],1e-4]))
+                conv = vc.optimize(scales0=scales0)
+                if not conv:
+                    print 'warning initialization not converged'
+                Cg = vc.getTraitCovar(0)
+                Cn = vc.getTraitCovar(1)
+                rho_g[p1,p2] = Cg[0,1]/sp.sqrt(Cg.diagonal().prod())
+                rho_n[p1,p2] = Cn[0,1]/sp.sqrt(Cn.diagonal().prod())
+                rho_g[p2,p1] = rho_g[p1,p2]
+                rho_n[p2,p1] = rho_n[p1,p2]
+        #3. init
+        Cg0 = rho_g*sp.dot(sp.sqrt(var[:,0:1]),sp.sqrt(var[:,0:1].T)) 
+        Cn0 = rho_n*sp.dot(sp.sqrt(var[:,1:2]),sp.sqrt(var[:,1:2].T)) 
+        offset_g = abs(sp.minimum(sp.linalg.eigh(Cg0)[0].min(),0))+1e-4
+        offset_n = abs(sp.minimum(sp.linalg.eigh(Cn0)[0].min(),0))+1e-4
+        Cg0+=offset_g*sp.eye(self.P)
+        Cn0+=offset_n*sp.eye(self.P)
+        Lg = sp.linalg.cholesky(Cg0)
+        Ln = sp.linalg.cholesky(Cn0)
+        Cg_params0 = sp.concatenate([Lg[:,p][:p+1] for p in range(self.P)])
+        Cn_params0 = sp.concatenate([Ln[:,p][:p+1] for p in range(self.P)])
+        scales0 = sp.concatenate([Cg_params0,1e-2*sp.ones(1),Cn_params0,1e-2*sp.ones(1)])
+
+        return scales0
+
 
     def _getScalesRand(self):
         """
