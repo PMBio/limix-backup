@@ -26,7 +26,7 @@ import glob
 
 def plot_manhattan(posCum,pv,chromBounds=None,
 					thr=None,qv=None,lim=None,xticklabels=True,
-					alphaNS=0.1,alphaS=0.5,colorNS='DarkBlue',colorS='Orange',plt=None,thr_plotting=None):
+					alphaNS=0.1,alphaS=0.5,colorNS='DarkBlue',colorS='Orange',plt=None,thr_plotting=None,labelS=None,labelNS=None):
 	"""
 	This script makes a manhattan plot
 	-------------------------------------------
@@ -45,6 +45,8 @@ def plot_manhattan(posCum,pv,chromBounds=None,
 	alphaS			transparency of significant SNPs
 	plt				matplotlib.axes.AxesSubplot, the target handle for this figure (otherwise current axes)
 	thr_plotting	plot only P-values that are smaller than thr_plotting to speed up plotting
+    labelS           optional plotting label (significant loci)
+    labelNS          optional plotting label (non significnat loci)
 	"""
 	if plt is None:
 		plt = pl.gca()
@@ -83,8 +85,8 @@ def plot_manhattan(posCum,pv,chromBounds=None,
 	else:
 		Isign = pv<thr
 
-	pl.plot(posCum[~Isign],-sp.log10(pv[~Isign]),'.',color=colorNS,ms=5,alpha=alphaNS)
-	pl.plot(posCum[Isign], -sp.log10(pv[Isign]), '.',color=colorS,ms=5,alpha=alphaS)
+	pl.plot(posCum[~Isign],-sp.log10(pv[~Isign]),'.',color=colorNS,ms=5,alpha=alphaNS,label=labelNS)
+	pl.plot(posCum[Isign], -sp.log10(pv[Isign]), '.',color=colorS,ms=5,alpha=alphaS,label=labelS)
 
 	pl.plot([0,posCum.max()],[-sp.log10(thr),-sp.log10(thr)],'--',color='Gray')
 

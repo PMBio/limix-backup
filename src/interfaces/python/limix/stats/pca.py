@@ -18,6 +18,7 @@ PCA related utility function
 import numpy as np 
 import pdb
 import numpy.linalg as linalg
+import scipy as sp
 
 def PCA(Y, components):
 	"""
