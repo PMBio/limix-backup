@@ -717,55 +717,58 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
 
 
 """ INTERNAL """
+def _estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,trait_covar_type='lowrank_diag',rank=1,lambd=None,verbose=True,init_method='pairwise',old_opt=True):
+	"""
+	estimates the background covariance model before testing
 
-def _estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,trait_covar_type='lowrank_diag',rank=1):
-    """
-    estimates the background covariance model before testing
-
-    Args:
-        phenos: [N x P] np.array of P phenotypes for N individuals
-        K1r:    [N x N] np.array of LMM-covariance/kinship koefficients (optional)
-                        If not provided, then linear regression analysis is performed
-        K1c:    [P x P] np.array of LMM-covariance/kinship koefficients (optional)
-                        If not provided, then linear regression analysis is performed
-        K2r:    [N x N] np.array of LMM-covariance/kinship koefficients (optional)
-                        If not provided, then linear regression analysis is performed
-        K2c:    [P x P] np.array of LMM-covariance/kinship koefficients (optional)
-                        If not provided, then linear regression analysis is performed
-        covs:           list of np.arrays holding covariates. Each covs[i] has one corresponding Acovs[i]
-        Acovs:          list of np.arrays holding the phenotype design matrices for covariates.
-                        Each covs[i] has one corresponding Acovs[i].
-        trait_covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
-                        'freeform': free form optimization, 
-                        'fixed': use a fixed matrix specified in covar_K0,
-                        'diag': optimize a diagonal matrix, 
-                        'lowrank': optimize a low rank matrix. The rank of the lowrank part is specified in the variable rank,
-                        'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                        'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                        'block': optimize the weight of a constant P x P block matrix of ones,
-                        'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
-                        'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,         
-        rank:           rank of a possible lowrank component (default 1)
+	Args:
+		phenos: [N x P] np.array of P phenotypes for N individuals
+		K1r:    [N x N] np.array of LMM-covariance/kinship koefficients (optional)
+						If not provided, then linear regression analysis is performed
+		K1c:    [P x P] np.array of LMM-covariance/kinship koefficients (optional)
+						If not provided, then linear regression analysis is performed
+		K2r:    [N x N] np.array of LMM-covariance/kinship koefficients (optional)
+						If not provided, then linear regression analysis is performed
+		K2c:    [P x P] np.array of LMM-covariance/kinship koefficients (optional)
+						If not provided, then linear regression analysis is performed
+		covs:           list of np.arrays holding covariates. Each covs[i] has one corresponding Acovs[i]
+		Acovs:          list of np.arrays holding the phenotype design matrices for covariates.
+						Each covs[i] has one corresponding Acovs[i].
+		trait_covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
+						'freeform': free form optimization, 
+						'fixed': use a fixed matrix specified in covar_K0,
+						'diag': optimize a diagonal matrix, 
+						'lowrank': optimize a low rank matrix. The rank of the lowrank part is specified in the variable rank,
+						'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+						'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+						'block': optimize the weight of a constant P x P block matrix of ones,
+						'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
+						'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,         
+		rank:           rank of a possible lowrank component (default 1)
     
-    Returns:
-        VarianceDecomposition object
-    """
-    print ".. Training the backgrond covariance with a GP model"
-    vc = VAR.VarianceDecomposition(phenos)
-    if K1r is not None:
-        vc.addRandomEffect(K1r,trait_covar_type=trait_covar_type,rank=rank)
-    if K2r is not None:
-        #TODO: fix this; forces second term to be the noise covariance
-        vc.addRandomEffect(is_noise=True,K=K2r,trait_covar_type=trait_covar_type,rank=rank)
-    for ic  in xrange(len(Acovs)):
-        vc.addFixedEffect(covs[ic],Acovs[ic])
-    start = time.time()
-    conv = vc.optimize(fast=True)
-    assert conv, "Variance Decomposition has not converged"
-    time_el = time.time()-start
-    print "Background model trained in %.2f s" % time_el
-    return vc
-
+	Returns:
+		VarianceDecomposition object
+	"""
+	print ".. Training the backgrond covariance with a GP model"
+	vc = VAR.VarianceDecomposition(phenos)
+	if K1r is not None:
+		vc.addRandomEffect(K1r,trait_covar_type=trait_covar_type,rank=rank)
+	if K2r is not None:
+		#TODO: fix this; forces second term to be the noise covariance
+		vc.addRandomEffect(is_noise=True,K=K2r,trait_covar_type=trait_covar_type,rank=rank)
+	for ic  in xrange(len(Acovs)):
+		vc.addFixedEffect(covs[ic],Acovs[ic])
+	start = time.time()
+	if old_opt:
+		conv = vc.optimize(fast=True)
+	elif lambd is not None:
+		conv = vc.optimize(init_method=init_method,verbose=verbose,lambd=lambd)
+	else:
+		conv = vc.optimize(init_method=init_method,verbose=verbose)
+	assert conv, "Variance Decomposition has not converged"
+	time_el = time.time()-start
+	print "Background model trained in %.2f s" % time_el
+	return vc
 
 def _updateKronCovs(covs,Acovs,N,P):
     """
