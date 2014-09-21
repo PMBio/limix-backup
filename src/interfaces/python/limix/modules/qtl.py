@@ -718,7 +718,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
 
 
 """ INTERNAL """
-def _estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,trait_covar_type='lowrank_diag',rank=1,lambd=None,verbose=True,init_method='pairwise',old_opt=True):
+def _estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,trait_covar_type='lowrank_diag',rank=1,lambd=None,verbose=True,init_method='random',old_opt=True):
 	"""
 	estimates the background covariance model before testing
 

@@ -156,6 +156,7 @@ if(env['CC']=='cl'):
    cflags.extend(['-EHsc'])
    debugcflags.extend(['-Zi'])
    debuglinkflags.extend(['/debug','/ASSEMBLYDEBUG'])
+   releasecflags.extend(['/O2'])
    if build_options['with_mkl']:
       env.Append(CPPDEFINES = ["EIGEN_USE_MKL_ALL"])
       cflags.extend([r"-IC:\Program Files (x86)\Intel\Composer XE\mkl\include"])
