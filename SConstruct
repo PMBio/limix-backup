@@ -56,9 +56,12 @@ help='Build doxygen documenation', default=False)
 AddOption('--with-tests', dest='with_tests', action='store_true',
 help='Run unit tests after build', default=False)
 
-#run unit tests?
-AddOption('--with-mkl', dest='with_mkl', action='store_true',
+#compile against MKL?
+AddOption('--mkl', dest='with_mkl', action='store_true',
 help='Bind against MKL performance librabries', default=False)
+AddOption('--inteldir', dest='inteldir', 
+help='Path to Intel Composer XE (required for MKL performance librabries)', default=r"\\lippert1\C$\Program Files (x86)\Intel\Composer XE")
+
 
 #build development tools for c++ (standalone snipsets)
 AddOption('--with-developcpp', dest='with_developcpp', action='store_true',
@@ -101,6 +104,7 @@ SetOption('num_jobs', n_jobs)
 build_options= {}
 build_options['with_zlib'] = GetOption('with_zlib')
 build_options['with_mkl'] = GetOption('with_mkl')
+build_options['inteldir'] = GetOption('inteldir')
 build_options['with_python'] = GetOption('with_python')
 build_options['with_developcpp'] = GetOption('with_developcpp')
 build_options['with_tests'] = GetOption('with_tests')
@@ -159,8 +163,8 @@ if(env['CC']=='cl'):
    releasecflags.extend(['/O2'])
    if build_options['with_mkl']:
       env.Append(CPPDEFINES = ["EIGEN_USE_MKL_ALL"])
-      cflags.extend([r"-IC:\Program Files (x86)\Intel\Composer XE\mkl\include"])
-      linkflags.extend(["C:\Program Files (x86)\Intel\Composer XE\mkl\lib\intel64\mkl_intel_lp64.lib", "C:\Program Files (x86)\Intel\Composer XE\mkl\lib\intel64\mkl_core.lib", "C:\Program Files (x86)\Intel\Composer XE\mkl\lib\intel64\mkl_intel_thread.lib", "C:\Program Files (x86)\Intel\Composer XE\compiler\lib\intel64\libiomp5md.lib", "-ldl"])
+      cflags.extend([r"-I"+os.path.join(build_options['inteldir'],r"mkl\include")])
+      linkflags.extend([os.path.join(build_options['inteldir'],r"mkl\lib\intel64\mkl_intel_lp64.lib"), os.path.join(build_options['inteldir'],r"mkl\lib\intel64\mkl_core.lib"), os.path.join(build_options['inteldir'],r"mkl\lib\intel64\mkl_intel_thread.lib"), os.path.join(build_options['inteldir'],r"compiler\lib\intel64\libiomp5md.lib"), "-ldl"])
 else: 
    #slse? (clang / gcc settings are very similar)
    cflags.extend(['-fPIC'])
