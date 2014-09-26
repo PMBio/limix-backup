@@ -23,6 +23,12 @@ import time
 import copy
 import warnings
 
+try:
+	from fastlmm.inference.lmm_cov import LMM as fastLMM
+	fastlmm_present = True
+except:
+	fastlmm_present = False
+
 class VarianceDecomposition:
     """
     Variance decomposition module in LIMIX
@@ -862,6 +868,7 @@ class VarianceDecomposition:
 		a pairwise model to initialize correlations
 		"""
 		var = sp.zeros((self.P,2))
+
 		if initDiagonal:
 			#1. fit single trait model
 			if verbose:
@@ -882,8 +889,10 @@ class VarianceDecomposition:
 				if not conv:
 					print 'warning initialization not converged'
 				var[p,:] = vc.getVarianceComps()[0,:]
-		elif True:
-			from fastlmm.inference.lmm_cov import LMM as fastLMM
+		
+		elif fastlmm_present:
+			if verbose:
+				print '.. fit single-trait model for initialization (using fastlmm)'			
 			for p in range(self.P):
 				if verbose: print '   .. trait %d' % p
 				covariates = None
