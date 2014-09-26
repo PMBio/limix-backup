@@ -75,5 +75,38 @@ class CRank1diagCF_test(unittest.TestCase,Acovar_test):
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
 
+class CFixedDiagonalCF_test(unittest.TestCase,Acovar_test):
+    """test class for CFixedDiagonalCF"""
+    def setUp(self):
+        SP.random.seed(1)
+        self.n=4
+        self.rank=1
+        d = SP.rand(self.n)+1
+        C0 = limix.CSumCF()
+        C0.addCovariance(limix.CLowRankCF(self.n,self.rank))
+        C0.addCovariance(limix.CDiagonalCF(self.n))
+        self.C = limix.CFixedDiagonalCF(C0,d)
+        self.name = 'CFixedDiagonalCF'
+        self.n_params=self.C.getNumberParams()
+        params=SP.randn(self.n_params)
+        self.C.setParams(params)
+        """
+        h = 1e-4
+        e = SP.zeros(self.n_params)
+        for i in range(self.n_params):
+            print i
+            e[i] = 1
+            self.C.setParams(params)
+            Cgrad = self.C.Kgrad_param(i)
+            self.C.setParams(params+h*e)
+            Cr = self.C.K()
+            self.C.setParams(params-h*e)
+            Cl = self.C.K()
+            Cgrad1 = (Cr-Cl)/(2*h)
+            print Cgrad/Cgrad1
+            pdb.set_trace()
+            e[i] = 0
+        """
+
 if __name__ == '__main__':
     unittest.main()

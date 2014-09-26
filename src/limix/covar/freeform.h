@@ -1,16 +1,8 @@
-// Copyright(c) 2014, The LIMIX developers(Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// Copyright(c) 2014, The LIMIX developers (Christoph Lippert, Paolo Francesco Casale, Oliver Stegle)
+// All rights reserved.
 //
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
+// LIMIX is provided under a 2-clause BSD license.
+// See license.txt for the complete license.
 
 #ifndef FREEFORM_H_
 #define FREEFORM_H_
@@ -327,6 +319,50 @@ public:
 
 };
 typedef sptr<CSqExpCF> PSqExpCF;
+
+class CFixedDiagonalCF: public ACovarianceFunction {
+
+protected:
+    muint_t numberGroups;
+    PCovarianceFunction covar;
+	VectorXd d;
+public:
+
+    CFixedDiagonalCF(PCovarianceFunction covar, const VectorXd& d);
+    ~CFixedDiagonalCF();
+
+    //set and get Params
+    virtual void setParams(const CovarParams& params){this->covar->setParams(params);};
+    virtual void agetParams(CovarParams* out) const {this->covar->agetParams(out);};
+
+    //Block X functions: X is fixed and set in the constructor
+    virtual void setX(const CovarInput& X)  {};
+    virtual void setXcol(const CovarInput& X, muint_t col)  {};
+    virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+    virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const  {};
+    virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const  {};
+
+    virtual void agetScales(CovarParams* out);
+    virtual void setParamsCovariance(const MatrixXd& K0) ;
+
+	virtual muint_t Kdim() const 
+		{
+			return this->numberGroups;
+		}
+
+
+    //Covariance pure functions
+    //pure functions that need to be implemented
+    virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+    virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const ;
+    virtual void agetParamMask0(CovarParams* out) const;
+
+    //class information
+    inline std::string getName() const {return "CFixedDiagonalCF";};
+
+};
+typedef sptr<CFixedDiagonalCF> PFixedDiagonalCF;
 
 
 } /* namespace limix */

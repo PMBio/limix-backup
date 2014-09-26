@@ -59,26 +59,24 @@ CGPkronSumCache::CGPkronSumCache(CGPkronSum* gp)
 	LambdacCacheNull=true;
 	SVDrstarCacheNull=true;
 	LambdarCacheNull=true;
+	DCacheNull=true;
 	YrotPartCacheNull=true;
 	YrotCacheNull=true;
 	YtildeCacheNull=true;
-	RrotCacheNull=true;
-	OmegaRotCacheNull=true;
 }
 
 
 /*!
 This is optimised for the case where rows are fixed and colomns vary
-(because of the partial rotation on Y, Rrot and OmegaRot)
+(because of the partial rotation on Y)
 
 if R1 or Omega change
 - row rotations (inner rotation performed only if Omega changes)
-- Lambdar
+- Lambdar,D
 - YrotPart, Yrot, Ytilde
-- Rrot, OmegaRot
 if C1 or Sigma change
 - col rotations (inner rotation performed only if Sigma changes)
-- Lambdac
+- Lambdac,D
 - Yrot, Ytilde
 */
 void CGPkronSumCache::validateCache()
@@ -88,6 +86,7 @@ void CGPkronSumCache::validateCache()
 	{
 		SVDcstarCacheNull=true;
 		LambdacCacheNull=true;
+		DCacheNull=true;
 		YrotCacheNull=true;
 		YtildeCacheNull=true;
 	}
@@ -95,11 +94,10 @@ void CGPkronSumCache::validateCache()
 	{
 		SVDrstarCacheNull=true;
 		LambdarCacheNull=true;
+		DCacheNull=true;
 		YrotPartCacheNull=true;
 		YrotCacheNull=true;
 		YtildeCacheNull=true;
-		RrotCacheNull=true;
-		OmegaRotCacheNull=true;
 	}
 	if((!*syncData)) {
 		YrotPartCacheNull=true;
@@ -200,7 +198,6 @@ void CGPkronSumCache::updateSVDrstar()
 	SomegaCache=this->covarr2->rgetSK();
 	aUS2alpha(USisqrt,this->covarr2->rgetUK(),SomegaCache,-0.5);
 	MatrixXd Rstar = USisqrt.transpose()*this->covarr1->rgetK()*USisqrt;
-	// ADD SOME DIAGONAL STUFF?
 	Eigen::SelfAdjointEigenSolver<MatrixXd> eigensolver(Rstar);
 	UrstarCache = eigensolver.eigenvectors();
 	SrstarCache = eigensolver.eigenvalues();
@@ -273,8 +270,7 @@ MatrixXd& CGPkronSumCache::rgetYrotPart()
 		//Rotate columns of Y
 		YrotPartCache.resize(gp->getY().rows(),gp->getY().cols());
 		MatrixXd& Lambdar = rgetLambdar();
-		for (muint_t p=0; p<(muint_t)this->gp->getY().cols(); p++)
-			YrotPartCache.block(0,p,gp->getY().rows(),1).noalias()=Lambdar*gp->dataTerm->evaluate().block(0,p,gp->getY().rows(),1);
+		YrotPartCache.noalias()=Lambdar*gp->dataTerm->evaluate();
 		YrotPartCacheNull=false;
 	}
     this->gp->rtYrotPart=te1(beg);
@@ -289,12 +285,31 @@ MatrixXd& CGPkronSumCache::rgetYrot()
 		//Rotate rows of Y
 		YrotCache.resize(gp->getY().rows(),gp->getY().cols());
 		MatrixXd& Lambdac = rgetLambdac();
-		for (muint_t n=0; n<(muint_t)this->gp->getY().rows(); n++)
-			YrotCache.block(n,0,1,gp->getY().cols()).noalias()=rgetYrotPart().block(n,0,1,gp->getY().cols())*Lambdac.transpose();
+		MatrixXd& YrotPart = rgetYrotPart();
+		YrotCache.noalias()=YrotPart*Lambdac.transpose();
 		YrotCacheNull=false;
 	}
     this->gp->rtYrot=te1(beg);
 	return YrotCache;
+}
+
+MatrixXd& CGPkronSumCache::rgetD()
+{
+	validateCache();
+	clock_t beg = clock();
+	if (DCacheNull) {
+	    DCache.resize(gp->getN(),gp->getP());
+	    MatrixXd& Scstar = rgetScstar();
+	    MatrixXd& Srstar = rgetSrstar();
+	    for (muint_t n=0; n<this->gp->getN(); n++)	{
+	        for (muint_t p=0; p<this->gp->getP(); p++)	{
+	        	DCache(n,p)=1/(Scstar(p,0)*Srstar(n,0)+1);
+	    	}
+	    }
+	    DCacheNull=false;
+	}
+    this->gp->rtD=te1(beg);
+	return DCache;
 }
 
 MatrixXd& CGPkronSumCache::rgetYtilde()
@@ -302,46 +317,14 @@ MatrixXd& CGPkronSumCache::rgetYtilde()
 	validateCache();
 	clock_t beg = clock();
 	if (YtildeCacheNull) {
-	    YtildeCache.resize(gp->getN(),gp->getP());
 	    MatrixXd& Yrot = rgetYrot();
-	    MatrixXd& Scstar = rgetScstar();
-	    MatrixXd& Srstar = rgetSrstar();
-	    for (muint_t n=0; n<this->gp->getN(); n++)	{
-	        for (muint_t p=0; p<this->gp->getP(); p++)	{
-	        	YtildeCache(n,p)=Yrot(n,p)/(Scstar(p,0)*Srstar(n,0)+1);
-	    	}
-	    }
+	    MatrixXd& D = rgetD();
+	    YtildeCache = D.array()*Yrot.array();
 	    YtildeCacheNull=false;
 	}
     this->gp->rtYtilde=te1(beg);
 	return YtildeCache;
 }
-
-MatrixXd& CGPkronSumCache::rgetRrot()
-{
-	validateCache();
-	clock_t beg = clock();
-	if (RrotCacheNull) {
-		Rrot=rgetLambdar()*this->covarr1->rgetK()*rgetLambdar().transpose();
-		RrotCacheNull=false;
-	}
-    this->gp->rtRrot=te1(beg);
-	return Rrot;
-}
-
-MatrixXd& CGPkronSumCache::rgetOmegaRot()
-{
-	validateCache();
-	clock_t beg = clock();
-	if (OmegaRotCacheNull) {
-		//Rotate rows of Y
-		OmegaRot=rgetLambdar()*this->covarr2->rgetK()*rgetLambdar().transpose();
-		OmegaRotCacheNull=false;
-	}
-    this->gp->rtOmegaRot=te1(beg);
-	return OmegaRot;
-}
-
 
 /* CGPkronSum */
 
@@ -449,18 +432,10 @@ CGPHyperParams CGPkronSum::getParamMask() const {
 void CGPkronSum::agetKEffInvYCache(MatrixXd* out) 
 {
 	//Computing Kinv
-	MatrixXd& Yrot = cache->rgetYrot();
-    MatrixXd& Scstar = cache->rgetScstar();
-    MatrixXd& Srstar = cache->rgetSrstar();
+	MatrixXd& Ytilde = cache->rgetYtilde();
 	MatrixXd& Lambdar = cache->rgetLambdar();
 	MatrixXd& Lambdac = cache->rgetLambdac();
-	MatrixXd& Ytilde = cache->rgetYtilde();
-	MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
-	out->resize(Yrot.rows(),Yrot.cols());
-	for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
-		_Ytilde.block(0,p,Yrot.rows(),1).noalias()=Lambdar.transpose()*Ytilde.block(0,p,Yrot.rows(),1);
-	for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
-		out->block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*Lambdac;
+	(*out) = Lambdar.transpose()*Ytilde*Lambdac;
 }
 
 
@@ -485,6 +460,7 @@ mfloat_t CGPkronSum::LML()
     	rtLML1e+=te1(beg);
     }
     else	rtLML1e+=te1(beg);
+    MatrixXd& Ytilde = cache->rgetYtilde();
 
     beg = clock();
     //1. logdet:
@@ -507,12 +483,7 @@ mfloat_t CGPkronSum::LML()
 
     beg = clock();
     //2. quadratic term
-    mfloat_t lml_quad = 0;
-    for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
-        for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
-    		lml_quad+=std::pow(Yrot(n,p),2)/(Scstar(p,0)*Srstar(n,0)+1);
-    	}
-    }
+    mfloat_t lml_quad = (Ytilde.array()*Yrot.array()).sum();
     lml_quad *= 0.5;
     rtLML3+=te1(beg);
 
@@ -604,7 +575,7 @@ void CGPkronSum::aLMLgrad_covarc1(VectorXd *out)
 {
 	clock_t beg = clock();
     //get stuff from cache
-    MatrixXd& Scstar = cache->rgetScstar();
+    MatrixXd& D = cache->rgetD();
     this->rtCC1part1a+=te1(beg);
 	beg = clock();
     MatrixXd& Srstar = cache->rgetSrstar();
@@ -619,9 +590,6 @@ void CGPkronSum::aLMLgrad_covarc1(VectorXd *out)
 	MatrixXd& Ytilde = cache->rgetYtilde();
     this->rtCC1part1e+=te1(beg);
 	beg = clock();
-	//covar
-	MatrixXd& Rrot = cache->rgetRrot();
-    this->rtCC1part1f+=te1(beg);
 	//param mask
 	VectorXd paramMask = this->covarc1->getParamMask();
 
@@ -637,21 +605,17 @@ void CGPkronSum::aLMLgrad_covarc1(VectorXd *out)
 			CgradRot=Lambdac*covarc1->Kgrad_param(i)*Lambdac.transpose();
 			//1. grad logdet
 			mfloat_t grad_det = 0;
-	    	for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
-	        	for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
-	        		grad_det+=CgradRot(p,p)*Rrot(n,n)/(Scstar(p,0)*Srstar(n,0)+1);
-	    		}
-	    	}
+	    	for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
+	        	for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
+	        		grad_det+=CgradRot(p,p)*Srstar(n,0)*D(n,p);
 	    	grad_det*=0.5;
 			//2. grad quadratic term
 	    	// Decomposition in columns and row
 	   		MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
-	    	MatrixXd YtildeR(Yrot.rows(),Yrot.cols());
-			for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
-				_Ytilde.block(0,p,Yrot.rows(),1).noalias()=Rrot*Ytilde.block(0,p,Yrot.rows(),1);
 			for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
-				YtildeR.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*CgradRot.transpose();
-			mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
+				for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
+					_Ytilde(n,p) = Srstar(n,0)*Ytilde(n,p);
+			mfloat_t grad_quad = -0.5*(Ytilde.array()*(_Ytilde*CgradRot.transpose()).array()).sum();
 			(*out)(i,0)=grad_det+grad_quad;
 		}
     }
@@ -662,14 +626,10 @@ void CGPkronSum::aLMLgrad_covarc2(VectorXd *out)
 {
 	clock_t beg = clock();
     //get stuff from cache
-    MatrixXd& Scstar = cache->rgetScstar();
-    MatrixXd& Srstar = cache->rgetSrstar();
+    MatrixXd& D = cache->rgetD();
     MatrixXd& Yrot = cache->rgetYrot();
 	MatrixXd& Lambdac = cache->rgetLambdac();
 	MatrixXd& Ytilde = cache->rgetYtilde();
-	//covar
-	MatrixXd& OmegaRot = cache->rgetOmegaRot();
-    this->rtCC2part1+=te1(beg);
 	//param mask
 	VectorXd paramMask = this->covarc1->getParamMask();
 
@@ -685,21 +645,13 @@ void CGPkronSum::aLMLgrad_covarc2(VectorXd *out)
 			SigmaGradRot=Lambdac*covarc2->Kgrad_param(i)*Lambdac.transpose();
 			//1. grad logdet
 			mfloat_t grad_det = 0;
-	    	for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)	{
-	        	for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)	{
-	        		grad_det+=SigmaGradRot(p,p)*OmegaRot(n,n)/(Scstar(p,0)*Srstar(n,0)+1);
-	    		}
-	    	}
+	    	for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
+	        	for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
+	        		grad_det+=SigmaGradRot(p,p)*D(n,p);
 	    	grad_det*=0.5;
 			//2. grad quadratic term
 	    	// Decomposition in columns and row
-	    	MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
-	    	MatrixXd YtildeR(Yrot.rows(),Yrot.cols());
-			for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
-				_Ytilde.block(0,p,Yrot.rows(),1).noalias()=OmegaRot*Ytilde.block(0,p,Yrot.rows(),1);
-			for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
-				YtildeR.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*SigmaGradRot.transpose();
-			mfloat_t grad_quad = -0.5*(Ytilde.array()*YtildeR.array()).sum();
+			mfloat_t grad_quad = -0.5*(Ytilde.array()*(Ytilde*SigmaGradRot.transpose()).array()).sum();
 			(*out)(i,0)=grad_det+grad_quad;
 		}
     }
@@ -798,19 +750,8 @@ void CGPkronSum::aLMLgrad_covarr2(VectorXd *out)
 
 void CGPkronSum::aLMLgrad_dataTerm(MatrixXd* out) 
 {
-	//Computing Kinv
-	MatrixXd& Yrot = cache->rgetYrot();
-    MatrixXd& Scstar = cache->rgetScstar();
-    MatrixXd& Srstar = cache->rgetSrstar();
-	MatrixXd& Lambdar = cache->rgetLambdar();
-	MatrixXd& Lambdac = cache->rgetLambdac();
-	MatrixXd& Ytilde = cache->rgetYtilde();
-	MatrixXd _Ytilde(Yrot.rows(),Yrot.cols());
-	MatrixXd KinvY(Yrot.rows(),Yrot.cols());
-	for (muint_t p=0; p<(muint_t)Yrot.cols(); p++)
-		_Ytilde.block(0,p,Yrot.rows(),1).noalias()=Lambdar.transpose()*Ytilde.block(0,p,Yrot.rows(),1);
-	for (muint_t n=0; n<(muint_t)Yrot.rows(); n++)
-		KinvY.block(n,0,1,Yrot.cols()).noalias()=_Ytilde.block(n,0,1,Yrot.cols())*Lambdac;
+	MatrixXd KinvY;
+	this->agetKEffInvYCache(&KinvY);
 	(*out) = this->dataTerm->gradParams(KinvY);
 }
 

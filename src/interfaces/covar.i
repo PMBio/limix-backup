@@ -27,6 +27,7 @@
 %shared_ptr(limix::CDiagonalCF)
 %shared_ptr(limix::CRank1diagCF)
 %shared_ptr(limix::CSqExpCF)
+%shared_ptr(limix::CFixedDiagonalCF)
 %shared_ptr(limix::CCovLinearARD)
 %shared_ptr(limix::CCovLinearISO)
 %shared_ptr(limix::CCovLinearISODelta)

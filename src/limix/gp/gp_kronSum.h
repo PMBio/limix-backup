@@ -38,11 +38,10 @@ Stores all the intermediate computations for the two covariance Kronecker model
 - Rstar    = Urstar diag(Srstar) Urstar.T
 - Lambdac  = Ucstar diag(Ssigma^(-0.5)) Usigma
 - Lambdar  = Uomega diag(Somega^(-0.5)) Uomega
+- D        = vec^(-1)((Scstar \kron diag(Srstar) + I)^(-1))
 - YrotPart = vec^(-1)((I \kron Lambdar) vec(Y) )
 - Yrot     = vec^(-1)((Lambdac \kron I) vec(YrotPart) )
-- Ytilde   = vec^(-1)((Scstar \kron diag(Srstar) + I) vec(Yrot) )
-- Rrot     = (Lambdac \kron Lambdar)   R   (Lambdac \kron Lambdar).T
-- OmegaRot = (Lambdac \kron Lambdar) Omega (Lambdac \kron Lambdar).T
+- Ytilde   = D.array() * Yrot.array()
 */
 class CGPkronSumCache : public CParamObject
 {
@@ -56,17 +55,15 @@ protected:
 	MatrixXd SrstarCache;
 	MatrixXd UrstarCache;
 	MatrixXd LambdarCache;
+	MatrixXd DCache;
 	MatrixXd YrotPartCache;
 	MatrixXd YrotCache;
 	MatrixXd YtildeCache;
-	MatrixXd Rrot;
-	MatrixXd OmegaRot;
 
 	CGPkronSum* gp;
 	bool SVDcstarCacheNull,SVDrstarCacheNull;
-	bool LambdarCacheNull,LambdacCacheNull;
+	bool LambdarCacheNull,LambdacCacheNull,DCacheNull;
 	bool YrotPartCacheNull,YrotCacheNull,YtildeCacheNull;
-	bool RrotCacheNull,OmegaRotCacheNull;
 	//sync states
 	Pbool syncLik,syncCovarc1,syncCovarc2,syncCovarr1,syncCovarr2,syncData;
 	//validate & clear cache
@@ -90,11 +87,10 @@ public:
 	MatrixXd& rgetSrstar();
 	MatrixXd& rgetUrstar();
 	MatrixXd& rgetLambdar();
+	MatrixXd& rgetD();
 	MatrixXd& rgetYrotPart();
 	MatrixXd& rgetYrot();
 	MatrixXd& rgetYtilde();
-	MatrixXd& rgetRrot();
-	MatrixXd& rgetOmegaRot();
 
 	void argetSsigma(MatrixXd* out)
 	{
@@ -128,6 +124,10 @@ public:
 	{
 		(*out) = rgetLambdar();
 	}
+	void argetD(MatrixXd* out)
+	{
+		(*out) = rgetD();
+	}
 	void argetYrotPart(MatrixXd* out)
 	{
 		(*out) = rgetYrotPart();
@@ -139,14 +139,6 @@ public:
 	void argetYtilde(MatrixXd* out)
 	{
 		(*out) = rgetYtilde();
-	}
-	void argetRrot(MatrixXd* out)
-	{
-		(*out) = rgetRrot();
-	}
-	void argetOmegaRot(MatrixXd* out)
-	{
-		(*out) = rgetOmegaRot();
 	}
 
 };
@@ -181,11 +173,10 @@ protected:
 	mfloat_t rtSVDrows;
 	mfloat_t rtLambdac;
 	mfloat_t rtLambdar;
+	mfloat_t rtD;
 	mfloat_t rtYrotPart;
 	mfloat_t rtYrot;
 	mfloat_t rtYtilde;
-	mfloat_t rtRrot;
-	mfloat_t rtOmegaRot;
 	mfloat_t rtCC1part1a;
 	mfloat_t rtCC1part1b;
 	mfloat_t rtCC1part1c;
@@ -296,11 +287,10 @@ public:
 	mfloat_t getRtSVDrows() 	{return rtSVDrows;}
 	mfloat_t getRtLambdac() 	{return rtLambdac;}
 	mfloat_t getRtLambdar() 	{return rtLambdar;}
+	mfloat_t getRtD() 			{return rtD;}
 	mfloat_t getRtYrotPart() 	{return rtYrotPart;}
 	mfloat_t getRtYrot() 		{return rtYrot;}
 	mfloat_t getRtYtilde() 		{return rtYtilde;}
-	mfloat_t getRtRrot() 		{return rtRrot;}
-	mfloat_t getRtOmegaRot() 	{return rtOmegaRot;}
 	mfloat_t getRtCC1part1a() 	{return rtCC1part1a;}
 	mfloat_t getRtCC1part1b() 	{return rtCC1part1b;}
 	mfloat_t getRtCC1part1c() 	{return rtCC1part1c;}
