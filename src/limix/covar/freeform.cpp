@@ -737,7 +737,73 @@ void CSqExpCF::agetParamMask0(CovarParams* out) const
     (*out) = VectorXd::Ones(getNumberParams());
 }
 
+/* CFixedDiagonalCF class */
 
+CFixedDiagonalCF::CFixedDiagonalCF(PCovarianceFunction covar, const VectorXd& d)
+{
+    this->numberGroups=covar->Kdim();
+    this->numberDimensions = 0;
+    this->covar = covar;
+    this->numberParams = covar->getNumberParams();
+    this->d = d;
+    initParams();
+}
+
+CFixedDiagonalCF::~CFixedDiagonalCF()
+{
+}
+
+void CFixedDiagonalCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const
+{
+    (*out)=this->d;
+}
+
+void CFixedDiagonalCF::agetScales(CovarParams* out) {
+    (*out) = this->getParams();
+}
+
+void CFixedDiagonalCF::setParamsCovariance(const MatrixXd& K0)
+{
+    //not implemented
+}
+
+void CFixedDiagonalCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const
+{
+    MatrixXd C = this->covar->K();
+    (*out) = MatrixXd::Zero(this->Kdim(),this->Kdim());
+    for (muint_t ir=0; ir<(*out).rows(); ir++) {
+        for (muint_t ic=0; ic<=ir; ic++) {
+            (*out)(ir,ic)=C(ir,ic)*sqrt(d(ir)*d(ic)/(C(ir,ir)*C(ic,ic)));
+            (*out)(ic,ir)=(*out)(ir,ic);
+        }
+    }
+}
+
+void CFixedDiagonalCF::aKgrad_param(MatrixXd* out,muint_t i) const
+{
+    MatrixXd C = this->covar->K();
+    MatrixXd Cgrad = this->covar->Kgrad_param(i);
+    (*out) = MatrixXd::Zero(this->Kdim(),this->Kdim());
+    for (muint_t ir=0; ir<(*out).rows(); ir++) {
+        for (muint_t ic=0; ic<=ir; ic++) {
+            (*out)(ir,ic)  = Cgrad(ir,ic)/sqrt(C(ir,ir)*C(ic,ic));
+            (*out)(ir,ic) += -0.5*C(ir,ic)*Cgrad(ir,ir)/(sqrt(C(ir,ir)*C(ic,ic))*C(ir,ir));
+            (*out)(ir,ic) += -0.5*C(ir,ic)*Cgrad(ic,ic)/(sqrt(C(ir,ir)*C(ic,ic))*C(ic,ic));
+            (*out)(ir,ic) *= sqrt(d(ir)*d(ic));
+            (*out)(ic,ir)=(*out)(ir,ic);
+        }
+    }
+}
+
+void CFixedDiagonalCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const
+{
+    //not implemented
+}
+
+void CFixedDiagonalCF::agetParamMask0(CovarParams* out) const
+{
+    (*out) = VectorXd::Ones(getNumberParams());
+}
 
 } /* namespace limix */
 
