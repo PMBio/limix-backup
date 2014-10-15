@@ -494,23 +494,24 @@ mfloat_t CGPkronSum::LML()
     rtLML4+=te1(beg);
 
 	//4. penalization
-	mfloat_t lml_pen = 0;
+	mfloat_t lml_pen_g = 0;
 	if (lambda_g>0) {
 		MatrixXd C1 = covarc1->K();
 		for (muint_t ir=0; ir<C1.rows(); ir++)
 			for (muint_t ic=0; ic<ir; ic++)
-				lml_pen+= C1(ir,ic)*C1(ir,ic);
-		lml_pen*=lambda_g;
+				lml_pen_g+= C1(ir,ic)*C1(ir,ic);
+		lml_pen_g*=lambda_g;
 	}
+	mfloat_t lml_pen_n = 0;
 	if (lambda_n>0) {
 		MatrixXd C2 = covarc2->K();
 		for (muint_t ir=0; ir<C2.rows(); ir++)
 			for (muint_t ic=0; ic<ir; ic++)
-				lml_pen+= C2(ir,ic)*C2(ir,ic);
-		lml_pen*=lambda_n;
+				lml_pen_n+= C2(ir,ic)*C2(ir,ic);
+		lml_pen_n*=lambda_n;
 	}
 
-    return lml_quad + lml_det + lml_const+ lml_pen;
+    return lml_quad + lml_det + lml_const+ lml_pen_g + lml_pen_n;
 };
 
 

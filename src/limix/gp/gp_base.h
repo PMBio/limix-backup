@@ -194,6 +194,8 @@ public:
 
 	//set penalization
 	virtual void setLambda(mfloat_t lambda) {};
+	virtual void setLambdaG(mfloat_t lambda) {};
+	virtual void setLambdaN(mfloat_t lambda) {};
 
 	//getter and setter for Parameters:
 	virtual void setParams(const CGPHyperParams& hyperparams) ;					//!< sets the parameters without a mask
