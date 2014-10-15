@@ -342,7 +342,8 @@ CGPkronSum::CGPkronSum(const MatrixXd& Y,
 	this->N=Y.rows();
 	this->P=Y.cols();
 
-	this->lambda=0;
+	this->lambda_g=0;
+	this->lambda_n=0;
 
 	rtLML1a=0;
 	rtLML1b=0;
@@ -494,13 +495,19 @@ mfloat_t CGPkronSum::LML()
 
 	//4. penalization
 	mfloat_t lml_pen = 0;
-	if (lambda>0) {
+	if (lambda_g>0) {
 		MatrixXd C1 = covarc1->K();
-		MatrixXd C2 = covarc2->K();
 		for (muint_t ir=0; ir<C1.rows(); ir++)
 			for (muint_t ic=0; ic<ir; ic++)
-				lml_pen+= C1(ir,ic)*C1(ir,ic)+C2(ir,ic)*C2(ir,ic);
-		lml_pen*=lambda;
+				lml_pen+= C1(ir,ic)*C1(ir,ic);
+		lml_pen*=lambda_g;
+	}
+	if (lambda_n>0) {
+		MatrixXd C2 = covarc2->K();
+		for (muint_t ir=0; ir<C2.rows(); ir++)
+			for (muint_t ic=0; ic<ir; ic++)
+				lml_pen+= C2(ir,ic)*C2(ir,ic);
+		lml_pen*=lambda_n;
 	}
 
     return lml_quad + lml_det + lml_const+ lml_pen;
@@ -515,14 +522,14 @@ CGPHyperParams CGPkronSum::LMLgrad()
     if(params.exists("covarc1")){
         VectorXd grad_covar;
         aLMLgrad_covarc1(&grad_covar);
-        if (lambda>0) {
+        if (lambda_g>0) {
             MatrixXd C1, C1grad;
             for (muint_t i=0; i<(muint_t)params["covarc1"].rows(); i++) {
                 C1     = covarc1->K();
                 C1grad = covarc1->Kgrad_param(i);
                 for (muint_t ir=0; ir<C1.rows(); ir++)
                     for (muint_t ic=0; ic<ir; ic++)
-                        grad_covar(i)+= 2*lambda*C1(ir,ic)*C1grad(ir,ic);
+                        grad_covar(i)+= 2*lambda_g*C1(ir,ic)*C1grad(ir,ic);
             }
         }
         rv.set("covarc1", grad_covar);
@@ -530,14 +537,14 @@ CGPHyperParams CGPkronSum::LMLgrad()
     if(params.exists("covarc2")){
         VectorXd grad_covar;
         aLMLgrad_covarc2(&grad_covar);
-        if (lambda>0) {
+        if (lambda_n>0) {
             MatrixXd C2, C2grad;
             for (muint_t i=0; i<params["covarc2"].rows(); i++) {
                 C2     = covarc2->K();
                 C2grad = covarc2->Kgrad_param(i);
                 for (muint_t ir=0; ir<C2.rows(); ir++)
                     for (muint_t ic=0; ic<ir; ic++)
-                        grad_covar(i)+= 2*lambda*C2(ir,ic)*C2grad(ir,ic);
+                        grad_covar(i)+= 2*lambda_n*C2(ir,ic)*C2grad(ir,ic);
             }
         }
         rv.set("covarc2", grad_covar);

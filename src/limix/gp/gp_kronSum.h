@@ -163,7 +163,8 @@ protected:
 	muint_t P;
 
 	//penalization
-	mfloat_t lambda;
+	mfloat_t lambda_g;
+	mfloat_t lambda_n;
 
 	//debug bool
 	bool debug;
@@ -211,7 +212,12 @@ public:
 	virtual ~CGPkronSum();
 
 	//set penalization constant
-	virtual void setLambda(mfloat_t lambda) {this->lambda=lambda;};
+	virtual void setLambda(mfloat_t lambda) {
+		this->setLambdaG(lambda);
+		this->setLambdaN(lambda);
+	}
+	virtual void setLambdaG(mfloat_t lambda) {this->lambda_g=lambda;};
+	virtual void setLambdaN(mfloat_t lambda) {this->lambda_n=lambda;};
 
 	//getter for parameter bounds and hyperparam Mask
 	virtual CGPHyperParams getParamBounds(bool upper) const;
