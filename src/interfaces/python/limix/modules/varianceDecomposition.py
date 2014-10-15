@@ -228,7 +228,7 @@ class VarianceDecomposition:
         self.cache['Sigma']   = None
         self.cache['Hessian'] = None
 
-    def trainGP(self,fast=None,scales0=None,fixed0=None,lambd=None):
+    def trainGP(self,fast=None,scales0=None,fixed0=None,lambd_g=None,lambd_n=None):
         """
         Train the gp
        
@@ -236,17 +236,20 @@ class VarianceDecomposition:
             fast:       if true and the gp has not been initialized, initializes a kronSum gp
             scales0:    initial variance components params
             fixed0:     initial fixed effect params
-            lambd:      extent of the quadratic penalization on the off-diagonal elements of the trait-to-trait covariance matrix
+            lambd_g:    extent of the quadratic penalization on the off-diagonal elements of the trait-to-trait covariance matrix
+                        if None (default), no penalization is considered
+            lambd_n:    extent of the quadratic penalization on the off-diagonal elements of the trait-to-trait covariance matrix
                         if None (default), no penalization is considered
         """
         assert self.n_randEffs>0, 'VarianceDecomposition:: No variance component terms'
 
         if not self.init:        self._initGP(fast=fast)
 
-        assert lambd==None or self.fast, 'VarianceDecomposition:: Penalization not available for non-fast inference'
+        assert (lambd_n==None and lambd_g==None) or self.fast, 'VarianceDecomposition:: Penalization not available for non-fast inference'
 
         # set lambda
-        if lambd!=None:        self.gp.setLambda(lambd)
+        if lambd_g!=None:        self.gp.setLambdaG(lambd_g)
+        if lambd_n!=None:        self.gp.setLambdaN(lambd_n)
 
         # set scales0
         if scales0!=None:
@@ -267,7 +270,7 @@ class VarianceDecomposition:
             
         return conv
 
-    def optimize(self,fast=None,scales0=None,fixed0=None,init_method=None,termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=None,lambd=None):
+    def optimize(self,fast=None,scales0=None,fixed0=None,init_method=None,termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=None,lambd_g=None,lambd_n=None):
         """
         Train the model using the specified initialization strategy
         
@@ -324,7 +327,7 @@ class VarianceDecomposition:
                 scales1 = scales0
                 fixed1  = fixed0
 
-            conv = self.trainGP(scales0=scales1,fixed0=fixed1,lambd=lambd)
+            conv = self.trainGP(scales0=scales1,fixed0=fixed1,lambd_g=lambd_g,lambd_n=lambd_n)
             if conv:    break
     
         if verbose:
@@ -335,7 +338,7 @@ class VarianceDecomposition:
  
         return conv
 
-    def optimize_with_repeates(self,fast=None,verbose=None,n_times=10,lambd=None):
+    def optimize_with_repeates(self,fast=None,verbose=None,n_times=10,lambd_g=None,lambd_n=None):
         """
         Train the model repeadly up to a number specified by the users with random restarts and
         return a list of all relative minima that have been found 
@@ -358,7 +361,7 @@ class VarianceDecomposition:
             
             scales1 = self._getScalesRand()
             fixed1  = 1e-1*sp.randn(fixed0.shape[0],fixed0.shape[1])
-            conv = self.trainGP(fast=fast,scales0=scales1,fixed0=fixed1,lambd=lambd)
+            conv = self.trainGP(fast=fast,scales0=scales1,fixed0=fixed1,lambd_g=lambd_g,lambd_n=lambd_n)
 
             if conv:
                 # compare with previous minima
