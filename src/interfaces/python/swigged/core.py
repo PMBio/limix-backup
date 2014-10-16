@@ -4039,6 +4039,185 @@ class CSqExpCF(ACovarianceFunction):
 CSqExpCF_swigregister = _core.CSqExpCF_swigregister
 CSqExpCF_swigregister(CSqExpCF)
 
+class CFixedDiagonalCF(ACovarianceFunction):
+    """Proxy of C++ limix::CFixedDiagonalCF class"""
+    __swig_setmethods__ = {}
+    for _s in [ACovarianceFunction]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CFixedDiagonalCF, name, value)
+    __swig_getmethods__ = {}
+    for _s in [ACovarianceFunction]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, CFixedDiagonalCF, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(limix::CFixedDiagonalCF self, limix::PCovarianceFunction covar, VectorXd const & d) -> CFixedDiagonalCF
+
+        Parameters:
+            covar: limix::PCovarianceFunction
+            d: VectorXd const &
+
+        """
+        this = _core.new_CFixedDiagonalCF(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _core.delete_CFixedDiagonalCF
+    __del__ = lambda self : None;
+    def setParams(self, *args):
+        """
+        setParams(CFixedDiagonalCF self, limix::CovarParams const & params)
+
+        Parameters:
+            params: limix::CovarParams const &
+
+        """
+        return _core.CFixedDiagonalCF_setParams(self, *args)
+
+    def getParams(self):
+        """
+        getParams(CFixedDiagonalCF self)
+
+        Parameters:
+            self: limix::CFixedDiagonalCF const *
+
+        """
+        return _core.CFixedDiagonalCF_getParams(self)
+
+    def setX(self, *args):
+        """
+        setX(CFixedDiagonalCF self, limix::CovarInput const & X)
+
+        Parameters:
+            X: limix::CovarInput const &
+
+        """
+        return _core.CFixedDiagonalCF_setX(self, *args)
+
+    def setXcol(self, *args):
+        """
+        setXcol(CFixedDiagonalCF self, limix::CovarInput const & X, limix::muint_t col)
+
+        Parameters:
+            X: limix::CovarInput const &
+            col: limix::muint_t
+
+        """
+        return _core.CFixedDiagonalCF_setXcol(self, *args)
+
+    def Kcross_diag(self, *args):
+        """
+        Kcross_diag(CFixedDiagonalCF self, limix::CovarInput const & Xstar)
+
+        Parameters:
+            Xstar: limix::CovarInput const &
+
+        """
+        return _core.CFixedDiagonalCF_Kcross_diag(self, *args)
+
+    def Kcross_grad_X(self, *args):
+        """
+        Kcross_grad_X(CFixedDiagonalCF self, limix::CovarInput const & Xstar, limix::muint_t const d)
+
+        Parameters:
+            Xstar: limix::CovarInput const &
+            d: limix::muint_t const
+
+        """
+        return _core.CFixedDiagonalCF_Kcross_grad_X(self, *args)
+
+    def Kdiag_grad_X(self, *args):
+        """
+        Kdiag_grad_X(CFixedDiagonalCF self, limix::muint_t const d)
+
+        Parameters:
+            d: limix::muint_t const
+
+        """
+        return _core.CFixedDiagonalCF_Kdiag_grad_X(self, *args)
+
+    def agetScales(self):
+        """
+        agetScales(CFixedDiagonalCF self)
+
+        Parameters:
+            self: limix::CFixedDiagonalCF *
+
+        """
+        return _core.CFixedDiagonalCF_agetScales(self)
+
+    def setParamsCovariance(self, *args):
+        """
+        setParamsCovariance(CFixedDiagonalCF self, MatrixXd const & K0)
+
+        Parameters:
+            K0: MatrixXd const &
+
+        """
+        return _core.CFixedDiagonalCF_setParamsCovariance(self, *args)
+
+    def Kdim(self):
+        """
+        Kdim(CFixedDiagonalCF self) -> limix::muint_t
+
+        Parameters:
+            self: limix::CFixedDiagonalCF const *
+
+        """
+        return _core.CFixedDiagonalCF_Kdim(self)
+
+    def Kcross(self, *args):
+        """
+        Kcross(CFixedDiagonalCF self, limix::CovarInput const & Xstar)
+
+        Parameters:
+            Xstar: limix::CovarInput const &
+
+        """
+        return _core.CFixedDiagonalCF_Kcross(self, *args)
+
+    def Kgrad_param(self, *args):
+        """
+        Kgrad_param(CFixedDiagonalCF self, limix::muint_t const i)
+
+        Parameters:
+            i: limix::muint_t const
+
+        """
+        return _core.CFixedDiagonalCF_Kgrad_param(self, *args)
+
+    def Khess_param(self, *args):
+        """
+        Khess_param(CFixedDiagonalCF self, limix::muint_t const i, limix::muint_t const j)
+
+        Parameters:
+            i: limix::muint_t const
+            j: limix::muint_t const
+
+        """
+        return _core.CFixedDiagonalCF_Khess_param(self, *args)
+
+    def agetParamMask0(self):
+        """
+        agetParamMask0(CFixedDiagonalCF self)
+
+        Parameters:
+            self: limix::CFixedDiagonalCF const *
+
+        """
+        return _core.CFixedDiagonalCF_agetParamMask0(self)
+
+    def getName(self):
+        """
+        getName(CFixedDiagonalCF self) -> std::string
+
+        Parameters:
+            self: limix::CFixedDiagonalCF const *
+
+        """
+        return _core.CFixedDiagonalCF_getName(self)
+
+CFixedDiagonalCF_swigregister = _core.CFixedDiagonalCF_swigregister
+CFixedDiagonalCF_swigregister(CFixedDiagonalCF)
+
 class CCovSqexpARD(ACovarianceFunction):
     """Proxy of C++ limix::CCovSqexpARD class"""
     __swig_setmethods__ = {}
@@ -6467,6 +6646,26 @@ class CGPbase(_object):
         """
         return _core.CGPbase_setLambda(self, *args)
 
+    def setLambdaG(self, *args):
+        """
+        setLambdaG(CGPbase self, limix::mfloat_t _lambda)
+
+        Parameters:
+            lambda: limix::mfloat_t
+
+        """
+        return _core.CGPbase_setLambdaG(self, *args)
+
+    def setLambdaN(self, *args):
+        """
+        setLambdaN(CGPbase self, limix::mfloat_t _lambda)
+
+        Parameters:
+            lambda: limix::mfloat_t
+
+        """
+        return _core.CGPbase_setLambdaN(self, *args)
+
     def setParams(self, *args):
         """
         setParams(CGPbase self, CGPHyperParams hyperparams)
@@ -7395,6 +7594,16 @@ class CGPkronSumCache(CParamObject):
         """
         return _core.CGPkronSumCache_rgetLambdar(self)
 
+    def rgetD(self):
+        """
+        rgetD(CGPkronSumCache self) -> MatrixXd &
+
+        Parameters:
+            self: limix::CGPkronSumCache *
+
+        """
+        return _core.CGPkronSumCache_rgetD(self)
+
     def rgetYrotPart(self):
         """
         rgetYrotPart(CGPkronSumCache self) -> MatrixXd &
@@ -7424,26 +7633,6 @@ class CGPkronSumCache(CParamObject):
 
         """
         return _core.CGPkronSumCache_rgetYtilde(self)
-
-    def rgetRrot(self):
-        """
-        rgetRrot(CGPkronSumCache self) -> MatrixXd &
-
-        Parameters:
-            self: limix::CGPkronSumCache *
-
-        """
-        return _core.CGPkronSumCache_rgetRrot(self)
-
-    def rgetOmegaRot(self):
-        """
-        rgetOmegaRot(CGPkronSumCache self) -> MatrixXd &
-
-        Parameters:
-            self: limix::CGPkronSumCache *
-
-        """
-        return _core.CGPkronSumCache_rgetOmegaRot(self)
 
     def argetSsigma(self):
         """
@@ -7525,6 +7714,16 @@ class CGPkronSumCache(CParamObject):
         """
         return _core.CGPkronSumCache_argetLambdar(self)
 
+    def argetD(self):
+        """
+        argetD(CGPkronSumCache self)
+
+        Parameters:
+            self: limix::CGPkronSumCache *
+
+        """
+        return _core.CGPkronSumCache_argetD(self)
+
     def argetYrotPart(self):
         """
         argetYrotPart(CGPkronSumCache self)
@@ -7554,26 +7753,6 @@ class CGPkronSumCache(CParamObject):
 
         """
         return _core.CGPkronSumCache_argetYtilde(self)
-
-    def argetRrot(self):
-        """
-        argetRrot(CGPkronSumCache self)
-
-        Parameters:
-            self: limix::CGPkronSumCache *
-
-        """
-        return _core.CGPkronSumCache_argetRrot(self)
-
-    def argetOmegaRot(self):
-        """
-        argetOmegaRot(CGPkronSumCache self)
-
-        Parameters:
-            self: limix::CGPkronSumCache *
-
-        """
-        return _core.CGPkronSumCache_argetOmegaRot(self)
 
 CGPkronSumCache_swigregister = _core.CGPkronSumCache_swigregister
 CGPkronSumCache_swigregister(CGPkronSumCache)
@@ -7617,6 +7796,26 @@ class CGPkronSum(CGPbase):
 
         """
         return _core.CGPkronSum_setLambda(self, *args)
+
+    def setLambdaG(self, *args):
+        """
+        setLambdaG(CGPkronSum self, limix::mfloat_t _lambda)
+
+        Parameters:
+            lambda: limix::mfloat_t
+
+        """
+        return _core.CGPkronSum_setLambdaG(self, *args)
+
+    def setLambdaN(self, *args):
+        """
+        setLambdaN(CGPkronSum self, limix::mfloat_t _lambda)
+
+        Parameters:
+            lambda: limix::mfloat_t
+
+        """
+        return _core.CGPkronSum_setLambdaN(self, *args)
 
     def getParamBounds(self, *args):
         """
@@ -8008,6 +8207,16 @@ class CGPkronSum(CGPbase):
         """
         return _core.CGPkronSum_getRtLambdar(self)
 
+    def getRtD(self):
+        """
+        getRtD(CGPkronSum self) -> limix::mfloat_t
+
+        Parameters:
+            self: limix::CGPkronSum *
+
+        """
+        return _core.CGPkronSum_getRtD(self)
+
     def getRtYrotPart(self):
         """
         getRtYrotPart(CGPkronSum self) -> limix::mfloat_t
@@ -8037,26 +8246,6 @@ class CGPkronSum(CGPbase):
 
         """
         return _core.CGPkronSum_getRtYtilde(self)
-
-    def getRtRrot(self):
-        """
-        getRtRrot(CGPkronSum self) -> limix::mfloat_t
-
-        Parameters:
-            self: limix::CGPkronSum *
-
-        """
-        return _core.CGPkronSum_getRtRrot(self)
-
-    def getRtOmegaRot(self):
-        """
-        getRtOmegaRot(CGPkronSum self) -> limix::mfloat_t
-
-        Parameters:
-            self: limix::CGPkronSum *
-
-        """
-        return _core.CGPkronSum_getRtOmegaRot(self)
 
     def getRtCC1part1a(self):
         """

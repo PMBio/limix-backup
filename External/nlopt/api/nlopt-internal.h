@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2012 Massachusetts Institute of Technology
+/* Copyright (c) 2007-2014 Massachusetts Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -72,7 +72,7 @@ struct nlopt_opt_s {
      double *dx; /* initial step sizes (length n) for nonderivative algs */
      unsigned vector_storage; /* max subspace dimension (0 for default) */
 
-     double *work; /* algorithm-specific workspace during optimization */
+     void *work; /* algorithm-specific workspace during optimization */
 };
 
 /*********************************************************************/

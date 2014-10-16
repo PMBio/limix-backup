@@ -1,3 +1,47 @@
+NLopt 2.4.2 (20 May 2014)
+
+* Fix CRS for empty dimensions (where lower == upper bound) (issue #13).
+
+* Improvements to CMake (thanks to @xantares) and Windows builds (issue #12).
+
+* Fix guile2 compatibility (issue #21).
+
+NLopt 2.4.1 (19 November 2013)
+
+* Use cdecl calling convention instead of stdcall on Win32, to
+  simplify shared-library usage and for consistency with Win64.
+
+NLopt 2.4 (2 November 2013)
+
+* New genetic algorithm ESCH, thanks to Carlos Henrique da Silva Santos.
+
+* Fix swig dir for VPATH builds, thanks to Sandro Vitenti for the bug report.
+
+* Use python-config program in the configure script to find the include
+  directories for Python, if possible (may be overridden by PYTHON_CONFIG
+  environment variable).
+
+* Bugfix in copy constructor for C++ and Python interfaces.
+
+* Bugfix in return value for setting min/max objective.
+
+* Handle negative rescalings in COBYLA and BOBYQA.
+
+* Plugin installation honors the configure --prefix, if any
+  (thanks to xantares@github).
+
+* Various compilation fixes for compatibility with recent software.
+
+NLopt 2.3.1 (16 September 2012)
+
+* Bug fix: COBLYA should return ROUNDOFF_LIMITED rather than XTOL_REACHED
+  if the trust-region radius underflows to zero; thanks to David Liu.
+
+* Bug fix: incorrect return value from set min/max objective.
+
+* Handle case of negative rescalings (from negative dx) in COBYLA and BOBYQA;
+  thanks to Alexander Law for the bug report
+
 NLopt 2.3 (20 July 2012)
 
 * In Matlab/Octave interface, make returning NaN from the objective

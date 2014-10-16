@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2012 Massachusetts Institute of Technology
+/* Copyright (c) 2007-2014 Massachusetts Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -127,6 +127,7 @@ double *nlopt_compute_rescaling(unsigned n, const double *dx);
 double *nlopt_new_rescaled(unsigned n, const double *s, const double *x);
 void nlopt_rescale(unsigned n, const double *s, const double *x, double *xs);
 void nlopt_unscale(unsigned n, const double *s, const double *x, double *xs);
+void nlopt_reorder_bounds(unsigned n, double *lb, double *ub);
 
 #ifdef __cplusplus
 }  /* extern "C" */
