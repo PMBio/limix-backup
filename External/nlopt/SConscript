@@ -5,7 +5,7 @@ Import('env','conf','build_prefix','build_options')
 localenv = env.Clone()
 
 #add paths for nlopt
-localenv.Append(CPPPATH = ['stogo','util','direct','cdirect','praxis','luksan','crs','mlsl','mma','cobyla','newuoa','neldermead','auglag','bobyqa','isres','slsqp','api'])
+localenv.Append(CPPPATH = ['stogo','util','direct','cdirect','praxis','luksan','crs','mlsl','mma','cobyla','newuoa','neldermead','auglag','bobyqa','isres','slsqp','api','esch'])
 #add variant dir to path
 
 #figure out target install path
@@ -98,6 +98,7 @@ srclst = ['direct/DIRect.c',
        'newuoa/newuoa.c',
        'neldermead/nldrmd.c','neldermead/sbplx.c',
        'auglag/auglag.c',
+	   'esch/esch.c',
        'bobyqa/bobyqa.c',
        'isres/isres.c',
        'slsqp/slsqp.c',

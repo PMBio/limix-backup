@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2012 Massachusetts Institute of Technology
+/* Copyright (c) 2007-2014 Massachusetts Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -61,11 +61,7 @@ static const char nlopt_algorithm_names[NLOPT_NUM_ALGORITHMS][256] = {
      "StoGO (NOT COMPILED)",
      "StoGO randomized (NOT COMPILED)",
 #endif
-#ifdef WITH_NOCEDAL_LBFGS
-     "original NON-FREE L-BFGS code by Nocedal et al. (local, deriv.-based)",
-#else
-     "original NON-FREE L-BFGS code by Nocedal et al. (NOT COMPILED)",
-#endif
+     "original L-BFGS code by Nocedal et al. (NOT COMPILED)",
      "Limited-memory BFGS (L-BFGS) (local, derivative-based)",
      "Principal-axis, praxis (local, no-derivative)",
      "Limited-memory variable-metric, rank 1 (local, derivative-based)",
@@ -97,6 +93,7 @@ static const char nlopt_algorithm_names[NLOPT_NUM_ALGORITHMS][256] = {
      "Multi-level single-linkage (MLSL), quasi-random (global, needs sub-algorithm)",
      "Sequential Quadratic Programming (SQP) (local, derivative)",
      "CCSA (Conservative Convex Separable Approximations) with simple quadratic approximations (local, derivative)",
+     "ESCH evolutionary strategy"
 };
 
 const char * NLOPT_STDCALL nlopt_algorithm_name(nlopt_algorithm a)

@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(nlopt, 2.3.0, stevenj@alum.mit.edu)
+AC_INIT(nlopt, 2.4.2, stevenj@alum.mit.edu)
 AC_CONFIG_SRCDIR(api/nlopt.h)
-SHARED_VERSION_INFO="7:0:7" # CURRENT:REVISION:AGE
+SHARED_VERSION_INFO="8:2:8" # CURRENT:REVISION:AGE
 
 AM_INIT_AUTOMAKE(1.7)
 AM_CONFIG_HEADER(config.h)
@@ -95,16 +95,6 @@ fi
 AC_MSG_RESULT(${ok})
 
 dnl -----------------------------------------------------------------------
-
-if test "x$with_cxx" = xyes; then
-  test -r $srcdir/lbfgs/ap.cpp && test -r $srcdir/lbfgs/ap.h && test -r $srcdir/lbfgs/l-bfgs-b.cpp && test -r $srcdir/lbfgs/l-bfgs-b.h && have_lbfgs=yes
-fi
-AM_CONDITIONAL(WITH_NOCEDAL, test -n "$have_lbfgs")
-if test -n "$have_lbfgs"; then
-   AC_DEFINE(WITH_NOCEDAL, [1], [Define if we have the non-free Nocedal LBFGS code])
-fi
-
-dnl -----------------------------------------------------------------------
 dnl SWIG wrappers
 
 AC_ARG_WITH(guile,
@@ -148,8 +138,17 @@ if test "x$GUILE" = xunknown; then
    AC_MSG_WARN([can't find guile, disabling Guile wrapper])
    GUILE_CONFIG=unknown
 elif test x"$GUILE_INSTALL_DIR" = "x"; then
+   AC_CHECK_PROGS(GUILE_CONFIG, guile-config, echo)
+   AC_MSG_CHECKING(guile prefix)
+   GUILE_PREFIX=`$GUILE_CONFIG info prefix`
+   AC_MSG_RESULT($GUILE_PREFIX)
    AC_MSG_CHECKING([for Guile installation directory])
    GUILE_INSTALL_DIR=`guile -c '(display (%site-dir))'`
+   if test "$prefix" != "NONE"; then
+        # strip guile install path to honor prefix
+        GUILE_INSTALL_DIR=`echo "$GUILE_INSTALL_DIR" | sed "s|$GUILE_PREFIX|$prefix|g"`
+   fi
+
    AC_MSG_RESULT([$GUILE_INSTALL_DIR])
 fi
 
@@ -162,17 +161,25 @@ else
 dnl Python:
 AM_PATH_PYTHON([],[have_python=yes],[have_python=no])
 if test $have_python = yes; then
-  AC_MSG_CHECKING([for Python include directory])
-  pinc=`echo "import distutils.sysconfig; print distutils.sysconfig.get_python_inc()" | $PYTHON - 2>/dev/null`
+  AC_ARG_VAR([PYTHON_CONFIG], [python-config program])
+  AC_PATH_PROGS([PYTHON_CONFIG], [python$PYTHON_VERSION-config python-config],
+                [unknown], [`dirname $PYTHON`:$PATH])
+  AC_MSG_CHECKING([for Python include flags])
+  if test "x$PYTHON_CONFIG" = "xunknown"; then
+      pinc=-I`echo "import distutils.sysconfig; print (distutils.sysconfig.get_python_inc())" | $PYTHON - 2>/dev/null`
+      test "x$pinc" = "x-I" && pinc=""
+  else
+      pinc=`$PYTHON_CONFIG --includes 2>/dev/null`
+  fi
   AC_MSG_RESULT([${pinc:-unknown}])
-  test -n "$pinc" && PYTHON_INCLUDES="-I$pinc"
+  PYTHON_INCLUDES="$pinc"
   save_CPPFLAGS=$CPPFLAGS
   CPPFLAGS="$CPPFLAGS $PYTHON_INCLUDES"
   AC_CHECK_HEADER([Python.h], [], [AC_MSG_WARN([disabling Python wrappers]) 
                                    have_python=no])
   if test $have_python = yes; then
     AC_MSG_CHECKING([for Numpy include directory])
-    pinc=`echo "import numpy; print numpy.get_include()" | $PYTHON - 2>/dev/null`
+    pinc=`echo "import numpy; print (numpy.get_include())" | $PYTHON - 2>/dev/null`
     AC_MSG_RESULT([${pinc:-unknown}])
     test -n "$pinc" && PYTHON_INCLUDES="$PYTHON_INCLUDES -I$pinc"
     CPPFLAGS="$save_CPPFLAGS $PYTHON_INCLUDES"
@@ -216,11 +223,15 @@ elif test x"$OCT_INSTALL_DIR" = "x"; then
 	# try to find installation directory
 	AC_CHECK_PROGS(OCTAVE, octave, echo)
 	AC_CHECK_PROGS(OCTAVE_CONFIG, octave-config, echo)
-
+	
+	AC_MSG_CHECKING(octave prefix)
+	OCTAVE_PREFIX=`$OCTAVE_CONFIG --print PREFIX 2> /dev/null`
+	AC_MSG_RESULT($OCTAVE_PREFIX)
+	
 	AC_MSG_CHECKING(where octave plugins go)
-	OCT_INSTALL_DIR=`octave-config --oct-site-dir 2> /dev/null | grep '/'`
+	OCT_INSTALL_DIR=`$OCTAVE_CONFIG --oct-site-dir 2> /dev/null | grep '/'`
 	if test -z "$OCT_INSTALL_DIR"; then
-		OCT_INSTALL_DIR=`octave-config --print OCTFILEDIR 2> /dev/null | grep '/'`
+		OCT_INSTALL_DIR=`$OCTAVE_CONFIG --print OCTFILEDIR 2> /dev/null | grep '/'`
 	fi
 	if test -z "$OCT_INSTALL_DIR"; then
 		OCT_INSTALL_DIR=`echo "path" | $OCTAVE -q 2> /dev/null | grep "/oct/" | head -1`
@@ -229,6 +240,10 @@ elif test x"$OCT_INSTALL_DIR" = "x"; then
 		OCT_INSTALL_DIR=`echo "DEFAULT_LOADPATH" | $OCTAVE -q 2> /dev/null | tr ':' '\n' | grep "site/oct" | head -1`
         fi
 	if test -n "$OCT_INSTALL_DIR"; then
+		if test "$prefix" != "NONE"; then
+			# strip octave install path to honor prefix
+			OCT_INSTALL_DIR=`echo "$OCT_INSTALL_DIR" | sed "s|$OCTAVE_PREFIX|$prefix|g"`
+		fi
 		AC_MSG_RESULT($OCT_INSTALL_DIR)
 	else
 		AC_MSG_RESULT(unknown)
@@ -236,9 +251,9 @@ elif test x"$OCT_INSTALL_DIR" = "x"; then
 	fi
 
 	AC_MSG_CHECKING(where octave scripts go)
-	M_INSTALL_DIR=`octave-config --m-site-dir 2> /dev/null | grep '/'`
+	M_INSTALL_DIR=`$OCTAVE_CONFIG --m-site-dir 2> /dev/null | grep '/'`
 	if test -z "$M_INSTALL_DIR"; then
-		M_INSTALL_DIR=`octave-config --print FCNFILEDIR 2> /dev/null | grep '/'`
+		M_INSTALL_DIR=`$OCTAVE_CONFIG --print FCNFILEDIR 2> /dev/null | grep '/'`
 	fi
 	if test -z "$M_INSTALL_DIR"; then
 		M_INSTALL_DIR=`echo "path" | $OCTAVE -q 2> /dev/null | grep "/m" | head -1`
@@ -247,6 +262,10 @@ elif test x"$OCT_INSTALL_DIR" = "x"; then
 		M_INSTALL_DIR=`echo "DEFAULT_LOADPATH" | $OCTAVE -q 2> /dev/null | tr ':' '\n' | grep "site/m" | head -1`
         fi
 	if test -n "$M_INSTALL_DIR"; then
+		if test "$prefix" != "NONE"; then
+			# strip octave install path to honor prefix
+			M_INSTALL_DIR=`echo "$M_INSTALL_DIR" | sed "s|$OCTAVE_PREFIX|$prefix|g"`
+		fi
 		AC_MSG_RESULT($M_INSTALL_DIR)
 	else
 		AC_MSG_RESULT(unknown)
@@ -369,10 +388,10 @@ dnl add gcc warnings, in debug/maintainer mode only
 if test "$enable_debug" = yes || test "$USE_MAINTAINER_MODE" = yes; then
 if test $ac_cv_prog_gcc = yes; then
    if test "$ac_test_CFLAGS" != "set"; then
-      CFLAGS="$CFLAGS -Wall -W -Wcast-qual -Wpointer-arith -Wcast-align -pedantic -Wshadow -Wbad-function-cast -Wwrite-strings -Wstrict-prototypes -Wredundant-decls -Wnested-externs -Wundef -Wconversion -Wmissing-prototypes -Wmissing-declarations"
+      CFLAGS="$CFLAGS -Wall -W -Wcast-qual -Wpointer-arith -Wcast-align -Wno-long-long -pedantic -Wshadow -Wbad-function-cast -Wwrite-strings -Wstrict-prototypes -Wredundant-decls -Wnested-externs -Wundef -Wconversion -Wmissing-prototypes -Wmissing-declarations"
    fi
    if test "$ac_test_CXXFLAGS" != "set"; then
-      CXXFLAGS="$CXXFLAGS -Wall -W -Wcast-qual -Wpointer-arith -Wcast-align -pedantic -Wshadow -Wwrite-strings -Wredundant-decls -Wundef -Wconversion"
+      CXXFLAGS="$CXXFLAGS -Wall -W -Wcast-qual -Wpointer-arith -Wcast-align -Wno-long-long -pedantic -Wshadow -Wwrite-strings -Wredundant-decls -Wundef -Wconversion"
    fi
    if test "x$with_cxx" = xyes; then
       CFLAGS=$CXXFLAGS
@@ -399,7 +418,6 @@ AC_CONFIG_FILES([
    cdirect/Makefile
    stogo/Makefile
    praxis/Makefile
-   lbfgs/Makefile
    luksan/Makefile
    crs/Makefile
    mlsl/Makefile
@@ -411,6 +429,7 @@ AC_CONFIG_FILES([
    bobyqa/Makefile
    isres/Makefile
    slsqp/Makefile
+   esch/Makefile
    test/Makefile
    swig/Makefile
    swig/nlopt.scm
