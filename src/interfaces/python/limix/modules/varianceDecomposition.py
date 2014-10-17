@@ -23,6 +23,12 @@ import time
 import copy
 import warnings
 
+try:
+	from fastlmm.inference.lmm_cov import LMM as fastLMM
+	fastlmm_present = True
+except:
+	fastlmm_present = False
+
 class VarianceDecomposition:
     """
     Variance decomposition module in LIMIX
@@ -886,95 +892,98 @@ class VarianceDecomposition:
         return sp.concatenate(scales)
 
     def _getScalesPairwise(self,verbose=False, initDiagonal=False):
-        """
-        Internal function for parameter initialization
-        Uses a single trait model for initializing variances and
-        a pairwise model to initialize correlations
-        """
-        var = sp.zeros((self.P,2))
-        if initDiagonal:
-            #1. fit single trait model
-            if verbose:
-                print '.. fit single-trait model for initialization'
-            vc = VarianceDecomposition(self.Y[:,0:1])
-            for term_i in range(self.n_randEffs):
-                if term_i==self.noisPos:
-                    vc.addRandomEffect(is_noise=True)
-                else:
-                    K = self.vd.getTerm(term_i).getK()
-                    vc.addRandomEffect(K=K)
-            scales0 = sp.sqrt(0.5)*sp.ones(2)
-            
-            for p in range(self.P):
-                if verbose: print '   .. trait %d' % p
-                vc.setY(self.Y[:,p:p+1])
-                conv = vc.optimize(scales0=scales0)
-                if not conv:
-                    print 'warning initialization not converged'
-                var[p,:] = vc.getVarianceComps()[0,:]
-        elif True:
-            from fastlmm.inference.lmm_cov import LMM as fastLMM
-            for p in range(self.P):
-                if verbose: print '   .. trait %d' % p
-                covariates = None
-                for term_i in range(self.n_randEffs):
-                    if term_i==self.noisPos:
-                        pass
-                    else:
-                        K = self.vd.getTerm(term_i).getK()
-                varY = sp.var(self.Y[:,p:p+1])
-                lmm = fastLMM(X=covariates, Y=self.Y[:,p:p+1], G=None, K=K)
-                opt = lmm.findH2(nGridH2=100)
-                h2 = opt['h2']
-                var[p,:] = h2 * varY
-                var[p,self.noisPos] = (1.0-h2) * varY
-                #import ipdb;ipdb.set_trace()
-        else:
-            if verbose:
-                print '.. random initialization of diagonal'
-            var = sp.random.randn(var.shape[0],var.shape[1])
-            var = var*var + 0.001
-        #2. fit pairwise model
-        if verbose:
-            print '.. fit pairwise model for initialization'
-        vc = VarianceDecomposition(self.Y[:,0:2])
-        for term_i in range(self.n_randEffs):
-            if term_i==self.noisPos:
-                vc.addRandomEffect(is_noise=True,trait_covar_type='freeform')
-            else:
-                K = self.vd.getTerm(term_i).getK()
-                vc.addRandomEffect(K=K,trait_covar_type='freeform')
-        rho_g = sp.ones((self.P,self.P))
-        rho_n = sp.ones((self.P,self.P))
-        for p1 in range(self.P):
-            for p2 in range(p1):
-                if verbose:
-                    print '   .. fit pair (%d,%d)'%(p1,p2)
-                vc.setY(self.Y[:,[p1,p2]])
-                scales0 = sp.sqrt(sp.array([var[p1,0],1e-4,var[p2,0],1e-4,var[p1,1],1e-4,var[p2,1],1e-4]))
-                conv = vc.optimize(scales0=scales0)
-                if not conv:
-                    print 'warning initialization not converged'
-                Cg = vc.getTraitCovar(0)
-                Cn = vc.getTraitCovar(1)
-                rho_g[p1,p2] = Cg[0,1]/sp.sqrt(Cg.diagonal().prod())
-                rho_n[p1,p2] = Cn[0,1]/sp.sqrt(Cn.diagonal().prod())
-                rho_g[p2,p1] = rho_g[p1,p2]
-                rho_n[p2,p1] = rho_n[p1,p2]
-        #3. init
-        Cg0 = rho_g*sp.dot(sp.sqrt(var[:,0:1]),sp.sqrt(var[:,0:1].T)) 
-        Cn0 = rho_n*sp.dot(sp.sqrt(var[:,1:2]),sp.sqrt(var[:,1:2].T)) 
-        offset_g = abs(sp.minimum(sp.linalg.eigh(Cg0)[0].min(),0))+1e-4
-        offset_n = abs(sp.minimum(sp.linalg.eigh(Cn0)[0].min(),0))+1e-4
-        Cg0+=offset_g*sp.eye(self.P)
-        Cn0+=offset_n*sp.eye(self.P)
-        Lg = sp.linalg.cholesky(Cg0)
-        Ln = sp.linalg.cholesky(Cn0)
-        Cg_params0 = sp.concatenate([Lg[:,p][:p+1] for p in range(self.P)])
-        Cn_params0 = sp.concatenate([Ln[:,p][:p+1] for p in range(self.P)])
-        scales0 = sp.concatenate([Cg_params0,1e-2*sp.ones(1),Cn_params0,1e-2*sp.ones(1)])
+		"""
+		Internal function for parameter initialization
+		Uses a single trait model for initializing variances and
+		a pairwise model to initialize correlations
+		"""
+		var = sp.zeros((self.P,2))
 
-        return scales0
+		if initDiagonal:
+			#1. fit single trait model
+			if verbose:
+				print '.. fit single-trait model for initialization'
+			vc = VarianceDecomposition(self.Y[:,0:1])
+			for term_i in range(self.n_randEffs):
+				if term_i==self.noisPos:
+					vc.addRandomEffect(is_noise=True)
+				else:
+					K = self.vd.getTerm(term_i).getK()
+					vc.addRandomEffect(K=K)
+			scales0 = sp.sqrt(0.5)*sp.ones(2)
+			
+			for p in range(self.P):
+				if verbose: print '   .. trait %d' % p
+				vc.setY(self.Y[:,p:p+1])
+				conv = vc.optimize(scales0=scales0)
+				if not conv:
+					print 'warning initialization not converged'
+				var[p,:] = vc.getVarianceComps()[0,:]
+		
+		elif fastlmm_present:
+			if verbose:
+				print '.. fit single-trait model for initialization (using fastlmm)'			
+			for p in range(self.P):
+				if verbose: print '   .. trait %d' % p
+				covariates = None
+				for term_i in range(self.n_randEffs):
+					if term_i==self.noisPos:
+						pass
+					else:
+						K = self.vd.getTerm(term_i).getK()
+				varY = sp.var(self.Y[:,p:p+1])
+				lmm = fastLMM(X=covariates, Y=self.Y[:,p:p+1], G=None, K=K)
+				opt = lmm.findH2(nGridH2=100)
+				h2 = opt['h2']
+				var[p,:] = h2 * varY
+				var[p,self.noisPos] = (1.0-h2) * varY
+				#import ipdb;ipdb.set_trace()
+		else:
+			if verbose:
+				print '.. random initialization of diagonal'
+			var = sp.random.randn(var.shape[0],var.shape[1])
+			var = var*var + 0.001
+		#2. fit pairwise model
+		if verbose:
+			print '.. fit pairwise model for initialization'
+		vc = VarianceDecomposition(self.Y[:,0:2])
+		for term_i in range(self.n_randEffs):
+			if term_i==self.noisPos:
+				vc.addRandomEffect(is_noise=True,trait_covar_type='freeform')
+			else:
+				K = self.vd.getTerm(term_i).getK()
+				vc.addRandomEffect(K=K,trait_covar_type='freeform')
+		rho_g = sp.ones((self.P,self.P))
+		rho_n = sp.ones((self.P,self.P))
+		for p1 in range(self.P):
+			for p2 in range(p1):
+				if verbose:
+					print '   .. fit pair (%d,%d)'%(p1,p2)
+				vc.setY(self.Y[:,[p1,p2]])
+				scales0 = sp.sqrt(sp.array([var[p1,0],1e-4,var[p2,0],1e-4,var[p1,1],1e-4,var[p2,1],1e-4]))
+				conv = vc.optimize(scales0=scales0)
+				if not conv:
+					print 'warning initialization not converged'
+				Cg = vc.getTraitCovar(0)
+				Cn = vc.getTraitCovar(1)
+				rho_g[p1,p2] = Cg[0,1]/sp.sqrt(Cg.diagonal().prod())
+				rho_n[p1,p2] = Cn[0,1]/sp.sqrt(Cn.diagonal().prod())
+				rho_g[p2,p1] = rho_g[p1,p2]
+				rho_n[p2,p1] = rho_n[p1,p2]
+		#3. init
+		Cg0 = rho_g*sp.dot(sp.sqrt(var[:,0:1]),sp.sqrt(var[:,0:1].T)) 
+		Cn0 = rho_n*sp.dot(sp.sqrt(var[:,1:2]),sp.sqrt(var[:,1:2].T)) 
+		offset_g = abs(sp.minimum(sp.linalg.eigh(Cg0)[0].min(),0))+1e-4
+		offset_n = abs(sp.minimum(sp.linalg.eigh(Cn0)[0].min(),0))+1e-4
+		Cg0+=offset_g*sp.eye(self.P)
+		Cn0+=offset_n*sp.eye(self.P)
+		Lg = sp.linalg.cholesky(Cg0)
+		Ln = sp.linalg.cholesky(Cn0)
+		Cg_params0 = sp.concatenate([Lg[:,p][:p+1] for p in range(self.P)])
+		Cn_params0 = sp.concatenate([Ln[:,p][:p+1] for p in range(self.P)])
+		scales0 = sp.concatenate([Cg_params0,1e-2*sp.ones(1),Cn_params0,1e-2*sp.ones(1)])
+
+		return scales0
 
 
     def _getScalesRand(self):

@@ -114,7 +114,7 @@ def readRAW(basefilename, delimiter = ' ',missing = '0',standardize = True, phen
     #pos = SP.array(map[:,(0,2,3)],dtype = 'float')
     #map = None
     import pdb
-    pdb.set_trace()
+    #pdb.set_trace()
     raw = SP.loadtxt(rawfile,dtype = 'str')
     iid = raw[:,0:2]
     snpsstr = raw[:,6::]
@@ -237,9 +237,10 @@ def readBED(basefilename, blocksize = 1, start = 0, nSNPs = SP.inf, startpos = N
     fam = SP.loadtxt(fam,delimiter = delimiter,dtype = 'str',usecols=(0,1))
     bim = basefilename+'.bim'
     delimiter = deduce_delimiter(bim)
-    bim = SP.loadtxt(bim,delimiter = delimiter,dtype = 'str',usecols = (0,1,2,3))
+    bim = SP.loadtxt(bim,delimiter = delimiter,dtype = 'str',usecols = (0,1,2,3,4,5))
     rs = bim[:,1]
     pos = SP.array(bim[:,(0,2,3)],dtype = 'float')
+    alleles = SP.array(bim[:,(4,5)],dtype='str')
     #pdb.set_trace()
     if startpos is not None:
         #pdb.set_trace()
@@ -340,6 +341,7 @@ def readBED(basefilename, blocksize = 1, start = 0, nSNPs = SP.inf, startpos = N
     ret = {
             'rs'     :rs[start:S_res],
             'pos'    :pos[start:S_res,:],
+            'alleles'    :alleles[start:S_res,:],
             'snps'   :snps,
             'iid'    :fam
             }

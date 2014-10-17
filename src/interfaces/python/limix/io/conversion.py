@@ -170,4 +170,5 @@ class LIMIX_converter(object):
         #write col header
         col_header.create_dataset(name='chrom',data=data['pos'][:,0])
         col_header.create_dataset(name='pos',data=data['pos'][:,2])
+        col_header.create_dataset(name='alleles',data=data['alleles'])
         pass
