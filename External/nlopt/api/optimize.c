@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2012 Massachusetts Institute of Technology
+/* Copyright (c) 2007-2014 Massachusetts Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -44,10 +44,6 @@ static int my_isnan(double x) { return x != x; }
 
 #include "cdirect.h"
 
-#ifdef WITH_NOCEDAL
-#  include "l-bfgs-b.h"
-#endif
-
 #include "luksan.h"
 
 #include "crs.h"
@@ -60,6 +56,7 @@ static int my_isnan(double x) { return x != x; }
 #include "auglag.h"
 #include "bobyqa.h"
 #include "isres.h"
+#include "esch.h"
 #include "slsqp.h"
 
 /*********************************************************************/
@@ -89,16 +86,17 @@ static double f_noderiv(int n, const double *x, void *data_)
 static double f_direct(int n, const double *x, int *undefined, void *data_)
 {
      nlopt_opt data = (nlopt_opt) data_;
+     double *work = (double*) data->work;
      double f;
      unsigned i, j;
      f = data->f((unsigned) n, x, NULL, data->f_data);
      *undefined = isnan(f) || nlopt_isinf(f);
      if (nlopt_get_force_stop(data)) return f;
      for (i = 0; i < data->m && !*undefined; ++i) {
-	  nlopt_eval_constraint(data->work, NULL, data->fc+i, (unsigned) n, x);
+	  nlopt_eval_constraint(work, NULL, data->fc+i, (unsigned) n, x);
 	  if (nlopt_get_force_stop(data)) return f;
 	  for (j = 0; j < data->fc[i].m; ++j)
-	       if (data->work[j] > 0)
+	       if (work[j] > 0)
 		    *undefined = 1;
      }
      return f;
@@ -341,6 +339,7 @@ static int elimdim_wrapcheck(nlopt_opt opt)
 	 case NLOPT_GN_DIRECT_L_RAND_NOSCAL: 
 	 case NLOPT_GN_ORIG_DIRECT:
 	 case NLOPT_GN_ORIG_DIRECT_L:
+         case NLOPT_GN_CRS2_LM:
 	 case NLOPT_LN_PRAXIS:
 	 case NLOPT_LN_COBYLA:
 	 case NLOPT_LN_NEWUOA:
@@ -349,6 +348,7 @@ static int elimdim_wrapcheck(nlopt_opt opt)
 	 case NLOPT_LN_NELDERMEAD:
 	 case NLOPT_LN_SBPLX:
 	 case NLOPT_GN_ISRES:
+	 case NLOPT_GN_ESCH:
 	 case NLOPT_GD_STOGO:
          case NLOPT_GD_STOGO_RAND:
 	      return 1;
@@ -442,9 +442,9 @@ static nlopt_result nlopt_optimize_(nlopt_opt opt, double *x, double *minf)
 	 case NLOPT_GN_ORIG_DIRECT_L: {
 	      direct_return_code dret;
 	      if (!finite_domain(n, lb, ub)) return NLOPT_INVALID_ARGS;
-	      opt->work = (double*) malloc(sizeof(double) *
-					   nlopt_max_constraint_dim(opt->m,
-								    opt->fc));
+	      opt->work = malloc(sizeof(double) *
+				 nlopt_max_constraint_dim(opt->m,
+							  opt->fc));
 	      if (!opt->work) return NLOPT_OUT_OF_MEMORY;
 	      dret = direct_optimize(f_direct, opt, ni, lb, ub, x, minf,
 				     stop.maxeval, -1,
@@ -533,40 +533,6 @@ static nlopt_result nlopt_optimize_(nlopt_opt opt, double *x, double *minf)
 	      return praxis_(0.0, DBL_EPSILON, 
 			     step, ni, x, f_bound, opt, &stop, minf);
 	 }
-
-#ifdef WITH_NOCEDAL
-	 case NLOPT_LD_LBFGS_NOCEDAL: {
-	      int iret, *nbd = (int *) malloc(sizeof(int) * n);
-	      if (!nbd) return NLOPT_OUT_OF_MEMORY;
-	      for (i = 0; i < n; ++i) {
-		   int linf = nlopt_isinf(lb[i]) && lb[i] < 0;
-		   int uinf = nlopt_isinf(ub[i]) && ub[i] > 0;
-		   nbd[i] = linf && uinf ? 0 : (uinf ? 1 : (linf ? 3 : 2));
-	      }
-	      iret = lbfgsb_minimize(ni, f, f_data, x, nbd, lb, ub,
-				     ni < 5 ? ni : 5, 0.0, stop.ftol_rel, 
-				     stop.xtol_abs[0] > 0 ? stop.xtol_abs[0]
-				     : stop.xtol_rel,
-				     stop.maxeval);
-	      free(nbd);
-	      if (iret <= 0) {
-		   switch (iret) {
-		       case -1: return NLOPT_INVALID_ARGS;
-		       case -2: default: return NLOPT_FAILURE;
-		   }
-	      }
-	      else {
-		   *minf = f(n, x, NULL, f_data);
-		   switch (iret) {
-		       case 5: return NLOPT_MAXEVAL_REACHED;
-		       case 2: return NLOPT_XTOL_REACHED;
-		       case 1: return NLOPT_FTOL_REACHED;
-		       default: return NLOPT_SUCCESS;
-		   }
-	      }
-	      break;
-	 }
-#endif
 
 	 case NLOPT_LD_LBFGS: 
 	      return luksan_plis(ni, f, f_data, lb, ub, x, minf, 
@@ -675,11 +641,11 @@ static nlopt_result nlopt_optimize_(nlopt_opt opt, double *x, double *minf)
 		   if (nlopt_set_default_initial_step(opt, x) != NLOPT_SUCCESS)
 			return NLOPT_OUT_OF_MEMORY;
 	      }
-	      return cobyla_minimize(n, f, f_data, 
-				     opt->m, opt->fc,
-				     opt->p, opt->h,
-				     lb, ub, x, minf, &stop,
-				     opt->dx);
+	      ret = cobyla_minimize(n, f, f_data, 
+                                    opt->m, opt->fc,
+                                    opt->p, opt->h,
+                                    lb, ub, x, minf, &stop,
+                                    opt->dx);
 	      if (freedx) { free(opt->dx); opt->dx = NULL; }
 	      return ret;
 	 }
@@ -778,6 +744,13 @@ static nlopt_result nlopt_optimize_(nlopt_opt opt, double *x, double *minf)
 				    (int) (opt->p), opt->h,
 				    lb, ub, x, minf, &stop,
 				    (int) POP(0));
+
+	case NLOPT_GN_ESCH:
+	      if (!finite_domain(n, lb, ub)) return NLOPT_INVALID_ARGS;
+	      return chevolutionarystrategy(n, f, f_data, 
+					    lb, ub, x, minf, &stop,
+					    (unsigned) POP(0),
+					    (unsigned) (POP(0)*1.5));
 
 	 case NLOPT_LD_SLSQP:
 	      return nlopt_slsqp(n, f, f_data,

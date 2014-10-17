@@ -7,8 +7,7 @@
 
 #define ExceptionSubclass(EXCNAME, EXCDOC)				\
   static PyTypeObject MyExc_ ## EXCNAME = {				\
-    PyObject_HEAD_INIT(NULL)						\
-      0,								\
+    PyVarObject_HEAD_INIT(NULL, 0)						\
       "nlopt." # EXCNAME,						\
       sizeof(PyBaseExceptionObject),					\
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,			\
@@ -38,6 +37,7 @@ ExceptionSubclass(RoundoffLimited,
 %pythoncode %{
   ForcedStop = _nlopt.ForcedStop
   RoundoffLimited = _nlopt.RoundoffLimited
+  __version__ = str(_nlopt.version_major())+'.'+str(_nlopt.version_minor())+'.'+str(_nlopt.version_bugfix())
 %}
 
 %typemap(throws) std::bad_alloc %{
@@ -60,7 +60,6 @@ ExceptionSubclass(RoundoffLimited,
 
 %{
 #define SWIG_FILE_WITH_INIT
-#define array_stride(a,i)        (((PyArrayObject *)a)->strides[i])
 %}
 %include "numpy.i"
 %init %{
@@ -119,12 +118,17 @@ ExceptionSubclass(RoundoffLimited,
 static void *free_pyfunc(void *p) { Py_DECREF((PyObject*) p); return p; }
 static void *dup_pyfunc(void *p) { Py_INCREF((PyObject*) p); return p; }
 
+#if NPY_API_VERSION < 0x00000007
+#  define NPY_ARRAY_C_CONTIGUOUS NPY_C_CONTIGUOUS
+#  define NPY_ARRAY_ALIGNED NPY_ALIGNED
+#endif
+
 static double func_python(unsigned n, const double *x, double *grad, void *f)
 {
   npy_intp sz = npy_intp(n), sz0 = 0, stride1 = sizeof(double);
   PyObject *xpy = PyArray_New(&PyArray_Type, 1, &sz, NPY_DOUBLE, &stride1,
 			      const_cast<double*>(x), // not NPY_WRITEABLE
-			      0, NPY_C_CONTIGUOUS | NPY_ALIGNED, NULL);
+			      0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_ALIGNED, NULL);
   PyObject *gradpy = grad
     ? PyArray_SimpleNewFromData(1, &sz, NPY_DOUBLE, grad)
     : PyArray_SimpleNew(1, &sz0, NPY_DOUBLE);
@@ -160,7 +164,7 @@ static void mfunc_python(unsigned m, double *result,
   npy_intp sz0 = 0, stride1 = sizeof(double);
   PyObject *xpy = PyArray_New(&PyArray_Type, 1, &nsz, NPY_DOUBLE, &stride1,
 			      const_cast<double*>(x), // not NPY_WRITEABLE
-			      0, NPY_C_CONTIGUOUS | NPY_ALIGNED, NULL);
+			      0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_ALIGNED, NULL);
   PyObject *rpy = PyArray_SimpleNewFromData(1, &msz, NPY_DOUBLE, result);
   PyObject *gradpy = grad
     ? PyArray_SimpleNewFromData(2, mnsz, NPY_DOUBLE, grad)
