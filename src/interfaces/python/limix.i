@@ -41,6 +41,7 @@
 #include "limix/modules/CVarianceDecomposition.h"
 #include "limix/io/dataframe.h"
 #include "limix/io/genotype.h"
+#include "limix/LMM_forest/lmm_forest.h"
 
 using namespace limix;
 //  removed namespace bindings (12.02.12)
@@ -121,5 +122,5 @@ using namespace limix;
 %include "limix/modules/CVarianceDecomposition.i"
 %include "limix/io/dataframe.i"
 %include "limix/io/genotype.i"
-
+%include "limix/LMM_forest/lmm_forest.i"
  

@@ -11420,6 +11420,40 @@ class CMemGenotypeContainer(AGenotypeContainer):
 CMemGenotypeContainer_swigregister = _core.CMemGenotypeContainer_swigregister
 CMemGenotypeContainer_swigregister(CMemGenotypeContainer)
 
+
+def FitMyTreeCrapStuff(*args):
+  """
+    FitMyTreeCrapStuff(MatrixXd const & matrix_in)
+
+    Parameters:
+        matrix_in: MatrixXd const &
+
+    """
+  return _core.FitMyTreeCrapStuff(*args)
+
+def best_split_full_model(*args):
+  """
+    best_split_full_model(limix::mint_t * m_best, limix::mfloat_t * s_best, limix::mfloat_t * left_mean, limix::mfloat_t * right_mean, 
+        limix::mfloat_t * ll_score, MatrixXd const & X, 
+        MatrixXd const & UTy, MatrixXd const & C, MatrixXd const & S, MatrixXd const & U, 
+        VectorXi const & noderange, limix::mfloat_t delta)
+
+    Parameters:
+        m_best: limix::mint_t *
+        s_best: limix::mfloat_t *
+        left_mean: limix::mfloat_t *
+        right_mean: limix::mfloat_t *
+        ll_score: limix::mfloat_t *
+        X: MatrixXd const &
+        UTy: MatrixXd const &
+        C: MatrixXd const &
+        S: MatrixXd const &
+        U: MatrixXd const &
+        noderange: VectorXi const &
+        delta: limix::mfloat_t
+
+    """
+  return _core.best_split_full_model(*args)
 # This file is compatible with both classic and new-style classes.
 
 

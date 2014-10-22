@@ -30,12 +30,12 @@ namespace limix {
                                mfloat_t* left_mean,
 		                       mfloat_t* right_mean,
 		                       mfloat_t* ll_score,
-		                       const MatrixXd* X,
-		                       const MatrixXd* UTy,
-		                       const MatrixXd* C,
-		                       const MatrixXd* S,
-		                       const MatrixXd* U,
-		                       const VectorXi* noderange,
+		                       const MatrixXd& X,
+		                       const MatrixXd& UTy,
+		                       const MatrixXd& C,
+		                       const MatrixXd& S,
+		                       const MatrixXd& U,
+		                       const VectorXi& noderange,
 		                       mfloat_t delta);
 }
-#endif LMM_FOREST_H_
+#endif
