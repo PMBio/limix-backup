@@ -338,21 +338,20 @@ inline void transform_predictors(
 	*splitting_level = all_levels;
 }
 
-
-template <typename Derived1,typename Derived2, typename Derived3, typename Derived4>
-inline void best_split_full_model(
+inline void best_split_full_model_code(
 		mint_t* m_best,
 		mfloat_t* s_best,
 		mfloat_t* left_mean,
 		mfloat_t* right_mean,
 		mfloat_t* ll_score,
-		const Eigen::MatrixBase<Derived4>* X,
-		const Eigen::MatrixBase<Derived2>* UTy,
-		const Eigen::MatrixBase<Derived1>* C,
-		const Eigen::MatrixBase<Derived2>* S,
-		const Eigen::MatrixBase<Derived1>* U,
-		const Eigen::MatrixBase<Derived3>* noderange,
+		const MatrixXd* X,
+		const MatrixXd* UTy,
+		const MatrixXd* C,
+		const MatrixXd* S,
+		const MatrixXd* U,
+		const VectorXi* noderange,
 		mfloat_t delta){
+
 		*m_best = -1;
 		muint_t best_sub_index;
 		muint_t better_split_found = 0;

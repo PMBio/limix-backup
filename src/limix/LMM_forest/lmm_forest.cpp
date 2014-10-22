@@ -16,10 +16,21 @@
 
 namespace limix {
 
-	void FitMyTreeCrapStuff(MatrixXd* matrix_out,const MatrixXd& matrix_in)
+	void FitMyTreeCrapStuff(MatrixXd* matrix_out, const MatrixXd& matrix_in)
 	{
+    }
 
-	}
-
-
+	void best_split_full_model(mint_t* m_best, 
+                               mfloat_t* s_best,
+                               mfloat_t* left_mean,
+		                       mfloat_t* right_mean,
+		                       mfloat_t* ll_score,
+		                       const MatrixXd* X,
+		                       const MatrixXd* UTy,
+		                       const MatrixXd* C,
+		                       const MatrixXd* S,
+		                       const MatrixXd* U,
+		                       const VectorXi* noderange,
+		                       mfloat_t delta){
+     }
 }

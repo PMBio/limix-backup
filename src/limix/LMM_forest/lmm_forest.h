@@ -23,7 +23,19 @@ namespace limix {
 	//TODO fill me with function you want to call from python
 	void FitMyTreeCrapStuff(MatrixXd* matrix_out,const MatrixXd& matrix_in);
 	//from python matrix_out = limix.FitMyTreeCrapStuff(matrix_in)
-
-
+	// A
+	//
+	void best_split_full_model(mint_t* m_best, 
+                               mfloat_t* s_best,
+                               mfloat_t* left_mean,
+		                       mfloat_t* right_mean,
+		                       mfloat_t* ll_score,
+		                       const MatrixXd* X,
+		                       const MatrixXd* UTy,
+		                       const MatrixXd* C,
+		                       const MatrixXd* S,
+		                       const MatrixXd* U,
+		                       const VectorXi* noderange,
+		                       mfloat_t delta);
 }
 #endif LMM_FOREST_H_
