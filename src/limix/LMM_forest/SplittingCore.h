@@ -9,11 +9,13 @@
 
 #ifndef SPLITTINGCORE_H_
 #define SPLITTINGCORE_H_
-#include "types.h"
 #include <stdio.h>
 #include <vector>
+#include "limix/types.h"
 #include <iostream>
 #include <time.h>
+
+namespace limix {
 
 
 typedef std::pair<mint_t, mfloat_t> argsort_pair;
@@ -291,8 +293,8 @@ inline void transform_predictors(
 		std::vector<muint_t>* feature_map,
 		std::vector<mfloat_t>* splitting_level,
 		Eigen::MatrixBase<Derived1>* X_in){
-	vector<mfloat_t> all_levels(0);
-	vector<muint_t> all_pred(0);
+	std::vector<mfloat_t> all_levels(0);
+	std::vector<muint_t> all_pred(0);
 	muint_t cnt = 0;
 	//std::cout << "number of columns "<< cnt << "\n";
 	for (muint_t j=0; j<(muint_t)X_in->cols(); ++j){
@@ -528,4 +530,6 @@ inline void test(const Eigen::MatrixBase<Derived1>* out_, const Eigen::MatrixBas
 	std::cout << *Xr << "\n";
 	std::cout << *yR << "\n";
 }
+
+} //end:namespace
 #endif /* SPLITTINGCORE_H_ */
