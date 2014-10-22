@@ -338,7 +338,7 @@ inline void transform_predictors(
 	*splitting_level = all_levels;
 }
 
-inline void best_split_full_model_code(
+inline void C_best_split_full_model(
 		mint_t* m_best,
 		mfloat_t* s_best,
 		mfloat_t* left_mean,

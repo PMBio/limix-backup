@@ -32,5 +32,7 @@ namespace limix {
 		                       const MatrixXd* U,
 		                       const VectorXi* noderange,
 		                       mfloat_t delta){
+
+       C_best_split_full_model(m_best, s_best, left_mean, right_mean, ll_score, X, UTy, C, S, U, noderange, delta);
      }
 }
