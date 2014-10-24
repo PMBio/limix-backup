@@ -25,11 +25,7 @@ namespace limix {
 	//from python matrix_out = limix.FitMyTreeCrapStuff(matrix_in)
 	// A
 	//
-	void best_split_full_model(mint_t* m_best, 
-                               mfloat_t* s_best,
-                               mfloat_t* left_mean,
-		                       mfloat_t* right_mean,
-		                       mfloat_t* ll_score,
+	void best_split_full_model(mint_t *out, 
 		                       const MatrixXd& X,
 		                       const MatrixXd& UTy,
 		                       const MatrixXd& C,

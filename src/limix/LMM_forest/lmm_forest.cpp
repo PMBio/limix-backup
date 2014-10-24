@@ -20,11 +20,7 @@ namespace limix {
 	{
     }
 
-	void best_split_full_model(mint_t* m_best, 
-                               mfloat_t* s_best,
-                               mfloat_t* left_mean,
-		                       mfloat_t* right_mean,
-		                       mfloat_t* ll_score,
+	void best_split_full_model(mint_t* out,
 		                       const MatrixXd& X,
 		                       const MatrixXd& UTy,
 		                       const MatrixXd& C,
@@ -32,7 +28,12 @@ namespace limix {
 		                       const MatrixXd& U,
 		                       const VectorXi& noderange,
 		                       mfloat_t delta){
-
-       C_best_split_full_model(m_best, s_best, left_mean, right_mean, ll_score, &X, &UTy, &C, &S, &U, &noderange, delta);
+    return;
+   /* mfloat_t s_best = 0.0;*/
+	//mfloat_t ll_score = 0.0;
+	//mfloat_t left_mean = 0.0;
+	//mfloat_t right_mean = 0.0;
+   /* out = 0.0;*/
+       //C_best_split_full_model(out, &s_best, &left_mean, &right_mean, &ll_score, &X, &UTy, &C, &S, &U, &noderange, delta);
      }
 }
