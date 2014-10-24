@@ -28,12 +28,12 @@ namespace limix {
 		                       const MatrixXd& U,
 		                       const VectorXi& noderange,
 		                       mfloat_t delta){
-    return;
+   return;
    /* mfloat_t s_best = 0.0;*/
 	//mfloat_t ll_score = 0.0;
 	//mfloat_t left_mean = 0.0;
 	//mfloat_t right_mean = 0.0;
    /* out = 0.0;*/
        //C_best_split_full_model(out, &s_best, &left_mean, &right_mean, &ll_score, &X, &UTy, &C, &S, &U, &noderange, delta);
-     }
+   }
 }
