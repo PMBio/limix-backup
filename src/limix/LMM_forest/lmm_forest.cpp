@@ -16,7 +16,7 @@
 
 namespace limix {
 
-	void best_split_full_model(mint_t* out,
+	void best_split_full_model(int* int_out,
 		                       const MatrixXd& X,
 		                       const MatrixXd& UTy,
 		                       const MatrixXd& C,
@@ -28,9 +28,20 @@ namespace limix {
 	//mfloat_t ll_score = 0.0;
 	//mfloat_t left_mean = 0.0;
 	//mfloat_t right_mean = 0.0;
-    (*out) = 0;
+    (*int_out) = 0;
     return;
     
        //C_best_split_full_model(out, &s_best, &left_mean, &right_mean, &ll_score, &X, &UTy, &C, &S, &U, &noderange, delta);
+   }
+   void argOutSwigTest2(int* int_out1, int* int_out2,mint_t in1,mint_t in2)
+   {
+   	(*int_out1) = in1;
+   	(*int_out2) = in1+in2;
+   }
+
+   void argOutSwigTest3(float* int_out1, float* int_out2,mint_t in1,mint_t in2)
+   {
+   	(*int_out1) = in1;
+   	(*int_out2) = in1+in2;
    }
 }

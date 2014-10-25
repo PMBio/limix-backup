@@ -17,4 +17,9 @@ namespace limix {
 }
 
 //raw include
+//apply derivatices:
+%apply int *OUTPUT { int* int_out1};
+%apply int *OUTPUT { int* int_out1, int* int_out2};
+%apply float *OUTPUT { float* int_out1, float* int_out2};
+
 %include "limix/LMM_forest/lmm_forest.h"
