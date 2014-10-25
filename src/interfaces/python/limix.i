@@ -122,4 +122,4 @@ using namespace limix;
 %include "limix/modules/CVarianceDecomposition.i"
 %include "limix/io/dataframe.i"
 %include "limix/io/genotype.i"
-#include "limix/LMM_forest/lmm_forest.h"
+#include "limix/LMM_forest/lmm_forest.i"

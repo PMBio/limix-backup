@@ -19,12 +19,6 @@
 
 
 namespace limix {
-
-	//TODO fill me with function you want to call from python
-	void FitMyTreeCrapStuff(MatrixXd* matrix_out,const MatrixXd& matrix_in);
-	//from python matrix_out = limix.FitMyTreeCrapStuff(matrix_in)
-	// A
-	//
 	void best_split_full_model(mint_t* out, 
 		                       const MatrixXd& X,
 		                       const MatrixXd& UTy,
