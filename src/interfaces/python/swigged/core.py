@@ -11459,6 +11459,16 @@ def argOutSwigTest3(*args):
 
     """
   return _core.argOutSwigTest3(*args)
+
+def argOutSwigTest4(*args):
+  """
+    argOutSwigTest4(MatrixXd const & m)
+
+    Parameters:
+        m: MatrixXd const &
+
+    """
+  return _core.argOutSwigTest4(*args)
 # This file is compatible with both classic and new-style classes.
 
 
