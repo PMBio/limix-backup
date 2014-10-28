@@ -16,7 +16,11 @@
 
 namespace limix {
 
-	void best_split_full_model(int* int_out,
+	void best_split_full_model(float* m_best,
+                               float* s_best,
+                               float* left_mean,
+                               float* right_mean,
+                               float* ll_score,
 		                       const MatrixXd& X,
 		                       const MatrixXd& UTy,
 		                       const MatrixXd& C,
@@ -24,14 +28,22 @@ namespace limix {
 		                       const MatrixXd& U,
 		                       const VectorXi& noderange,
 		                       mfloat_t delta){
-   /* mfloat_t s_best = 0.0;*/
-	//mfloat_t ll_score = 0.0;
-	//mfloat_t left_mean = 0.0;
-	//mfloat_t right_mean = 0.0;
-    (*int_out) = 0;
-    return;
+    (*m_best) = 0;
+    (*s_best) = 1.0;
+    (*left_mean) = 2.0;
+    (*right_mean) = 4.0;
+    (*ll_score) = 5.0;
+
+    mint_t m_best_ = 0;
+    mfloat_t s_best_ = 0.0;
+    mfloat_t  right_mean_ = 0.0;
+    mfloat_t  left_mean_ = 0.0;
+    mfloat_t  ll_score_ = 0.0;
+   
     
-       //C_best_split_full_model(out, &s_best, &left_mean, &right_mean, &ll_score, &X, &UTy, &C, &S, &U, &noderange, delta);
+   C_best_split_full_model(&m_best_, &s_best_, &left_mean_, &right_mean_, &ll_score_, &X, &UTy, &C, &S, &U, &noderange, delta);
+   std::cout << m_best;
+   return;
    }
    void argOutSwigTest2(int* int_out1, int* int_out2,mint_t in1,mint_t in2)
    {
