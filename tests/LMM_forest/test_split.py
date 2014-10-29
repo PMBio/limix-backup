@@ -23,7 +23,6 @@ right_mean = 0.
 ll_score = 0.
 m_best = 0
 m_best, s_best, left_mean, right_mean, ll_score = limix.best_split_full_model(X, y, C, S, U, noderange, delta)
-print type(m_best)
 print m_best
 print s_best
 print left_mean

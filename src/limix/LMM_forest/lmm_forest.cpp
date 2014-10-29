@@ -40,9 +40,13 @@ namespace limix {
     mfloat_t  left_mean_ = 0.0;
     mfloat_t  ll_score_ = 0.0;
    
-    
    C_best_split_full_model(&m_best_, &s_best_, &left_mean_, &right_mean_, &ll_score_, &X, &UTy, &C, &S, &U, &noderange, delta);
-   std::cout << m_best;
+   // typecasts to make swig happy (although underneath there are the same types)
+   (*m_best) = (float)m_best_;
+   (*s_best) = (float)s_best_;
+   (*left_mean) = (float)left_mean_;
+   (*right_mean) = (float)right_mean_;
+   (*ll_score) = (float)ll_score_;
    return;
    }
    void argOutSwigTest2(int* int_out1, int* int_out2,mint_t in1,mint_t in2)
