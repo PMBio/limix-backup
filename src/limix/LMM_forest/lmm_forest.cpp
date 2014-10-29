@@ -56,4 +56,10 @@ namespace limix {
    	(*int_out1) = in1;
    	(*int_out2) = in1+in2;
    }
+
+   void argOutSwigTest4(int* int_out1, int* int_out2,const MatrixXd& m)
+   {
+   	(*int_out1) = m.rows();
+   	(*int_out2) = m.cols();
+   }
 }

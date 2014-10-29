@@ -94376,6 +94376,121 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_argOutSwigTest4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int *arg1 = (int *) 0 ;
+  int *arg2 = (int *) 0 ;
+  MatrixXd *arg3 = 0 ;
+  int temp1 ;
+  int res1 = SWIG_TMPOBJ ;
+  int temp2 ;
+  int res2 = SWIG_TMPOBJ ;
+  MatrixXd temp3 ;
+  PyObject * obj0 = 0 ;
+  
+  arg1 = &temp1;
+  arg2 = &temp2;
+  if (!PyArg_ParseTuple(args,(char *)"O:argOutSwigTest4",&obj0)) SWIG_fail;
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj0) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion(obj0, NPY_DOUBLE, &newObject);
+      break;
+      
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      //if vector: create a column vector explicitly:
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+    }
+    
+    arg3 = &temp3;
+    // prepare the input array
+    switch( array_type(obj0) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      (*arg3) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
+      break;
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  {
+    try {
+      limix::argOutSwigTest4(arg1,arg2,(MatrixXd const &)*arg3);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsTmpObj(res1)) {
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg1)));
+  } else {
+    int new_flags = SWIG_IsNewObj(res1) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg1), SWIGTYPE_p_int, new_flags));
+  }
+  if (SWIG_IsTmpObj(res2)) {
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg2)));
+  } else {
+    int new_flags = SWIG_IsNewObj(res2) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg2), SWIGTYPE_p_int, new_flags));
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { (char *)"delete_SwigPyIterator", _wrap_delete_SwigPyIterator, METH_VARARGS, (char *)"\n"
@@ -102783,6 +102898,13 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters:\n"
 		"    in1: limix::mint_t\n"
 		"    in2: limix::mint_t\n"
+		"\n"
+		""},
+	 { (char *)"argOutSwigTest4", _wrap_argOutSwigTest4, METH_VARARGS, (char *)"\n"
+		"argOutSwigTest4(MatrixXd const & m)\n"
+		"\n"
+		"Parameters:\n"
+		"    m: MatrixXd const &\n"
 		"\n"
 		""},
 	 { NULL, NULL, 0, NULL }

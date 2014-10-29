@@ -33,5 +33,10 @@ namespace limix {
 		                       mfloat_t delta);
 	void argOutSwigTest2(int* int_out1, int* int_out2,mint_t in1,mint_t in2);
 	void argOutSwigTest3(float* int_out1, float* int_out2,mint_t in1,mint_t in2);
+<<<<<<< HEAD
+=======
+	void argOutSwigTest4(int* int_out1, int* int_out2,const MatrixXd& m);
+
+>>>>>>> 45d6810bd017a0add552ee4d99b4cbeda8439fe8
 }
 #endif
