@@ -6,30 +6,33 @@ Created on Sep 25, 2013
 
 
 import scipy as SP
-from mixed_forest.MixedForest import Forest as LMF
+from limix.modules.lmm_forest import Forest as LMF
 import pylab as PL
-import mixedForestUtils as utils
+import limix.modules.mixedForestUtils as utils
 
 if __name__ == '__main__':
-    #######################
-    ### data simulation ###
-    #######################
-    # we simulate genetric features as X as binary encoding of integer numbers
+
+    # Data simulation
+    # We simulate genetric features as X as binary encoding of integer numbers
     SP.random.seed(42)
-    n_samples=2**8
-    x = SP.arange(n_samples).reshape(-1,1)
+    n_samples = 2**8
+    x = SP.arange(n_samples).reshape(-1, 1)
     X = utils.convertToBinaryPredictor(x)
-    y_fixed = X[:,0:1] * X[:,2:3]
-    kernel=utils.getQuadraticKernel(x, d=200)
+    y_fixed = X[:, 0:1] * X[:, 2:3]
+    kernel = utils.getQuadraticKernel(x, d=200)
     y_conf = y_fixed.copy()
-    y_conf += SP.random.multivariate_normal(SP.zeros(n_samples),kernel).reshape(-1,1)
-    y_conf += .1*SP.random.randn(n_samples,1)
+    y_conf += SP.random.multivariate_normal(SP.zeros(n_samples),
+                                            kernel).reshape(-1, 1)
+    y_conf += .1*SP.random.randn(n_samples, 1)
     (training, test) = utils.crossValidationScheme(2, n_samples)
     SP.random.seed(42)
-    lm_forest = LMF(kernel=kernel[SP.ix_(training, training)], sampsize=.5, verbose=1, n_estimators=100)
+    lm_forest = LMF(kernel=kernel[SP.ix_(training, training)],
+                    sampsize=.5, verbose=1, n_estimators=100)
+
     lm_forest.fit(X[training], y_conf[training])
-    response_tot = lm_forest.predict(X[test], kernel[SP.ix_(test,training)])
-    # make random forest prediction for comparision
+    response_tot = lm_forest.predict(X[test], kernel[SP.ix_(test, training)])
+
+    # Make random forest prediction for comparison
     random_forest = LMF(kernel='iid')
     random_forest.fit(X[training], y_conf[training])
     response_iid = random_forest.predict(X[test])
