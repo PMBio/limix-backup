@@ -11,6 +11,7 @@ import pySplittingCore as SC
 import parMixedForest
 import mixedForestUtils as utils
 import BLUP
+import limix
 
 class Forest(object):
     '''
@@ -479,13 +480,12 @@ class MixedForestTree(object):
                                self.forest.y[self.subsample].reshape(-1)-mean)
         return response
 
-#    def predict_cpp(self, X, depth):
-        ## Ensure consistency to Cpp data type
-        #X = SP.array(X, dtype='float')
-        #response = SP.empty(X.shape[0])
-        #return CSP.predict(response, self.nodes, self.left_child,
-                           #self.right_child, self.best_predictor, self.mean,
-                           #self.s, X, depth)
+    def predict_cpp(self, X, depth):
+        # Ensure consistency to Cpp data type
+        X = SP.array(X, dtype='float')
+        return limix.predict_lmm_forest(self.nodes, self.left_child,
+                                        self.right_child, self.best_predictor,
+                                        self.mean, self.s, X, depth).reshape(-1)
 
     def predict_py(self, X, depth):
         response = SP.empty(X.shape[0])

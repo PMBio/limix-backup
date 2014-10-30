@@ -49,6 +49,22 @@ namespace limix {
    (*ll_score) = (float)ll_score_;
    return;
    }
+
+   void predict_lmm_forest(MatrixXd* response,
+                 const VectorXi& tree_nodes,
+                 const VectorXi& left_children,
+                 const VectorXi& right_children,
+                 const VectorXi& best_predictor,
+                 const MatrixXd& mean,
+                 const MatrixXd& splitting_value,
+                 const MatrixXd& X,
+                 mfloat_t depth){
+        
+    MatrixXd response_(X.rows(),1);
+        C_predict(&response_, &tree_nodes, &left_children, &right_children, &best_predictor, &mean, &splitting_value, &X, depth);
+    (*response) = response_;
+    }
+ 
    void argOutSwigTest2(int* int_out1, int* int_out2,mint_t in1,mint_t in2)
    {
    	(*int_out1) = in1;

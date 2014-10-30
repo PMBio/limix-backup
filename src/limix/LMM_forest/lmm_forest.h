@@ -31,6 +31,18 @@ namespace limix {
 		                       const MatrixXd& U,
 		                       const VectorXi& noderange,
 		                       mfloat_t delta);
+
+
+    void predict_lmm_forest(MatrixXd* response,
+                 const VectorXi& tree_nodes,
+                 const VectorXi& left_children,
+                 const VectorXi& right_children,
+                 const VectorXi& best_predictor,
+                 const MatrixXd& mean,
+                 const MatrixXd& splitting_value,
+                 const MatrixXd& X,
+                 mfloat_t depth);
+                
 	void argOutSwigTest2(int* int_out1, int* int_out2,mint_t in1,mint_t in2);
 	void argOutSwigTest3(float* int_out1, float* int_out2,mint_t in1,mint_t in2);
 	void argOutSwigTest4(int* int_out1, int* int_out2,const MatrixXd& m);

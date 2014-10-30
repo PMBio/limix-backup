@@ -494,7 +494,7 @@ inline void predict_rec(mfloat_t* response,
 }
 
 template <typename Derived1, typename Derived2>
-inline void predict(const Eigen::MatrixBase<Derived2>* response,
+inline void C_predict(const Eigen::MatrixBase<Derived2>* response,
 		const Eigen::MatrixBase<Derived1>* tree_nodes,
 		const Eigen::MatrixBase<Derived1>* left_children,
 		const Eigen::MatrixBase<Derived1>* right_children,

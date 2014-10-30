@@ -94254,6 +94254,567 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_predict_lmm_forest(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MatrixXd *arg1 = (MatrixXd *) 0 ;
+  VectorXi *arg2 = 0 ;
+  VectorXi *arg3 = 0 ;
+  VectorXi *arg4 = 0 ;
+  VectorXi *arg5 = 0 ;
+  MatrixXd *arg6 = 0 ;
+  MatrixXd *arg7 = 0 ;
+  MatrixXd *arg8 = 0 ;
+  limix::mfloat_t arg9 ;
+  MatrixXd temp1 ;
+  VectorXi temp2 ;
+  VectorXi temp3 ;
+  VectorXi temp4 ;
+  VectorXi temp5 ;
+  MatrixXd temp6 ;
+  MatrixXd temp7 ;
+  MatrixXd temp8 ;
+  double val9 ;
+  int ecode9 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  PyObject * obj6 = 0 ;
+  PyObject * obj7 = 0 ;
+  
+  {
+    arg1 = &temp1;
+    
+  }
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOO:predict_lmm_forest",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7)) SWIG_fail;
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj0) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+    case NPY_INT:
+      in_array = obj_to_array_contiguous_allow_conversion(obj0, NPY_INT64, &newObject);
+      break;
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+      
+    }
+    
+    arg2 = &temp2;
+    
+    // prepare the input array
+    switch( array_type(obj0) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+    case NPY_INT:
+      (*arg2) = Eigen::Map<VectorXiscipy>((mint_t*)array_data( in_array ), in_rows)	.cast<mint_t>();
+      break;
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+    case NPY_INT:
+      in_array = obj_to_array_contiguous_allow_conversion(obj1, NPY_INT64, &newObject);
+      break;
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+      
+    }
+    
+    arg3 = &temp3;
+    
+    // prepare the input array
+    switch( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+    case NPY_INT:
+      (*arg3) = Eigen::Map<VectorXiscipy>((mint_t*)array_data( in_array ), in_rows)	.cast<mint_t>();
+      break;
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj2) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+    case NPY_INT:
+      in_array = obj_to_array_contiguous_allow_conversion(obj2, NPY_INT64, &newObject);
+      break;
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+      
+    }
+    
+    arg4 = &temp4;
+    
+    // prepare the input array
+    switch( array_type(obj2) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+    case NPY_INT:
+      (*arg4) = Eigen::Map<VectorXiscipy>((mint_t*)array_data( in_array ), in_rows)	.cast<mint_t>();
+      break;
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj3) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+    case NPY_INT:
+      in_array = obj_to_array_contiguous_allow_conversion(obj3, NPY_INT64, &newObject);
+      break;
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+      
+    }
+    
+    arg5 = &temp5;
+    
+    // prepare the input array
+    switch( array_type(obj3) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+    case NPY_INT:
+      (*arg5) = Eigen::Map<VectorXiscipy>((mint_t*)array_data( in_array ), in_rows)	.cast<mint_t>();
+      break;
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj4) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion(obj4, NPY_DOUBLE, &newObject);
+      break;
+      
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      //if vector: create a column vector explicitly:
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+    }
+    
+    arg6 = &temp6;
+    // prepare the input array
+    switch( array_type(obj4) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      (*arg6) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
+      break;
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj5) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion(obj5, NPY_DOUBLE, &newObject);
+      break;
+      
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      //if vector: create a column vector explicitly:
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+    }
+    
+    arg7 = &temp7;
+    // prepare the input array
+    switch( array_type(obj5) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      (*arg7) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
+      break;
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj6) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion(obj6, NPY_DOUBLE, &newObject);
+      break;
+      
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      //if vector: create a column vector explicitly:
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+    }
+    
+    arg8 = &temp8;
+    // prepare the input array
+    switch( array_type(obj6) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      (*arg8) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
+      break;
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  ecode9 = SWIG_AsVal_double(obj7, &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "predict_lmm_forest" "', argument " "9"" of type '" "limix::mfloat_t""'");
+  } 
+  arg9 = static_cast< limix::mfloat_t >(val9);
+  {
+    try {
+      limix::predict_lmm_forest(arg1,(VectorXi const &)*arg2,(VectorXi const &)*arg3,(VectorXi const &)*arg4,(VectorXi const &)*arg5,(MatrixXd const &)*arg6,(MatrixXd const &)*arg7,(MatrixXd const &)*arg8,arg9);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  {
+    // prepare resulting array
+    npy_intp dims[] = {
+      arg1->rows(), arg1->cols()
+    };
+    PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    
+    if (out_array == NULL){
+      PyErr_SetString(PyExc_ValueError,
+        "Unable to create the output array.");
+      
+      return NULL;
+    }
+    
+    mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+    Eigen::Map<MatrixXdscipy>(out_data, dims[0], dims[1]) = (*arg1);
+    
+    resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_argOutSwigTest2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   int *arg1 = (int *) 0 ;
@@ -102882,6 +103443,22 @@ static PyMethodDef SwigMethods[] = {
 		"    U: MatrixXd const &\n"
 		"    noderange: VectorXi const &\n"
 		"    delta: limix::mfloat_t\n"
+		"\n"
+		""},
+	 { (char *)"predict_lmm_forest", _wrap_predict_lmm_forest, METH_VARARGS, (char *)"\n"
+		"predict_lmm_forest(VectorXi const & tree_nodes, VectorXi const & left_children, VectorXi const & right_children, \n"
+		"    VectorXi const & best_predictor, MatrixXd const & mean, MatrixXd const & splitting_value, \n"
+		"    MatrixXd const & X, limix::mfloat_t depth)\n"
+		"\n"
+		"Parameters:\n"
+		"    tree_nodes: VectorXi const &\n"
+		"    left_children: VectorXi const &\n"
+		"    right_children: VectorXi const &\n"
+		"    best_predictor: VectorXi const &\n"
+		"    mean: MatrixXd const &\n"
+		"    splitting_value: MatrixXd const &\n"
+		"    X: MatrixXd const &\n"
+		"    depth: limix::mfloat_t\n"
 		"\n"
 		""},
 	 { (char *)"argOutSwigTest2", _wrap_argOutSwigTest2, METH_VARARGS, (char *)"\n"
