@@ -145,7 +145,7 @@ class lmm:
 			raise NotImplementedError("only f and lrt are implemented")
 
 		if self._lmm.getTestStatistics() == self._lmm.TEST_F:
-			self.test_statistics = (self.beta_snp*self.beta_snp)/(beta_ste*beta_ste)
+			self.test_statistics = (self.beta_snp*self.beta_snp)/(self.beta_ste*self.beta_ste)
 		if self._lmm.getTestStatistics() == self._lmm.TEST_LRT:
 			self.test_statistics = 2.0 * (self.NLL_0 - self.NLL_alt)
 		t1=time.time()
