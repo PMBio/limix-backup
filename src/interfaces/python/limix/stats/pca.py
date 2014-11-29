@@ -15,6 +15,7 @@
 """
 PCA related utility function
 """
+import scipy as sp
 import numpy as np 
 import pdb
 import numpy.linalg as linalg
