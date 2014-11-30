@@ -364,6 +364,47 @@ public:
 };
 typedef sptr<CFixedDiagonalCF> PFixedDiagonalCF;
 
+class CPolyCF: public ACovarianceFunction {
+
+protected:
+    muint_t numberGroups;
+    muint_t n_dims;
+    muint_t order;
+public:
+
+    CPolyCF(muint_t numberGroups, muint_t n_dims, muint_t order);
+    ~CPolyCF();
+
+    //Block X functions: X is fixed and set in the constructor
+    virtual void setX(const CovarInput& X)  {};
+    virtual void setXcol(const CovarInput& X, muint_t col)  {};
+    virtual void aKcross_diag(VectorXd* out, const CovarInput& Xstar) const ;
+    virtual void aKcross_grad_X(MatrixXd* out,const CovarInput& Xstar, const muint_t d) const  {};
+    virtual void aKdiag_grad_X(VectorXd* out,const muint_t d) const  {};
+	virtual muint_t Kdim() const
+		{
+			return this->numberGroups;
+		}
+
+    virtual void agetX1(MatrixXd* out) const;
+    virtual void agetX1grad(MatrixXd* out,muint_t i) const;
+
+
+    virtual void agetScales(CovarParams* out);
+    virtual void setParamsCovariance(const MatrixXd& K0) ;
+
+    //Covariance pure functions
+    //pure functions that need to be implemented
+    virtual void aKcross(MatrixXd* out, const CovarInput& Xstar ) const ;
+    virtual void aKgrad_param(MatrixXd* out,const muint_t i) const ;
+    virtual void aKhess_param(MatrixXd* out,const muint_t i,const muint_t j) const ;
+    virtual void agetParamMask0(CovarParams* out) const;
+
+    //class information
+    inline std::string getName() const {return "CPolyCF";};
+
+};
+typedef sptr<CPolyCF> PPolyCF;
 
 } /* namespace limix */
 #endif /* FREEFORM_H_ */

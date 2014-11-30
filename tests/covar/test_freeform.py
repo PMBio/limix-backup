@@ -75,6 +75,19 @@ class CRank1diagCF_test(unittest.TestCase,Acovar_test):
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
 
+class CPolyCF_test(unittest.TestCase,Acovar_test):
+    """test class for CRank1diagCF"""
+    def setUp(self):
+        SP.random.seed(1)
+        self.n=4
+        self.d=2
+        self.K=3
+        self.C = limix.CPolyCF(self.n,self.d,self.K)
+        self.name = 'CPolyCF'
+        self.n_params=self.C.getNumberParams()
+        params=SP.randn(self.n_params)
+        self.C.setParams(params)
+
 class CFixedDiagonalCF_test(unittest.TestCase,Acovar_test):
     """test class for CFixedDiagonalCF"""
     def setUp(self):

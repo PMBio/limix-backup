@@ -805,6 +805,99 @@ void CFixedDiagonalCF::agetParamMask0(CovarParams* out) const
     (*out) = VectorXd::Ones(getNumberParams());
 }
 
-} /* namespace limix */
 
+/* CPolyCF class */
+
+CPolyCF::CPolyCF(muint_t numberGroups, muint_t n_dims, muint_t order)
+{
+    this->numberDimensions = 0;
+    this->numberGroups=numberGroups;
+    //number of parameters:
+    this->numberParams = n_dims*numberGroups;
+    this->n_dims = n_dims;
+    this->order  = order;
+    initParams();
+}
+
+CPolyCF::~CPolyCF()
+{
+}
+
+void CPolyCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const 
+{
+    MatrixXd K;
+    aKcross(&K,Xstar);
+    (*out)=K.diagonal();
+}
+
+void CPolyCF::agetX1(MatrixXd* out) const
+{
+    (*out).setConstant(this->numberGroups,this->n_dims*this->order,0);
+    //for rows
+    muint_t ip=0;
+    muint_t ic=0;
+    for (muint_t ik=1;ik<this->order+1;++ik) {
+        ip = 0;
+        for (muint_t dim_i=0;dim_i<this->n_dims;++dim_i) {
+            for(muint_t ir=0;ir<this->numberGroups;++ir) {
+                (*out)(ir,ic) = std::pow(params(ip),ik);
+                ip++;
+            }
+            ic++;
+        }
+    }
+}
+
+void CPolyCF::agetX1grad(MatrixXd* out, muint_t i) const
+{
+    (*out).setConstant(this->numberGroups,this->n_dims*this->order,0);
+    //for rows
+    muint_t ip=0;
+    muint_t ic=0;
+    for (muint_t ik=1;ik<this->order+1;++ik) {
+        ip = 0;
+        for (muint_t dim_i=0;dim_i<this->n_dims;++dim_i) {
+            for(muint_t ir=0;ir<this->numberGroups;++ir) {
+                if (ip==i)
+                    (*out)(ir,ic) = ik*std::pow(params(ip),ik-1);
+                ip++;
+            }
+            ic++;
+        }
+    }
+}
+
+void CPolyCF::agetScales(CovarParams* out) {
+    //to implement properly
+    (*out) = this->params;
+}
+
+void CPolyCF::setParamsCovariance(const MatrixXd& K0)
+{
+    //IMPLEMENT ME
+}
+
+void CPolyCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const 
+{
+    MatrixXd X1; this->agetX1(&X1);
+    (*out).noalias() = X1*X1.transpose();
+}
+
+void CPolyCF::aKgrad_param(MatrixXd* out,muint_t i) const
+{
+    MatrixXd X1; this->agetX1(&X1);
+    MatrixXd X1grad; this->agetX1grad(&X1grad,i);
+    (*out).noalias() = X1grad*X1.transpose()+X1*X1grad.transpose();
+}
+
+void CPolyCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const{
+    //IMPLEMENT ME
+}
+
+void CPolyCF::agetParamMask0(CovarParams* out) const
+{
+    (*out) = VectorXd::Ones(getNumberParams());
+}
+
+} /* namespace limix */
 
