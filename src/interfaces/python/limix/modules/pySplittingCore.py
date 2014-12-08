@@ -64,14 +64,9 @@ def check_predictors(X, noderange, rmind):
     indexes = (X_sum != Xout.shape[0]) & (X_sum != 0)
     return rmind[indexes]
 
-def cpp_best_split_full_model(
-                              X,
-                              Uy,
-                              C,
-                              S,
-                              U,
-                              noderange,
-                              delta):
+def cpp_best_split_full_model(X, Uy, C, S, U, noderange, delta,
+                              save_memory=False):
+    """wrappe calling cpp splitting function"""
 
     m_best, s_best, left_mean, right_mean, ll_score =\
          limix.best_split_full_model(X, Uy, C, S, U, noderange, delta)

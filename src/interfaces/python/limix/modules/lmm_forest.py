@@ -520,33 +520,48 @@ class MixedForestTree(object):
         return left_end
 
     def split_node(self, node_ind):
-        noderange =\
-            self.sample[self.start_index[node_ind]:self.end_index[node_ind]]
+        noderange = self.sample[self.start_index[node_ind]:self.end_index[node_ind]]
         rmind = SP.random.permutation(self.forest.m)[:self.forest.max_features]
         mBest = -1
         sBest = -float('inf')
         left_mean = None
         right_mean = None
-        ll_score = None
-        X = self.get_self_X()
-        # Some (black) magic to make things contigious is C
-        X = SP.array(X[:, rmind], order='C')
-        if X.shape[1] > 0:
-            Covariates = SC.get_covariates(node_ind, self.nodes[node_ind],
-                                           self.parent, self.sample,
-                                           self.start_index, self.end_index)
+        ll_score = -float('inf')
+        if rmind.size > 10 and self.forest.optimize_memory_use:
+            print 'optimizing'
+            n_slice = 10
+        else:
+            n_slice = 1
+        print n_slice
+        intv = SP.floor(n_slice*SP.arange(rmind.size)/rmind.size)
+        for slc in SP.arange(n_slice):
+            rmind_slice = rmind[intv==slc]
+            X = self.get_X_slice(rmind_slice)
+            Covariates = SC.get_covariates(node_ind,
+                                self.nodes[node_ind],
+                                self.parent,
+                                self.sample,
+                                self.start_index,
+                                self.end_index)
+
             if self.forest.cpp_fit:
-                mBest, sBest, left_mean, right_mean, ll_score =\
-                    SC.cpp_best_split_full_model(X, self.Uy, Covariates, self.S,
-                                                 self.U, noderange,
-                                                 self.forest.delta)
+                    mBest_, sBest_, left_mean_, right_mean_, ll_score_ =\
+                        SC.cpp_best_split_full_model(X, self.Uy, Covariates,
+                                                     self.S,
+                                                     self.U, noderange,
+                                                     self.forest.delta)
             else:
-                mBest, sBest, left_mean, right_mean, ll_score =\
+                mBest_, sBest_, left_mean_, right_mean_, ll_score_ =\
                     SC.best_split_full_model(X, self.Uy, Covariates, self.S,
                                              self.U, noderange,
                                              self.forest.delta)
-            if mBest != -1:
-                mBest = rmind[mBest]
+
+            if (mBest_ != -1) and (ll_score_ > ll_score):
+                mBest = rmind_slice[mBest_]
+                sBest = sBest_
+                left_mean = left_mean_
+                right_mean = right_mean_
+                ll_score = ll_score_
         return mBest, sBest, left_mean, right_mean, ll_score
 
     def cut_to_stump(self):
@@ -576,3 +591,10 @@ class MixedForestTree(object):
             return self.forest.X[self.subsample]
         else:
             return self.X
+
+    def get_X_slice(self, rmind):
+        '''get X with slicing'''
+        if self.forest.optimize_memory_use:
+            return self.forest.X[:, rmind][self.subsample]
+        else:
+            return self.X[:, rmind]
