@@ -182,8 +182,12 @@ class Forest(object):
         self.n, self.m = self.X.shape
         if self.delta is None:
             self.BLUP = BLUP.BLUP()
+            if self.verbose > 1:
+                print 'fitting BLUP'
             self.BLUP.fit(XTrain=self.X, yTrain=self.y, KTrain=self.kernel,
                           delta=self.delta)
+            if self.verbose > 1:
+                print 'done fitting BLUP'
             # Update delta if it used to be 'None'
             self.delta = self.BLUP.delta
         self.max_features = SP.maximum(SP.int_(self.ratio_features*self.m), 1)
@@ -358,6 +362,10 @@ class MixedForestTree(object):
         Constructor
         '''
         self.forest = forest
+        if self.forest is not None:
+            self.verbose = self.forest.verbose
+        else:
+            self.verbose = 0
         self.max_depth = 0
         # Estimate the potential number of nodes
         self.subsample = subsample
@@ -384,8 +392,12 @@ class MixedForestTree(object):
         kernel = self.get_kernel()
         if not(self.forest.optimize_memory_use):
             self.X = self.forest.X[subsample]
+        if self.verbose > 1:
+            print 'compute tree wise singular value decomposition'
         self.S, self.U = LA.eigh(kernel + SP.eye(subsample.size)*1e-8)
         self.Uy = SP.dot(self.U.T, self.forest.y[subsample])
+        if self.verbose > 1:
+            print 'compute tree wise bias'
         self.mean[0] = SC.estimate_bias(self.Uy, self.U, self.S,
                                         SP.log(self.forest.delta))
         self.sample = SP.arange(subsample.size)
@@ -393,6 +405,9 @@ class MixedForestTree(object):
         self.cross_core = SP.dot(ck, LA.inv(kernel +
                                             SP.eye(self.subsample.size) *
                                             self.forest.delta))
+        if self.verbose > 1:
+            print 'done initializing tree'
+
 
     def print_tree(self):
         return self.print_tree_rec(0)
@@ -466,7 +481,7 @@ class MixedForestTree(object):
             if oob:
                 X = self.forest.X[self.oob]
             else:
-                X = self.get_self_X()
+                X = self.get_X()
         ##################################################
         # making prediction
         if self.forest.cpp_predict:
@@ -509,7 +524,7 @@ class MixedForestTree(object):
         node_start = self.start_index[node_ind]
         node_end = self.end_index[node_ind]
         nodesamples = self.sample[node_start:node_end]
-        left_indexes = self.get_self_X()[nodesamples, j] < best_s
+        left_indexes = self.get_X_slice(j)[nodesamples] < best_s
         # Print left_indexes
         left_samples = nodesamples[left_indexes]
         right_samples = nodesamples[~left_indexes]
@@ -528,11 +543,9 @@ class MixedForestTree(object):
         right_mean = None
         ll_score = -float('inf')
         if rmind.size > 10 and self.forest.optimize_memory_use:
-            print 'optimizing'
             n_slice = 10
         else:
             n_slice = 1
-        print n_slice
         intv = SP.floor(n_slice*SP.arange(rmind.size)/rmind.size)
         for slc in SP.arange(n_slice):
             rmind_slice = rmind[intv==slc]
@@ -586,7 +599,7 @@ class MixedForestTree(object):
         self.Uy = None
         self.U = None
 
-    def get_self_X(self):
+    def get_X(self):
         if self.forest.optimize_memory_use:
             return self.forest.X[self.subsample]
         else:
