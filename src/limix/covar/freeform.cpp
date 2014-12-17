@@ -813,7 +813,7 @@ CPolyCF::CPolyCF(muint_t numberGroups, muint_t n_dims, muint_t order)
     this->numberDimensions = 0;
     this->numberGroups=numberGroups;
     //number of parameters:
-    this->numberParams = n_dims*numberGroups;
+    this->numberParams = order+n_dims*numberGroups;
     this->n_dims = n_dims;
     this->order  = order;
     initParams();
@@ -830,43 +830,6 @@ void CPolyCF::aKcross_diag(VectorXd* out, const CovarInput& Xstar) const
     (*out)=K.diagonal();
 }
 
-void CPolyCF::agetX1(MatrixXd* out) const
-{
-    (*out).setConstant(this->numberGroups,this->n_dims*this->order,0);
-    //for rows
-    muint_t ip=0;
-    muint_t ic=0;
-    for (muint_t ik=1;ik<this->order+1;++ik) {
-        ip = 0;
-        for (muint_t dim_i=0;dim_i<this->n_dims;++dim_i) {
-            for(muint_t ir=0;ir<this->numberGroups;++ir) {
-                (*out)(ir,ic) = std::pow(params(ip),ik);
-                ip++;
-            }
-            ic++;
-        }
-    }
-}
-
-void CPolyCF::agetX1grad(MatrixXd* out, muint_t i) const
-{
-    (*out).setConstant(this->numberGroups,this->n_dims*this->order,0);
-    //for rows
-    muint_t ip=0;
-    muint_t ic=0;
-    for (muint_t ik=1;ik<this->order+1;++ik) {
-        ip = 0;
-        for (muint_t dim_i=0;dim_i<this->n_dims;++dim_i) {
-            for(muint_t ir=0;ir<this->numberGroups;++ir) {
-                if (ip==i)
-                    (*out)(ir,ic) = ik*std::pow(params(ip),ik-1);
-                ip++;
-            }
-            ic++;
-        }
-    }
-}
-
 void CPolyCF::agetScales(CovarParams* out) {
     //to implement properly
     (*out) = this->params;
@@ -879,15 +842,39 @@ void CPolyCF::setParamsCovariance(const MatrixXd& K0)
 
 void CPolyCF::aKcross(MatrixXd* out, const CovarInput& Xstar ) const 
 {
-    MatrixXd X1; this->agetX1(&X1);
-    (*out).noalias() = X1*X1.transpose();
+    MatrixXd W = this->params.block(order,0,n_dims*numberGroups,1);
+    W.resize(numberGroups,n_dims);
+    MatrixXd W2o;
+    (*out).setConstant(this->numberGroups,this->numberGroups,0);
+    for (muint_t o=1; o<this->order+1; o++) {
+        W2o = W.unaryExpr(std::bind2nd(std::ptr_fun<double,double,double>(pow),o));
+        (*out) += this->params(o-1)*this->params(o-1)*W2o*W2o.transpose();
+    }
 }
 
 void CPolyCF::aKgrad_param(MatrixXd* out,muint_t i) const
 {
-    MatrixXd X1; this->agetX1(&X1);
-    MatrixXd X1grad; this->agetX1grad(&X1grad,i);
-    (*out).noalias() = X1grad*X1.transpose()+X1*X1grad.transpose();
+    if (i<this->order) {
+        MatrixXd W = this->params.block(order,0,n_dims*numberGroups,1);
+        W.resize(numberGroups,n_dims);
+        MatrixXd W2o = W.unaryExpr(std::bind2nd(std::ptr_fun<double,double,double>(pow),i+1)); 
+        (*out).noalias() = 2*this->params(i)*W2o*W2o.transpose();
+    }
+    else {
+        MatrixXd W = this->params.block(order,0,n_dims*numberGroups,1);
+        MatrixXd W2oGrad = MatrixXd::Zero(n_dims*numberGroups,1);
+        W.resize(numberGroups,n_dims);
+        MatrixXd W2o; //MatrixXd W2oGrad;
+        (*out).setConstant(this->numberGroups,this->numberGroups,0);
+        for (muint_t o=1; o<this->order+1; o++) {
+            W2o = W.unaryExpr(std::bind2nd(std::ptr_fun<double,double,double>(pow),o));
+            W2oGrad(i-this->order) = o*std::pow(params(i),o-1);
+            W2oGrad.resize(numberGroups,n_dims);
+            (*out) += this->params(o-1)*this->params(o-1)*W2oGrad*W2o.transpose();
+            (*out) += this->params(o-1)*this->params(o-1)*W2o*W2oGrad.transpose();
+            W2oGrad.resize(numberGroups*n_dims,1);
+        }
+    }
 }
 
 void CPolyCF::aKhess_param(MatrixXd* out,muint_t i,muint_t j) const{

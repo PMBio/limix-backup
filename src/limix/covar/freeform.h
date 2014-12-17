@@ -386,10 +386,6 @@ public:
 			return this->numberGroups;
 		}
 
-    virtual void agetX1(MatrixXd* out) const;
-    virtual void agetX1grad(MatrixXd* out,muint_t i) const;
-
-
     virtual void agetScales(CovarParams* out);
     virtual void setParamsCovariance(const MatrixXd& K0) ;
 
