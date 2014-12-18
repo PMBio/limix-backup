@@ -73,8 +73,6 @@ class LIMIX_converter(object):
     	    transpose: standard is rows - individuals unless transpose = True
     	"""
     	C = pandas.io.parsers.read_csv(csv_file,sep=sep,header=None,index_col=False,*args,**kw_args)
-        import ipdb
-        ipdb.set_trace()
     	if transpose:
     		C = C.T
     	values = C.values
