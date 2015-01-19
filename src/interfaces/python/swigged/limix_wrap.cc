@@ -3002,125 +3002,127 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_limix__CMultiTraitTerm swig_types[62]
 #define SWIGTYPE_p_limix__CNamedCache swig_types[63]
 #define SWIGTYPE_p_limix__CParamObject swig_types[64]
-#define SWIGTYPE_p_limix__CProductCF swig_types[65]
-#define SWIGTYPE_p_limix__CRMemDataFrameT_MatrixXd_t swig_types[66]
-#define SWIGTYPE_p_limix__CRWMemDataFrameT_MatrixXd_t swig_types[67]
-#define SWIGTYPE_p_limix__CRank1diagCF swig_types[68]
-#define SWIGTYPE_p_limix__CRankOneCF swig_types[69]
-#define SWIGTYPE_p_limix__CSingleTraitTerm swig_types[70]
-#define SWIGTYPE_p_limix__CSqExpCF swig_types[71]
-#define SWIGTYPE_p_limix__CSumCF swig_types[72]
-#define SWIGTYPE_p_limix__CSumLinear swig_types[73]
-#define SWIGTYPE_p_limix__CTextfileGenotypeContainer swig_types[74]
-#define SWIGTYPE_p_limix__CVarianceDecomposition swig_types[75]
-#define SWIGTYPE_p_limix__FlexEigenMatrixT_Eigen__Dynamic_1_Eigen__ColMajor_t swig_types[76]
-#define SWIGTYPE_p_limix__FlexEigenMatrixT_Eigen__Dynamic_Eigen__Dynamic_Eigen__ColMajor_t swig_types[77]
-#define SWIGTYPE_p_limix__nLLevalFunctor swig_types[78]
-#define SWIGTYPE_p_limix__nLLevalKronFunctor swig_types[79]
-#define SWIGTYPE_p_long swig_types[80]
-#define SWIGTYPE_p_long_long swig_types[81]
-#define SWIGTYPE_p_mapped_type swig_types[82]
-#define SWIGTYPE_p_p_PyObject swig_types[83]
-#define SWIGTYPE_p_short swig_types[84]
-#define SWIGTYPE_p_signed_char swig_types[85]
-#define SWIGTYPE_p_size_type swig_types[86]
-#define SWIGTYPE_p_std__allocatorT_MatrixXd_t swig_types[87]
-#define SWIGTYPE_p_std__allocatorT_VectorXi_t swig_types[88]
-#define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t swig_types[89]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[90]
-#define SWIGTYPE_p_std__exception swig_types[91]
-#define SWIGTYPE_p_std__invalid_argument swig_types[92]
-#define SWIGTYPE_p_std__lessT_std__string_t swig_types[93]
-#define SWIGTYPE_p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t swig_types[94]
-#define SWIGTYPE_p_std__mapT_std__string_PCVoid_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_PCVoid_t_t_t swig_types[95]
-#define SWIGTYPE_p_std__shared_ptrT_MatrixXd_t swig_types[96]
-#define SWIGTYPE_p_std__shared_ptrT_bool_t swig_types[97]
-#define SWIGTYPE_p_std__shared_ptrT_bost__enable_shared_from_thisT_CGPbase_t_t swig_types[98]
-#define SWIGTYPE_p_std__shared_ptrT_limix__ACovarianceFunction_t swig_types[99]
-#define SWIGTYPE_p_std__shared_ptrT_limix__ADataTerm_t swig_types[100]
-#define SWIGTYPE_p_std__shared_ptrT_limix__AGenotypeContainer_t swig_types[101]
-#define SWIGTYPE_p_std__shared_ptrT_limix__ALMM_t swig_types[102]
-#define SWIGTYPE_p_std__shared_ptrT_limix__ALikelihood_t swig_types[103]
-#define SWIGTYPE_p_std__shared_ptrT_limix__AMultiCF_t swig_types[104]
-#define SWIGTYPE_p_std__shared_ptrT_limix__ARDataFrameT_MatrixXd_t_t swig_types[105]
-#define SWIGTYPE_p_std__shared_ptrT_limix__AVarianceTerm_t swig_types[106]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearARD_t swig_types[107]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearISODelta_t swig_types[108]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearISO_t swig_types[109]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovSqexpARD_t swig_types[110]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovarianceFunctionCacheOld_t swig_types[111]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CCovarianceFunctionCache_t swig_types[112]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CData_t swig_types[113]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CDiagonalCF_t swig_types[114]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CFixedCF_t swig_types[115]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CFixedDiagonalCF_t swig_types[116]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CFreeFormCF_t swig_types[117]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPCholCache_t swig_types[118]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPHyperParams_t swig_types[119]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPKroneckerCache_t swig_types[120]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPLMM_t swig_types[121]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPSumCache_t swig_types[122]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPSum_t swig_types[123]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPbase_t swig_types[124]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronSumCache_t swig_types[125]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronSum_t swig_types[126]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronecker_t swig_types[127]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPopt_t swig_types[128]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGPvarDecomp_t swig_types[129]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CGenotypeBlock_t swig_types[130]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CHeaderMap_t swig_types[131]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CInteractLMM_t swig_types[132]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerCF_t swig_types[133]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerLMM_t swig_types[134]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerMean_t swig_types[135]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLMMCore_t swig_types[136]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLMMKroneckerCore_t swig_types[137]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLMM_t swig_types[138]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalIso_t swig_types[139]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalNULL_t swig_types[140]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalSVD_t swig_types[141]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLinCombCF_t swig_types[142]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLinearMean_t swig_types[143]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CLowRankCF_t swig_types[144]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CMemGenotypeContainer_t swig_types[145]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CMultiTraitTerm_t swig_types[146]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CMultiTraitVQTL_t swig_types[147]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CNamedCache_t swig_types[148]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CParamObject_t swig_types[149]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CProductCF_t swig_types[150]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t swig_types[151]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_t swig_types[152]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CRank1diagCF_t swig_types[153]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CRankOneCF_t swig_types[154]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CSingleTraitTerm_t swig_types[155]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CSqExpCF_t swig_types[156]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CSumCF_t swig_types[157]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CSumLinear_t swig_types[158]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CTextfileGenotypeContainer_t swig_types[159]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CVarianceDecomposition_t swig_types[160]
-#define SWIGTYPE_p_std__shared_ptrT_limix__CVqtl_t swig_types[161]
-#define SWIGTYPE_p_std__shared_ptrT_limix__FlexEigenMatrixT_Eigen__Dynamic_1_Eigen__ColMajor_t_t swig_types[162]
-#define SWIGTYPE_p_std__shared_ptrT_limix__FlexEigenMatrixT_Eigen__Dynamic_Eigen__Dynamic_Eigen__ColMajor_t_t swig_types[163]
-#define SWIGTYPE_p_std__shared_ptrT_limix__stringVec_t swig_types[164]
-#define SWIGTYPE_p_std__shared_ptrT_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t_t swig_types[165]
-#define SWIGTYPE_p_std__vectorT_MatrixXd_std__allocatorT_MatrixXd_t_t swig_types[166]
-#define SWIGTYPE_p_std__vectorT_VectorXi_std__allocatorT_VectorXi_t_t swig_types[167]
-#define SWIGTYPE_p_std__vectorT__Tp__Alloc_t swig_types[168]
-#define SWIGTYPE_p_std__vectorT_limix__CGPHyperParams_std__allocatorT_limix__CGPHyperParams_t_t swig_types[169]
-#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_bool_t_std__allocatorT_std__shared_ptrT_bool_t_t_t swig_types[170]
-#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__ACovarianceFunction_t_std__allocatorT_std__shared_ptrT_limix__ACovarianceFunction_t_t_t swig_types[171]
-#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__AVarianceTerm_t_std__allocatorT_std__shared_ptrT_limix__AVarianceTerm_t_t_t swig_types[172]
-#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__CLinearMean_t_std__allocatorT_std__shared_ptrT_limix__CLinearMean_t_t_t swig_types[173]
-#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[174]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[175]
-#define SWIGTYPE_p_unsigned_char swig_types[176]
-#define SWIGTYPE_p_unsigned_int swig_types[177]
-#define SWIGTYPE_p_unsigned_long swig_types[178]
-#define SWIGTYPE_p_unsigned_long_long swig_types[179]
-#define SWIGTYPE_p_unsigned_short swig_types[180]
-#define SWIGTYPE_p_value_type swig_types[181]
-static swig_type_info *swig_types[183];
-static swig_module_info swig_module = {swig_types, 182, 0, 0, 0, 0};
+#define SWIGTYPE_p_limix__CPolyCF swig_types[65]
+#define SWIGTYPE_p_limix__CProductCF swig_types[66]
+#define SWIGTYPE_p_limix__CRMemDataFrameT_MatrixXd_t swig_types[67]
+#define SWIGTYPE_p_limix__CRWMemDataFrameT_MatrixXd_t swig_types[68]
+#define SWIGTYPE_p_limix__CRank1diagCF swig_types[69]
+#define SWIGTYPE_p_limix__CRankOneCF swig_types[70]
+#define SWIGTYPE_p_limix__CSingleTraitTerm swig_types[71]
+#define SWIGTYPE_p_limix__CSqExpCF swig_types[72]
+#define SWIGTYPE_p_limix__CSumCF swig_types[73]
+#define SWIGTYPE_p_limix__CSumLinear swig_types[74]
+#define SWIGTYPE_p_limix__CTextfileGenotypeContainer swig_types[75]
+#define SWIGTYPE_p_limix__CVarianceDecomposition swig_types[76]
+#define SWIGTYPE_p_limix__FlexEigenMatrixT_Eigen__Dynamic_1_Eigen__ColMajor_t swig_types[77]
+#define SWIGTYPE_p_limix__FlexEigenMatrixT_Eigen__Dynamic_Eigen__Dynamic_Eigen__ColMajor_t swig_types[78]
+#define SWIGTYPE_p_limix__nLLevalFunctor swig_types[79]
+#define SWIGTYPE_p_limix__nLLevalKronFunctor swig_types[80]
+#define SWIGTYPE_p_long swig_types[81]
+#define SWIGTYPE_p_long_long swig_types[82]
+#define SWIGTYPE_p_mapped_type swig_types[83]
+#define SWIGTYPE_p_p_PyObject swig_types[84]
+#define SWIGTYPE_p_short swig_types[85]
+#define SWIGTYPE_p_signed_char swig_types[86]
+#define SWIGTYPE_p_size_type swig_types[87]
+#define SWIGTYPE_p_std__allocatorT_MatrixXd_t swig_types[88]
+#define SWIGTYPE_p_std__allocatorT_VectorXi_t swig_types[89]
+#define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t swig_types[90]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[91]
+#define SWIGTYPE_p_std__exception swig_types[92]
+#define SWIGTYPE_p_std__invalid_argument swig_types[93]
+#define SWIGTYPE_p_std__lessT_std__string_t swig_types[94]
+#define SWIGTYPE_p_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t swig_types[95]
+#define SWIGTYPE_p_std__mapT_std__string_PCVoid_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_PCVoid_t_t_t swig_types[96]
+#define SWIGTYPE_p_std__shared_ptrT_MatrixXd_t swig_types[97]
+#define SWIGTYPE_p_std__shared_ptrT_bool_t swig_types[98]
+#define SWIGTYPE_p_std__shared_ptrT_bost__enable_shared_from_thisT_CGPbase_t_t swig_types[99]
+#define SWIGTYPE_p_std__shared_ptrT_limix__ACovarianceFunction_t swig_types[100]
+#define SWIGTYPE_p_std__shared_ptrT_limix__ADataTerm_t swig_types[101]
+#define SWIGTYPE_p_std__shared_ptrT_limix__AGenotypeContainer_t swig_types[102]
+#define SWIGTYPE_p_std__shared_ptrT_limix__ALMM_t swig_types[103]
+#define SWIGTYPE_p_std__shared_ptrT_limix__ALikelihood_t swig_types[104]
+#define SWIGTYPE_p_std__shared_ptrT_limix__AMultiCF_t swig_types[105]
+#define SWIGTYPE_p_std__shared_ptrT_limix__ARDataFrameT_MatrixXd_t_t swig_types[106]
+#define SWIGTYPE_p_std__shared_ptrT_limix__AVarianceTerm_t swig_types[107]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearARD_t swig_types[108]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearISODelta_t swig_types[109]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovLinearISO_t swig_types[110]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovSqexpARD_t swig_types[111]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovarianceFunctionCacheOld_t swig_types[112]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CCovarianceFunctionCache_t swig_types[113]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CData_t swig_types[114]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CDiagonalCF_t swig_types[115]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CFixedCF_t swig_types[116]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CFixedDiagonalCF_t swig_types[117]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CFreeFormCF_t swig_types[118]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPCholCache_t swig_types[119]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPHyperParams_t swig_types[120]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPKroneckerCache_t swig_types[121]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPLMM_t swig_types[122]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPSumCache_t swig_types[123]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPSum_t swig_types[124]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPbase_t swig_types[125]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronSumCache_t swig_types[126]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronSum_t swig_types[127]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPkronecker_t swig_types[128]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPopt_t swig_types[129]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGPvarDecomp_t swig_types[130]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CGenotypeBlock_t swig_types[131]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CHeaderMap_t swig_types[132]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CInteractLMM_t swig_types[133]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerCF_t swig_types[134]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerLMM_t swig_types[135]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerMean_t swig_types[136]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLMMCore_t swig_types[137]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLMMKroneckerCore_t swig_types[138]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLMM_t swig_types[139]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalIso_t swig_types[140]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalNULL_t swig_types[141]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLikNormalSVD_t swig_types[142]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLinCombCF_t swig_types[143]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLinearMean_t swig_types[144]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CLowRankCF_t swig_types[145]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CMemGenotypeContainer_t swig_types[146]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CMultiTraitTerm_t swig_types[147]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CMultiTraitVQTL_t swig_types[148]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CNamedCache_t swig_types[149]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CParamObject_t swig_types[150]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t swig_types[151]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CProductCF_t swig_types[152]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t swig_types[153]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_t swig_types[154]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CRank1diagCF_t swig_types[155]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CRankOneCF_t swig_types[156]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CSingleTraitTerm_t swig_types[157]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CSqExpCF_t swig_types[158]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CSumCF_t swig_types[159]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CSumLinear_t swig_types[160]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CTextfileGenotypeContainer_t swig_types[161]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CVarianceDecomposition_t swig_types[162]
+#define SWIGTYPE_p_std__shared_ptrT_limix__CVqtl_t swig_types[163]
+#define SWIGTYPE_p_std__shared_ptrT_limix__FlexEigenMatrixT_Eigen__Dynamic_1_Eigen__ColMajor_t_t swig_types[164]
+#define SWIGTYPE_p_std__shared_ptrT_limix__FlexEigenMatrixT_Eigen__Dynamic_Eigen__Dynamic_Eigen__ColMajor_t_t swig_types[165]
+#define SWIGTYPE_p_std__shared_ptrT_limix__stringVec_t swig_types[166]
+#define SWIGTYPE_p_std__shared_ptrT_std__mapT_std__string_MatrixXd_std__lessT_std__string_t_std__allocatorT_std__pairT_std__string_const_MatrixXd_t_t_t_t swig_types[167]
+#define SWIGTYPE_p_std__vectorT_MatrixXd_std__allocatorT_MatrixXd_t_t swig_types[168]
+#define SWIGTYPE_p_std__vectorT_VectorXi_std__allocatorT_VectorXi_t_t swig_types[169]
+#define SWIGTYPE_p_std__vectorT__Tp__Alloc_t swig_types[170]
+#define SWIGTYPE_p_std__vectorT_limix__CGPHyperParams_std__allocatorT_limix__CGPHyperParams_t_t swig_types[171]
+#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_bool_t_std__allocatorT_std__shared_ptrT_bool_t_t_t swig_types[172]
+#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__ACovarianceFunction_t_std__allocatorT_std__shared_ptrT_limix__ACovarianceFunction_t_t_t swig_types[173]
+#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__AVarianceTerm_t_std__allocatorT_std__shared_ptrT_limix__AVarianceTerm_t_t_t swig_types[174]
+#define SWIGTYPE_p_std__vectorT_std__shared_ptrT_limix__CLinearMean_t_std__allocatorT_std__shared_ptrT_limix__CLinearMean_t_t_t swig_types[175]
+#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[176]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[177]
+#define SWIGTYPE_p_unsigned_char swig_types[178]
+#define SWIGTYPE_p_unsigned_int swig_types[179]
+#define SWIGTYPE_p_unsigned_long swig_types[180]
+#define SWIGTYPE_p_unsigned_long_long swig_types[181]
+#define SWIGTYPE_p_unsigned_short swig_types[182]
+#define SWIGTYPE_p_value_type swig_types[183]
+static swig_type_info *swig_types[185];
+static swig_module_info swig_module = {swig_types, 184, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -37076,6 +37078,1439 @@ SWIGINTERN PyObject *CFixedDiagonalCF_swigregister(PyObject *SWIGUNUSEDPARM(self
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_std__shared_ptrT_limix__CFixedDiagonalCF_t, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_CPolyCF(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::muint_t arg1 ;
+  limix::muint_t arg2 ;
+  limix::muint_t arg3 ;
+  unsigned long val1 ;
+  int ecode1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  limix::CPolyCF *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:new_CPolyCF",&obj0,&obj1,&obj2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_long(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_CPolyCF" "', argument " "1"" of type '" "limix::muint_t""'");
+  } 
+  arg1 = static_cast< limix::muint_t >(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_CPolyCF" "', argument " "2"" of type '" "limix::muint_t""'");
+  } 
+  arg2 = static_cast< limix::muint_t >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_CPolyCF" "', argument " "3"" of type '" "limix::muint_t""'");
+  } 
+  arg3 = static_cast< limix::muint_t >(val3);
+  {
+    try {
+      result = (limix::CPolyCF *)new limix::CPolyCF(arg1,arg2,arg3);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  {
+    std::shared_ptr<  limix::CPolyCF > *smartresult = result ? new std::shared_ptr<  limix::CPolyCF >(result SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW) : 0;
+    resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(smartresult), SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, SWIG_POINTER_NEW | SWIG_POINTER_OWN);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_CPolyCF(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF > *smartarg1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_CPolyCF",&obj0)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CPolyCF" "', argument " "1"" of type '" "limix::CPolyCF *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  {
+    try {
+      (void)arg1; delete smartarg1;
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_setX(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  limix::CovarInput *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF > *smartarg1 = 0 ;
+  MatrixXd temp2 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:CPolyCF_setX",&obj0,&obj1)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_setX" "', argument " "1"" of type '" "limix::CPolyCF *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion(obj1, NPY_DOUBLE, &newObject);
+      break;
+      
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      //if vector: create a column vector explicitly:
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+    }
+    
+    arg2 = &temp2;
+    // prepare the input array
+    switch( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      (*arg2) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
+      break;
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  {
+    try {
+      (arg1)->setX((limix::CovarInput const &)*arg2);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_setXcol(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  limix::CovarInput *arg2 = 0 ;
+  limix::muint_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF > *smartarg1 = 0 ;
+  MatrixXd temp2 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:CPolyCF_setXcol",&obj0,&obj1,&obj2)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_setXcol" "', argument " "1"" of type '" "limix::CPolyCF *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion(obj1, NPY_DOUBLE, &newObject);
+      break;
+      
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      //if vector: create a column vector explicitly:
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+    }
+    
+    arg2 = &temp2;
+    // prepare the input array
+    switch( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      (*arg2) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
+      break;
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CPolyCF_setXcol" "', argument " "3"" of type '" "limix::muint_t""'");
+  } 
+  arg3 = static_cast< limix::muint_t >(val3);
+  {
+    try {
+      (arg1)->setXcol((limix::CovarInput const &)*arg2,arg3);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_Kcross_diag(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  VectorXd *arg2 = (VectorXd *) 0 ;
+  limix::CovarInput *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF const > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF const > *smartarg1 = 0 ;
+  VectorXd temp2 ;
+  MatrixXd temp3 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  {
+    arg2 = &temp2;
+    
+  }
+  if (!PyArg_ParseTuple(args,(char *)"OO:CPolyCF_Kcross_diag",&obj0,&obj1)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_Kcross_diag" "', argument " "1"" of type '" "limix::CPolyCF const *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion(obj1, NPY_DOUBLE, &newObject);
+      break;
+      
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      //if vector: create a column vector explicitly:
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+    }
+    
+    arg3 = &temp3;
+    // prepare the input array
+    switch( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      (*arg3) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
+      break;
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  {
+    try {
+      ((limix::CPolyCF const *)arg1)->aKcross_diag(arg2,(limix::CovarInput const &)*arg3);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  {
+    // prepare resulting array
+    /*
+      npy_intp dims[] = {arg2->rows(), arg2->cols()};
+      PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    
+      if (out_array == NULL){
+        PyErr_SetString(PyExc_ValueError,
+                        "Unable to create the output array.");
+        
+        return NULL;
+      }
+      
+      mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+      Eigen::Map<VectorXdscipy>(out_data, dims[0]) = (*arg2);
+    
+      resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+      */
+    //Vector types in eigen have rows only:
+    npy_intp dims[] = {
+      arg2->rows()
+    };
+    PyObject * out_array = PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    
+    if (out_array == NULL){
+      PyErr_SetString(PyExc_ValueError,
+        "Unable to create the output array.");
+      
+      return NULL;
+    }
+    
+    mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+    Eigen::Map<VectorXdscipy>(out_data, dims[0]) = (*arg2);
+    
+    resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_Kcross_grad_X(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  MatrixXd *arg2 = (MatrixXd *) 0 ;
+  limix::CovarInput *arg3 = 0 ;
+  limix::muint_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF const > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF const > *smartarg1 = 0 ;
+  MatrixXd temp2 ;
+  MatrixXd temp3 ;
+  unsigned long val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  {
+    arg2 = &temp2;
+    
+  }
+  if (!PyArg_ParseTuple(args,(char *)"OOO:CPolyCF_Kcross_grad_X",&obj0,&obj1,&obj2)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_Kcross_grad_X" "', argument " "1"" of type '" "limix::CPolyCF const *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion(obj1, NPY_DOUBLE, &newObject);
+      break;
+      
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      //if vector: create a column vector explicitly:
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+    }
+    
+    arg3 = &temp3;
+    // prepare the input array
+    switch( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      (*arg3) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
+      break;
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  ecode4 = SWIG_AsVal_unsigned_SS_long(obj2, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "CPolyCF_Kcross_grad_X" "', argument " "4"" of type '" "limix::muint_t""'");
+  } 
+  arg4 = static_cast< limix::muint_t >(val4);
+  {
+    try {
+      ((limix::CPolyCF const *)arg1)->aKcross_grad_X(arg2,(limix::CovarInput const &)*arg3,arg4);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  {
+    // prepare resulting array
+    npy_intp dims[] = {
+      arg2->rows(), arg2->cols()
+    };
+    PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    
+    if (out_array == NULL){
+      PyErr_SetString(PyExc_ValueError,
+        "Unable to create the output array.");
+      
+      return NULL;
+    }
+    
+    mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+    Eigen::Map<MatrixXdscipy>(out_data, dims[0], dims[1]) = (*arg2);
+    
+    resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_Kdiag_grad_X(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  VectorXd *arg2 = (VectorXd *) 0 ;
+  limix::muint_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF const > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF const > *smartarg1 = 0 ;
+  VectorXd temp2 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  {
+    arg2 = &temp2;
+    
+  }
+  if (!PyArg_ParseTuple(args,(char *)"OO:CPolyCF_Kdiag_grad_X",&obj0,&obj1)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_Kdiag_grad_X" "', argument " "1"" of type '" "limix::CPolyCF const *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj1, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CPolyCF_Kdiag_grad_X" "', argument " "3"" of type '" "limix::muint_t""'");
+  } 
+  arg3 = static_cast< limix::muint_t >(val3);
+  {
+    try {
+      ((limix::CPolyCF const *)arg1)->aKdiag_grad_X(arg2,arg3);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  {
+    // prepare resulting array
+    /*
+      npy_intp dims[] = {arg2->rows(), arg2->cols()};
+      PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    
+      if (out_array == NULL){
+        PyErr_SetString(PyExc_ValueError,
+                        "Unable to create the output array.");
+        
+        return NULL;
+      }
+      
+      mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+      Eigen::Map<VectorXdscipy>(out_data, dims[0]) = (*arg2);
+    
+      resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+      */
+    //Vector types in eigen have rows only:
+    npy_intp dims[] = {
+      arg2->rows()
+    };
+    PyObject * out_array = PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    
+    if (out_array == NULL){
+      PyErr_SetString(PyExc_ValueError,
+        "Unable to create the output array.");
+      
+      return NULL;
+    }
+    
+    mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+    Eigen::Map<VectorXdscipy>(out_data, dims[0]) = (*arg2);
+    
+    resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_Kdim(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF const > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF const > *smartarg1 = 0 ;
+  PyObject * obj0 = 0 ;
+  limix::muint_t result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:CPolyCF_Kdim",&obj0)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_Kdim" "', argument " "1"" of type '" "limix::CPolyCF const *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  {
+    try {
+      result = (limix::muint_t)((limix::CPolyCF const *)arg1)->Kdim();
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_agetScales(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  limix::CovarParams *arg2 = (limix::CovarParams *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF > *smartarg1 = 0 ;
+  VectorXd temp2 ;
+  PyObject * obj0 = 0 ;
+  
+  {
+    arg2 = &temp2;
+    
+  }
+  if (!PyArg_ParseTuple(args,(char *)"O:CPolyCF_agetScales",&obj0)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_agetScales" "', argument " "1"" of type '" "limix::CPolyCF *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  {
+    try {
+      (arg1)->agetScales(arg2);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  {
+    // prepare resulting array
+    /*
+      npy_intp dims[] = {arg2->rows(), arg2->cols()};
+      PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    
+      if (out_array == NULL){
+        PyErr_SetString(PyExc_ValueError,
+                        "Unable to create the output array.");
+        
+        return NULL;
+      }
+      
+      mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+      Eigen::Map<VectorXdscipy>(out_data, dims[0]) = (*arg2);
+    
+      resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+      */
+    //Vector types in eigen have rows only:
+    npy_intp dims[] = {
+      arg2->rows()
+    };
+    PyObject * out_array = PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    
+    if (out_array == NULL){
+      PyErr_SetString(PyExc_ValueError,
+        "Unable to create the output array.");
+      
+      return NULL;
+    }
+    
+    mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+    Eigen::Map<VectorXdscipy>(out_data, dims[0]) = (*arg2);
+    
+    resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_setParamsCovariance(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  MatrixXd *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF > *smartarg1 = 0 ;
+  MatrixXd temp2 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:CPolyCF_setParamsCovariance",&obj0,&obj1)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_setParamsCovariance" "', argument " "1"" of type '" "limix::CPolyCF *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr<  limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion(obj1, NPY_DOUBLE, &newObject);
+      break;
+      
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      //if vector: create a column vector explicitly:
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+    }
+    
+    arg2 = &temp2;
+    // prepare the input array
+    switch( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      (*arg2) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
+      break;
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  {
+    try {
+      (arg1)->setParamsCovariance((MatrixXd const &)*arg2);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_Kcross(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  MatrixXd *arg2 = (MatrixXd *) 0 ;
+  limix::CovarInput *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF const > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF const > *smartarg1 = 0 ;
+  MatrixXd temp2 ;
+  MatrixXd temp3 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  {
+    arg2 = &temp2;
+    
+  }
+  if (!PyArg_ParseTuple(args,(char *)"OO:CPolyCF_Kcross",&obj0,&obj1)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_Kcross" "', argument " "1"" of type '" "limix::CPolyCF const *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  {
+    // create array from input
+    int newObject=0;
+    PyArrayObject * in_array;
+    
+    switch ( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      in_array = obj_to_array_contiguous_allow_conversion(obj1, NPY_DOUBLE, &newObject);
+      break;
+      
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      
+      return NULL;
+    }
+    
+    if( in_array == NULL ){
+      PyErr_SetString(PyExc_ValueError,
+        "array could not be created");
+      
+      return NULL;
+    }
+    
+    // require one or two dimensions
+    int dims[] = {
+      1, 2
+    };
+    require_dimensions_n(in_array, dims, 2);
+    
+    // get the dimensions
+    int in_rows;
+    int in_cols;
+    if(array_numdims(in_array) == 2){
+      in_rows = array_size(in_array, 0);
+      in_cols = array_size(in_array, 1);
+      
+    }else{
+      //if vector: create a column vector explicitly:
+      in_rows = array_size(in_array, 0);
+      in_cols = 1;
+    }
+    
+    arg3 = &temp3;
+    // prepare the input array
+    switch( array_type(obj1) ) {
+    case NPY_LONG:
+    case NPY_DOUBLE:
+      (*arg3) = Eigen::Map<MatrixXdscipy>((double*)array_data( in_array ), in_rows, in_cols).cast<mfloat_t>();
+      break;
+    case NPY_INT:
+    case NPY_FLOAT:
+      
+    default:
+      PyErr_SetString(PyExc_ValueError,
+        "array must be of type int, float, long or double");
+      return NULL;
+    }
+    //refernce counter if we craeted a copy?
+    if(newObject)
+    {
+      Py_DECREF(in_array);
+    }
+    
+  }
+  {
+    try {
+      ((limix::CPolyCF const *)arg1)->aKcross(arg2,(limix::CovarInput const &)*arg3);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  {
+    // prepare resulting array
+    npy_intp dims[] = {
+      arg2->rows(), arg2->cols()
+    };
+    PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    
+    if (out_array == NULL){
+      PyErr_SetString(PyExc_ValueError,
+        "Unable to create the output array.");
+      
+      return NULL;
+    }
+    
+    mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+    Eigen::Map<MatrixXdscipy>(out_data, dims[0], dims[1]) = (*arg2);
+    
+    resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_Kgrad_param(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  MatrixXd *arg2 = (MatrixXd *) 0 ;
+  limix::muint_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF const > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF const > *smartarg1 = 0 ;
+  MatrixXd temp2 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  {
+    arg2 = &temp2;
+    
+  }
+  if (!PyArg_ParseTuple(args,(char *)"OO:CPolyCF_Kgrad_param",&obj0,&obj1)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_Kgrad_param" "', argument " "1"" of type '" "limix::CPolyCF const *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj1, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CPolyCF_Kgrad_param" "', argument " "3"" of type '" "limix::muint_t""'");
+  } 
+  arg3 = static_cast< limix::muint_t >(val3);
+  {
+    try {
+      ((limix::CPolyCF const *)arg1)->aKgrad_param(arg2,arg3);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  {
+    // prepare resulting array
+    npy_intp dims[] = {
+      arg2->rows(), arg2->cols()
+    };
+    PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    
+    if (out_array == NULL){
+      PyErr_SetString(PyExc_ValueError,
+        "Unable to create the output array.");
+      
+      return NULL;
+    }
+    
+    mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+    Eigen::Map<MatrixXdscipy>(out_data, dims[0], dims[1]) = (*arg2);
+    
+    resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_Khess_param(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  MatrixXd *arg2 = (MatrixXd *) 0 ;
+  limix::muint_t arg3 ;
+  limix::muint_t arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF const > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF const > *smartarg1 = 0 ;
+  MatrixXd temp2 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  unsigned long val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  {
+    arg2 = &temp2;
+    
+  }
+  if (!PyArg_ParseTuple(args,(char *)"OOO:CPolyCF_Khess_param",&obj0,&obj1,&obj2)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_Khess_param" "', argument " "1"" of type '" "limix::CPolyCF const *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj1, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CPolyCF_Khess_param" "', argument " "3"" of type '" "limix::muint_t""'");
+  } 
+  arg3 = static_cast< limix::muint_t >(val3);
+  ecode4 = SWIG_AsVal_unsigned_SS_long(obj2, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "CPolyCF_Khess_param" "', argument " "4"" of type '" "limix::muint_t""'");
+  } 
+  arg4 = static_cast< limix::muint_t >(val4);
+  {
+    try {
+      ((limix::CPolyCF const *)arg1)->aKhess_param(arg2,arg3,arg4);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  {
+    // prepare resulting array
+    npy_intp dims[] = {
+      arg2->rows(), arg2->cols()
+    };
+    PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    
+    if (out_array == NULL){
+      PyErr_SetString(PyExc_ValueError,
+        "Unable to create the output array.");
+      
+      return NULL;
+    }
+    
+    mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+    Eigen::Map<MatrixXdscipy>(out_data, dims[0], dims[1]) = (*arg2);
+    
+    resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_agetParamMask0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  limix::CovarParams *arg2 = (limix::CovarParams *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF const > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF const > *smartarg1 = 0 ;
+  VectorXd temp2 ;
+  PyObject * obj0 = 0 ;
+  
+  {
+    arg2 = &temp2;
+    
+  }
+  if (!PyArg_ParseTuple(args,(char *)"O:CPolyCF_agetParamMask0",&obj0)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_agetParamMask0" "', argument " "1"" of type '" "limix::CPolyCF const *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  {
+    try {
+      ((limix::CPolyCF const *)arg1)->agetParamMask0(arg2);
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  {
+    // prepare resulting array
+    /*
+      npy_intp dims[] = {arg2->rows(), arg2->cols()};
+      PyObject * out_array = PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    
+      if (out_array == NULL){
+        PyErr_SetString(PyExc_ValueError,
+                        "Unable to create the output array.");
+        
+        return NULL;
+      }
+      
+      mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+      Eigen::Map<VectorXdscipy>(out_data, dims[0]) = (*arg2);
+    
+      resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+      */
+    //Vector types in eigen have rows only:
+    npy_intp dims[] = {
+      arg2->rows()
+    };
+    PyObject * out_array = PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    
+    if (out_array == NULL){
+      PyErr_SetString(PyExc_ValueError,
+        "Unable to create the output array.");
+      
+      return NULL;
+    }
+    
+    mfloat_t* out_data = (mfloat_t*)array_data(out_array);
+    Eigen::Map<VectorXdscipy>(out_data, dims[0]) = (*arg2);
+    
+    resultobj = SWIG_Python_AppendOutput(resultobj, out_array);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPolyCF_getName(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  limix::CPolyCF *arg1 = (limix::CPolyCF *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::shared_ptr< limix::CPolyCF const > tempshared1 ;
+  std::shared_ptr< limix::CPolyCF const > *smartarg1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::string result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:CPolyCF_getName",&obj0)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, 0 |  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPolyCF_getName" "', argument " "1"" of type '" "limix::CPolyCF const *""'"); 
+    }
+    if (newmem & SWIG_CAST_NEW_MEMORY) {
+      tempshared1 = *reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      delete reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >(tempshared1.get());
+    } else {
+      smartarg1 = reinterpret_cast< std::shared_ptr< const limix::CPolyCF > * >(argp1);
+      arg1 = const_cast< limix::CPolyCF * >((smartarg1 ? smartarg1->get() : 0));
+    }
+  }
+  {
+    try {
+      result = ((limix::CPolyCF const *)arg1)->getName();
+    } catch (limix::CLimixException& e) {
+      std::string s("LIMIX error: "), s2(e.what());
+      s = s + s2;
+      SWIG_exception(SWIG_RuntimeError, s.c_str());
+      return NULL;
+    } catch (...) {
+      SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *CPolyCF_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_std__shared_ptrT_limix__CPolyCF_t, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
@@ -96818,6 +98253,126 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"CFixedDiagonalCF_swigregister", CFixedDiagonalCF_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_CPolyCF", _wrap_new_CPolyCF, METH_VARARGS, (char *)"\n"
+		"new_CPolyCF(limix::muint_t numberGroups, limix::muint_t n_dims, limix::muint_t order) -> CPolyCF\n"
+		"\n"
+		"Parameters:\n"
+		"    numberGroups: limix::muint_t\n"
+		"    n_dims: limix::muint_t\n"
+		"    order: limix::muint_t\n"
+		"\n"
+		""},
+	 { (char *)"delete_CPolyCF", _wrap_delete_CPolyCF, METH_VARARGS, (char *)"\n"
+		"delete_CPolyCF(CPolyCF self)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF *\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_setX", _wrap_CPolyCF_setX, METH_VARARGS, (char *)"\n"
+		"CPolyCF_setX(CPolyCF self, limix::CovarInput const & X)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF *\n"
+		"    X: limix::CovarInput const &\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_setXcol", _wrap_CPolyCF_setXcol, METH_VARARGS, (char *)"\n"
+		"CPolyCF_setXcol(CPolyCF self, limix::CovarInput const & X, limix::muint_t col)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF *\n"
+		"    X: limix::CovarInput const &\n"
+		"    col: limix::muint_t\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_Kcross_diag", _wrap_CPolyCF_Kcross_diag, METH_VARARGS, (char *)"\n"
+		"CPolyCF_Kcross_diag(CPolyCF self, limix::CovarInput const & Xstar)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF const *\n"
+		"    Xstar: limix::CovarInput const &\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_Kcross_grad_X", _wrap_CPolyCF_Kcross_grad_X, METH_VARARGS, (char *)"\n"
+		"CPolyCF_Kcross_grad_X(CPolyCF self, limix::CovarInput const & Xstar, limix::muint_t const d)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF const *\n"
+		"    Xstar: limix::CovarInput const &\n"
+		"    d: limix::muint_t const\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_Kdiag_grad_X", _wrap_CPolyCF_Kdiag_grad_X, METH_VARARGS, (char *)"\n"
+		"CPolyCF_Kdiag_grad_X(CPolyCF self, limix::muint_t const d)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF const *\n"
+		"    d: limix::muint_t const\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_Kdim", _wrap_CPolyCF_Kdim, METH_VARARGS, (char *)"\n"
+		"CPolyCF_Kdim(CPolyCF self) -> limix::muint_t\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF const *\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_agetScales", _wrap_CPolyCF_agetScales, METH_VARARGS, (char *)"\n"
+		"CPolyCF_agetScales(CPolyCF self)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF *\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_setParamsCovariance", _wrap_CPolyCF_setParamsCovariance, METH_VARARGS, (char *)"\n"
+		"CPolyCF_setParamsCovariance(CPolyCF self, MatrixXd const & K0)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF *\n"
+		"    K0: MatrixXd const &\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_Kcross", _wrap_CPolyCF_Kcross, METH_VARARGS, (char *)"\n"
+		"CPolyCF_Kcross(CPolyCF self, limix::CovarInput const & Xstar)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF const *\n"
+		"    Xstar: limix::CovarInput const &\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_Kgrad_param", _wrap_CPolyCF_Kgrad_param, METH_VARARGS, (char *)"\n"
+		"CPolyCF_Kgrad_param(CPolyCF self, limix::muint_t const i)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF const *\n"
+		"    i: limix::muint_t const\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_Khess_param", _wrap_CPolyCF_Khess_param, METH_VARARGS, (char *)"\n"
+		"CPolyCF_Khess_param(CPolyCF self, limix::muint_t const i, limix::muint_t const j)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF const *\n"
+		"    i: limix::muint_t const\n"
+		"    j: limix::muint_t const\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_agetParamMask0", _wrap_CPolyCF_agetParamMask0, METH_VARARGS, (char *)"\n"
+		"CPolyCF_agetParamMask0(CPolyCF self)\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF const *\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_getName", _wrap_CPolyCF_getName, METH_VARARGS, (char *)"\n"
+		"CPolyCF_getName(CPolyCF self) -> std::string\n"
+		"\n"
+		"Parameters:\n"
+		"    self: limix::CPolyCF const *\n"
+		"\n"
+		""},
+	 { (char *)"CPolyCF_swigregister", CPolyCF_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CCovSqexpARD", _wrap_new_CCovSqexpARD, METH_VARARGS, (char *)"\n"
 		"CCovSqexpARD(limix::muint_t numberDimensions=1)\n"
 		"\n"
@@ -102156,6 +103711,10 @@ static void *_p_std__shared_ptrT_limix__CCovLinearISODelta_tTo_p_std__shared_ptr
     *newmemory = SWIG_CAST_NEW_MEMORY;
     return (void *) new std::shared_ptr< limix::ACovarianceFunction >(*(std::shared_ptr< limix::CCovLinearISODelta > *)x);
 }
+static void *_p_std__shared_ptrT_limix__CPolyCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::ACovarianceFunction >(*(std::shared_ptr< limix::CPolyCF > *)x);
+}
 static void *_p_std__shared_ptrT_limix__CCovSqexpARD_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
     return (void *) new std::shared_ptr< limix::ACovarianceFunction >(*(std::shared_ptr< limix::CCovSqexpARD > *)x);
@@ -102216,13 +103775,13 @@ static void *_p_std__shared_ptrT_limix__AMultiCF_tTo_p_std__shared_ptrT_limix__A
     *newmemory = SWIG_CAST_NEW_MEMORY;
     return (void *) new std::shared_ptr< limix::ACovarianceFunction >(*(std::shared_ptr< limix::AMultiCF > *)x);
 }
-static void *_p_std__shared_ptrT_limix__CSumCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::ACovarianceFunction >(*(std::shared_ptr< limix::CSumCF > *)x);
-}
 static void *_p_std__shared_ptrT_limix__CRank1diagCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
     return (void *) new std::shared_ptr< limix::ACovarianceFunction >(*(std::shared_ptr< limix::CRank1diagCF > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CSumCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::ACovarianceFunction >(*(std::shared_ptr< limix::CSumCF > *)x);
 }
 static void *_p_std__shared_ptrT_limix__CLikNormalSVD_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
@@ -102320,104 +103879,107 @@ static void *_p_limix__CSumCFTo_p_limix__AMultiCF(void *x, int *SWIGUNUSEDPARM(n
 static void *_p_limix__CProductCFTo_p_limix__AMultiCF(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::AMultiCF *)  ((limix::CProductCF *) x));
 }
-static void *_p_limix__CFixedCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CFixedCF *) x));
-}
-static void *_p_limix__CLinearMeanTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ADataTerm *) ((limix::CLinearMean *) x));
-}
-static void *_p_limix__CCovLinearISOTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CCovLinearISO *) x));
-}
-static void *_p_limix__CSqExpCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CSqExpCF *) x));
-}
-static void *_p_limix__CRank1diagCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CRank1diagCF *) x));
-}
-static void *_p_limix__CFreeFormCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CFreeFormCF *) x));
-}
-static void *_p_limix__CLikNormalSVDTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::ALikelihood *) ((limix::CLikNormalSVD *) x));
-}
-static void *_p_limix__ALikelihoodTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::ALikelihood *) x));
-}
-static void *_p_limix__CFixedDiagonalCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CFixedDiagonalCF *) x));
-}
-static void *_p_limix__CDiagonalCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CDiagonalCF *) x));
-}
-static void *_p_limix__CSumCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::AMultiCF *) ((limix::CSumCF *) x));
+static void *_p_limix__CCovSqexpARDTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CCovSqexpARD *) x));
 }
 static void *_p_limix__CSumLinearTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::CParamObject *) (limix::ADataTerm *) ((limix::CSumLinear *) x));
 }
-static void *_p_limix__ACovarianceFunctionTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *)  ((limix::ACovarianceFunction *) x));
-}
-static void *_p_limix__CCovLinearISODeltaTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CCovLinearISODelta *) x));
-}
-static void *_p_limix__CCovarianceFunctionCacheOldTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *)  ((limix::CCovarianceFunctionCacheOld *) x));
-}
-static void *_p_limix__CCovSqexpARDTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CCovSqexpARD *) x));
-}
-static void *_p_limix__AMultiCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::AMultiCF *) x));
-}
-static void *_p_limix__CKroneckerMeanTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ADataTerm *)(limix::CLinearMean *) ((limix::CKroneckerMean *) x));
-}
-static void *_p_limix__CProductCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::AMultiCF *) ((limix::CProductCF *) x));
-}
-static void *_p_limix__CGPKroneckerCacheTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *)  ((limix::CGPKroneckerCache *) x));
-}
-static void *_p_limix__CKroneckerCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::AMultiCF *) ((limix::CKroneckerCF *) x));
-}
-static void *_p_limix__CLikNormalNULLTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::ALikelihood *) ((limix::CLikNormalNULL *) x));
+static void *_p_limix__CLowRankCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CLowRankCF *) x));
 }
 static void *_p_limix__CCovLinearARDTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CCovLinearARD *) x));
 }
-static void *_p_limix__CRankOneCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CRankOneCF *) x));
-}
-static void *_p_limix__CDataTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ADataTerm *) ((limix::CData *) x));
-}
-static void *_p_limix__CLowRankCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CLowRankCF *) x));
-}
-static void *_p_limix__CLinCombCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::AMultiCF *) ((limix::CLinCombCF *) x));
-}
 static void *_p_limix__CGPCholCacheTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::CParamObject *)  ((limix::CGPCholCache *) x));
 }
-static void *_p_limix__CNamedCacheTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *)  ((limix::CNamedCache *) x));
+static void *_p_limix__CRankOneCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CRankOneCF *) x));
+}
+static void *_p_limix__CLinearMeanTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ADataTerm *) ((limix::CLinearMean *) x));
+}
+static void *_p_limix__CProductCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::AMultiCF *) ((limix::CProductCF *) x));
+}
+static void *_p_limix__CLikNormalSVDTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::ALikelihood *) ((limix::CLikNormalSVD *) x));
 }
 static void *_p_limix__ADataTermTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::CParamObject *)  ((limix::ADataTerm *) x));
 }
-static void *_p_limix__CLikNormalIsoTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::ALikelihood *) ((limix::CLikNormalIso *) x));
+static void *_p_limix__CDiagonalCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CDiagonalCF *) x));
+}
+static void *_p_limix__CFixedDiagonalCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CFixedDiagonalCF *) x));
+}
+static void *_p_limix__CGPKroneckerCacheTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *)  ((limix::CGPKroneckerCache *) x));
+}
+static void *_p_limix__CKroneckerMeanTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ADataTerm *)(limix::CLinearMean *) ((limix::CKroneckerMean *) x));
+}
+static void *_p_limix__CFixedCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CFixedCF *) x));
+}
+static void *_p_limix__CLinCombCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::AMultiCF *) ((limix::CLinCombCF *) x));
+}
+static void *_p_limix__ALikelihoodTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::ALikelihood *) x));
+}
+static void *_p_limix__CRank1diagCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CRank1diagCF *) x));
+}
+static void *_p_limix__CLikNormalNULLTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::ALikelihood *) ((limix::CLikNormalNULL *) x));
+}
+static void *_p_limix__AMultiCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::AMultiCF *) x));
+}
+static void *_p_limix__CCovLinearISOTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CCovLinearISO *) x));
+}
+static void *_p_limix__CGPSumCacheTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *)  ((limix::CGPSumCache *) x));
 }
 static void *_p_limix__CGPkronSumCacheTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::CParamObject *)  ((limix::CGPkronSumCache *) x));
 }
-static void *_p_limix__CGPSumCacheTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::CParamObject *)  ((limix::CGPSumCache *) x));
+static void *_p_limix__CCovarianceFunctionCacheOldTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *)  ((limix::CCovarianceFunctionCacheOld *) x));
+}
+static void *_p_limix__CPolyCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CPolyCF *) x));
+}
+static void *_p_limix__CKroneckerCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::AMultiCF *) ((limix::CKroneckerCF *) x));
+}
+static void *_p_limix__CLikNormalIsoTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::ALikelihood *) ((limix::CLikNormalIso *) x));
+}
+static void *_p_limix__CCovLinearISODeltaTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CCovLinearISODelta *) x));
+}
+static void *_p_limix__CNamedCacheTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *)  ((limix::CNamedCache *) x));
+}
+static void *_p_limix__CSqExpCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CSqExpCF *) x));
+}
+static void *_p_limix__CDataTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ADataTerm *) ((limix::CData *) x));
+}
+static void *_p_limix__CSumCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *)(limix::AMultiCF *) ((limix::CSumCF *) x));
+}
+static void *_p_limix__ACovarianceFunctionTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *)  ((limix::ACovarianceFunction *) x));
+}
+static void *_p_limix__CFreeFormCFTo_p_limix__CParamObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::CParamObject *) (limix::ACovarianceFunction *) ((limix::CFreeFormCF *) x));
 }
 static void *_p_std__shared_ptrT_limix__CInteractLMM_tTo_p_std__shared_ptrT_limix__ALMM_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
@@ -102446,6 +104008,9 @@ static void *_p_limix__CSumLinearTo_p_limix__ADataTerm(void *x, int *SWIGUNUSEDP
 static void *_p_limix__CFixedCFTo_p_limix__ACovarianceFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::ACovarianceFunction *)  ((limix::CFixedCF *) x));
 }
+static void *_p_limix__CPolyCFTo_p_limix__ACovarianceFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::ACovarianceFunction *)  ((limix::CPolyCF *) x));
+}
 static void *_p_limix__CCovLinearISOTo_p_limix__ACovarianceFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::ACovarianceFunction *)  ((limix::CCovLinearISO *) x));
 }
@@ -102464,14 +104029,14 @@ static void *_p_limix__CLikNormalSVDTo_p_limix__ACovarianceFunction(void *x, int
 static void *_p_limix__ALikelihoodTo_p_limix__ACovarianceFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::ACovarianceFunction *)  ((limix::ALikelihood *) x));
 }
-static void *_p_limix__CSumCFTo_p_limix__ACovarianceFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((limix::ACovarianceFunction *) (limix::AMultiCF *) ((limix::CSumCF *) x));
-}
 static void *_p_limix__CFixedDiagonalCFTo_p_limix__ACovarianceFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::ACovarianceFunction *)  ((limix::CFixedDiagonalCF *) x));
 }
 static void *_p_limix__CDiagonalCFTo_p_limix__ACovarianceFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::ACovarianceFunction *)  ((limix::CDiagonalCF *) x));
+}
+static void *_p_limix__CSumCFTo_p_limix__ACovarianceFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((limix::ACovarianceFunction *) (limix::AMultiCF *) ((limix::CSumCF *) x));
 }
 static void *_p_limix__CCovLinearISODeltaTo_p_limix__ACovarianceFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::ACovarianceFunction *)  ((limix::CCovLinearISODelta *) x));
@@ -102506,137 +104071,141 @@ static void *_p_limix__CLinCombCFTo_p_limix__ACovarianceFunction(void *x, int *S
 static void *_p_limix__CLikNormalIsoTo_p_limix__ACovarianceFunction(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((limix::ACovarianceFunction *) (limix::ALikelihood *) ((limix::CLikNormalIso *) x));
 }
-static void *_p_std__shared_ptrT_limix__CSqExpCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+static void *_p_std__shared_ptrT_limix__ALikelihood_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CSqExpCF > *)x);
-}
-static void *_p_std__shared_ptrT_limix__ADataTerm_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::ADataTerm > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CCovLinearISODelta_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CCovLinearISODelta > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CCovSqexpARD_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CCovSqexpARD > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CLowRankCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CLowRankCF > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CCovLinearISO_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CCovLinearISO > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CCovarianceFunctionCacheOld_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CCovarianceFunctionCacheOld > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CFixedCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CFixedCF > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CFixedDiagonalCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CFixedDiagonalCF > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CDiagonalCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CDiagonalCF > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CProductCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CProductCF > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CRankOneCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CRankOneCF > *)x);
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::ALikelihood > *)x);
 }
 static void *_p_std__shared_ptrT_limix__CFreeFormCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
     return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CFreeFormCF > *)x);
 }
-static void *_p_std__shared_ptrT_limix__CCovLinearARD_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+static void *_p_std__shared_ptrT_limix__CLikNormalSVD_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CCovLinearARD > *)x);
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CLikNormalSVD > *)x);
 }
-static void *_p_std__shared_ptrT_limix__CLinCombCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+static void *_p_std__shared_ptrT_limix__CLowRankCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CLinCombCF > *)x);
-}
-static void *_p_std__shared_ptrT_limix__ALikelihood_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::ALikelihood > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CLikNormalNULL_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CLikNormalNULL > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CData_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CData > *)x);
-}
-static void *_p_std__shared_ptrT_limix__ACovarianceFunction_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::ACovarianceFunction > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CKroneckerCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CKroneckerCF > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CLinearMean_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CLinearMean > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CKroneckerMean_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CKroneckerMean > *)x);
-}
-static void *_p_std__shared_ptrT_limix__AMultiCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::AMultiCF > *)x);
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CLowRankCF > *)x);
 }
 static void *_p_std__shared_ptrT_limix__CSumLinear_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
     return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CSumLinear > *)x);
 }
-static void *_p_std__shared_ptrT_limix__CRank1diagCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+static void *_p_std__shared_ptrT_limix__CLikNormalNULL_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CRank1diagCF > *)x);
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CLikNormalNULL > *)x);
 }
-static void *_p_std__shared_ptrT_limix__CSumCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+static void *_p_std__shared_ptrT_limix__CCovLinearISODelta_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CSumCF > *)x);
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CCovLinearISODelta > *)x);
 }
-static void *_p_std__shared_ptrT_limix__CLikNormalSVD_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+static void *_p_std__shared_ptrT_limix__CProductCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CLikNormalSVD > *)x);
-}
-static void *_p_std__shared_ptrT_limix__CNamedCache_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
-    *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CNamedCache > *)x);
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CProductCF > *)x);
 }
 static void *_p_std__shared_ptrT_limix__CLikNormalIso_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
     return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CLikNormalIso > *)x);
 }
-static void *_p_std__shared_ptrT_limix__CGPCholCache_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+static void *_p_std__shared_ptrT_limix__CDiagonalCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CGPCholCache > *)x);
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CDiagonalCF > *)x);
 }
-static void *_p_std__shared_ptrT_limix__CGPKroneckerCache_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+static void *_p_std__shared_ptrT_limix__CFixedDiagonalCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CGPKroneckerCache > *)x);
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CFixedDiagonalCF > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CFixedCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CFixedCF > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CKroneckerCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CKroneckerCF > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CRank1diagCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CRank1diagCF > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CPolyCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CPolyCF > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CLinCombCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CLinCombCF > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CSumCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CSumCF > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CRankOneCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CRankOneCF > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CData_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CData > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CCovLinearARD_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CCovLinearARD > *)x);
+}
+static void *_p_std__shared_ptrT_limix__AMultiCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::AMultiCF > *)x);
+}
+static void *_p_std__shared_ptrT_limix__ADataTerm_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::ADataTerm > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CGPSumCache_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CGPSumCache > *)x);
 }
 static void *_p_std__shared_ptrT_limix__CGPkronSumCache_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
     return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CGPkronSumCache > *)x);
 }
-static void *_p_std__shared_ptrT_limix__CGPSumCache_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+static void *_p_std__shared_ptrT_limix__CGPKroneckerCache_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
-    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CGPSumCache > *)x);
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CGPKroneckerCache > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CGPCholCache_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CGPCholCache > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CNamedCache_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CNamedCache > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CKroneckerMean_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CKroneckerMean > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CLinearMean_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CLinearMean > *)x);
+}
+static void *_p_std__shared_ptrT_limix__ACovarianceFunction_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::ACovarianceFunction > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CCovLinearISO_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CCovLinearISO > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CSqExpCF_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CSqExpCF > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CCovarianceFunctionCacheOld_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CCovarianceFunctionCacheOld > *)x);
+}
+static void *_p_std__shared_ptrT_limix__CCovSqexpARD_tTo_p_std__shared_ptrT_limix__CParamObject_t(void *x, int *newmemory) {
+    *newmemory = SWIG_CAST_NEW_MEMORY;
+    return (void *) new std::shared_ptr< limix::CParamObject >(*(std::shared_ptr< limix::CCovSqexpARD > *)x);
 }
 static void *_p_std__shared_ptrT_limix__CKroneckerLMM_tTo_p_std__shared_ptrT_limix__CLMMKroneckerCore_t(void *x, int *newmemory) {
     *newmemory = SWIG_CAST_NEW_MEMORY;
@@ -102797,6 +104366,7 @@ static swig_type_info _swigt__p_limix__CMemGenotypeContainer = {"_p_limix__CMemG
 static swig_type_info _swigt__p_limix__CMultiTraitTerm = {"_p_limix__CMultiTraitTerm", "limix::CMultiTraitTerm *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CNamedCache = {"_p_limix__CNamedCache", "limix::CNamedCache *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CParamObject = {"_p_limix__CParamObject", "limix::CParamObject *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_limix__CPolyCF = {"_p_limix__CPolyCF", "limix::CPolyCF *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CProductCF = {"_p_limix__CProductCF", "limix::CProductCF *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CRMemDataFrameT_MatrixXd_t = {"_p_limix__CRMemDataFrameT_MatrixXd_t", "limix::CRMemDataFrame< MatrixXd > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_limix__CRWMemDataFrameT_MatrixXd_t = {"_p_limix__CRWMemDataFrameT_MatrixXd_t", "limix::CRWMemDataFrame< MatrixXd > *", 0, 0, (void*)0, 0};
@@ -102882,6 +104452,7 @@ static swig_type_info _swigt__p_std__shared_ptrT_limix__CMultiTraitTerm_t = {"_p
 static swig_type_info _swigt__p_std__shared_ptrT_limix__CMultiTraitVQTL_t = {"_p_std__shared_ptrT_limix__CMultiTraitVQTL_t", "std::shared_ptr< limix::CMultiTraitVQTL > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__shared_ptrT_limix__CNamedCache_t = {"_p_std__shared_ptrT_limix__CNamedCache_t", "std::shared_ptr< limix::CNamedCache > *|limix::PNamedCache *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__shared_ptrT_limix__CParamObject_t = {"_p_std__shared_ptrT_limix__CParamObject_t", "std::shared_ptr< limix::CParamObject > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__shared_ptrT_limix__CPolyCF_t = {"_p_std__shared_ptrT_limix__CPolyCF_t", "limix::PPolyCF *|std::shared_ptr< limix::CPolyCF > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__shared_ptrT_limix__CProductCF_t = {"_p_std__shared_ptrT_limix__CProductCF_t", "limix::PProductCF *|std::shared_ptr< limix::CProductCF > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t = {"_p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t", "std::shared_ptr< limix::CRMemDataFrame< MatrixXd > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_t = {"_p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_t", "std::shared_ptr< limix::CRWMemDataFrame< MatrixXd > > *", 0, 0, (void*)0, 0};
@@ -102981,6 +104552,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_limix__CMultiTraitTerm,
   &_swigt__p_limix__CNamedCache,
   &_swigt__p_limix__CParamObject,
+  &_swigt__p_limix__CPolyCF,
   &_swigt__p_limix__CProductCF,
   &_swigt__p_limix__CRMemDataFrameT_MatrixXd_t,
   &_swigt__p_limix__CRWMemDataFrameT_MatrixXd_t,
@@ -103066,6 +104638,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__shared_ptrT_limix__CMultiTraitVQTL_t,
   &_swigt__p_std__shared_ptrT_limix__CNamedCache_t,
   &_swigt__p_std__shared_ptrT_limix__CParamObject_t,
+  &_swigt__p_std__shared_ptrT_limix__CPolyCF_t,
   &_swigt__p_std__shared_ptrT_limix__CProductCF_t,
   &_swigt__p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t,
   &_swigt__p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_t,
@@ -103116,7 +104689,7 @@ static swig_cast_info _swigc__p_double[] = {  {&_swigt__p_double, 0, 0, 0},{0, 0
 static swig_cast_info _swigc__p_float[] = {  {&_swigt__p_float, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_key_type[] = {  {&_swigt__p_key_type, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_limix__ACovarianceFunction[] = {  {&_swigt__p_limix__CFixedCF, _p_limix__CFixedCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CCovLinearISO, _p_limix__CCovLinearISOTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CSqExpCF, _p_limix__CSqExpCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CSumCF, _p_limix__CSumCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CRank1diagCF, _p_limix__CRank1diagCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CLikNormalSVD, _p_limix__CLikNormalSVDTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CFreeFormCF, _p_limix__CFreeFormCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__ALikelihood, _p_limix__ALikelihoodTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CFixedDiagonalCF, _p_limix__CFixedDiagonalCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CDiagonalCF, _p_limix__CDiagonalCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__ACovarianceFunction, 0, 0, 0},  {&_swigt__p_limix__CCovLinearISODelta, _p_limix__CCovLinearISODeltaTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__AMultiCF, _p_limix__AMultiCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CCovSqexpARD, _p_limix__CCovSqexpARDTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CProductCF, _p_limix__CProductCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CLikNormalNULL, _p_limix__CLikNormalNULLTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CKroneckerCF, _p_limix__CKroneckerCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CCovLinearARD, _p_limix__CCovLinearARDTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CRankOneCF, _p_limix__CRankOneCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CLinCombCF, _p_limix__CLinCombCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CLowRankCF, _p_limix__CLowRankCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CLikNormalIso, _p_limix__CLikNormalIsoTo_p_limix__ACovarianceFunction, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_limix__ACovarianceFunction[] = {  {&_swigt__p_limix__CFixedCF, _p_limix__CFixedCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CPolyCF, _p_limix__CPolyCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CCovLinearISO, _p_limix__CCovLinearISOTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CSqExpCF, _p_limix__CSqExpCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CSumCF, _p_limix__CSumCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CRank1diagCF, _p_limix__CRank1diagCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CLikNormalSVD, _p_limix__CLikNormalSVDTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CFreeFormCF, _p_limix__CFreeFormCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__ALikelihood, _p_limix__ALikelihoodTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CFixedDiagonalCF, _p_limix__CFixedDiagonalCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CDiagonalCF, _p_limix__CDiagonalCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__ACovarianceFunction, 0, 0, 0},  {&_swigt__p_limix__CCovLinearISODelta, _p_limix__CCovLinearISODeltaTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__AMultiCF, _p_limix__AMultiCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CCovSqexpARD, _p_limix__CCovSqexpARDTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CProductCF, _p_limix__CProductCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CLikNormalNULL, _p_limix__CLikNormalNULLTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CKroneckerCF, _p_limix__CKroneckerCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CCovLinearARD, _p_limix__CCovLinearARDTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CRankOneCF, _p_limix__CRankOneCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CLinCombCF, _p_limix__CLinCombCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CLowRankCF, _p_limix__CLowRankCFTo_p_limix__ACovarianceFunction, 0, 0},  {&_swigt__p_limix__CLikNormalIso, _p_limix__CLikNormalIsoTo_p_limix__ACovarianceFunction, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__ADataTerm[] = {  {&_swigt__p_limix__CLinearMean, _p_limix__CLinearMeanTo_p_limix__ADataTerm, 0, 0},  {&_swigt__p_limix__CKroneckerMean, _p_limix__CKroneckerMeanTo_p_limix__ADataTerm, 0, 0},  {&_swigt__p_limix__CData, _p_limix__CDataTo_p_limix__ADataTerm, 0, 0},  {&_swigt__p_limix__ADataTerm, 0, 0, 0},  {&_swigt__p_limix__CSumLinear, _p_limix__CSumLinearTo_p_limix__ADataTerm, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__AGenotypeContainer[] = {  {&_swigt__p_limix__AGenotypeContainer, 0, 0, 0},  {&_swigt__p_limix__CTextfileGenotypeContainer, _p_limix__CTextfileGenotypeContainerTo_p_limix__AGenotypeContainer, 0, 0},  {&_swigt__p_limix__CMemGenotypeContainer, _p_limix__CMemGenotypeContainerTo_p_limix__AGenotypeContainer, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__ALMM[] = {  {&_swigt__p_limix__ALMM, 0, 0, 0},  {&_swigt__p_limix__CInteractLMM, _p_limix__CInteractLMMTo_p_limix__ALMM, 0, 0},  {&_swigt__p_limix__CLMM, _p_limix__CLMMTo_p_limix__ALMM, 0, 0},  {&_swigt__p_limix__CKroneckerLMM, _p_limix__CKroneckerLMMTo_p_limix__ALMM, 0, 0},{0, 0, 0, 0}};
@@ -103164,7 +104737,8 @@ static swig_cast_info _swigc__p_limix__CLowRankCF[] = {  {&_swigt__p_limix__CLow
 static swig_cast_info _swigc__p_limix__CMemGenotypeContainer[] = {  {&_swigt__p_limix__CMemGenotypeContainer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CMultiTraitTerm[] = {  {&_swigt__p_limix__CMultiTraitTerm, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CNamedCache[] = {  {&_swigt__p_limix__CNamedCache, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_limix__CParamObject[] = {  {&_swigt__p_limix__CCovSqexpARD, _p_limix__CCovSqexpARDTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CSumLinear, _p_limix__CSumLinearTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLowRankCF, _p_limix__CLowRankCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CCovLinearARD, _p_limix__CCovLinearARDTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CGPCholCache, _p_limix__CGPCholCacheTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CRankOneCF, _p_limix__CRankOneCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CSumCF, _p_limix__CSumCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLinearMean, _p_limix__CLinearMeanTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CProductCF, _p_limix__CProductCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLikNormalSVD, _p_limix__CLikNormalSVDTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__ADataTerm, _p_limix__ADataTermTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CDiagonalCF, _p_limix__CDiagonalCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CFixedDiagonalCF, _p_limix__CFixedDiagonalCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CGPKroneckerCache, _p_limix__CGPKroneckerCacheTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CKroneckerMean, _p_limix__CKroneckerMeanTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CFixedCF, _p_limix__CFixedCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLinCombCF, _p_limix__CLinCombCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__ALikelihood, _p_limix__ALikelihoodTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CRank1diagCF, _p_limix__CRank1diagCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLikNormalNULL, _p_limix__CLikNormalNULLTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__AMultiCF, _p_limix__AMultiCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CCovLinearISO, _p_limix__CCovLinearISOTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CGPkronSumCache, _p_limix__CGPkronSumCacheTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CGPSumCache, _p_limix__CGPSumCacheTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CCovarianceFunctionCacheOld, _p_limix__CCovarianceFunctionCacheOldTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CParamObject, 0, 0, 0},  {&_swigt__p_limix__CKroneckerCF, _p_limix__CKroneckerCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLikNormalIso, _p_limix__CLikNormalIsoTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CCovLinearISODelta, _p_limix__CCovLinearISODeltaTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CNamedCache, _p_limix__CNamedCacheTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CSqExpCF, _p_limix__CSqExpCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__ACovarianceFunction, _p_limix__ACovarianceFunctionTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CFreeFormCF, _p_limix__CFreeFormCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CData, _p_limix__CDataTo_p_limix__CParamObject, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_limix__CParamObject[] = {  {&_swigt__p_limix__CCovSqexpARD, _p_limix__CCovSqexpARDTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CSumLinear, _p_limix__CSumLinearTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLowRankCF, _p_limix__CLowRankCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CCovLinearARD, _p_limix__CCovLinearARDTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CGPCholCache, _p_limix__CGPCholCacheTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CRankOneCF, _p_limix__CRankOneCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CSumCF, _p_limix__CSumCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLinearMean, _p_limix__CLinearMeanTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CProductCF, _p_limix__CProductCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLikNormalSVD, _p_limix__CLikNormalSVDTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__ADataTerm, _p_limix__ADataTermTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CFixedDiagonalCF, _p_limix__CFixedDiagonalCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CDiagonalCF, _p_limix__CDiagonalCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CGPKroneckerCache, _p_limix__CGPKroneckerCacheTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CKroneckerMean, _p_limix__CKroneckerMeanTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CFixedCF, _p_limix__CFixedCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLinCombCF, _p_limix__CLinCombCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__ALikelihood, _p_limix__ALikelihoodTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CRank1diagCF, _p_limix__CRank1diagCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLikNormalNULL, _p_limix__CLikNormalNULLTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__AMultiCF, _p_limix__AMultiCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CCovLinearISO, _p_limix__CCovLinearISOTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CGPSumCache, _p_limix__CGPSumCacheTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CGPkronSumCache, _p_limix__CGPkronSumCacheTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CCovarianceFunctionCacheOld, _p_limix__CCovarianceFunctionCacheOldTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CPolyCF, _p_limix__CPolyCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CParamObject, 0, 0, 0},  {&_swigt__p_limix__CKroneckerCF, _p_limix__CKroneckerCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CLikNormalIso, _p_limix__CLikNormalIsoTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CCovLinearISODelta, _p_limix__CCovLinearISODeltaTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CNamedCache, _p_limix__CNamedCacheTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CSqExpCF, _p_limix__CSqExpCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__ACovarianceFunction, _p_limix__ACovarianceFunctionTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CFreeFormCF, _p_limix__CFreeFormCFTo_p_limix__CParamObject, 0, 0},  {&_swigt__p_limix__CData, _p_limix__CDataTo_p_limix__CParamObject, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_limix__CPolyCF[] = {  {&_swigt__p_limix__CPolyCF, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CProductCF[] = {  {&_swigt__p_limix__CProductCF, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CRMemDataFrameT_MatrixXd_t[] = {  {&_swigt__p_limix__CRMemDataFrameT_MatrixXd_t, 0, 0, 0},  {&_swigt__p_limix__CGenotypeBlock, _p_limix__CGenotypeBlockTo_p_limix__CRMemDataFrameT_MatrixXd_t, 0, 0},  {&_swigt__p_limix__CRWMemDataFrameT_MatrixXd_t, _p_limix__CRWMemDataFrameT_MatrixXd_tTo_p_limix__CRMemDataFrameT_MatrixXd_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_limix__CRWMemDataFrameT_MatrixXd_t[] = {  {&_swigt__p_limix__CRWMemDataFrameT_MatrixXd_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -103199,7 +104773,7 @@ static swig_cast_info _swigc__p_std__mapT_std__string_PCVoid_std__lessT_std__str
 static swig_cast_info _swigc__p_std__shared_ptrT_MatrixXd_t[] = {  {&_swigt__p_std__shared_ptrT_MatrixXd_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__shared_ptrT_bool_t[] = {  {&_swigt__p_std__shared_ptrT_bool_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__shared_ptrT_bost__enable_shared_from_thisT_CGPbase_t_t[] = {  {&_swigt__p_std__shared_ptrT_bost__enable_shared_from_thisT_CGPbase_t_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__shared_ptrT_limix__ACovarianceFunction_t[] = {  {&_swigt__p_std__shared_ptrT_limix__CCovLinearISO_t, _p_std__shared_ptrT_limix__CCovLinearISO_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFixedCF_t, _p_std__shared_ptrT_limix__CFixedCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFixedDiagonalCF_t, _p_std__shared_ptrT_limix__CFixedDiagonalCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CDiagonalCF_t, _p_std__shared_ptrT_limix__CDiagonalCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CProductCF_t, _p_std__shared_ptrT_limix__CProductCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFreeFormCF_t, _p_std__shared_ptrT_limix__CFreeFormCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CRankOneCF_t, _p_std__shared_ptrT_limix__CRankOneCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovLinearARD_t, _p_std__shared_ptrT_limix__CCovLinearARD_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLinCombCF_t, _p_std__shared_ptrT_limix__CLinCombCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__ALikelihood_t, _p_std__shared_ptrT_limix__ALikelihood_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalNULL_t, _p_std__shared_ptrT_limix__CLikNormalNULL_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CKroneckerCF_t, _p_std__shared_ptrT_limix__CKroneckerCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__AMultiCF_t, _p_std__shared_ptrT_limix__AMultiCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CSumCF_t, _p_std__shared_ptrT_limix__CSumCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CRank1diagCF_t, _p_std__shared_ptrT_limix__CRank1diagCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalSVD_t, _p_std__shared_ptrT_limix__CLikNormalSVD_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalIso_t, _p_std__shared_ptrT_limix__CLikNormalIso_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CSqExpCF_t, _p_std__shared_ptrT_limix__CSqExpCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovSqexpARD_t, _p_std__shared_ptrT_limix__CCovSqexpARD_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovLinearISODelta_t, _p_std__shared_ptrT_limix__CCovLinearISODelta_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLowRankCF_t, _p_std__shared_ptrT_limix__CLowRankCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__shared_ptrT_limix__ACovarianceFunction_t[] = {  {&_swigt__p_std__shared_ptrT_limix__CCovLinearISO_t, _p_std__shared_ptrT_limix__CCovLinearISO_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFixedCF_t, _p_std__shared_ptrT_limix__CFixedCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFixedDiagonalCF_t, _p_std__shared_ptrT_limix__CFixedDiagonalCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CDiagonalCF_t, _p_std__shared_ptrT_limix__CDiagonalCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CProductCF_t, _p_std__shared_ptrT_limix__CProductCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFreeFormCF_t, _p_std__shared_ptrT_limix__CFreeFormCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CRankOneCF_t, _p_std__shared_ptrT_limix__CRankOneCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovLinearARD_t, _p_std__shared_ptrT_limix__CCovLinearARD_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLinCombCF_t, _p_std__shared_ptrT_limix__CLinCombCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__ALikelihood_t, _p_std__shared_ptrT_limix__ALikelihood_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalNULL_t, _p_std__shared_ptrT_limix__CLikNormalNULL_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CKroneckerCF_t, _p_std__shared_ptrT_limix__CKroneckerCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__AMultiCF_t, _p_std__shared_ptrT_limix__AMultiCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CSumCF_t, _p_std__shared_ptrT_limix__CSumCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CRank1diagCF_t, _p_std__shared_ptrT_limix__CRank1diagCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalSVD_t, _p_std__shared_ptrT_limix__CLikNormalSVD_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalIso_t, _p_std__shared_ptrT_limix__CLikNormalIso_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CSqExpCF_t, _p_std__shared_ptrT_limix__CSqExpCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovSqexpARD_t, _p_std__shared_ptrT_limix__CCovSqexpARD_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovLinearISODelta_t, _p_std__shared_ptrT_limix__CCovLinearISODelta_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CPolyCF_t, _p_std__shared_ptrT_limix__CPolyCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLowRankCF_t, _p_std__shared_ptrT_limix__CLowRankCF_tTo_p_std__shared_ptrT_limix__ACovarianceFunction_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__shared_ptrT_limix__ADataTerm_t[] = {  {&_swigt__p_std__shared_ptrT_limix__CSumLinear_t, _p_std__shared_ptrT_limix__CSumLinear_tTo_p_std__shared_ptrT_limix__ADataTerm_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLinearMean_t, _p_std__shared_ptrT_limix__CLinearMean_tTo_p_std__shared_ptrT_limix__ADataTerm_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CKroneckerMean_t, _p_std__shared_ptrT_limix__CKroneckerMean_tTo_p_std__shared_ptrT_limix__ADataTerm_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__ADataTerm_t, 0, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CData_t, _p_std__shared_ptrT_limix__CData_tTo_p_std__shared_ptrT_limix__ADataTerm_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__shared_ptrT_limix__AGenotypeContainer_t[] = {  {&_swigt__p_std__shared_ptrT_limix__AGenotypeContainer_t, 0, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CMemGenotypeContainer_t, _p_std__shared_ptrT_limix__CMemGenotypeContainer_tTo_p_std__shared_ptrT_limix__AGenotypeContainer_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CTextfileGenotypeContainer_t, _p_std__shared_ptrT_limix__CTextfileGenotypeContainer_tTo_p_std__shared_ptrT_limix__AGenotypeContainer_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__shared_ptrT_limix__ALMM_t[] = {  {&_swigt__p_std__shared_ptrT_limix__CInteractLMM_t, _p_std__shared_ptrT_limix__CInteractLMM_tTo_p_std__shared_ptrT_limix__ALMM_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLMM_t, _p_std__shared_ptrT_limix__CLMM_tTo_p_std__shared_ptrT_limix__ALMM_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CKroneckerLMM_t, _p_std__shared_ptrT_limix__CKroneckerLMM_tTo_p_std__shared_ptrT_limix__ALMM_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__ALMM_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -103249,7 +104823,8 @@ static swig_cast_info _swigc__p_std__shared_ptrT_limix__CMemGenotypeContainer_t[
 static swig_cast_info _swigc__p_std__shared_ptrT_limix__CMultiTraitTerm_t[] = {  {&_swigt__p_std__shared_ptrT_limix__CMultiTraitTerm_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__shared_ptrT_limix__CMultiTraitVQTL_t[] = {  {&_swigt__p_std__shared_ptrT_limix__CMultiTraitVQTL_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__shared_ptrT_limix__CNamedCache_t[] = {  {&_swigt__p_std__shared_ptrT_limix__CNamedCache_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__shared_ptrT_limix__CParamObject_t[] = {  {&_swigt__p_std__shared_ptrT_limix__ADataTerm_t, _p_std__shared_ptrT_limix__ADataTerm_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__AMultiCF_t, _p_std__shared_ptrT_limix__AMultiCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CParamObject_t, 0, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CNamedCache_t, _p_std__shared_ptrT_limix__CNamedCache_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CGPCholCache_t, _p_std__shared_ptrT_limix__CGPCholCache_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CGPSumCache_t, _p_std__shared_ptrT_limix__CGPSumCache_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CGPkronSumCache_t, _p_std__shared_ptrT_limix__CGPkronSumCache_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CGPKroneckerCache_t, _p_std__shared_ptrT_limix__CGPKroneckerCache_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLinearMean_t, _p_std__shared_ptrT_limix__CLinearMean_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CKroneckerMean_t, _p_std__shared_ptrT_limix__CKroneckerMean_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__ACovarianceFunction_t, _p_std__shared_ptrT_limix__ACovarianceFunction_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CSqExpCF_t, _p_std__shared_ptrT_limix__CSqExpCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovLinearISO_t, _p_std__shared_ptrT_limix__CCovLinearISO_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovSqexpARD_t, _p_std__shared_ptrT_limix__CCovSqexpARD_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__ALikelihood_t, _p_std__shared_ptrT_limix__ALikelihood_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFreeFormCF_t, _p_std__shared_ptrT_limix__CFreeFormCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalSVD_t, _p_std__shared_ptrT_limix__CLikNormalSVD_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLowRankCF_t, _p_std__shared_ptrT_limix__CLowRankCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovLinearISODelta_t, _p_std__shared_ptrT_limix__CCovLinearISODelta_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CSumLinear_t, _p_std__shared_ptrT_limix__CSumLinear_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalNULL_t, _p_std__shared_ptrT_limix__CLikNormalNULL_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CProductCF_t, _p_std__shared_ptrT_limix__CProductCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalIso_t, _p_std__shared_ptrT_limix__CLikNormalIso_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFixedDiagonalCF_t, _p_std__shared_ptrT_limix__CFixedDiagonalCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CDiagonalCF_t, _p_std__shared_ptrT_limix__CDiagonalCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFixedCF_t, _p_std__shared_ptrT_limix__CFixedCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CKroneckerCF_t, _p_std__shared_ptrT_limix__CKroneckerCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CRank1diagCF_t, _p_std__shared_ptrT_limix__CRank1diagCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLinCombCF_t, _p_std__shared_ptrT_limix__CLinCombCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CSumCF_t, _p_std__shared_ptrT_limix__CSumCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovarianceFunctionCacheOld_t, _p_std__shared_ptrT_limix__CCovarianceFunctionCacheOld_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CRankOneCF_t, _p_std__shared_ptrT_limix__CRankOneCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CData_t, _p_std__shared_ptrT_limix__CData_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovLinearARD_t, _p_std__shared_ptrT_limix__CCovLinearARD_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__shared_ptrT_limix__CParamObject_t[] = {  {&_swigt__p_std__shared_ptrT_limix__ADataTerm_t, _p_std__shared_ptrT_limix__ADataTerm_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__AMultiCF_t, _p_std__shared_ptrT_limix__AMultiCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CParamObject_t, 0, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CGPSumCache_t, _p_std__shared_ptrT_limix__CGPSumCache_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CGPkronSumCache_t, _p_std__shared_ptrT_limix__CGPkronSumCache_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CNamedCache_t, _p_std__shared_ptrT_limix__CNamedCache_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CGPCholCache_t, _p_std__shared_ptrT_limix__CGPCholCache_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CGPKroneckerCache_t, _p_std__shared_ptrT_limix__CGPKroneckerCache_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLinearMean_t, _p_std__shared_ptrT_limix__CLinearMean_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CKroneckerMean_t, _p_std__shared_ptrT_limix__CKroneckerMean_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__ACovarianceFunction_t, _p_std__shared_ptrT_limix__ACovarianceFunction_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CSqExpCF_t, _p_std__shared_ptrT_limix__CSqExpCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovLinearISO_t, _p_std__shared_ptrT_limix__CCovLinearISO_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovSqexpARD_t, _p_std__shared_ptrT_limix__CCovSqexpARD_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__ALikelihood_t, _p_std__shared_ptrT_limix__ALikelihood_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFreeFormCF_t, _p_std__shared_ptrT_limix__CFreeFormCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalSVD_t, _p_std__shared_ptrT_limix__CLikNormalSVD_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLowRankCF_t, _p_std__shared_ptrT_limix__CLowRankCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovLinearISODelta_t, _p_std__shared_ptrT_limix__CCovLinearISODelta_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CSumLinear_t, _p_std__shared_ptrT_limix__CSumLinear_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalNULL_t, _p_std__shared_ptrT_limix__CLikNormalNULL_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CProductCF_t, _p_std__shared_ptrT_limix__CProductCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLikNormalIso_t, _p_std__shared_ptrT_limix__CLikNormalIso_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFixedDiagonalCF_t, _p_std__shared_ptrT_limix__CFixedDiagonalCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CDiagonalCF_t, _p_std__shared_ptrT_limix__CDiagonalCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CFixedCF_t, _p_std__shared_ptrT_limix__CFixedCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CKroneckerCF_t, _p_std__shared_ptrT_limix__CKroneckerCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CPolyCF_t, _p_std__shared_ptrT_limix__CPolyCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CRank1diagCF_t, _p_std__shared_ptrT_limix__CRank1diagCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CLinCombCF_t, _p_std__shared_ptrT_limix__CLinCombCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CSumCF_t, _p_std__shared_ptrT_limix__CSumCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovarianceFunctionCacheOld_t, _p_std__shared_ptrT_limix__CCovarianceFunctionCacheOld_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CRankOneCF_t, _p_std__shared_ptrT_limix__CRankOneCF_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CData_t, _p_std__shared_ptrT_limix__CData_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CCovLinearARD_t, _p_std__shared_ptrT_limix__CCovLinearARD_tTo_p_std__shared_ptrT_limix__CParamObject_t, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__shared_ptrT_limix__CPolyCF_t[] = {  {&_swigt__p_std__shared_ptrT_limix__CPolyCF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__shared_ptrT_limix__CProductCF_t[] = {  {&_swigt__p_std__shared_ptrT_limix__CProductCF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t[] = {  {&_swigt__p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t, 0, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CGenotypeBlock_t, _p_std__shared_ptrT_limix__CGenotypeBlock_tTo_p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t, 0, 0},  {&_swigt__p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_t, _p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_tTo_p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_t[] = {  {&_swigt__p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -103349,6 +104924,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_limix__CMultiTraitTerm,
   _swigc__p_limix__CNamedCache,
   _swigc__p_limix__CParamObject,
+  _swigc__p_limix__CPolyCF,
   _swigc__p_limix__CProductCF,
   _swigc__p_limix__CRMemDataFrameT_MatrixXd_t,
   _swigc__p_limix__CRWMemDataFrameT_MatrixXd_t,
@@ -103434,6 +105010,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__shared_ptrT_limix__CMultiTraitVQTL_t,
   _swigc__p_std__shared_ptrT_limix__CNamedCache_t,
   _swigc__p_std__shared_ptrT_limix__CParamObject_t,
+  _swigc__p_std__shared_ptrT_limix__CPolyCF_t,
   _swigc__p_std__shared_ptrT_limix__CProductCF_t,
   _swigc__p_std__shared_ptrT_limix__CRMemDataFrameT_MatrixXd_t_t,
   _swigc__p_std__shared_ptrT_limix__CRWMemDataFrameT_MatrixXd_t_t,

@@ -4218,6 +4218,166 @@ class CFixedDiagonalCF(ACovarianceFunction):
 CFixedDiagonalCF_swigregister = _core.CFixedDiagonalCF_swigregister
 CFixedDiagonalCF_swigregister(CFixedDiagonalCF)
 
+class CPolyCF(ACovarianceFunction):
+    """Proxy of C++ limix::CPolyCF class"""
+    __swig_setmethods__ = {}
+    for _s in [ACovarianceFunction]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CPolyCF, name, value)
+    __swig_getmethods__ = {}
+    for _s in [ACovarianceFunction]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, CPolyCF, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        """
+        __init__(limix::CPolyCF self, limix::muint_t numberGroups, limix::muint_t n_dims, limix::muint_t order) -> CPolyCF
+
+        Parameters:
+            numberGroups: limix::muint_t
+            n_dims: limix::muint_t
+            order: limix::muint_t
+
+        """
+        this = _core.new_CPolyCF(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _core.delete_CPolyCF
+    __del__ = lambda self : None;
+    def setX(self, *args):
+        """
+        setX(CPolyCF self, limix::CovarInput const & X)
+
+        Parameters:
+            X: limix::CovarInput const &
+
+        """
+        return _core.CPolyCF_setX(self, *args)
+
+    def setXcol(self, *args):
+        """
+        setXcol(CPolyCF self, limix::CovarInput const & X, limix::muint_t col)
+
+        Parameters:
+            X: limix::CovarInput const &
+            col: limix::muint_t
+
+        """
+        return _core.CPolyCF_setXcol(self, *args)
+
+    def Kcross_diag(self, *args):
+        """
+        Kcross_diag(CPolyCF self, limix::CovarInput const & Xstar)
+
+        Parameters:
+            Xstar: limix::CovarInput const &
+
+        """
+        return _core.CPolyCF_Kcross_diag(self, *args)
+
+    def Kcross_grad_X(self, *args):
+        """
+        Kcross_grad_X(CPolyCF self, limix::CovarInput const & Xstar, limix::muint_t const d)
+
+        Parameters:
+            Xstar: limix::CovarInput const &
+            d: limix::muint_t const
+
+        """
+        return _core.CPolyCF_Kcross_grad_X(self, *args)
+
+    def Kdiag_grad_X(self, *args):
+        """
+        Kdiag_grad_X(CPolyCF self, limix::muint_t const d)
+
+        Parameters:
+            d: limix::muint_t const
+
+        """
+        return _core.CPolyCF_Kdiag_grad_X(self, *args)
+
+    def Kdim(self):
+        """
+        Kdim(CPolyCF self) -> limix::muint_t
+
+        Parameters:
+            self: limix::CPolyCF const *
+
+        """
+        return _core.CPolyCF_Kdim(self)
+
+    def agetScales(self):
+        """
+        agetScales(CPolyCF self)
+
+        Parameters:
+            self: limix::CPolyCF *
+
+        """
+        return _core.CPolyCF_agetScales(self)
+
+    def setParamsCovariance(self, *args):
+        """
+        setParamsCovariance(CPolyCF self, MatrixXd const & K0)
+
+        Parameters:
+            K0: MatrixXd const &
+
+        """
+        return _core.CPolyCF_setParamsCovariance(self, *args)
+
+    def Kcross(self, *args):
+        """
+        Kcross(CPolyCF self, limix::CovarInput const & Xstar)
+
+        Parameters:
+            Xstar: limix::CovarInput const &
+
+        """
+        return _core.CPolyCF_Kcross(self, *args)
+
+    def Kgrad_param(self, *args):
+        """
+        Kgrad_param(CPolyCF self, limix::muint_t const i)
+
+        Parameters:
+            i: limix::muint_t const
+
+        """
+        return _core.CPolyCF_Kgrad_param(self, *args)
+
+    def Khess_param(self, *args):
+        """
+        Khess_param(CPolyCF self, limix::muint_t const i, limix::muint_t const j)
+
+        Parameters:
+            i: limix::muint_t const
+            j: limix::muint_t const
+
+        """
+        return _core.CPolyCF_Khess_param(self, *args)
+
+    def agetParamMask0(self):
+        """
+        agetParamMask0(CPolyCF self)
+
+        Parameters:
+            self: limix::CPolyCF const *
+
+        """
+        return _core.CPolyCF_agetParamMask0(self)
+
+    def getName(self):
+        """
+        getName(CPolyCF self) -> std::string
+
+        Parameters:
+            self: limix::CPolyCF const *
+
+        """
+        return _core.CPolyCF_getName(self)
+
+CPolyCF_swigregister = _core.CPolyCF_swigregister
+CPolyCF_swigregister(CPolyCF)
+
 class CCovSqexpARD(ACovarianceFunction):
     """Proxy of C++ limix::CCovSqexpARD class"""
     __swig_setmethods__ = {}
