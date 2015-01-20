@@ -30,9 +30,13 @@ class gp2kronSum_reml(GP):
         #offset for trait covariance matrices
         self.setOffset(offset)
         self.params = None
+        self.reml = True
         # time
         self.time = {}
         self.count = {}
+
+    def set_reml(self,value=True):
+        self.reml = value
 
     def get_time(self):
         """ returns time dictionary """
@@ -67,7 +71,7 @@ class gp2kronSum_reml(GP):
         """
         set gp mean
         """
-        self.mean.setY(Y)
+        self.mean.Y = Y
 
     def setOffset(self,offset):
         """
@@ -98,8 +102,6 @@ class gp2kronSum_reml(GP):
         params = {}
         params['Cg'] = self.Cg.getParams()
         params['Cn'] = self.Cn.getParams()
-        if 'mean' in self.params.keys():
-            params['mean'] = self.mean.getParams()
         return params
 
     def setParams(self,params):
@@ -118,8 +120,6 @@ class gp2kronSum_reml(GP):
             self.Cg.setParams(self.params['Cg'])
         if 'Cn' in keys:
             self.Cn.setParams(self.params['Cn'])
-        if 'mean' in keys:
-            self.mean.setParams(self.params['mean'])
 
     def _update_cache(self):
         """
@@ -132,7 +132,7 @@ class gp2kronSum_reml(GP):
             """ Row SVD Bg + Noise """
             self.cache['Srstar'],Urstar  = LA.eigh(self.XX)
             self.cache['Lr']   = Urstar.T
-            self.mean.setRowRotation(Lr=self.cache['Lr'])
+            self.mean.Lr = self.cache['Lr']
 
             smartSum(self.time,'cache_XXchanged',TIME.time()-start)
             smartSum(self.count,'cache_XXchanged',1)
@@ -148,7 +148,7 @@ class gp2kronSum_reml(GP):
             self.cache['Scstar'],Ucstar = LA.eigh(Cstar)
             self.cache['Lc'] = SP.dot(Ucstar.T,USi2.T)
             """ pheno """
-            self.mean.setColRotation(self.cache['Lc'])
+            self.mean.Lc = self.cache['Lc'] 
 
 
         if cov_params_have_changed or self.XX_has_changed:
@@ -158,8 +158,9 @@ class gp2kronSum_reml(GP):
             self.cache['D'] = SP.reshape(self.cache['d'],(self.N,self.P), order='F')
 
             """ pheno """
-            self.cache['LY']  = self.mean.getYr()
-            self.cache['DLY'] = self.cache['D']*self.cache['LY']
+            self.mean.d = self.cache['d']
+            self.cache['LZ']  = self.mean.Zstar()
+            self.cache['DLZ'] = self.cache['D']*self.cache['LZ']
 
             smartSum(self.time,'cache_colSVDpRot',TIME.time()-start)
             smartSum(self.count,'cache_colSVDpRot',1)
@@ -186,7 +187,11 @@ class gp2kronSum_reml(GP):
         lml += SP.sum(SP.log(self.cache['Sc2']))*self.N + SP.log(self.cache['s']).sum()
 
         #3. quatratic term
-        lml += (self.cache['LY']*self.cache['DLY']).sum()
+        lml += (self.cache['LZ']*self.cache['DLZ']).sum()
+
+        if self.reml:
+            #4. reml term
+            lml += SP.log(SP.diag(self.mean.Areml_chol())).sum()
 
         lml *= 0.5
 
@@ -217,7 +222,6 @@ class gp2kronSum_reml(GP):
 
         return lml
 
-
     def LMLgrad(self,params=None,**kw_args):
         """
         LML gradient
@@ -229,8 +233,6 @@ class gp2kronSum_reml(GP):
         covars = ['Cg','Cn']
         for covar in covars:        
             RV[covar] = self._LMLgrad_covar(covar)
-        if 'mean' in self.params.keys():
-            RV['mean'] = self._LMLgrad_mean()
         return RV
 
     def _LMLgrad_covar(self,covar,**kw_args):
@@ -245,16 +247,20 @@ class gp2kronSum_reml(GP):
             LRLdiag = SP.ones(self.N)
             n_params = self.Cn.getNumberParams()
 
+        # some stuff to cache
+        LRLdiag_DLZ = LRLdiag[:,SP.newaxis]*self.cache['DLZ']
+        self.mean.LRLdiag = LRLdiag
+
         # fill gradient vector
         RV = SP.zeros(n_params)
         for i in range(n_params):
 
             #0. calc LCL
             start = TIME.time()
-            if covar=='Cr':     C = self.Cr.Kgrad_param(i)
-            elif covar=='Cg':   C = self.Cg.Kgrad_param(i)
+            if covar=='Cg':     C = self.Cg.Kgrad_param(i)
             elif covar=='Cn':   C = self.Cn.Kgrad_param(i)
             LCL = SP.dot(self.cache['Lc'],SP.dot(C,self.cache['Lc'].T))
+            self.mean.LCLdiag = LCLdiag
 
             #1. der of log det
             start = TIME.time()
@@ -265,22 +271,18 @@ class gp2kronSum_reml(GP):
 
             #2. der of quad form
             start = TIME.time()
-            KDLY  = LRLdiag[:,SP.newaxis]*SP.dot(self.cache['DLY'],LCL.T)
-            RV[i] -= (self.cache['DLY']*KDLY).sum()
+            KDLZ  = SP.dot(LRLdiag_DLZ,LCL.T)
+            KDLZ += self.mean.Xstar_beta_grad()
+            RV[i] -= (self.cache['DLZ']*KDLZ).sum()
             smartSum(self.time,'lmlgrad_quadform',TIME.time()-start)
             smartSum(self.count,'lmlgrad_quadform',1)
 
+            if self.reml:
+                # der of log det reml
+                RV[i] += SP.einsum('ij,ji->',self.mean.Areml_inv(),self.mean.Areml_grad())
+
             RV[i] *= 0.5
 
-        return RV
-
-    def _LMLgrad_mean(self):
-        """ LMLgradient with respect to the mean params """
-        n_params = self.params['mean'].shape[0]
-        RV = SP.zeros(n_params)
-        for i in range(n_params):
-            dF = self.mean.getGradient(i)
-            RV[i] = (dF*self.cache['DLY']).sum()
         return RV
 
     def LMLgrad_debug(self,**kw_args):
