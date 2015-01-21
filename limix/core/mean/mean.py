@@ -1,6 +1,6 @@
 import sys
-sys.path.insert(0,'./..')
-from cobj import * 
+sys.path.insert(0,'./../../..')
+from limix.core.cobj import * 
 import scipy as SP
 import scipy.linalg as LA
 import copy

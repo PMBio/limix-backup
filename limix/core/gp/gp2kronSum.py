@@ -10,7 +10,7 @@ import scipy.linalg as LA
 import time as TIME
 from gp_base import GP
 
-class gp2kronSum_reml(GP):
+class gp2kronSum(GP):
  
     def __init__(self,mean,Cg,Cn,XX=None,S_XX=None,U_XX=None,offset=1e-4):
         """
@@ -189,7 +189,7 @@ class gp2kronSum_reml(GP):
         #3. quatratic term
         lml += (self.cache['LZ']*self.cache['DLZ']).sum()
 
-        if self.reml:
+        if self.reml and self.mean.n_fixed_effs>0:
             #4. reml term
             lml += 2*SP.log(SP.diag(self.mean.Areml_chol())).sum()
 
@@ -260,7 +260,7 @@ class gp2kronSum_reml(GP):
             smartSum(self.time,'lmlgrad_quadform',TIME.time()-start)
             smartSum(self.count,'lmlgrad_quadform',1)
 
-            if self.reml:
+            if self.reml and self.mean.n_fixed_effs>0:
                 # der of log det reml
                 RV[i] += SP.einsum('ij,ji->',self.mean.Areml_inv(),self.mean.Areml_grad())
 

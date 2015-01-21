@@ -45,7 +45,7 @@ if __name__ == "__main__":
     mean.LRLdiag = Sr
     mean.LCL     = C**2
 
-    if 0:
+    if 1:
         # calculate stuff to see if it goes through
         print mean.Ystar()
         print mean.Yhat()

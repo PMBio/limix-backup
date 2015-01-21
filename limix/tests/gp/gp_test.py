@@ -11,6 +11,9 @@ from limix.core.covar import freeform
 from limix.core.gp.gp2kronSum import gp2kronSum
 import limix.core.optimize.optimize_bfgs as OPT
 
+#path_abs = os.path.dirname(os.path.abspath(sys.argv[0]))
+#path_mtSet = os.path.join(path_abs,'../..')
+
 class gp_unittest(unittestClass):
     """test class for optimization""" 
     
@@ -22,16 +25,17 @@ class gp_unittest(unittestClass):
         self.N,self.P = self.Y.shape
         self.write = False 
 
-    def test_gp2kronSumOpt(self):
-        fbasename = 'gp2kronSumOpt'
+    def test_gp2kronSumGrad(self):
+        fbasename = 'gp2kronSumGrad'
         mu = mean(self.Y)
-        mu.addFixedEffect(F=self.Xr,A=SP.ones((1,self.P)))
+        mu.addFixedEffect(F=self.Xr[:,0:2],A=SP.ones((1,self.P)))
+        mu.addFixedEffect(F=self.Xr[:,2:4],A=SP.eye(self.P))
         Cg = freeform(self.P)
         Cn = freeform(self.P)
         gp = gp2kronSum(mu,Cg,Cn,XX=self.XX)
         params0 = {'Cg': SP.randn(Cg.getParams().shape[0]),
-                   'Cn': SP.randn(Cg.getParams().shape[0]),
-                   'mean': SP.zeros(mu.getParams().shape[0])}
+                   'Cn': SP.randn(Cg.getParams().shape[0])}
+        pdb.set_trace()
         conv,info = OPT.opt_hyper(gp,params0,factr=1e3)
         ext = {'Cg':gp.Cg.K(),'Cn':gp.Cn.K()}
         if self.write: self.saveStuff(fbasename,ext)

@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0,'./../../..')
 sys.path.insert(0,'./../../../../../mksum/mtSet')
 from limix.core.mean import mean
-from limix.core.gp import gp2kronSum_reml as gp2kronSum
+from limix.core.gp import gp2kronSum as gp2kronSum
 from mtSet.pycore.gp import gp2kronSum as gp2kronSumMtSet
 import mtSet.pycore.mean as MEAN
 from limix.core.covar import freeform 
@@ -31,16 +31,16 @@ if __name__ == "__main__":
     Xr*= SP.sqrt(N/(Xr**2).sum())
 
     # define mean term
-    mean = mean(Y)
-    mean1 = MEAN.mean(Y)
+    mu = mean(Y)
+    mu1 = MEAN.mean(Y)
     # add first fixed effect
     F = 1.*(SP.rand(N,2)<0.2); A = SP.eye(P)
-    mean.addFixedEffect(F=F,A=A)
-    mean1.addFixedEffect(F=F,A=A)
+    mu.addFixedEffect(F=F,A=A)
+    mu1.addFixedEffect(F=F,A=A)
     # add first fixed effect
     F = 1.*(SP.rand(N,3)<0.2); A = SP.ones((1,P))
-    mean.addFixedEffect(F=F,A=A)
-    mean1.addFixedEffect(F=F,A=A)
+    mu.addFixedEffect(F=F,A=A)
+    mu1.addFixedEffect(F=F,A=A)
 
     # define covariance matrices
     Cg = freeform(P)
@@ -50,24 +50,23 @@ if __name__ == "__main__":
     
     ipdb.set_trace()
 
-    if 1:
-        # generate parameters
+    if 0:
+        # compare with mtSet implementation
         params = {}
         params['Cg']   = SP.randn(int(0.5*P*(P+1)))
         params['Cn']   = SP.randn(int(0.5*P*(P+1)))
         params1 = copy.copy(params)
-        params1['mean'] = SP.zeros(mean1.getParams().shape[0])
+        params1['mean'] = SP.zeros(mu1.getParams().shape[0])
 
         print "check gradient with gp2kronSum"
-        gp = gp2kronSum(mean,Cg,Cn,XX)
-        gp1 = gp2kronSumMtSet(mean1,Cg1,Cn1,XX)
+        gp = gp2kronSum(mu,Cg,Cn,XX)
+        gp1 = gp2kronSumMtSet(mu1,Cg1,Cn1,XX)
         gp.setParams(params)
         gp1.setParams(params1)
         if 0:
             gp.set_reml(False)
 
         print "test optimization"
-
         start = TIME.time()
         conv,info = OPT.opt_hyper(gp,params,factr=1e3)
         print 'Reml GP:', TIME.time()-start
@@ -78,4 +77,17 @@ if __name__ == "__main__":
         print conv
 
         ipdb.set_trace()
+
+    if 1:
+        # no fixed 
+        mu = mean(Y)
+        params = {}
+        params['Cg']   = SP.randn(int(0.5*P*(P+1)))
+        params['Cn']   = SP.randn(int(0.5*P*(P+1)))
+
+        ipdb.set_trace()
+        gp = gp2kronSum(mu,Cg,Cn,XX)
+        gp.setParams(params)
+        gp.LML()
+        gp.LMLgrad()
 
