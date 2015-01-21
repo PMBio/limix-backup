@@ -10,7 +10,7 @@ import scipy.linalg as LA
 import time as TIME
 from gp_base import GP
 
-class gp2kronSum(GP):
+class gp2kronSum_reml(GP):
  
     def __init__(self,mean,Cg,Cn,XX=None,S_XX=None,U_XX=None,offset=1e-4):
         """
@@ -30,9 +30,13 @@ class gp2kronSum(GP):
         #offset for trait covariance matrices
         self.setOffset(offset)
         self.params = None
+        self.reml = True
         # time
         self.time = {}
         self.count = {}
+
+    def set_reml(self,value=True):
+        self.reml = value
 
     def get_time(self):
         """ returns time dictionary """
@@ -67,7 +71,7 @@ class gp2kronSum(GP):
         """
         set gp mean
         """
-        self.mean.setY(Y)
+        self.mean.Y = Y
 
     def setOffset(self,offset):
         """
@@ -98,8 +102,6 @@ class gp2kronSum(GP):
         params = {}
         params['Cg'] = self.Cg.getParams()
         params['Cn'] = self.Cn.getParams()
-        if 'mean' in self.params.keys():
-            params['mean'] = self.mean.getParams()
         return params
 
     def setParams(self,params):
@@ -118,8 +120,6 @@ class gp2kronSum(GP):
             self.Cg.setParams(self.params['Cg'])
         if 'Cn' in keys:
             self.Cn.setParams(self.params['Cn'])
-        if 'mean' in keys:
-            self.mean.setParams(self.params['mean'])
 
     def _update_cache(self):
         """
@@ -132,7 +132,7 @@ class gp2kronSum(GP):
             """ Row SVD Bg + Noise """
             self.cache['Srstar'],Urstar  = LA.eigh(self.XX)
             self.cache['Lr']   = Urstar.T
-            self.mean.setRowRotation(Lr=self.cache['Lr'])
+            self.mean.Lr = self.cache['Lr']
 
             smartSum(self.time,'cache_XXchanged',TIME.time()-start)
             smartSum(self.count,'cache_XXchanged',1)
@@ -148,7 +148,7 @@ class gp2kronSum(GP):
             self.cache['Scstar'],Ucstar = LA.eigh(Cstar)
             self.cache['Lc'] = SP.dot(Ucstar.T,USi2.T)
             """ pheno """
-            self.mean.setColRotation(self.cache['Lc'])
+            self.mean.Lc = self.cache['Lc'] 
 
 
         if cov_params_have_changed or self.XX_has_changed:
@@ -158,8 +158,9 @@ class gp2kronSum(GP):
             self.cache['D'] = SP.reshape(self.cache['d'],(self.N,self.P), order='F')
 
             """ pheno """
-            self.cache['LY']  = self.mean.evaluate()
-            self.cache['DLY'] = self.cache['D']*self.cache['LY']
+            self.mean.d = self.cache['d']
+            self.cache['LZ']  = self.mean.Zstar()
+            self.cache['DLZ'] = self.cache['D']*self.cache['LZ']
 
             smartSum(self.time,'cache_colSVDpRot',TIME.time()-start)
             smartSum(self.count,'cache_colSVDpRot',1)
@@ -186,7 +187,11 @@ class gp2kronSum(GP):
         lml += SP.sum(SP.log(self.cache['Sc2']))*self.N + SP.log(self.cache['s']).sum()
 
         #3. quatratic term
-        lml += (self.cache['LY']*self.cache['DLY']).sum()
+        lml += (self.cache['LZ']*self.cache['DLZ']).sum()
+
+        if self.reml:
+            #4. reml term
+            lml += 2*SP.log(SP.diag(self.mean.Areml_chol())).sum()
 
         lml *= 0.5
 
@@ -196,26 +201,6 @@ class gp2kronSum(GP):
         return lml
 
 
-    def LMLdebug(self):
-        """
-        LML function for debug
-        """
-        assert self.N*self.P<2000, 'gp2kronSum:: N*P>=2000'
-
-        y  = SP.reshape(self.Y,(self.N*self.P), order='F') 
-
-        K  = SP.kron(self.Cg.K(),self.XX)
-        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
-
-        cholK = LA.cholesky(K)
-        Kiy   = LA.cho_solve((cholK,False),y)
-
-        lml  = y.shape[0]*SP.log(2*SP.pi)
-        lml += 2*SP.log(SP.diag(cholK)).sum()
-        lml += SP.dot(y,Kiy)
-        lml *= 0.5
-
-        return lml
 
 
     def LMLgrad(self,params=None,**kw_args):
@@ -229,8 +214,6 @@ class gp2kronSum(GP):
         covars = ['Cg','Cn']
         for covar in covars:        
             RV[covar] = self._LMLgrad_covar(covar)
-        if 'mean' in self.params.keys():
-            RV['mean'] = self._LMLgrad_mean()
         return RV
 
     def _LMLgrad_covar(self,covar,**kw_args):
@@ -245,16 +228,20 @@ class gp2kronSum(GP):
             LRLdiag = SP.ones(self.N)
             n_params = self.Cn.getNumberParams()
 
+        # some stuff to cache
+        LRLdiag_DLZ = LRLdiag[:,SP.newaxis]*self.cache['DLZ']
+        self.mean.LRLdiag = LRLdiag
+
         # fill gradient vector
         RV = SP.zeros(n_params)
         for i in range(n_params):
 
             #0. calc LCL
             start = TIME.time()
-            if covar=='Cr':     C = self.Cr.Kgrad_param(i)
-            elif covar=='Cg':   C = self.Cg.Kgrad_param(i)
+            if covar=='Cg':     C = self.Cg.Kgrad_param(i)
             elif covar=='Cn':   C = self.Cn.Kgrad_param(i)
             LCL = SP.dot(self.cache['Lc'],SP.dot(C,self.cache['Lc'].T))
+            self.mean.LCL = LCL
 
             #1. der of log det
             start = TIME.time()
@@ -265,22 +252,20 @@ class gp2kronSum(GP):
 
             #2. der of quad form
             start = TIME.time()
-            KDLY  = LRLdiag[:,SP.newaxis]*SP.dot(self.cache['DLY'],LCL.T)
-            RV[i] -= (self.cache['DLY']*KDLY).sum()
+            KDLZ  = SP.dot(LRLdiag_DLZ,LCL.T)
+            KDLZ += self.mean.Xstar_beta_grad()
+            RV[i] -= (self.cache['DLZ']*KDLZ).sum()
+
+
             smartSum(self.time,'lmlgrad_quadform',TIME.time()-start)
             smartSum(self.count,'lmlgrad_quadform',1)
 
+            if self.reml:
+                # der of log det reml
+                RV[i] += SP.einsum('ij,ji->',self.mean.Areml_inv(),self.mean.Areml_grad())
+
             RV[i] *= 0.5
 
-        return RV
-
-    def _LMLgrad_mean(self):
-        """ LMLgradient with respect to the mean params """
-        n_params = self.params['mean'].shape[0]
-        RV = SP.zeros(n_params)
-        for i in range(n_params):
-            dF = self.mean.getGradient(i)
-            RV[i] = (dF*self.cache['DLY']).sum()
         return RV
 
     def LMLgrad_debug(self,**kw_args):
@@ -304,7 +289,7 @@ class gp2kronSum(GP):
 
         cholK = LA.cholesky(K).T
         Ki  = LA.cho_solve((cholK,True),SP.eye(y.shape[0]))
-        Kiy   = LA.cho_solve((cholK,True),y)
+        Kiy  = LA.cho_solve((cholK,True),y)
 
         if covar=='Cr':     n_params = self.Cr.getNumberParams()
         elif covar=='Cg':   n_params = self.Cg.getNumberParams()
@@ -338,4 +323,150 @@ class gp2kronSum(GP):
         KiY = SP.dot(self.cache['Lr'].T,SP.dot(self.cache['DLY'],self.cache['Lc']))
         rv = SP.dot(XXstar,SP.dot(KiY,self.Cg.K()))
         return rv
+
+
+    """ debug functions """
+
+    def check_Areml(self):
+        self.LML()
+        K  = SP.kron(self.Cg.K(),self.XX)
+        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
+        cholK = LA.cholesky(K).T
+        Ki    = LA.cho_solve((cholK,True),SP.eye(self.N*self.P))
+        X = []
+        for term_i in range(self.mean.n_terms):
+            X.append(SP.kron(self.mean.A[term_i].T,self.mean.F[term_i]))
+        X = SP.concatenate(X,1)
+        Areml = SP.dot(X.T,SP.dot(Ki,X))
+        print ((Areml-self.mean.Areml())**2).mean()<1e-6
+
+    def check_beta_hat(self):
+        self.LML()
+        y  = self.mean.Y.reshape((self.mean.Y.size,1),order='F')
+        K  = SP.kron(self.Cg.K(),self.XX)
+        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
+        cholK = LA.cholesky(K).T
+        Ki    = LA.cho_solve((cholK,True),SP.eye(self.N*self.P))
+        X = []
+        for term_i in range(self.mean.n_terms):
+            X.append(SP.kron(self.mean.A[term_i].T,self.mean.F[term_i]))
+        X = SP.concatenate(X,1)
+        XKiy = SP.dot(X.T,SP.dot(Ki,y))
+        beta_hat = SP.dot(self.mean.Areml_inv(),XKiy)
+        L = SP.kron(self.cache['Lc'],self.cache['Lr'])
+        zstar = SP.dot(L,self.mean.Y.reshape((self.mean.Y.size,1),order='F')-SP.dot(X,beta_hat))
+        zstar1 = self.mean.Zstar().reshape((self.mean.Y.size,1),order='F')
+
+        # beta 1
+        #L = SP.kron(self.cache['Lc'],self.cache['Lr'])
+        #Xstar = SP.dot(L,X)
+        #yhat  = SP.dot(L,self.mean.Y.reshape((self.mean.Y.size,1)))
+        #yhat *= self.cache['d'][:,SP.newaxis]
+        #beta_hat1 = SP.dot(self.mean.Areml_inv(),SP.dot(Xstar.T,yhat))
+
+        print ((beta_hat-self.mean.beta_hat())**2).mean()<1e-6
+        print ((zstar-zstar1)**2).mean()<1e-6
+
+    def LMLdebug(self):
+        """
+        LML function for debug
+        """
+        assert self.N*self.P<2000, 'gp2kronSum:: N*P>=2000'
+
+        y  = SP.reshape(self.mean.Y,(self.N*self.P,1), order='F')
+
+        K  = SP.kron(self.Cg.K(),self.XX)
+        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
+
+        cholK = LA.cholesky(K)
+
+        X = []
+        for term_i in range(self.mean.n_terms):
+            X.append(SP.kron(self.mean.A[term_i].T,self.mean.F[term_i]))
+        X = SP.concatenate(X,1)
+        z = y-SP.dot(X,self.mean.beta_hat())
+
+        Kiz   = LA.cho_solve((cholK,False),z)
+
+        lml  = y.shape[0]*SP.log(2*SP.pi)
+        lml += 2*SP.log(SP.diag(cholK)).sum()
+        lml += (z*Kiz).sum()
+        lml += 2*SP.log(SP.diag(self.mean.Areml_chol())).sum()
+        lml *= 0.5
+
+        return lml
+
+    def check_Agrad(self):
+        """
+        A = X.T Ki X
+        Agrad = - X.T Ki dK Ki X
+        """
+        self.LML()
+        K  = SP.kron(self.Cg.K(),self.XX)
+        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
+        cholK = LA.cholesky(K).T
+        Ki    = LA.cho_solve((cholK,True),SP.eye(self.N*self.P))
+        X = []
+        for term_i in range(self.mean.n_terms):
+            X.append(SP.kron(self.mean.A[term_i].T,self.mean.F[term_i]))
+        X = SP.concatenate(X,1)
+    
+        i = 0
+        C   = self.Cg.Kgrad_param(i)
+        Kgrad = SP.kron(C,self.XX)
+
+        Agrad = -SP.dot(X.T,SP.dot(Ki,SP.dot(Kgrad,SP.dot(Ki,X))))
+
+        # Agrad1 = -Xstar.T D LCL\kronLRLdiag Xhat
+        LRLdiag = self.cache['Srstar']
+        LCL = SP.dot(self.cache['Lc'],SP.dot(C,self.cache['Lc'].T))
+        #dK    = SP.kron(LCL,SP.diag(LRLdiag))
+        #Xstar = self.mean.Xstar()
+        #Xhat  = self.mean.Xhat()
+        #DKiXhat = self.cache['d'][:,SP.newaxis]*SP.dot(dK,Xhat)
+        #Agrad2 = -SP.dot(Xstar.T,DKiXhat)
+
+        self.mean.LRLdiag = LRLdiag
+        self.mean.LCL = LCL
+        Agrad1 = self.mean.Areml_grad()
+
+        print ((Agrad-Agrad1)**2).mean()<1e-6
+
+    def check_beta_grad(self):
+        """
+        b = Ai Xt Ki y
+        bgrad = - Ai dA beta
+                - Ai Xt Ki dK Ki y
+        """
+        self.LML()
+        y  = SP.reshape(self.mean.Y,(self.N*self.P,1), order='F')
+        K  = SP.kron(self.Cg.K(),self.XX)
+        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
+        cholK = LA.cholesky(K).T
+        Ki    = LA.cho_solve((cholK,True),SP.eye(self.N*self.P))
+        X = []
+        for term_i in range(self.mean.n_terms):
+            X.append(SP.kron(self.mean.A[term_i].T,self.mean.F[term_i]))
+        X = SP.concatenate(X,1)
+
+        i = 0
+        C   = self.Cg.Kgrad_param(i)
+        Kgrad = SP.kron(C,self.XX)
+
+        Agrad = -SP.dot(X.T,SP.dot(Ki,SP.dot(Kgrad,SP.dot(Ki,X))))
+
+        beta_grad = SP.dot(Agrad,self.mean.beta_hat())
+        beta_grad+= SP.dot(X.T,SP.dot(Ki,SP.dot(Kgrad,SP.dot(Ki,y))))
+        beta_grad = -SP.dot(self.mean.Areml_inv(),beta_grad)
+        Xstar_beta_grad = SP.dot(self.mean.Xstar(),beta_grad)
+
+        LRLdiag = self.cache['Srstar']
+        LCL = SP.dot(self.cache['Lc'],SP.dot(C,self.cache['Lc'].T))
+        self.mean.LRLdiag = LRLdiag
+        self.mean.LCL = LCL
+        beta_grad1 = self.mean.beta_grad()
+        Xstar_beta_grad1 = self.mean.Xstar_beta_grad().reshape((self.P*self.N,1),order='F') 
+
+        print ((beta_grad-beta_grad1)**2).mean()<1e-6
+        print ((Xstar_beta_grad-Xstar_beta_grad1)**2).mean()<1e-6
 
