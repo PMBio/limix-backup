@@ -1,4 +1,5 @@
 import scipy as SP
+import warnings
 
 class covariance:
     """
@@ -16,11 +17,31 @@ class covariance:
         self.params = params
         self.params_have_changed=True
 
+    def setRandomParams(self):
+        """
+        set random hyperparameters
+        """
+        params = SP.randn(self.getNumberParams())
+        self.setParams(params)
+
+    def setCovariance(self,cov):
+        """
+        set hyperparameters from given covariance
+        """
+        warnings.warn('not implemented')
+
     def getParams(self):
         """
         get hyperparameters
         """
         return self.params
+
+    def perturbParams(self,pertSize=1e-3):
+        """
+        slightly perturbs the values of the parameters
+        """
+        params = self.getParams()
+        self.setParams(params+pertSize*SP.randn(params.shape[0]))
 
     def getNumberParams(self):
         """
@@ -42,13 +63,12 @@ class covariance:
         """
         LG.critical("implement Kgrad_theta")
         print("%s: Function K not yet implemented"%(self.__class__))
-        return None
 
     def _calcNumberParams(self):
         """
         calculates the number of parameters
         """
-        pass
+        warnings.warn('not implemented')
 
     def _initParams(self):
         """

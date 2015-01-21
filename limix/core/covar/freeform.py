@@ -1,4 +1,5 @@
 import scipy as SP
+import scipy.linalg as LA
 from covariance import covariance
 import pdb
 
@@ -14,6 +15,14 @@ class freeform(covariance):
         self.L = SP.zeros((self.P,self.P))
         self.Lgrad = SP.zeros((self.P,self.P))
         self.zeros = SP.zeros(self.n_params)
+
+    def setCovariance(self,cov):
+        """
+        set hyperparameters from given covariance
+        """
+        chol = LA.cholesky(cov,lower=True)
+        params = chol[SP.tril_indices(self.P)]
+        self.setParams(params)
 
     def K(self):
         """

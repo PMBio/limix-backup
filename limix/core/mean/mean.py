@@ -1,6 +1,7 @@
 import sys
 sys.path.insert(0,'./../../..')
 from limix.core.cobj import * 
+from limix.utils.preprocess import regressOut
 import scipy as SP
 import scipy.linalg as LA
 import copy
@@ -314,6 +315,19 @@ class mean(cObject):
         RV = self.Ystar().copy()
         for term_i in range(self.n_terms):
             RV-=SP.dot(self.Fstar()[term_i],SP.dot(self.B_hat()[term_i],self.Astar()[term_i]))
+        return RV
+
+    def getResiduals(self):
+        """ regress out fixed effects and results residuals """
+        X = SP.zeros((self.N*self.P,self.n_fixed_effs))
+        ip = 0
+        for i in range(self.n_terms):
+            Ki = self.A[i].shape[0]*self.F[i].shape[1]
+            X[:,ip:ip+Ki] = SP.kron(self.A[i].T,self.F[i])
+            ip += Ki
+        y = SP.reshape(self.Y,(self.Y.size,1),order='F')
+        RV = regressOut(y,X)
+        RV = SP.reshape(RV,self.Y.shape,order='F')
         return RV
 
     #########################################
