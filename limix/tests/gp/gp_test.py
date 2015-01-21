@@ -25,8 +25,8 @@ class gp_unittest(unittestClass):
         self.N,self.P = self.Y.shape
         self.write = False 
 
-    def test_gp2kronSumGrad(self):
-        fbasename = 'gp2kronSumGrad'
+    def test_gp2kronSumOpt(self):
+        fbasename = 'gp2kronSumOpt'
         mu = mean(self.Y)
         mu.addFixedEffect(F=self.Xr[:,0:2],A=SP.ones((1,self.P)))
         mu.addFixedEffect(F=self.Xr[:,2:4],A=SP.eye(self.P))
@@ -35,7 +35,6 @@ class gp_unittest(unittestClass):
         gp = gp2kronSum(mu,Cg,Cn,XX=self.XX)
         params0 = {'Cg': SP.randn(Cg.getParams().shape[0]),
                    'Cn': SP.randn(Cg.getParams().shape[0])}
-        pdb.set_trace()
         conv,info = OPT.opt_hyper(gp,params0,factr=1e3)
         ext = {'Cg':gp.Cg.K(),'Cn':gp.Cn.K()}
         if self.write: self.saveStuff(fbasename,ext)
