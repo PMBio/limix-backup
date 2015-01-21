@@ -204,7 +204,7 @@ class mean(cObject):
         ip = 0
         for i in range(self.n_terms):
             Ki = self.A[i].shape[0]*self.F[i].shape[1]
-            RV[:,ip:ip+Ki] = SP.kron(self.Fstar()[i],self.Astar()[i].T)
+            RV[:,ip:ip+Ki] = SP.kron(self.Astar()[i].T,self.Fstar()[i])
             ip += Ki
         return RV 
 
@@ -227,7 +227,7 @@ class mean(cObject):
 
     @cached
     def beta_hat(self):
-        return SP.dot(self.Areml_inv(),self.XstarT_dot(SP.reshape(self.Y,(self.Y.size,1))))
+        return SP.dot(self.Areml_inv(),self.XstarT_dot(SP.reshape(self.Yhat(),(self.Y.size,1),order='F')))
 
     @cached
     def B_hat(self):
@@ -240,7 +240,7 @@ class mean(cObject):
 
     @cached
     def LRLdiag_Xhat_tens(self):
-        RV  = SP.reshape(self.Xhat(),(self.N,self.P,self.n_fixed_effs),order='F')
+        RV  = SP.reshape(self.Xhat(),(self.N,self.P,self.n_fixed_effs),order='F').copy()
         RV *= self.LRLdiag[:,SP.newaxis,SP.newaxis]
         return RV
 
@@ -253,7 +253,7 @@ class mean(cObject):
         RV = SP.einsum('jpk,lp->jlk',self.LRLdiag_Xhat_tens(),self.LCL)
         RV = RV.reshape((self.N*self.P,self.n_fixed_effs),order='F')
         RV*= self.d[:,SP.newaxis]
-        RV = self.XstarT_dot(RV)
+        RV = -self.XstarT_dot(RV)
         return RV
 
     @cached
@@ -261,18 +261,19 @@ class mean(cObject):
         RV  = SP.reshape(SP.dot(self.LRLdiag_Yhat(),self.LCL.T),(self.N*self.P,1),order='F')
         RV *= self.d[:,SP.newaxis]
         RV  = self.XstarT_dot(RV)
-        RV += SP.dot(Areml_grad,self.beta_hat())
-        RV  = -SP.dot(self.Areml_inv(),beta_grad)
+        RV += SP.dot(self.Areml_grad(),self.beta_hat())
+        RV  = -SP.dot(self.Areml_inv(),RV)
         return RV
 
     @cached
     def Xstar_beta_grad(self):
         RV = SP.zeros((self.N,self.P))
         ip = 0
-        for term_i in range(self.mean.n_terms):
+        for term_i in range(self.n_terms):
             _Bgrad = SP.reshape(self.beta_grad()[ip:ip+self.B[term_i].size],self.B[term_i].shape, order='F')
             RV+=SP.dot(self.Fstar()[term_i],SP.dot(_Bgrad,self.Astar()[term_i]))
             ip += self.B[term_i].size
+        return RV
 
     ###############################################
     # Other getters with no caching, should not they have caching somehow?
@@ -347,26 +348,6 @@ class mean(cObject):
         for key in x.keys():
             self.toChange[key] = True
 
-    def _init(self):
-        # DEPRECATED
-        """ initializes all quantities """
-        # rotations and scalings
-        self.Lr = SP.eye(self.N)
-        self.Lc = SP.eye(self.P)
-        self.d  = SP.ones(self.N*self.P)
-        # pheno transformations
-        Ystar1 = Y.copy()
-        Ystar  = Y.copy()
-        Yhat   = Y.copy()
-        # fixed effect transformations
-        self.Astar = copy.copy(self.A)
-        self.Fstar = copy.copy(self.F)
-        # set toChange dict
-        x = ['Y','Ystar','Ystar1','Fstar','Astar','Xhat']
-        for key in x.keys():
-            self.toChange[key] = False
-        self.toChange['Xhat'] = True
-
     def _update_indicator(self,K,L):
         """ update the indicator """
         _update = {'term': self.n_terms*SP.ones((K,L)).T.ravel(),
@@ -374,4 +355,3 @@ class mean(cObject):
                     'col': SP.kron(SP.ones((K,1)),SP.arange(L)[SP.newaxis,:]).T.ravel()} 
         for key in _update.keys():
             self.indicator[key] = SP.concatenate([self.indicator[key],_update[key]])
-

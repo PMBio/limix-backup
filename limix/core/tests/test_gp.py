@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     # generate data
     h2 = 0.3
-    N = 1000; P = 4; S = 1000
+    N = 500; P = 3; S = 1000
     X = 1.*(SP.rand(N,S)<0.2)
     beta = SP.randn(S,P)
     Yg = SP.dot(X,beta); Yg*=SP.sqrt(h2/Yg.var(0).mean())
@@ -33,8 +33,8 @@ if __name__ == "__main__":
     F = 1.*(SP.rand(N,2)<0.2); A = SP.eye(P)
     mean.addFixedEffect(F=F,A=A)
     # add first fixed effect
-    F = 1.*(SP.rand(N,3)<0.2); A = SP.ones((1,P))
-    mean.addFixedEffect(F=F,A=A)
+    #F = 1.*(SP.rand(N,3)<0.2); A = SP.ones((1,P))
+    #mean.addFixedEffect(F=F,A=A)
 
     # define covariance matrices
     Cg = freeform(P)
@@ -50,11 +50,18 @@ if __name__ == "__main__":
         gp = gp2kronSum(mean,Cg,Cn,XX)
         gp.setParams(params)
 
-        ipdb.set_trace()
-
         print gp.LML()
         print gp.LMLgrad() 
-        gp.LMLgrad()
+
+        gp.check_Areml()
+        gp.check_beta_hat()
+        LML= gp.LML()
+        LML1= gp.LMLdebug()
+        print LML-LML1
+        gp.check_Agrad()
+        gp.check_beta_grad()
+
+        ipdb.set_trace()
 
         gp.checkGradient()
         print "test optimization"

@@ -42,26 +42,26 @@ if __name__ == "__main__":
     mean.d = d
     mean.Lc = Uc.T
     mean.Lr = Ur.T
-
-    print mean.Ystar()
-    print mean.Yhat()
-    print mean.Xstar()
-    print mean.Xhat()
-    print mean.XstarT_dot(SP.randn(mean.N*mean.P,mean.n_fixed_effs))
-    print mean.Areml()
-    print mean.beta_hat()
-    Bhat =  mean.B_hat()
-    print mean.Zstar()
-
-    ipdb.set_trace()
-
-    # test grad stuff
     mean.LRLdiag = Sr
     mean.LCL     = C**2
-    print mean.LRLdiag_Xhat_tens()
-    print mean.LRLdiag_Yhat()
-    print mean.Areml_grad()
-    print mean.beta_grad()
-    print mean.Xstar_beta_grad()
+
+    if 0:
+        # calculate stuff to see if it goes through
+        print mean.Ystar()
+        print mean.Yhat()
+        print mean.Xstar()
+        print mean.Xhat()
+        print mean.XstarT_dot(SP.randn(mean.N*mean.P,mean.n_fixed_effs))
+        print mean.Areml()
+        print mean.beta_hat()
+        Bhat =  mean.B_hat()
+        print mean.Zstar()
+
+        # test grad stuff
+        print mean.LRLdiag_Xhat_tens()
+        print mean.LRLdiag_Yhat()
+        print mean.Areml_grad()
+        print mean.beta_grad()
+        print mean.Xstar_beta_grad()
 
 
