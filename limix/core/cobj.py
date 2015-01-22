@@ -10,6 +10,10 @@ class cObject(object):
             setattr(self,'_cache_'+method_name,None)
             setattr(self,'_cached_'+method_name,False)
 
+    def fill_cache(self,method_name,value):
+        setattr(self,'_cache_'+method_name,value)
+        setattr(self,'_cached_'+method_name,True)
+
 def cached(method):
     """ this function is used as a decorator for caching """
     _cache_attr_name = '_cache_'+method.__name__
