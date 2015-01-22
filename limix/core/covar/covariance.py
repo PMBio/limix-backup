@@ -1,7 +1,11 @@
+import sys
+sys.path.insert(0,'./../../..')
+from limix.core.cobj import *
 import scipy as SP
+import scipy.linalg as LA
 import warnings
 
-class covariance:
+class covariance(cObject):
     """
     abstract super class for all implementations of covariance functions
     """
@@ -16,6 +20,7 @@ class covariance:
         """
         self.params = params
         self.params_have_changed=True
+        self.clear_cache('inv','chol','S','U','Sgrad','Ugrad')
 
     def setRandomParams(self):
         """
@@ -90,6 +95,47 @@ class covariance:
         self.setParams(params)
         RV = (C_R-C_L)/(2*h)
         return RV
-        
+
+    @cached
+    def chol(self):
+        return LA.cholesky(self.K()).T
             
+    @cached
+    def inv(self):
+        return LA.cho_solve((self.chol(),True),SP.eye(self.P)) 
+
+    @cached
+    def S(self):
+        RV,U = LA.eigh(self.K()) 
+        self.fill_cache('U',U)
+        return RV
+
+    @cached
+    def U(self):
+        S,RV = LA.eigh(self.K()) 
+        self.fill_cache('S',S)
+        return RV
+
+    def Sgrad(self,i):
+        Kgrad = self.Kgrad_param(i)
+        RV = (self.U()*SP.dot(Kgrad,self.U())).sum(0)
+        return RV
+
+    def Ugrad(self,i):
+        """
+        dv_p = (lambda_p I - A)^(+)*dA*U_p
+        dv_p = (lambda_p I - USUt)^(+)*dA*U_p
+        dv_p = (U * (lambda_p I - S) Ut)^(+) *dA*U_p
+        """
+        Kgrad = self.Kgrad_param(i)
+        RV = SP.zeros((self.P,self.P))
+        for p in range(self.P):
+            S1 = self.S()[p]-self.S()
+            I  = abs(S1)>1e-4
+            _U = self.U()[:,I]
+            _D = (S1[I]**(-1))[:,SP.newaxis]
+            pseudo = SP.dot(_U,_D*_U.T) 
+            RV[:,p] = SP.dot(pseudo,SP.dot(Kgrad,self.U()[:,p]))
+        return RV
+
 
