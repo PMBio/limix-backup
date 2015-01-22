@@ -1,10 +1,18 @@
 import sys
-sys.path.insert(0,'./../../..')
-sys.path.insert(0,'./../../../../../mksum/mtSet')
+
+try:
+    sys.path.insert(0,'./../../..')
+    sys.path.insert(0,'./../../../../../mksum/mtSet')
+    from mtSet.pycore.gp import gp2kronSum as gp2kronSumMtSet
+    import mtSet.pycore.mean as MEAN
+    mtSet_present = True
+except:
+    print "no mtSet found in path"
+    mtSet_present = False
+
 from limix.core.mean import mean
 from limix.core.gp import gp2kronSum as gp2kronSum
-from mtSet.pycore.gp import gp2kronSum as gp2kronSumMtSet
-import mtSet.pycore.mean as MEAN
+
 from limix.core.covar import freeform 
 import limix.core.optimize.optimize_bfgs as OPT
 
@@ -32,15 +40,21 @@ if __name__ == "__main__":
 
     # define mean term
     mu = mean(Y)
-    mu1 = MEAN.mean(Y)
+
     # add first fixed effect
     F = 1.*(SP.rand(N,2)<0.2); A = SP.eye(P)
+
+    # add second fixed effect
+    F2 = 1.*(SP.rand(N,3)<0.2); A2 = SP.ones((1,P))
+    
     mu.addFixedEffect(F=F,A=A)
-    mu1.addFixedEffect(F=F,A=A)
-    # add first fixed effect
-    F = 1.*(SP.rand(N,3)<0.2); A = SP.ones((1,P))
-    mu.addFixedEffect(F=F,A=A)
-    mu1.addFixedEffect(F=F,A=A)
+    mu.addFixedEffect(F=F2,A=A2)
+
+    if mtSet_present:
+        mu1 = MEAN.mean(Y)
+        mu1.addFixedEffect(F=F,A=A)
+        mu1.addFixedEffect(F=F2,A=A2)
+    
 
     # define covariance matrices
     Cg = freeform(P)
@@ -50,19 +64,17 @@ if __name__ == "__main__":
     
     ipdb.set_trace()
 
-    if 0:
+    if 1:
         # compare with mtSet implementation
         params = {}
         params['Cg']   = SP.randn(int(0.5*P*(P+1)))
         params['Cn']   = SP.randn(int(0.5*P*(P+1)))
-        params1 = copy.copy(params)
-        params1['mean'] = SP.zeros(mu1.getParams().shape[0])
+
 
         print "check gradient with gp2kronSum"
         gp = gp2kronSum(mu,Cg,Cn,XX)
-        gp1 = gp2kronSumMtSet(mu1,Cg1,Cn1,XX)
         gp.setParams(params)
-        gp1.setParams(params1)
+
         if 0:
             gp.set_reml(False)
 
@@ -70,10 +82,16 @@ if __name__ == "__main__":
         start = TIME.time()
         conv,info = OPT.opt_hyper(gp,params,factr=1e3)
         print 'Reml GP:', TIME.time()-start
+        
+        if mtSet_present:
+            params1 = copy.copy(params)
+            params1['mean'] = SP.zeros(mu1.getParams().shape[0])
+            gp1 = gp2kronSumMtSet(mu1,Cg1,Cn1,XX)
+            gp1.setParams(params1)
+            start = TIME.time()
+            conv1,info = OPT.opt_hyper(gp1,params1,factr=1e3)
+            print 'Old GP:', TIME.time()-start
 
-        start = TIME.time()
-        conv1,info = OPT.opt_hyper(gp1,params1,factr=1e3)
-        print 'Old GP:', TIME.time()-start
         print conv
 
         ipdb.set_trace()

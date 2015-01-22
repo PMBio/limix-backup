@@ -296,7 +296,7 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 
 		muint_t cumSumC = 0;
 
-		for(muint_t termC = 0; termC < A.size(); ++termC){
+		for(muint_t termC = 0; termC < A.size(); ++termC){//this does redundant computations, as the matrix is symmetric, change to start with termR instead
 			muint_t nW_AC = A[termC].rows();
 			muint_t nW_XC = X[termC].cols();
 			muint_t colsBlock = nW_AC * nW_XC;
@@ -344,11 +344,11 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 
 	mfloat_t nLL = 0.5 * ( R * C * (L2pi + log(sigma) + 1.0) + ldet);
 #ifdef returnW
-	covW = covW.inverse();
+	covW = covW.inverse();	//here is another inverse!
 	//std::cout << "covW.inverse() = " << covW<<std::endl;
 
 	muint_t cumSum = 0;
-	VectorXd F_vec = W_vec.array() * W_vec.array() /covW.diagonal().array() / sigma;
+	VectorXd F_vec = W_vec.array() * W_vec.array() /covW.diagonal().array() / sigma;//how to compute the inverse diagonal more efficiently?
 	for(muint_t term = 0; term < A.size();++term)
 	{
 		muint_t currSize = X[term].cols() * A[term].rows();

@@ -3,6 +3,8 @@ sys.path.insert(0,'./../../..')
 from limix.core.cobj import * 
 from limix.utils.preprocess import regressOut
 import scipy as SP
+import numpy as np
+		    
 import scipy.linalg as LA
 import copy
 import pdb
@@ -216,7 +218,9 @@ class mean(cObject):
 
     @cached
     def Areml(self):
-        return self.XstarT_dot(self.Xhat())
+        #A1 = self.XstarT_dot(self.Xhat())
+        A2 =  self.compute_XKX()
+        return A2
 
     @cached
     def Areml_chol(self):
@@ -279,6 +283,27 @@ class mean(cObject):
     ###############################################
     # Other getters with no caching, should not they have caching somehow?
     ###############################################
+
+    def compute_XKX(self):
+
+        n_weights1 = 0
+        
+        for term1 in xrange(self.n_terms):
+            n_weights1+=self.Astar()[term1].shape[0] * self.Fstar()[term1].shape[1]
+        cov_beta = SP.zeros((n_weights1,n_weights1))
+        n_weights1 = 0
+        for term1 in xrange(self.n_terms):
+            n_weights2 = n_weights1
+            for term2 in xrange(term1,self.n_terms):
+                block = compute_XK1X2(Y=self.Ystar(), D=self.D, X1=self.Fstar()[term1], X2=self.Fstar()[term2], A1=self.Astar()[term1], A2=self.Astar()[term2])
+                cov_beta[n_weights1:n_weights1 + self.Astar()[term1].shape[0] * self.Fstar()[term1].shape[1], n_weights2:n_weights2 + self.Astar()[term2].shape[0] * self.Fstar()[term2].shape[1]] = block
+                if term1!=term2:
+                    cov_beta[n_weights2:n_weights2 + self.Astar()[term2].shape[0] * self.Fstar()[term2].shape[1], n_weights1:n_weights1 + self.Astar()[term1].shape[0] * self.Fstar()[term1].shape[1]] = block.T
+    
+                n_weights2+=self.Astar()[term2].shape[0] * self.Fstar()[term2].shape[1]
+
+            n_weights1+=self.Astar()[term1].shape[0] * self.Fstar()[term1].shape[1]
+        return cov_beta
 
     def predict(self):
         """ predict the value of the fixed effect """
@@ -369,3 +394,48 @@ class mean(cObject):
                     'col': SP.kron(SP.ones((K,1)),SP.arange(L)[SP.newaxis,:]).T.ravel()} 
         for key in _update.keys():
             self.indicator[key] = SP.concatenate([self.indicator[key],_update[key]])
+
+def compute_XK1X2(Y, D, X1, X2, A1=None, A2=None):
+    #import ipdb; ipdb.set_trace()
+    R,C = Y.shape
+    if A1 is None:
+	    nW_A1 = Y.shape[1]			
+	    A1 = SP.eye(Y.shape[1])	#for now this creates A1 and A2
+    else:
+	    nW_A1 = A1.shape[0]
+
+    if A2 is None:
+	    nW_A2 = Y.shape[1]
+	    A2 = SP.eye(Y.shape[1])	#for now this creates A1 and A2
+    else:
+	    nW_A2 = A2.shape[0]
+			
+
+    nW_X1 = X1.shape[1]
+    rows_block = nW_A1 * nW_X1
+
+    if 0:#independentX2:
+	    nW_X2 = 1
+    else:
+	    nW_X2 = X2.shape[1]
+    cols_block = nW_A2 * nW_X2
+		
+    block = SP.zeros((rows_block,cols_block))
+
+    if R<C:
+
+	    for r in xrange(R):
+		    A1D = A1 * D[r:r+1,:]
+		    A1A2 = A1D.dot(A2.T)
+		    X1X2 = X1[r,:][:,SP.newaxis].dot(X2[r,:][SP.newaxis,:])
+		    block += SP.kron(A1A2,X1X2)
+			
+    else:
+	    for c in xrange(C):
+                X1D = X1 * D[:,c:c+1]
+                X1X2 = X1D.T.dot(X2)
+                A1A2 = np.outer(A1[:,c],A2[:,c])
+                block_ = SP.kron(A1A2,X1X2)
+                block += block_
+                
+    return block
