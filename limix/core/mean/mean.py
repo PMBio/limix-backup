@@ -97,6 +97,7 @@ class mean(cObject):
         self._REML_term = []
         self._n_terms = 0
         self._n_fixed_effs = 0
+        self._n_fixed_effs_REML = 0
         self.indicator = {'term':SP.array([]),
                             'row':SP.array([]),
                             'col':SP.array([])}
