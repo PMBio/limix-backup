@@ -80,7 +80,7 @@ class covariance(cObject):
         """
         initialize paramters to vector of zeros
         """
-        params = SP.zeros(self.n_params)
+        params = SP.zeros(self.getNumberParams())
         self.setParams(params)
 
     def Kgrad_param_num(self,i,h=1e-4):
