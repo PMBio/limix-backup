@@ -6,8 +6,7 @@
     <ProjectGuid>3c990e04-9f15-4aeb-9ce0-ce56452da73f</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>test_gp.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\..\..\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>tests</Name>

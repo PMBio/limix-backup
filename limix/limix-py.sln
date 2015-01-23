@@ -23,6 +23,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "modules", "modules\modules.
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "utils", "utils\utils.pyproj", "{2D1D829E-CAFF-45E0-9789-A54DBCCAC8A5}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "limix", "limix.pyproj", "{F7D69A21-B1F7-4D5F-9F1F-B38143006567}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,8 @@ Global
 		{ECF1C741-D697-4C2A-B04A-CD3661FB2206}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D1D829E-CAFF-45E0-9789-A54DBCCAC8A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D1D829E-CAFF-45E0-9789-A54DBCCAC8A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7D69A21-B1F7-4D5F-9F1F-B38143006567}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D69A21-B1F7-4D5F-9F1F-B38143006567}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

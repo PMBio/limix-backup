@@ -3,15 +3,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>2fbd6cfd-da5b-4b48-8f90-3627b49e3b91</ProjectGuid>
+    <ProjectGuid>f7d69a21-b1f7-4d5f-9f1f-b38143006567</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>
     </StartupFile>
-    <SearchPath>..\..\..\</SearchPath>
+    <SearchPath>..\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>covar</Name>
-    <RootNamespace>covar</RootNamespace>
+    <Name>limix</Name>
+    <RootNamespace>limix</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,10 +27,6 @@
     <PtvsTargetsFile>$(VSToolsPath)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="covariance.py" />
-    <Compile Include="freeform.py" />
-    <Compile Include="lowrank.py" />
-    <Compile Include="test.py" />
     <Compile Include="__init__.py" />
   </ItemGroup>
   <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />
