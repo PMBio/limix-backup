@@ -128,7 +128,7 @@ class mean(cObject):
             self.F.append(F)
             self.A.append(A)
             self.A_identity.append(A_identity)
-            self.REML_term.apend(REML)
+            self.REML_term.append(REML)
             # build B matrix and indicator
             self.B.append(SP.zeros((F.shape[1],A.shape[0])))
             self._n_terms+=1
