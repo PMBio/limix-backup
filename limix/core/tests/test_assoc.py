@@ -81,7 +81,7 @@ if __name__ == "__main__":
         gp = gp2kronSum(mu,Cg,Cn,XX)
         gp.setParams(params)
 
-        if 0:
+        if "ML" in sys.argv:
             gp.set_reml(False)#seems to be buggy. Does it ignore the mean?
 
         print "test optimization"
