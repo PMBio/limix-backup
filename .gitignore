@@ -28,6 +28,8 @@ build/
 *.meta
 *.obj
 *.pyc
+limix/*.pyc
+limix/*/*.pyc
 *.pch
 *.pdb
 *.pgc

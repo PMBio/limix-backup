@@ -106,6 +106,10 @@ class covariance(cObject):
         return LA.cho_solve((self.chol(),True),SP.eye(self.P)) 
 
     @cached
+    def logdet(self):
+        return 2*SP.log(SP.diag(self.chol())).sum()
+
+    @cached
     def S(self):
         RV,U = LA.eigh(self.K()) 
         self.fill_cache('U',U)
