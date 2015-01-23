@@ -7,8 +7,7 @@
     <ProjectHome>.</ProjectHome>
     <StartupFile>
     </StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\..\..\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>mean</Name>
