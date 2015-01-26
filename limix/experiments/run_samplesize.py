@@ -8,7 +8,7 @@ import os
 import matplotlib
 matplotlib.use('agg')
 
-import matplotlib.pylab as plt
+import matplotlib.pylab as pltfig = plt.figure()
 
 def run_experiments(dataset_name,seed):
     scipy.random.seed(seed)

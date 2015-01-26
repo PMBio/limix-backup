@@ -2,7 +2,6 @@ import sys
 import scipy 
 import pdb
 import h5py
-import simulator
 from utils import *
 
 import sys
@@ -12,6 +11,7 @@ import limix.core.covar.freeform as freeform
 import limix.core.gp.gp3kronSumApprox as gp3kronSumApprox
 import limix.core.optimize.optimize_bfgs as optimize_bfgs
 import limix.utils.utils
+from settings import *
 
 def opt_gp3kronSumApprox(Y,R1,R2):
     # optimizing
@@ -74,19 +74,30 @@ if __name__ == "__main__":
     scipy.random.seed(seed)
     
     if dataset_name=='arab':
-        fn = '/Users/rakitsch/Documents/Work/limix_demos/datasets/arab107/arab107.hdf5'
-        #fn = CFG['arab']['data']
+        fn = CFG['arab']['data']
         X,chrom,pos = load_arabidopsis(fn,debug=False)
         N = X.shape[0]
         I = scipy.eye(N)
         
         R1 = scipy.dot(X[:,chrom==3],X[:,chrom==3].T)
         R1 /= scipy.diag(R1).mean()
-        R1 += 1e-1*I
+        R1 += 1e-2*I
         
         R2 = scipy.dot(X[:,chrom!=3],X[:,chrom!=3].T)
         R2/= scipy.diag(R2).mean()
-        R2+= 1e-1*I
+        R2+= 1e-2*I
+    elif dataset_name=='NFBC':
+        f = h5py.File(CFG['nfbc']['data'],'r')
+        R2 = f['Kpop'][:1000][:,:1000]
+        I  = scipy.eye(R2.shape[0])
+        R2+= 1e-2*I
+        
+        chrom = f['chrom'][:]
+        X = f['X'][:1000][:,chrom==15]
+        R1 = scipy.dot(X,X.T)
+        R1/= scipy.diag(R1).mean()
+        R1+= 1e-2*I
+        f.close()
 
         
     # simulate trait-trait covariance matrices
@@ -95,9 +106,9 @@ if __name__ == "__main__":
     I  = scipy.eye(N)
     weights = scipy.random.rand(3)
     weights/= weights.sum()
-    C1 = weights[0]*sim_psd_matrix(N=4,n_dim=4,jitter=0.1)
-    C2 = weights[1]*sim_psd_matrix(N=4,n_dim=4,jitter=0.1)
-    C3 = weights[2]*sim_psd_matrix(N=4,n_dim=4,jitter=0.1)
+    C1 = weights[0]*sim_psd_matrix(N=P,n_dim=P,jitter=0.1)
+    C2 = weights[1]*sim_psd_matrix(N=P,n_dim=P,jitter=0.1)
+    C3 = weights[2]*sim_psd_matrix(N=P,n_dim=P,jitter=0.1)
 
     # simulate phenotypes
     Y1 = sim_kronecker(C1,R1)
@@ -118,7 +129,7 @@ if __name__ == "__main__":
     RV['TRUE_K3_eps1'] = {'LML':tmp['LML'],'LB':tmp['LB'], 'UB':tmp['UB'], 'Cr':tmp['C2'], 'Cg':tmp['C1'], 'Cn':tmp['C3']}
     
     # writing out
-    fn = 'out/%s_%d.hdf'%(dataset_name,seed)
+    fn = 'out/approximation/%s_%d.hdf'%(dataset_name,seed)
     f  = h5py.File(fn,'w')
     for key in RV.keys():
         group = f.create_group(key)
