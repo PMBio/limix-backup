@@ -121,14 +121,9 @@ class gp3kronSumApprox(GP):
         self._update_cache()
 
         start = TIME.time()
-        Rr = SP.dot(self.Xr,self.Xr.T)
         y  = SP.reshape(self.Y,(self.N*self.P), order='F') 
-
-        K  = SP.kron(self.Cr.K(),Rr)
-        K += SP.kron(self.Cg.K(),self.XX)
-        K += SP.kron(self.Cn.K(),SP.eye(self.N))
-
-        cholK = LA.cholesky(K)
+ 
+        cholK = LA.cholesky(self.K.K())
         Kiy   = LA.cho_solve((cholK,False),y)
 
         lml  = y.shape[0]*SP.log(2*SP.pi)
