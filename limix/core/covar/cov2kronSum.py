@@ -91,7 +91,9 @@ class cov2kronSum(covariance):
 
     def CstarGrad_n(self,i):
         RV = SP.dot(self.Cn.USi2grad(i).T,SP.dot(self.Cg.K(),self.Cn.USi2()))
-        RV+= RV.T
+        RV+= SP.dot(self.Cn.USi2().T,SP.dot(self.Cg.K(),self.Cn.USi2grad(i)))
+        #RV+= RV.T
+        return RV
 
     def S_CstarGrad_g(self,i):
         return dS_dti(self.CstarGrad_g(i),U=self.U_Cstar())
@@ -106,16 +108,16 @@ class cov2kronSum(covariance):
         return dU_dti(self.CstarGrad_n(i),U=self.U_Cstar(),S=self.S_Cstar())
 
     def LcGrad_g(self,i):
-        return SP.dot(self.U_CstarGrad_g().T,self.Cn.USi2().T) 
+        return SP.dot(self.U_CstarGrad_g(i).T,self.Cn.USi2().T) 
 
     def LcGrad_n(self,i):
-        RV  = SP.dot(self.U_CstarGrad_n().T,self.Cn.USi2().T) 
-        RV += SP.dot(self.U_Cstar().T,self.Cn.USi2grad().T) 
+        RV  = SP.dot(self.U_CstarGrad_n(i).T,self.Cn.USi2().T) 
+        RV += SP.dot(self.U_Cstar().T,self.Cn.USi2grad(i).T) 
         return RV
 
-    def Sgrad_g(self):
-        return SP.kron(self.S_CstarGrad_g(),self.Sr())
+    def Sgrad_g(self,i):
+        return SP.kron(self.S_CstarGrad_g(i),self.Sr())
 
-    def Sgrad_n(self):
-        return SP.kron(self.S_CstarGrad_n(),self.Sr())
+    def Sgrad_n(self,i):
+        return SP.kron(self.S_CstarGrad_n(i),self.Sr())
 

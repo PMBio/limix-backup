@@ -194,7 +194,7 @@ class GP(object):
         """ reset cache """
         self._covar_cache = None
 
-    def checkGradient(self,h=1e-6,verbose=True):
+    def checkGradient(self,h=1e-4,verbose=True):
         """ utility function to check the gradient of the gp """
         grad_an = self.LMLgrad()
         grad_num = {}
@@ -213,7 +213,7 @@ class GP(object):
                 e[i] = 0
             if verbose:
                 print '%s:'%key
-                print abs((grad_an[key]-grad_num[key])/grad_an[key])
+                print abs((grad_an[key]-grad_num[key]))
                 print ''
 
 
