@@ -6,6 +6,7 @@ from limix.core.covar import cov2kronSum
 import scipy as SP
 import scipy.linalg as LA
 import scipy.sparse.linalg as SLA
+import scipy.stats.mstats as MST
 import warnings
 from covariance import covariance
 
@@ -117,20 +118,13 @@ class cov3kronSum(cov2kronSum):
         self.fill_cache('S_GGstar',S)
         return U
 
-    @cached
-    def logdet_up(self):
+    def logdet_bound(self,bound='up'):
         Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        idx_r = Sr.argsort()[::-1]
+        if bound=='up':
+            idx_r = Sr.argsort()[::-1]
+        elif bound=='low':
+            idx_r = Sr.argsort()
         idx = self.S().argsort()
-        RV = SP.log(Sr[idx_r]+self.S()[idx]).sum()
-        RV+= SP.sum(SP.log(self.Cn.S()))*self.N
-        return RV
-
-    @cached
-    def logdet_low(self):
-        Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        idx = self.S().argsort()
-        idx_r = Sr.argsort()
         RV = SP.log(Sr[idx_r]+self.S()[idx]).sum()
         RV+= SP.sum(SP.log(self.Cn.S()))*self.N
         return RV
@@ -141,7 +135,7 @@ class cov3kronSum(cov2kronSum):
         for n in range(n_perms):
             idx_r = SP.random.permutation(self.N*self.P)
             RV.append(SP.log(Sr[idx_r]+self.S()).sum())
-        RV = SP.median(RV)
+        RV = MST.gmean(RV)
         RV+= SP.sum(SP.log(self.Cn.S()))*self.N
         return RV
         
@@ -185,28 +179,37 @@ class cov3kronSum(cov2kronSum):
     def S_CrStarGrad_n(self,i):
         return dS_dti(self.CrStarGrad_n(i),U=self.U_CrStar())
 
-    def logdet_up_grad_r(self,i):
+    def logdet_bound_grad_r(self,i,bound='up'):
         Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
         SrGrad = SP.kron(self.S_CrStarGrad_r(i),self.S_GGstar())
-        idx_r = Sr.argsort()[::-1]
+        if bound=='up':
+            idx_r = Sr.argsort()[::-1]
+        elif bound=='low':
+            idx_r = Sr.argsort()
         idx = self.S().argsort()
         RV = (SrGrad[idx_r]/(Sr[idx_r]+self.S()[idx])).sum()
         return RV
 
-    def logdet_up_grad_g(self,i):
+    def logdet_bound_grad_g(self,i,bound='up'):
         Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
         SrGrad = SP.kron(self.S_CrStarGrad_g(i),self.S_GGstar())
         Sgrad  = self.Sgrad_g(i)
-        idx_r = Sr.argsort()[::-1]
+        if bound=='up':
+            idx_r = Sr.argsort()[::-1]
+        elif bound=='low':
+            idx_r = Sr.argsort()
         idx = self.S().argsort()
         RV = ((SrGrad[idx_r]+Sgrad[idx])/(Sr[idx_r]+self.S()[idx])).sum()
         return RV
 
-    def logdet_up_grad_n(self,i):
+    def logdet_bound_grad_n(self,i,bound='up'):
         Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
         SrGrad = SP.kron(self.S_CrStarGrad_n(i),self.S_GGstar())
         Sgrad  = self.Sgrad_n(i)
-        idx_r = Sr.argsort()[::-1]
+        if bound=='up':
+            idx_r = Sr.argsort()[::-1]
+        elif bound=='low':
+            idx_r = Sr.argsort()
         idx = self.S().argsort()
         RV = ((SrGrad[idx_r]+Sgrad[idx])/(Sr[idx_r]+self.S()[idx])).sum()
         RV+= SP.sum(self.Cn.Sgrad(i)/self.Cn.S())*self.N
