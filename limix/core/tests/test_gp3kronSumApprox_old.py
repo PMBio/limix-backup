@@ -3,7 +3,7 @@ import scipy as SP
 import scipy.linalg as LA
 sys.path.insert(0,'/Users/casale/Documents/limix/limix')
 from limix.core.covar import freeform
-from limix.core.gp.gp3kronSumApprox import gp3kronSumApprox 
+from limix.core.gp.gp3kronSumApprox_old import gp3kronSumApprox 
 import limix.core.optimize.optimize_bfgs as OPT
 sys.path.append('./../../../build/release.darwin/interfaces/python/limix/modules')
 import varianceDecomposition as VAR
@@ -50,28 +50,12 @@ if __name__=='__main__':
     Cg = freeform(P)
     Cn = freeform(P)
     gp = gp3kronSumApprox(Y=Y,Cr=Cr,Cg=Cg,Cn=Cn,XX=XX,GG=GG) 
-    n_rips = 10
-    for rip in range(n_rips):
+    Cr.setRandomParams()
+    Cg.setRandomParams()
+    Cn.setRandomParams()
+    params = gp.getParams()
+    gp.setParams(params)
 
-        Cr.setRandomParams()
-        Cg.setRandomParams()
-        Cn.setRandomParams()
-        params = gp.getParams()
-        gp.setParams(params)
-
-        conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-        print conv
-
-        print 'Cr'
-        print Cr.K()
-        print 'Cg'
-        print Cg.K()
-        print 'Cn'
-        print Cn.K()
-
-    ipdb.set_trace()
-
-    gp.setBound(0)
     conv,info = OPT.opt_hyper(gp,params,factr=1e3)
     print conv
 
@@ -82,7 +66,7 @@ if __name__=='__main__':
     print 'Cn'
     print Cn.K()
 
-    gp.setBound(1)
+    gp.setBound('low')
     conv,info = OPT.opt_hyper(gp,params,factr=1e3)
     print conv
 

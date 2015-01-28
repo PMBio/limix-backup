@@ -114,6 +114,9 @@ class cov3kronSum(covariance):
                 self.clear_cache_idxs('Cstar',(i,j))
                 self.clear_cache_idxs('U_Cstar',(i,j))
                 self.clear_cache_idxs('S_Cstar',(i,j))
+        self.clear_cache('logdet_bound_1')
+        self.clear_cache('logdet_bound_2')
+        self.clear_cache('logdet_bound_3')
 
     def getParams(self):
         return SP.concatenate([self.C[0].getParams(),self.C[1].getParams(),self.C[2].getParams()])
@@ -137,9 +140,9 @@ class cov3kronSum(covariance):
         compute K x
         """
         X = SP.reshape(x,(self.N,self.P),order='F')
-        B = SP.dot(self.R1,SP.dot(X,self.C1.K()))
-        B+= SP.dot(self.R2,SP.dot(X,self.C2.K()))
-        B+= SP.dot(X,self.C3.K())
+        B = SP.dot(self.R[0],SP.dot(X,self.C[0].K()))
+        B+= SP.dot(self.R[1],SP.dot(X,self.C[1].K()))
+        B+= SP.dot(X,self.C[2].K())
         b = SP.reshape(B,(self.N*self.P),order='F')
         return b
 
@@ -152,36 +155,7 @@ class cov3kronSum(covariance):
         RV = SP.reshape(x,(self.N,self.P),order='F')
         return RV
 
-    def logdet_bound(self,j):
-        S = []
-        for i in range(3):
-            if i==j: continue
-            S.append(SP.kron(self.S_Cstar(i,j),self.S_Rstar(i,j)))
-        idx0 = S[0].argsort()[::-1]
-        idx1 = S[1].argsort()
-        RV = SP.log(S[0][idx0]+S[1][idx1]+1).sum()
-        RV+= SP.sum(SP.log(self.C[j].S()))*self.N
-        if j!=2:
-            RV+= SP.sum(SP.log(self.S_R(j)))*self.P
-        return RV
-
-    def logdet_bound_grad(self,j,k,p):
-        S = []
-        Sgrad = []
-        for i in range(3):
-            if i==j: continue
-            S.append(SP.kron(self.S_Cstar(i,j),self.S_Rstar(i,j)))
-            if k==j:
-                Sgrad.append(SP.kron(self.S_CstarGrad(i,j,k,p),self.S_Rstar(i,j)))
-        if k!=j:
-            Sgrad = SP.kron(self.S_CstarGrad(k,j,k,p),self.S_Rstar(k,j))
-        idx0 = S[0].argsort()[::-1]
-        idx1 = S[1].argsort()
-        if k==j: 
-            RV = ((Sgrad[0][idx0]+S[1][idx1])/(S[0][idx0]+S[1][idx1]+1)).sum()
-            RV+= SP.sum(SP.log(self.C[j].S()))*self.N
-        return RV
-
+    @cached
     def logdet_bound_1(self):
         S2 = SP.kron(self.S_Cstar(1,0),self.S_Rstar(1,0))
         S3 = SP.kron(self.S_Cstar(2,0),self.S_Rstar(2,0))
@@ -221,6 +195,7 @@ class cov3kronSum(covariance):
         RV = (S3grad[idx3]/(S2[idx2]+S3[idx3]+1)).sum()
         return RV
 
+    @cached
     def logdet_bound_2(self):
         S1 = SP.kron(self.S_Cstar(0,1),self.S_Rstar(0,1))
         S3 = SP.kron(self.S_Cstar(2,1),self.S_Rstar(2,1))
@@ -260,6 +235,7 @@ class cov3kronSum(covariance):
         RV = (S3grad[idx3]/(S1[idx1]+S3[idx3]+1)).sum()
         return RV
 
+    @cached
     def logdet_bound_3(self):
         S1 = SP.kron(self.S_Cstar(0,2),self.S_Rstar(0,2))
         S2 = SP.kron(self.S_Cstar(1,2),self.S_Rstar(1,2))
@@ -296,6 +272,30 @@ class cov3kronSum(covariance):
         idx2 = S2.argsort()
         RV = ((S1grad[idx1]+S2grad[idx2])/(S1[idx1]+S2[idx2]+1)).sum()
         RV+= SP.sum(self.C[2].Sgrad(p)/self.C[2].S())*self.N
+        return RV
+
+    def logdet_bound(self,bound=2):
+        if bound==0:      RV = self.logdet_bound_1()
+        elif bound==1:    RV = self.logdet_bound_2()
+        elif bound==2:    RV = self.logdet_bound_3()
+        return RV
+
+    def logdet_bound_grad_C1(self,p,bound=2):
+        if bound==0:      RV = self.logdet_bound_1_grad_C1(p)
+        elif bound==1:    RV = self.logdet_bound_2_grad_C1(p)
+        elif bound==2:    RV = self.logdet_bound_3_grad_C1(p)
+        return RV
+
+    def logdet_bound_grad_C2(self,p,bound=2):
+        if bound==0:      RV = self.logdet_bound_1_grad_C2(p)
+        elif bound==1:    RV = self.logdet_bound_2_grad_C2(p)
+        elif bound==2:    RV = self.logdet_bound_3_grad_C2(p)
+        return RV
+
+    def logdet_bound_grad_C3(self,p,bound=2):
+        if bound==0:      RV = self.logdet_bound_1_grad_C3(p)
+        elif bound==1:    RV = self.logdet_bound_2_grad_C3(p)
+        elif bound==2:    RV = self.logdet_bound_3_grad_C3(p)
         return RV
 
     def numGrad_C1(self,f,h=1e-6):
