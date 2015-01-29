@@ -1,7 +1,9 @@
 import numpy as np
 import scipy.linalg as la
+import scipy.stats as stats
+from limix.core.cobj import *
 
-class LmmKronecker(object):
+class LmmKronecker(cObject):
     pass
 
     def __init__(self, gp=None):
@@ -10,22 +12,56 @@ class LmmKronecker(object):
         forcefullrank   : if True, then the code always computes K and runs cubically
 					        (False)
         '''
-        self.gp = gp
-        self.index_snpterm = self.gp.mean.n_terms
-        self._LL_0 = gp.LML()
+        self._gp = gp
         
-    def LL_snps(self, snps, Asnps=None):
+        gp.set_reml(False)#currently only ML is supported
+        self._LL_0 = self._gp.LML()
+        #self.clear_cache('LL_snps','test_snps')
+    
+    def addFixedEffect(self,F,A=None):
+        self._gp.mean.addFixedEffect(F=F, A=A)
+        self._LL_0 = self._gp.LML()
+        #self.clear_cache('LL_snps','test_snps')
+        pass
+
+    def LL_snps(self, snps, Asnps=None, inter=None):
+        """
+        compute log likelihood for SNPs
+        """
+        LL_snps = np.zeros(snps.shape[1])
+        LL_snps_0 = np.zeros(snps.shape[1])
+        #index_snpterm = self.gp.mean.n_terms
+        if inter is None:
+
+            LL_snps_0[:] = self._LL_0
+            for i_snp in xrange(snps.shape[1]):
+                self._gp.mean.addFixedEffect(F=snps[:,i_snp:i_snp+1], A=Asnps)
+                LL_snps[i_snp] = self._gp.LML()
+                self._gp.mean.removeFixedEffect()
+        else:
+            for i_snp in xrange(snps.shape[1]):
+                self._gp.mean.addFixedEffect(F=snps[:,i_snp:i_snp+1], A=Asnps)
+                LL_snps_0[i_snp] = self._gp.LML()
+                self._gp.mean.addFixedEffect(F=snps[:,i_snp:i_snp+1]*inter, A=Asnps)
+                LL_snps[i_snp] = self._gp.LML()
+                self._gp.mean.removeFixedEffect()
+                self._gp.mean.removeFixedEffect()
+        return LL_snps,LL_snps_0
+    
+    
+    def test_snps(self, snps, Asnps=None):
         """
         test snps for association
         """
-        #TODO: find a way to evaluate multiple SNPs at once
-        nLL_snps = np.ones(snps.shape[1])
-        for i_snp in xrange(snps.shape[1]):
+        if Asnps is None:
+            dof = self._gp.mean.P
+        else:
+            dof = Asnps.shape[0]
+        LL_snps, LL_snps_0 = self.LL_snps(snps=snps,Asnps=Asnps)
+        LRT = 2.0 * (LL_snps_0 - LL_snps)
+        pv = stats.chi2.sf(LRT,dof)
+        return pv,LL_snps,LL_snps_0
 
-            self.gp.mean.addFixedEffect(F=snps[:,i_snp:i_snp+1], A=Asnps,index=self.index_snpterm)
-            nLL_snps[i_snp] = self.gp.LML()
-
-        return nLL_snps
 
 def compute_D(S_C, S_R, delta=1.0):
 	return 1.0 / (delta + np.outer(S_C, S_R))

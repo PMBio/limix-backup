@@ -102,9 +102,9 @@ class mean(cObject):
                             'row':SP.array([]),
                             'col':SP.array([])}
         self.clear_cache('Fstar','Astar','Xstar','Xhat',
-                         'Areml','Areml_chol','Areml_inv','beta_hat','B_hat',
+                         'Areml','Areml_eigh','Areml_chol','Areml_inv','beta_hat','B_hat',
                          'LRLdiag_Xhat_tens','Areml_grad',
-                         'beta_grad','Xstar_beta_grad')
+                         'beta_grad','Xstar_beta_grad','Zstar','DLZ')
 
     def addFixedEffect(self,F=None,A=None, REML=True, index=None):
         """
@@ -125,7 +125,7 @@ class mean(cObject):
 
         assert F.shape[0]==self.N, "F dimension mismatch"
         assert A.shape[1]==self.P, "A dimension mismatch"
-        if index is None or index>=self.n_terms:
+        if index is None or index==self.n_terms:
             self.F.append(F)
             self.A.append(A)
             self.A_identity.append(A_identity)
@@ -134,6 +134,8 @@ class mean(cObject):
             self.B.append(SP.zeros((F.shape[1],A.shape[0])))
             self._n_terms+=1
             self._update_indicator(F.shape[1],A.shape[0])
+        elif index >self.n_terms:
+            raise Exception("index exceeds max index of terms")
         else:
             self._n_fixed_effs-=self.F[index].shape[1]*self.A[index].shape[0]
             if self.REML_term[index]:
@@ -149,10 +151,43 @@ class mean(cObject):
         if REML:
             self._n_fixed_effs_REML+=F.shape[1]*A.shape[0]
         self.clear_cache('Fstar','Astar','Xstar','Xhat',
-                         'Areml','Areml_chol','Areml_inv','beta_hat','B_hat',
+                         'Areml','Areml_eigh','Areml_chol','Areml_inv','beta_hat','B_hat',
                          'LRLdiag_Xhat_tens','Areml_grad',
-                         'beta_grad','Xstar_beta_grad')
+                         'beta_grad','Xstar_beta_grad','Zstar','DLZ')
 
+    def removeFixedEffect(self, index=None):
+        """
+        set sample and trait designs
+        F:      NxK sample design
+        A:      LxP sample design
+        REML:   REML for this term?
+        index:  index of which fixed effect to replace. If None, remove last term.
+        """
+        if self._n_terms==0:
+            pass
+        if index is None or index==(self._n_terms-1):
+            
+            self._n_terms-=1
+            F = self._F.pop() #= self.F[:-1]
+            A = self._A.pop() #= self.A[:-1]
+            self._A_identity.pop() #= self.A_identity[:-1]
+            REML_term = self._REML_term.pop()# = self.REML_term[:-1]
+            self._B.pop()# = self.B[:-1]
+            self._n_fixed_effs-=F.shape[1]*A.shape[0]
+            if REML_term:
+                self._n_fixed_effs_REML-=F.shape[1]*A.shape[0]
+            
+            pass
+        elif index >= self.n_terms:
+            raise Exception("index exceeds max index of terms")
+        else:
+            raise NotImplementedError("currently only last term can be removed")
+            pass
+        self._rebuild_indicator()
+        self.clear_cache('Fstar','Astar','Xstar','Xhat',
+                         'Areml','Areml_eigh','Areml_chol','Areml_inv','beta_hat','B_hat',
+                         'LRLdiag_Xhat_tens','Areml_grad',
+                         'beta_grad','Xstar_beta_grad','Zstar','DLZ')
 
     @Y.setter
     def Y(self,value):
@@ -160,7 +195,7 @@ class mean(cObject):
         self._N,self._P = value.shape
         self._Y = value
         self.clear_cache('Ystar1','Ystar','Yhat','LRLdiag_Yhat',
-                         'beta_grad','Xstar_beta_grad')
+                         'beta_grad','Xstar_beta_grad','Zstar','DLZ')
 
     @Lr.setter
     def Lr(self,value):
@@ -169,11 +204,11 @@ class mean(cObject):
         assert value.shape[1]==self._N, 'dimension mismatch'
         self._Lr = value
         self.clear_cache('Fstar','Ystar1','Ystar','Yhat','Xstar','Xhat',
-                         'Areml','Areml_chol','Areml_inv','beta_hat','B_hat',
+                         'Areml','Areml_eigh','Areml_chol','Areml_inv','beta_hat','B_hat',
                          'LRLdiag_Xhat_tens','LRLdiag_Yhat','Areml_grad',
                          'beta_grad','Xstar_beta_grad',
                          'LRLdiag_Xhat_tens','LRLdiag_Yhat','Areml_grad',
-                         'beta_grad','Xstar_beta_grad')
+                         'beta_grad','Xstar_beta_grad','Zstar','DLZ')
 
     @Lc.setter
     def Lc(self,value):
@@ -182,18 +217,18 @@ class mean(cObject):
         assert value.shape[1]==self._P, 'Lc dimension mismatch'
         self._Lc = value
         self.clear_cache('Astar','Ystar','Yhat','Xstar','Xhat',
-                         'Areml','Areml_chol','Areml_inv','beta_hat','B_hat',
+                         'Areml','Areml_eigh','Areml_chol','Areml_inv','beta_hat','B_hat',
                          'LRLdiag_Xhat_tens','LRLdiag_Yhat','Areml_grad',
-                         'beta_grad','Xstar_beta_grad')
+                         'beta_grad','Xstar_beta_grad','Zstar','DLZ')
 
     @d.setter
     def d(self,value):
         """ set anisotropic scaling """
         assert value.shape[0]==self._P*self._N, 'd dimension mismatch'
         self._d = value
-        self.clear_cache('Yhat','Xhat','Areml','Areml_chol','Areml_inv','beta_hat','B_hat',
+        self.clear_cache('Yhat','Xhat','Areml','Areml_eigh','Areml_chol','Areml_inv','beta_hat','B_hat',
                          'LRLdiag_Xhat_tens','LRLdiag_Yhat','Areml_grad',
-                         'beta_grad','Xstar_beta_grad')
+                         'beta_grad','Xstar_beta_grad','Zstar','DLZ')
 
     @LRLdiag.setter
     def LRLdiag(self,value):
@@ -275,7 +310,9 @@ class mean(cObject):
     def beta_hat(self):
         #XKY = self.XstarT_dot(SP.reshape(self.Yhat(),(self.Y.size,1),order = 'F'))
         XKY = self.compute_XKY(M=self.Yhat())
-        beta_hat = SP.dot(self.Areml_inv(), XKY)
+
+        beta_hat = self.Areml_solve(XKY)
+            #SP.dot(self.Areml_inv(), XKY)
         return beta_hat
 
     @cached
@@ -324,9 +361,44 @@ class mean(cObject):
             ip += self.B[term_i].size
         return RV
 
+    @cached
+    def Zstar(self):
+        """ predict the value of the fixed effect """
+        RV = self.Ystar().copy()
+        for term_i in range(self.n_terms):
+            RV-=SP.dot(self.Fstar()[term_i],SP.dot(self.B_hat()[term_i],self.Astar()[term_i]))
+        self.clear_cache('DLZ')
+        return RV
+
+    @cached 
+    def Areml_eigh(self):
+        """compute the eigenvalue decomposition of Astar"""
+        s,U = LA.eigh(self.Areml(),lower=True)
+        i_pos = (s>1e-10)
+        s = s[i_pos]
+        U = U[:,i_pos]
+        return s,U
+
+    @cached
+    def DLZ(self):
+        return self.Zstar()*SP.reshape(self.D,(self.N,self.P), order='F')
+
     ###############################################
     # Other getters with no caching, should not they have caching somehow?
     ###############################################
+
+    def Areml_solve(self, b):
+        try:
+            res = LA.cho_solve((self.Areml_chol(),True),b)
+        except LA.LinAlgError:
+            
+            s,U = self.Areml_eigh()
+            res = U.T.dot(b)
+            res /= s[:,SP.newaxis]
+            res = U.dot(res)
+            
+        return res
+
 
     def compute_XKY(self, M=None):
         if M is None:
@@ -389,13 +461,6 @@ class mean(cObject):
             pass
         else:
             RV = SP.dot(self.Xstar().T,M)
-        return RV
-
-    def Zstar(self):
-        """ predict the value of the fixed effect """
-        RV = self.Ystar().copy()
-        for term_i in range(self.n_terms):
-            RV-=SP.dot(self.Fstar()[term_i],SP.dot(self.B_hat()[term_i],self.Astar()[term_i]))
         return RV
 
     def getResiduals(self):
