@@ -101,8 +101,8 @@ if __name__ == "__main__":
     if plot:
         import pylab as pl
         pl.ion()
-        pl.figure(); pl.hist(pv,50)
-        pl.figure(); pl.hist(pv0,50)
+        #pl.figure(); pl.hist(pv,50)
+        #pl.figure(); pl.hist(pv0,50)
         i_pv = pv.argsort()
         i_pv0 = pv0.argsort()
         pl.figure()
