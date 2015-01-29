@@ -159,8 +159,8 @@ class gp2kronSum(GP):
 
             """ pheno """
             self.mean.d = self.cache['d']
-            self.cache['LZ']  = self.mean.Zstar()
-            self.cache['DLZ'] = self.cache['D']*self.cache['LZ']
+            #self.cache['LZ']  = self.mean.Zstar()
+            #self.cache['DLZ'] = self.cache['D']*self.cache['LZ']
 
             smartSum(self.time,'cache_colSVDpRot',TIME.time()-start)
             smartSum(self.count,'cache_colSVDpRot',1)
@@ -187,7 +187,7 @@ class gp2kronSum(GP):
         lml += SP.sum(SP.log(self.cache['Sc2']))*self.N + SP.log(self.cache['s']).sum()
 
         #3. quatratic term
-        lml += (self.cache['LZ']*self.cache['DLZ']).sum()
+        lml += (self.mean.Zstar()*self.mean.DLZ()).sum()
 
         if self.reml and self.mean.n_fixed_effs>0:
             #4. reml term
@@ -229,7 +229,7 @@ class gp2kronSum(GP):
             n_params = self.Cn.getNumberParams()
 
         # some stuff to cache
-        LRLdiag_DLZ = LRLdiag[:,SP.newaxis]*self.cache['DLZ']
+        LRLdiag_DLZ = LRLdiag[:,SP.newaxis]*self.mean.DLZ()
         self.mean.LRLdiag = LRLdiag
 
         # fill gradient vector
@@ -254,7 +254,7 @@ class gp2kronSum(GP):
             start = TIME.time()
             KDLZ  = SP.dot(LRLdiag_DLZ,LCL.T)
             KDLZ += self.mean.Xstar_beta_grad()
-            RV[i] -= (self.cache['DLZ']*KDLZ).sum()
+            RV[i] -= (self.mean.DLZ()*KDLZ).sum()
 
 
             smartSum(self.time,'lmlgrad_quadform',TIME.time()-start)

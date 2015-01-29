@@ -26,6 +26,7 @@
     <PtvsTargetsFile>$(VSToolsPath)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="test_assoc.py" />
     <Compile Include="test_gp.py" />
     <Compile Include="test_mean.py" />
   </ItemGroup>
