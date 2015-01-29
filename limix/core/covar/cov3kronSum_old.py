@@ -2,7 +2,6 @@ import sys
 sys.path.insert(0,'./../../..')
 from limix.core.cobj import *
 from limix.core.utils.eigen import *
-from limix.core.covar import cov2kronSum
 import scipy as SP
 import scipy.linalg as LA
 import scipy.sparse.linalg as SLA
@@ -12,63 +11,138 @@ from covariance import covariance
 
 import pdb
 
-# should be a child class of combinator
-class cov3kronSum(cov2kronSum):
+class cov3kronSum(covariance):
 
-    def __init__(self,Cr=None,Cg=None,Cn=None,GG=None,XX=None):
+    def __init__(self,C1=None,C2=None,C3=None,R1=None,R2=None):
         """
         initialization
         """
-        assert Cr is not None, 'specify Cr'
-        assert Cg is not None, 'specify Cg'
-        assert Cn is not None, 'specify Cn'
-        assert GG is not None, 'specify GG'
-        assert XX is not None, 'specify XX'
-        self.Cr = Cr
-        self.Cg = Cg
-        self.Cn = Cn
-        self.P  = Cg.P
-        self.setXX(XX)
-        self.setGG(GG)
+        assert C1 is not None, 'specify C1'
+        assert C2 is not None, 'specify C2'
+        assert C3 is not None, 'specify C3'
+        assert R1 is not None, 'specify R1'
+        assert R2 is not None, 'specify R2'
+        self.C = [C1,C2,C3]
+        self.P = C1.P
+        self.setR(R1,R2)
         self._calcNumberParams()
         self._initParams()
 
+    @cached_idxs
+    def Cstar(self,i,j):
+        return SP.dot(self.C[j].USi2().T,SP.dot(self.C[i].K(),self.C[j].USi2()))
+
+    @cached_idxs
+    def U_Cstar(self,i,j):
+        S,RV = LA.eigh(self.Cstar(i,j))
+        self.fill_cache_idxs('S_Cstar',S,(i,j))
+        return RV
+
+    @cached_idxs
+    def S_Cstar(self,i,j):
+        RV,U = LA.eigh(self.Cstar(i,j))
+        self.fill_cache_idxs('U_Cstar',U,(i,j))
+        return RV
+
+    @cached_idxs
+    def S_R(self,i):
+        RV,U = LA.eigh(self.R[i])
+        self.fill_cache_idxs('U_R',U,i)
+        return RV 
+
+    @cached_idxs
+    def U_R(self,i):
+        S,RV = LA.eigh(self.R[i])
+        self.fill_cache_idxs('S_R',S,i)
+        return RV 
+
+    @cached_idxs
+    def USi2_R(self,i):
+        return self.U_R(i)*(self.S_R(i)**(-0.5))
+
+    @cached_idxs
+    def Rstar(self,i,j):
+        if i==2:    RV = SP.diag(1./self.S_R(j))
+        elif j==2:  RV = self.R[i]
+        else:       RV = SP.dot(self.USi2_R(j).T,SP.dot(self.R[i],self.USi2_R(j)))
+        return RV 
+
+    @cached_idxs
+    def S_Rstar(self,i,j):
+        if i==2:    RV = 1./self.S_R(j)
+        if j==2:    RV = self.S_R(i)
+        else:       RV = LA.eigh(self.Rstar(i,j),eigvals_only=True)
+        return RV
+
+    def CstarGrad(self,i,j,k,p):
+        """
+        Derivarive of Cstar_i_j with respect to the p-th param of cov k
+        """
+        if k==i:
+            RV = SP.dot(self.C[j].USi2().T,SP.dot(self.C[i].Kgrad_param(p),self.C[j].USi2()))
+        elif k==j:
+            RV = SP.dot(self.C[j].USi2grad(p).T,SP.dot(self.C[i].K(),self.C[j].USi2()))
+            RV+= SP.dot(self.C[j].USi2().T,SP.dot(self.C[i].K(),self.C[j].USi2grad(p)))
+        else:
+            RV = None
+        return RV
+
+    def S_CstarGrad(self,i,j,k,p):
+        return dS_dti(self.CstarGrad(i,j,k,p),U=self.U_Cstar(i,j))
+
+    def U_CstarGrad(self,i,j,k,p):
+        return dU_dti(self.CstarGrad(i,j,k,p),U=self.U_Cstar(i,j),S=self.S_Cstar(i,j))
+
+    def setR(self,R1,R2):
+        self.N = R1.shape[0]
+        self.R = [R1,R2]
+        for i in range(3):
+            self.clear_cache_idxs('S_R',i)
+            self.clear_cache_idxs('U_R',i)
+            self.clear_cache_idxs('USi2_R',i)
+        for i in range(3):
+            for j in range(3):
+                self.clear_cache_idxs('Rstar',(i,j))
+                self.clear_cache_idxs('S_Rstar',(i,j))
+
     def setParams(self,params):
-        self.Cr.setParams(params[:self.Cr.getNumberParams()])
-        self.Cg.setParams(params[self.Cr.getNumberParams():self.Cr.getNumberParams()+self.Cg.getNumberParams()])
-        self.Cn.setParams(params[self.Cr.getNumberParams()+self.Cg.getNumberParams():])
-        self.clear_cache('Cstar','S_Cstar','U_Cstar','S','D','Lc','CrStar','S_CrStar','logdet','logdet_up','logdet_low','logdet_rnd')
+        self.C[0].setParams(params[:self.C[0].getNumberParams()])
+        self.C[1].setParams(params[self.C[0].getNumberParams():self.C[0].getNumberParams()+self.C[1].getNumberParams()])
+        self.C[2].setParams(params[self.C[0].getNumberParams()+self.C[1].getNumberParams():])
+        for i in range(3):
+            for j in range(3):
+                self.clear_cache_idxs('Cstar',(i,j))
+                self.clear_cache_idxs('U_Cstar',(i,j))
+                self.clear_cache_idxs('S_Cstar',(i,j))
+        self.clear_cache('logdet_bound_1')
+        self.clear_cache('logdet_bound_2')
+        self.clear_cache('logdet_bound_3')
 
     def getParams(self):
-        return SP.concatenate([Cr.getParams(),Cg.getParams(),Cn.getParams()])
+        return SP.concatenate([self.C[0].getParams(),self.C[1].getParams(),self.C[2].getParams()])
 
     def _calcNumberParams(self):
-        self.n_params = self.Cr.getNumberParams()+self.Cg.getNumberParams()+self.Cn.getNumberParams()
-
-    def setXX(self,XX):
-        self.XX = XX
-        self.N  = XX.shape[0]
-        self.clear_cache('Sr','Lr','GGstar','S_GGstar','U_GGstar','S','D','logdet','logdet_up','logdet_low','logdet_rnd')
-
-    def setGG(self,GG):
-        self.GG = GG
-        self.clear_cache('GGstar','S_GGstar','U_GGstar','logdet','logdet_up','logdet_low')
+        self.n_params = self.C[0].getNumberParams()+self.C[1].getNumberParams()+self.C[2].getNumberParams()
 
     def K(self):
-        assert self.XX.shape[0]*self.Cr.K().shape[0]<5000, 'dimension is too high'
-        RV = SP.kron(self.Cr.K(),self.GG)
-        RV+= SP.kron(self.Cg.K(),self.XX)
-        RV+= SP.kron(self.Cn.K(),SP.eye(self.N))
+        assert self.P*self.N<5000, 'dimension is too high'
+        RV = SP.kron(self.C[0].K(),self.R[0])
+        RV+= SP.kron(self.C[1].K(),self.R[1])
+        RV+= SP.kron(self.C[2].K(),SP.eye(self.N))
         return RV
+
+    def logdet(self):
+        S,U = LA.eigh(self.K())
+        return SP.log(S).sum()
 
     def _Kx(self,x):
         """
         compute K x
         """
         X = SP.reshape(x,(self.N,self.P),order='F')
-        B = SP.dot(self.GG,SP.dot(X,self.Cr.K()))
-        B+= SP.dot(self.XX,SP.dot(X,self.Cg.K()))
-        B+= SP.dot(X,self.Cn.K())
+        B = SP.dot(self.R[0],SP.dot(X,self.C[0].K()))
+        B+= SP.dot(self.R[1],SP.dot(X,self.C[1].K()))
+        B+= SP.dot(X,self.C[2].K())
         b = SP.reshape(B,(self.N*self.P),order='F')
         return b
 
@@ -82,193 +156,202 @@ class cov3kronSum(cov2kronSum):
         return RV
 
     @cached
-    def logdet(self):
-        S,U = LA.eigh(self.K())
-        return SP.log(S).sum()
+    def logdet_bound_1(self):
+        S2 = SP.kron(self.S_Cstar(1,0),self.S_Rstar(1,0))
+        S3 = SP.kron(self.S_Cstar(2,0),self.S_Rstar(2,0))
+        idx2 = S2.argsort()[::-1]
+        idx3 = S3.argsort()
+        RV = SP.log(S2[idx2]+S3[idx3]+1).sum()
+        RV+= SP.sum(SP.log(self.C[0].S()))*self.N
+        RV+= SP.sum(SP.log(self.S_R(0)))*self.P
+        return RV
+
+    def logdet_bound_1_grad_C1(self,p):
+        S2 = SP.kron(self.S_Cstar(1,0),self.S_Rstar(1,0))
+        S3 = SP.kron(self.S_Cstar(2,0),self.S_Rstar(2,0))
+        S2grad = SP.kron(self.S_CstarGrad(1,0,0,p),self.S_Rstar(1,0))
+        S3grad = SP.kron(self.S_CstarGrad(2,0,0,p),self.S_Rstar(2,0))
+        idx2 = S2.argsort()[::-1]
+        idx3 = S3.argsort()
+        RV = ((S2grad[idx2]+S3grad[idx3])/(S2[idx2]+S3[idx3]+1)).sum()
+        RV+= SP.sum(self.C[0].Sgrad(p)/self.C[0].S())*self.N
+        return RV
+
+    def logdet_bound_1_grad_C2(self,p):
+        S2 = SP.kron(self.S_Cstar(1,0),self.S_Rstar(1,0))
+        S3 = SP.kron(self.S_Cstar(2,0),self.S_Rstar(2,0))
+        S2grad = SP.kron(self.S_CstarGrad(1,0,1,p),self.S_Rstar(1,0))
+        idx2 = S2.argsort()[::-1]
+        idx3 = S3.argsort()
+        RV = (S2grad[idx2]/(S2[idx2]+S3[idx3]+1)).sum()
+        return RV
+
+    def logdet_bound_1_grad_C3(self,p):
+        S2 = SP.kron(self.S_Cstar(1,0),self.S_Rstar(1,0))
+        S3 = SP.kron(self.S_Cstar(2,0),self.S_Rstar(2,0))
+        S3grad = SP.kron(self.S_CstarGrad(2,0,2,p),self.S_Rstar(2,0))
+        idx2 = S2.argsort()[::-1]
+        idx3 = S3.argsort()
+        RV = (S3grad[idx3]/(S2[idx2]+S3[idx3]+1)).sum()
+        return RV
 
     @cached
-    def CrStar(self):
-        return SP.dot(self.Lc(),SP.dot(self.Cr.K(),self.Lc().T))
+    def logdet_bound_2(self):
+        S1 = SP.kron(self.S_Cstar(0,1),self.S_Rstar(0,1))
+        S3 = SP.kron(self.S_Cstar(2,1),self.S_Rstar(2,1))
+        idx1 = S1.argsort()[::-1]
+        idx3 = S3.argsort()
+        RV = SP.log(S1[idx1]+S3[idx3]+1).sum()
+        RV+= SP.sum(SP.log(self.C[1].S()))*self.N
+        RV+= SP.sum(SP.log(self.S_R(1)))*self.P
+        return RV
+
+    def logdet_bound_2_grad_C1(self,p):
+        S1 = SP.kron(self.S_Cstar(0,1),self.S_Rstar(0,1))
+        S3 = SP.kron(self.S_Cstar(2,1),self.S_Rstar(2,1))
+        S1grad = SP.kron(self.S_CstarGrad(0,1,0,p),self.S_Rstar(0,1))
+        idx1 = S1.argsort()[::-1]
+        idx3 = S3.argsort()
+        RV = (S1grad[idx1]/(S1[idx1]+S3[idx3]+1)).sum()
+        return RV
+
+    def logdet_bound_2_grad_C2(self,p):
+        S1 = SP.kron(self.S_Cstar(0,1),self.S_Rstar(0,1))
+        S3 = SP.kron(self.S_Cstar(2,1),self.S_Rstar(2,1))
+        S1grad = SP.kron(self.S_CstarGrad(0,1,1,p),self.S_Rstar(0,1))
+        S3grad = SP.kron(self.S_CstarGrad(2,1,1,p),self.S_Rstar(2,1))
+        idx1 = S1.argsort()[::-1]
+        idx3 = S3.argsort()
+        RV = ((S1grad[idx1]+S3grad[idx3])/(S1[idx1]+S3[idx3]+1)).sum()
+        RV+= SP.sum(self.C[1].Sgrad(p)/self.C[1].S())*self.N
+        return RV
+
+    def logdet_bound_2_grad_C3(self,p):
+        S1 = SP.kron(self.S_Cstar(0,1),self.S_Rstar(0,1))
+        S3 = SP.kron(self.S_Cstar(2,1),self.S_Rstar(2,1))
+        S3grad = SP.kron(self.S_CstarGrad(2,1,2,p),self.S_Rstar(2,1))
+        idx1 = S1.argsort()[::-1]
+        idx3 = S3.argsort()
+        RV = (S3grad[idx3]/(S1[idx1]+S3[idx3]+1)).sum()
+        return RV
 
     @cached
-    def S_CrStar(self):
-        S,U = LA.eigh(self.CrStar())
-        self.fill_cache('U_CrStar',U)
-        return S
-
-    @cached
-    def U_CrStar(self):
-        S,U = LA.eigh(self.CrStar())
-        self.fill_cache('S_CrStar',S)
-        return U
-
-    @cached
-    def GGstar(self):
-        return SP.dot(self.Lr(),SP.dot(self.GG,self.Lr().T))
-
-    @cached
-    def S_GGstar(self):
-        S,U = LA.eigh(self.GGstar())
-        self.fill_cache('U_GGstar',U)
-        return S
-
-    @cached
-    def U_GGstar(self):
-        S,U = LA.eigh(self.GGstar())
-        self.fill_cache('S_GGstar',S)
-        return U
-
-    def logdet_bound(self,bound='up'):
-        Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        if bound=='up':
-            idx_r = Sr.argsort()[::-1]
-        elif bound=='low':
-            idx_r = Sr.argsort()
-        idx = self.S().argsort()
-        RV = SP.log(Sr[idx_r]+self.S()[idx]).sum()
-        RV+= SP.sum(SP.log(self.Cn.S()))*self.N
+    def logdet_bound_3(self):
+        S1 = SP.kron(self.S_Cstar(0,2),self.S_Rstar(0,2))
+        S2 = SP.kron(self.S_Cstar(1,2),self.S_Rstar(1,2))
+        idx1 = S1.argsort()[::-1]
+        idx2 = S2.argsort()
+        RV = SP.log(S1[idx1]+S2[idx2]+1).sum()
+        RV+= SP.sum(SP.log(self.C[2].S()))*self.N
         return RV
 
-    def logdet_rnd(self,n_perms=1):
-        Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        RV = []
-        for n in range(n_perms):
-            idx_r = SP.random.permutation(self.N*self.P)
-            RV.append(SP.log(Sr[idx_r]+self.S()).sum())
-        RV = MST.gmean(RV)
-        RV+= SP.sum(SP.log(self.Cn.S()))*self.N
-        return RV
-        
-    def logdet_up_debug(self):
-        assert self.XX.shape[0]*self.Cr.K().shape[0]<5000, 'dimension is too high'
-        A = SP.kron(self.Cr.K(),self.GG)
-        B = SP.kron(self.Cg.K(),self.XX)
-        B+= SP.kron(self.Cn.K(),SP.eye(self.XX.shape[0]))
-        Sa,Ua = LA.eigh(A)
-        Sb,Ub = LA.eigh(B)
-        return SP.log(Sa+Sb[::-1]).sum()
-
-    def logdet_low_debug(self):
-        assert self.XX.shape[0]*self.Cr.K().shape[0]<5000, 'dimension is too high'
-        A = SP.kron(self.Cr.K(),self.GG)
-        B = SP.kron(self.Cg.K(),self.XX)
-        B+= SP.kron(self.Cn.K(),SP.eye(self.XX.shape[0]))
-        Sa,Ua = LA.eigh(A)
-        Sb,Ub = LA.eigh(B)
-        return SP.log(Sa+Sb).sum()
-
-    def CrStarGrad_r(self,i):
-        return SP.dot(self.Lc(),SP.dot(self.Cr.Kgrad_param(i),self.Lc().T))
-
-    def CrStarGrad_g(self,i):
-        RV = SP.dot(self.LcGrad_g(i),SP.dot(self.Cr.K(),self.Lc().T))
-        RV+= RV.T 
-        return RV
-        
-    def CrStarGrad_n(self,i):
-        RV = SP.dot(self.LcGrad_n(i),SP.dot(self.Cr.K(),self.Lc().T))
-        RV+= RV.T 
+    def logdet_bound_3_grad_C1(self,p):
+        S1 = SP.kron(self.S_Cstar(0,2),self.S_Rstar(0,2))
+        S2 = SP.kron(self.S_Cstar(1,2),self.S_Rstar(1,2))
+        S1grad = SP.kron(self.S_CstarGrad(0,2,0,p),self.S_Rstar(0,2))
+        idx1 = S1.argsort()[::-1]
+        idx2 = S2.argsort()
+        RV = (S1grad[idx1]/(S1[idx1]+S2[idx2]+1)).sum()
         return RV
 
-    def S_CrStarGrad_r(self,i):
-        return dS_dti(self.CrStarGrad_r(i),U=self.U_CrStar())
-
-    def S_CrStarGrad_g(self,i):
-        return dS_dti(self.CrStarGrad_g(i),U=self.U_CrStar())
-
-    def S_CrStarGrad_n(self,i):
-        return dS_dti(self.CrStarGrad_n(i),U=self.U_CrStar())
-
-    def logdet_bound_grad_r(self,i,bound='up'):
-        Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        SrGrad = SP.kron(self.S_CrStarGrad_r(i),self.S_GGstar())
-        if bound=='up':
-            idx_r = Sr.argsort()[::-1]
-        elif bound=='low':
-            idx_r = Sr.argsort()
-        idx = self.S().argsort()
-        RV = (SrGrad[idx_r]/(Sr[idx_r]+self.S()[idx])).sum()
+    def logdet_bound_3_grad_C2(self,p):
+        S1 = SP.kron(self.S_Cstar(0,2),self.S_Rstar(0,2))
+        S2 = SP.kron(self.S_Cstar(1,2),self.S_Rstar(1,2))
+        S2grad = SP.kron(self.S_CstarGrad(1,2,1,p),self.S_Rstar(1,2))
+        idx1 = S1.argsort()[::-1]
+        idx2 = S2.argsort()
+        RV = (S2grad[idx2]/(S1[idx1]+S2[idx2]+1)).sum()
         return RV
 
-    def logdet_bound_grad_g(self,i,bound='up'):
-        Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        SrGrad = SP.kron(self.S_CrStarGrad_g(i),self.S_GGstar())
-        Sgrad  = self.Sgrad_g(i)
-        if bound=='up':
-            idx_r = Sr.argsort()[::-1]
-        elif bound=='low':
-            idx_r = Sr.argsort()
-        idx = self.S().argsort()
-        RV = ((SrGrad[idx_r]+Sgrad[idx])/(Sr[idx_r]+self.S()[idx])).sum()
+    def logdet_bound_3_grad_C3(self,p):
+        S1 = SP.kron(self.S_Cstar(0,2),self.S_Rstar(0,2))
+        S2 = SP.kron(self.S_Cstar(1,2),self.S_Rstar(1,2))
+        S1grad = SP.kron(self.S_CstarGrad(0,2,2,p),self.S_Rstar(0,2))
+        S2grad = SP.kron(self.S_CstarGrad(1,2,2,p),self.S_Rstar(1,2))
+        idx1 = S1.argsort()[::-1]
+        idx2 = S2.argsort()
+        RV = ((S1grad[idx1]+S2grad[idx2])/(S1[idx1]+S2[idx2]+1)).sum()
+        RV+= SP.sum(self.C[2].Sgrad(p)/self.C[2].S())*self.N
         return RV
 
-    def logdet_bound_grad_n(self,i,bound='up'):
-        Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        SrGrad = SP.kron(self.S_CrStarGrad_n(i),self.S_GGstar())
-        Sgrad  = self.Sgrad_n(i)
-        if bound=='up':
-            idx_r = Sr.argsort()[::-1]
-        elif bound=='low':
-            idx_r = Sr.argsort()
-        idx = self.S().argsort()
-        RV = ((SrGrad[idx_r]+Sgrad[idx])/(Sr[idx_r]+self.S()[idx])).sum()
-        RV+= SP.sum(self.Cn.Sgrad(i)/self.Cn.S())*self.N
+    def logdet_bound(self,bound=2):
+        if bound==0:      RV = self.logdet_bound_1()
+        elif bound==1:    RV = self.logdet_bound_2()
+        elif bound==2:    RV = self.logdet_bound_3()
         return RV
 
-    def numGrad_r(self,f,h=1e-4):
-        params_r  = self.Cr.getParams().copy()
-        params_g  = self.Cg.getParams().copy()
-        params_n  = self.Cn.getParams().copy()
-        params    = params_r.copy()
+    def logdet_bound_grad_C1(self,p,bound=2):
+        if bound==0:      RV = self.logdet_bound_1_grad_C1(p)
+        elif bound==1:    RV = self.logdet_bound_2_grad_C1(p)
+        elif bound==2:    RV = self.logdet_bound_3_grad_C1(p)
+        return RV
+
+    def logdet_bound_grad_C2(self,p,bound=2):
+        if bound==0:      RV = self.logdet_bound_1_grad_C2(p)
+        elif bound==1:    RV = self.logdet_bound_2_grad_C2(p)
+        elif bound==2:    RV = self.logdet_bound_3_grad_C2(p)
+        return RV
+
+    def logdet_bound_grad_C3(self,p,bound=2):
+        if bound==0:      RV = self.logdet_bound_1_grad_C3(p)
+        elif bound==1:    RV = self.logdet_bound_2_grad_C3(p)
+        elif bound==2:    RV = self.logdet_bound_3_grad_C3(p)
+        return RV
+
+    def numGrad_C1(self,f,h=1e-6):
+        params1  = self.C[0].getParams().copy()
+        params2  = self.C[1].getParams().copy()
+        params3  = self.C[2].getParams().copy()
+        params    = params1.copy()
         RV = []
         for i in range(params.shape[0]):
-            params[i] = params_r[i]+h 
-            _params = SP.concatenate([params,params_g,params_n])
+            params[i] = params1[i]+h
+            _params = SP.concatenate([params,params2,params3])
             self.setParams(_params)
             fR = f()
-            params[i] = params_r[i]-h 
-            _params = SP.concatenate([params,params_g,params_n])
+            params[i] = params1[i]-h
+            _params = SP.concatenate([params,params2,params3])
             self.setParams(_params)
             fL = f()
-            params[i] = params_r[i]
+            params[i] = params1[i]
             RV.append((fR-fL)/(2*h))
         return SP.array(RV)
 
-    def numGrad_g(self,f,h=1e-4):
-        params_r  = self.Cr.getParams().copy()
-        params_g  = self.Cg.getParams().copy()
-        params_n  = self.Cn.getParams().copy()
-        params    = params_g.copy()
+    def numGrad_C2(self,f,h=1e-6):
+        params1  = self.C[0].getParams().copy()
+        params2  = self.C[1].getParams().copy()
+        params3  = self.C[2].getParams().copy()
+        params    = params2.copy()
         RV = []
         for i in range(params.shape[0]):
-            params[i] = params_g[i]+h 
-            _params = SP.concatenate([params_r,params,params_n])
+            params[i] = params2[i]+h
+            _params = SP.concatenate([params1,params,params3])
             self.setParams(_params)
             fR = f()
-            params[i] = params_g[i]-h 
-            _params = SP.concatenate([params_r,params,params_n])
+            params[i] = params2[i]-h
+            _params = SP.concatenate([params1,params,params3])
             self.setParams(_params)
             fL = f()
-            params[i] = params_g[i]
+            params[i] = params2[i]
             RV.append((fR-fL)/(2*h))
         return SP.array(RV)
 
-    def numGrad_n(self,f,h=1e-4):
-        params_r  = self.Cr.getParams().copy()
-        params_g  = self.Cg.getParams().copy()
-        params_n  = self.Cn.getParams().copy()
-        params    = params_n.copy()
+    def numGrad_C3(self,f,h=1e-6):
+        params1  = self.C[0].getParams().copy()
+        params2  = self.C[1].getParams().copy()
+        params3  = self.C[2].getParams().copy()
+        params    = params3.copy()
         RV = []
         for i in range(params.shape[0]):
-            params[i] = params_n[i]+h 
-            _params = SP.concatenate([params_r,params_g,params])
+            params[i] = params3[i]+h
+            _params = SP.concatenate([params1,params2,params])
             self.setParams(_params)
             fR = f()
-            params[i] = params_n[i]-h 
-            _params = SP.concatenate([params_r,params_g,params])
+            params[i] = params3[i]-h
+            _params = SP.concatenate([params1,params2,params])
             self.setParams(_params)
             fL = f()
-            params[i] = params_n[i]
+            params[i] = params3[i]
             RV.append((fR-fL)/(2*h))
         return SP.array(RV)
 

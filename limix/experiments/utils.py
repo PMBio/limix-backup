@@ -19,6 +19,22 @@ def sim_psd_matrix(X=None,N=None,n_dim=None,jitter=1e-3):
  
     return K
 
+def sim_psd_matrix(X=None,N=None,n_dim=None,jitter=1e-3):
+    """
+    simulate positive definite kernel
+    """
+    if X==None:
+        X = scipy.random.randn(N,n_dim)
+    else:
+        N = X.shape[0]
+        n_dim = X.shape[1]
+
+    K = scipy.dot(X,X.T)
+    K/= scipy.diag(K).mean()
+    K+= jitter*scipy.eye(N)
+
+    return K
+
 def sim_kronecker(C,R):
     S_c,U_c = scipy.linalg.eigh(C+1E-6*scipy.eye(C.shape[0]))
     S_r,U_r = scipy.linalg.eigh(R+1E-6*scipy.eye(R.shape[0]))
