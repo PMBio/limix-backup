@@ -9,6 +9,8 @@ import scipy.stats.mstats as MST
 import warnings
 from covariance import covariance
 
+from scipy.optimize import fmin_l_bfgs_b as optimize
+
 import pdb
 
 # should be a child class of combinator
@@ -162,6 +164,12 @@ class cov3kronSum(covariance):
     def C3_grad_n(self,i):
         return self.Cn.Kgrad_param(i) 
 
+    def C3_grad_a(self):
+        return self.C1.K()
+
+    def C3_grad_b(self):
+        return self.C2.K()
+
     def S_C3_grad_1(self,i):
         return dS_dti(self.C3_grad_1(i),U=self.U_C3())
 
@@ -171,6 +179,12 @@ class cov3kronSum(covariance):
     def S_C3_grad_n(self,i):
         return dS_dti(self.C3_grad_n(i),U=self.U_C3())
 
+    def S_C3_grad_a(self):
+        return dS_dti(self.C3_grad_a(),U=self.U_C3())
+
+    def S_C3_grad_b(self):
+        return dS_dti(self.C3_grad_b(),U=self.U_C3())
+
     def U_C3_grad_1(self,i):
         return dU_dti(self.C3_grad_1(i),U=self.U_C3(),S=self.S_C3())
 
@@ -179,6 +193,12 @@ class cov3kronSum(covariance):
 
     def U_C3_grad_n(self,i):
         return dU_dti(self.C3_grad_n(i),U=self.U_C3(),S=self.S_C3())
+
+    def U_C3_grad_a(self):
+        return dU_dti(self.C3_grad_a(),U=self.U_C3(),S=self.S_C3())
+
+    def U_C3_grad_b(self):
+        return dU_dti(self.C3_grad_b(),U=self.U_C3(),S=self.S_C3())
 
     def USi2_C3_grad_1(self,i):
         Si2grad = -0.5*self.S_C3()**(-1.5)*self.S_C3_grad_1(i)
@@ -191,6 +211,14 @@ class cov3kronSum(covariance):
     def USi2_C3_grad_n(self,i):
         Si2grad = -0.5*self.S_C3()**(-1.5)*self.S_C3_grad_n(i)
         return self.U_C3_grad_n(i)*(self.S_C3()**(-0.5)) + self.U_C3()*Si2grad
+
+    def USi2_C3_grad_a(self):
+        Si2grad = -0.5*self.S_C3()**(-1.5)*self.S_C3_grad_a()
+        return self.U_C3_grad_a()*(self.S_C3()**(-0.5)) + self.U_C3()*Si2grad
+
+    def USi2_C3_grad_b(self):
+        Si2grad = -0.5*self.S_C3()**(-1.5)*self.S_C3_grad_b()
+        return self.U_C3_grad_b()*(self.S_C3()**(-0.5)) + self.U_C3()*Si2grad
 
     ###########################
     # C1star
@@ -228,6 +256,16 @@ class cov3kronSum(covariance):
         RV+= RV.T
         return RV
 
+    def C1star_grad_a(self):
+        RV = SP.dot(self.USi2_C3_grad_a().T,SP.dot(self.C1.K(),self.USi2_C3()))
+        RV+= RV.T
+        return RV
+
+    def C1star_grad_b(self):
+        RV = SP.dot(self.USi2_C3_grad_b().T,SP.dot(self.C1.K(),self.USi2_C3()))
+        RV+= RV.T
+        return RV
+
     def S_C1star_grad_1(self,i):
         return dS_dti(self.C1star_grad_1(i),U=self.U_C1star())
 
@@ -236,6 +274,12 @@ class cov3kronSum(covariance):
 
     def S_C1star_grad_n(self,i):
         return dS_dti(self.C1star_grad_n(i),U=self.U_C1star())
+
+    def S_C1star_grad_a(self):
+        return dS_dti(self.C1star_grad_a(),U=self.U_C1star())
+
+    def S_C1star_grad_b(self):
+        return dS_dti(self.C1star_grad_b(),U=self.U_C1star())
 
     ###########################
     # C2star
@@ -273,6 +317,16 @@ class cov3kronSum(covariance):
         RV+= RV.T
         return RV
 
+    def C2star_grad_a(self):
+        RV = SP.dot(self.USi2_C3_grad_a().T,SP.dot(self.C2.K(),self.USi2_C3()))
+        RV+= RV.T
+        return RV
+
+    def C2star_grad_b(self):
+        RV = SP.dot(self.USi2_C3_grad_b().T,SP.dot(self.C2.K(),self.USi2_C3()))
+        RV+= RV.T
+        return RV
+
     def S_C2star_grad_1(self,i):
         return dS_dti(self.C2star_grad_1(i),U=self.U_C2star())
 
@@ -281,6 +335,12 @@ class cov3kronSum(covariance):
 
     def S_C2star_grad_n(self,i):
         return dS_dti(self.C2star_grad_n(i),U=self.U_C2star())
+
+    def S_C2star_grad_a(self):
+        return dS_dti(self.C2star_grad_a(),U=self.U_C2star())
+
+    def S_C2star_grad_b(self):
+        return dS_dti(self.C2star_grad_b(),U=self.U_C2star())
 
     ###########################
     # Bound
@@ -335,6 +395,32 @@ class cov3kronSum(covariance):
         RV+= (self.S_C3_grad_n(i)/self.S_C3()).sum()*self.N
         return RV
 
+    def logdet_bound_grad_a(self):
+        S1 = SP.kron(self.S_C1star(),self.S_R1()-self.a)
+        S2 = SP.kron(self.S_C2star(),self.S_R2()-self.b)
+        S1grad = SP.kron(self.S_C1star_grad_a(),self.S_R1()-self.a)
+        S1grad+= SP.kron(self.S_C1star(),-SP.ones(self.N))
+        S2grad = SP.kron(self.S_C2star_grad_a(),self.S_R2()-self.b)
+        idx1 = SP.argsort(S1)
+        idx2 = SP.argsort(S2)
+        assert (S1[idx1]+S2[idx2]+1).min()>1e-4, 'invalid values of a and b'
+        RV = ((S1grad[idx1][::-1]+S2grad[idx2])/(S1[idx1][::-1]+S2[idx2]+1)).sum()
+        RV+= (self.S_C3_grad_a()/self.S_C3()).sum()*self.N
+        return RV
+
+    def logdet_bound_grad_b(self):
+        S1 = SP.kron(self.S_C1star(),self.S_R1()-self.a)
+        S2 = SP.kron(self.S_C2star(),self.S_R2()-self.b)
+        S1grad = SP.kron(self.S_C1star_grad_b(),self.S_R1()-self.a)
+        S2grad = SP.kron(self.S_C2star_grad_b(),self.S_R2()-self.b)
+        S2grad+= SP.kron(self.S_C2star(),-SP.ones(self.N))
+        idx1 = SP.argsort(S1)
+        idx2 = SP.argsort(S2)
+        assert (S1[idx1]+S2[idx2]+1).min()>1e-4, 'invalid values of a and b'
+        RV = ((S1grad[idx1][::-1]+S2grad[idx2])/(S1[idx1][::-1]+S2[idx2]+1)).sum()
+        RV+= (self.S_C3_grad_b()/self.S_C3()).sum()*self.N
+        return RV
+
     def optimizeAB(self,values=None,n=None):
         """ Minimize the upper bound with respect to a and b """
         if n is None:
@@ -342,22 +428,36 @@ class cov3kronSum(covariance):
         if values is None:
             values = SP.linspace(0,1,n)
         ld_min = SP.inf
-        #A = SP.zeros((n,n))
+        A = SP.zeros((n,n))
         for ai in range(n):
             for bi in range(n):
                 self.setAB(values[ai],values[bi])
                 value = self.logdet_bound() 
-                #A[ai,bi] = value
+                A[ai,bi] = value
                 if value<ld_min:
                     ld_min = value
                     a_best = values[ai]
                     b_best = values[bi]
-        #import pylab as PL
-        #PL.ion()
-        #A[A==SP.inf] = 0
-        #PL.imshow(A)
-        #PL.colorbar()
+        import pylab as PL
+        PL.ion()
+        A[A==SP.inf] = 0
+        PL.imshow(A)
+        PL.colorbar()
         self.setAB(a_best,b_best)
+
+    def optimizeABgrad(self):
+        def f(x):
+            self.setAB(x[0],x[1])
+            rv = self.logdet_bound()
+            rvGrad = SP.array([self.logdet_bound_grad_a(),self.logdet_bound_grad_b()])
+            return rv,rvGrad
+        x0 = SP.zeros(2)
+        f(x0) 
+        bounds = [(0,1e-2), (0,1e-2)]
+        x,fmin,info = optimize(f, x0=x0, bounds=bounds)
+        print x
+        pdb.set_trace()
+
 
     def numGrad_1(self,f,h=1e-6):
         params_1  = self.C1.getParams().copy()
@@ -415,4 +515,24 @@ class cov3kronSum(covariance):
             params[i] = params_n[i]
             RV.append((fR-fL)/(2*h))
         return SP.array(RV)
+
+    def numGrad_a(self,f,h=1e-6):
+        a = self.a
+        self.setAB(a+h,self.b)
+        fR = f()
+        self.setAB(a-h,self.b)
+        fL = f()
+        RV = (fR-fL)/(2*h)
+        self.setAB(a,self.b)
+        return RV
+
+    def numGrad_b(self,f,h=1e-6):
+        b = self.b
+        self.setAB(self.a,b+h)
+        fR = f()
+        self.setAB(self.a,b-h)
+        fL = f()
+        RV = (fR-fL)/(2*h)
+        self.setAB(self.a,b)
+        return RV
 

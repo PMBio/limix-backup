@@ -7,7 +7,7 @@ class freeform(covariance):
     """
     freeform covariance function
     """
-    def __init__(self,P):
+    def __init__(self,P,jitter=1e-4):
         """
         initialization
         """
@@ -15,6 +15,10 @@ class freeform(covariance):
         self.L = SP.zeros((self.P,self.P))
         self.Lgrad = SP.zeros((self.P,self.P))
         self.zeros = SP.zeros(self.n_params)
+        self.set_jitter(jitter)
+
+    def set_jitter(self,value):
+        self.jitter = value
 
     def setCovariance(self,cov):
         """
@@ -29,7 +33,7 @@ class freeform(covariance):
         evaluates the kernel for given hyperparameters theta
         """
         self._updateL()
-        RV = SP.dot(self.L,self.L.T)
+        RV = SP.dot(self.L,self.L.T)+self.jitter*SP.eye(self.P)
         return RV
      
     def Kgrad_param(self,i):

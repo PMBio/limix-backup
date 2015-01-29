@@ -3,7 +3,7 @@ import scipy as SP
 import scipy.linalg as LA
 sys.path.insert(0,'/Users/casale/Documents/limix/limix')
 from limix.core.covar import freeform
-from limix.core.gp.gp3kronSumApprox_old import gp3kronSumApprox 
+from limix.core.gp.gp3kronSumApprox import gp3kronSumApprox 
 import limix.core.optimize.optimize_bfgs as OPT
 sys.path.append('./../../../build/release.darwin/interfaces/python/limix/modules')
 import varianceDecomposition as VAR
@@ -46,36 +46,48 @@ if __name__=='__main__':
     GG/= GG.diagonal().mean()
     GG+= 1e-4*SP.eye(GG.shape[0])
 
-    Cr = freeform(P)
-    Cg = freeform(P)
+    C1 = freeform(P)
+    C2 = freeform(P)
     Cn = freeform(P)
-    gp = gp3kronSumApprox(Y=Y,Cr=Cr,Cg=Cg,Cn=Cn,XX=XX,GG=GG) 
-    Cr.setRandomParams()
-    Cg.setRandomParams()
-    Cn.setRandomParams()
+    gp = gp3kronSumApprox(Y=Y,C1=C1,C2=C2,Cn=Cn,R1=GG,R2=XX) 
+
+    if 0:
+        Kinit = SP.cov(Y.T)/3 
+        C1.setCovariance(Kinit)
+        C2.setCovariance(Kinit)
+        Cn.setCovariance(Kinit)
+    else:
+        C1.setRandomParams()
+        C2.setRandomParams()
+        Cn.setRandomParams()
     params = gp.getParams()
     gp.setParams(params)
 
-    conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-    print conv
+    if 1:
+        gp.K.optimizeAB(n=100)
+        print 'a:', gp.K.a
+        print 'b:', gp.K.b
+        gp.K.optimizeABgrad()
 
-    print 'Cr'
-    print Cr.K()
-    print 'Cg'
-    print Cg.K()
-    print 'Cn'
-    print Cn.K()
+    for i in range(10):
 
-    gp.setBound('low')
-    conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-    print conv
+        conv,info = OPT.opt_hyper(gp,params,factr=1e-3)
+        print conv
 
-    print 'Cr'
-    print Cr.K()
-    print 'Cg'
-    print Cg.K()
-    print 'Cn'
-    print Cn.K()
+        print 'C1'
+        print C1.K()
+        print 'C2'
+        print C2.K()
+        print 'Cn'
+        print Cn.K()
 
-    ipdb.set_trace()
+        ipdb.set_trace()
+        print 'before a and b opt:', gp.LML()
+        gp.K.optimizeAB(n=100)
+        print 'after a and b opt:', gp.LML()
+        print 'a:', gp.K.a
+        print 'b:', gp.K.b
+        params = gp.getParams()
+
+
 

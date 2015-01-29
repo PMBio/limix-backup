@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0,'./../../..')
 from gp_base import GP
-from limix.core.covar.cov3kronSum_old import cov3kronSum
+from limix.core.covar.cov3kronSum import cov3kronSum
 import pdb
 import numpy as NP
 import scipy as SP
@@ -13,13 +13,13 @@ import copy
 
 class gp3kronSumApprox(GP):
  
-    def __init__(self,Y=None,Cr=None,Cg=None,Cn=None,XX=None,GG=None,tol=1E-3,bound='up'):
+    def __init__(self,Y=None,C1=None,C2=None,Cn=None,R2=None,R1=None,tol=1E-3):
         """
         Y:      Phenotype matrix
-        Cr:     LIMIX trait-to-trait covariance for region contribution
-        Cg:     LIMIX trait-to-trait covariance for genetic contribution
+        C1:     LIMIX trait-to-trait covariance for region contribution
+        C2:     LIMIX trait-to-trait covariance for genetic contribution
         Cn:     LIMIX trait-to-trait covariance for noise
-        XX:     Matrix for fixed sample-to-sample covariance function
+        R2:     Matrix for fixed sample-to-sample covariance function
         """
 
         # time
@@ -34,25 +34,21 @@ class gp3kronSumApprox(GP):
 
         # opt
         self.tol = tol
-        self.bound = bound
         
         # covars
-        self.K  = cov3kronSum(Cr=Cr,Cg=Cg,Cn=Cn,GG=GG,XX=XX)
+        self.K  = cov3kronSum(C1=C1,C2=C2,Cn=Cn,R1=R1,R2=R2)
 
         #init cache and params
         self.cache = {} 
         self.params = None
 
-    def setBound(self,value):
-        self.bound = value
-        
     def getParams(self):
         """
         get hper parameters
         """
         params = {}
-        params['Cr'] = self.K.Cr.getParams()
-        params['Cg'] = self.K.Cg.getParams()
+        params['C1'] = self.K.C1.getParams()
+        params['C2'] = self.K.C2.getParams()
         params['Cn'] = self.K.Cn.getParams()
         return params
 
@@ -67,29 +63,30 @@ class gp3kronSumApprox(GP):
         """
         update parameters
         """
-        params = SP.concatenate([self.params['Cr'],self.params['Cg'],self.params['Cn']])
+        params = SP.concatenate([self.params['C1'],self.params['C2'],self.params['Cn']])
         self.K.setParams(params)
 
     def _update_cache(self):
         """
         Update cache
         """
-        cov_params_have_changed = self.K.Cr.params_have_changed or self.K.Cg.params_have_changed or self.K.Cn.params_have_changed
+        cov_params_have_changed = self.K.C1.params_have_changed or self.K.C2.params_have_changed or self.K.Cn.params_have_changed
 
-        if 'KiY' not in self.cache or self.XX_has_changed:
-            D = SP.reshape(self.K.D(),(self.N,self.P), order='F')
-            DLY = D*SP.dot(self.K.Lr(),SP.dot(self.Y,self.K.Lc().T))
-            self.cache['KiY'] = SP.dot(self.K.Lr().T,SP.dot(DLY,self.K.Lc()))
+        if 'KiY' not in self.cache or self.R2_has_changed:
+            #D = SP.reshape(self.K.D(),(self.N,self.P), order='F')
+            #DLY = D*SP.dot(self.K.Lr(),SP.dot(self.Y,self.K.Lc().T))
+            #self.cache['KiY'] = SP.dot(self.K.Lr().T,SP.dot(DLY,self.K.Lc()))
+            self.cache['KiY'] = 1e-3*SP.randn(self.N,self.P)
 
-        if cov_params_have_changed or self.XX_has_changed or self.GG_has_changed:
+        if cov_params_have_changed or self.R2_has_changed or self.R1_has_changed:
             start = TIME.time()
             self.cache['KiY'] = self.K.solve(self.Y,X0=self.cache['KiY'],tol=self.tol) 
             self.time[2]+=TIME.time()-start
         
-        self.XX_has_changed = False
-        self.GG_has_changed = False
-        self.K.Cr.params_have_changed = False
-        self.K.Cg.params_have_changed = False
+        self.R2_has_changed = False
+        self.R1_has_changed = False
+        self.K.C1.params_have_changed = False
+        self.K.C2.params_have_changed = False
         self.K.Cn.params_have_changed = False
 
     def LML(self,params=None,*kw_args):
@@ -103,7 +100,7 @@ class gp3kronSumApprox(GP):
         #1. constant term
         lml  = self.N*self.P*SP.log(2*SP.pi)
         #2. log det
-        lml += self.K.logdet_bound(bound=self.bound)
+        lml += self.K.logdet_bound()
         #3. quadratic term
         lml += (self.Y*self.cache['KiY']).sum()
         lml *= 0.5
@@ -142,7 +139,7 @@ class gp3kronSumApprox(GP):
             self.setParams(params)
         self._update_cache()
         RV = {}
-        covars = ['Cr','Cg','Cn']
+        covars = ['C1','C2','Cn']
         for covar in covars:
             RV[covar] = self._LMLgrad_covar(covar)
         return RV
@@ -153,12 +150,12 @@ class gp3kronSumApprox(GP):
         """
         # preprocessing
         start = TIME.time()
-        if covar=='Cr':
-            n_params = self.K.Cr.getNumberParams()
-            RKiY = SP.dot(self.K.GG,self.cache['KiY'])
-        elif covar=='Cg':
-            n_params = self.K.Cg.getNumberParams()
-            RKiY = SP.dot(self.K.XX,self.cache['KiY'])
+        if covar=='C1':
+            n_params = self.K.C1.getNumberParams()
+            RKiY = SP.dot(self.K.R1,self.cache['KiY'])
+        elif covar=='C2':
+            n_params = self.K.C2.getNumberParams()
+            RKiY = SP.dot(self.K.R2,self.cache['KiY'])
         elif covar=='Cn':
             n_params = self.K.Cn.getNumberParams()
             RKiY = self.cache['KiY']
@@ -168,15 +165,15 @@ class gp3kronSumApprox(GP):
         RV = SP.zeros(n_params)
         for i in range(n_params):
             start = TIME.time()
-            if covar=='Cr':
-                C = self.K.Cr.Kgrad_param(i);
-                logdetGrad = self.K.logdet_bound_grad_r(i,bound=self.bound)
-            elif covar=='Cg':
-                C = self.K.Cg.Kgrad_param(i);
-                logdetGrad = self.K.logdet_bound_grad_g(i,bound=self.bound)
+            if covar=='C1':
+                C = self.K.C1.Kgrad_param(i);
+                logdetGrad = self.K.logdet_bound_grad_1(i)
+            elif covar=='C2':
+                C = self.K.C2.Kgrad_param(i);
+                logdetGrad = self.K.logdet_bound_grad_2(i)
             elif covar=='Cn':
                 C = self.K.Cn.Kgrad_param(i)
-                logdetGrad = self.K.logdet_bound_grad_n(i,bound=self.bound)
+                logdetGrad = self.K.logdet_bound_grad_n(i)
             self.time[4] += TIME.time() - start
             
             #1. der of logdet grad 
