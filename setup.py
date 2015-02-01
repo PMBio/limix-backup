@@ -1,21 +1,14 @@
 import distutils.cmd
-import sys,os,re
+from distutils import dist
+from setuptools import setup
 
-
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-
-import pdb
-import glob
-
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+import os
+import re
+import sys
 
 __revision__ = "src/script/scons.py  2013/03/03 09:48:35 garyo"
 
-__version__ = "2.3.0"
+__sconsversion__ = "2.3.4"
 
 __build__ = ""
 
@@ -24,144 +17,149 @@ __buildsys__ = "reepicheep"
 __date__ = "2013/03/03 09:48:35"
 
 __developer__ = "garyo"
-##############################################################################
-# BEGIN STANDARD SCons SCRIPT HEADER
-#
-# This is the cut-and-paste logic so that a self-contained script can
-# interoperate correctly with different SCons versions and installation
-# locations for the engine.  If you modify anything in this section, you
-# should also change other scripts that use this same header.
-##############################################################################
 
-# Strip the script directory from sys.path() so on case-insensitive
-# (WIN32) systems Python doesn't think that the "scons" script is the
-# "SCons" package.  Replace it with our own library directories
-# (version-specific first, in case they installed by hand there,
-# followed by generic) so we pick up the right version of the build
-# engine modules if they're in either directory.
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
+def setup_scons():
+    ##############################################################################
+    # BEGIN STANDARD SCons SCRIPT HEADER
+    #
+    # This is the cut-and-paste logic so that a self-contained script can
+    # interoperate correctly with different SCons versions and installation
+    # locations for the engine.  If you modify anything in this section, you
+    # should also change other scripts that use this same header.
+    ##############################################################################
+
+    # Strip the script directory from sys.path() so on case-insensitive
+    # (WIN32) systems Python doesn't think that the "scons" script is the
+    # "SCons" package.  Replace it with our own library directories
+    # (version-specific first, in case they installed by hand there,
+    # followed by generic) so we pick up the right version of the build
+    # engine modules if they're in either directory.
+
+    dist.Distribution(dict(setup_requires='scons==2.3.4'))
+    if sys.version_info >= (3,0,0):
+        msg = "scons: *** SCons version %s does not run under Python version %s.\n\
+    Python 3 is not yet supported.\n"
+        sys.stderr.write(msg % (__version__, sys.version.split()[0]))
+        sys.exit(1)
 
 
-if sys.version_info >= (3,0,0):
-    msg = "scons: *** SCons version %s does not run under Python version %s.\n\
-Python 3 is not yet supported.\n"
-    sys.stderr.write(msg % (__version__, sys.version.split()[0]))
-    sys.exit(1)
 
+    ## Not sure what's happening here
+    ## Not a good idea to remove a path direct
+    ## script_dir = sys.path[0]
+    #if script_dir in sys.path:
+    #    sys.path.remove(script_dir)
 
-script_dir = sys.path[0]
+    libs = []
 
-if script_dir in sys.path:
-    sys.path.remove(script_dir)
+    if "SCONS_LIB_DIR" in os.environ:
+        libs.append(os.environ["SCONS_LIB_DIR"])
 
-libs = []
+    scons_version = 'scons-%s' % __sconsversion__
 
-if "SCONS_LIB_DIR" in os.environ:
-    libs.append(os.environ["SCONS_LIB_DIR"])
+    # preferred order of scons lookup paths
 
-local_version = 'scons-local-' + __version__
-local = 'scons-local'
-if script_dir:
-    local_version = os.path.join(script_dir, local_version)
-    local = os.path.join(script_dir, local)
-libs.append(os.path.abspath(local_version))
-libs.append(os.path.abspath(local))
+    if (os.path.exists('.eggs')):
+        if (sys.path[-1].endswith('.egg')):
+            sys.path[-1] = os.path.join(sys.path[-1], scons_version)
+            return
 
-scons_version = 'scons-%s' % __version__
-
-# preferred order of scons lookup paths
-prefs = []
-
-try:
-    import pkg_resources
-except ImportError:
-    pass
-else:
-    # when running from an egg add the egg's directory 
     try:
-        d = pkg_resources.get_distribution('scons')
-    except pkg_resources.DistributionNotFound:
+        import pkg_resources
+    except ImportError:
         pass
     else:
-        prefs.append(d.location)
-
-if sys.platform == 'win32':
-    # sys.prefix is (likely) C:\Python*;
-    # check only C:\Python*.
-    prefs.append(sys.prefix)
-    prefs.append(os.path.join(sys.prefix, 'Lib', 'site-packages'))
-else:
-    # On other (POSIX) platforms, things are more complicated due to
-    # the variety of path names and library locations.  Try to be smart
-    # about it.
-    if script_dir == 'bin':
-        # script_dir is `pwd`/bin;
-        # check `pwd`/lib/scons*.
-        prefs.append(os.getcwd())
-    else:
-        if script_dir == '.' or script_dir == '':
-            script_dir = os.getcwd()
-        head, tail = os.path.split(script_dir)
-        if tail == "bin":
-            # script_dir is /foo/bin;
-            # check /foo/lib/scons*.
-            prefs.append(head)
-
-    head, tail = os.path.split(sys.prefix)
-    if tail == "usr":
-        # sys.prefix is /foo/usr;
-        # check /foo/usr/lib/scons* first,
-        # then /foo/usr/local/lib/scons*.
-        prefs.append(sys.prefix)
-        prefs.append(os.path.join(sys.prefix, "local"))
-    elif tail == "local":
-        h, t = os.path.split(head)
-        if t == "usr":
-            # sys.prefix is /foo/usr/local;
-            # check /foo/usr/local/lib/scons* first,
-            # then /foo/usr/lib/scons*.
-            prefs.append(sys.prefix)
-            prefs.append(head)
+        # when running from an egg add the egg's directory
+        try:
+            d = pkg_resources.get_distribution('scons')
+        except pkg_resources.DistributionNotFound:
+            pass
         else:
-            # sys.prefix is /foo/local;
-            # check only /foo/local/lib/scons*.
-            prefs.append(sys.prefix)
-    else:
-        # sys.prefix is /foo (ends in neither /usr or /local);
-        # check only /foo/lib/scons*.
+            sys.path = [os.path.join(d.location, scons_version)] + libs + sys.path
+
+    """
+    if sys.platform == 'win32':
+        # sys.prefix is (likely) C:\Python*;
+        # check only C:\Python*.
         prefs.append(sys.prefix)
-
-    temp = [os.path.join(x, 'lib') for x in prefs]
-    temp.extend([os.path.join(x,
-                                           'lib',
-                                           'python' + sys.version[:3],
-                                           'site-packages') for x in prefs])
-    prefs = temp
-
-    # Add the parent directory of the current python's library to the
-    # preferences.  On SuSE-91/AMD64, for example, this is /usr/lib64,
-    # not /usr/lib.
-    try:
-        libpath = os.__file__
-    except AttributeError:
-        pass
+        prefs.append(os.path.join(sys.prefix, 'Lib', 'site-packages'))
     else:
-        # Split /usr/libfoo/python*/os.py to /usr/libfoo/python*.
-        libpath, tail = os.path.split(libpath)
-        # Split /usr/libfoo/python* to /usr/libfoo
-        libpath, tail = os.path.split(libpath)
-        # Check /usr/libfoo/scons*.
-        prefs.append(libpath)
+        # On other (POSIX) platforms, things are more complicated due to
+        # the variety of path names and library locations.  Try to be smart
+        # about it.
+        if script_dir == 'bin':
+            # script_dir is `pwd`/bin;
+            # check `pwd`/lib/scons*.
+            prefs.append(os.getcwd())
+        else:
+            if script_dir == '.' or script_dir == '':
+                script_dir = os.getcwd()
+            head, tail = os.path.split(script_dir)
+            if tail == "bin":
+                # script_dir is /foo/bin;
+                # check /foo/lib/scons*.
+                prefs.append(head)
 
-# Look first for 'scons-__version__' in all of our preference libs,
-# then for 'scons'.
-libs.extend([os.path.join(x, scons_version) for x in prefs])
-libs.extend([os.path.join(x, 'scons') for x in prefs])
+        head, tail = os.path.split(sys.prefix)
+        if tail == "usr":
+            # sys.prefix is /foo/usr;
+            # check /foo/usr/lib/scons* first,
+            # then /foo/usr/local/lib/scons*.
+            prefs.append(sys.prefix)
+            prefs.append(os.path.join(sys.prefix, "local"))
+        elif tail == "local":
+            h, t = os.path.split(head)
+            if t == "usr":
+                # sys.prefix is /foo/usr/local;
+                # check /foo/usr/local/lib/scons* first,
+                # then /foo/usr/lib/scons*.
+                prefs.append(sys.prefix)
+                prefs.append(head)
+            else:
+                # sys.prefix is /foo/local;
+                # check only /foo/local/lib/scons*.
+                prefs.append(sys.prefix)
+        else:
+            # sys.prefix is /foo (ends in neither /usr or /local);
+            # check only /foo/lib/scons*.
+            prefs.append(sys.prefix)
 
-sys.path = libs + sys.path
+        temp = [os.path.join(x, 'lib') for x in prefs]
+        temp.extend([os.path.join(x,
+                                            'lib',
+                                            'python' + sys.version[:3],
+                                            'site-packages') for x in prefs])
+        prefs = temp
 
-##############################################################################
-# END STANDARD SCons SCRIPT HEADER
-##############################################################################
+        # Add the parent directory of the current python's library to the
+        # preferences.  On SuSE-91/AMD64, for example, this is /usr/lib64,
+        # not /usr/lib.
+        try:
+            libpath = os.__file__
+        except AttributeError:
+            pass
+        else:
+            # Split /usr/libfoo/python*/os.py to /usr/libfoo/python*.
+            libpath, tail = os.path.split(libpath)
+            # Split /usr/libfoo/python* to /usr/libfoo
+            libpath, tail = os.path.split(libpath)
+            # Check /usr/libfoo/scons*.
+            prefs.append(libpath)
+
+    # Look first for 'scons-__version__' in all of our preference libs,
+    # then for 'scons'.
+    libs.extend([os.path.join(x, scons_version) for x in prefs])
+    libs.extend([os.path.join(x, 'scons') for x in prefs])
+
+    sys.path = libs + sys.path
+    """
+
+    ##############################################################################
+    # END STANDARD SCons SCRIPT HEADER
+    ##############################################################################
 
 
 def file_list_recursive(dir_name,exclude_list=[]):
@@ -195,7 +193,7 @@ def check_versions(min_versions):
         npversion = numpy.__version__
     except ImportError:
         raise ImportError("LIMIX requires numpy")
- 
+
     try:
         import pandas
         pandasversion = pandas.__version__
@@ -261,8 +259,8 @@ if __name__ == '__main__':
         'pandas' : '0.12.0',
         'scons' : '2.1.0',
                    }
-    check_versions(min_versions)
-
+    #check_versions(min_versions)
+    setup_scons()
     import SCons.Script
     setup(
         name = 'limix',
@@ -281,6 +279,6 @@ if __name__ == '__main__':
         cmdclass = {'build_py': build_py_cmd},
         #dependencies
         #requires = ['scipy','numpy','matplotlib','pandas','scons'],
-        requires = ['scipy','numpy','matplotlib','pandas'],
-        install_requires = ['scons>=2.3.0']
+        setup_requires = ['scipy','numpy','matplotlib','pandas'],
+        #install_requires = ['scons>=2.3.0']
         )
