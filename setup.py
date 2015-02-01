@@ -42,7 +42,7 @@ def setup_scons():
     if sys.version_info >= (3,0,0):
         msg = "scons: *** SCons version %s does not run under Python version %s.\n\
     Python 3 is not yet supported.\n"
-        sys.stderr.write(msg % (__version__, sys.version.split()[0]))
+        sys.stderr.write(msg % (__sconsversion__, sys.version.split()[0]))
         sys.exit(1)
 
 
@@ -279,6 +279,6 @@ if __name__ == '__main__':
         cmdclass = {'build_py': build_py_cmd},
         #dependencies
         #requires = ['scipy','numpy','matplotlib','pandas','scons'],
-        setup_requires = ['scipy','numpy','matplotlib','pandas'],
+        setup_requires = ['numpy', 'scipy', 'matplotlib','pandas'],
         #install_requires = ['scons>=2.3.0']
         )
