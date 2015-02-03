@@ -67,6 +67,8 @@ if __name__=='__main__':
         gp.K.optimizeAB(n=100)
         print 'a:', gp.K.a
         print 'b:', gp.K.b
+
+        ipdb.set_trace()
         gp.K.optimizeABgrad()
 
     for i in range(10):
