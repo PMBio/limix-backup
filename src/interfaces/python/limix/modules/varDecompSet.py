@@ -27,7 +27,7 @@ import time
 
 class varDecompSet:
     """variance decomposition set class"""
-    def __init__(self,Y=None,Ks=None,standardize=True):
+    def __init__(self,Y=None,Ks=None,standardize=True,noise_off=False):
         """
         Args:
             X: alternatively SNP data
@@ -45,7 +45,9 @@ class varDecompSet:
             self.Y /= self.Y.std(axis=0)
         self.N = self.Y.shape[0]
         self.P = self.Y.shape[1]
-        pass
+        self.noise_off = noise_off
+        self.n_terms = len(self.Ks)+1
+        if noise_off: self.n_terms-=1
 
     def train(self,jitter=1e-4):
         """train vds module"""
@@ -53,23 +55,19 @@ class varDecompSet:
         covar_params = []
         for K in self.Ks:
             covar.addCovariance(limix.CFixedCF(K+jitter*sp.eye(self.N)))
-            covar_params.append(1.0/sp.sqrt(len(self.Ks)))
-
-        ll  = limix.CLikNormalIso()
-        covar_params = sp.array(covar_params)
-        lik_params =  sp.array([1.0/sp.sqrt(len(self.Ks))])
+            covar_params.append(1.0/sp.sqrt(self.n_terms))
+        if not self.noise_off:
+            covar.addCovariance(limix.CFixedCF(sp.eye(self.N)))
+            covar_params.append(1.0/sp.sqrt(self.n_terms))
 
         hyperparams = limix.CGPHyperParams()
-        hyperparams['covar'] = covar_params
-        hyperparams['lik'] = lik_params
-    
+        hyperparams['covar'] = sp.array(covar_params)
         constrainU = limix.CGPHyperParams()
         constrainL = limix.CGPHyperParams()
         constrainU['covar'] = +5*sp.ones_like(covar_params);
         constrainL['covar'] = -5*sp.ones_like(covar_params);
-        constrainU['lik'] = +5*sp.ones_like(lik_params);
 
-        self.gp=limix.CGPbase(covar,ll)
+        self.gp=limix.CGPbase(covar,limix.CLikNormalNULL())
         self.gp.setY(self.Y)
         lml0 = self.gp.LML(hyperparams)
         dlml0 = self.gp.LMLgrad(hyperparams)        
@@ -88,7 +86,6 @@ class varDecompSet:
         Returns:
             vector of variance components of the PANAMA, Kpop and noise contributions
         """
-        params = self.gp.getParams()
-        RV = sp.concatenate([params['covar'], params['lik']])**2
+        RV = self.gp.getParams()['covar']**2
         return RV 
 
