@@ -27,7 +27,7 @@ import time
 
 class varDecompSet:
     """variance decomposition set class"""
-    def __init__(self,Y=None,Ks=None,standardize=True,noise_off=False):
+    def __init__(self,Y=None,Ks=None,standardize=True,noise=None):
         """
         Args:
             X: alternatively SNP data
@@ -45,9 +45,10 @@ class varDecompSet:
             self.Y /= self.Y.std(axis=0)
         self.N = self.Y.shape[0]
         self.P = self.Y.shape[1]
-        self.noise_off = noise_off
+        self.noise = noise
         self.n_terms = len(self.Ks)+1
-        if noise_off: self.n_terms-=1
+        if self.noise is 'off':
+            self.n_terms-=1
 
     def train(self,jitter=1e-4):
         """train vds module"""
@@ -55,13 +56,22 @@ class varDecompSet:
         covar_params = []
         for K in self.Ks:
             covar.addCovariance(limix.CFixedCF(K+jitter*sp.eye(self.N)))
-            covar_params.append(1.0/sp.sqrt(self.n_terms))
-        if not self.noise_off:
+            covar_params.append(sp.ones(1)/sp.sqrt(self.n_terms))
+        if self.noise is 'correlated':
+            _cov1 = limix.CFixedCF(sp.eye(int(self.Y.shape[0]/2)))
+            _cov1.setParamMask(sp.zeros(1))
+            self.cov_noise = limix.CFreeFormCF(2)
+            self.Knoise = limix.CKroneckerCF(_cov1,self.cov_noise)
+            covar.addCovariance(self.Knoise)
+            covar_params.append(sp.ones(1))
+            covar_params.append(sp.array([1.,1e-3,1.])/sp.sqrt(self.n_terms))
+        elif self.noise is not 'off':
             covar.addCovariance(limix.CFixedCF(sp.eye(self.N)))
-            covar_params.append(1.0/sp.sqrt(self.n_terms))
+            covar_params.append(sp.ones(1)/sp.sqrt(self.n_terms))
 
         hyperparams = limix.CGPHyperParams()
-        hyperparams['covar'] = sp.array(covar_params)
+        covar_params = sp.concatenate(covar_params)
+        hyperparams['covar'] = covar_params 
         constrainU = limix.CGPHyperParams()
         constrainL = limix.CGPHyperParams()
         constrainU['covar'] = +5*sp.ones_like(covar_params);
@@ -80,12 +90,20 @@ class varDecompSet:
         t2 = time.time()
 
         RV = {'Converged': True, 'time': t2-t1}
+        return RV
 
     def getVarianceComps(self):
         """
         Returns:
             vector of variance components of the PANAMA, Kpop and noise contributions
         """
-        RV = self.gp.getParams()['covar']**2
+        if self.noise is 'correlated':
+            RV = self.gp.getParams()['covar'][:self.n_terms-1]**2
+        else:
+            RV = self.gp.getParams()['covar']**2
         return RV 
+
+    def getNoise(self):
+        assert self.noise is 'correlated', 'work only if noise is \'correlated\'!'
+        return self.cov_noise.K()
 
