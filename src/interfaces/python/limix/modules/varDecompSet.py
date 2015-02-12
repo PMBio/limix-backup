@@ -59,12 +59,12 @@ class varDecompSet:
             covar_params.append(sp.ones(1)/sp.sqrt(self.n_terms))
         if self.noise is 'correlated':
             _cov1 = limix.CFixedCF(sp.eye(int(self.Y.shape[0]/2)))
-            _cov1.setParamMask(sp.zeros(1))
-            self.cov_noise = limix.CFreeFormCF(2)
+            self.cov_noise = limix.CFixedDiagonalCF(limix.CFreeFormCF(2),sp.ones(2))
+            self.cov_noise.setParamMask(sp.array([0,1,0]))
             self.Knoise = limix.CKroneckerCF(_cov1,self.cov_noise)
             covar.addCovariance(self.Knoise)
-            covar_params.append(sp.ones(1))
-            covar_params.append(sp.array([1.,1e-3,1.])/sp.sqrt(self.n_terms))
+            covar_params.append(sp.ones(1)/sp.sqrt(self.n_terms))
+            covar_params.append(sp.array([1.,1e-3,1.]))
         elif self.noise is not 'off':
             covar.addCovariance(limix.CFixedCF(sp.eye(self.N)))
             covar_params.append(sp.ones(1)/sp.sqrt(self.n_terms))
@@ -105,5 +105,5 @@ class varDecompSet:
 
     def getNoise(self):
         assert self.noise is 'correlated', 'work only if noise is \'correlated\'!'
-        return self.cov_noise.K()
+        return self.gp.getParams()['covar'][self.n_terms-1]**2*self.cov_noise.K()
 
