@@ -38,7 +38,7 @@ class varDecompSet:
         assert Y is not None, 'Specify Y'
         assert Ks is not None, 'Specify Ks'
         if type(Ks)!=list: Ks = [Ks]
-        self.Y  = Y
+        self.Y  = Y.copy()
         self.Ks = Ks
         if standardize:
             self.Y -= self.Y.mean(axis=0)
