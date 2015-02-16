@@ -26,7 +26,7 @@ class LmmKronecker(cObject):
         #self.clear_cache('LL_snps','test_snps')
         pass
 
-    def LL_snps(self, snps, Asnps=None, inter=None, identity_trick=False):
+    def LL_snps(self, snps, Asnps=None, inter=None, identity_trick=True):
         """
         compute log likelihood for SNPs
         """
@@ -36,64 +36,12 @@ class LmmKronecker(cObject):
         LL_snps = np.zeros(snps.shape[1])
         LL_new = np.zeros(snps.shape[1])
         LL_snps_0 = np.zeros(snps.shape[1])
-        if 1:#is this needed or not?
-            self._gp.mean.clear_cache('Fstar','Astar','Xstar','Xhat',
-                    'Areml','Areml_eigh','Areml_chol','Areml_inv','beta_hat','B_hat',
-                    'LRLdiag_Xhat_tens','Areml_grad',
-                    'beta_grad','Xstar_beta_grad','Zstar','DLZ')        #index_snpterm = self.gp.mean.n_terms
-        if inter is None:
 
+        if inter is None:
             LL_snps_0[:] = self._LL_0
             for i_snp in xrange(snps.shape[1]):
                 #correlated but not identical:
-                if 0:
-                    self._gp.mean.clear_cache('Fstar','Astar','Xstar','Xhat',
-                         'Areml','Areml_eigh','Areml_chol','Areml_inv','beta_hat','B_hat',
-                         'LRLdiag_Xhat_tens','Areml_grad',
-                         'beta_grad','Xstar_beta_grad','Zstar','DLZ')
-                #Areml_small1 = self._gp.mean.Areml()
-                #LL_new[i_snp],beta,Areml1,Areml_11 = self.LML_blockwise(snp=np.dot(self._gp.mean.Lr,snps[:,i_snp:i_snp+1]), Asnp=Asnps, identity_trick=True)
-                LL_new[i_snp],beta = self.LML_blockwise(snp=np.dot(self._gp.mean.Lr,snps[:,i_snp:i_snp+1]), Asnp=Asnps, identity_trick=True)
-                #worse:
-                #LL_new[i_snp],beta = self.LML_blockwise(snp=snps[:,i_snp:i_snp+1], Asnp=Asnps, identity_trick=True)
-                #Areml_small2 = self._gp.mean.Areml()
-                #diff_small = Areml_small1-Areml_small2
-                #absdiff_small=np.absolute(diff_small)
-                #print np.max(absdiff_small)
-                if 0:
-                    self._gp.mean.addFixedEffect(F=snps[:,i_snp:i_snp+1], A=Asnps)
-                    #LL_new_large,beta_large,Areml1_large,Areml_11_large = self.LML_blockwise(snp=np.dot(self._gp.mean.Lr,snps[:,i_snp:i_snp+1]), Asnp=Asnps, identity_trick=True)
-                
-                    if 0:
-                        self._gp.mean.clear_cache('Fstar','Astar','Xstar','Xhat',
-                             'Areml','Areml_eigh','Areml_chol','Areml_inv','beta_hat','B_hat',
-                             'LRLdiag_Xhat_tens','Areml_grad',
-                             'beta_grad','Xstar_beta_grad','Zstar','DLZ')
-                    #Areml2_prior = self._gp.mean.Areml()
-                    LL__ = self._gp.LML(identity_trick=identity_trick)
-                    if 0:
-                        Areml2 = self._gp.mean.Areml()
-                        diff=Areml1-Areml2
-                        #diff_prior=Areml2 - Areml2_prior
-                        #absdiff_prior=np.absolute(diff_prior)
-                        #print np.max(absdiff_prior)
-                        absdiff=np.absolute(diff)
-                        print np.max(absdiff)
-                        print np.max(absdiff[0:-1,0:-1])
-                    #diff_large_small = Areml1[0:-1,0:-1]-Areml_small2
-                    #absdiff_large_small=np.absolute(diff_large_small)
-                    #print np.max(absdiff_large_small)
-                    #diff_large_small = Areml2[0:-1,0:-1]-Areml_11
-                    #absdiff_large_small=np.absolute(diff_large_small)
-                    #print np.max(absdiff_large_small)
-                    if 0:
-                        import ipdb;ipdb.set_trace()
-                
-                
-                    LL_snps[i_snp] = LL__
-                    self._gp.mean.removeFixedEffect()
-                else:
-                    LL_snps[i_snp] = LL_new[i_snp]
+                LL_snps[i_snp],beta = self.LML_blockwise(snp=np.dot(self._gp.mean.Lr,snps[:,i_snp:i_snp+1]), Asnp=Asnps, identity_trick=True)
         else:
             for i_snp in xrange(snps.shape[1]):
                 self._gp.mean.addFixedEffect(F=snps[:,i_snp:i_snp+1], A=Asnps)
@@ -102,12 +50,13 @@ class LmmKronecker(cObject):
                 LL_snps[i_snp] = self._gp.LML(identity_trick=identity_trick)
                 self._gp.mean.removeFixedEffect()
                 self._gp.mean.removeFixedEffect()
-        return LL_snps,LL_snps_0,LL_new
+        return LL_snps,LL_snps_0
 
 
     def LML_blockwise(self, snp, Asnp=None, identity_trick=False, *kw_args):
         """
         calculate LML
+        The beta of the SNP tested is computed using blockwise matrix inversion.
         """
         self._gp._update_cache()
         
@@ -153,41 +102,25 @@ class LmmKronecker(cObject):
             n_effs_sum+=n_effs_term
         AXcovarXsnp = self._gp.mean.Areml_solve(XcovarXsnp)
         XsnpXsnp_ = XsnpXsnp - XcovarXsnp.T.dot(AXcovarXsnp)
-        #compute beta
-       
+        
         #compute a
         snpKY = compute_XYA(DY=self._gp.mean.Yhat(), X=snp, A=Asnp)
-        if 1:
-            XsnpXsnp_solver = psd_solve.psd_solver(XsnpXsnp_, lower=True, threshold=1e-10,check_finite=True,overwrite_a=False)
-            #solve XsnpXsnp \ AXcovarXsnp*beta
-            DCbeta = XsnpXsnp_solver.solve(XcovarXsnp.T.dot(beta),overwrite_b=False)
-            #solve XsnpXsnp \ a
-            Da = XsnpXsnp_solver.solve(snpKY,overwrite_b=False)
-            beta_snp = Da-DCbeta#This is correct
-            beta_up = self._gp.mean.Areml_solve(XcovarXsnp.dot(-beta_snp),identity_trick=identity_trick)#This is not correct
-            var_expl_snp = (XKY*(beta + beta_up)).sum() + (snpKY*beta_snp).sum()
-            beta_all = np.concatenate([beta+beta_up,beta_snp])
-            var_res = var_total - var_expl_snp
-        else:
-            #debug version (expensive)
-            Areml_11 = self._gp.mean.Areml()
-            Areml_12 = XcovarXsnp
-            Areml_22 = XsnpXsnp
-            Areml1 = np.concatenate((Areml_11,Areml_12),1)
-            Areml2 = np.concatenate((Areml_12.T,Areml_22),1)
-            Areml_all = np.concatenate((Areml1,Areml2),0)
-            Areml_all_solver = psd_solve.psd_solver(Areml_all, lower=True, threshold=1e-10,check_finite=True,overwrite_a=False)
-            XKY_all = np.concatenate((XKY,snpKY),0)
-            beta_all = Areml_all_solver.solve(XKY_all)
-            var_expl_all=(XKY_all*beta_all_).sum()
 
-            var_res = var_total - var_expl_all#var_expl_snp
-        #import ipdb;ipdb.set_trace()
+        XsnpXsnp_solver = psd_solve.psd_solver(XsnpXsnp_, lower=True, threshold=1e-10,check_finite=True,overwrite_a=False)
+        #solve XsnpXsnp \ AXcovarXsnp*beta
+        DCbeta = XsnpXsnp_solver.solve(XcovarXsnp.T.dot(beta),overwrite_b=False)
+        #solve XsnpXsnp \ a
+        Da = XsnpXsnp_solver.solve(snpKY,overwrite_b=False)
+        beta_snp = Da-DCbeta#This is correct
+        beta_up = self._gp.mean.Areml_solve(XcovarXsnp.dot(-beta_snp),identity_trick=identity_trick)#This is not correct
+        var_expl_snp = (XKY*(beta + beta_up)).sum() + (snpKY*beta_snp).sum()
+        beta_all = np.concatenate([beta+beta_up,beta_snp])
+        var_res = var_total - var_expl_snp
+
         lml += var_res
         lml *= 0.5
 
-        #import ipdb;ipdb.set_trace()
-        return lml,beta_all#,Areml_all,Areml_11
+        return lml,beta_all
 
     def test_snps(self, snps, Asnps=None, inter=None, identity_trick=False):
         """
@@ -197,13 +130,10 @@ class LmmKronecker(cObject):
             dof = self._gp.mean.P
         else:
             dof = Asnps.shape[0]
-        LL_snps, LL_snps_0,LL_new = self.LL_snps(snps=snps,Asnps=Asnps, inter=inter, identity_trick=identity_trick)
+        LL_snps, LL_snps_0 = self.LL_snps(snps=snps,Asnps=Asnps, inter=inter, identity_trick=identity_trick)
         LRT = 2.0 * (LL_snps_0 - LL_snps)
-        LRT_new = 2.0 * (LL_snps_0 - LL_new)
         pv = stats.chi2.sf(LRT,dof)
-        pv_new = stats.chi2.sf(LRT_new,dof)
-        #import ipdb;ipdb.set_trace()
-        return pv,LL_snps,LL_snps_0,LL_new,pv_new
+        return pv,LL_snps,LL_snps_0
 
 
 
