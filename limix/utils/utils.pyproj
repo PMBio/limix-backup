@@ -29,6 +29,7 @@
   <ItemGroup>
     <Compile Include="eigen.py" />
     <Compile Include="preprocess.py" />
+    <Compile Include="psd_solve.py" />
     <Compile Include="utils.py" />
     <Compile Include="__init__.py" />
   </ItemGroup>

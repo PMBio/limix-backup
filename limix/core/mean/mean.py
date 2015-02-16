@@ -9,6 +9,56 @@ import scipy.linalg as LA
 import copy
 import pdb
 
+def compute_X1KX2(Y, D, X1, X2, A1=None, A2=None):
+    #import ipdb; ipdb.set_trace()
+    R,C = Y.shape
+    if A1 is None:
+        nW_A1 = Y.shape[1]			
+        #A1 = SP.eye(Y.shape[1])	#for now this creates A1 and A2
+    else:
+        nW_A1 = A1.shape[0]
+
+    if A2 is None:
+        nW_A2 = Y.shape[1]
+        #A2 = SP.eye(Y.shape[1])	#for now this creates A1 and A2
+    else:
+        nW_A2 = A2.shape[0]
+        	
+
+    nW_X1 = X1.shape[1]
+    rows_block = nW_A1 * nW_X1
+
+    if 0:#independentX2:
+        nW_X2 = 1
+    else:
+        nW_X2 = X2.shape[1]
+    cols_block = nW_A2 * nW_X2
+    	
+    block = SP.zeros((rows_block,cols_block))
+
+
+    if R>C or A1 is None or A2 is None:
+        for c in xrange(C):
+            X1D = X1 * D[:,c:c+1]
+            X1X2 = X1D.T.dot(X2)
+            if A1 is None and A2 is None:
+                block[c*X1.shape[1]:(c+1)*X1.shape[1], c*X2.shape[1]:(c+1)*X2.shape[1]] += X1X2
+            elif A1 is None:
+                block[c*X1.shape[1]:(c+1)*X1.shape[1],:] += SP.kron(A2[:,c:c+1].T,X1X2)
+            elif A2 is None:
+                block[:,c*X2.shape[1]:(c+1)*X2.shape[1]] += SP.kron(A1[:,c:c+1],X1X2)
+            else:
+                A1A2 = np.outer(A1[:,c],A2[:,c])
+                block += SP.kron(A1A2,X1X2)
+    else:
+        for r in xrange(R):
+            A1D = A1 * D[r:r+1,:]
+            A1A2 = A1D.dot(A2.T)
+            X1X2 = X1[r,:][:,SP.newaxis].dot(X2[r,:][SP.newaxis,:])
+            block += SP.kron(A1A2,X1X2)
+
+    return block
+
 class mean(cObject):
 
     def __init__(self,Y):
@@ -289,38 +339,39 @@ class mean(cObject):
         return RV 
 
     @cached
-    def Areml(self):
+    def Areml(self, identity_trick=False):
         #A1 = self.XstarT_dot(self.Xhat())
-        A2 =  self.compute_XKX()
+        A2 =  self.compute_XKX(identity_trick=identity_trick)
         return A2
 
     @cached
-    def Areml_chol(self):
-        return LA.cholesky(self.Areml()).T
+    def Areml_chol(self,identity_trick=False):
+        return LA.cholesky(self.Areml(identity_trick=identity_trick)).T
 
     @cached
-    def Areml_REML_chol(self):
-        return LA.cholesky(self.Areml()).T
+    def Areml_REML_chol(self, identity_trick=False):
+        return LA.cholesky(self.Areml(identity_trick=identity_trick)).T
 
     @cached
     def Areml_inv(self):
         return LA.cho_solve((self.Areml_chol(),True),SP.eye(self.n_fixed_effs))
 
     @cached
-    def beta_hat(self):
+    def beta_hat(self, identity_trick=False):
         #XKY = self.XstarT_dot(SP.reshape(self.Yhat(),(self.Y.size,1),order = 'F'))
-        XKY = self.compute_XKY(M=self.Yhat())
+        XKY = self.compute_XKY(M=self.Yhat(), identity_trick=identity_trick)
 
-        beta_hat = self.Areml_solve(XKY)
+        beta_hat = self.Areml_solve(XKY,identity_trick=identity_trick)
             #SP.dot(self.Areml_inv(), XKY)
         return beta_hat
 
+
     @cached
-    def B_hat(self):
+    def B_hat(self, identity_trick=False):
         RV = []
         ip = 0
         for term_i in range(self.n_terms):
-            RV.append(SP.reshape(self.beta_hat()[ip:ip+self.B[term_i].size],self.B[term_i].shape, order='F'))
+            RV.append(SP.reshape(self.beta_hat(identity_trick=identity_trick)[ip:ip+self.B[term_i].size],self.B[term_i].shape, order='F'))
             ip += self.B[term_i].size
         return RV
 
@@ -361,38 +412,42 @@ class mean(cObject):
             ip += self.B[term_i].size
         return RV
 
+
     @cached
-    def Zstar(self):
+    def Zstar(self, identity_trick=False):
         """ predict the value of the fixed effect """
         RV = self.Ystar().copy()
         for term_i in range(self.n_terms):
-            RV-=SP.dot(self.Fstar()[term_i],SP.dot(self.B_hat()[term_i],self.Astar()[term_i]))
+            if identity_trick and self.A_identity[term_i]:
+                RV-=SP.dot(self.Fstar()[term_i],self.B_hat(identity_trick=identity_trick)[term_i])
+            else:
+                RV-=SP.dot(self.Fstar()[term_i],SP.dot(self.B_hat(identity_trick=identity_trick)[term_i],self.Astar()[term_i]))
         self.clear_cache('DLZ')
         return RV
 
     @cached 
-    def Areml_eigh(self):
+    def Areml_eigh(self, identity_trick=False):
         """compute the eigenvalue decomposition of Astar"""
-        s,U = LA.eigh(self.Areml(),lower=True)
+        s,U = LA.eigh(self.Areml(identity_trick=identity_trick),lower=True)
         i_pos = (s>1e-10)
         s = s[i_pos]
         U = U[:,i_pos]
         return s,U
 
     @cached
-    def DLZ(self):
-        return self.Zstar()*SP.reshape(self.D,(self.N,self.P), order='F')
+    def DLZ(self, identity_trick=False):
+        return self.Zstar(identity_trick=identity_trick)*SP.reshape(self.D,(self.N,self.P), order='F')
 
     ###############################################
     # Other getters with no caching, should not they have caching somehow?
     ###############################################
 
-    def Areml_solve(self, b):
+    def Areml_solve(self, b, identity_trick=False):
         try:
-            res = LA.cho_solve((self.Areml_chol(),True),b)
+            res = LA.cho_solve((self.Areml_chol(identity_trick=identity_trick),True),b)
         except LA.LinAlgError:
             
-            s,U = self.Areml_eigh()
+            s,U = self.Areml_eigh(identity_trick=identity_trick)
             res = U.T.dot(b)
             res /= s[:,SP.newaxis]
             res = U.dot(res)
@@ -400,19 +455,22 @@ class mean(cObject):
         return res
 
 
-    def compute_XKY(self, M=None):
+    def compute_XKY(self, M=None, identity_trick=False):
         if M is None:
             M = self.Yhat()
         assert M.shape==(self.N,self.P)
         XKY = np.zeros((self.n_fixed_effs,1))
         n_weights = 0
         for term in xrange(self.n_terms):
-            XKY_block = compute_XYA(DY=M, X=self.Fstar()[term], A=self.Astar()[term])
-            XKY[n_weights:n_weights + self.Astar()[term].shape[0] * self.Fstar()[term].shape[1],0] = XKY_block.ravel(order='F')
-            n_weights += self.Astar()[term].shape[0] * self.Fstar()[term].shape[1]
+            if identity_trick and self.A_identity[term]:
+                XKY_block = compute_XYA(DY=M, X=self.Fstar()[term], A=None)
+            else:
+                XKY_block = compute_XYA(DY=M, X=self.Fstar()[term], A=self.Astar()[term])
+            XKY[n_weights:n_weights + self.A[term].shape[0] * self.F[term].shape[1],0] = XKY_block.ravel(order='F')
+            n_weights += self.A[term].shape[0] * self.F[term].shape[1]
         return XKY
 
-    def compute_XKX(self):
+    def compute_XKX(self, identity_trick=False):
         #n_weights1 = 0
         # 
         #for term1 in xrange(self.n_terms):
@@ -421,16 +479,24 @@ class mean(cObject):
         cov_beta = np.zeros((self.n_fixed_effs,self.n_fixed_effs))
         n_weights1 = 0
         for term1 in xrange(self.n_terms):
+            if identity_trick and self.A_identity[term1]:
+                A_term1 = None
+            else:
+                A_term1 = self.Astar()[term1]
             n_weights2 = n_weights1
             for term2 in xrange(term1,self.n_terms):
-                block = compute_XK1X2(Y=self.Ystar(), D=self.D, X1=self.Fstar()[term1], X2=self.Fstar()[term2], A1=self.Astar()[term1], A2=self.Astar()[term2])
-                cov_beta[n_weights1:n_weights1 + self.Astar()[term1].shape[0] * self.Fstar()[term1].shape[1], n_weights2:n_weights2 + self.Astar()[term2].shape[0] * self.Fstar()[term2].shape[1]] = block
+                if identity_trick and self.A_identity[term2]:
+                    A_term2 = None
+                else:
+                    A_term2 = self.Astar()[term2]
+                block = compute_X1KX2(Y=self.Ystar(), D=self.D, X1=self.Fstar()[term1], X2=self.Fstar()[term2], A1=A_term1, A2=A_term2)
+                cov_beta[n_weights1:n_weights1 + self.A[term1].shape[0] * self.F[term1].shape[1], n_weights2:n_weights2 + self.A[term2].shape[0] * self.F[term2].shape[1]] = block
                 if term1!=term2:
-                    cov_beta[n_weights2:n_weights2 + self.Astar()[term2].shape[0] * self.Fstar()[term2].shape[1], n_weights1:n_weights1 + self.Astar()[term1].shape[0] * self.Fstar()[term1].shape[1]] = block.T
+                    cov_beta[n_weights2:n_weights2 + self.A[term2].shape[0] * self.F[term2].shape[1], n_weights1:n_weights1 + self.A[term1].shape[0] * self.F[term1].shape[1]] = block.T
     
-                n_weights2+=self.Astar()[term2].shape[0] * self.Fstar()[term2].shape[1]
+                n_weights2+=self.A[term2].shape[0] * self.F[term2].shape[1]
 
-            n_weights1+=self.Astar()[term1].shape[0] * self.Fstar()[term1].shape[1]
+            n_weights1+=self.A[term1].shape[0] * self.F[term1].shape[1]
         return cov_beta
 
     def predict(self):
@@ -542,46 +608,3 @@ def compute_XYA(DY, X, A=None):
     return XYA
 
 
-def compute_XK1X2(Y, D, X1, X2, A1=None, A2=None):
-    #import ipdb; ipdb.set_trace()
-    R,C = Y.shape
-    if A1 is None:
-        nW_A1 = Y.shape[1]			
-        A1 = SP.eye(Y.shape[1])	#for now this creates A1 and A2
-    else:
-        nW_A1 = A1.shape[0]
-
-    if A2 is None:
-        nW_A2 = Y.shape[1]
-        A2 = SP.eye(Y.shape[1])	#for now this creates A1 and A2
-    else:
-        nW_A2 = A2.shape[0]
-        	
-
-    nW_X1 = X1.shape[1]
-    rows_block = nW_A1 * nW_X1
-
-    if 0:#independentX2:
-        nW_X2 = 1
-    else:
-        nW_X2 = X2.shape[1]
-    cols_block = nW_A2 * nW_X2
-    	
-    block = SP.zeros((rows_block,cols_block))
-
-    if R<C:
-
-        for r in xrange(R):
-            A1D = A1 * D[r:r+1,:]
-            A1A2 = A1D.dot(A2.T)
-            X1X2 = X1[r,:][:,SP.newaxis].dot(X2[r,:][SP.newaxis,:])
-            block += SP.kron(A1A2,X1X2)
-
-    else:
-        for c in xrange(C):
-            X1D = X1 * D[:,c:c+1]
-            X1X2 = X1D.T.dot(X2)
-            A1A2 = np.outer(A1[:,c],A2[:,c])
-            block += SP.kron(A1A2,X1X2)
-                
-    return block

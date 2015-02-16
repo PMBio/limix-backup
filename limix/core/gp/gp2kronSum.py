@@ -169,7 +169,7 @@ class gp2kronSum(GP):
         self.Cg.params_have_changed = False
         self.Cn.params_have_changed = False
 
-    def LML(self,params=None,*kw_args):
+    def LML(self, params=None, identity_trick=False, *kw_args):
         """
         calculate LML
         """
@@ -181,13 +181,13 @@ class gp2kronSum(GP):
         start = TIME.time()
 
         #1. const term
-        lml  = self.N*self.P*SP.log(2*SP.pi)
+        lml  = self.N*self.P*SP.log(2.0*SP.pi)
 
         #2. logdet term
         lml += SP.sum(SP.log(self.cache['Sc2']))*self.N + SP.log(self.cache['s']).sum()
 
-        #3. quatratic term
-        lml += (self.mean.Zstar()*self.mean.DLZ()).sum()
+        #3. quadratic term
+        lml += (self.mean.Zstar(identity_trick=identity_trick)*self.mean.DLZ(identity_trick=identity_trick)).sum()
 
         if self.reml and self.mean.n_fixed_effs>0:
             #4. reml term

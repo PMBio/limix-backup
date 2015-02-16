@@ -94,9 +94,9 @@ if __name__ == "__main__":
     #association
     assoc = lmm.LmmKronecker(gp=gp)
     #signal snps
-    pv,LL_snps,LL_snps_0 = assoc.test_snps(snps)
+    pv,LL_snps,LL_snps_0,LL_new ,pv_new= assoc.test_snps(snps,identity_trick = True)
     #null snps
-    pv0,n_LL_snps0,LL_snps0_0 = assoc.test_snps(snps_0)
+    pv0,n_LL_snps0,LL_snps0_0,LL_new_0,pv_new_0 = assoc.test_snps(snps_0,identity_trick = True)
     
     if plot:
         import pylab as pl
@@ -109,10 +109,18 @@ if __name__ == "__main__":
         pl.plot(-SP.log(pv[i_pv]),-SP.log(pv0[i_pv0]),'.')
         pl.plot([0,8],[0,8])
 
-    if 1:
+        pv0_,n_LL_snps0_,LL_snps0_0_,LL_new_0_,pv_new_0_ = assoc.test_snps(snps_0,identity_trick = True)
+        pl.figure(); pl.plot(-SP.log(pv0_),-SP.log(pv0),'.')
+        pl.figure(); pl.plot(-SP.log(pv0_),-SP.log(pv0),'.')
+        pl.figure(); pl.plot(-SP.log(pv_new_0_),-SP.log(pv_new_0),'.')
+        pl.figure(); pl.plot(-SP.log(pv0_),-SP.log(pv_new_0),'.')
+        pl.figure(); pl.plot(-SP.log(pv),-SP.log(pv_new),'.')
+
+
+    if 0:
         #forward selection step
         assoc.addFixedEffect(F=snps[:,i_pv[0]:(i_pv[0]+1)],A=None)
-        pv_forw,LL_snps_forw,LL_snps_0_forw = assoc.test_snps(snps)
+        pv_forw,LL_snps_forw,LL_snps_0_forw,LL_new_forw = assoc.test_snps(snps,identity_trick = True)
         if plot:
             pl.figure()
             pl.plot(-SP.log(pv_forw),-SP.log(pv),'.')
