@@ -100,7 +100,7 @@ class pheno_reader_tables():
                 I = self.index_frame.query(phenotype_query).values[:,0]
             except Exception, arg:
                 
-                print "query '%s' yielded no results: %s"%phenotype_query, str(arg) 
+                print "query '%s' yielded no results: %s" % (phenotype_query, str(arg))
                                 
                 I = SP.zeros([0],dtype="int") 
         else:
