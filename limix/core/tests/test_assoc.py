@@ -11,6 +11,7 @@ except:
     mtSet_present = False
 
 from limix.core.mean import mean
+from limix.core.mean.mean_efficient import Mean
 from limix.core.gp import gp2kronSum as gp2kronSum
 
 from limix.core.covar import freeform 
@@ -27,11 +28,11 @@ import copy
 
 if __name__ == "__main__":
 
-    plot = True
+    plot = "plot" in sys.argv
 
     # generate data
     h2 = 0.999
-    N = 500; P = 1; S = 1000
+    N = 500; P = 2; S = 1000
     X = 1.*(SP.rand(N,S)<0.2)
     snps = 1.*(SP.rand(N,S)<0.2)
     snps_0 = 1.*(SP.rand(N,S)<0.2)
@@ -58,7 +59,7 @@ if __name__ == "__main__":
     F[:,0]=1.0
 
     # add second fixed effect
-    F2 = 1.*(SP.rand(N,3)<0.2); A2 = SP.ones((1,P))
+    F2 = 1.*(SP.rand(N,4)<0.2); A2 = SP.ones((1,P))
     
     mu.addFixedEffect(F=F,A=A)
     mu.addFixedEffect(F=F2,A=A2)
@@ -82,21 +83,22 @@ if __name__ == "__main__":
 
     if "ML" in sys.argv:
         gp.set_reml(False)
-
-    print "test optimization"
-    start = TIME.time()
-    conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-    print 'Reml GP:', TIME.time()-start
+    if 1:#optimizwe
+        print "test optimization"
+        start = TIME.time()
+        conv,info = OPT.opt_hyper(gp,params,factr=1e3)
+        print 'Reml GP:', TIME.time()-start
         
 
-    print conv
+        print conv
 
     #association
     assoc = lmm.LmmKronecker(gp=gp)
-    #signal snps
-    pv,LL_snps,LL_snps_0= assoc.test_snps(snps,identity_trick = True)
-    #null snps
-    pv0,n_LL_snps0,LL_snps0_0 = assoc.test_snps(snps_0,identity_trick = True)
+    if 0:
+        #signal snps
+        pv,LL_snps,LL_snps_0= assoc.test_snps(snps,identity_trick = True)
+        #null snps
+        pv0,n_LL_snps0,LL_snps0_0 = assoc.test_snps(snps_0,identity_trick = True)
     
     if plot:
         import pylab as pl
@@ -114,10 +116,46 @@ if __name__ == "__main__":
         pl.figure(); pl.plot(-SP.log(pv0_),-SP.log(pv0),'.')
 
     if 1:
+        lml0 = assoc._gp.LMLdebug()
+        lml1 = assoc._gp.LML()  
+        gp_ = assoc._gp
+        var_expl1,beta1 = assoc._gp.mean.var_explained()
+        
+
+        
+        var_expl1,beta1 = assoc._gp.mean.var_explained()
+        mu_ = Mean(Y)
+        mu_.addFixedEffect(F=F,A=A)
+        mu_.addFixedEffect(F=F2,A=A2)
+        gp_.setMean(mu_)
+        lml2 = gp_.LML()
+        var_expl2,beta_hat, beta_hat_any = assoc._gp.mean.var_explained()
+
+        mu__ = mean(Y,identity_trick=True)
+        mu__.addFixedEffect(F=F,A=A)
+        mu__.addFixedEffect(F=F2,A=A2)
+        gp_.setMean(mu__)
+        var_expl3,beta3 = assoc._gp.mean.var_explained()
+        print lml0
+        print lml1
+        print lml2
+
+    if 0:
         #forward selection step
         assoc.addFixedEffect(F=snps[:,i_pv[0]:(i_pv[0]+1)],A=None)
+        
+        if 1:#optimize
+            print "test optimization"
+            start = TIME.time()
+            conv,info = OPT.opt_hyper(assoc._gp,params,factr=1e3)
+            print 'Reml GP:', TIME.time()-start
+        
+
+        print conv
         pv_forw,LL_snps_forw,LL_snps_0_forw = assoc.test_snps(snps,identity_trick = True)
         if plot:
             pl.figure()
             pl.plot(-SP.log(pv_forw),-SP.log(pv),'.')
             pl.plot([0,8],[0,8])
+
+

@@ -66,6 +66,12 @@ class gp2kronSum(GP):
         """
         self.N, self.P = mean.getDimensions()
         self.mean = mean
+        if self.cache.has_key("d"):
+            self.mean.d = self.cache['d']
+        if self.cache.has_key("Lr"):
+            self.mean.Lr = self.cache['Lr']
+        if self.cache.has_key("Lc"):
+            self.mean.Lc = self.cache['Lc']
 
     def setY(self,Y):
         """
@@ -89,7 +95,8 @@ class gp2kronSum(GP):
         if SUnotNone:
             self.cache['Srstar'] = S_XX
             self.cache['Lr'] = U_XX.T
-            self.mean.setRowRotation(Lr=self.cache['Lr'])
+            raise NotImplementedError("self.mean.setRowRotation(Lr=self.cache['Lr'])#this function does not exist")
+            self.mean.setRowRotation(Lr=self.cache['Lr'])#this function does not exist 
             self.XX_has_changed = False
         else:
             self.XX = XX
@@ -169,7 +176,7 @@ class gp2kronSum(GP):
         self.Cg.params_have_changed = False
         self.Cn.params_have_changed = False
 
-    def LML(self, params=None, identity_trick=False, *kw_args):
+    def LML(self, params=None, *kw_args):
         """
         calculate LML
         """
@@ -187,8 +194,8 @@ class gp2kronSum(GP):
         lml += SP.sum(SP.log(self.cache['Sc2']))*self.N + SP.log(self.cache['s']).sum()
 
         #3. quadratic term
-        lml += (self.mean.Zstar(identity_trick=identity_trick)*self.mean.DLZ(identity_trick=identity_trick)).sum()
-
+        lml += self.mean.var_total() - self.mean.var_explained()[0]
+        
         if self.reml and self.mean.n_fixed_effs>0:
             #4. reml term
             lml += 2*SP.log(SP.diag(self.mean.Areml_chol())).sum()
