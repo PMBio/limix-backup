@@ -16,7 +16,7 @@ import pdb
 # should be a child class of combinator
 class cov3kronSum(covariance):
 
-    def __init__(self,C1=None,C2=None,Cn=None,R1=None,R2=None):
+    def __init__(self,C1=None,C2=None,Cn=None,R1=None,R2=None,gradient_method='lb',nIterMC=30):
         """
         initialization
         """
@@ -35,7 +35,14 @@ class cov3kronSum(covariance):
         self.setAB(0,0)
         self._calcNumberParams()
         self._initParams()
+        
+        self.gradient_method = 'lb'
+        self.nIterMC = nIterMC
+        self.drawZ()
 
+    def setGradientMethod(self,gradient_method):
+        self.gradient_method = gradient_method
+        
     def setParams(self,params):
         self.C1.setParams(params[:self.C1.getNumberParams()])
         self.C2.setParams(params[self.C1.getNumberParams():self.C1.getNumberParams()+self.C2.getNumberParams()])
@@ -44,7 +51,8 @@ class cov3kronSum(covariance):
         self.clear_cache('C1star','S_C1star','U_C1star')
         self.clear_cache('C2star','S_C2star','U_C2star')
         self.clear_cache('logdet','logdet_bound')
-
+        self.clear_cache('K','Kinv','solveKinvZ')
+        
     def setAB(self,a,b):
         self.a = a
         self.b = b
@@ -57,11 +65,15 @@ class cov3kronSum(covariance):
         self.R1 = R1
         self.clear_cache('S_R1','U_R1')
         self.clear_cache('logdet','logdet_bound')
+        self.clear_cache('K','Kinv','solveKinvZ')
+        self.clear_cache('R1Z')
 
     def setR2(self,R2):
         self.R2 = R2
         self.clear_cache('S_R2','U_R2')
         self.clear_cache('logdet','logdet_bound')
+        self.clear_cache('K','Kinv')
+        self.clear_cache('R2Z','solveKinvZ')
 
     def getParams(self):
         return SP.concatenate([self.C1.getParams(),self.C2.getParams(),self.Cn.getParams()])
@@ -69,12 +81,6 @@ class cov3kronSum(covariance):
     def _calcNumberParams(self):
         self.n_params = self.C1.getNumberParams()+self.C2.getNumberParams()+self.Cn.getNumberParams()
 
-    def K(self):
-        assert self.R2.shape[0]*self.C1.K().shape[0]<5000, 'dimension is too high'
-        RV = SP.kron(self.C1.K(),self.R1)
-        RV+= SP.kron(self.C2.K(),self.R2)
-        RV+= SP.kron(self.Cn.K(),SP.eye(self.N))
-        return RV
 
     def _Kx(self,x):
         """
@@ -96,10 +102,68 @@ class cov3kronSum(covariance):
         RV = SP.reshape(x,(self.N,self.P),order='F')
         return RV
 
+    def logdet_grad_1(self,i):
+        if self.gradient_method=='exact':
+            return self.logdet_exact_grad_1(i)
+        elif self.gradient_method=='lb':
+            return self.logdet_bound_grad_1(i)
+        elif self.gradient_method=='mc':
+            return self.logdet_mc_grad_1(i)
+        
+    def logdet_grad_2(self,i):
+        if self.gradient_method=='exact':
+            return self.logdet_exact_grad_2(i)
+        elif self.gradient_method=='lb':
+            return self.logdet_bound_grad_2(i)
+        elif self.gradient_method=='mc':
+            return self.logdet_mc_grad_2(i)
+
+    def logdet_grad_n(self,i):
+        if self.gradient_method=='exact':
+            return self.logdet_exact_grad_n(i)
+        elif self.gradient_method=='lb':
+            return self.logdet_bound_grad_n(i)
+        elif self.gradient_method=='mc':
+            return self.logdet_mc_grad_n(i)
+
+    ###########################
+    # exact computations
+    ##########################
+    
+    @cached
+    def K(self):
+        assert self.R2.shape[0]*self.C1.K().shape[0]<5000, 'dimension is too high'
+        RV = SP.kron(self.C1.K(),self.R1)
+        RV+= SP.kron(self.C2.K(),self.R2)
+        RV+= SP.kron(self.Cn.K(),SP.eye(self.N))
+        return RV
+
+    @cached
+    def Kinv(self):
+        return LA.inv(self.K())
+    
     @cached
     def logdet(self):
         S,U = LA.eigh(self.K())
         return SP.log(S).sum()
+    
+    def logdet_exact_grad_1(self,i):
+        assert self.R2.shape[0]*self.C1.K().shape[0]<5000, 'dimension is too high'
+        Kgrad_i = SP.kron(self.C1.Kgrad_param(i),self.R1)
+        return SP.sum(Kgrad_i*self.Kinv())
+       
+
+    def logdet_exact_grad_2(self,i):
+        assert self.R2.shape[0]*self.C1.K().shape[0]<5000, 'dimension is too high'
+        Kgrad_i = SP.kron(self.C2.Kgrad_param(i),self.R2)
+        return SP.sum(Kgrad_i*self.Kinv())
+     
+
+    def logdet_exact_grad_n(self,i):
+        assert self.R2.shape[0]*self.C1.K().shape[0]<5000, 'dimension is too high'
+        Kgrad_i = SP.kron(self.Cn.Kgrad_param(i),SP.eye(self.N))
+        return SP.sum(Kgrad_i*self.Kinv())
+        
 
 
     ###########################
@@ -438,11 +502,12 @@ class cov3kronSum(covariance):
                     ld_min = value
                     a_best = values[ai]
                     b_best = values[bi]
-        import pylab as PL
-        PL.ion()
-        A[A==SP.inf] = 0
-        PL.imshow(A)
-        PL.colorbar()
+        if 0:
+            import pylab as PL
+            PL.ion()
+            A[A==SP.inf] = 0
+            PL.imshow(A)
+            PL.colorbar()
         self.setAB(a_best,b_best)
 
     def optimizeABgrad(self):
@@ -536,3 +601,53 @@ class cov3kronSum(covariance):
         self.setAB(self.a,b)
         return RV
 
+
+    
+
+    ###########################
+    # Monte Carlo Trace Approximation
+    ##########################
+    
+    def set_nIterMC(self,nIterMC):
+        self.nIterMC = nIterMC
+        
+    def drawZ(self,seed=0):
+        rs = SP.random.RandomState(seed)
+        self.Z  = rs.randn(self.nIterMC,self.N,self.P)
+        self.KinvZ = SP.zeros((self.nIterMC,self.N,self.P))
+        self.clear_cache('R1Z','R2Z','solveKinvZ')
+
+    @cached
+    def R1Z(self):
+        return SP.transpose(SP.tensordot(self.R1,self.Z,axes=(1,1)),axes=(1,0,2))
+
+    @cached
+    def R2Z(self):
+        return SP.transpose(SP.tensordot(self.R2,self.Z,axes=(1,1)),axes=(1,0,2))
+
+    @cached 
+    def solveKinvZ(self):
+        for j in range(self.nIterMC):
+            self.KinvZ[j] = self.solve(self.Z[j],X0=self.KinvZ[j])
+        return self.KinvZ
+    
+    def logdet_mc_grad_1(self,i):
+        grad = SP.zeros(self.nIterMC)
+        KgradZ = SP.dot(self.R1Z(),self.C1.Kgrad_param(i))
+        KinvZ = self.solveKinvZ()
+        return SP.sum(KgradZ*KinvZ)/self.nIterMC
+    
+    def logdet_mc_grad_2(self,i):
+        grad = SP.zeros(self.nIterMC)
+        KinvZ = self.solveKinvZ()
+        KgradZ = SP.dot(self.R2Z(),self.C2.Kgrad_param(i))
+        return SP.sum(KgradZ*KinvZ)/self.nIterMC
+     
+    def logdet_mc_grad_n(self,i):
+        grad = SP.zeros(self.nIterMC)
+        KgradZ =  SP.dot(self.Z,self.Cn.Kgrad_param(i))
+        KinvZ = self.solveKinvZ()
+        return SP.sum(KgradZ*KinvZ)/self.nIterMC
+        
+    
+        

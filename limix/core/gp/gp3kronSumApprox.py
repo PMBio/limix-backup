@@ -2,6 +2,7 @@ import sys
 sys.path.insert(0,'./../../..')
 from gp_base import GP
 from limix.core.covar.cov3kronSum import cov3kronSum
+from limix.core.covar import freeform
 import pdb
 import numpy as NP
 import scipy as SP
@@ -42,6 +43,7 @@ class gp3kronSumApprox(GP):
         self.cache = {} 
         self.params = None
 
+  
     def getParams(self):
         """
         get hper parameters
@@ -73,9 +75,6 @@ class gp3kronSumApprox(GP):
         cov_params_have_changed = self.K.C1.params_have_changed or self.K.C2.params_have_changed or self.K.Cn.params_have_changed
 
         if 'KiY' not in self.cache or self.R2_has_changed:
-            #D = SP.reshape(self.K.D(),(self.N,self.P), order='F')
-            #DLY = D*SP.dot(self.K.Lr(),SP.dot(self.Y,self.K.Lc().T))
-            #self.cache['KiY'] = SP.dot(self.K.Lr().T,SP.dot(DLY,self.K.Lc()))
             self.cache['KiY'] = 1e-3*SP.randn(self.N,self.P)
 
         if cov_params_have_changed or self.R2_has_changed or self.R1_has_changed:
@@ -167,13 +166,13 @@ class gp3kronSumApprox(GP):
             start = TIME.time()
             if covar=='C1':
                 C = self.K.C1.Kgrad_param(i);
-                logdetGrad = self.K.logdet_bound_grad_1(i)
+                logdetGrad = self.K.logdet_grad_1(i)
             elif covar=='C2':
                 C = self.K.C2.Kgrad_param(i);
-                logdetGrad = self.K.logdet_bound_grad_2(i)
+                logdetGrad = self.K.logdet_grad_2(i)
             elif covar=='Cn':
                 C = self.K.Cn.Kgrad_param(i)
-                logdetGrad = self.K.logdet_bound_grad_n(i)
+                logdetGrad = self.K.logdet_grad_n(i)
             self.time[4] += TIME.time() - start
             
             #1. der of logdet grad 
@@ -189,5 +188,7 @@ class gp3kronSumApprox(GP):
             RV[i] *= 0.5
         
         return RV
+
+
 
 
