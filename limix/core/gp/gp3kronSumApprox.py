@@ -75,11 +75,11 @@ class gp3kronSumApprox(GP):
         cov_params_have_changed = self.K.C1.params_have_changed or self.K.C2.params_have_changed or self.K.Cn.params_have_changed
 
         if 'KiY' not in self.cache or self.R2_has_changed:
-            self.cache['KiY'] = 1e-3*SP.randn(self.N,self.P)
+            self.cache['KiY0'] = 1e-3*SP.randn(self.N,self.P)
 
         if cov_params_have_changed or self.R2_has_changed or self.R1_has_changed:
             start = TIME.time()
-            self.cache['KiY'] = self.K.solve(self.Y,X0=self.cache['KiY'],tol=self.tol) 
+            self.cache['KiY'],self.cache['KiY0'] = self.K.solve(self.Y,X0=self.cache['KiY0'],tol=self.tol) 
             self.time[2]+=TIME.time()-start
         
         self.R2_has_changed = False
