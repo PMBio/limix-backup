@@ -559,6 +559,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter
         lm.setCovs(covs)
         lm.process()
         pv = lm.getPv().ravel()
+        pv[sp.isnan(pv)] = 1
         pvall.append(pv)
         imin= pv.argmin()
         if qvalues:
