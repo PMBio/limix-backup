@@ -37,15 +37,15 @@ def compute_X1KX2(Y, D, X1, X2, A1=None, A2=None):
     block = np.zeros((rows_block,cols_block))
 
 
-    if R>C or A1 is None or A2 is None:
+    if (R>C) or (A1 is None) or (A2 is None):
         for c in xrange(C):
             X1D = X1 * D[:,c:c+1]
             X1X2 = X1D.T.dot(X2)
-            if A1 is None and A2 is None:
+            if (A1 is None) and (A2 is None):
                 block[c*X1.shape[1]:(c+1)*X1.shape[1], c*X2.shape[1]:(c+1)*X2.shape[1]] += X1X2
-            elif A1 is None:
+            elif (A1 is None):
                 block[c*X1.shape[1]:(c+1)*X1.shape[1],:] += np.kron(A2[:,c:c+1].T,X1X2)
-            elif A2 is None:
+            elif (A2 is None):
                 block[:,c*X2.shape[1]:(c+1)*X2.shape[1]] += np.kron(A1[:,c:c+1],X1X2)
             else:
                 A1A2 = np.outer(A1[:,c],A2[:,c])

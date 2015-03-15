@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     #association
     assoc = lmm.LmmKronecker(gp=gp)
-    if 0:
+    if 1:
         #signal snps
         pv,LL_snps,LL_snps_0= assoc.test_snps(snps,identity_trick = True)
         #null snps
@@ -136,7 +136,7 @@ if __name__ == "__main__":
         mu__.addFixedEffect(F=F2,A=A2)
         gp_.setMean(mu__)
         var_expl3,beta3 = assoc._gp.mean.var_explained()
-        print lml0
+        print lml0#complete garbage
         print lml1
         print lml2
 

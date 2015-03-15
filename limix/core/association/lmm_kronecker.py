@@ -55,6 +55,136 @@ class LmmKronecker(cObject):
         return LL_snps,LL_snps_0
 
 
+    def LML_snps_blockwise_any_multisnp(self, snps ):
+        """
+        calculate LML
+        The beta of the SNP tested is computed using blockwise matrix inversion.
+        """
+        self._gp._update_cache()
+        
+        #1. const term
+        lml  = self._gp.N*self._gp.P*np.log(2.0*np.pi)
+
+        #2. logdet term
+        lml += np.sum(np.log(self._gp.cache['Sc2']))*self._gp.N + np.log(self._gp.cache['s']).sum()
+
+        #3. quadratic term
+        XKY = self._gp.mean.compute_XKY(M=self._gp.mean.Yhat())
+        beta = self._gp.mean.Areml_solve(XKY)
+        var_total = (self._gp.mean.Yhat()*self._gp.mean.Ystar()).sum()
+        var_expl_cov = (XKY*beta).sum()
+        
+        
+        #use blockwise matrix inversion
+        #[  Areml,          XcovarXsnp
+        #   XcovarXsnp.T    XsnpXsnp    ]
+        var_expl_snp = np.zeros((snps.shape[1]))
+        var_expl_up = 0.0
+
+        #trivially parallelizable:
+        for p in xrange(self._gp.P):
+            Dsnps = snps * D[:,c:c+1]
+            XsnpKXsnp = (Dsnps * snps).sum(0)
+            XcovarXsnp = np.zeros((self._gp.mean.dof,snps.shape[1]))
+            start = 0
+            if 0:
+                for term in xrange(self._gp.mean.len):
+                    n_effs_term = self._gp.mean.Fstar()[term].shape[1]
+            
+                    Astar_term = self._gp.mean.Astar()[term]
+                    n_effs_term *= Astar_term.shape[0]
+                    stop = start + n_effs_term
+                    block = self._gp.mean.Fstar()[term].T.dot(Dsnps)
+                    block = np.kron(A2[:,c:c+1],block)
+                    XcovarXsnp[start:stop,:] = block
+                    start=stop
+            XanyXsnp = self._gp.mean.Fstar_any.T.dot(Dsnps)
+
+            #For any effect covariates perform low rank update for each phenotype
+            
+            #compute DiC:
+            DiC = self._gp.mean.Areml_solver.solve(b_any=XanyXsnp,p=p)
+
+            #compute the Schur complement:
+            up_schur = (XanyXsnp * DiC).sum(0)
+            schur = XsnpKXsnp - up_schur
+            
+            beta_snp = (XsnpKY - DiC.T.dot(XKY)) / schur
+            beta_up = DiC.T.dot(beta_snp)
+
+            var_expl_snp += (XsnpKY * beta_snp)
+            var_expl_up += (XKY * beta_up).sum()
+
+        var_res = var_total - var_expl_snp - var_expl_cov - var_expl_up
+        
+        lml += var_res
+        lml *= 0.5
+            
+        return lml,beta_all
+
+    def LML_snps_blockwise_any_singlesnp(self, snp ):
+        """
+        calculate LML
+        The beta of the SNP tested is computed using blockwise matrix inversion.
+        """
+        self._gp._update_cache()
+        
+        #1. const term
+        lml  = self._gp.N*self._gp.P*np.log(2.0*np.pi)
+
+        #2. logdet term
+        lml += np.sum(np.log(self._gp.cache['Sc2']))*self._gp.N + np.log(self._gp.cache['s']).sum()
+
+        #3. quadratic term
+        XKY = self._gp.mean.compute_XKY(M=self._gp.mean.Yhat())
+        beta = self._gp.mean.Areml_solve(XKY)
+        var_total = (self._gp.mean.Yhat()*self._gp.mean.Ystar()).sum()
+        var_expl_cov = (XKY*beta).sum()
+        
+        
+        #use blockwise matrix inversion
+        #[  Areml,          XcovarXsnp
+        #   XcovarXsnp.T    XsnpXsnp    ]
+        Dsnp = snp * D
+        XsnpKXsnp = (Dsnp * snp).sum(0)
+        XcovarXsnp = np.zeros((self._gp.mean.dof,snps.shape[1]))
+        start = 0
+        if 0:
+            for term in xrange(self._gp.mean.len):
+                n_effs_term = self._gp.mean.Fstar()[term].shape[1]
+            
+                Astar_term = self._gp.mean.Astar()[term]
+                n_effs_term *= Astar_term.shape[0]
+                stop = start + n_effs_term
+                block = self._gp.mean.Fstar()[term].T.dot(Dsnps)
+                block = np.kron(A2[:,c:c+1],block)
+                XcovarXsnp[start:stop,:] = block
+                start=stop
+        XanyXsnp = self._gp.mean.Fstar_any.T.dot(Dsnps)
+        XKXsnp = XXX
+        #For any effect covariates perform low rank update for each phenotype
+            
+        #compute DiC:
+        DiC = self._gp.mean.Areml_solver.solve(b_any=XanyXsnp)
+
+        #compute the Schur complement:
+        up_schur = XanyXsnp.T.dot(DiC)
+        schur = XsnpKXsnp - up_schur
+            
+        beta_snp = (XsnpKY - DiC.T.dot(XKY)) / schur
+        beta_up = DiC.T.dot(beta_snp)
+
+        var_expl_snp = (XsnpKY * beta_snp).sum()
+        var_expl_up = (XKY * beta_up).sum()
+
+        var_res = var_total - var_expl_snp - var_expl_cov - var_expl_up
+        
+        lml += var_res
+        lml *= 0.5
+            
+        return lml,beta_all
+
+
     def LML_blockwise(self, snp, Asnp=None, *kw_args):
         """
         calculate LML
@@ -107,7 +237,7 @@ class LmmKronecker(cObject):
         XsnpXsnp_ = XsnpXsnp - XcovarXsnp.T.dot(AXcovarXsnp)
         
         #compute a
-        snpKY = compute_XYA(DY=self._gp.mean.Yhat(), X=snp, A=Asnp).ravel(order='F')[:,np.newaxis]
+        snpKY = compute_XYA(DY=self._gp.mean.Yhat(), X=snp, A=Asnp).ravel(order='F')
         
 
         XsnpXsnp_solver = psd_solve.psd_solver(XsnpXsnp_, lower=True, threshold=1e-10,check_finite=True,overwrite_a=False)

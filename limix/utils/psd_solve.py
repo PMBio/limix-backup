@@ -44,16 +44,19 @@ class psd_solver_any(object):
         for p in xrange(A.shape[0]):
             self.solver.append(psd_solver(A[p]))
 
-    def solve(self,b,overwrite_b=False,check_finite=True):
+    def solve(self,b,overwrite_b=False,check_finite=True, p=None):
         """
         solve A \ b
         """
-        assert b.shape[:2]==(len(self.solver),self.dof_any)
-        solution = np.empty(b.shape)
-        #This is trivially parallelizable:
-        for p in xrange(self.P):
-            solution[p] = self.solver[p].solve(b=b[p])
-        return solution
+        if p is None:
+            assert b.shape[:2]==(len(self.solver),self.dof_any)
+            solution = np.empty(b.shape)
+            #This is trivially parallelizable:
+            for p in xrange(self.P):
+                solution[p] = self.solver[p].solve(b=b[p])
+            return solution
+        else:
+            return self.solver[p].solve(b=b)
 
 class PsdSolverKron(object):
     """
@@ -81,7 +84,7 @@ class PsdSolverKron(object):
             self.schur_solver = psd_solver(A=A, lower=lower, threshold=threshold,check_finite=check_finite,overwrite_a=overwrite_a)
           
 
-    def solve(self, b_any, b, check_finite=True):
+    def solve(self, b_any, b, check_finite=True, p=None):
         """
         solve A \ b
         """
@@ -93,15 +96,16 @@ class PsdSolverKron(object):
             return b, b_any
         elif self.schur_solver is None:
             assert (b is None) or (b.shape[0]==0), "shape missmatch"
-            solution_any = self.A_any_solver.solve(b_any)
+            solution_any = self.A_any_solver.solve(b=b_any,p=p)
             return b,solution_any
         elif self.A_any_solver is None:
             assert (b_any is None) or (b_any.shape[0]==0), "shape missmatch"
-            solution = self.schur_solver.solve(b)
+            solution = self.schur_solver.solve(b=b, check_finite=check_finite)
             return solution, b_any
         else:
+            assert p is None, "p is not None"
             cross_term = np.tensordot(self.DinvC,b_any,axes=([0,1],[0,1]))
-            solution = self.schur_solver.solve(b - cross_term)
-            solution_any = self.A_any_solver.solve(b_any)
+            solution = self.schur_solver.solve(b=(b - cross_term), check_finite=check_finite)
+            solution_any = self.A_any_solver.solve(b=b_any, check_finite=check_finite, p=p)
             solution_any -= self.DinvC.dot(solution)
             return solution, solution_any
