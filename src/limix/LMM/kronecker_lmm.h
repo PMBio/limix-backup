@@ -143,7 +143,7 @@ public:
 	{
 		(*out) = ldelta0_inter;
 	}
-    void agetBetaAlt(MatrixXd *out){
+    void agetBeta(MatrixXd *out){
         (*out) = W;
     };
     

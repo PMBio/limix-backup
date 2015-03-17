@@ -6,7 +6,6 @@ import limix
 import data
 import os
 
-
 class CKroneckerLMM_test(unittest.TestCase):
     """test class for CLMM"""
 
