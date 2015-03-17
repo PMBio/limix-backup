@@ -9,7 +9,7 @@ import os
 
 class CKroneckerLMM_test(unittest.TestCase):
     """test class for CLMM"""
-    
+
     def setUp(self):
         self.datasets = ['lmm_data1']
         self.dir_name = os.path.dirname(__file__)
@@ -29,13 +29,13 @@ class CKroneckerLMM_test(unittest.TestCase):
             Xcov  = D['Cov'][:,SP.newaxis]
             X      = D['X']
             Y      = D['Y'][:,SP.newaxis]
-                        
+
             lmm = limix.CKroneckerLMM()
             lmm.setK1r(K1r)
             lmm.setK1c(K1c)
             lmm.setK2r(K2r)
             lmm.setK2c(K2c)
-            
+
             lmm.setSNPs(X)
             #add covariates
             lmm.addCovariates(Xcov,Acov)
@@ -44,7 +44,7 @@ class CKroneckerLMM_test(unittest.TestCase):
             lmm.setPheno(Y)
             lmm.setNumIntervalsAlt(0)
             lmm.setNumIntervals0(100)
-            
+
             lmm.process()
             pv = lmm.getPv().ravel()
             D2= ((SP.log10(pv)-SP.log10(D['pv']))**2)
@@ -79,13 +79,13 @@ class CKroneckerLMM_test(unittest.TestCase):
             X      = D['X']
             Y      = D['Y'][:,SP.newaxis]
             Y      = SP.tile(Y,(1,P))
-                        
+
             lmm = limix.CKroneckerLMM()
             lmm.setK1r(K1r)
             lmm.setK1c(K1c)
             lmm.setK2r(K2r)
             lmm.setK2c(K2c)
-            
+
             lmm.setSNPs(X)
             #add covariates
             lmm.addCovariates(Xcov,Acov)
@@ -94,9 +94,9 @@ class CKroneckerLMM_test(unittest.TestCase):
             lmm.setPheno(Y)
             lmm.setNumIntervalsAlt(0)
             lmm.setNumIntervals0(100)
-            
+
             lmm.process()
-            
+
             #get p-values with P-dof:
             pv_Pdof = lmm.getPv().ravel()
             #transform in P-values with a single DOF:
