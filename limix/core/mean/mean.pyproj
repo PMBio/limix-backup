@@ -28,6 +28,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="mean.py" />
+    <Compile Include="mean_efficient.py" />
     <Compile Include="mean_old.py" />
     <Compile Include="__init__.py" />
   </ItemGroup>

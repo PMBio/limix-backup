@@ -16,7 +16,7 @@ import pdb
 # should be a child class of combinator
 class cov3kronSum(covariance):
 
-    def __init__(self,C1=None,C2=None,Cn=None,R1=None,R2=None):
+    def __init__(self,C1=None,C2=None,Cn=None,R1=None,R2=None,gradient_method='lb',nIterMC=30,tol=1E-3,linsys_method='rot'):
         """
         initialization
         """
@@ -36,6 +36,21 @@ class cov3kronSum(covariance):
         self._calcNumberParams()
         self._initParams()
 
+        self.tol = tol
+        self.gradient_method = 'lb'
+        self.linsys_method   = 'std'
+        self.nIterMC = nIterMC
+        self.drawZ()
+
+    def setGradientMethod(self,gradient_method):
+        self.gradient_method = gradient_method
+
+    def setLinSysMethod(self,linsys_method):
+        self.linsys_method = linsys_method
+
+    def setTolerance(self,tolerance):
+        self.tolerance = tolerance
+        
     def setParams(self,params):
         self.C1.setParams(params[:self.C1.getNumberParams()])
         self.C2.setParams(params[self.C1.getNumberParams():self.C1.getNumberParams()+self.C2.getNumberParams()])
@@ -43,8 +58,14 @@ class cov3kronSum(covariance):
         self.clear_cache('C3','S_C3','U_C3','USi2_C3')
         self.clear_cache('C1star','S_C1star','U_C1star')
         self.clear_cache('C2star','S_C2star','U_C2star')
-        self.clear_cache('logdet','logdet_bound')
 
+        self.clear_cache('Cn','S_Cn','U_Cn','USi2_Cn')
+        self.clear_cache('C1star_n','S_C1star_n','U_C1star_n')
+        self.clear_cache('C2star_n','S_C2star_n','U_C2star_n')
+        
+        self.clear_cache('logdet','logdet_bound')
+        self.clear_cache('K','Kinv','solveKinvZ')
+        
     def setAB(self,a,b):
         self.a = a
         self.b = b
@@ -57,11 +78,15 @@ class cov3kronSum(covariance):
         self.R1 = R1
         self.clear_cache('S_R1','U_R1')
         self.clear_cache('logdet','logdet_bound')
+        self.clear_cache('K','Kinv','solveKinvZ')
+        self.clear_cache('R1Z','UR2t_R1_UR2')
 
     def setR2(self,R2):
         self.R2 = R2
         self.clear_cache('S_R2','U_R2')
         self.clear_cache('logdet','logdet_bound')
+        self.clear_cache('K','Kinv','solveKinvZ')
+        self.clear_cache('R2Z','UR2t_R1_UR2')
 
     def getParams(self):
         return SP.concatenate([self.C1.getParams(),self.C2.getParams(),self.Cn.getParams()])
@@ -69,12 +94,6 @@ class cov3kronSum(covariance):
     def _calcNumberParams(self):
         self.n_params = self.C1.getNumberParams()+self.C2.getNumberParams()+self.Cn.getNumberParams()
 
-    def K(self):
-        assert self.R2.shape[0]*self.C1.K().shape[0]<5000, 'dimension is too high'
-        RV = SP.kron(self.C1.K(),self.R1)
-        RV+= SP.kron(self.C2.K(),self.R2)
-        RV+= SP.kron(self.Cn.K(),SP.eye(self.N))
-        return RV
 
     def _Kx(self,x):
         """
@@ -87,19 +106,124 @@ class cov3kronSum(covariance):
         b = SP.reshape(B,(self.N*self.P),order='F')
         return b
 
-    def solve(self,Y,X0=None,tol=1E-9):
+    def _KxRot(self,x):
+        """
+        compute Krot x
+        """
+
+        #TODO: put Cstar in a separate function
+        Cstar = SP.dot(self.U_C2star_n().T,SP.dot(self.C1star_n(),self.U_C2star_n()))
+        X = SP.reshape(x,(self.N,self.P),order='F')
+        Y = SP.dot(self.UR2t_R1_UR2(),SP.dot(X,Cstar.T))
+        Y+= self.S_C2star_n()*(X.T*self.S_R2()).T
+        Y+= X
+        y = SP.reshape(Y,(self.N*self.P),order='F')
+        return y
+    
+    def solve(self,Y,X0=None,tol=None):
+        if self.linsys_method=='std':
+            # no rotation is used
+            return self.solve_std(Y,X0=X0,tol=tol)
+        elif self.linsys_method=='rot':
+            # rotating out one component
+            return self.solve_rot(Y,X0=X0,tol=tol)
+            
+
+    def solve_rot(self,Y,X0=None,tol=None):
+        """ solve lin system Ki Y = X by whitening out first """
+        if tol is None: tol = self.tol
+  
+        Kx_linop = SLA.LinearOperator((self.N*self.P,self.N*self.P),matvec=self._KxRot,rmatvec=self._Kx,dtype='float64')
+        x0 = SP.reshape(X0,(self.N*self.P),order='F')
+
+        # rotate input
+        # TODO: put Cstar in a separate function
+        Cstar = SP.dot(self.USi2_Cn(),self.U_C2star_n())
+
+        # TODO: ideally, we would like to precompute U_R2*Y for certain Ys
+        Yrot = SP.dot(self.U_R2().T,SP.dot(Y,Cstar))
+
+        # solve linear system
+        yrot = SP.reshape(Yrot,(self.N*self.P),order='F')
+        ytilde,_ = SLA.cgs(Kx_linop,yrot,x0=x0,tol=self.tol)
+        Ytilde = SP.reshape(ytilde,(self.N,self.P),order='F')
+
+        # rotate output
+        RV = SP.dot(self.U_R2(),SP.dot(Ytilde,Cstar.T))
+        return RV,Ytilde
+    
+    def solve_std(self,Y,tol=None,X0=None):
         """ solve lin system Ki Y = X """
+        if tol is None: tol = self.tol
         Kx_linop = SLA.LinearOperator((self.N*self.P,self.N*self.P),matvec=self._Kx,rmatvec=self._Kx,dtype='float64')
         x0 = SP.reshape(X0,(self.N*self.P),order='F')
         y  = SP.reshape(Y,(self.N*self.P),order='F')
-        x,_ = SLA.cgs(Kx_linop,y,x0=x0,tol=tol)
+        x,_ = SLA.cgs(Kx_linop,y,x0=x0,tol=self.tol)
         RV = SP.reshape(x,(self.N,self.P),order='F')
+        return RV,RV
+
+    def logdet_grad_1(self,i):
+        if self.gradient_method=='exact':
+            return self.logdet_exact_grad_1(i)
+        elif self.gradient_method=='lb':
+            return self.logdet_bound_grad_1(i)
+        elif self.gradient_method=='mc':
+            return self.logdet_mc_grad_1(i)
+        
+    def logdet_grad_2(self,i):
+        if self.gradient_method=='exact':
+            return self.logdet_exact_grad_2(i)
+        elif self.gradient_method=='lb':
+            return self.logdet_bound_grad_2(i)
+        elif self.gradient_method=='mc':
+            return self.logdet_mc_grad_2(i)
+
+    def logdet_grad_n(self,i):
+        if self.gradient_method=='exact':
+            return self.logdet_exact_grad_n(i)
+        elif self.gradient_method=='lb':
+            return self.logdet_bound_grad_n(i)
+        elif self.gradient_method=='mc':
+            return self.logdet_mc_grad_n(i)
+
+    ###########################
+    # exact computations
+    ##########################
+    
+    @cached
+    def K(self):
+        assert self.R2.shape[0]*self.C1.K().shape[0]<5000, 'dimension is too high'
+        RV = SP.kron(self.C1.K(),self.R1)
+        RV+= SP.kron(self.C2.K(),self.R2)
+        RV+= SP.kron(self.Cn.K(),SP.eye(self.N))
         return RV
 
+    @cached
+    def Kinv(self):
+        return LA.inv(self.K())
+    
     @cached
     def logdet(self):
         S,U = LA.eigh(self.K())
         return SP.log(S).sum()
+    
+    def logdet_exact_grad_1(self,i):
+        assert self.R2.shape[0]*self.C1.K().shape[0]<5000, 'dimension is too high'
+        Kgrad_i = SP.kron(self.C1.Kgrad_param(i),self.R1)
+        return SP.sum(Kgrad_i*self.Kinv())
+       
+
+    def logdet_exact_grad_2(self,i):
+        assert self.R2.shape[0]*self.C1.K().shape[0]<5000, 'dimension is too high'
+        Kgrad_i = SP.kron(self.C2.Kgrad_param(i),self.R2)
+        return SP.sum(Kgrad_i*self.Kinv())
+     
+
+    def logdet_exact_grad_n(self,i):
+        assert self.R2.shape[0]*self.C1.K().shape[0]<5000, 'dimension is too high'
+        Kgrad_i = SP.kron(self.Cn.Kgrad_param(i),SP.eye(self.N))
+        return SP.sum(Kgrad_i*self.Kinv())
+        
 
 
     ###########################
@@ -130,11 +254,34 @@ class cov3kronSum(covariance):
         self.fill_cache('S_R2',S)
         return U
 
+    @cached
+    def UR2t_R1_UR2(self):
+        return SP.dot(self.U_R2().T,SP.dot(self.R1,self.U_R2()))
 
+    ###########################
+    # Cn
+    ##########################
+
+    @cached
+    def S_Cn(self):
+        S,U = LA.eigh(self.Cn.K())
+        self.fill_cache('U_Cn',U)
+        return S
+
+    @cached
+    def U_Cn(self):
+        S,U = LA.eigh(self.Cn.K())
+        self.fill_cache('S_Cn',S)
+        return U
+
+    @cached
+    def USi2_Cn(self):
+        return self.U_Cn()*self.S_Cn()**(-0.5)   
+    
     ###########################
     # C3
     ##########################
-
+    
     @cached
     def C3(self):
         return self.Cn.K()+self.a*self.C1.K()+self.b*self.C2.K() 
@@ -223,7 +370,23 @@ class cov3kronSum(covariance):
     ###########################
     # C1star
     ##########################
+    @cached
+    def C1star_n(self):
+        return SP.dot(self.USi2_Cn().T,SP.dot(self.C1.K(),self.USi2_Cn()))
 
+    @cached
+    def S_C1star_n(self):
+        S,U = LA.eigh(self.C1star_n())
+        self.fill_cache('U_C1star_n',U)
+        return S
+
+    @cached
+    def U_C1star_n(self):
+        S,U = LA.eigh(self.C1star_n())
+        self.fill_cache('S_C1star_n',S)
+        return U
+
+    
     @cached
     def C1star(self):
         return SP.dot(self.USi2_C3().T,SP.dot(self.C1.K(),self.USi2_C3()))
@@ -284,7 +447,23 @@ class cov3kronSum(covariance):
     ###########################
     # C2star
     ##########################
+    @cached
+    def C2star_n(self):
+        return SP.dot(self.USi2_Cn().T,SP.dot(self.C2.K(),self.USi2_Cn()))
 
+    @cached
+    def S_C2star_n(self):
+        S,U = LA.eigh(self.C2star_n())
+        self.fill_cache('U_C2star_n',U)
+        return S
+
+    @cached
+    def U_C2star_n(self):
+        S,U = LA.eigh(self.C2star_n())
+        self.fill_cache('S_C2star_n',S)
+        return U
+
+    
     @cached
     def C2star(self):
         return SP.dot(self.USi2_C3().T,SP.dot(self.C2.K(),self.USi2_C3()))
@@ -438,11 +617,12 @@ class cov3kronSum(covariance):
                     ld_min = value
                     a_best = values[ai]
                     b_best = values[bi]
-        import pylab as PL
-        PL.ion()
-        A[A==SP.inf] = 0
-        PL.imshow(A)
-        PL.colorbar()
+        if 0:
+            import pylab as PL
+            PL.ion()
+            A[A==SP.inf] = 0
+            PL.imshow(A)
+            PL.colorbar()
         self.setAB(a_best,b_best)
 
     def optimizeABgrad(self):
@@ -536,3 +716,51 @@ class cov3kronSum(covariance):
         self.setAB(self.a,b)
         return RV
 
+
+    
+
+    ###########################
+    # Monte Carlo Trace Approximation
+    ##########################
+    
+    def set_nIterMC(self,nIterMC):
+        self.nIterMC = nIterMC
+        
+    def drawZ(self,seed=0):
+        rs = SP.random.RandomState(seed)
+        self.Z  = rs.randn(self.nIterMC,self.N,self.P)
+        self.KinvZ  = SP.zeros((self.nIterMC,self.N,self.P))
+        self.KinvZ0 = SP.zeros((self.nIterMC,self.N,self.P))
+        self.clear_cache('R1Z','R2Z','solveKinvZ')
+
+    @cached
+    def R1Z(self):
+        return SP.transpose(SP.tensordot(self.R1,self.Z,axes=(1,1)),axes=(1,0,2))
+
+    @cached
+    def R2Z(self):
+        return SP.transpose(SP.tensordot(self.R2,self.Z,axes=(1,1)),axes=(1,0,2))
+
+    @cached 
+    def solveKinvZ(self):
+        for j in range(self.nIterMC):
+            self.KinvZ[j],self.KinvZ0[j] = self.solve(self.Z[j],X0=self.KinvZ0[j])
+        return self.KinvZ
+    
+    def logdet_mc_grad_1(self,i):
+        KgradZ = SP.dot(self.R1Z(),self.C1.Kgrad_param(i))
+        KinvZ = self.solveKinvZ()
+        return SP.sum(KgradZ*KinvZ)/self.nIterMC
+    
+    def logdet_mc_grad_2(self,i):
+        KinvZ = self.solveKinvZ()
+        KgradZ = SP.dot(self.R2Z(),self.C2.Kgrad_param(i))
+        return SP.sum(KgradZ*KinvZ)/self.nIterMC
+     
+    def logdet_mc_grad_n(self,i):
+        KgradZ =  SP.dot(self.Z,self.Cn.Kgrad_param(i))
+        KinvZ = self.solveKinvZ()
+        return SP.sum(KgradZ*KinvZ)/self.nIterMC
+        
+    
+        

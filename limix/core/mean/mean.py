@@ -2,18 +2,69 @@ import sys
 sys.path.insert(0,'./../../..')
 from limix.core.cobj import * 
 from limix.utils.preprocess import regressOut
-import scipy as SP
+#import scipy as SP
 import numpy as np
 		    
 import scipy.linalg as LA
 import copy
 import pdb
 
+def compute_X1KX2(Y, D, X1, X2, A1=None, A2=None):
+    #import ipdb; ipdb.set_trace()
+    R,C = Y.shape
+    if A1 is None:
+        nW_A1 = Y.shape[1]			
+        #A1 = np.eye(Y.shape[1])	#for now this creates A1 and A2
+    else:
+        nW_A1 = A1.shape[0]
+
+    if A2 is None:
+        nW_A2 = Y.shape[1]
+        #A2 = np.eye(Y.shape[1])	#for now this creates A1 and A2
+    else:
+        nW_A2 = A2.shape[0]
+        	
+
+    nW_X1 = X1.shape[1]
+    rows_block = nW_A1 * nW_X1
+
+    if 0:#independentX2:
+        nW_X2 = 1
+    else:
+        nW_X2 = X2.shape[1]
+    cols_block = nW_A2 * nW_X2
+    	
+    block = np.zeros((rows_block,cols_block))
+
+
+    if (R>C) or (A1 is None) or (A2 is None):
+        for c in xrange(C):
+            X1D = X1 * D[:,c:c+1]
+            X1X2 = X1D.T.dot(X2)
+            if (A1 is None) and (A2 is None):
+                block[c*X1.shape[1]:(c+1)*X1.shape[1], c*X2.shape[1]:(c+1)*X2.shape[1]] += X1X2
+            elif (A1 is None):
+                block[c*X1.shape[1]:(c+1)*X1.shape[1],:] += np.kron(A2[:,c:c+1].T,X1X2)
+            elif (A2 is None):
+                block[:,c*X2.shape[1]:(c+1)*X2.shape[1]] += np.kron(A1[:,c:c+1],X1X2)
+            else:
+                A1A2 = np.outer(A1[:,c],A2[:,c])
+                block += np.kron(A1A2,X1X2)
+    else:
+        for r in xrange(R):
+            A1D = A1 * D[r:r+1,:]
+            A1A2 = A1D.dot(A2.T)
+            X1X2 = X1[r,:][:,np.newaxis].dot(X2[r,:][np.newaxis,:])
+            block += np.kron(A1A2,X1X2)
+
+    return block
+
 class mean(cObject):
 
-    def __init__(self,Y):
+    def __init__(self,Y, identity_trick=False):
         """ init data term """
         self.Y = Y
+        self.identity_trick=identity_trick
         self.clearFixedEffect()
 
     #########################################
@@ -74,7 +125,7 @@ class mean(cObject):
 
     @property
     def D(self):
-        return SP.reshape(self.d,(self.N,self.P), order='F')
+        return np.reshape(self.d,(self.N,self.P), order='F')
 
     @property
     def LRLdiag(self):
@@ -87,6 +138,13 @@ class mean(cObject):
     #########################################
     # Setters 
     #########################################
+    def use_identity_trick(self,identity_trick=True):
+        self.identity_trick=identity_trick
+        self.clear_cache('Fstar','Astar','Xstar','Xhat',
+                         'Areml','Areml_eigh','Areml_chol','Areml_inv','beta_hat','B_hat',
+                         'LRLdiag_Xhat_tens','Areml_grad',
+                         'beta_grad','Xstar_beta_grad','Zstar','DLZ')
+
 
     def clearFixedEffect(self):
         """ erase all fixed effects """
@@ -98,9 +156,9 @@ class mean(cObject):
         self._n_terms = 0
         self._n_fixed_effs = 0
         self._n_fixed_effs_REML = 0
-        self.indicator = {'term':SP.array([]),
-                            'row':SP.array([]),
-                            'col':SP.array([])}
+        self.indicator = {'term':np.array([]),
+                            'row':np.array([]),
+                            'col':np.array([])}
         self.clear_cache('Fstar','Astar','Xstar','Xhat',
                          'Areml','Areml_eigh','Areml_chol','Areml_inv','beta_hat','B_hat',
                          'LRLdiag_Xhat_tens','Areml_grad',
@@ -114,9 +172,9 @@ class mean(cObject):
         REML:   REML for this term?
         index:  index of which fixed effect to replace. If None, just append.
         """
-        if F is None:   F = SP.ones((self.N,1))
+        if F is None:   F = np.ones((self.N,1))
         if A is None:
-            A = SP.eye(self.P)
+            A = np.eye(self.P)
             A_identity = True
         elif (A.shape == (self.P,self.P)) & (A==np.eye(self.P)).all():
             A_identity = True
@@ -131,7 +189,7 @@ class mean(cObject):
             self.A_identity.append(A_identity)
             self.REML_term.append(REML)
             # build B matrix and indicator
-            self.B.append(SP.zeros((F.shape[1],A.shape[0])))
+            self.B.append(np.zeros((F.shape[1],A.shape[0])))
             self._n_terms+=1
             self._update_indicator(F.shape[1],A.shape[0])
         elif index >self.n_terms:
@@ -144,7 +202,7 @@ class mean(cObject):
             self.A[index] = A
             self.A_identity[index] = A_identity
             self.REML_term[index]=REML
-            self.B[index] = SP.zeros((F.shape[1],A.shape[0]))
+            self.B[index] = np.zeros((F.shape[1],A.shape[0]))
             self._rebuild_indicator()
         
         self._n_fixed_effs+=F.shape[1]*A.shape[0]
@@ -251,23 +309,22 @@ class mean(cObject):
     def Astar(self):
         RV = []
         for term_i in range(self.n_terms):
-            RV.append(SP.dot(self.A[term_i],self.Lc.T))
+            RV.append(np.dot(self.A[term_i],self.Lc.T))
         return RV 
 
     @cached
     def Fstar(self):
         RV = []
         for term_i in range(self.n_terms):
-            RV.append(SP.dot(self.Lr,self.F[term_i]))
+            RV.append(np.dot(self.Lr,self.F[term_i]))
         return RV 
 
-    @cached
     def Ystar1(self):
-        return SP.dot(self.Lr,self.Y)
+        return np.dot(self.Lr,self.Y)
 
     @cached
     def Ystar(self):
-        return SP.dot(self.Ystar1(),self.Lc.T)
+        return np.dot(self.Ystar1(),self.Lc.T)
 
     @cached
     def Yhat(self):
@@ -275,17 +332,27 @@ class mean(cObject):
 
     @cached
     def Xstar(self):
-        RV = SP.zeros((self.N*self.P,self.n_fixed_effs))
+        RV = np.zeros((self.N*self.P,self.n_fixed_effs))
         ip = 0
         for i in range(self.n_terms):
             Ki = self.A[i].shape[0]*self.F[i].shape[1]
-            RV[:,ip:ip+Ki] = SP.kron(self.Astar()[i].T,self.Fstar()[i])
+            RV[:,ip:ip+Ki] = np.kron(self.Astar()[i].T,self.Fstar()[i])
             ip += Ki
         return RV 
 
+    def var_total(self):
+        return (self.Yhat()*self.Ystar()).sum()
+        
+
+    def var_explained(self):
+        XKY = self.compute_XKY(M=self.Yhat())
+        beta_hat = self.Areml_solve(XKY)
+        return (XKY*beta_hat).sum(), beta_hat
+        
+
     @cached
     def Xhat(self):
-        RV = self.d[:,SP.newaxis]*self.Xstar()
+        RV = self.d[:,np.newaxis]*self.Xstar()
         return RV 
 
     @cached
@@ -304,69 +371,72 @@ class mean(cObject):
 
     @cached
     def Areml_inv(self):
-        return LA.cho_solve((self.Areml_chol(),True),SP.eye(self.n_fixed_effs))
+        return LA.cho_solve((self.Areml_chol(),True),np.eye(self.n_fixed_effs))
 
-    @cached
+    #caching bug:
+    #@cached
     def beta_hat(self):
-        #XKY = self.XstarT_dot(SP.reshape(self.Yhat(),(self.Y.size,1),order = 'F'))
         XKY = self.compute_XKY(M=self.Yhat())
-
         beta_hat = self.Areml_solve(XKY)
-            #SP.dot(self.Areml_inv(), XKY)
         return beta_hat
+
 
     @cached
     def B_hat(self):
         RV = []
         ip = 0
         for term_i in range(self.n_terms):
-            RV.append(SP.reshape(self.beta_hat()[ip:ip+self.B[term_i].size],self.B[term_i].shape, order='F'))
+            RV.append(np.reshape(self.beta_hat()[ip:ip+self.B[term_i].size],self.B[term_i].shape, order='F'))
             ip += self.B[term_i].size
         return RV
 
     @cached
     def LRLdiag_Xhat_tens(self):
-        RV  = SP.reshape(self.Xhat(),(self.N,self.P,self.n_fixed_effs),order='F').copy()
-        RV *= self.LRLdiag[:,SP.newaxis,SP.newaxis]
+        RV  = np.reshape(self.Xhat(),(self.N,self.P,self.n_fixed_effs),order='F').copy()
+        RV *= self.LRLdiag[:,np.newaxis,np.newaxis]
         return RV
 
     @cached
     def LRLdiag_Yhat(self):
-        return self.LRLdiag[:,SP.newaxis]*self.Yhat()
+        return self.LRLdiag[:,np.newaxis]*self.Yhat()
 
     @cached
     def Areml_grad(self):
-        RV = SP.einsum('jpk,lp->jlk',self.LRLdiag_Xhat_tens(),self.LCL)
+        RV = np.einsum('jpk,lp->jlk',self.LRLdiag_Xhat_tens(),self.LCL)
         RV = RV.reshape((self.N*self.P,self.n_fixed_effs),order='F')
-        RV*= self.d[:,SP.newaxis]
+        RV*= self.d[:,np.newaxis]
         RV = -self.XstarT_dot(RV)
         return RV
 
     @cached
     def beta_grad(self):
-        RV  = SP.reshape(SP.dot(self.LRLdiag_Yhat(),self.LCL.T),(self.N*self.P,1),order='F')
-        RV *= self.d[:,SP.newaxis]
+        RV  = np.reshape(np.dot(self.LRLdiag_Yhat(),self.LCL.T),(self.N*self.P),order='F')
+        RV *= self.d
         RV  = self.XstarT_dot(RV)
-        RV += SP.dot(self.Areml_grad(),self.beta_hat())
-        RV  = -SP.dot(self.Areml_inv(),RV)
+        RV += np.dot(self.Areml_grad(),self.beta_hat())
+        RV  = -np.dot(self.Areml_inv(),RV)
         return RV
 
     @cached
     def Xstar_beta_grad(self):
-        RV = SP.zeros((self.N,self.P))
+        RV = np.zeros((self.N,self.P))
         ip = 0
         for term_i in range(self.n_terms):
-            _Bgrad = SP.reshape(self.beta_grad()[ip:ip+self.B[term_i].size],self.B[term_i].shape, order='F')
-            RV+=SP.dot(self.Fstar()[term_i],SP.dot(_Bgrad,self.Astar()[term_i]))
+            _Bgrad = np.reshape(self.beta_grad()[ip:ip+self.B[term_i].size],self.B[term_i].shape, order='F')
+            RV+=np.dot(self.Fstar()[term_i],np.dot(_Bgrad,self.Astar()[term_i]))
             ip += self.B[term_i].size
         return RV
+
 
     @cached
     def Zstar(self):
         """ predict the value of the fixed effect """
         RV = self.Ystar().copy()
         for term_i in range(self.n_terms):
-            RV-=SP.dot(self.Fstar()[term_i],SP.dot(self.B_hat()[term_i],self.Astar()[term_i]))
+            if self.identity_trick and self.A_identity[term_i]:
+                RV-=np.dot(self.Fstar()[term_i],self.B_hat()[term_i])
+            else:
+                RV-=np.dot(self.Fstar()[term_i],np.dot(self.B_hat()[term_i],self.Astar()[term_i]))
         self.clear_cache('DLZ')
         return RV
 
@@ -381,7 +451,7 @@ class mean(cObject):
 
     @cached
     def DLZ(self):
-        return self.Zstar()*SP.reshape(self.D,(self.N,self.P), order='F')
+        return self.Zstar()*np.reshape(self.D,(self.N,self.P), order='F')
 
     ###############################################
     # Other getters with no caching, should not they have caching somehow?
@@ -394,7 +464,7 @@ class mean(cObject):
             
             s,U = self.Areml_eigh()
             res = U.T.dot(b)
-            res /= s[:,SP.newaxis]
+            res /= s[:,np.newaxis]
             res = U.dot(res)
             
         return res
@@ -404,12 +474,15 @@ class mean(cObject):
         if M is None:
             M = self.Yhat()
         assert M.shape==(self.N,self.P)
-        XKY = np.zeros((self.n_fixed_effs,1))
+        XKY = np.zeros((self.n_fixed_effs))
         n_weights = 0
         for term in xrange(self.n_terms):
-            XKY_block = compute_XYA(DY=M, X=self.Fstar()[term], A=self.Astar()[term])
-            XKY[n_weights:n_weights + self.Astar()[term].shape[0] * self.Fstar()[term].shape[1],0] = XKY_block.ravel(order='F')
-            n_weights += self.Astar()[term].shape[0] * self.Fstar()[term].shape[1]
+            if self.identity_trick and self.A_identity[term]:
+                XKY_block = compute_XYA(DY=M, X=self.Fstar()[term], A=None)
+            else:
+                XKY_block = compute_XYA(DY=M, X=self.Fstar()[term], A=self.Astar()[term])
+            XKY[n_weights:n_weights + self.A[term].shape[0] * self.F[term].shape[1]] = XKY_block.ravel(order='F')
+            n_weights += self.A[term].shape[0] * self.F[term].shape[1]
         return XKY
 
     def compute_XKX(self):
@@ -417,27 +490,35 @@ class mean(cObject):
         # 
         #for term1 in xrange(self.n_terms):
         #    n_weights1+=self.Astar()[term1].shape[0] * self.Fstar()[term1].shape[1]
-        #cov_beta = SP.zeros((n_weights1,n_weights1))
+        #cov_beta = np.zeros((n_weights1,n_weights1))
         cov_beta = np.zeros((self.n_fixed_effs,self.n_fixed_effs))
         n_weights1 = 0
         for term1 in xrange(self.n_terms):
+            if self.identity_trick and self.A_identity[term1]:
+                A_term1 = None
+            else:
+                A_term1 = self.Astar()[term1]
             n_weights2 = n_weights1
             for term2 in xrange(term1,self.n_terms):
-                block = compute_XK1X2(Y=self.Ystar(), D=self.D, X1=self.Fstar()[term1], X2=self.Fstar()[term2], A1=self.Astar()[term1], A2=self.Astar()[term2])
-                cov_beta[n_weights1:n_weights1 + self.Astar()[term1].shape[0] * self.Fstar()[term1].shape[1], n_weights2:n_weights2 + self.Astar()[term2].shape[0] * self.Fstar()[term2].shape[1]] = block
+                if self.identity_trick and self.A_identity[term2]:
+                    A_term2 = None
+                else:
+                    A_term2 = self.Astar()[term2]
+                block = compute_X1KX2(Y=self.Ystar(), D=self.D, X1=self.Fstar()[term1], X2=self.Fstar()[term2], A1=A_term1, A2=A_term2)
+                cov_beta[n_weights1:n_weights1 + self.A[term1].shape[0] * self.F[term1].shape[1], n_weights2:n_weights2 + self.A[term2].shape[0] * self.F[term2].shape[1]] = block
                 if term1!=term2:
-                    cov_beta[n_weights2:n_weights2 + self.Astar()[term2].shape[0] * self.Fstar()[term2].shape[1], n_weights1:n_weights1 + self.Astar()[term1].shape[0] * self.Fstar()[term1].shape[1]] = block.T
+                    cov_beta[n_weights2:n_weights2 + self.A[term2].shape[0] * self.F[term2].shape[1], n_weights1:n_weights1 + self.A[term1].shape[0] * self.F[term1].shape[1]] = block.T
     
-                n_weights2+=self.Astar()[term2].shape[0] * self.Fstar()[term2].shape[1]
+                n_weights2+=self.A[term2].shape[0] * self.F[term2].shape[1]
 
-            n_weights1+=self.Astar()[term1].shape[0] * self.Fstar()[term1].shape[1]
+            n_weights1+=self.A[term1].shape[0] * self.F[term1].shape[1]
         return cov_beta
 
     def predict(self):
         """ predict the value of the fixed effect """
-        RV = SP.zeros((self.N,self.P))
+        RV = np.zeros((self.N,self.P))
         for term_i in range(self.n_terms):
-            RV+=SP.dot(self.Fstar()[term_i],SP.dot(self.B()[term_i],self.Astar()[term_i]))
+            RV+=np.dot(self.Fstar()[term_i],np.dot(self.B()[term_i],self.Astar()[term_i]))
         return RV
 
     def evaluate(self):
@@ -451,7 +532,7 @@ class mean(cObject):
         i = int(self.indicator['term'][j])
         r = int(self.indicator['row'][j])
         c = int(self.indicator['col'][j])
-        rv = -SP.kron(self.Fstar()[i][:,[r]],self.Astar()[i][[c],:])
+        rv = -np.kron(self.Fstar()[i][:,[r]],self.Astar()[i][[c],:])
         return rv
 
     def XstarT_dot(self,M):
@@ -460,20 +541,20 @@ class mean(cObject):
             #TODO: implement this properly
             pass
         else:
-            RV = SP.dot(self.Xstar().T,M)
+            RV = np.dot(self.Xstar().T,M)
         return RV
 
     def getResiduals(self):
         """ regress out fixed effects and results residuals """
-        X = SP.zeros((self.N*self.P,self.n_fixed_effs))
+        X = np.zeros((self.N*self.P,self.n_fixed_effs))
         ip = 0
         for i in range(self.n_terms):
             Ki = self.A[i].shape[0]*self.F[i].shape[1]
-            X[:,ip:ip+Ki] = SP.kron(self.A[i].T,self.F[i])
+            X[:,ip:ip+Ki] = np.kron(self.A[i].T,self.F[i])
             ip += Ki
-        y = SP.reshape(self.Y,(self.Y.size,1),order='F')
+        y = np.reshape(self.Y,(self.Y.size,1),order='F')
         RV = regressOut(y,X)
-        RV = SP.reshape(RV,self.Y.shape,order='F')
+        RV = np.reshape(RV,self.Y.shape,order='F')
         return RV
 
     #########################################
@@ -482,18 +563,18 @@ class mean(cObject):
 
     def getParams(self):
         """ get params """
-        rv = SP.array([])
+        rv = np.array([])
         if self.n_terms>0: 
-            rv = SP.concatenate([SP.reshape(self.B[term_i],self.B[term_i].size, order='F') for term_i in range(self.n_terms)])
+            rv = np.concatenate([np.reshape(self.B[term_i],self.B[term_i].size, order='F') for term_i in range(self.n_terms)])
         return rv
 
     def setParams(self,params):
         """ set params """
         start = 0
         for i in range(self.n_terms):
-            np = self.B[i].size
-            self.B[i] = SP.reshape(params[start:start+np],self.B[i].shape, order='F')
-            start += np
+            n_effects = self.B[i].size
+            self.B[i] = np.reshape(params[start:start+n_effects],self.B[i].shape, order='F')
+            start += n_effects
 
     #########################################
     # Utility functions
@@ -510,78 +591,34 @@ class mean(cObject):
 
     def _update_indicator(self,K,L):
         """ update the indicator """
-        _update = {'term': self.n_terms*SP.ones((K,L)).T.ravel(),
-                    'row': SP.kron(SP.arange(K)[:,SP.newaxis],SP.ones((1,L))).T.ravel(),
-                    'col': SP.kron(SP.ones((K,1)),SP.arange(L)[SP.newaxis,:]).T.ravel()} 
+        _update = {'term': self.n_terms*np.ones((K,L)).T.ravel(),
+                    'row': np.kron(np.arange(K)[:,np.newaxis],np.ones((1,L))).T.ravel(),
+                    'col': np.kron(np.ones((K,1)),np.arange(L)[np.newaxis,:]).T.ravel()} 
         for key in _update.keys():
-            self.indicator[key] = SP.concatenate([self.indicator[key],_update[key]])
+            self.indicator[key] = np.concatenate([self.indicator[key],_update[key]])
 
     def _rebuild_indicator(self):
         """ update the indicator """
-        indicator = {'term':SP.array([]),
-                     'row':SP.array([]),
-                     'col':SP.array([])}
+        indicator = {'term':np.array([]),
+                     'row':np.array([]),
+                     'col':np.array([])}
 
         for term in xrange(self.n_terms):
             L = self.A[term].shape[0]
             K = self.F[term].shape[1]
-            _update = {'term': (term+1)*SP.ones((K,L)).T.ravel(),
-                    'row': SP.kron(SP.arange(K)[:,SP.newaxis],SP.ones((1,L))).T.ravel(),
-                    'col': SP.kron(SP.ones((K,1)),SP.arange(L)[SP.newaxis,:]).T.ravel()} 
+            _update = {'term': (term+1)*np.ones((K,L)).T.ravel(),
+                    'row': np.kron(np.arange(K)[:,np.newaxis],np.ones((1,L))).T.ravel(),
+                    'col': np.kron(np.ones((K,1)),np.arange(L)[np.newaxis,:]).T.ravel()} 
             for key in _update.keys():
-                indicator[key] = SP.concatenate([indicator[key],_update[key]])
+                indicator[key] = np.concatenate([indicator[key],_update[key]])
         self.indicator = indicator
 
 def compute_XYA(DY, X, A=None):
 
-    if A is not None:
+    if A is not None:#general case
     	DYA = DY.dot(A.T)
-    else:
+    else:#any effect
     	DYA = DY
-    XYA = X.T.dot(DYA)#should be pre-computed
-    return XYA
+    return X.T.dot(DYA)#should be pre-computed
 
 
-def compute_XK1X2(Y, D, X1, X2, A1=None, A2=None):
-    #import ipdb; ipdb.set_trace()
-    R,C = Y.shape
-    if A1 is None:
-        nW_A1 = Y.shape[1]			
-        A1 = SP.eye(Y.shape[1])	#for now this creates A1 and A2
-    else:
-        nW_A1 = A1.shape[0]
-
-    if A2 is None:
-        nW_A2 = Y.shape[1]
-        A2 = SP.eye(Y.shape[1])	#for now this creates A1 and A2
-    else:
-        nW_A2 = A2.shape[0]
-        	
-
-    nW_X1 = X1.shape[1]
-    rows_block = nW_A1 * nW_X1
-
-    if 0:#independentX2:
-        nW_X2 = 1
-    else:
-        nW_X2 = X2.shape[1]
-    cols_block = nW_A2 * nW_X2
-    	
-    block = SP.zeros((rows_block,cols_block))
-
-    if R<C:
-
-        for r in xrange(R):
-            A1D = A1 * D[r:r+1,:]
-            A1A2 = A1D.dot(A2.T)
-            X1X2 = X1[r,:][:,SP.newaxis].dot(X2[r,:][SP.newaxis,:])
-            block += SP.kron(A1A2,X1X2)
-
-    else:
-        for c in xrange(C):
-            X1D = X1 * D[:,c:c+1]
-            X1X2 = X1D.T.dot(X2)
-            A1A2 = np.outer(A1[:,c],A2[:,c])
-            block += SP.kron(A1A2,X1X2)
-                
-    return block
