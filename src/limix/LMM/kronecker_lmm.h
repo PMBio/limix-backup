@@ -80,6 +80,7 @@ protected:
 	MatrixXd ldeltaAlt;
     //Weights  
     MatrixXd W;
+    MatrixXd beta_snp;
 public:
 	CKroneckerLMM();
 	virtual ~CKroneckerLMM();
@@ -143,10 +144,10 @@ public:
 	{
 		(*out) = ldelta0_inter;
 	}
-    void agetBeta(MatrixXd *out){
-        (*out) = W;
-    };
-    
+	void agetBetaSNP(MatrixXd *out)
+	{
+		(*out) = beta_snp;
+	}
 
 
 	/*! set Vecotr of covariates

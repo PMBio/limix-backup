@@ -10026,15 +10026,15 @@ class CKroneckerLMM(ALMM):
         """
         return _core.CKroneckerLMM_agetLdelta0_inter(self)
 
-    def getBeta(self):
+    def getBetaSNP(self):
         """
-        getBeta(CKroneckerLMM self)
+        getBetaSNP(CKroneckerLMM self)
 
         Parameters:
             self: limix::CKroneckerLMM *
 
         """
-        return _core.CKroneckerLMM_getBeta(self)
+        return _core.CKroneckerLMM_getBetaSNP(self)
 
     def addCovariates(self, *args):
         """

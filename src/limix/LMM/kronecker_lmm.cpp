@@ -53,7 +53,7 @@ void CKroneckerLMM::process() {
 	this->nLLAlt.resize(1,num_snps);
 	this->ldelta0.resize(1,num_snps);
 	this->ldeltaAlt.resize(1,num_snps);
-    //this->beta_snp.resize(snpcoldesignU.rows(),num_snps);
+    this->beta_snp.resize(snpcoldesignU.rows(),num_snps);
 	if (this->snpcoldesign0_inter.rows()!=0) //check if interaction design matrix is set
 	{
 		this->nLL0_inter.resize(1,num_snps);
@@ -132,7 +132,7 @@ void CKroneckerLMM::process() {
 			nLL = CKroneckerLMM::nLLeval(ldelta,coldesignUAlt,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r, this->W);
 		}
 		nLLAlt(0,is) = nLL;
-        //beta_snp.block(0,is,snpcoldesignU.rows(),1) = W;
+        beta_snp.block(0,is,snpcoldesignU.rows(),1) = W;
 		ldeltaAlt(0,is) = ldelta;
 		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
 		//std::cout<< "nLL0(0,is)"<< nLL0(0,is)<< "nLLAlt(0,is)" << nLLAlt(0,is)<< "\n";

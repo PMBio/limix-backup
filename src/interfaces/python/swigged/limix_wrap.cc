@@ -83315,7 +83315,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CKroneckerLMM_getBeta(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_CKroneckerLMM_getBetaSNP(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   limix::CKroneckerLMM *arg1 = (limix::CKroneckerLMM *) 0 ;
   MatrixXd *arg2 = (MatrixXd *) 0 ;
@@ -83330,12 +83330,12 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getBeta(PyObject *SWIGUNUSEDPARM(self),
     arg2 = &temp2;
     
   }
-  if (!PyArg_ParseTuple(args,(char *)"O:CKroneckerLMM_getBeta",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:CKroneckerLMM_getBetaSNP",&obj0)) SWIG_fail;
   {
     int newmem = 0;
     res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_limix__CKroneckerLMM_t, 0 |  0 , &newmem);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CKroneckerLMM_getBeta" "', argument " "1"" of type '" "limix::CKroneckerLMM *""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CKroneckerLMM_getBetaSNP" "', argument " "1"" of type '" "limix::CKroneckerLMM *""'"); 
     }
     if (newmem & SWIG_CAST_NEW_MEMORY) {
       tempshared1 = *reinterpret_cast< std::shared_ptr<  limix::CKroneckerLMM > * >(argp1);
@@ -83348,7 +83348,7 @@ SWIGINTERN PyObject *_wrap_CKroneckerLMM_getBeta(PyObject *SWIGUNUSEDPARM(self),
   }
   {
     try {
-      (arg1)->agetBeta(arg2);
+      (arg1)->agetBetaSNP(arg2);
     } catch (limix::CLimixException& e) {
       std::string s("LIMIX error: "), s2(e.what());
       s = s + s2;
@@ -101229,8 +101229,8 @@ static PyMethodDef SwigMethods[] = {
 		"    self: limix::CKroneckerLMM *\n"
 		"\n"
 		""},
-	 { (char *)"CKroneckerLMM_getBeta", _wrap_CKroneckerLMM_getBeta, METH_VARARGS, (char *)"\n"
-		"CKroneckerLMM_getBeta(CKroneckerLMM self)\n"
+	 { (char *)"CKroneckerLMM_getBetaSNP", _wrap_CKroneckerLMM_getBetaSNP, METH_VARARGS, (char *)"\n"
+		"CKroneckerLMM_getBetaSNP(CKroneckerLMM self)\n"
 		"\n"
 		"Parameters:\n"
 		"    self: limix::CKroneckerLMM *\n"
