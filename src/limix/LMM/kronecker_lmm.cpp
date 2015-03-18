@@ -53,8 +53,7 @@ void CKroneckerLMM::process() {
 	this->nLLAlt.resize(1,num_snps);
 	this->ldelta0.resize(1,num_snps);
 	this->ldeltaAlt.resize(1,num_snps);
-    //this->W.resize(1, num_snps*P);
-    //this->W *= 0.;
+    //this->beta_snp.resize(snpcoldesignU.rows(),num_snps);
 	if (this->snpcoldesign0_inter.rows()!=0) //check if interaction design matrix is set
 	{
 		this->nLL0_inter.resize(1,num_snps);
@@ -133,6 +132,7 @@ void CKroneckerLMM::process() {
 			nLL = CKroneckerLMM::nLLeval(ldelta,coldesignUAlt,UrowdesignAlt,this->Upheno,this->S1c,this->S1r,this->S2c,this->S2r, this->W);
 		}
 		nLLAlt(0,is) = nLL;
+        //beta_snp.block(0,is,snpcoldesignU.rows(),1) = W;
 		ldeltaAlt(0,is) = ldelta;
 		deltaNLL = nLL0(0,is) - nLLAlt(0,is);
 		//std::cout<< "nLL0(0,is)"<< nLL0(0,is)<< "nLLAlt(0,is)" << nLLAlt(0,is)<< "\n";
@@ -333,10 +333,21 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
 	}
 	//std::cout << "covW = " << covW<<std::endl;
 	MatrixXd W_vec = covW.colPivHouseholderQr().solve(XYA);
-    W = W_vec;
 	//MatrixXd W_vec = covW * XYA;
 	//std::cout << "W = " << W_vec<<std::endl;
 	//std::cout << "XYA = " << XYA<<std::endl;
+
+    // getting out Bsnp
+    muint_t cumSum = 0;
+    for(muint_t term = 0; term < A.size();++term)
+    {
+        muint_t currSize = X[term].cols() * A[term].rows();
+        if (term==A.size()-2) {
+            W = W_vec.block(cumSum,0,currSize,1);//
+            //W.resize(X[term].cols(),A[term].rows());
+        }
+        cumSum+=currSize;
+    }
 
 	mfloat_t res = (Y.array()*DY.array()).sum();
 	mfloat_t varPred = (W_vec.array() * XYA.array()).sum();
