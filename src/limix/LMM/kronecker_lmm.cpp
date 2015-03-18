@@ -53,7 +53,7 @@ void CKroneckerLMM::process() {
 	this->nLLAlt.resize(1,num_snps);
 	this->ldelta0.resize(1,num_snps);
 	this->ldeltaAlt.resize(1,num_snps);
-    this->beta_snp.resize(snpcoldesignU.rows(),num_snps);
+    this->beta_snp.resize(snpcoldesign.rows(),num_snps);
 	if (this->snpcoldesign0_inter.rows()!=0) //check if interaction design matrix is set
 	{
 		this->nLL0_inter.resize(1,num_snps);

@@ -62,7 +62,7 @@ class CKroneckerLMM_test(unittest.TestCase):
             #construct Kronecker LMM model which has the special case of standard LMM
             #covar1: genotype matrix
             N = D['K'].shape[0]
-            P = 3
+            P = 10
             K1r = D['K']
             #K1c = SP.zeros([2,2])
             #K1c[0,0] = 1
@@ -95,7 +95,7 @@ class CKroneckerLMM_test(unittest.TestCase):
             lmm.setNumIntervals0(100)
 
             lmm.process()
-
+            import ipdb; ipdb.set_trace()  # XXX BREAKPOINT
             #get p-values with P-dof:
             pv_Pdof = lmm.getPv().ravel()
             #transform in P-values with a single DOF:
@@ -111,7 +111,6 @@ class CKroneckerLMM_test(unittest.TestCase):
             #print RV
             #pdb.set_trace()
             self.assertTrue(RV<1E-6)
-
 
 
     def test_permutation(self):
