@@ -49,7 +49,7 @@ if __name__=='__main__':
     C1 = freeform(P)
     C2 = freeform(P)
     Cn = freeform(P)
-    gp = gp3kronSumApprox(Y=Y,C1=C1,C2=C2,Cn=Cn,R1=GG,R2=XX) 
+    gp = gp3kronSumApprox(Y=Y,C1=C1,C2=C2,Cn=Cn,R1=GG,R2=XX,tol=1e-16) 
 
     if 0:
         Kinit = SP.cov(Y.T)/3 
@@ -63,7 +63,9 @@ if __name__=='__main__':
     params = gp.getParams()
     gp.setParams(params)
 
-    if 1:
+    gp.checkGradient()
+
+    if 0:
         gp.K.optimizeAB(n=100)
         print 'a:', gp.K.a
         print 'b:', gp.K.b
@@ -72,6 +74,8 @@ if __name__=='__main__':
         gp.K.optimizeABgrad()
 
     for i in range(10):
+
+        ipdb.set_trace()
 
         conv,info = OPT.opt_hyper(gp,params,factr=1e-3)
         print conv

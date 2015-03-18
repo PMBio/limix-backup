@@ -77,7 +77,7 @@ if __name__ == "__main__":
         best[i] = A.min() 
         naive[i] = f(0,0,0.5)
             
-        if 1:
+        if 0:
             i,j = SP.where(A==A.min())
             alpha = values[i]
             beta = values[j]
@@ -92,12 +92,20 @@ if __name__ == "__main__":
             ipdb.set_trace()
 
     PL.ion()
-    PL.subplot(2,2,1)
+    PL.figure(1,figsize=(12,5))
+    PL.subplot(1,2,1)
     PL.plot(ld,naive,'.k')
     PL.plot([ld.min(),naive.max()],[ld.min(),naive.max()],'r')
-    PL.subplot(2,2,2)
+    PL.xlabel('logdet')
+    PL.ylabel('fiedler_opt')
+    PL.subplot(1,2,2)
     PL.plot(ld,best,'.k')
     PL.plot([ld.min(),naive.max()],[ld.min(),naive.max()],'r')
+    PL.xlabel('logdet')
+    PL.ylabel('fiedler_opt')
+    pdb.set_trace()
+    PL.tight_layout()
+    PL.savefig('results.pdf')
     PL.show()
 
     ipdb.set_trace()

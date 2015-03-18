@@ -14,6 +14,7 @@ import scipy.linalg as LA
 import scipy.sparse.linalg as SLA
 import ipdb
 import pylab as PL
+import time as TIME
 
 def compute_pcs(C,R,nPCs=10):
 
@@ -73,8 +74,12 @@ if __name__ == "__main__":
     R2+= 1e-4*SP.eye(R2.shape[0])
     R = [R1,R2,SP.eye(R1.shape[0])]
 
-    ld1 = SP.zeros(100)
-    ld    = SP.zeros(100)
+    ranks = [50,100,200]
+    n_ranks = len(ranks)
+
+    ld  = SP.zeros(100)
+    ld1 = SP.zeros((100,n_ranks))
+    time = SP.zeros((100,n_ranks+1))
     for i in range(100):
         print i
 
@@ -88,21 +93,41 @@ if __name__ == "__main__":
 
         C = [Cfg,Cbg,Cn]
 
-        X,d = lowrank_diag(C,R)
-
-        B = SP.eye(X.shape[1])+SP.dot(X.T,d[:,SP.newaxis]*X)
-        Sb,Ub = LA.eigh(B)
-        ld1[i] = SP.log(d).sum()+SP.log(Sb).sum()
+        for k,rank in enumerate(ranks):
+            t0 = TIME.time()
+            X,d = lowrank_diag(C,R,nPCs=rank)
+            B = SP.eye(X.shape[1])+SP.dot(X.T,d[:,SP.newaxis]**(-1)*X)
+            Sb,Ub = LA.eigh(B)
+            ld1[i,k] = SP.log(d).sum()+SP.log(Sb).sum()
+            time[i,k] = TIME.time()-t0
 
         N = R[0].shape[0]
         P = C[0].shape[0]
         n_terms = len(R)
-        K = SP.zeros(N*P)
-        for i in range(n_terms):    K = SP.kron(C[i],R[i])
+        K = SP.zeros((N*P,N*P))
+        for ti in range(n_terms):    K += SP.kron(C[ti],R[ti])
+        t0 = TIME.time()
         Sk,Uk = LA.eigh(K)
         ld[i] = SP.log(Sk).sum()
+        time[i,-1] = TIME.time()-t0
 
-
-    PL.plot(ld,ld1,'.')
+    PL.subplot(2,2,1)
+    PL.title('%d ranks'%ranks[0])
+    PL.plot(ld,ld1[:,0],'.')
+    PL.subplot(2,2,2)
+    PL.title('%d ranks'%ranks[1])
+    PL.plot(ld,ld1[:,1],'.')
+    PL.subplot(2,2,3)
+    PL.title('%d ranks'%ranks[2])
+    PL.plot(ld,ld1[:,2],'.')
+    plt = PL.subplot(2,2,4)
+    PL.title('time')
+    PL.xlabel('ranks')
+    PL.plot(time.mean(0),'k')
+    plt.set_xticks(SP.arange(n_ranks+1))
+    ranks.append('naive')
+    plt.set_xticklabels(ranks)
     PL.show()
+
+    ipdb.set_trace()
 
