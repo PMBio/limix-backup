@@ -6,9 +6,10 @@ import limix
 import data
 import os
 
+
 class CKroneckerLMM_test(unittest.TestCase):
     """test class for CLMM"""
-
+    
     def setUp(self):
         self.datasets = ['lmm_data1']
         self.dir_name = os.path.dirname(__file__)
@@ -28,13 +29,13 @@ class CKroneckerLMM_test(unittest.TestCase):
             Xcov  = D['Cov'][:,SP.newaxis]
             X      = D['X']
             Y      = D['Y'][:,SP.newaxis]
-
+                        
             lmm = limix.CKroneckerLMM()
             lmm.setK1r(K1r)
             lmm.setK1c(K1c)
             lmm.setK2r(K2r)
             lmm.setK2c(K2c)
-
+            
             lmm.setSNPs(X)
             #add covariates
             lmm.addCovariates(Xcov,Acov)
@@ -43,7 +44,7 @@ class CKroneckerLMM_test(unittest.TestCase):
             lmm.setPheno(Y)
             lmm.setNumIntervalsAlt(0)
             lmm.setNumIntervals0(100)
-
+            
             lmm.process()
             pv = lmm.getPv().ravel()
             D2= ((SP.log10(pv)-SP.log10(D['pv']))**2)
@@ -62,7 +63,7 @@ class CKroneckerLMM_test(unittest.TestCase):
             #construct Kronecker LMM model which has the special case of standard LMM
             #covar1: genotype matrix
             N = D['K'].shape[0]
-            P = 10
+            P = 3
             K1r = D['K']
             #K1c = SP.zeros([2,2])
             #K1c[0,0] = 1
@@ -78,13 +79,13 @@ class CKroneckerLMM_test(unittest.TestCase):
             X      = D['X']
             Y      = D['Y'][:,SP.newaxis]
             Y      = SP.tile(Y,(1,P))
-
+                        
             lmm = limix.CKroneckerLMM()
             lmm.setK1r(K1r)
             lmm.setK1c(K1c)
             lmm.setK2r(K2r)
             lmm.setK2c(K2c)
-
+            
             lmm.setSNPs(X)
             #add covariates
             lmm.addCovariates(Xcov,Acov)
@@ -93,9 +94,9 @@ class CKroneckerLMM_test(unittest.TestCase):
             lmm.setPheno(Y)
             lmm.setNumIntervalsAlt(0)
             lmm.setNumIntervals0(100)
-
+            
             lmm.process()
-            import ipdb; ipdb.set_trace()  # XXX BREAKPOINT
+            
             #get p-values with P-dof:
             pv_Pdof = lmm.getPv().ravel()
             #transform in P-values with a single DOF:
@@ -111,6 +112,7 @@ class CKroneckerLMM_test(unittest.TestCase):
             #print RV
             #pdb.set_trace()
             self.assertTrue(RV<1E-6)
+
 
 
     def test_permutation(self):
