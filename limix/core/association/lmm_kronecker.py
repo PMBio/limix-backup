@@ -42,7 +42,11 @@ class LmmKronecker(cObject):
         if inter is None:
             LL_snps_0[:] = self._LL_0
             for i_snp in xrange(snps.shape[1]):
+
                 LL_snps[i_snp],beta = self.LML_blockwise(snp=np.dot(self._gp.mean.Lr,snps[:,i_snp:i_snp+1]), Asnp=Asnps)
+                if False and (Asnps is None) and (self._gp.mean):
+                    LL_ = self.LML_snps_blockwise_any_singlesnp(snp=np.dot(self._gp.mean.Lr,snps[:,i_snp:i_snp+1]))
+
         else:
             for i_snp in xrange(snps.shape[1]):
                 self._gp.mean.addFixedEffect(F=snps[:,i_snp:i_snp+1], A=Asnps)
@@ -145,7 +149,7 @@ class LmmKronecker(cObject):
         #use blockwise matrix inversion
         #[  Areml,          XcovarXsnp
         #   XcovarXsnp.T    XsnpXsnp    ]
-        Dsnp = snp * D
+        Dsnp = snp * self._gp.mean.D
         XsnpKXsnp = (Dsnp * snp).sum(0)
         XcovarXsnp = np.zeros((self._gp.mean.dof,snps.shape[1]))
         start = 0

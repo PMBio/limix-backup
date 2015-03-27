@@ -96,9 +96,9 @@ if __name__ == "__main__":
     assoc = lmm.LmmKronecker(gp=gp)
     if 1:
         #signal snps
-        pv,LL_snps,LL_snps_0= assoc.test_snps(snps,identity_trick = True)
+        pv,LL_snps,LL_snps_0= assoc.test_snps(snps, identity_trick = True)
         #null snps
-        pv0,n_LL_snps0,LL_snps0_0 = assoc.test_snps(snps_0,identity_trick = True)
+        pv0,n_LL_snps0,LL_snps0_0 = assoc.test_snps(snps_0, identity_trick = True)
     
     if plot:
         import pylab as pl
@@ -111,7 +111,7 @@ if __name__ == "__main__":
         pl.plot(-SP.log(pv[i_pv]),-SP.log(pv0[i_pv0]),'.')
         pl.plot([0,8],[0,8])
 
-        pv0_,n_LL_snps0_,LL_snps0_0_ = assoc.test_snps(snps_0,identity_trick = True)
+        pv0_,n_LL_snps0_,LL_snps0_0_ = assoc.test_snps(snps_0, identity_trick = True)
         pl.figure(); pl.plot(-SP.log(pv0_),-SP.log(pv0),'.')
         pl.figure(); pl.plot(-SP.log(pv0_),-SP.log(pv0),'.')
 
