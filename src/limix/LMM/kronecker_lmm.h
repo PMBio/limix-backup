@@ -31,8 +31,6 @@ class CLMMKroneckerCore : public CLMMCore
 	//TODO: create inline functions along the lines for CLMMCore optdeltaEx, nllEvalEx, etc.
 	template <typename Derived1, typename Derived2,typename Derived3,typename Derived4, typename Derived5,typename Derived6,typename Derived7,typename Derived8>
 	inline void nLLevalEx(const Eigen::MatrixBase<Derived1>& AObeta_, const Eigen::MatrixBase<Derived2>& AObeta_ste_, const Eigen::MatrixBase<Derived3>& AOsigma_, const Eigen::MatrixBase<Derived4>& AOF_tests_,const Eigen::MatrixBase<Derived5>& AOnLL_,const Eigen::MatrixBase<Derived6>& UY, const Eigen::MatrixBase<Derived7>& UX, const Eigen::MatrixBase<Derived8>& S,mfloat_t ldelta,bool calc_ftest=false,bool calc_ste=false, bool REML = false);
-
-
 };
 
 
@@ -80,6 +78,9 @@ protected:
 	MatrixXd ldelta0;
 	MatrixXd ldelta0_inter;
 	MatrixXd ldeltaAlt;
+    //Weights  
+    MatrixXd W;
+    MatrixXd beta_snp;
 public:
 	CKroneckerLMM();
 	virtual ~CKroneckerLMM();
@@ -143,6 +144,10 @@ public:
 	{
 		(*out) = ldelta0_inter;
 	}
+	void agetBetaSNP(MatrixXd *out)
+	{
+		(*out) = beta_snp;
+	}
 
 
 	/*! set Vecotr of covariates
@@ -169,12 +174,11 @@ public:
 	void setCovariates(muint_t index,const MatrixXd& covR, const MatrixXd& covC);
 
 
-	static mfloat_t nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2);
+	static mfloat_t nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2, MatrixXd& W);
 	static mfloat_t optdelta(mfloat_t& ldelta_opt, const MatrixXdVec& A,const MatrixXdVec& X, const MatrixXd& Y, const VectorXd& S_C1, const VectorXd& S_R1, const VectorXd& S_C2, const VectorXd& S_R2, mfloat_t ldeltamin, mfloat_t ldeltamax, muint_t numintervals);
 	//set precompute decompositions
 	//void setMatrices(const MatrixXd)
 	//getters: TODO
-	
 };
 
 
@@ -201,6 +205,7 @@ class nLLevalKronFunctor: public BrentFunctor{
 	MatrixXd S_C2;
 	MatrixXd S_R1;
 	MatrixXd S_R2;
+    MatrixXd W;
 public:
    nLLevalKronFunctor(	
 		const MatrixXdVec A,
@@ -209,14 +214,11 @@ public:
 		const MatrixXd S_C1,
 		const MatrixXd S_R1,
 		const MatrixXd S_C2,
-		const MatrixXd S_R2);
+		const MatrixXd S_R2,
+        MatrixXd W);
    ~nLLevalKronFunctor();
    virtual mfloat_t operator()(const mfloat_t logdelta);
 };
 
 } //end namespace LIMIX
-
-
-
-
 #endif /* KRONECKER_LMM_H_ */

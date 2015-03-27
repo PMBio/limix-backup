@@ -145,7 +145,7 @@ class lmm:
 			raise NotImplementedError("only f and lrt are implemented")
 
 		if self._lmm.getTestStatistics() == self._lmm.TEST_F:
-			self.test_statistics = (self.beta_snp*self.beta_snp)/(beta_ste*beta_ste)
+			self.test_statistics = (self.beta_snp*self.beta_snp)/(self.beta_ste*self.beta_ste)
 		if self._lmm.getTestStatistics() == self._lmm.TEST_LRT:
 			self.test_statistics = 2.0 * (self.NLL_0 - self.NLL_alt)
 		t1=time.time()
@@ -321,7 +321,7 @@ def test_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=
     return lmm,pv
 
 
-def test_interaction_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False):
+def test_interaction_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False,return_lmm=False):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
     
@@ -441,7 +441,10 @@ def test_interaction_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,
         pvAlt[iA,:] = lmm.getPv()[0]
         pv[iA,:] = lmm.getPv()[1]
         pv0 = lmm.getPv()[2][np.newaxis,:]
-    return pv,pv0,pvAlt
+    if return_lmm:
+        return pv,pv0,pvAlt,lmm
+    else:
+        return pv,pv0,pvAlt
 
 
 def test_interaction_lmm(snps,pheno,Inter,Inter0=None,covs=None,K=None,test='lrt'):
