@@ -123,7 +123,7 @@ if __name__ == "__main__":
     
     #test snps
     print "testing SNPs with any effect"
-    pv,LL_snps,LL_snps_0= assoc.test_snps(snps, identity_trick = True)
+    pv,LL_snps,LL_snps_0= assoc.test_snps(snps)
     
     if 0:
         import pylab as pl
