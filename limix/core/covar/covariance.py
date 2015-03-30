@@ -126,6 +126,10 @@ class covariance(cObject):
         # U * S**(-1/2)
         return self.U()*(self.S()**(-0.5))
 
+    """
+    Follows derivatives of eigenvalues and eigenvectors
+    #TODO: handle the caching for them
+    """
     def Sgrad(self,i):
         return dS_dti(self.Kgrad_param(i),U=self.U())
 
