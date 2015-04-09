@@ -1,73 +1,113 @@
 import pdb
-import scipy as SP
-import scipy.linalg as LA
+import scipy as sp
+import scipy.linalg
 import copy
 
 import sys
-sys.path.append('./../../..')
-from limix.core.linalg.linalg_matrix import jitChol
-import limix.core.likelihood.likelihood_base
+sys.path.insert(0,'./../../..')
+from limix.core.cobj import *
+#from limix.core.linalg.linalg_matrix import jitChol
+import limix.core.mean.mean_base
+import limix.core.covar.covariance
 import scipy.lib.lapack.flapack
 
 
 import logging as LG
 
 
-class GP(object):
+class gp(cObject):
     """
-    Gaussian Process regression class. Holds all information for the GP regression to take place.
-
-    
+    Gaussian Process regression class for linear mean (with REML)
+    y ~ N(Xb,K)
     """
 
-    __slots__ = ['X','Y','n','d','t','covar','likelihood','_covar_cache','debugging']
-    
-    def __init__(self,covar_func=None,likelihood=None):
+    def __init__(self,covar=None,mean=None):
         """
         covar:        Covariance function
-        likelihood:   Likelihood function
-        x:            Inputs  [n x d]
-        y:            Outputs [n x t]
+        mean:         Linear Mean function
         """
-        self.covar = covar_func
-        self.likelihood = likelihood
-        self._covar_cache = None
-        self.debugging = False
+        self.covar = covar
+        self.mean  = mean
 
-    def setDebugging(self,debugging):
-        self.debugging = debugging
-        self._invalidate_cache()
-        
+    #######################
+    # LML terms 
+    #######################
+    @cached
+    def Areml(self):
+        return sp.dot(self.mean.X.T,self.KiX())
 
-    def setData(self,X=None,Y=None,X_r=None):
-        """
-        set data
+    #TODO: move in matrix class?
+    @cached
+    def Areml_chol(self):
+        return LA.cholesky(self.Areml()).T
 
-        X:    Inputs  [n x d]
-        Y:    Outputs [n x t]
-        """
-        if X_r!=None:
-            X = X_r
-        
-        assert X.shape[0]==Y.shape[0], 'dimensions do not match'
-        self.X = X
-        self.Y = Y
-        self.n = X.shape[0]
-        self.d = X.shape[1]
-        self.t = Y.shape[1]
+    #TODO: move in matrix class?
+    @cached
+    def Areml_inv(self):
+        return LA.cho_solve((self.Areml_chol(),True),SP.eye(self.mean._K))
 
-        self._invalidate_cache()
-        
-    def LML(self,hyperparams):
-        """
-        evalutes the log marginal likelihood for the given hyperparameters
+    #TODO: move in matrix class?
+    @cached
+    def Areml_logdet(self):
+        return 2*SP.log(SP.diag(self.Areml_chol())).sum()
 
-        hyperparams
-        """
-        LML = self._LML_covar(hyperparams)
+    # B is calculated here but cached in the mean?
+    def update_B(self):
+        self.mean.B = SP.dot(self.Areml_inv(),self,XKiY)
+
+    @cached
+    def KiXB(self):
+        # TODO
+        pass
+
+    @cached
+    def KiY(self):
+        return self.covar.Kinv_dot(self.mean.Y)
+
+    @cached
+    def YKiY(self):
+        return (self.mean.Y*self.KiY()).sum()
+
+    @cached
+    def YKiXB(self):
+        # TODO
+        pass
+
+    #######################
+    # gradients
+    #######################
+    #TODO caching?
+    def dKKiY(self,i):
+        dK = self.covar.Kgrad_param(i)
+        return SP.dot(dK,self.KiY())
+
+    def dKKiX(self,i):
+        dK = self.covar.Kgrad_param(i)
+        return SP.dot(dK,self.KiX())
+
+    #TODO: in c principle these guys should have the key as well
+    def YKiY_grad(self,i):
+        return -(self.KiY()*self.dKKiY(i)).sum()
+
+    def YKiXB_grad(self,i):
+        pass
+
+    def Areml_logdet_grad(self,i):
+        pass
+
+    #######################
+    # LML and gradients
+    #######################
+
+    @cached
+    def LML(self):
+        rv = -0.5*self.covar.logdet()
+        rv -= 0.5*self.A_logdet()
+        rv -= 0.5*self.yKiy()
+        rv += 0.5*self.yKiB()
         return LML
 
-    def LMLgrad(self,hyperparams):
+    def LML_grad(self,hyperparams):
         """
         evaluates the gradient of the log marginal likelihood for the given hyperparameters
         """
@@ -194,9 +234,14 @@ class GP(object):
         """ reset cache """
         self._covar_cache = None
 
-    def checkGradient(self,h=1e-4,verbose=True):
-        """ utility function to check the gradient of the gp """
-        grad_an = self.LMLgrad()
+    def checkGradient(self,h=1e-4,verbose=True,fun='LML'):
+        """
+        utility function to check the analytical gradient of
+        a scalar function in the gp
+        """
+        f = getattr(self,fun)
+        f_grad = getattr(self,fun+'_grad')
+        grad_an = f_grad()
         grad_num = {}
         for key in self.params.keys():
             paramsL = self.params.copy()
@@ -207,13 +252,14 @@ class GP(object):
                 e[i] = 1
                 paramsL[key]=self.params[key]-h*e
                 paramsR[key]=self.params[key]+h*e
-                lml_L = self.LML(paramsL)
-                lml_R = self.LML(paramsR)
+                gp.setParams(paramsL)
+                lml_L = f()
+                gp.setParams(paramsR)
+                lml_R = f()
                 grad_num[key][i] = (lml_R-lml_L)/(2*h)
                 e[i] = 0
             if verbose:
                 print '%s:'%key
                 print abs((grad_an[key]-grad_num[key]))
                 print ''
-
 

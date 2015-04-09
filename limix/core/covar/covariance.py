@@ -62,7 +62,7 @@ class covariance(cObject):
         LG.critical("implement K")
         print("%s: Function K not yet implemented"%(self.__class__))
         return None
-     
+
     def Kgrad_param(self,i):
         """
         partial derivative with repspect to the i-th hyperparamter theta[i]
@@ -97,12 +97,15 @@ class covariance(cObject):
         RV = (C_R-C_L)/(2*h)
         return RV
 
+    def Kinv_dot(self,M):
+        return LA.cho_solve((self.chol(),True),M)
+
     @cached
     def chol(self):
         return LA.cholesky(self.K()).T
             
     @cached
-    def inv(self):
+    def Kinv(self):
         return LA.cho_solve((self.chol(),True),SP.eye(self.P)) 
 
     @cached
