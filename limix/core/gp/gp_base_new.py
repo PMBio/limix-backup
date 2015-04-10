@@ -2,18 +2,11 @@ import pdb
 import scipy as sp
 import scipy.linalg
 import copy
-
 import sys
 sys.path.insert(0,'./../../..')
 from limix.core.cobj import *
-#from limix.core.linalg.linalg_matrix import jitChol
 import limix.core.mean.mean_base
 import limix.core.covar.covariance
-import scipy.lib.lapack.flapack
-
-
-import logging as LG
-
 
 class gp(cObject):
     """
@@ -49,7 +42,8 @@ class gp(cObject):
                             'YKiY','YKiXB','LML',
                             'dKKiY','dKKiX','dKKiXB',
                             'YKiY_grad_i','YKiXB_grad_i','Areml_grad_i'
-                            'Areml_logdet_grad','YKiY_grad','YKiXB_grad','LML_grad')
+                            'Areml_logdet_grad','YKiY_grad',
+                            'YKiXB_grad','LML_grad')
         self.update_B()
 
     def getParams(self,params):

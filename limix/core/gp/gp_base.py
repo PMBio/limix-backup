@@ -2,11 +2,10 @@ import pdb
 import scipy as SP
 import scipy.linalg as LA
 import copy
-
 import sys
 sys.path.append('./../../..')
-from mtSet.pycore.linalg.linalg_matrix import jitChol
-import mtSet.pycore.likelihood.likelihood_base
+from limix.core.linalg.linalg_matrix import jitChol
+import limix.core.likelihood.likelihood_base
 import scipy.lib.lapack.flapack
 
 

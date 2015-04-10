@@ -7,15 +7,23 @@ class freeform(covariance):
     """
     freeform covariance function
     """
-    def __init__(self,P,jitter=1e-4):
+    def __init__(self,dim,jitter=1e-4):
         """
         initialization
         """
-        covariance.__init__(self,P)
-        self.L = SP.zeros((self.P,self.P))
-        self.Lgrad = SP.zeros((self.P,self.P))
+        covariance.__init__(self,dim)
+        self.L = SP.zeros((self.dim,self.dim))
+        self.Lgrad = SP.zeros((self.dim,self.dim))
         self.zeros = SP.zeros(self.n_params)
         self.set_jitter(jitter)
+
+    def setParams(self,params):
+        """
+        set hyperparameters
+        """
+        self.params = params
+        # this is to make the old implementation work
+        self.params_have_changed = True
 
     def set_jitter(self,value):
         self.jitter = value
@@ -25,7 +33,7 @@ class freeform(covariance):
         set hyperparameters from given covariance
         """
         chol = LA.cholesky(cov,lower=True)
-        params = chol[SP.tril_indices(self.P)]
+        params = chol[SP.tril_indices(self.dim)]
         self.setParams(params)
 
     def K(self):
@@ -33,7 +41,7 @@ class freeform(covariance):
         evaluates the kernel for given hyperparameters theta
         """
         self._updateL()
-        RV = SP.dot(self.L,self.L.T)+self.jitter*SP.eye(self.P)
+        RV = SP.dot(self.L,self.L.T)+self.jitter*SP.eye(self.dim)
         return RV
      
     def Kgrad_param(self,i):
@@ -49,19 +57,19 @@ class freeform(covariance):
         """
         calculates the number of parameters
         """
-        self.n_params = int(0.5*self.P*(self.P+1))
+        self.n_params = int(0.5*self.dim*(self.dim+1))
 
     def _updateL(self):
         """
         construct the cholesky factor from hyperparameters
         """
-        self.L[SP.tril_indices(self.P)] = self.params
+        self.L[SP.tril_indices(self.dim)] = self.params
 
     def _updateLgrad(self,i):
         """
         construct the cholesky factor from hyperparameters
         """
         self.zeros[i] = 1
-        self.Lgrad[SP.tril_indices(self.P)] = self.zeros
+        self.Lgrad[SP.tril_indices(self.dim)] = self.zeros
         self.zeros[i] = 0
 

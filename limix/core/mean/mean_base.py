@@ -11,14 +11,14 @@ import pdb
 
 class mean_base(cObject):
 
-    def __init__(self,Y,F,Fstar):
+    def __init__(self,Y,F):
         """
         y:        phenotype vector
         F:        fixed effect design
         """
         self.Y = Y
         self.F = F
-        self.Fstar = Fstar
+        self.B = sp.zeros((self._K,1))
 
     #########################################
     # Properties 
@@ -51,7 +51,7 @@ class mean_base(cObject):
         """ set phenotype """
         assert value.shape[0]==self._N, 'Dimension mismatch'
         self._K = value.shape[1]
-        self._Y = value
+        self._F = value
         self.clear_cache('predict','Yres')
 
     @B.setter
