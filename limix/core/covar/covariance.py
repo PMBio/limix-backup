@@ -77,7 +77,7 @@ class covariance(cObject):
         """
         check discrepancies between numerical and analytical gradients
         """
-        params  = self.params.copy()
+        params = self.getParams() 
         e = SP.zeros_like(params); e[i] = 1
         self.setParams(params-h*e)
         C_L = self.K()
@@ -122,7 +122,7 @@ class covariance(cObject):
         return LA.cholesky(self.K()).T
             
     @cached
-    def Kinv(self):
+    def inv(self):
         return self.Kinv_dot(SP.eye(self.dim)) 
 
     @cached
@@ -165,4 +165,19 @@ class covariance(cObject):
         # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
         Si2grad = -0.5*self.S()**(-1.5)*self.Sgrad(i)
         return self.Ugrad(i)*(self.S()**(-0.5)) + self.U()*Si2grad
+
+    ########################
+    # Test functions
+    ########################
+    def test_grad(self,h=1e-4):
+        """test analytical gradient"""
+        ss = 0
+        for i in range(self.getNumberParams()):
+            self.set_grad_idx(i) 
+            K_an  = self.K_grad_i()
+            K_num = self.Kgrad_param_num(i,h=h)
+            _ss = ((K_an-K_num)**2).sum()
+            print i, _ss
+            #ss += _ss
+
 

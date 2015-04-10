@@ -2,7 +2,7 @@ from covariance import covariance
 import pdb
 import scipy as SP
 
-class sum(covariance):
+class sumcov(covariance):
 
     def __init__(self,*covars):
         self.dim = None
@@ -15,7 +15,9 @@ class sum(covariance):
     # Covars handling
     #####################
     def addCovariance(self,covar):
-        if self.dim is not None:
+        if self.dim is None:
+            self.dim = covar.dim
+        else:
             assert covar.dim==self.dim, 'Dimension mismatch'
         self.covars.append(covar)
         self._calcNumberParams()
@@ -30,16 +32,17 @@ class sum(covariance):
         istart = 0
         for i in range(len(self.covars)):
             istop = istart + self.getCovariance(i).getNumberParams()
-            self.covars.getCovariance(i).setParams(params[istart:istop])
+            self.getCovariance(i).setParams(params[istart:istop])
             istart = istop
 
     def getParams(self):
         istart = 0
-        params = SP.zeros(n_params)
+        params = SP.zeros(self.getNumberParams())
         for i in range(len(self.covars)):
             istop = istart + self.getCovariance(i).getNumberParams()
             params[istart:istop] = self.getCovariance(i).getParams()
             istart = istop
+        return params
     
     #####################
     # Cached
@@ -49,9 +52,9 @@ class sum(covariance):
     need to talk to single covariance matrices
     """
     def K(self):
-        K = SP.zeros((self.P,self.P))
+        K = SP.zeros((self.dim,self.dim))
         for i in range(len(self.covars)):
-            K += self.covars[i].K()
+            K += self.getCovariance(i).K()
         return K
 
     #def Kcross(self):
@@ -67,14 +70,14 @@ class sum(covariance):
     #    
     #    return Kcross
         
-    def Kgrad_param_i(self):
+    def K_grad_i(self):
         istart = 0
         for j in range(len(self.covars)):
             istop = istart + self.getCovariance(j).getNumberParams()
             if (self._grad_idx < istop): 
-                idx = i - istart 
+                idx = self._grad_idx - istart 
                 self.getCovariance(j).set_grad_idx(idx)
-                return self.getCovariance(j).Kgrad_param_i()
+                return self.getCovariance(j).K_grad_i()
             istart = istop 
         return None
     

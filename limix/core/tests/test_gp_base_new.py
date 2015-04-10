@@ -3,6 +3,8 @@ sys.path.insert(0,'./../../..')
 
 from limix.core.mean.mean_base import mean_base as lin_mean
 from limix.core.covar.sqexp import sqexp
+from limix.core.covar.fixed import fixed 
+from limix.core.covar.combinators import sumcov 
 from limix.core.gp.gp_base_new import gp
 
 import ipdb
@@ -24,58 +26,26 @@ if __name__ == "__main__":
     Y = sp.sin(X)+s_y*sp.randn(N,1)
     #pl.plot(x,y,'x')
 
-    ipdb.set_trace()
-
     # define mean term
     F = 1.*(sp.rand(N,2)<0.2)
     mu = lin_mean(Y,F)
 
     # define covariance matrices
-    covar = sqexp(X)
-    
+    covar1 = sqexp(X)
+    covar2 = fixed(sp.eye(N))
+    covar  = sumcov(covar1,covar2)
+
     ipdb.set_trace()
 
-    if 1:
-        # compare with mtSet implementation
-        params = {}
-        params['Cg']   = sp.randn(int(0.5*P*(P+1)))
-        params['Cn']   = sp.randn(int(0.5*P*(P+1)))
+    # cheack gradient for covariances
+    for i in range(10): 
+        covar1.setRandomParams()
+        covar1.test_grad()
+        covar2.setRandomParams()
+        covar2.test_grad()
+        covar.setRandomParams()
+        covar.test_grad()
 
-        print "check gradient with gp2kronSum"
-        gp = gp2kronSum(mu,Cg,Cn,XX)
-        gp.setParams(params)
-
-        if 0:
-            gp.set_reml(False)
-
-        print "test optimization"
-        start = TIME.time()
-        conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-        print 'Reml GP:', TIME.time()-start
-        
-        if mtSet_present:
-            params1 = copy.copy(params)
-            params1['mean'] = sp.zeros(mu1.getParams().shape[0])
-            gp1 = gp2kronSumMtSet(mu1,Cg1,Cn1,XX)
-            gp1.setParams(params1)
-            start = TIME.time()
-            conv1,info = OPT.opt_hyper(gp1,params1,factr=1e3)
-            print 'Old GP:', TIME.time()-start
-
-        print conv
-
-        ipdb.set_trace()
-
-    if 1:
-        # no fixed 
-        mu = mean(Y)
-        params = {}
-        params['Cg']   = sp.randn(int(0.5*P*(P+1)))
-        params['Cn']   = sp.randn(int(0.5*P*(P+1)))
-
-        ipdb.set_trace()
-        gp = gp2kronSum(mu,Cg,Cn,XX)
-        gp.setParams(params)
-        gp.LML()
-        gp.LMLgrad()
+    ipdb.set_trace()
+    
 

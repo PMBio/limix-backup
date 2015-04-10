@@ -17,6 +17,7 @@ covariance (->covar_base.py???)
 - specialized covar knows parameters with proper name,
     getParams build the vactor on spot.
     Same thing in combinators and gp
+- alternatively vector of params is known and specific setters act directely on the elements of the array
 - paramMask into covar
 - caching for combinators does not work properly
     - combinators has to know if some parameter has changed 

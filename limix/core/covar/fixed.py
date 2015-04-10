@@ -1,4 +1,4 @@
-import scipy as SP
+import scipy as sp
 from covariance import covariance
 import pdb
 
@@ -33,10 +33,11 @@ class fixed(covariance):
     # Params handling
     #####################
     def setParams(self,params):
-        self.scale  = SP.exp(params[0])
+        self.scale  = sp.exp(params[0])
 
-    def getParams(self,params):
-        params = SP.log(SP.array([self.scale]))
+    def getParams(self):
+        params = sp.log(sp.array([self.scale]))
+        return params
 
     def _calcNumberParams(self):
         self.n_params = 1
@@ -45,7 +46,7 @@ class fixed(covariance):
     # Cached
     #####################
     def K(self):
-        return self.scale * self.cov
+        return self.scale * self.K0
         
     #def Kcross(self):
     #    """
@@ -53,9 +54,9 @@ class fixed(covariance):
     #    """
     #    return 0
     
-    def Kgrad_param_i(self):
-        if grad_idx==0:
-            return self.scale*self.cov
+    def K_grad_i(self):
+        if self._grad_idx==0:
+            return self.scale*self.K0
         return None
 
 

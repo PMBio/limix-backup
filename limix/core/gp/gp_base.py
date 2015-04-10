@@ -120,7 +120,6 @@ class GP(object):
         return self._covar_cache
 
    
-
     def checkGradient(self,h=1e-6,verbose=True):
         """ utility function to check the gradient of the gp """
         grad_an = self.LMLgrad()
