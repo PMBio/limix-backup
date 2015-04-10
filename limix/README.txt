@@ -1,3 +1,14 @@
+TODO:
+- cov: change parameterization to scipy arrays (P)
+- cov and mean: two inner prediction methods for prediction
+(in-of-sample cached,out-of-sample not) (P)
+- cov: observer pattern for caching and send demo (D)
+- cov: move set_grad_idx to cache (D)
+- cov: make Areml to cov (P)
+- cov: rename to solve (P)
+- cov: change small d to large D (P)
+- gp/mean: change Y/B to y/b (P)
+
 mean_base
 - add predicitons out of sample
     - how to cache? - Ystar(self,Fstar=None)

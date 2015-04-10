@@ -90,7 +90,7 @@ class gp(cObject):
     @cached
     def Areml_logdet(self):
         return 2*sp.log(sp.diag(self.Areml_chol())).sum()
-
+    
     @cached
     def KiF(self):
         return self.covar.Kinv_dot(self.mean.F)

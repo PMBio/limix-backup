@@ -7,7 +7,7 @@ from limix.core.covar.fixed import fixed
 from limix.core.covar.combinators import sumcov 
 from limix.core.gp.gp_base_new import gp as gp_base
 
-import ipdb
+import pdb as ipdb
 import scipy as sp
 import scipy.linalg as LA 
 import time as TIME
