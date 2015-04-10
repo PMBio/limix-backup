@@ -17,7 +17,7 @@ class covariance(cObject):
         self._grad_idx = 0
 
     def clear_all(self):
-        self.clear_cache('K','K_grad_i','logdet_grad_i',
+        self.clear_cache('K','K_grad_i','logdet','logdet_grad_i',
                             'inv','chol','S','U',
                             'USi2','Sgrad','Ugrad')
 

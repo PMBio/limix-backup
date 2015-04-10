@@ -10,6 +10,7 @@ class sumcov(covariance):
         for covar in covars:
             self.addCovariance(covar)
         self._grad_idx = 0
+        self.clear_all()
         
     #####################
     # Covars handling
@@ -34,6 +35,7 @@ class sumcov(covariance):
             istop = istart + self.getCovariance(i).getNumberParams()
             self.getCovariance(i).setParams(params[istart:istop])
             istart = istop
+        self.clear_all()
 
     def getParams(self):
         istart = 0

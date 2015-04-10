@@ -5,7 +5,7 @@ from limix.core.mean.mean_base import mean_base as lin_mean
 from limix.core.covar.sqexp import sqexp
 from limix.core.covar.fixed import fixed 
 from limix.core.covar.combinators import sumcov 
-from limix.core.gp.gp_base_new import gp
+from limix.core.gp.gp_base_new import gp as gp_base
 
 import ipdb
 import scipy as sp
@@ -28,24 +28,31 @@ if __name__ == "__main__":
 
     # define mean term
     F = 1.*(sp.rand(N,2)<0.2)
-    mu = lin_mean(Y,F)
+    mean = lin_mean(Y,F)
 
     # define covariance matrices
     covar1 = sqexp(X)
     covar2 = fixed(sp.eye(N))
     covar  = sumcov(covar1,covar2)
 
-    ipdb.set_trace()
+    if 0:
+        # cheack gradient for covariances
+        for i in range(10): 
+            covar1.setRandomParams()
+            covar1.test_grad()
+            covar2.setRandomParams()
+            covar2.test_grad()
+            covar.setRandomParams()
+            covar.test_grad()
 
-    # cheack gradient for covariances
-    for i in range(10): 
-        covar1.setRandomParams()
-        covar1.test_grad()
-        covar2.setRandomParams()
-        covar2.test_grad()
-        covar.setRandomParams()
-        covar.test_grad()
+    # define gp
+    gp = gp_base(covar=covar,mean=mean)
+    covar.setRandomParams()
+    print gp.LML()
+    print gp.LML_grad()
 
     ipdb.set_trace()
-    
+    gp.checkGradient(fun='YKiY')
+    gp.checkGradient(fun='YKiFB')
+    gp.checkGradient(fun='Areml_logdet')
 
