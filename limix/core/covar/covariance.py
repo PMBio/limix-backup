@@ -10,18 +10,16 @@ class covariance(cObject):
     """
     abstract super class for all implementations of covariance functions
     """
-    def __init__(self,P):
-        self.P = P
+    def __init__(self,dim):
+        self.dim = dim
         self._calcNumberParams()
         self._initParams()
+        self._grad_idx = 0
 
-    def setParams(self,params):
-        """
-        set hyperparameters
-        """
-        self.params = params
-        self.params_have_changed=True
-        self.clear_cache('inv','chol','S','U','USi2','Sgrad','Ugrad')
+    def clear_all(self):
+        self.clear_cache('K','K_grad_i','logdet_grad_i',
+                            'inv','chol','S','U',
+                            'USi2','Sgrad','Ugrad')
 
     def setRandomParams(self):
         """
@@ -54,14 +52,6 @@ class covariance(cObject):
         return the number of hyperparameters
         """
         return self.n_params
-
-    def K(self):
-        """
-        evaluates the kernel for given hyperparameters theta and inputs X
-        """
-        LG.critical("implement K")
-        print("%s: Function K not yet implemented"%(self.__class__))
-        return None
 
     def Kgrad_param(self,i):
         """
@@ -97,6 +87,33 @@ class covariance(cObject):
         RV = (C_R-C_L)/(2*h)
         return RV
 
+    def set_grad_idx(self,value):
+        """
+        Set gradient index for K_grad_i and logdet_grad_i
+        """
+        self._grad_idx = value
+        self.clear_cache('K_grad_i','logdet_grad_i')
+
+    ####################################
+    # cached
+    ####################################
+    @cached
+    def K(self):
+        """
+        evaluates the kernel for given hyperparameters theta and inputs X
+        """
+        LG.critical("implement K")
+        print("%s: Function K not yet implemented"%(self.__class__))
+        return None
+
+    @cached
+    def K_grad_i(self):
+        """
+        partial derivative with repspect to the i-th hyperparamter theta[i]
+        """
+        LG.critical("implement K_grad_i")
+        print("%s: Function K not yet implemented"%(self.__class__))
+
     def Kinv_dot(self,M):
         return LA.cho_solve((self.chol(),True),M)
 
@@ -106,11 +123,16 @@ class covariance(cObject):
             
     @cached
     def Kinv(self):
-        return LA.cho_solve((self.chol(),True),SP.eye(self.P)) 
+        return self.Kinv_dot(SP.eye(self.dim)) 
 
     @cached
     def logdet(self):
         return 2*SP.log(SP.diag(self.chol())).sum()
+
+    @cached
+    def logdet_grad_i(self):
+        #return (self.Kinv()*K_grad_i()).sum()
+        return self.Kinv_dot(self.K_grad_i()).diagonal().sum()
 
     @cached
     def S(self):

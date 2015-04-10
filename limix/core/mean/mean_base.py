@@ -52,7 +52,7 @@ class mean_base(cObject):
         assert value.shape[0]==self._N, 'Dimension mismatch'
         self._K = value.shape[1]
         self._Y = value
-        #self.clear_cache()
+        self.clear_cache('predict','Yres')
 
     @B.setter
     def B(self,value):
@@ -60,7 +60,7 @@ class mean_base(cObject):
         assert value.shape[0]==self._K, 'Dimension mismatch'
         assert value.shape[1]==1, 'Dimension mismatch'
         self._B = value
-        #self.clear_cache()
+        self.clear_cache('predict','Yres')
 
     #########################################
     # Getters (caching)
@@ -70,9 +70,9 @@ class mean_base(cObject):
         """ predict the value of the fixed effect (F*B) """
         return sp.dot(self.F,self.B)
 
-    @cache
+    @cached
     def Yres(self):
-        """ predict the value of """
+        """ residual """
         RV  = self.Y-self.predict() 
         return RV
 
