@@ -30,7 +30,7 @@ class TestMixedForest(unittest.TestCase):
         self.n_estimators = 100
 
     def test_toy_data_rand(self):
-        SP.random.seed(390)
+        SP.random.seed(39)
         y_conf = self.data['y_conf'].value
         kernel = self.data['kernel'].value
         X = self.data['X'].value
