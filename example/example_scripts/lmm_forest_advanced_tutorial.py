@@ -3,12 +3,11 @@ Created on Sep 25, 2013
 
 @author: johannes
 '''
-
-
 import scipy as SP
 from limix.modules.lmm_forest import Forest as LMF
 import pylab as PL
 import limix.modules.mixedForestUtils as utils
+import h5py
 
 if __name__ == '__main__':
 
@@ -37,6 +36,9 @@ if __name__ == '__main__':
     random_forest.fit(X[training], y_conf[training])
     response_iid = random_forest.predict(X[test])
     response_fixed = lm_forest.predict(X[test])
+    feature_scores_lmf = lm_forest.log_importance
+    feature_scores_rf = random_forest.log_importance
+
     PL.plot(x, y_fixed, 'g--')
     PL.plot(x, y_conf, '.7')
     PL.plot(x[test], response_tot, 'r-.')
@@ -47,8 +49,6 @@ if __name__ == '__main__':
     PL.ylabel('phenotype')
     PL.show()
     PL.close()
-    feature_scores_lmf = lm_forest.log_importance
-    feature_scores_rf = random_forest.log_importance
     n_predictors = X.shape[1]
     PL.bar(SP.arange(n_predictors), feature_scores_lmf, .3, color='r')
     PL.bar(SP.arange(n_predictors)+.3, feature_scores_rf, .3, color='b')

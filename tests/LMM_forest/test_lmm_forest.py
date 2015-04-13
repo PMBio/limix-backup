@@ -6,22 +6,90 @@ Created on Sep 19, 2013
 # create some test cases
 import scipy as SP
 import limix.modules.mixedForestUtils as utils
+import h5py
 from limix.modules.lmm_forest import Forest as MF
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import metrics
-from sklearn import cross_validation as CV
-import pylab as PL
+import os
+#from sklearn.ensemble import RandomForestRegressor
+#from sklearn.metrics import metrics
+#from sklearn import cross_validation as CV
+#import pylab as PL
 import unittest
 
 
 class TestMixedForest(unittest.TestCase):
 
     def setUp(self, n=100, m=1):
+        self.dir_name = os.path.dirname(__file__)
+        self.data = h5py.File(os.path.join(self.dir_name,
+                                           'test_data/lmm_forest_toy_data.h5'),
+                              'r')
         SP.random.seed(1)
         self.x, self.y = utils.lin_data_cont_predictors(n=n,m=m)
         self.n, self.m = self.x.shape
         [self.train, self.test] = utils.crossValidationScheme(2,self.n)
         self.n_estimators = 100
+
+    def test_toy_data_rand(self):
+        SP.random.seed(390)
+        y_conf = self.data['y_conf'].value
+        kernel = self.data['kernel'].value
+        X = self.data['X'].value
+        # This is a non-random cross validation
+        (training, test) = utils.crossValidationScheme(2, y_conf.size)
+        lm_forest = MF(kernel=kernel[SP.ix_(training, training)],
+                       sampsize=.5, verbose=1, n_estimators=100)
+        lm_forest.fit(X[training], y_conf[training])
+        response_tot = lm_forest.predict(X[test],
+                                         kernel[SP.ix_(test, training)])
+        random_forest = MF(kernel='iid')
+        random_forest.fit(X[training], y_conf[training])
+        response_iid = random_forest.predict(X[test])
+        response_fixed = lm_forest.predict(X[test])
+        feature_scores_lmf = lm_forest.log_importance
+        feature_scores_rf = random_forest.log_importance
+        # All consistency checks
+        err = (feature_scores_lmf-self.data['feature_scores_lmf'].value).sum()
+        self.assertTrue(SP.absolute(err) < 10)
+        err = (feature_scores_rf-self.data['feature_scores_rf'].value).sum()
+        self.assertTrue(SP.absolute(err) < 10)
+        err = SP.absolute(self.data['response_tot'] - response_tot).sum()
+        self.assertTrue(SP.absolute(err) < 2)
+        err = SP.absolute(self.data['response_fixed'] - response_fixed).sum()
+        self.assertTrue(SP.absolute(err) < 4)
+        err = SP.absolute(self.data['response_iid'] - response_iid).sum()
+        self.assertTrue(SP.absolute(err) < 8)
+
+
+    def test_toy_data_numerical(self):
+        SP.random.seed(42)
+        y_conf = self.data['y_conf'].value
+        kernel = self.data['kernel'].value
+        X = self.data['X'].value
+        # This is a non-random cross validation
+        (training, test) = utils.crossValidationScheme(2, y_conf.size)
+        lm_forest = MF(kernel=kernel[SP.ix_(training, training)],
+                       sampsize=.5, verbose=1, n_estimators=100)
+        lm_forest.fit(X[training], y_conf[training])
+        response_tot = lm_forest.predict(X[test],
+                                         kernel[SP.ix_(test, training)])
+        random_forest = MF(kernel='iid')
+        random_forest.fit(X[training], y_conf[training])
+        response_iid = random_forest.predict(X[test])
+        response_fixed = lm_forest.predict(X[test])
+        feature_scores_lmf = lm_forest.log_importance
+        feature_scores_rf = random_forest.log_importance
+        # All consistency checks
+        err = (feature_scores_lmf-self.data['feature_scores_lmf'].value).sum()
+        self.assertTrue(SP.absolute(err) == 0)
+        err = (feature_scores_rf-self.data['feature_scores_rf'].value).sum()
+        self.assertTrue(SP.absolute(err) == 0)
+        err = SP.absolute(self.data['response_tot'] - response_tot).sum()
+        self.assertTrue(SP.absolute(err) == 0)
+        err = SP.absolute(self.data['response_fixed'] - response_fixed).sum()
+        self.assertTrue(SP.absolute(err) == 0)
+        err = SP.absolute(self.data['response_iid'] - response_iid).sum()
+        self.assertTrue(SP.absolute(err) == 0)
+
 
     def test_delta_updating(self):
         n_sample = 100
@@ -67,21 +135,6 @@ class TestMixedForest(unittest.TestCase):
         response_rf = random_forest.predict(X[test_sample], k=kernel_test)
 
 
-    def test_sklearn_crossvalidation_kernel(self):
-        self.setUp(n=100, m=110)
-        kernel = SP.ones(self.m, dtype='bool')
-        kernel[:10] = False
-        mf = MF(n_estimators=self.n_estimators, kernel=kernel)
-        scores = CV.cross_val_score(mf, self.x, self.y, scoring='r2')
-        self.assertTrue(SP.absolute((scores[0] - scores[1]) < 0.3))
-
-    def test_sklearn_crossvalidation(self):
-        self.setUp(n=100, m=10)
-        mf = MF(n_estimators=self.n_estimators, kernel='iid')
-        scores = CV.cross_val_score(mf, self.x, self.y, scoring='r2')
-        self.assertTrue(SP.absolute((scores[0] - scores[1]) < 0.1))
-        pass
-
     def test_kernel_builing(self):
         SP.random.seed(42)
         X = (SP.random.rand(5, 10) > .5)*1.0
@@ -90,61 +143,6 @@ class TestMixedForest(unittest.TestCase):
         small_kernel_test = utils.update_Kernel(kernel, X[:, 5:], scale=False)
         self.assertAlmostEqual((small_kernel -
                                 small_kernel_test).sum(), 0, places=14)
-
-    def test_consistency_cont_cpp(self):
-        # Test: consistency to rf on cont. predictors (cpp)
-        model = MF(kernel=SP.identity(self.train.sum()),
-                   n_estimators=self.n_estimators, cpp_fit=True,
-                   cpp_predict=True, subsampling=False, min_samples_split=2)
-
-        model.fit(self.x[self.train], self.y[self.train])
-        response = model.predict(self.x[self.test])
-        rf = RandomForestRegressor(n_estimators=self.n_estimators)
-        rf.fit(self.x[self.train], self.y[self.train].reshape(-1))
-        response_rf = rf.predict(self.x[self.test])
-        self.assertTrue(SP.absolute(response - response_rf).sum() < 2400)
-
-    def test_consistency_cont_py(self):
-        # Test: consistency to rf on cont. predictors (py)
-        model = MF(kernel=SP.identity(self.train.sum()),
-                   n_estimators=self.n_estimators,
-                   cpp_fit=False, cpp_predict=False, subsampling=False,
-                   min_samples_split=2)
-        model.fit(self.x[self.train], self.y[self.train])
-        response = model.predict(self.x[self.test])
-        rf = RandomForestRegressor(n_estimators=self.n_estimators)
-        rf.fit(self.x[self.train], self.y[self.train].reshape(-1))
-        response_rf = rf.predict(self.x[self.test])
-        self.assertTrue(SP.absolute(response - response_rf).sum() < 2400)
-
-    def test_consistency_cont_multi_dim(self):
-        # Test: consistency to rf on cont. predictors (cpp)
-        self.setUp(m=10)
-        model = MF(kernel=SP.identity(self.train.sum()),
-                   n_estimators=self.n_estimators, cpp_fit=True,
-                   cpp_predict=True, subsampling=False, min_samples_split=2)
-        model.fit(self.x[self.train], self.y[self.train])
-        response = model.predict(self.x[self.test])
-        rf = RandomForestRegressor(n_estimators=self.n_estimators)
-        rf.fit(self.x[self.train], self.y[self.train].reshape(-1))
-        response_rf = rf.predict(self.x[self.test])
-        self.assertTrue(SP.absolute(response - response_rf).sum() < 2400)
-
-    def test_consistency_cont_multi_dim_big(self):
-        # Test: consistency to rf on cont. predictors (cpp)
-        self.setUp(m=100)
-        SP.random.seed(10)
-        self.n_estimators = 100
-        model = MF(kernel=SP.identity(self.train.sum()),
-                   n_estimators=self.n_estimators, subsampling=False,
-                   min_samples_split=2, ratio_features=1)
-        model.fit(self.x[self.train], self.y[self.train])
-        response = model.predict(self.x[self.test])
-        rf = RandomForestRegressor(n_estimators=self.n_estimators)
-        rf.fit(self.x[self.train], self.y[self.train].reshape(-1))
-        response_rf = rf.predict(self.x[self.test])
-        rf.fit(self.x[self.train], self.y[self.train].reshape(-1))
-        self.assertTrue(SP.absolute(response - response_rf).sum() < 2400)
 
 
     def test_depth_building(self):
@@ -168,35 +166,35 @@ class TestMixedForest(unittest.TestCase):
                                      depth=model.opt_depth)
         self.assertEqual((prediction_1 - prediction_2).sum(), 0.0)
 
-    def test_depth_building_linear(self):
-        SP.random.seed(42)
-        n_samples = 2**8
-        x = SP.arange(n_samples).reshape(-1, 1)
-        X = utils.convertToBinaryPredictor(x)
-        y_fixed = X[:, 0:1] * X[:, 2:3]
-        kernel = utils.getQuadraticKernel(x, d=200)
-        y_conf = y_fixed.copy()
-        y_conf += SP.random.multivariate_normal(SP.zeros(n_samples),
-                                                kernel, 1).reshape(-1, 1)
-        y_conf += .1*SP.random.randn(n_samples, 1)
-        (training, test) = utils.crossValidationScheme(2, n_samples)
-        SP.random.seed(42)
-        lm_forest = MF(kernel=kernel[SP.ix_(training, training)], sampsize=.5,
-                       n_estimators=100, fit_optimal_depth=True)
-        lm_forest.fit(X[training], y_conf[training])
-        self.assertEqual(2, lm_forest.opt_depth, msg='fitting of optimal depth')
+#    def test_depth_building_linear(self):
+        #SP.random.seed(42)
+        #n_samples = 2**8
+        #x = SP.arange(n_samples).reshape(-1, 1)
+        #X = utils.convertToBinaryPredictor(x)
+        #y_fixed = X[:, 0:1] * X[:, 2:3]
+        #kernel = utils.getQuadraticKernel(x, d=200)
+        #y_conf = y_fixed.copy()
+        #y_conf += SP.random.multivariate_normal(SP.zeros(n_samples),
+                                                #kernel, 1).reshape(-1, 1)
+        #y_conf += .1*SP.random.randn(n_samples, 1)
+        #(training, test) = utils.crossValidationScheme(2, n_samples)
+        #SP.random.seed(42)
+        #lm_forest = MF(kernel=kernel[SP.ix_(training, training)], sampsize=.5,
+                       #n_estimators=100, fit_optimal_depth=True)
+        #lm_forest.fit(X[training], y_conf[training])
+        #self.assertEqual(2, lm_forest.opt_depth, msg='fitting of optimal depth')
 
-        response_tot = lm_forest.predict(X[test],
-                                         kernel[SP.ix_(test, training)])
-        random_forest = MF(kernel='iid')
-        random_forest.fit(X[training], y_conf[training])
-        response_iid = random_forest.predict(X[test])
-        diff_rf_mf = (response_tot - response_iid).sum()
-        print diff_rf_mf
-        self.assertAlmostEqual(diff_rf_mf, 6.17, 2, msg='difference rf and mf')
-        self.assertEqual(2, lm_forest.opt_depth, msg='fitting of optimal depth')
-        diff_mf = (response_tot - SP.zeros_like(response_tot)).sum()
-        #self.assertAlmostEqual(diff_mf, 2.75, 2, msg='mf correctness')
+        #response_tot = lm_forest.predict(X[test],
+                                         #kernel[SP.ix_(test, training)])
+        #random_forest = MF(kernel='iid')
+        #random_forest.fit(X[training], y_conf[training])
+        #response_iid = random_forest.predict(X[test])
+        #diff_rf_mf = (response_tot - response_iid).sum()
+        #print diff_rf_mf
+        #self.assertAlmostEqual(diff_rf_mf, 6.17, 2, msg='difference rf and mf')
+        #self.assertEqual(2, lm_forest.opt_depth, msg='fitting of optimal depth')
+        #diff_mf = (response_tot - SP.zeros_like(response_tot)).sum()
+        ##self.assertAlmostEqual(diff_mf, 2.75, 2, msg='mf correctness')
 
     def test_forest_stump_recycling(self):
         self.setUp(m=5)
