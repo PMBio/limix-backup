@@ -41,6 +41,7 @@
 #include "limix/modules/CVarianceDecomposition.h"
 #include "limix/io/dataframe.h"
 #include "limix/io/genotype.h"
+#include "limix/LMM_forest/lmm_forest.h"
 
 using namespace limix;
 //  removed namespace bindings (12.02.12)
@@ -50,7 +51,8 @@ using namespace limix;
 %include "numpy.i"
 //support for eigen matrix stuff
 %include "eigen.i"
-//support for std libs
+//include typemaps
+%include "typemaps.i"
 
 #define SWIG_SHARED_PTR_NAMESPACE std
 //C11, no tr!
@@ -121,5 +123,4 @@ using namespace limix;
 %include "limix/modules/CVarianceDecomposition.i"
 %include "limix/io/dataframe.i"
 %include "limix/io/genotype.i"
-
- 
+%include "limix/LMM_forest/lmm_forest.i"
