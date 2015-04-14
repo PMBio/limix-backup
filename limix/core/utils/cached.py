@@ -1,7 +1,7 @@
 import inspect
 import os
 
-# HOW TO USE: Please, look at the end of the file for an example.
+# HOW TO USE: Please, look at the end of the file for a example.
 
 class Cached(object):
     def __init__(self):
@@ -57,9 +57,6 @@ def cached(*args, **kwargs):
                 setattr(self, valid_var_name, True)
                 cached_args.clear()
                 cached_args.update(provided_args)
-                print 'invalid cache'
-            else:
-                print 'valid cache'
 
             return getattr(self, cache_var_name)
 
