@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0,'./../../..')
-from limix.core.cobj import *
+from limix.core.utils.cached import *
 from limix.core.utils.eigen import *
 import scipy as SP
 import scipy.linalg as LA
@@ -14,7 +14,6 @@ class covariance(cObject):
         self.dim = dim
         self._calcNumberParams()
         self._initParams()
-        self._grad_idx = 0
 
     def clear_all(self):
         self.clear_cache('K','K_grad_i','logdet','logdet_grad_i',
@@ -87,13 +86,6 @@ class covariance(cObject):
         RV = (C_R-C_L)/(2*h)
         return RV
 
-    def set_grad_idx(self,value):
-        """
-        Set gradient index for K_grad_i and logdet_grad_i
-        """
-        self._grad_idx = value
-        self.clear_cache('K_grad_i','logdet_grad_i')
-
     ####################################
     # cached
     ####################################
@@ -107,7 +99,7 @@ class covariance(cObject):
         return None
 
     @cached
-    def K_grad_i(self):
+    def K_grad_i(self,i):
         """
         partial derivative with repspect to the i-th hyperparamter theta[i]
         """
@@ -130,8 +122,7 @@ class covariance(cObject):
         return 2*SP.log(SP.diag(self.chol())).sum()
 
     @cached
-    def logdet_grad_i(self):
-        #return (self.Kinv()*K_grad_i()).sum()
+    def logdet_grad_i(self,i):
         return self.Kinv_dot(self.K_grad_i()).diagonal().sum()
 
     @cached
@@ -173,8 +164,7 @@ class covariance(cObject):
         """test analytical gradient"""
         ss = 0
         for i in range(self.getNumberParams()):
-            self.set_grad_idx(i) 
-            K_an  = self.K_grad_i()
+            K_an  = self.K_grad_i(i)
             K_num = self.Kgrad_param_num(i,h=h)
             _ss = ((K_an-K_num)**2).sum()
             print i, _ss

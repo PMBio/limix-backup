@@ -1,9 +1,9 @@
 import inspect
 import os
 
-# HOW TO USE: Please, look at the end of the file for a example.
+# HOW TO USE: Please, look at the end of the file for an example.
 
-class Cached(object):
+class cObject(object):
     def __init__(self):
         pass
 
@@ -104,7 +104,7 @@ def _fetch_argnames_argvalues(method, args, kwargs):
     return (argnames, argvalues)
 
 if __name__ == '__main__':
-    class Test(Cached):
+    class Test(cObject):
         @cached
         def foo1(self, par1, par2=None):
             return 5

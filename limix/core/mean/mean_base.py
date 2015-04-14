@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0,'./../../..')
-from limix.core.cobj import * 
+from limix.core.utils.cached import *
 from limix.utils.preprocess import regressOut
 import scipy as sp
 import numpy as np
@@ -44,7 +44,7 @@ class mean_base(cObject):
         assert value.shape[1]==1, 'Dimension mismatch'
         self._N = value.shape[0]
         self._Y = value
-        #self.clear_cache()
+        self.clear_cache('Yres')
 
     @F.setter
     def F(self,value):

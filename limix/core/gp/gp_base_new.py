@@ -4,7 +4,7 @@ import scipy.linalg
 import copy
 import sys
 sys.path.insert(0,'./../../..')
-from limix.core.cobj import *
+from limix.core.utils.cached import *
 import limix.core.mean.mean_base
 import limix.core.covar.covariance
 
@@ -21,7 +21,6 @@ class gp(cObject):
         """
         self.covar = covar
         self.mean  = mean
-        self.set_grad_idx(0)
         self.clear_all()
         self.update_B()
 
@@ -38,20 +37,12 @@ class gp(cObject):
         self.clear_cache('KiF','YKiF','KiFB','KiY','YKiY','YKiFB','LML')
 
     def clear_lmlgrad_terms_i(self):
-        self.clear_cache('dKKiY','dKKiF','dKKiFB','Areml_grad_i',
+        self.clear_cache('DiKKiY','DiKKiF','DiKKiFB','Areml_grad_i',
                             'YKiY_grad_i','YKiFB_grad_i',
                             'Areml_logdet_grad_i')
 
     def clear_lmlgrad_terms(self):
         self.clear_cache('YKiY_grad','YKiFB_grad','Areml_logdet_grad','LML_grad')
-
-    def set_grad_idx(self,value):
-        """
-        Set gradient index for derivatives 
-        """
-        self._grad_idx = value
-        self.covar.set_grad_idx(value)
-        self.clear_lmlgrad_terms_i()
 
     def setParams(self,params):
         """
@@ -124,34 +115,34 @@ class gp(cObject):
     # gradients
     #######################
     @cached
-    def dKKiY(self):
-        return sp.dot(self.covar.K_grad_i(),self.KiY())
+    def DiKKiY(self,i):
+        return sp.dot(self.covar.K_grad_i(i),self.KiY())
 
     @cached
-    def dKKiF(self):
-        return sp.dot(self.covar.K_grad_i(),self.KiF())
+    def DiKKiF(self,i):
+        return sp.dot(self.covar.K_grad_i(i),self.KiF())
 
     @cached
-    def dKKiFB(self):
-        return sp.dot(self.dKKiF(),self.mean.B)
+    def DiKKiFB(self,i):
+        return sp.dot(self.DiKKiF(i),self.mean.B)
 
     @cached
-    def Areml_grad_i(self):
-        return -sp.dot(self.KiF().T,self.dKKiF())
+    def Areml_grad_i(self,i):
+        return -sp.dot(self.KiF().T,self.DiKKiF(i))
 
     @cached
-    def YKiY_grad_i(self):
-        return -(self.KiY()*self.dKKiY()).sum()
+    def YKiY_grad_i(self,i):
+        return -(self.KiY()*self.DiKKiY(i)).sum()
 
     @cached
-    def YKiFB_grad_i(self):
-        rv = -2*(self.KiY()*self.dKKiFB()).sum()
-        rv+= (self.KiFB()*self.dKKiFB()).sum()
+    def YKiFB_grad_i(self,i):
+        rv = -2*(self.KiY()*self.DiKKiFB(i)).sum()
+        rv+= (self.KiFB()*self.DiKKiFB(i)).sum()
         return rv
 
     @cached
-    def Areml_logdet_grad_i(self):
-        return (self.Areml_inv()*self.Areml_grad_i()).sum()
+    def Areml_logdet_grad_i(self,i):
+        return (self.Areml_inv()*self.Areml_grad_i(i)).sum()
 
     #######################
     # LML and gradients
@@ -171,8 +162,7 @@ class gp(cObject):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
         for i in range(n_params):
-            self.set_grad_idx(i)
-            RV['covar'][i] = self.YKiY_grad_i()
+            RV['covar'][i] = self.YKiY_grad_i(i)
         return RV
 
     @cached
@@ -180,8 +170,7 @@ class gp(cObject):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
         for i in range(n_params):
-            self.set_grad_idx(i)
-            RV['covar'][i] = self.YKiFB_grad_i()
+            RV['covar'][i] = self.YKiFB_grad_i(i)
         return RV
 
     @cached
@@ -189,19 +178,17 @@ class gp(cObject):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
         for i in range(n_params):
-            self.set_grad_idx(i)
-            RV['covar'][i] = self.Areml_logdet_grad_i()
+            RV['covar'][i] = self.Areml_logdet_grad_i(i)
         return RV
 
     def LML_grad(self):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
         for i in range(n_params):
-            self.set_grad_idx(i)
-            RV['covar'][i] = -0.5*self.covar.logdet_grad_i()
-            RV['covar'][i] -= 0.5*self.Areml_logdet_grad_i()
-            RV['covar'][i] -= 0.5*self.YKiY_grad_i()
-            RV['covar'][i] += 0.5*self.YKiFB_grad_i()
+            RV['covar'][i] = -0.5*self.covar.logdet_grad_i(i)
+            RV['covar'][i] -= 0.5*self.Areml_logdet_grad_i(i)
+            RV['covar'][i] -= 0.5*self.YKiY_grad_i(i)
+            RV['covar'][i] += 0.5*self.YKiFB_grad_i(i)
         return RV
 
     def checkGradient(self,h=1e-4,verbose=True,fun='LML'):
