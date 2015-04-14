@@ -28,6 +28,7 @@ class fixed(covariance):
         assert value>=0, 'Scale must be >=0'
         self._scale = value
         self.clear_all()
+        self._notify()
 
     #####################
     # Params handling
@@ -47,19 +48,14 @@ class fixed(covariance):
     #####################
     def K(self):
         return self.scale * self.K0
-        
+
     #def Kcross(self):
     #    """
     #    evaluates the kernel between test and training points for given hyperparameters
     #    """
     #    return 0
-    
+
     def K_grad_i(self):
         if self._grad_idx==0:
             return self.scale*self.K0
         return None
-
-
-
-
-    
