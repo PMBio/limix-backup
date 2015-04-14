@@ -2,14 +2,21 @@
 
 class Observed(object):
     def __init__(self):
+        self._init_interesteds()
+
+    def _init_interesteds(self):
         self._interesteds = dict()
 
     def register(self, interested, event='default'):
+        if not hasattr(self, '_interesteds'):
+            self._init_interesteds()
         if event not in self._interesteds.keys():
             self._interesteds[event] = []
         self._interesteds[event].append(interested)
 
     def _notify(self, event='default'):
+        if not hasattr(self, '_interesteds'):
+            self._init_interesteds()
         if event in self._interesteds:
             for i in self._interesteds[event]:
                 i()

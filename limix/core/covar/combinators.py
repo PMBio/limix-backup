@@ -80,8 +80,7 @@ class sumcov(covariance):
             istop = istart + self.getCovariance(j).getNumberParams()
             if (i < istop):
                 idx = i - istart
-                self.getCovariance(j).set_grad_idx(idx)
-                return self.getCovariance(j).K_grad_i(i)
+                return self.getCovariance(j).K_grad_i(idx)
             istart = istop
         return None
 

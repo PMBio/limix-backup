@@ -18,7 +18,7 @@ class fixed(covariance):
     #####################
     @property
     def scale(self):
-        return self._scale
+        return sp.exp(self.params[0])
 
     #####################
     # Setters
@@ -26,20 +26,13 @@ class fixed(covariance):
     @scale.setter
     def scale(self,value):
         assert value>=0, 'Scale must be >=0'
-        self._scale = value
+        self.params[0] = sp.log(value) 
         self.clear_all()
         self._notify()
 
     #####################
     # Params handling
     #####################
-    def setParams(self,params):
-        self.scale  = sp.exp(params[0])
-
-    def getParams(self):
-        params = sp.log(sp.array([self.scale]))
-        return params
-
     def _calcNumberParams(self):
         self.n_params = 1
 
@@ -55,7 +48,7 @@ class fixed(covariance):
     #    """
     #    return 0
 
-    def K_grad_i(self):
-        if self._grad_idx==0:
+    def K_grad_i(self,i):
+        if i==0:
             return self.scale*self.K0
         return None

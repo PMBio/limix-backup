@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0,'./../../..')
-from limix.core.cobj import *
-import scipy as SP
+from limix.core.utils.cached import *
+import scipy as sp
 from covariance import covariance
 import pdb
 import scipy.spatial as SS
@@ -21,11 +21,11 @@ class sqexp(covariance):
     #####################
     @property
     def scale(self):
-        return self._scale
+        return sp.exp(self.params[0])
 
     @property
     def length(self):
-        return self._length
+        return sp.exp(self.params[1])
 
     @property
     def X(self):
@@ -37,14 +37,14 @@ class sqexp(covariance):
     @scale.setter
     def scale(self,value):
         assert value>=0, 'Scale must be >=0'
-        self._scale = value
+        self.params[0] = sp.log(value)
         self.clear_all()
         self._notify()
 
     @length.setter
     def length(self,value):
         assert value>=0, 'Length must be >=0'
-        self._length = value
+        self.params[1] = sp.log(value)
         self.clear_all()
         self._notify()
 
@@ -59,14 +59,6 @@ class sqexp(covariance):
     #####################
     # Params handling
     #####################
-    def setParams(self,params):
-        self.scale  = SP.exp(params[0])
-        self.length = SP.exp(params[1])
-
-    def getParams(self):
-        params = SP.log(SP.array([self.scale,self.length]))
-        return params
-
     def _calcNumberParams(self):
         self.n_params = self.X.shape[1]+1
 
@@ -81,19 +73,19 @@ class sqexp(covariance):
 
     @cached
     def K(self):
-        return self.scale * SP.exp(-self.E()/(2*self.length))
+        return self.scale * sp.exp(-self.E()/(2*self.length))
 
     #TODO
     #@cached
     #def Kcross(self):
     #    assert self.X.shape[1]==1, 'only implemented for 1-dim input'
     #    Estar = (self.Xstar - self.X.T)**2
-    #    return  self.scale * SP.exp(-Estar/(2*self.length))
+    #    return  self.scale * sp.exp(-Estar/(2*self.length))
 
     @cached
-    def K_grad_i(self):
-        if self._grad_idx==0:
-            return SP.exp(-self.E()/(2*self.length)) * self.scale
+    def K_grad_i(self,i):
+        if i==0:
+            return sp.exp(-self.E()/(2*self.length)) * self.scale
         else:
-            A = SP.exp(-self.E()/(2*self.length))*self.E()
+            A = sp.exp(-self.E()/(2*self.length))*self.E()
             return self.scale * A / (2*self.length)

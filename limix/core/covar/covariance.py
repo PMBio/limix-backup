@@ -4,6 +4,7 @@ sys.path.insert(0,'./../../..')
 from limix.core.utils.cached import *
 from limix.core.utils.eigen import *
 import scipy as SP
+import pdb
 import scipy.linalg as LA
 import warnings
 
@@ -39,6 +40,14 @@ class covariance(cObject, Observed):
         get hyperparameters
         """
         return self.params
+
+    def setParams(self,params):
+        """
+        set hyperParams
+        """
+        self.params = params
+        self.clear_all()
+        self._notify()
 
     def perturbParams(self,pertSize=1e-3):
         """
@@ -124,7 +133,7 @@ class covariance(cObject, Observed):
 
     @cached
     def logdet_grad_i(self,i):
-        return self.Kinv_dot(self.K_grad_i()).diagonal().sum()
+        return self.Kinv_dot(self.K_grad_i(i)).diagonal().sum()
 
     @cached
     def S(self):
