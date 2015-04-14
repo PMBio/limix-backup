@@ -1,16 +1,15 @@
 from covariance import covariance
 import pdb
 import scipy as SP
-from limix.core.utils.cached import Cached, cached
+from limix.core.utils.cached import * 
 
-class sumcov(covariance, Cached):
+class sumcov(covariance):
 
     def __init__(self,*covars):
         self.dim = None
         self.covars = []
         for covar in covars:
             self.addCovariance(covar)
-        self._grad_idx = 0
         self.clear_all()
 
     def _clear_caches(self):
@@ -54,10 +53,6 @@ class sumcov(covariance, Cached):
     #####################
     # Cached
     #####################
-    """
-    The caching for now does not work
-    need to talk to single covariance matrices
-    """
     @cached
     def K(self):
         K = SP.zeros((self.dim,self.dim))
@@ -79,14 +74,14 @@ class sumcov(covariance, Cached):
     #    return Kcross
 
     @cached
-    def K_grad_i(self):
+    def K_grad_i(self,i):
         istart = 0
         for j in range(len(self.covars)):
             istop = istart + self.getCovariance(j).getNumberParams()
-            if (self._grad_idx < istop):
-                idx = self._grad_idx - istart
+            if (i < istop):
+                idx = i - istart
                 self.getCovariance(j).set_grad_idx(idx)
-                return self.getCovariance(j).K_grad_i()
+                return self.getCovariance(j).K_grad_i(i)
             istart = istop
         return None
 
