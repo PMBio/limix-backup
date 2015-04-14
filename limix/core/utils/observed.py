@@ -24,9 +24,8 @@ if __name__ == '__main__':
 
     class B(object):
         def __init__(self, a):
-            self._a = a
-            self._a.register(self.call_me)
-            self._a.register(self.call_me_on_event1, 'event1')
+            a.register(self.call_me)
+            a.register(self.call_me_on_event1, 'event1')
 
         def call_me(self):
             print 'call_me'
