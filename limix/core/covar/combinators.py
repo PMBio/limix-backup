@@ -1,8 +1,9 @@
 from covariance import covariance
 import pdb
 import scipy as SP
+from limix.core.utils.cached import Cached, cached
 
-class sumcov(covariance):
+class sumcov(covariance, Cached):
 
     def __init__(self,*covars):
         self.dim = None
@@ -11,7 +12,10 @@ class sumcov(covariance):
             self.addCovariance(covar)
         self._grad_idx = 0
         self.clear_all()
-        
+
+    def _clear_caches(self):
+        self.clear_cache('K', 'K_grad_i')
+
     #####################
     # Covars handling
     #####################
@@ -21,8 +25,9 @@ class sumcov(covariance):
         else:
             assert covar.dim==self.dim, 'Dimension mismatch'
         self.covars.append(covar)
+        covar.register(self._clear_caches)
         self._calcNumberParams()
-        
+
     def getCovariance(self,i):
         return self.covars[i]
 
@@ -45,7 +50,7 @@ class sumcov(covariance):
             params[istart:istop] = self.getCovariance(i).getParams()
             istart = istop
         return params
-    
+
     #####################
     # Cached
     #####################
@@ -53,6 +58,7 @@ class sumcov(covariance):
     The caching for now does not work
     need to talk to single covariance matrices
     """
+    @cached
     def K(self):
         K = SP.zeros((self.dim,self.dim))
         for i in range(len(self.covars)):
@@ -69,26 +75,27 @@ class sumcov(covariance):
     #
     #    for i in range(len(self.covars)):
     #        Kcross += self.covars[i].Kcross()
-    #    
+    #
     #    return Kcross
-        
+
+    @cached
     def K_grad_i(self):
         istart = 0
         for j in range(len(self.covars)):
             istop = istart + self.getCovariance(j).getNumberParams()
-            if (self._grad_idx < istop): 
-                idx = self._grad_idx - istart 
+            if (self._grad_idx < istop):
+                idx = self._grad_idx - istart
                 self.getCovariance(j).set_grad_idx(idx)
                 return self.getCovariance(j).K_grad_i()
-            istart = istop 
+            istart = istop
         return None
-    
+
     def _calcNumberParams(self):
         self.n_params = 0
         for i in range(len(self.covars)):
             self.n_params += self.getCovariance(i).getNumberParams()
         return self.n_params
-            
+
     ####################
     # DEPRECATED FUNCTIONS
     ####################
@@ -100,5 +107,3 @@ class sumcov(covariance):
     #    self.Xstar = Xstar
     #    for i in range(len(self.covars)):
     #        self.covars[i].setXstar(Xstar)
-
-

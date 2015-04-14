@@ -39,12 +39,14 @@ class sqexp(covariance):
         assert value>=0, 'Scale must be >=0'
         self._scale = value
         self.clear_all()
+        self._notify()
 
     @length.setter
     def length(self,value):
         assert value>=0, 'Length must be >=0'
         self._length = value
         self.clear_all()
+        self._notify()
 
     @X.setter
     def X(self,value):
@@ -52,6 +54,7 @@ class sqexp(covariance):
         covariance.__init__(self,self.X.shape[0])
         self.clear_all()
         self.clear_cache('E')
+        self._notify()
 
     #####################
     # Params handling
@@ -63,7 +66,7 @@ class sqexp(covariance):
     def getParams(self):
         params = SP.log(SP.array([self.scale,self.length]))
         return params
-    
+
     def _calcNumberParams(self):
         self.n_params = self.X.shape[1]+1
 
@@ -85,8 +88,8 @@ class sqexp(covariance):
     #def Kcross(self):
     #    assert self.X.shape[1]==1, 'only implemented for 1-dim input'
     #    Estar = (self.Xstar - self.X.T)**2
-    #    return  self.scale * SP.exp(-Estar/(2*self.length))    
-  
+    #    return  self.scale * SP.exp(-Estar/(2*self.length))
+
     @cached
     def K_grad_i(self):
         if self._grad_idx==0:
@@ -94,8 +97,3 @@ class sqexp(covariance):
         else:
             A = SP.exp(-self.E()/(2*self.length))*self.E()
             return self.scale * A / (2*self.length)
-
-
-
-
-    

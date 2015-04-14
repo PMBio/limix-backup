@@ -1,4 +1,5 @@
 import sys
+from limix.core.utils.observed import Observed
 sys.path.insert(0,'./../../..')
 from limix.core.utils.cached import *
 from limix.core.utils.eigen import *
@@ -6,7 +7,7 @@ import scipy as SP
 import scipy.linalg as LA
 import warnings
 
-class covariance(cObject):
+class covariance(cObject, Observed):
     """
     abstract super class for all implementations of covariance functions
     """
@@ -76,7 +77,7 @@ class covariance(cObject):
         """
         check discrepancies between numerical and analytical gradients
         """
-        params = self.getParams() 
+        params = self.getParams()
         e = SP.zeros_like(params); e[i] = 1
         self.setParams(params-h*e)
         C_L = self.K()
@@ -112,10 +113,10 @@ class covariance(cObject):
     @cached
     def chol(self):
         return LA.cholesky(self.K()).T
-            
+
     @cached
     def inv(self):
-        return self.Kinv_dot(SP.eye(self.dim)) 
+        return self.Kinv_dot(SP.eye(self.dim))
 
     @cached
     def logdet(self):
@@ -127,18 +128,18 @@ class covariance(cObject):
 
     @cached
     def S(self):
-        RV,U = LA.eigh(self.K()) 
+        RV,U = LA.eigh(self.K())
         self.fill_cache('U',U)
         return RV
 
     @cached
     def U(self):
-        S,RV = LA.eigh(self.K()) 
+        S,RV = LA.eigh(self.K())
         self.fill_cache('S',S)
         return RV
 
     @cached
-    def USi2(self):        
+    def USi2(self):
         # U * S**(-1/2)
         return self.U()*(self.S()**(-0.5))
 
@@ -169,5 +170,3 @@ class covariance(cObject):
             _ss = ((K_an-K_num)**2).sum()
             print i, _ss
             #ss += _ss
-
-
