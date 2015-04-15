@@ -1,12 +1,14 @@
 import sys
-from limix.core.utils.observed import Observed
 sys.path.insert(0,'./../../..')
+from limix.core.utils.observed import Observed
 from limix.core.utils.cached import *
 from limix.core.utils.eigen import *
 import scipy as SP
 import pdb
 import scipy.linalg as LA
 import warnings
+
+import logging as LG
 
 class covariance(cObject, Observed):
     """
@@ -116,7 +118,7 @@ class covariance(cObject, Observed):
         LG.critical("implement K_grad_i")
         print("%s: Function K not yet implemented"%(self.__class__))
 
-    def Kinv_dot(self,M):
+    def solve(self,M):
         return LA.cho_solve((self.chol(),True),M)
 
     @cached
@@ -125,7 +127,7 @@ class covariance(cObject, Observed):
 
     @cached
     def inv(self):
-        return self.Kinv_dot(SP.eye(self.dim))
+        return self.solve(SP.eye(self.dim))
 
     @cached
     def logdet(self):
@@ -133,7 +135,7 @@ class covariance(cObject, Observed):
 
     @cached
     def logdet_grad_i(self,i):
-        return self.Kinv_dot(self.K_grad_i(i)).diagonal().sum()
+        return self.solve(self.K_grad_i(i)).diagonal().sum()
 
     @cached
     def S(self):
