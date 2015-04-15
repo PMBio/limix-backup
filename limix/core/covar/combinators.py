@@ -12,9 +12,6 @@ class sumcov(covariance):
             self.addCovariance(covar)
         self.clear_all()
 
-    def _clear_caches(self):
-        self.clear_cache('K', 'K_grad_i')
-
     #####################
     # Covars handling
     #####################
@@ -24,7 +21,7 @@ class sumcov(covariance):
         else:
             assert covar.dim==self.dim, 'Dimension mismatch'
         self.covars.append(covar)
-        covar.register(self._clear_caches)
+        covar.register(self.clear_all())
         self._calcNumberParams()
 
     def getCovariance(self,i):

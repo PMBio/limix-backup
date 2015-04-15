@@ -1,4 +1,5 @@
 import scipy as sp
+from limix.core.utils.cached import *
 from covariance import covariance
 import pdb
 
@@ -39,6 +40,7 @@ class fixed(covariance):
     #####################
     # Cached
     #####################
+    @cached
     def K(self):
         return self.scale * self.K0
 
@@ -48,6 +50,7 @@ class fixed(covariance):
     #    """
     #    return 0
 
+    @cached
     def K_grad_i(self,i):
         if i==0:
             return self.scale*self.K0
