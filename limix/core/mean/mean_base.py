@@ -1,5 +1,6 @@
 import sys
 sys.path.insert(0,'./../../..')
+from limix.core.utils.observed import Observed
 from limix.core.utils.cached import *
 from limix.utils.preprocess import regressOut
 import scipy as sp
@@ -9,7 +10,7 @@ import scipy.linalg as LA
 import copy
 import pdb
 
-class mean_base(cObject):
+class mean_base(cObject, Observed):
 
     def __init__(self,Y,F):
         """
@@ -35,14 +36,22 @@ class mean_base(cObject):
     def B(self):
         return self._B
 
+    @property
+    def y(self):
+        return sp.reshape(self.Y,(self._N*self._P,1),order='F') 
+
+    @property
+    def b(self):
+        return sp.reshape(self.B,(self._K*self._P,1),order='F')
+
     #########################################
     # Setters 
     #########################################
     @Y.setter
     def Y(self,value):
         """ set phenotype """
-        assert value.shape[1]==1, 'Dimension mismatch'
         self._N = value.shape[0]
+        self._P = value.shape[1]
         self._Y = value
         self.clear_cache('Yres')
 
@@ -58,7 +67,7 @@ class mean_base(cObject):
     def B(self,value):
         """ set phenotype """
         assert value.shape[0]==self._K, 'Dimension mismatch'
-        assert value.shape[1]==1, 'Dimension mismatch'
+        assert value.shape[1]==self._P, 'Dimension mismatch'
         self._B = value
         self.clear_cache('predict','Yres')
 
