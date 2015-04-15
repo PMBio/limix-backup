@@ -46,6 +46,8 @@ if __name__ == "__main__":
             covar.test_grad()
 
     # define gp
+    ipdb.set_trace()
+
     gp = gp_base(covar=covar,mean=mean)
     covar.setRandomParams()
     print gp.LML()
@@ -54,5 +56,5 @@ if __name__ == "__main__":
     ipdb.set_trace()
     gp.checkGradient(fun='YKiY')
     gp.checkGradient(fun='YKiFB')
-    gp.checkGradient(fun='Areml_logdet')
+    #gp.checkGradient(fun='Areml_logdet')
 

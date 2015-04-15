@@ -4,11 +4,12 @@ import scipy.linalg
 import copy
 import sys
 sys.path.insert(0,'./../../..')
+from limix.core.utils.observed import Observed
 from limix.core.utils.cached import *
 import limix.core.mean.mean_base
-import limix.core.covar.covariance
+from limix.core.covar.cov_reml import cov_reml
 
-class gp(cObject):
+class gp(cObject, Observed):
     """
     Gaussian Process regression class for linear mean (with REML)
     y ~ N(Fb,K)
@@ -21,6 +22,7 @@ class gp(cObject):
         """
         self.covar = covar
         self.mean  = mean
+        self.Areml = cov_reml(self)
         self.clear_all()
         self.update_B()
 
@@ -31,15 +33,15 @@ class gp(cObject):
         self.clear_lmlgrad_terms()
 
     def clear_Areml(self):
-        self.clear_cache('Areml','Areml_chol','Areml_inv','Areml_logdet')
+        pdb.set_trace()
+        self._notify()
 
     def clear_lml_terms(self):
         self.clear_cache('KiF','YKiF','KiFB','KiY','YKiY','YKiFB','LML')
 
     def clear_lmlgrad_terms_i(self):
-        self.clear_cache('DiKKiY','DiKKiF','DiKKiFB','Areml_grad_i',
-                            'YKiY_grad_i','YKiFB_grad_i',
-                            'Areml_logdet_grad_i')
+        self.clear_cache('DiKKiY','DiKKiF','DiKKiFB',
+                            'YKiY_grad_i','YKiFB_grad_i')
 
     def clear_lmlgrad_terms(self):
         self.clear_cache('YKiY_grad','YKiFB_grad','Areml_logdet_grad','LML_grad')
@@ -60,28 +62,18 @@ class gp(cObject):
         RV['covar'] = self.covar.getParams()
         return RV
 
+    ######################
+    # Areml
+    ######################
+    def Areml_K(self):
+        return sp.dot(self.mean.F.T,self.KiF())
+    
+    def Areml_K_grad_i(self,i):
+        return -sp.dot(self.KiF().T,self.DiKKiF(i))
+
     #######################
     # LML terms 
     #######################
-    @cached
-    def Areml(self):
-        return sp.dot(self.mean.F.T,self.KiF())
-
-    #TODO: move in matrix class?
-    @cached
-    def Areml_chol(self):
-        return sp.linalg.cholesky(self.Areml()).T
-
-    #TODO: move in matrix class?
-    @cached
-    def Areml_inv(self):
-        return sp.linalg.cho_solve((self.Areml_chol(),True),sp.eye(self.mean._K))
-
-    #TODO: move in matrix class?
-    @cached
-    def Areml_logdet(self):
-        return 2*sp.log(sp.diag(self.Areml_chol())).sum()
-    
     @cached
     def KiF(self):
         return self.covar.Kinv_dot(self.mean.F)
@@ -92,7 +84,7 @@ class gp(cObject):
 
     # B is calculated here but cached in the mean?
     def update_B(self):
-        self.mean.B = sp.dot(self.Areml_inv(),self.YKiF().T)
+        self.mean.B = self.Areml.solve(self.YKiF().T)
 
     @cached
     def KiFB(self):
@@ -126,9 +118,6 @@ class gp(cObject):
     def DiKKiFB(self,i):
         return sp.dot(self.DiKKiF(i),self.mean.B)
 
-    @cached
-    def Areml_grad_i(self,i):
-        return -sp.dot(self.KiF().T,self.DiKKiF(i))
 
     @cached
     def YKiY_grad_i(self,i):
@@ -140,10 +129,6 @@ class gp(cObject):
         rv+= (self.KiFB()*self.DiKKiFB(i)).sum()
         return rv
 
-    @cached
-    def Areml_logdet_grad_i(self,i):
-        return (self.Areml_inv()*self.Areml_grad_i(i)).sum()
-
     #######################
     # LML and gradients
     #######################
@@ -152,7 +137,7 @@ class gp(cObject):
     def LML(self):
         #const term to add?
         rv = -0.5*self.covar.logdet()
-        rv -= 0.5*self.Areml_logdet()
+        rv -= 0.5*self.Areml.logdet()
         rv -= 0.5*self.YKiY()
         rv += 0.5*self.YKiFB()
         return rv 
@@ -178,7 +163,7 @@ class gp(cObject):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
         for i in range(n_params):
-            RV['covar'][i] = self.Areml_logdet_grad_i(i)
+            RV['covar'][i] = self.Areml.logdet_grad_i(i)
         return RV
 
     def LML_grad(self):
@@ -186,7 +171,7 @@ class gp(cObject):
         RV = {'covar': sp.zeros(n_params)}
         for i in range(n_params):
             RV['covar'][i] = -0.5*self.covar.logdet_grad_i(i)
-            RV['covar'][i] -= 0.5*self.Areml_logdet_grad_i(i)
+            RV['covar'][i] -= 0.5*self.Areml.logdet_grad_i(i)
             RV['covar'][i] -= 0.5*self.YKiY_grad_i(i)
             RV['covar'][i] += 0.5*self.YKiFB_grad_i(i)
         return RV
