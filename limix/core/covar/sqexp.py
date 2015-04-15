@@ -15,7 +15,11 @@ class sqexp(covariance):
         """
         X   dim x d input matrix
         """
+        covariance.__init__(self)
         self.X = X
+        self.params = np.empty(2)
+        self.scale = 1.0
+        self.length = 1.0
 
     #####################
     # Properties
@@ -52,7 +56,6 @@ class sqexp(covariance):
     @X.setter
     def X(self,value):
         self._X = value
-        covariance.__init__(self,self.X.shape[0])
         self.clear_all()
         self.clear_cache('E')
         self._notify()
