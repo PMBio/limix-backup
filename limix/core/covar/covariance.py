@@ -14,10 +14,13 @@ class covariance(cObject, Observed):
     """
     abstract super class for all implementations of covariance functions
     """
-    def __init__(self,dim):
-        self.dim = dim
-        self._calcNumberParams()
-        self._initParams()
+    def __init__(self):
+        pass
+        # self.dim = dim
+        # Danilo: this is not a good idea. Params are specific to each
+        # class, so they should be always initialized in those classes.
+        # self._calcNumberParams()
+        # self._initParams()
 
     def clear_all(self):
         self.clear_cache('K','K_grad_i','logdet','logdet_grad_i',
@@ -77,12 +80,12 @@ class covariance(cObject, Observed):
         """
         warnings.warn('not implemented')
 
-    def _initParams(self):
-        """
-        initialize paramters to vector of zeros
-        """
-        params = SP.zeros(self.getNumberParams())
-        self.setParams(params)
+    # def _initParams(self):
+    #     """
+    #     initialize paramters to vector of zeros
+    #     """
+    #     params = SP.zeros(self.getNumberParams())
+    #     self.setParams(params)
 
     def Kgrad_param_num(self,i,h=1e-4):
         """

@@ -3,13 +3,13 @@ sys.path.insert(0,'./../../..')
 
 from limix.core.mean.mean_base import mean_base as lin_mean
 from limix.core.covar.sqexp import sqexp
-from limix.core.covar.fixed import fixed 
-from limix.core.covar.combinators import sumcov 
+from limix.core.covar.fixed import fixed
+from limix.core.covar.combinators import sumcov
 from limix.core.gp.gp_base_new import gp as gp_base
 
 import pdb as ipdb
 import scipy as sp
-import scipy.linalg as LA 
+import scipy.linalg as LA
 import time as TIME
 import copy
 import pylab as pl
@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     if 0:
         # cheack gradient for covariances
-        for i in range(10): 
+        for i in range(10):
             covar1.setRandomParams()
             covar1.test_grad()
             covar2.setRandomParams()
@@ -57,4 +57,3 @@ if __name__ == "__main__":
     gp.checkGradient(fun='YKiY')
     gp.checkGradient(fun='YKiFB')
     #gp.checkGradient(fun='Areml_logdet')
-

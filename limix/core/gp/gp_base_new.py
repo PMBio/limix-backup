@@ -33,7 +33,6 @@ class gp(cObject, Observed):
         self.clear_lmlgrad_terms()
 
     def clear_Areml(self):
-        pdb.set_trace()
         self._notify()
 
     def clear_lml_terms(self):
@@ -67,12 +66,12 @@ class gp(cObject, Observed):
     ######################
     def Areml_K(self):
         return sp.dot(self.mean.F.T,self.KiF())
-    
+
     def Areml_K_grad_i(self,i):
         return -sp.dot(self.KiF().T,self.DiKKiF(i))
 
     #######################
-    # LML terms 
+    # LML terms
     #######################
     @cached
     def KiF(self):
@@ -140,7 +139,7 @@ class gp(cObject, Observed):
         rv -= 0.5*self.Areml.logdet()
         rv -= 0.5*self.YKiY()
         rv += 0.5*self.YKiFB()
-        return rv 
+        return rv
 
     @cached
     def YKiY_grad(self):
@@ -216,7 +215,7 @@ if 0:
         Kstar = self.covar.K(hyperparams['covar'],self.F,Fstar)
         Ystar = sp.dot(Kstar.T,KV['alpha'])
         return Ystar.flatten()
-        
+
     def get_covariances(self,hyperparams):
         """
         INPUT:
@@ -232,7 +231,7 @@ if 0:
             return self._covar_cache
 
         K = self.covar.K(hyperparams['covar'],self.F)
-        
+
         if self.likelihood is not None:
             Knoise = self.likelihood.K(hyperparams['lik'],self.n)
             K += Knoise
@@ -247,7 +246,7 @@ if 0:
         self._covar_cache['L'] = L
         self._covar_cache['alpha'] = alpha
         self._covar_cache['W'] = W
-        self._covar_cache['hyperparams'] = copy.deepcopy(hyperparams) 
+        self._covar_cache['hyperparams'] = copy.deepcopy(hyperparams)
         return self._covar_cache
 
     def _is_cached(self,hyperparams,keys=None):
@@ -266,5 +265,3 @@ if 0:
     def _invalidate_cache(self):
         """ reset cache """
         self._covar_cache = None
-
-
