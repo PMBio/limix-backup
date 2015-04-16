@@ -1,5 +1,4 @@
 TODO:
-- fix the gp (P)
 - cov and mean: two inner prediction methods for prediction
 (in-of-sample cached,out-of-sample not) (P)
 - gp/mean: change Y/B to y/b (P)

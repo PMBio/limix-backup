@@ -72,12 +72,25 @@ class mean_base(cObject, Observed):
         self.clear_cache('predict','Yres')
 
     #########################################
-    # Getters (caching)
+    # Predictions 
     #########################################
+    def predict(self,Fstar=None):
+        if Fstar is None:
+            r = self._predict_in_sample()
+        else:
+            r = self._predict_out_sample()
+        return r 
+
     @cached
-    def predict(self):
-        """ predict the value of the fixed effect (F*B) """
-        return sp.dot(self.F,self.B)
+    def _predict_in_sample(self):
+        r = _predict_fun(self.F) 
+
+    def _predict_out_sample(self,Fstar):
+        assert Fstar.shape[1]==self._K, 'Dimension mismatch'
+        r = _predict_fun(Fstar) 
+
+    def _predict_fun(self,M):
+        return sp.dot(M,self.B)
 
     @cached
     def Yres(self):
