@@ -113,7 +113,7 @@ if __name__ == "__main__":
     print "optimization of GP parameters"
     start = TIME.time()
     conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-    print 'Reml GP:', TIME.time()-start
+    print 'time for fitting GP:', TIME.time()-start
         
 
     print conv
@@ -125,7 +125,32 @@ if __name__ == "__main__":
     print "testing SNPs with any effect"
     pv,LL_snps,LL_snps_0= assoc.test_snps(snps)
     
-    if 0:
-        import pylab as pl
-        pl.ion()
-        pl.hist(pv,30)
+
+
+    if 1:
+        print "forward selection step"
+        print "adding SNP with smalles pv as fixed effect"
+        i_pv = pv.argsort()
+        assoc.addFixedEffect(F=snps[:,i_pv[0]:(i_pv[0]+1)],A=None)
+        
+        if 1:#optimize
+            print "refitting GP"
+            start = TIME.time()
+            conv,info = OPT.opt_hyper(assoc._gp,params,factr=1e3)
+            print 'time for fitting GP:', TIME.time()-start
+        
+
+        print conv
+
+        print "testing after forward selection step"
+        assoc_forw = lmm.LmmKronecker(gp=assoc._gp)
+        pv_forw,LL_snps_forw,LL_snps_0_forw = assoc_forw.test_snps(snps)
+    
+
+        if plot:
+            import pylab as pl
+            pl.ion()
+            print "plotting pvalues before vs after forward selection"
+            pl.figure()
+            pl.plot(-SP.log10(pv_forw),-SP.log10(pv),'.')
+            pl.plot([0,8],[0,8])
