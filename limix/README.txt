@@ -1,19 +1,16 @@
 TODO:
+- unitests (D)
+    - covariance
+- check grad (D)
+- fix the gp (P)
 - cov and mean: two inner prediction methods for prediction
 (in-of-sample cached,out-of-sample not) (P)
-- cov: make Areml to cov (P)
-- cov: rename to solve (P)
-- cov: change small d to large D (P)
 - gp/mean: change Y/B to y/b (P)
 - optimization + standard error
 
 TODO next (discussed):
     - discuss about Y/y, B/b in mean (gplvm)
     - getParams -> getParamArray
-    - Areml as covariance:
-        - KiF into covar
-        - DiKKiF into covar
-        - Areml is observer
 
 mean_base
 - add predicitons out of sample
