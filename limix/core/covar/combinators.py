@@ -21,7 +21,7 @@ class sumcov(covariance):
         else:
             assert covar.dim==self.dim, 'Dimension mismatch'
         self.covars.append(covar)
-        covar.register(self.clear_all())
+        covar.register(self.clear_all)
         self._calcNumberParams()
 
     def getCovariance(self,i):

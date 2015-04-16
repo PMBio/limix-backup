@@ -8,10 +8,7 @@ class fixed(covariance):
     squared exponential covariance function
     """
     def __init__(self,K):
-        """
-        initialization
-        """
-        covariance.__init__(self,K.shape[0])
+        self.initialize(K.shape[0])
         self.K0 = K
 
     #####################
