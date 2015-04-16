@@ -75,7 +75,7 @@ class gp(cObject, Observed):
     #######################
     @cached
     def KiF(self):
-        return self.covar.Kinv_dot(self.mean.F)
+        return self.covar.solve(self.mean.F)
 
     @cached
     def YKiF(self):
@@ -87,12 +87,11 @@ class gp(cObject, Observed):
 
     @cached
     def KiFB(self):
-        # this can be rewritten as FKiF.Kinv_dot(self.mean.B)
         return sp.dot(self.KiF(),self.mean.B)
 
     @cached
     def KiY(self):
-        return self.covar.Kinv_dot(self.mean.Y)
+        return self.covar.solve(self.mean.Y)
 
     @cached
     def YKiY(self):

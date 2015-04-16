@@ -30,6 +30,8 @@ if __name__ == "__main__":
     F = 1.*(sp.rand(N,2)<0.2)
     mean = lin_mean(Y,F)
 
+    ipdb.set_trace()
+
     # define covariance matrices
     covar1 = sqexp(X)
     covar2 = fixed(sp.eye(N))
@@ -46,8 +48,6 @@ if __name__ == "__main__":
             covar.test_grad()
 
     # define gp
-    ipdb.set_trace()
-
     gp = gp_base(covar=covar,mean=mean)
     covar.setRandomParams()
     print gp.LML()
