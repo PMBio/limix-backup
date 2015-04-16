@@ -1,7 +1,4 @@
 TODO:
-- unitests (D)
-    - covariance
-- check grad (D)
 - fix the gp (P)
 - cov and mean: two inner prediction methods for prediction
 (in-of-sample cached,out-of-sample not) (P)
@@ -10,6 +7,7 @@ TODO:
 
 TODO next (discussed):
     - discuss about Y/y, B/b in mean (gplvm)
+    - params handling not solved
     - getParams -> getParamArray
 
 mean_base
