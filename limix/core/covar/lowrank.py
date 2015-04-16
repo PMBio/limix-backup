@@ -9,9 +9,18 @@ class lowrank(covariance):
         """
         initialization
         """
+        covariance.__init__(self)
+        self.n_params = P
+        self.P = P
         self.rank = rank
-        covariance.__init__(self,P)
-        
+
+
+    def getNumberParams(self):
+        """
+        return the number of hyperparameters
+        """
+        return self.n_params
+
     def K(self):
         """
         evaluates the kernel for given hyperparameters theta
@@ -19,7 +28,7 @@ class lowrank(covariance):
         X = self._getX()
         RV = SP.dot(X,X.T)
         return RV
-     
+
     def Kgrad_param(self,i):
         """
         partial derivative with repspect to the i-th hyperparamter theta[i]
@@ -28,7 +37,7 @@ class lowrank(covariance):
         Xgrad = self._getXgrad(i)
         import pdb
         RV = SP.dot(X,Xgrad.T)+SP.dot(Xgrad,X.T)
-        return RV 
+        return RV
 
     def _calcNumberParams(self):
         """
@@ -51,4 +60,3 @@ class lowrank(covariance):
         zeros[i] = 1
         RV = SP.reshape(zeros,(self.P,self.rank),order='F')
         return RV
-

@@ -2,6 +2,7 @@ import sys
 sys.path.insert(0,'./../../..')
 from limix.core.utils.cached import *
 import scipy as sp
+import numpy as np
 from covariance import covariance
 import pdb
 import scipy.spatial as SS
@@ -14,7 +15,11 @@ class sqexp(covariance):
         """
         X   dim x d input matrix
         """
+        covariance.__init__(self)
         self.X = X
+        self.params = np.empty(2)
+        self.scale = 1.0
+        self.length = 1.0
 
     #####################
     # Properties
@@ -51,7 +56,6 @@ class sqexp(covariance):
     @X.setter
     def X(self,value):
         self._X = value
-        covariance.__init__(self,self.X.shape[0])
         self.clear_all()
         self.clear_cache('E')
         self._notify()
@@ -85,7 +89,9 @@ class sqexp(covariance):
     @cached
     def K_grad_i(self,i):
         if i==0:
-            return sp.exp(-self.E()/(2*self.length)) * self.scale
+            r = sp.exp(-self.E()/(2*self.length)) * self.scale
         else:
             A = sp.exp(-self.E()/(2*self.length))*self.E()
-            return self.scale * A / (2*self.length)
+            r = self.scale * A / (2*self.length)
+
+        return r[...,np.newaxis]
