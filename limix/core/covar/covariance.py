@@ -14,13 +14,13 @@ class covariance(cObject, Observed):
     """
     abstract super class for all implementations of covariance functions
     """
-    def __init__(self):
-        pass
-        # self.dim = dim
-        # Danilo: this is not a good idea. Params are specific to each
-        # class, so they should be always initialized in those classes.
-        # self._calcNumberParams()
-        # self._initParams()
+    def __init__(self,dim):
+        self.initialize(dim)
+
+    def initialize(self,dim):
+        self.dim = dim
+        self._calcNumberParams()
+        self._initParams()
 
     def clear_all(self):
         self.clear_cache('K','K_grad_i','logdet','logdet_grad_i',
@@ -80,12 +80,12 @@ class covariance(cObject, Observed):
         """
         warnings.warn('not implemented')
 
-    # def _initParams(self):
-    #     """
-    #     initialize paramters to vector of zeros
-    #     """
-    #     params = SP.zeros(self.getNumberParams())
-    #     self.setParams(params)
+    def _initParams(self):
+         """
+         initialize paramters to vector of zeros
+         """
+         params = SP.zeros(self.getNumberParams())
+         self.setParams(params)
 
     def Kgrad_param_num(self,i,h=1e-4):
         """
@@ -157,30 +157,17 @@ class covariance(cObject, Observed):
         # U * S**(-1/2)
         return self.U()*(self.S()**(-0.5))
 
-    """
-    Follows derivatives of eigenvalues and eigenvectors
-    #TODO: handle the caching for them
-    """
+    @cached
     def Sgrad(self,i):
         return dS_dti(self.Kgrad_param(i),U=self.U())
 
+    @cached
     def Ugrad(self,i):
         return dU_dti(self.Kgrad_param(i),U=self.U(),S=self.S())
 
+    @cached
     def USi2grad(self,i):
         # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
         Si2grad = -0.5*self.S()**(-1.5)*self.Sgrad(i)
         return self.Ugrad(i)*(self.S()**(-0.5)) + self.U()*Si2grad
 
-    ########################
-    # Test functions
-    ########################
-    def test_grad(self,h=1e-4):
-        """test analytical gradient"""
-        ss = 0
-        for i in range(self.getNumberParams()):
-            K_an  = self.K_grad_i(i)
-            K_num = self.Kgrad_param_num(i,h=h)
-            _ss = ((K_an-K_num)**2).sum()
-            print i, _ss
-            #ss += _ss
