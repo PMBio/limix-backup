@@ -180,7 +180,7 @@ class gp(cObject, Observed):
         if self.covar.use_to_predict:
             Kcross = self.covar.Kcross()
             KiYres = self.KiY()-self.KiFB()
-            R = SP.dot(Kcross,KiYres)
+            R = sp.dot(Kcross,KiYres)
         if self.mean.use_to_predict:
             _ = self.mean.predict()
             if R is None:
@@ -189,7 +189,7 @@ class gp(cObject, Observed):
                 assert _.shape[0]==R.shape[0], 'Dimension mismatch'
                 assert _.shape[1]==R.shape[1], 'Dimension mismatch'
                 R += _
-            return R
+        return R
 
     def checkGradient(self,h=1e-4,verbose=True,fun='LML'):
         """

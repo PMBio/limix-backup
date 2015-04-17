@@ -98,7 +98,7 @@ class sqexp(covariance):
 
     @cached
     def Kcross(self):
-        assert Xstar.shape[1]==1, 'only implemented for 1-dim input'
+        assert self.Xstar.shape[1]==1, 'only implemented for 1-dim input'
         Estar = (self.Xstar - self.X.T)**2
         return  self.scale * sp.exp(-Estar/(2*self.length))
 

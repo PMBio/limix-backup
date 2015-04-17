@@ -55,10 +55,10 @@ class sumcov(covariance):
     def use_to_predict(self):
         r = False
         for i in range(len(self.covars)):
-            r += self.getCovariance(i).use_to_predict
+            r = r or self.getCovariance(i).use_to_predict
         return r
 
-    @covariance.use_to_predict.setter
+    @use_to_predict.setter
     def use_to_predict(self,value):
         warnings.warn('Method not available for combinator covariances. Set use_to_predict for single covariance terms.')
 
