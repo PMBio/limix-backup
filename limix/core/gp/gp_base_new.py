@@ -164,6 +164,7 @@ class gp(cObject, Observed):
             RV['covar'][i] = self.Areml.logdet_grad_i(i)
         return RV
 
+    @cached
     def LML_grad(self):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
@@ -173,6 +174,22 @@ class gp(cObject, Observed):
             RV['covar'][i] -= 0.5*self.YKiY_grad_i(i)
             RV['covar'][i] += 0.5*self.YKiFB_grad_i(i)
         return RV
+
+    def predict(self):
+        R = None
+        if self.covar.use_to_predict:
+            Kcross = self.covar.Kcross()
+            KiYres = self.KiY()-self.KiFB()
+            R = SP.dot(Kcross,KiYres)
+        if self.mean.use_to_predict:
+            _ = self.mean.predict()
+            if R is None:
+                R = _ 
+            else:
+                assert _.shape[0]==R.shape[0], 'Dimension mismatch'
+                assert _.shape[1]==R.shape[1], 'Dimension mismatch'
+                R += _
+            return R
 
     def checkGradient(self,h=1e-4,verbose=True,fun='LML'):
         """
@@ -204,63 +221,3 @@ class gp(cObject, Observed):
                 print abs((grad_an[key]-grad_num[key]))
                 print ''
 
-if 0:
-
-    def predict(self,hyperparams,Fstar):
-        """
-        predict on Fstar
-        """
-        KV = self.get_covariances(hyperparams)
-        Kstar = self.covar.K(hyperparams['covar'],self.F,Fstar)
-        Ystar = sp.dot(Kstar.T,KV['alpha'])
-        return Ystar.flatten()
-
-    def get_covariances(self,hyperparams):
-        """
-        INPUT:
-        hyperparams:  dictionary
-        OUTPUT: dictionary with the fields
-        K:     kernel
-        Kinv:  inverse of the kernel
-        L:     chol(K)
-        alpha: solve(K,y)
-        W:     D*Kinv * alpha*alpha^T
-        """
-        if self._is_cached(hyperparams):
-            return self._covar_cache
-
-        K = self.covar.K(hyperparams['covar'],self.F)
-
-        if self.likelihood is not None:
-            Knoise = self.likelihood.K(hyperparams['lik'],self.n)
-            K += Knoise
-        L = sp.linalg.cholesky(K).T# lower triangular
-
-        alpha = sp.linalg.cho_solve((L,True),self.Y)
-        Kinv = sp.linalg.cho_solve((L,True),sp.eye(L.shape[0]))
-        W = self.t*Kinv - sp.dot(alpha,alpha.T)
-        self._covar_cache = {}
-        self._covar_cache['K'] = K
-        self._covar_cache['Kinv'] = Kinv
-        self._covar_cache['L'] = L
-        self._covar_cache['alpha'] = alpha
-        self._covar_cache['W'] = W
-        self._covar_cache['hyperparams'] = copy.deepcopy(hyperparams)
-        return self._covar_cache
-
-    def _is_cached(self,hyperparams,keys=None):
-        """ check wheter model parameters are cached"""
-        if self._covar_cache is None:
-            return False
-        if not ('hyperparams' in self._covar_cache):
-            return False
-        if keys==None:
-            keys = hyperparams.keys()
-        for key in keys:
-            if (self._covar_cache['hyperparams'][key]!=hyperparams[key]).any():
-                return False
-        return True
-
-    def _invalidate_cache(self):
-        """ reset cache """
-        self._covar_cache = None

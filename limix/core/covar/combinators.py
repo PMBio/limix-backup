@@ -1,7 +1,8 @@
-from covariance import covariance
+from covar_base import covariance
 import pdb
 import scipy as SP
 from limix.core.utils.cached import * 
+import warnings
 
 class sumcov(covariance):
 
@@ -47,6 +48,20 @@ class sumcov(covariance):
             istart = istop
         return params
 
+    ####################
+    # Predictions
+    ####################
+    @property
+    def use_to_predict(self):
+        r = False
+        for i in range(len(self.covars)):
+            r += self.getCovariance(i).use_to_predict
+        return r
+
+    @covariance.use_to_predict.setter
+    def use_to_predict(self,value):
+        warnings.warn('Method not available for combinator covariances. Set use_to_predict for single covariance terms.')
+
     #####################
     # Cached
     #####################
@@ -57,18 +72,19 @@ class sumcov(covariance):
             K += self.getCovariance(i).K()
         return K
 
-    #def Kcross(self):
-    #    """
-    #    evaluates the kernel between test and training points for given hyperparameters
-    #    """
-    #    n_test  = self.Xstar.shape[0]
-    #    n_train = self.X.shape[0]
-    #    Kcross  = SP.zeros((n_test,n_train))
-    #
-    #    for i in range(len(self.covars)):
-    #        Kcross += self.covars[i].Kcross()
-    #
-    #    return Kcross
+    @cached
+    def Kcross(self):
+        R = None
+        for i in range(len(self.covars)):
+            if not self.getCovariance(i).use_to_predict:    continue
+            if R is None:
+                R = self.covars[i].Kcross()
+            else:
+                _ = self.covars[i].Kcross()
+                assert _.shape[0]==R.shape[0], 'Dimension mismatch'
+                assert _.shape[1]==R.shape[1], 'Dimension mismatch'
+                R += _
+        return R 
 
     @cached
     def K_grad_i(self,i):

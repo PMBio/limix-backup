@@ -8,6 +8,14 @@ TODO next (discussed):
     - discuss about Y/y, B/b in mean (gplvm)
     - params handling not solved
     - getParams -> getParamArray
+    - should paramArray (X) be a property?
+    - as combinator has to have X then I think
+        covar_base should have X too
+        (by default the covariance does not have X)
+    - Proposal
+        - covar_base has property X=None
+        - there is a covar_inputs with proper set and get X
+    - how to handle gradient with respect to X?
 
 mean_base
 - add predicitons out of sample
