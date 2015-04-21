@@ -12,7 +12,7 @@ import pdb
 
 class mean_base(cObject, Observed):
 
-    def __init__(self,Y,F):
+    def __init__(self,Y,F,Fstar=None):
         """
         y:        phenotype vector
         F:        fixed effect design
@@ -20,6 +20,7 @@ class mean_base(cObject, Observed):
         self.Y = Y
         self.F = F
         self.B = sp.zeros((self._K,1))
+        self.Fstar = Fstar
 
     #########################################
     # Properties 
@@ -44,6 +45,14 @@ class mean_base(cObject, Observed):
     def b(self):
         return sp.reshape(self.B,(self._K*self._P,1),order='F')
 
+    @property
+    def Fstar(self):
+        return self._Fstar
+
+    @property
+    def use_to_predict(self):
+        return self._use_to_predict 
+
     #########################################
     # Setters 
     #########################################
@@ -57,11 +66,22 @@ class mean_base(cObject, Observed):
 
     @F.setter
     def F(self,value):
-        """ set phenotype """
+        """ set fixed effect design """
         assert value.shape[0]==self._N, 'Dimension mismatch'
         self._K = value.shape[1]
         self._F = value
-        self.clear_cache('predict','Yres')
+        self.clear_cache('predict_in_sample','Yres')
+
+    @Fstar.setter
+    def Fstar(self,value):
+        """ set fixed effect design for predictions """
+        if value is None:
+            self._use_to_predict = False
+        else:
+            assert value.shape[1]==self._K, 'Dimension mismatch'
+            self._use_to_predict = True
+        self._Fstar = value
+        self.clear_cache('predict')
 
     @B.setter
     def B(self,value):
@@ -69,20 +89,33 @@ class mean_base(cObject, Observed):
         assert value.shape[0]==self._K, 'Dimension mismatch'
         assert value.shape[1]==self._P, 'Dimension mismatch'
         self._B = value
-        self.clear_cache('predict','Yres')
+        self.clear_cache('predict_in_sample','Yres','predict')
+
+    @use_to_predict.setter
+    def use_to_predict(self,value):
+        assert not (self.Fstar is None and value is True), 'set Fstar!'
+        self._use_to_predict = value
 
     #########################################
-    # Getters (caching)
+    # Predictions 
     #########################################
     @cached
     def predict(self):
-        """ predict the value of the fixed effect (F*B) """
-        return sp.dot(self.F,self.B)
+        r = _predict_fun(self.Fstar) 
+        return r
+
+    @cached
+    def predict_in_sample(self):
+        r = _predict_fun(self.F) 
+        return r
+
+    def _predict_fun(self,M):
+        return sp.dot(M,self.B)
 
     @cached
     def Yres(self):
         """ residual """
-        RV  = self.Y-self.predict() 
+        RV  = self.Y-self.predict_in_sample() 
         return RV
 
     ###########################################

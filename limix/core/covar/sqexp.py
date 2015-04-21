@@ -3,7 +3,7 @@ sys.path.insert(0,'./../../..')
 from limix.core.utils.cached import *
 import scipy as sp
 import numpy as np
-from covariance import covariance
+from covar_base import covariance
 import pdb
 import scipy.spatial as SS
 
@@ -11,11 +11,16 @@ class sqexp(covariance):
     """
     squared exponential covariance function
     """
-    def __init__(self,X):
+    def __init__(self,X,Xstar=None):
         """
         X   dim x d input matrix
         """
         self.X = X
+        self.Xstar = Xstar
+        self._initParams()
+
+    def get_input_dim(self):
+        return self.X.shape[1]
 
     #####################
     # Properties
@@ -31,6 +36,10 @@ class sqexp(covariance):
     @property
     def X(self):
         return self._X
+
+    @property
+    def Xstar(self):
+        return self._Xstar
 
     #####################
     # Setters
@@ -57,6 +66,21 @@ class sqexp(covariance):
         self.clear_cache('E')
         self._notify()
 
+    @Xstar.setter
+    def Xstar(self,value):
+        if value is None:
+            self._use_to_predict = False
+        else:
+            assert value.shape[1]==self.X.shape[1], 'Dimension mismatch'
+            self._use_to_predict = True
+        self._Xstar = value
+        self.clear_cache('Kcross')
+
+    @covariance.use_to_predict.setter
+    def use_to_predict(self,value):
+        assert self.Xstar is not None, 'set Xstar!'
+        self._use_to_predict = value
+
     #####################
     # Params handling
     #####################
@@ -73,15 +97,14 @@ class sqexp(covariance):
         return rv
 
     @cached
+    def Kcross(self):
+        assert self.Xstar.shape[1]==1, 'only implemented for 1-dim input'
+        Estar = (self.Xstar - self.X.T)**2
+        return  self.scale * sp.exp(-Estar/(2*self.length))
+
+    @cached
     def K(self):
         return self.scale * sp.exp(-self.E()/(2*self.length))
-
-    #TODO
-    #@cached
-    #def Kcross(self):
-    #    assert self.X.shape[1]==1, 'only implemented for 1-dim input'
-    #    Estar = (self.Xstar - self.X.T)**2
-    #    return  self.scale * sp.exp(-Estar/(2*self.length))
 
     @cached
     def K_grad_i(self,i):
@@ -90,5 +113,5 @@ class sqexp(covariance):
         else:
             A = sp.exp(-self.E()/(2*self.length))*self.E()
             r = self.scale * A / (2*self.length)
-
         return r
+

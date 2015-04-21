@@ -26,6 +26,8 @@ if __name__ == "__main__":
     Y = sp.sin(X)+s_y*sp.randn(N,1)
     #pl.plot(x,y,'x')
 
+    Xstar = sp.linspace(0,2,1000)[:,sp.newaxis]
+
     # define mean term
     F = 1.*(sp.rand(N,2)<0.2)
     mean = lin_mean(Y,F)
@@ -33,7 +35,7 @@ if __name__ == "__main__":
     ipdb.set_trace()
 
     # define covariance matrices
-    covar1 = sqexp(X)
+    covar1 = sqexp(X,Xstar=Xstar)
     covar2 = fixed(sp.eye(N))
     covar  = sumcov(covar1,covar2)
 
@@ -52,6 +54,8 @@ if __name__ == "__main__":
     covar.setRandomParams()
     print gp.LML()
     print gp.LML_grad()
+
+    gp.predict()
 
     ipdb.set_trace()
     gp.checkGradient(fun='YKiY')
