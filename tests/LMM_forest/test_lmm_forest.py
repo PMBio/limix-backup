@@ -30,14 +30,13 @@ class TestMixedForest(unittest.TestCase):
         self.n_estimators = 100
 
     def test_toy_data_rand(self):
-        SP.random.seed(39)
         y_conf = self.data['y_conf'].value
         kernel = self.data['kernel'].value
         X = self.data['X'].value
         # This is a non-random cross validation
         (training, test) = utils.crossValidationScheme(2, y_conf.size)
         lm_forest = MF(kernel=kernel[SP.ix_(training, training)],
-                       sampsize=.5, verbose=1, n_estimators=100)
+                       sampsize=.5, verbose=0, n_estimators=100)
         lm_forest.fit(X[training], y_conf[training])
         response_tot = lm_forest.predict(X[test],
                                          kernel[SP.ix_(test, training)])
@@ -59,38 +58,6 @@ class TestMixedForest(unittest.TestCase):
         err = SP.absolute(self.data['response_iid'] - response_iid).sum()
         self.assertTrue(SP.absolute(err) < 8)
 
-
-    def test_toy_data_numerical(self):
-        SP.random.seed(42)
-        y_conf = self.data['y_conf'].value
-        kernel = self.data['kernel'].value
-        X = self.data['X'].value
-        # This is a non-random cross validation
-        (training, test) = utils.crossValidationScheme(2, y_conf.size)
-        lm_forest = MF(kernel=kernel[SP.ix_(training, training)],
-                       sampsize=.5, verbose=1, n_estimators=100)
-        lm_forest.fit(X[training], y_conf[training])
-        response_tot = lm_forest.predict(X[test],
-                                         kernel[SP.ix_(test, training)])
-        random_forest = MF(kernel='iid')
-        random_forest.fit(X[training], y_conf[training])
-        response_iid = random_forest.predict(X[test])
-        response_fixed = lm_forest.predict(X[test])
-        feature_scores_lmf = lm_forest.log_importance
-        feature_scores_rf = random_forest.log_importance
-        # All consistency checks
-        err = (feature_scores_lmf-self.data['feature_scores_lmf'].value).sum()
-        self.assertTrue(SP.absolute(err) == 0)
-        err = (feature_scores_rf-self.data['feature_scores_rf'].value).sum()
-        self.assertTrue(SP.absolute(err) == 0)
-        err = SP.absolute(self.data['response_tot'] - response_tot).sum()
-        self.assertTrue(SP.absolute(err) == 0)
-        err = SP.absolute(self.data['response_fixed'] - response_fixed).sum()
-        self.assertTrue(SP.absolute(err) == 0)
-        err = SP.absolute(self.data['response_iid'] - response_iid).sum()
-        self.assertTrue(SP.absolute(err) == 0)
-
-
     def test_delta_updating(self):
         n_sample = 100
         # A 20 x 2 random integer matrix
@@ -101,7 +68,7 @@ class TestMixedForest(unittest.TestCase):
         sd_conf = .5
         noise = SP.random.randn(n_sample, 1)*sd_noise
 
-        print 'true delta equals', (sd_noise**2)/(sd_conf**2)
+        # print 'true delta equals', (sd_noise**2)/(sd_conf**2)
         # Here, the observed y is just a linear function of the first column
         # in X and # a little independent gaussian noise
         y_fixed = (X[:, 0:1] > .5)*1.0
@@ -113,7 +80,8 @@ class TestMixedForest(unittest.TestCase):
             SP.random.permutation(n_sample)[:SP.int_(.66*n_sample)]] = True
         test_sample = ~training_sample
 
-        kernel = utils.getQuadraticKernel(X[:, 0], d=0.0025)
+        kernel = utils.getQuadraticKernel(X[:, 0], d=0.0025) +\
+            1e-3*SP.eye(n_sample)
         # The confounded version of y_lin is computed as
         y_conf = sd_conf*SP.random.multivariate_normal(SP.zeros(n_sample),
                                                        kernel, 1).reshape(-1, 1)
@@ -127,23 +95,20 @@ class TestMixedForest(unittest.TestCase):
         lm_forest.fit(X[training_sample], y_tot[training_sample])
         response_lmf = lm_forest.predict(X[test_sample], k=kernel_test)
 
-        print 'fitting forest (delta-update)'
+        # print 'fitting forest (delta-update)'
         # earn random forest, not accounting for the confounding
         random_forest = MF(kernel=kernel_train, update_delta=True, max_depth=5,
                            verbose=0)
         random_forest.fit(X[training_sample], y_tot[training_sample])
         response_rf = random_forest.predict(X[test_sample], k=kernel_test)
 
-
     def test_kernel_builing(self):
-        SP.random.seed(42)
         X = (SP.random.rand(5, 10) > .5)*1.0
         kernel = utils.estimateKernel(X, scale=False)
         small_kernel = utils.estimateKernel(X[:, 0:5], scale=False)
         small_kernel_test = utils.update_Kernel(kernel, X[:, 5:], scale=False)
         self.assertAlmostEqual((small_kernel -
                                 small_kernel_test).sum(), 0, places=14)
-
 
     def test_depth_building(self):
         self.setUp(m=10)
@@ -166,36 +131,6 @@ class TestMixedForest(unittest.TestCase):
                                      depth=model.opt_depth)
         self.assertEqual((prediction_1 - prediction_2).sum(), 0.0)
 
-#    def test_depth_building_linear(self):
-        #SP.random.seed(42)
-        #n_samples = 2**8
-        #x = SP.arange(n_samples).reshape(-1, 1)
-        #X = utils.convertToBinaryPredictor(x)
-        #y_fixed = X[:, 0:1] * X[:, 2:3]
-        #kernel = utils.getQuadraticKernel(x, d=200)
-        #y_conf = y_fixed.copy()
-        #y_conf += SP.random.multivariate_normal(SP.zeros(n_samples),
-                                                #kernel, 1).reshape(-1, 1)
-        #y_conf += .1*SP.random.randn(n_samples, 1)
-        #(training, test) = utils.crossValidationScheme(2, n_samples)
-        #SP.random.seed(42)
-        #lm_forest = MF(kernel=kernel[SP.ix_(training, training)], sampsize=.5,
-                       #n_estimators=100, fit_optimal_depth=True)
-        #lm_forest.fit(X[training], y_conf[training])
-        #self.assertEqual(2, lm_forest.opt_depth, msg='fitting of optimal depth')
-
-        #response_tot = lm_forest.predict(X[test],
-                                         #kernel[SP.ix_(test, training)])
-        #random_forest = MF(kernel='iid')
-        #random_forest.fit(X[training], y_conf[training])
-        #response_iid = random_forest.predict(X[test])
-        #diff_rf_mf = (response_tot - response_iid).sum()
-        #print diff_rf_mf
-        #self.assertAlmostEqual(diff_rf_mf, 6.17, 2, msg='difference rf and mf')
-        #self.assertEqual(2, lm_forest.opt_depth, msg='fitting of optimal depth')
-        #diff_mf = (response_tot - SP.zeros_like(response_tot)).sum()
-        ##self.assertAlmostEqual(diff_mf, 2.75, 2, msg='mf correctness')
-
     def test_forest_stump_recycling(self):
         self.setUp(m=5)
         SP.random.seed(42)
@@ -208,7 +143,7 @@ class TestMixedForest(unittest.TestCase):
         self.assertGreater(.7, ((prediction_1 - prediction_2)**2).sum())
 
     def test_normalization_kernel(self):
-        SP.random.seed(42)
+        #SP.random.seed(42)
         n = 50
         m = 100
         X = (SP.random.rand(n, m) > .5)*1.
