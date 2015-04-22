@@ -342,7 +342,7 @@ mfloat_t CKroneckerLMM::nLLeval(mfloat_t ldelta, const MatrixXdVec& A,const Matr
     for(muint_t term = 0; term < A.size();++term)
     {
         muint_t currSize = X[term].cols() * A[term].rows();
-        if (term==A.size()-2) {
+        if (term==A.size()-1) {
             W = W_vec.block(cumSum,0,currSize,1);//
             //W.resize(X[term].cols(),A[term].rows());
         }
