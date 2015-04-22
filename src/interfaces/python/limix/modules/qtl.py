@@ -532,6 +532,8 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter
     lm = test_lmm(snps,pheno,K=K,covs=covs,test=test,**kw_args)
     pvall = []
     pv = lm.getPv().ravel()
+    #hack to avoid issues with degenerate pv
+    pv[sp.isnan(pv)] = 1
     pvall.append(pv)
     imin= pv.argmin()
     niter = 1
@@ -557,6 +559,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter
         lm.setCovs(covs)
         lm.process()
         pv = lm.getPv().ravel()
+        pv[sp.isnan(pv)] = 1
         pvall.append(pv)
         imin= pv.argmin()
         if qvalues:
