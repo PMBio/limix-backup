@@ -6,6 +6,7 @@ from limix.core.covar.sqexp import sqexp
 from limix.core.covar.fixed import fixed
 from limix.core.covar.combinators import sumcov
 from limix.core.gp.gp_base_new import gp as gp_base
+import limix.core.optimize.optimize_bfgs_new as OPT 
 
 import pdb as ipdb
 import scipy as sp
@@ -24,6 +25,8 @@ if __name__ == "__main__":
     s_y = 0.1
     X = (sp.linspace(0,2,N)+s_x*sp.randn(N))[:,sp.newaxis]
     Y = sp.sin(X)+s_y*sp.randn(N,1)
+    Y-= Y.mean(0)
+    Y/= Y.std(0)
     #pl.plot(x,y,'x')
 
     Xstar = sp.linspace(0,2,1000)[:,sp.newaxis]
@@ -58,6 +61,15 @@ if __name__ == "__main__":
     gp.predict()
 
     ipdb.set_trace()
-    gp.checkGradient(fun='YKiY')
-    gp.checkGradient(fun='YKiFB')
-    #gp.checkGradient(fun='Areml_logdet')
+    gp.checkGradient(fun='yKiy')
+    gp.checkGradient(fun='yKiFb')
+    gp.checkGradient(fun='LML')
+
+    ipdb.set_trace()
+
+    gp.covar.getCovariance(0).scale = 1e-4
+    gp.covar.getCovariance(0).length = 1
+    gp.covar.getCovariance(1).scale = 1 
+    OPT.opt_hyper(gp)
+
+

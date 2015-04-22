@@ -24,7 +24,7 @@ class gp(cObject, Observed):
         self.mean  = mean
         self.Areml = cov_reml(self)
         self.clear_all()
-        self.update_B()
+        self.update_b()
 
     def clear_all(self):
         self.clear_Areml()
@@ -36,27 +36,21 @@ class gp(cObject, Observed):
         self._notify()
 
     def clear_lml_terms(self):
-        self.clear_cache('KiF','YKiF','KiFB','KiY','YKiY','YKiFB','LML')
+        self.clear_cache('KiF','yKiF','KiFb','Kiy','yKiy','yKiFb','LML')
 
     def clear_lmlgrad_terms_i(self):
-        self.clear_cache('DiKKiY','DiKKiF','DiKKiFB',
-                            'YKiY_grad_i','YKiFB_grad_i')
+        self.clear_cache('DiKKiy','DiKKiF','DiKKiFb',
+                            'yKiy_grad_i','yKiFb_grad_i')
 
     def clear_lmlgrad_terms(self):
-        self.clear_cache('YKiY_grad','YKiFB_grad','Areml_logdet_grad','LML_grad')
+        self.clear_cache('yKiy_grad','yKiFb_grad','Areml_logdet_grad','LML_grad')
 
     def setParams(self,params):
-        """
-        Set parameters
-        """
         self.covar.setParams(params['covar'])
         self.clear_all()
-        self.update_B()
+        self.update_b()
 
     def getParams(self):
-        """
-        Get parameters
-        """
         RV = {}
         RV['covar'] = self.covar.getParams()
         return RV
@@ -78,53 +72,53 @@ class gp(cObject, Observed):
         return self.covar.solve(self.mean.F)
 
     @cached
-    def YKiF(self):
-        return sp.dot(self.mean.Y.T,self.KiF())
+    def yKiF(self):
+        return sp.dot(self.mean.y.T,self.KiF())
 
-    # B is calculated here but cached in the mean?
-    def update_B(self):
-        self.mean.B = self.Areml.solve(self.YKiF().T)
-
-    @cached
-    def KiFB(self):
-        return sp.dot(self.KiF(),self.mean.B)
+    # b is calculated here but cached in the mean?
+    def update_b(self):
+        self.mean.b = self.Areml.solve(self.yKiF().T)
 
     @cached
-    def KiY(self):
-        return self.covar.solve(self.mean.Y)
+    def KiFb(self):
+        return sp.dot(self.KiF(),self.mean.b)
 
     @cached
-    def YKiY(self):
-        return (self.mean.Y*self.KiY()).sum()
+    def Kiy(self):
+        return self.covar.solve(self.mean.y)
 
     @cached
-    def YKiFB(self):
-        return (self.mean.Y*self.KiFB()).sum()
+    def yKiy(self):
+        return (self.mean.y*self.Kiy()).sum()
+
+    @cached
+    def yKiFb(self):
+        return (self.mean.y*self.KiFb()).sum()
 
     #######################
     # gradients
     #######################
     @cached
-    def DiKKiY(self,i):
-        return sp.dot(self.covar.K_grad_i(i),self.KiY())
+    def DiKKiy(self,i):
+        return sp.dot(self.covar.K_grad_i(i),self.Kiy())
 
     @cached
     def DiKKiF(self,i):
         return sp.dot(self.covar.K_grad_i(i),self.KiF())
 
     @cached
-    def DiKKiFB(self,i):
-        return sp.dot(self.DiKKiF(i),self.mean.B)
+    def DiKKiFb(self,i):
+        return sp.dot(self.DiKKiF(i),self.mean.b)
 
 
     @cached
-    def YKiY_grad_i(self,i):
-        return -(self.KiY()*self.DiKKiY(i)).sum()
+    def yKiy_grad_i(self,i):
+        return -(self.Kiy()*self.DiKKiy(i)).sum()
 
     @cached
-    def YKiFB_grad_i(self,i):
-        rv = -2*(self.KiY()*self.DiKKiFB(i)).sum()
-        rv+= (self.KiFB()*self.DiKKiFB(i)).sum()
+    def yKiFb_grad_i(self,i):
+        rv = -2*(self.Kiy()*self.DiKKiFb(i)).sum()
+        rv+= (self.KiFb()*self.DiKKiFb(i)).sum()
         return rv
 
     #######################
@@ -134,26 +128,26 @@ class gp(cObject, Observed):
     @cached
     def LML(self):
         #const term to add?
-        rv = -0.5*self.covar.logdet()
-        rv -= 0.5*self.Areml.logdet()
-        rv -= 0.5*self.YKiY()
-        rv += 0.5*self.YKiFB()
+        rv = 0.5*self.covar.logdet()
+        rv += 0.5*self.Areml.logdet()
+        rv += 0.5*self.yKiy()
+        rv -= 0.5*self.yKiFb()
         return rv
 
     @cached
-    def YKiY_grad(self):
+    def yKiy_grad(self):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
         for i in range(n_params):
-            RV['covar'][i] = self.YKiY_grad_i(i)
+            RV['covar'][i] = self.yKiy_grad_i(i)
         return RV
 
     @cached
-    def YKiFB_grad(self):
+    def yKiFb_grad(self):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
         for i in range(n_params):
-            RV['covar'][i] = self.YKiFB_grad_i(i)
+            RV['covar'][i] = self.yKiFb_grad_i(i)
         return RV
 
     @cached
@@ -169,18 +163,18 @@ class gp(cObject, Observed):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
         for i in range(n_params):
-            RV['covar'][i] = -0.5*self.covar.logdet_grad_i(i)
-            RV['covar'][i] -= 0.5*self.Areml.logdet_grad_i(i)
-            RV['covar'][i] -= 0.5*self.YKiY_grad_i(i)
-            RV['covar'][i] += 0.5*self.YKiFB_grad_i(i)
+            RV['covar'][i]  = 0.5*self.covar.logdet_grad_i(i)
+            RV['covar'][i] += 0.5*self.Areml.logdet_grad_i(i)
+            RV['covar'][i] += 0.5*self.yKiy_grad_i(i)
+            RV['covar'][i] -= 0.5*self.yKiFb_grad_i(i)
         return RV
 
     def predict(self):
         R = None
         if self.covar.use_to_predict:
             Kcross = self.covar.Kcross()
-            KiYres = self.KiY()-self.KiFB()
-            R = sp.dot(Kcross,KiYres)
+            Kiyres = self.Kiy()-self.KiFb()
+            R = sp.dot(Kcross,Kiyres)
         if self.mean.use_to_predict:
             _ = self.mean.predict()
             if R is None:

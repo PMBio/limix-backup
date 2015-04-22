@@ -22,6 +22,7 @@ class sqexp(covariance):
     def get_input_dim(self):
         return self.X.shape[1]
 
+
     #####################
     # Properties
     #####################
@@ -32,6 +33,14 @@ class sqexp(covariance):
     @property
     def length(self):
         return sp.exp(self.params[1])
+
+    @property
+    def scale_ste(self):
+        return self.getInterParamsSte()[0]
+
+    @property
+    def length_ste(self):
+        return self.getInterParamsSte()[1]
 
     @property
     def X(self):
@@ -108,10 +117,28 @@ class sqexp(covariance):
 
     @cached
     def K_grad_i(self,i):
+        r = self.K_grad_interParam_i(i)
+        if i==0:        r *= self.scale
+        else:           r *= self.length
+        return r
+
+    ####################
+    # Interpretable Params
+    ####################
+    def getInterParams(self):
+        return SP.array([self.scale,self.length]) 
+
+    def getInterParamsSte(self):
+        return self._interParamsSte
+        
+    def setInterParamsSte(self,value):
+        self._interParamsSte = value
+
+    def K_grad_interParam_i(self,i):
         if i==0:
-            r = sp.exp(-self.E()/(2*self.length)) * self.scale
+            r = sp.exp(-self.E()/(2*self.length))
         else:
             A = sp.exp(-self.E()/(2*self.length))*self.E()
-            r = self.scale * A / (2*self.length)
+            r = self.scale * A / (2*self.length**2)
         return r
 

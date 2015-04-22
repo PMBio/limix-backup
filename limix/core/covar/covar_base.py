@@ -29,6 +29,17 @@ class covariance(cObject, Observed):
                             'inv','chol','S','U',
                             'USi2','Sgrad','Ugrad')
 
+    #######################
+    # Param Handling
+    #######################
+    def getParams(self):
+        return self.params
+
+    def setParams(self,params):
+        self.params = params
+        self.clear_all()
+        self._notify()
+
     def setRandomParams(self):
         """
         set random hyperparameters
@@ -42,19 +53,6 @@ class covariance(cObject, Observed):
         """
         warnings.warn('not implemented')
 
-    def getParams(self):
-        """
-        get hyperparameters
-        """
-        return self.params
-
-    def setParams(self,params):
-        """
-        set hyperParams
-        """
-        self.params = params
-        self.clear_all()
-        self._notify()
 
     def perturbParams(self,pertSize=1e-3):
         """
@@ -69,13 +67,6 @@ class covariance(cObject, Observed):
         """
         return self.n_params
 
-    def Kgrad_param(self,i):
-        """
-        partial derivative with repspect to the i-th hyperparamter theta[i]
-        """
-        LG.critical("implement Kgrad_theta")
-        print("%s: Function K not yet implemented"%(self.__class__))
-
     def _calcNumberParams(self):
         """
         calculates the number of parameters
@@ -88,20 +79,6 @@ class covariance(cObject, Observed):
          """
          params = SP.zeros(self.getNumberParams())
          self.setParams(params)
-
-    def Kgrad_param_num(self,i,h=1e-4):
-        """
-        check discrepancies between numerical and analytical gradients
-        """
-        params = self.getParams()
-        e = SP.zeros_like(params); e[i] = 1
-        self.setParams(params-h*e)
-        C_L = self.K()
-        self.setParams(params+h*e)
-        C_R = self.K()
-        self.setParams(params)
-        RV = (C_R-C_L)/(2*h)
-        return RV
 
     ####################################
     # cached
@@ -190,3 +167,35 @@ class covariance(cObject, Observed):
         LG.critical("implement Kcross")
         print("%s: Function Kcross not yet implemented"%(self.__class__))
 
+    ####################
+    # Interpretable Params (by default params are interpretable)
+    ####################
+    def getInterParams(self):
+        return self.getParams() 
+
+    def getInterParamsSte(self):
+        return self._interParamsSte
+
+    def setInterParamsSte(self,value):
+        self._interParamsSte = value
+
+    def K_grad_interParam_i(self,i):
+        return K_grad_i_interParams(self,i)
+
+    ############################
+    # Debugging
+    ############################
+
+    def Kgrad_param_num(self,i,h=1e-4):
+        """
+        check discrepancies between numerical and analytical gradients
+        """
+        params = self.getParams()
+        e = SP.zeros_like(params); e[i] = 1
+        self.setParams(params-h*e)
+        C_L = self.K()
+        self.setParams(params+h*e)
+        C_R = self.K()
+        self.setParams(params)
+        RV = (C_R-C_L)/(2*h)
+        return RV

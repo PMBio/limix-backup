@@ -19,6 +19,10 @@ class fixed(covariance):
         return sp.exp(self.params[0])
 
     @property
+    def scale_ste(self):
+        return self.getInterParamsSte()[0]
+
+    @property
     def K0(self):
         return self._K0 
 
@@ -76,7 +80,21 @@ class fixed(covariance):
 
     @cached
     def K_grad_i(self,i):
-        if i==0:    r = self.scale * self.K0
-        else:       r = None
+        r = self.scale * self.K0
         return r
+
+    ####################
+    # Interpretable Params
+    ####################
+    def getInterParams(self):
+        return SP.array([self.scale])
+
+    def getInterParamsSte(self):
+        return self._interParamsSte
+
+    def setInterParamsSte(self,value):
+        self._interParamsSte = value
+
+    def K_grad_interParam_i(self,i):
+        return self.K0 
 

@@ -91,6 +91,19 @@ class mean_base(cObject, Observed):
         self._B = value
         self.clear_cache('predict_in_sample','Yres','predict')
 
+    @y.setter
+    def y(self,value):
+        """ set phenotype """
+        assert value.shape[1] == 1, 'Dimension mismatch'
+        self.Y = value
+
+    @b.setter
+    def b(self,value):
+        """ set phenotype """
+        assert value.shape[0] == self._K*self._P, 'Dimension mismatch'
+        assert value.shape[1] == 1, 'Dimension mismatch'
+        self.B = sp.reshape(value,(self._K,self._P),order='F')
+
     @use_to_predict.setter
     def use_to_predict(self,value):
         assert not (self.Fstar is None and value is True), 'set Fstar!'
