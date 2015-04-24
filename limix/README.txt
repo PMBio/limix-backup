@@ -1,14 +1,64 @@
-TODO:
-- optimization
-- predictions
-- standard errors 
+***************************
+0) Files that are in limix-dev at the moment
+***************************
+    - gp/gp_base_new.py
+    - mean/mean_base.py
+    - covar/combinators.py
+    - covar/sqexp.py
+    - covar/fixed.py
+    - covar/cov_reml.py
+    - test/test_gp_base_new_D.py
 
-TODO next (discussed):
+    The rest is used by Christoph too!
+
+**************************
+1) Standard errors
+**************************
+    a) fisher mean is just Areml
+    b) fisher covar is calculated in covar and NOT cached.
+    c) after optimization if calc_ste==True gp get mean and covar Fisher's, compute inverses
+    d) the gp also gives the corresponding outcomes to mean and covar
+    e) covariance and mean get FIinv and cache them
+    f) in particular, the covariance combinator caches the whole FIinv but also passes down specific bocks to single term covariances
+        (alternatively, should it cache only external blocks?)
+    TODO:
+        - either solve synchronization
+        - or not considering steps d), e) and f)
+
+*****************************
+2) Better handling of parameters
+*****************************
+    - we could name all paramers using a scheme as proposed in the following example:
+
+        covar1 = sqexp(X,Xstar=Xstar)
+        covar2 = fixed(sp.eye(N))
+        covar  = sumcov(covar1,covar2)
+
+        covar.getParamNames()
+        SP.array(['sumcov.covar1_sqexp.scale',
+                    'sumcov.covar1_sqexp.length',
+                    'sumcov.covar2_fixed.scale'])
+
+    - parameters can then be a panda dataframe (a vector with labels)
+
+    - the inverse of the fisher information matrices cached in teh covariances can also be a panda dataframe (it would be much easier to read)
+
+    - paramMask is missing at the moment
+        - it should be handled in single term covariances (and mean) and propagate up to the gp
+        - the argument Ifilter that now the optimizer has should be removed
+
+    - getParams -> getParamArray??
+
+*******************************
+3) Handling GPLVM (to discuss all together)
+*********************************
+
     - discuss about Y/y, B/b in mean (gplvm)
-    - standard properties should be y and b (not Y and B)
     - params handling not solved
-    - getParams -> getParamArray
-    - should paramArray (X) be a property?
+
+***********************************
+4) X handling in combinator (to discuss all together)
+***********************************
     - as combinator has to have X then I think
         covar_base should have X too
         (by default the covariance does not have X)
@@ -17,23 +67,3 @@ TODO next (discussed):
         - there is a covar_inputs with proper set and get X
     - how to handle gradient with respect to X?
 
-mean_base
-- handle paramMask
-
-gp_base
-- general gp with gradients
-- general gp with linear mean (and reml)
-    - calculate B and set it to params
-- move Areml_inv.chol,.inv,.logdet to matrix class caching?
-    - Areml is in principle a suitable covariance matrix
-- _grad_idx, good solution?
-
-covariance (->covar_base.py???)
-- specialized covar knows parameters with proper name,
-    getParams build the vactor on spot.
-    Same thing in combinators and gp
-- alternatively vector of params is known and specific setters act directely on the elements of the array
-- paramMask into covar
-- caching for combinators does not work properly
-    - handling different parametrization
-- scale parameters does not change logdet, eigenval decomp, etc...
