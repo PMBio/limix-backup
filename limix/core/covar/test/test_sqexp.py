@@ -35,7 +35,7 @@ class TestSQExp(unittest.TestCase):
                           lambda: self._cov.K_grad_i(0))
 
         np.testing.assert_almost_equal(err, 0.)
-
+        
         def set_length(x):
             self._cov.length = x[0]
         err = scheck_grad(set_length,

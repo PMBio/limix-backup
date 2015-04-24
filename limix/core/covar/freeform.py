@@ -12,7 +12,7 @@ class freeform(covariance):
         """
         initialization
         """
-        covariance.__init__(self)
+        covariance.__init__(self, dim)
         self.n_params = int(dim * (dim + 1.) / 2.)
         self.dim = dim
         self.params = SP.zeros(self.n_params)

@@ -18,7 +18,7 @@ def mcheck_grad(func, grad, x0, epsilon=_eps,
 
         def gradi(x0i):
             x[i] = x0i
-            g = np.ravel(grad(x)[..., i])
+            g = np.ravel(grad(x))
             x[i] = x0[i]
             return g
 
@@ -32,9 +32,9 @@ def mcheck_grad(func, grad, x0, epsilon=_eps,
 
 
 def scheck_grad(theta_set, theta_get,
-    value,
-    grad, epsilon=_eps,
-    allerrs=False):
+                value,
+                grad, epsilon=_eps,
+                allerrs=False):
 
     x0 = theta_get()
     assert type(x0) is np.ndarray

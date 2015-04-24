@@ -9,10 +9,10 @@ class lowrank(covariance):
         """
         initialization
         """
-        covariance.__init__(self)
-        self.n_params = P
         self.P = P
         self.rank = rank
+        covariance.__init__(self, P)
+        self.n_params = P
 
 
     def getNumberParams(self):
