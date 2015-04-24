@@ -21,6 +21,7 @@ class mean_base(cObject, Observed):
         self.F = F
         self.B = sp.zeros((self._K,1))
         self.Fstar = Fstar
+        self.setFIinv(None)
 
     #########################################
     # Properties 
@@ -38,12 +39,28 @@ class mean_base(cObject, Observed):
         return self._B
 
     @property
+    def B_ste(self):
+        if self.getFIinv() is None:
+            R = None
+        else:
+            R = sp.reshape(self.b_ste,(self._K,self._P),order='F')
+        return R
+
+    @property
     def y(self):
         return sp.reshape(self.Y,(self._N*self._P,1),order='F') 
 
     @property
     def b(self):
         return sp.reshape(self.B,(self._K*self._P,1),order='F')
+
+    @property
+    def b_ste(self):
+        if self.getFIinv() is None:
+            R = None
+        else:
+            R = sp.sqrt(self.getFIinv().diagonal())[:,sp.newaxis]
+        return R
 
     @property
     def Fstar(self):
@@ -130,6 +147,15 @@ class mean_base(cObject, Observed):
         """ residual """
         RV  = self.Y-self.predict_in_sample() 
         return RV
+
+    #######################################
+    # Standard errors
+    ########################################
+    def setFIinv(self, value):
+        self._FIinv = value
+
+    def getFIinv(self):
+        return self._FIinv
 
     ###########################################
     # Gradient TODO

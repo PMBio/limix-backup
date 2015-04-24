@@ -6,9 +6,8 @@ from limix.core.covar.sqexp import sqexp
 from limix.core.covar.fixed import fixed
 from limix.core.covar.combinators import sumcov
 from limix.core.gp.gp_base_new import gp as gp_base
-import limix.core.optimize.optimize_bfgs_new as OPT 
 
-import pdb as ipdb
+import ipdb
 import scipy as sp
 import scipy.linalg as LA
 import time as TIME
@@ -27,7 +26,6 @@ if __name__ == "__main__":
     Y = sp.sin(X)+s_y*sp.randn(N,1)
     Y-= Y.mean(0)
     Y/= Y.std(0)
-    #pl.plot(x,y,'x')
 
     Xstar = sp.linspace(0,2,1000)[:,sp.newaxis]
 
@@ -65,11 +63,27 @@ if __name__ == "__main__":
     gp.checkGradient(fun='yKiFb')
     gp.checkGradient(fun='LML')
 
-    ipdb.set_trace()
-
     gp.covar.getCovariance(0).scale = 1e-4
     gp.covar.getCovariance(0).length = 1
     gp.covar.getCovariance(1).scale = 1 
-    OPT.opt_hyper(gp)
+    gp.optimize(calc_ste=True)
 
+    # print optimized values and standard errors
+    print 'weights of fixed effects'
+    print mean.b
+    print '+/-',mean.b_ste
+    print 'scale of sqexp'
+    print covar1.scale
+    print '+/-',covar1.scale_ste
+    print 'length of sqexp'
+    print covar1.length
+    print '+/-',covar1.length_ste
+    print 'scale of fixed'
+    print covar2.scale
+    print '+/-',covar2.scale_ste
+
+    ipdb.set_trace()
+    Ystar = gp.predict()
+    pl.plot(X.ravel(),Y.ravel(),'xk')
+    pl.plot(Xstar.ravel(),Ystar.ravel(),'FireBrick',lw=2)
 

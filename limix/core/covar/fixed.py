@@ -20,7 +20,11 @@ class fixed(covariance):
 
     @property
     def scale_ste(self):
-        return self.getInterParamsSte()[0]
+        if self.getFIinv() is None:
+            R = None
+        else:
+            R = sp.sqrt(self.getFIinv()[0,0])
+        return R
 
     @property
     def K0(self):
@@ -88,12 +92,6 @@ class fixed(covariance):
     ####################
     def getInterParams(self):
         return SP.array([self.scale])
-
-    def getInterParamsSte(self):
-        return self._interParamsSte
-
-    def setInterParamsSte(self,value):
-        self._interParamsSte = value
 
     def K_grad_interParam_i(self,i):
         return self.K0 

@@ -3,7 +3,7 @@ sys.path.insert(0,'./../../..')
 from limix.core.utils.observed import Observed
 from limix.core.utils.cached import *
 from limix.core.utils.eigen import *
-import scipy as SP
+import scipy as sp
 import pdb
 import scipy.linalg as LA
 import warnings
@@ -44,7 +44,7 @@ class covariance(cObject, Observed):
         """
         set random hyperparameters
         """
-        params = SP.randn(self.getNumberParams())
+        params = sp.randn(self.getNumberParams())
         self.setParams(params)
 
     def setCovariance(self,cov):
@@ -59,7 +59,7 @@ class covariance(cObject, Observed):
         slightly perturbs the values of the parameters
         """
         params = self.getParams()
-        self.setParams(params+pertSize*SP.randn(params.shape[0]))
+        self.setParams(params+pertSize*sp.randn(params.shape[0]))
 
     def getNumberParams(self):
         """
@@ -77,7 +77,7 @@ class covariance(cObject, Observed):
          """
          initialize paramters to vector of zeros
          """
-         params = SP.zeros(self.getNumberParams())
+         params = sp.zeros(self.getNumberParams())
          self.setParams(params)
 
     ####################################
@@ -109,11 +109,11 @@ class covariance(cObject, Observed):
 
     @cached
     def inv(self):
-        return self.solve(SP.eye(self.dim))
+        return self.solve(sp.eye(self.dim))
 
     @cached
     def logdet(self):
-        return 2*SP.log(SP.diag(self.chol())).sum()
+        return 2*sp.log(sp.diag(self.chol())).sum()
 
     @cached
     def logdet_grad_i(self,i):
@@ -168,19 +168,31 @@ class covariance(cObject, Observed):
         print("%s: Function Kcross not yet implemented"%(self.__class__))
 
     ####################
-    # Interpretable Params (by default params are interpretable)
+    # Interpretable Params, Fisher information Matrix, std errors
     ####################
     def getInterParams(self):
         return self.getParams() 
 
-    def getInterParamsSte(self):
-        return self._interParamsSte
-
-    def setInterParamsSte(self,value):
-        self._interParamsSte = value
-
     def K_grad_interParam_i(self,i):
         return K_grad_i_interParams(self,i)
+
+    def getFisherInf(self):
+        n_params = self.getNumberParams()
+        R = sp.zeros((n_params,n_params))
+        for m in range(n_params):
+            for n in range(n_params):
+                DnK = self.K_grad_interParam_i(m)
+                DmK = self.K_grad_interParam_i(n)
+                KiDnK = self.solve(DnK)
+                KiDmK = self.solve(DmK)
+                R[m,n] = 0.5*(KiDnK*KiDmK).sum()
+        return R
+
+    def setFIinv(self, value):
+        self._FIinv = value
+
+    def getFIinv(self):
+        return self._FIinv
 
     ############################
     # Debugging
@@ -191,7 +203,7 @@ class covariance(cObject, Observed):
         check discrepancies between numerical and analytical gradients
         """
         params = self.getParams()
-        e = SP.zeros_like(params); e[i] = 1
+        e = sp.zeros_like(params); e[i] = 1
         self.setParams(params-h*e)
         C_L = self.K()
         self.setParams(params+h*e)

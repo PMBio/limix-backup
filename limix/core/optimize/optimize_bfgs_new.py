@@ -63,7 +63,7 @@ def checkgrad(f, fprime, x, *args,**kw_args):
 	    
 
             
-def opt_hyper(gpr,params0=None,Ifilter=None,bounds=None,opts={},*args,**kw_args):
+def opt_hyper(gpr,Ifilter=None,bounds=None,opts={},*args,**kw_args):
     """
     optimize params
     
@@ -85,8 +85,7 @@ def opt_hyper(gpr,params0=None,Ifilter=None,bounds=None,opts={},*args,**kw_args)
     else:
         pgtol = 1e-10
         
-    if params0 is None:
-        params0 = gpr.getParams()
+    params0 = gpr.getParams()
 
     def f(x):
         x_ = X0

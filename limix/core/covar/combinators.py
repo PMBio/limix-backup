@@ -115,23 +115,6 @@ class sumcov(covariance):
             istart = istop
         return params
 
-    def getInterParamsSte(self):
-        istart = 0
-        rv = SP.zeros(self.getNumberParams())
-        for i in range(len(self.covars)):
-            istop = istart + self.getCovariance(i).getNumberParams()
-            rv[istart:istop] = self.getCovariance(i).getInterParamsSte()
-            istart = istop
-        return params
-
-    def setInterParamsSte(self,value):
-        istart = 0
-        for i in range(len(self.covars)):
-            istop = istart + self.getCovariance(i).getNumberParams()
-            self.getCovariance(i).setInterParamsSte(values[istart:istop])
-            istart = istop
-        self.clear_all()
-
     def K_grad_interParam_i(self,i):
         istart = 0
         for j in range(len(self.covars)):
@@ -142,3 +125,11 @@ class sumcov(covariance):
             istart = istop
         return None
 
+    def setFIinv(self, value):
+        self._FIinv = value
+        istart = 0
+        for i in range(len(self.covars)):
+            istop = istart + self.getCovariance(i).getNumberParams()
+            self.getCovariance(i).setFIinv(value[istart:istop][:,istart:istop])
+            istart = istop
+        

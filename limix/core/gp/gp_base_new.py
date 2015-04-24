@@ -3,11 +3,13 @@ import scipy as sp
 import scipy.linalg
 import copy
 import sys
+import time
 sys.path.insert(0,'./../../..')
 from limix.core.utils.observed import Observed
 from limix.core.utils.cached import *
 import limix.core.mean.mean_base
 from limix.core.covar.cov_reml import cov_reml
+import limix.core.optimize.optimize_bfgs_new as OPT
 
 class gp(cObject, Observed):
     """
@@ -184,6 +186,39 @@ class gp(cObject, Observed):
                 assert _.shape[1]==R.shape[1], 'Dimension mismatch'
                 R += _
         return R
+
+    #########################
+    # OPTIMIZATION
+    #########################
+    def optimize(self,calc_ste=False,verbose=True,Ifilter=None,bounds=None,opts={},*args,**kw_args):
+        if verbose: print '.. Optimize marginal likelihood'
+        t0 = time.time()
+        OPT.opt_hyper(self,Ifilter=Ifilter,bounds=bounds,opts=opts,*args,**kw_args)
+        t1 = time.time()
+        if verbose:
+            print 'Time elapsed: %.2f s' % (t1-t0)
+            grad = self.LML_grad()
+            grad_norm = 0
+            for key in grad.keys():
+                grad_norm += (grad[key]**2).sum()
+            grad_norm = sp.sqrt(grad_norm)
+            print 'Log Marginal Likelihood:', self.LML() 
+            print 'Gradient norm:', grad_norm
+        
+        if calc_ste:
+            if verbose: print '.. Calculate standard error'
+            t0 = time.time()
+            I_covar = self.covar.getFisherInf()
+            I_mean = self.Areml.K()
+            self.covar.setFIinv(sp.linalg.inv(I_covar))
+            self.mean.setFIinv(sp.linalg.inv(I_mean))
+            t1 = time.time()
+            if verbose:
+                print 'Time elapsed: %.2f s' % (t1-t0)
+
+    ############################
+    # DEBUGGING
+    ############################
 
     def checkGradient(self,h=1e-4,verbose=True,fun='LML'):
         """
