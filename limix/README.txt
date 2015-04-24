@@ -7,6 +7,7 @@
     - covar/sqexp.py
     - covar/fixed.py
     - covar/cov_reml.py
+    - optimize/optimize_bfgs_new.py
     - test/test_gp_base_new_D.py
 
     The rest is used by Christoph too!
