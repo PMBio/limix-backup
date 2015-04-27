@@ -1,0 +1,24 @@
+- Covariances
+    - combinators as abstract sum (1)
+    - sum covariance (1)
+    - kronecker covariance (1)
+    - ZKZ covariance for Amelie's models (1)
+    - 2kronSum combinator (2)
+    - low-rank (3)
+    - low-rank + full rank (3)
+    - 2kronSum + low-rank kron (3)
+    - 3kronSum (4)
+    - product covariance (4)
+
+- Mean
+    - multi trait mean (1)
+
+- GP
+    - gp with Kihy instead of Kiy (2)
+    - gp 2 kronSum (2)
+
+- Modules
+    - single trait variance decomposition (1)
+    - multi trait variance decomposition (1)
+    - efficient 2 term variance decomposition (2)
+
