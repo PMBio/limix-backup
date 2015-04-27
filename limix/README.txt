@@ -1,3 +1,18 @@
+***********************************
+TODO list
+***********************************
+- Check standard errrors handling (D)
+- Test a bit the code (D)
+- Implement Unitests (D)
+- Logging System (D)
+- move basic classes from utils to types (D)
+- get rid of position specificity [not using sys.path.append(...)](D) 
+- Variance deocmpositaion module (P)
+- Kronecker Covariance (P)
+...
+- Better Handling of Params (P)
+
+
 ***************************
 0) Files that are in limix-dev at the moment
 ***************************
