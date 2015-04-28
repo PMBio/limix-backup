@@ -1,9 +1,9 @@
 import scipy as sp
-from limix.core.utils.cached import *
-from covar_base import covariance
+from limix.core.type.cached import cached
+from covar_base import Covariance
 import pdb
 
-class fixed(covariance):
+class FixedCov(Covariance):
     """
     squared exponential covariance function
     """
@@ -19,12 +19,20 @@ class fixed(covariance):
         return sp.exp(self.params[0])
 
     @property
+    def scale_ste(self):
+        if self.getFIinv() is None:
+            R = None
+        else:
+            R = sp.sqrt(self.getFIinv()[0,0])
+        return R
+
+    @property
     def K0(self):
-        return self._K0 
+        return self._K0
 
     @property
     def Kcross0(self):
-        return self._Kcross0 
+        return self._Kcross0
 
     #####################
     # Setters
@@ -32,7 +40,7 @@ class fixed(covariance):
     @scale.setter
     def scale(self,value):
         assert value>=0, 'Scale must be >=0'
-        self.params[0] = sp.log(value) 
+        self.params[0] = sp.log(value)
         self.clear_all()
         self._notify()
 
@@ -52,7 +60,7 @@ class fixed(covariance):
         self._Kcross0 = value
         self.clear_cache('Kcross')
 
-    @covariance.use_to_predict.setter
+    @Covariance.use_to_predict.setter
     def use_to_predict(self,value):
         assert self.Kcross0 is not None, 'set Kcross0!'
         self._use_to_predict = value
@@ -76,7 +84,14 @@ class fixed(covariance):
 
     @cached
     def K_grad_i(self,i):
-        if i==0:    r = self.scale * self.K0
-        else:       r = None
+        r = self.scale * self.K0
         return r
 
+    ####################
+    # Interpretable Params
+    ####################
+    def getInterParams(self):
+        return SP.array([self.scale])
+
+    def K_grad_interParam_i(self,i):
+        return self.K0

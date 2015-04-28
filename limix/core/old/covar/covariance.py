@@ -1,7 +1,6 @@
 import sys
-sys.path.insert(0,'./../../..')
-from limix.core.utils.observed import Observed
-from limix.core.utils.cached import *
+from limix.core.type.observed import Observed
+from limix.core.type.cached import Cached, cached
 from limix.core.utils.eigen import *
 import scipy as SP
 import pdb
@@ -10,7 +9,7 @@ import warnings
 
 import logging as LG
 
-class covariance(cObject, Observed):
+class Covariance(Cached, Observed):
     """
     abstract super class for all implementations of covariance functions
     """
@@ -170,4 +169,3 @@ class covariance(cObject, Observed):
         # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
         Si2grad = -0.5*self.S()**(-1.5)*self.Sgrad(i)
         return self.Ugrad(i)*(self.S()**(-0.5)) + self.U()*Si2grad
-

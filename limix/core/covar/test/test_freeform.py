@@ -3,35 +3,32 @@ import unittest
 import scipy as SP
 import numpy as np
 import sys
-from limix.core.covar.freeform import freeform as FreeForm
-from limix.core.utils.check_grad import scheck_grad
+from limix.core.covar.freeform import FreeFormCov
+from limix.core.utils.check_grad import mcheck_grad
 
 class TestFreeForm(unittest.TestCase):
     def setUp(self):
         SP.random.seed(1)
         self.n=4
-        self.C = FreeForm(self.n)
+        self.C = FreeFormCov(self.n)
         self.name = 'freeform'
         self.n_params=self.C.getNumberParams()
         params=SP.randn(self.n_params)
         self.C.setParams(params)
 
     def test_grad(self):
-        params = self.C.getParams()
+        def func(x, i):
+            self.C.setParams(x)
+            return self.C.K()
 
-        for i in xrange(len(params)):
+        def grad(x, i):
+            self.C.setParams(x)
+            return self.C.Kgrad_param(i)
 
-            def set_param(x):
-                p = params.copy()
-                p[i] = x[0]
-                self.C.setParams(p)
+        x0 = self.C.getParams()
+        err = mcheck_grad(func, grad, x0)
 
-            err = scheck_grad(set_param,
-                              lambda: np.array([self.C.getParams()[i]]),
-                              lambda: self.C.K(),
-                              lambda: self.C.Kgrad_param(i))
-
-            np.testing.assert_almost_equal(err, 0.)
+        np.testing.assert_almost_equal(err, 0.)
 
 if __name__ == '__main__':
     unittest.main()

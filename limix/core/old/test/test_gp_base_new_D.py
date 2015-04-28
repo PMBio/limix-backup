@@ -7,7 +7,7 @@ from limix.core.covar.fixed import fixed
 from limix.core.covar.combinators import sumcov
 from limix.core.gp.gp_base_new import gp as gp_base
 
-import pdb as ipdb
+import ipdb
 import scipy as sp
 import scipy.linalg as LA
 import time as TIME
@@ -24,7 +24,8 @@ if __name__ == "__main__":
     s_y = 0.1
     X = (sp.linspace(0,2,N)+s_x*sp.randn(N))[:,sp.newaxis]
     Y = sp.sin(X)+s_y*sp.randn(N,1)
-    #pl.plot(x,y,'x')
+    Y-= Y.mean(0)
+    Y/= Y.std(0)
 
     Xstar = sp.linspace(0,2,1000)[:,sp.newaxis]
 
@@ -58,6 +59,31 @@ if __name__ == "__main__":
     gp.predict()
 
     ipdb.set_trace()
-    gp.checkGradient(fun='YKiY')
-    gp.checkGradient(fun='YKiFB')
-    #gp.checkGradient(fun='Areml_logdet')
+    gp.checkGradient(fun='yKiy')
+    gp.checkGradient(fun='yKiFb')
+    gp.checkGradient(fun='LML')
+
+    gp.covar.getCovariance(0).scale = 1e-4
+    gp.covar.getCovariance(0).length = 1
+    gp.covar.getCovariance(1).scale = 1 
+    gp.optimize(calc_ste=True)
+
+    # print optimized values and standard errors
+    print 'weights of fixed effects'
+    print mean.b
+    print '+/-',mean.b_ste
+    print 'scale of sqexp'
+    print covar1.scale
+    print '+/-',covar1.scale_ste
+    print 'length of sqexp'
+    print covar1.length
+    print '+/-',covar1.length_ste
+    print 'scale of fixed'
+    print covar2.scale
+    print '+/-',covar2.scale_ste
+
+    ipdb.set_trace()
+    Ystar = gp.predict()
+    pl.plot(X.ravel(),Y.ravel(),'xk')
+    pl.plot(Xstar.ravel(),Ystar.ravel(),'FireBrick',lw=2)
+

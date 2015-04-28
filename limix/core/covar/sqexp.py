@@ -1,13 +1,12 @@
 import sys
-sys.path.insert(0,'./../../..')
-from limix.core.utils.cached import *
+from limix.core.type.cached import cached
 import scipy as sp
 import numpy as np
-from covar_base import covariance
+from covar_base import Covariance
 import pdb
 import scipy.spatial as SS
 
-class sqexp(covariance):
+class SQExpCov(Covariance):
     """
     squared exponential covariance function
     """
@@ -22,6 +21,7 @@ class sqexp(covariance):
     def get_input_dim(self):
         return self.X.shape[1]
 
+
     #####################
     # Properties
     #####################
@@ -32,6 +32,22 @@ class sqexp(covariance):
     @property
     def length(self):
         return sp.exp(self.params[1])
+
+    @property
+    def scale_ste(self):
+        if self.getFIinv() is None:
+            R = None
+        else:
+            R = sp.sqrt(self.getFIinv()[0,0])
+        return R
+
+    @property
+    def length_ste(self):
+        if self.getFIinv() is None:
+            R = None
+        else:
+            R = sp.sqrt(self.getFIinv()[1,1])
+        return R
 
     @property
     def X(self):
@@ -76,7 +92,7 @@ class sqexp(covariance):
         self._Xstar = value
         self.clear_cache('Kcross')
 
-    @covariance.use_to_predict.setter
+    @Covariance.use_to_predict.setter
     def use_to_predict(self,value):
         assert self.Xstar is not None, 'set Xstar!'
         self._use_to_predict = value
@@ -85,7 +101,7 @@ class sqexp(covariance):
     # Params handling
     #####################
     def _calcNumberParams(self):
-        self.n_params = self.X.shape[1]+1
+        self.n_params = 2
 
     #####################
     # Cached
@@ -108,10 +124,25 @@ class sqexp(covariance):
 
     @cached
     def K_grad_i(self,i):
+        r = self.K_grad_interParam_i(i)
         if i==0:
-            r = sp.exp(-self.E()/(2*self.length)) * self.scale
+            r *= self.scale
+        elif i==1:
+            r *= self.length
         else:
-            A = sp.exp(-self.E()/(2*self.length))*self.E()
-            r = self.scale * A / (2*self.length)
+            assert False, 'There is no index %d on sqexp.' %i
         return r
 
+    ####################
+    # Interpretable Params
+    ####################
+    def getInterParams(self):
+        return SP.array([self.scale,self.length])
+
+    def K_grad_interParam_i(self,i):
+        if i==0:
+            r = sp.exp(-self.E()/(2*self.length))
+        else:
+            A = sp.exp(-self.E()/(2*self.length))*self.E()
+            r = self.scale * A / (2*self.length**2)
+        return r

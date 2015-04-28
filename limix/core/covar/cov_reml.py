@@ -1,20 +1,19 @@
 import sys
-sys.path.insert(0,'./../../..')
-from limix.core.utils.cached import *
+from limix.core.type.cached import cached
 import scipy as sp
-from covariance import covariance
+from covariance import Covariance
 import pdb
 import scipy.linalg as LA
 import warnings
 
 import logging as LG
 
-class cov_reml(covariance):
+class cov_reml(Covariance):
     """
     abstract super class for all implementations of covariance functions
     """
     def __init__(self,gp):
-        self.gp = gp 
+        self.gp = gp
         gp.register(self.clear_all)
         self.dim = gp.mean.b.shape[0]
         self._calcNumberParams()
@@ -24,21 +23,20 @@ class cov_reml(covariance):
     #####################
     def setParams(self,params):
         warnings.warn('Read-only covariance type')
-        
+
     def getParams(self,params):
         return self.gp.covar.getParams()
-        
+
     def _calcNumberParams(self):
-        self.n_params = self.gp.covar.getNumberParams() 
+        self.n_params = self.gp.covar.getNumberParams()
 
     #####################
     # Cached
     #####################
     @cached
     def K(self):
-        return self.gp.Areml_K() 
+        return self.gp.Areml_K()
 
     @cached
     def K_grad_i(self,i):
-        return self.gp.Areml_K_grad_i(i) 
-
+        return self.gp.Areml_K_grad_i(i)

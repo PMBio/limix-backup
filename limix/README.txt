@@ -1,14 +1,80 @@
-TODO:
-- cov and mean: two inner prediction methods for prediction
-(in-of-sample cached,out-of-sample not) (P)
-- gp/mean: change Y/B to y/b (P)
-- optimization + standard error
+***********************************
+TODO list
+***********************************
+- Check standard errrors handling (D)
+- Test a bit the code (D: OK)
+- Implement Unitests (D: OK)
+- Logging System (D)
+- move basic classes from utils to types (D, OK)
+- get rid of position specificity [not using sys.path.append(...)](D, OK)
+- Variance deocmpositaion module (P)
+- Kronecker Covariance (P)
+...
+- Better Handling of Params (P)
 
-TODO next (discussed):
+
+***************************
+0) Files that are in limix-dev at the moment
+***************************
+    - gp/gp_base.py
+    - mean/mean_base.py
+    - covar/combinators.py
+    - covar/sqexp.py
+    - covar/fixed.py
+    - covar/cov_reml.py
+    - optimize/optimize_bfgs_new.py
+    - test/test_gp_base.py
+
+    The rest is used by Christoph too!
+
+**************************
+1) Standard errors
+**************************
+    a) fisher mean is just Areml
+    b) fisher covar is calculated in covar and NOT cached.
+    c) after optimization if calc_ste==True gp get mean and covar Fisher's, compute inverses
+    d) the gp also gives the corresponding outcomes to mean and covar
+    e) covariance and mean get FIinv and cache them
+    f) in particular, the covariance combinator caches the whole FIinv but also passes down specific bocks to single term covariances
+        (alternatively, should it cache only external blocks?)
+    TODO:
+        - either solve synchronization
+        - or not considering steps d), e) and f)
+
+*****************************
+2) Better handling of parameters
+*****************************
+    - we could name all paramers using a scheme as proposed in the following example:
+
+        covar1 = sqexp(X,Xstar=Xstar)
+        covar2 = fixed(sp.eye(N))
+        covar  = sumcov(covar1,covar2)
+
+        covar.getParamNames()
+        SP.array(['sumcov.covar1_sqexp.scale',
+                    'sumcov.covar1_sqexp.length',
+                    'sumcov.covar2_fixed.scale'])
+
+    - parameters can then be a panda dataframe (a vector with labels)
+
+    - the inverse of the fisher information matrices cached in teh covariances can also be a panda dataframe (it would be much easier to read)
+
+    - paramMask is missing at the moment
+        - it should be handled in single term covariances (and mean) and propagate up to the gp
+        - the argument Ifilter that now the optimizer has should be removed
+
+    - getParams -> getParamArray??
+
+*******************************
+3) Handling GPLVM (to discuss all together)
+*********************************
+
     - discuss about Y/y, B/b in mean (gplvm)
     - params handling not solved
-    - getParams -> getParamArray
-    - should paramArray (X) be a property?
+
+***********************************
+4) X handling in combinator (to discuss all together)
+***********************************
     - as combinator has to have X then I think
         covar_base should have X too
         (by default the covariance does not have X)
@@ -16,34 +82,3 @@ TODO next (discussed):
         - covar_base has property X=None
         - there is a covar_inputs with proper set and get X
     - how to handle gradient with respect to X?
-
-mean_base
-- add predicitons out of sample
-    - how to cache? - Ystar(self,Fstar=None)
-- create method for both Y and y; B and b
-    - (Y and y are matrix and vector representation of the same thing)
-- handle paramMask
-
-gp_base
-- general gp with gradients
-- general gp with linear mean (and reml)
-    - calculate B and set it to params
-- move Areml_inv.chol,.inv,.logdet to matrix class caching?
-    - Areml is in principle a suitable covariance matrix
-- _grad_idx, good solution?
-
-covariance (->covar_base.py???)
-- specialized covar knows parameters with proper name,
-    getParams build the vactor on spot.
-    Same thing in combinators and gp
-- alternatively vector of params is known and specific setters act directely on the elements of the array
-- paramMask into covar
-- caching for combinators does not work properly
-    - combinators has to know if some parameter has changed 
-    - reimplement ideas in LIMIX for caching?
-    - handling different parametrization
-- logdet gradient, how to calc it?
-    - self.Kinv_dot(K_grad_i).diagonal().sum()
-    - (self.Kinv()*K_grad_i()).sum()
-        where self.Kinv_dot(SP.eye(N)) 
-- scale parameters does not change logdet, eigenval decomp, etc...

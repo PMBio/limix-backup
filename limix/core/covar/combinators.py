@@ -1,10 +1,10 @@
-from covar_base import covariance
+from covar_base import Covariance
 import pdb
 import scipy as SP
-from limix.core.utils.cached import * 
+from limix.core.type.cached import Cached, cached
 import warnings
 
-class sumcov(covariance):
+class SumCov(Covariance):
 
     def __init__(self,*covars):
         self.dim = None
@@ -84,7 +84,7 @@ class sumcov(covariance):
                 assert _.shape[0]==R.shape[0], 'Dimension mismatch'
                 assert _.shape[1]==R.shape[1], 'Dimension mismatch'
                 R += _
-        return R 
+        return R
 
     @cached
     def K_grad_i(self,i):
@@ -104,13 +104,31 @@ class sumcov(covariance):
         return self.n_params
 
     ####################
-    # DEPRECATED FUNCTIONS
+    # Interpretable Params
     ####################
-    #def setX(self,X):
-    #    self.X = X
-    #    for i in range(len(self.covars)):
-    #        self.covars[i].setX(X)
-    #def setXstar(self,Xstar):
-    #    self.Xstar = Xstar
-    #    for i in range(len(self.covars)):
-    #        self.covars[i].setXstar(Xstar)
+    def getInterParams(self):
+        istart = 0
+        interParams = SP.zeros(self.getNumberParams())
+        for i in range(len(self.covars)):
+            istop = istart + self.getCovariance(i).getNumberParams()
+            params[istart:istop] = self.getCovariance(i).getInterParams()
+            istart = istop
+        return params
+
+    def K_grad_interParam_i(self,i):
+        istart = 0
+        for j in range(len(self.covars)):
+            istop = istart + self.getCovariance(j).getNumberParams()
+            if (i < istop):
+                idx = i - istart
+                return self.getCovariance(j).K_grad_interParam_i(idx)
+            istart = istop
+        return None
+
+    def setFIinv(self, value):
+        self._FIinv = value
+        istart = 0
+        for i in range(len(self.covars)):
+            istop = istart + self.getCovariance(i).getNumberParams()
+            self.getCovariance(i).setFIinv(value[istart:istop][:,istart:istop])
+            istart = istop

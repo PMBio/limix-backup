@@ -1,14 +1,14 @@
 import unittest
 import numpy as np
-from limix.core.covar.sqexp import sqexp as SQExp
-from limix.core.utils.check_grad import scheck_grad
+from limix.core.covar.sqexp import SQExpCov
+from limix.core.utils.check_grad import mcheck_grad
 import scipy as sp
 
 class TestSQExp(unittest.TestCase):
     def setUp(self):
         np.random.seed(1)
         self._X = np.random.randn(10, 5)
-        self._cov = SQExp(self._X)
+        self._cov = SQExpCov(self._X)
 
     def test_setX_retE(self):
         X1 = self._X
@@ -27,23 +27,30 @@ class TestSQExp(unittest.TestCase):
         np.testing.assert_almost_equal(E2, self._cov.E())
 
     def test_Kgrad(self):
-        def set_scale(x):
-            self._cov.scale = x[0]
-        err = scheck_grad(set_scale,
-                          lambda: np.array([self._cov.scale]),
-                          lambda: self._cov.K(),
-                          lambda: self._cov.K_grad_i(0))
+
+        def func(x, i):
+            self._cov.scale = x[i]
+            return self._cov.K()
+
+        def grad(x, i):
+            self._cov.scale = x[i]
+            return self._cov.K_grad_i(0)
+
+        x0 = np.array([self._cov.scale])
+        err = mcheck_grad(func, grad, x0)
 
         np.testing.assert_almost_equal(err, 0.)
 
-        def set_length(x):
-            self._cov.length = x[0]
-        err = scheck_grad(set_length,
-                          lambda: np.array([self._cov.length]),
-                          lambda: self._cov.K(),
-                          lambda: self._cov.K_grad_i(1))
+        def func(x, i):
+            self._cov.length = x[i]
+            return self._cov.K()
 
-        np.testing.assert_almost_equal(err, 0.)
+        def grad(x, i):
+            self._cov.scale = x[i]
+            return self._cov.K_grad_i(1)
+
+        x0 = np.array([self._cov.scale])
+        err = mcheck_grad(func, grad, x0)
 
 
 if __name__ == '__main__':

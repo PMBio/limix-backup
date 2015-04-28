@@ -1,10 +1,10 @@
 import numpy as np
 import scipy as SP
 import scipy.linalg as LA
-from covariance import covariance
+from covariance import Covariance
 import pdb
 
-class freeform(covariance):
+class FreeFormCov(Covariance):
     """
     freeform covariance function
     """
@@ -12,7 +12,7 @@ class freeform(covariance):
         """
         initialization
         """
-        covariance.__init__(self)
+        Covariance.__init__(self, dim)
         self.n_params = int(dim * (dim + 1.) / 2.)
         self.dim = dim
         self.params = SP.zeros(self.n_params)

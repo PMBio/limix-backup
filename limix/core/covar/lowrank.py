@@ -1,7 +1,7 @@
 import scipy as SP
-from covariance import covariance
+from covariance import Covariance
 
-class lowrank(covariance):
+class LowRankCov(Covariance):
     """
     lowrank covariance
     """
@@ -9,10 +9,10 @@ class lowrank(covariance):
         """
         initialization
         """
-        covariance.__init__(self)
-        self.n_params = P
         self.P = P
         self.rank = rank
+        Covariance.__init__(self, P)
+        self.n_params = P
 
 
     def getNumberParams(self):
