@@ -12,13 +12,13 @@ def mcheck_grad(func, grad, x0, epsilon=_eps,
 
         def funci(x0i):
             x[i] = x0i
-            r = func(x)
+            r = func(x, i)
             x[i] = x0[i]
             return np.ravel(r)
 
         def gradi(x0i):
             x[i] = x0i
-            g = np.ravel(grad(x))
+            g = np.ravel(grad(x, i))
             x[i] = x0[i]
             return g
 
@@ -29,26 +29,6 @@ def mcheck_grad(func, grad, x0, epsilon=_eps,
     if allerrs:
         return errs
     return np.max(errs)
-
-
-def scheck_grad(theta_set, theta_get,
-                value,
-                grad, epsilon=_eps,
-                allerrs=False):
-
-    x0 = theta_get()
-    assert type(x0) is np.ndarray
-
-    def _func(x):
-        theta_set(x)
-        return value()
-
-    def _grad(x):
-        theta_set(x)
-        return grad()
-
-    return mcheck_grad(_func, _grad, x0, epsilon=_eps, allerrs=False)
-
 
 
 ########################### INTERNAL USE ONLY ###########################

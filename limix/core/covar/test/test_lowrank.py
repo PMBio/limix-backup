@@ -3,7 +3,7 @@ import unittest
 import scipy as sp
 import numpy as np
 from limix.core.covar.lowrank import lowrank
-from limix.core.utils.check_grad import scheck_grad
+from limix.core.utils.check_grad import mcheck_grad
 
 # class covariance_test(object):
 #     """abstract test class for covars"""

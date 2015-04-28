@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 from limix.core.covar.sqexp import sqexp as SQExp
 from limix.core.covar.combinators import sumcov as SumCov
-from limix.core.utils.check_grad import scheck_grad
+from limix.core.utils.check_grad import mcheck_grad
 import scipy as sp
 
 class TestSumCov(unittest.TestCase):
@@ -24,20 +24,18 @@ class TestSumCov(unittest.TestCase):
 
         cov = self._cov
 
-        errs = []
-        for i in xrange(len(cov.getParams())):
-            def set_param(x):
-                params = cov.getParams()
-                params[i] = x[0]
-                cov.setParams(params)
+        def func(x, i):
+            cov.setParams(x)
+            return cov.K()
 
-            err = scheck_grad(set_param,
-                              lambda: np.asarray([cov.getParams()[i]]),
-                              lambda: cov.K(),
-                              lambda: cov.K_grad_i(i))
-            errs.append(err)
+        def grad(x, i):
+            cov.setParams(x)
+            return cov.K_grad_i(i)
 
-        np.testing.assert_almost_equal(errs, 0.)
+        x0 = cov.getParams()
+        err = mcheck_grad(func, grad, x0)
+
+        np.testing.assert_almost_equal(err, 0.)
 
 if __name__ == '__main__':
     unittest.main()

@@ -5,7 +5,7 @@ from limix.core.covar.sqexp import sqexp
 from limix.core.covar.fixed import fixed
 from limix.core.covar.combinators import sumcov
 from limix.core.gp.gp_base import gp as gp_base
-from limix.core.utils.check_grad import scheck_grad
+from limix.core.utils.check_grad import mcheck_grad
 
 import numpy as np
 import scipy as sp
@@ -41,29 +41,23 @@ class TestGPBase(unittest.TestCase):
     def test_grad(self):
 
         gp = self._gp
-        errs = []
-        for i in xrange(len(gp.getParams()['covar'])):
-            def set_param(x):
-                params = gp.getParams()
-                params['covar'][i] = x[0]
-                gp.setParams(params)
 
-            def get_param():
-                params = gp.getParams()
-                return np.array([params['covar'][i]])
+        def func(x, i):
+            params = gp.getParams()
+            params['covar'] = x
+            gp.setParams(params)
+            return gp.LML()
 
-            def get_grad():
-                grad = gp.LML_grad()
-                return grad['covar'][i]
+        def grad(x, i):
+            params = gp.getParams()
+            params['covar'] = x
+            gp.setParams(params)
+            grad = gp.LML_grad()
+            return grad['covar'][i]
 
-            err = scheck_grad(set_param,
-                              get_param,
-                              lambda: gp.LML(),
-                              get_grad)
-
-            errs.append(err)
-
-        np.testing.assert_almost_equal(errs, 0., decimal=5)
+        x0 = gp.getParams()['covar']
+        err = mcheck_grad(func, grad, x0)
+        np.testing.assert_almost_equal(err, 0., decimal=6)
 
 if __name__ == "__main__":
     unittest.main()
