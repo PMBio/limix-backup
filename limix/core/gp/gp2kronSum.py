@@ -1,5 +1,4 @@
 import sys
-sys.path.append('./../../..')
 from limix.utils.utils import smartSum
 from limix.core.mean import mean
 
@@ -11,7 +10,7 @@ import time as TIME
 from gp_base import GP
 
 class gp2kronSum(GP):
- 
+
     def __init__(self,mean,Cg,Cn,XX=None,S_XX=None,U_XX=None,offset=1e-4):
         """
         Y:      Phenotype matrix
@@ -96,7 +95,7 @@ class gp2kronSum(GP):
             self.cache['Srstar'] = S_XX
             self.cache['Lr'] = U_XX.T
             raise NotImplementedError("self.mean.setRowRotation(Lr=self.cache['Lr'])#this function does not exist")
-            self.mean.setRowRotation(Lr=self.cache['Lr'])#this function does not exist 
+            self.mean.setRowRotation(Lr=self.cache['Lr'])#this function does not exist
             self.XX_has_changed = False
         else:
             self.XX = XX
@@ -143,7 +142,7 @@ class gp2kronSum(GP):
 
             smartSum(self.time,'cache_XXchanged',TIME.time()-start)
             smartSum(self.count,'cache_XXchanged',1)
-        
+
         if cov_params_have_changed:
             start = TIME.time()
             """ Col SVD Bg + Noise """
@@ -155,7 +154,7 @@ class gp2kronSum(GP):
             self.cache['Scstar'],Ucstar = LA.eigh(Cstar)
             self.cache['Lc'] = SP.dot(Ucstar.T,USi2.T)
             """ pheno """
-            self.mean.Lc = self.cache['Lc'] 
+            self.mean.Lc = self.cache['Lc']
 
 
         if cov_params_have_changed or self.XX_has_changed:
@@ -195,7 +194,7 @@ class gp2kronSum(GP):
 
         #3. quadratic term
         lml += self.mean.var_total() - self.mean.var_explained()[0]
-        
+
         if self.reml and self.mean.n_fixed_effs>0:
             #4. reml term
             lml += 2*SP.log(SP.diag(self.mean.Areml_chol())).sum()
@@ -219,7 +218,7 @@ class gp2kronSum(GP):
         self._update_cache()
         RV = {}
         covars = ['Cg','Cn']
-        for covar in covars:        
+        for covar in covars:
             RV[covar] = self._LMLgrad_covar(covar)
         return RV
 
@@ -289,7 +288,7 @@ class gp2kronSum(GP):
 
         assert self.N*self.P<2000, 'gp2kronSum:: N*P>=2000'
 
-        y  = SP.reshape(self.Y,(self.N*self.P), order='F') 
+        y  = SP.reshape(self.Y,(self.N*self.P), order='F')
 
         K  = SP.kron(self.Cg.K(),self.XX)
         K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
@@ -315,7 +314,7 @@ class gp2kronSum(GP):
 
             #1. der of log det
             RV[i]  = 0.5*(Ki*Kgrad).sum()
-            
+
             #2. der of quad form
             RV[i] -= 0.5*(Kiy*SP.dot(Kgrad,Kiy)).sum()
 
@@ -417,7 +416,7 @@ class gp2kronSum(GP):
         for term_i in range(self.mean.n_terms):
             X.append(SP.kron(self.mean.A[term_i].T,self.mean.F[term_i]))
         X = SP.concatenate(X,1)
-    
+
         i = 0
         C   = self.Cg.Kgrad_param(i)
         Kgrad = SP.kron(C,self.XX)
@@ -472,8 +471,7 @@ class gp2kronSum(GP):
         self.mean.LRLdiag = LRLdiag
         self.mean.LCL = LCL
         beta_grad1 = self.mean.beta_grad()
-        Xstar_beta_grad1 = self.mean.Xstar_beta_grad().reshape((self.P*self.N,1),order='F') 
+        Xstar_beta_grad1 = self.mean.Xstar_beta_grad().reshape((self.P*self.N,1),order='F')
 
         print ((beta_grad-beta_grad1)**2).mean()<1e-6
         print ((Xstar_beta_grad-Xstar_beta_grad1)**2).mean()<1e-6
-

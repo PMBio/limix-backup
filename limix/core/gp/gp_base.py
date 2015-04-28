@@ -3,11 +3,8 @@ import scipy as SP
 import scipy.linalg as LA
 import copy
 import sys
-sys.path.append('./../../..')
 from limix.core.linalg.linalg_matrix import jitChol
 import limix.core.likelihood.likelihood_base
-import scipy.lib.lapack.flapack
-
 
 import logging as LG
 
@@ -24,7 +21,7 @@ class GP(object):
         """
         self.covar = K
         self.setY(Y)
-        
+
     def setY(self,Y):
         """
         set pheno
@@ -45,7 +42,7 @@ class GP(object):
 
     def updateParams(self):
         self.covar.setParams(self.params['covar'])
-        
+
     def LML(self,params=None):
         """
         evalutes the log marginal likelihood for the given hyperparameters
@@ -58,13 +55,13 @@ class GP(object):
         KV = self._update_cache()
         alpha = KV['alpha']
         L = KV['L']
-        
+
         lml_quad = 0.5 * (alpha*self.Y).sum()
         lml_det = self.t *SP.log(SP.diag(L)).sum()
         lml_const = 0.5*self.n*self.t*SP.log(2*SP.pi)
         LML = lml_quad + lml_det + lml_const
         return LML
-    
+
 
     def LMLgrad(self,params=None):
         """
@@ -90,7 +87,7 @@ class GP(object):
         Kstar = self.covar.Kcross()
         Ystar = SP.dot(Kstar,KV['alpha'])
         return Ystar
-        
+
     def _update_cache(self):
         """
         INPUT:
@@ -116,10 +113,10 @@ class GP(object):
             self._covar_cache['L'] = L
             self._covar_cache['alpha'] = alpha
             self._covar_cache['W'] = W
-       
+
         return self._covar_cache
 
-   
+
     def checkGradient(self,h=1e-6,verbose=True):
         """ utility function to check the gradient of the gp """
         grad_an = self.LMLgrad()
