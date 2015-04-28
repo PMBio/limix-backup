@@ -102,7 +102,7 @@ class sqexp(covariance):
     # Params handling
     #####################
     def _calcNumberParams(self):
-        self.n_params = self.X.shape[1]+1
+        self.n_params = 2
 
     #####################
     # Cached
@@ -126,15 +126,19 @@ class sqexp(covariance):
     @cached
     def K_grad_i(self,i):
         r = self.K_grad_interParam_i(i)
-        if i==0:        r *= self.scale
-        else:           r *= self.length
+        if i==0:
+            r *= self.scale
+        elif i==1:
+            r *= self.length
+        else:
+            assert False, 'There is no index %d on sqexp.' %i
         return r
 
     ####################
     # Interpretable Params
     ####################
     def getInterParams(self):
-        return SP.array([self.scale,self.length]) 
+        return SP.array([self.scale,self.length])
 
     def K_grad_interParam_i(self,i):
         if i==0:
@@ -143,4 +147,3 @@ class sqexp(covariance):
             A = sp.exp(-self.E()/(2*self.length))*self.E()
             r = self.scale * A / (2*self.length**2)
         return r
-

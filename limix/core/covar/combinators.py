@@ -1,7 +1,7 @@
 from covar_base import covariance
 import pdb
 import scipy as SP
-from limix.core.utils.cached import * 
+from limix.core.utils.cached import *
 import warnings
 
 class sumcov(covariance):
@@ -84,7 +84,7 @@ class sumcov(covariance):
                 assert _.shape[0]==R.shape[0], 'Dimension mismatch'
                 assert _.shape[1]==R.shape[1], 'Dimension mismatch'
                 R += _
-        return R 
+        return R
 
     @cached
     def K_grad_i(self,i):
@@ -132,4 +132,3 @@ class sumcov(covariance):
             istop = istart + self.getCovariance(i).getNumberParams()
             self.getCovariance(i).setFIinv(value[istart:istop][:,istart:istop])
             istart = istop
-        
