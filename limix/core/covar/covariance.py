@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0,'./../../..')
-from limix.core.utils.observed import Observed
-from limix.core.utils.cached import *
+from limix.core.type.observed import Observed
+from limix.core.type.cached import *
 from limix.core.utils.eigen import *
 import scipy as SP
 import pdb

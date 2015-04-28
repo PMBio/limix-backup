@@ -2,11 +2,11 @@
 TODO list
 ***********************************
 - Check standard errrors handling (D)
-- Test a bit the code (D)
-- Implement Unitests (D)
+- Test a bit the code (D: OK)
+- Implement Unitests (D: OK)
 - Logging System (D)
-- move basic classes from utils to types (D)
-- get rid of position specificity [not using sys.path.append(...)](D) 
+- move basic classes from utils to types (D, OK)
+- get rid of position specificity [not using sys.path.append(...)](D)
 - Variance deocmpositaion module (P)
 - Kronecker Covariance (P)
 ...
@@ -82,4 +82,3 @@ TODO list
         - covar_base has property X=None
         - there is a covar_inputs with proper set and get X
     - how to handle gradient with respect to X?
-

@@ -5,8 +5,8 @@ import copy
 import sys
 import time
 sys.path.insert(0,'./../../..')
-from limix.core.utils.observed import Observed
-from limix.core.utils.cached import *
+from limix.core.type.observed import Observed
+from limix.core.type.cached import *
 import limix.core.mean.mean_base
 from limix.core.covar.cov_reml import cov_reml
 import limix.core.optimize.optimize_bfgs_new as OPT

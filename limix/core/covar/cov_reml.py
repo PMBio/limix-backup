@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0,'./../../..')
-from limix.core.utils.cached import *
+from limix.core.type.cached import *
 import scipy as sp
 from covariance import covariance
 import pdb

@@ -1,5 +1,5 @@
 import scipy as sp
-from limix.core.utils.cached import *
+from limix.core.type.cached import *
 from covar_base import covariance
 import pdb
 
