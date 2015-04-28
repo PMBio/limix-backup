@@ -1,7 +1,6 @@
 import sys
-sys.path.insert(0,'./../../..')
 from limix.core.type.observed import Observed
-from limix.core.type.cached import *
+from limix.core.type.cached import Cached, cached
 from limix.core.utils.eigen import *
 import scipy as sp
 import pdb
@@ -10,7 +9,7 @@ import warnings
 
 import logging as LG
 
-class covariance(cObject, Observed):
+class covariance(Cached, Observed):
     """
     abstract super class for all implementations of covariance functions
     """
@@ -152,7 +151,7 @@ class covariance(cObject, Observed):
 
     ###########################
     # Predictions
-    ###########################    
+    ###########################
     @property
     def use_to_predict(self):
         return self._use_to_predict
@@ -171,7 +170,7 @@ class covariance(cObject, Observed):
     # Interpretable Params, Fisher information Matrix, std errors
     ####################
     def getInterParams(self):
-        return self.getParams() 
+        return self.getParams()
 
     def K_grad_interParam_i(self,i):
         return K_grad_i_interParams(self,i)

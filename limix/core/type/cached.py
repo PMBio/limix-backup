@@ -3,7 +3,7 @@ import os
 
 # HOW TO USE: Please, look at the end of the file for an example.
 
-class cObject(object):
+class Cached(object):
     def __init__(self):
         pass
 
@@ -104,7 +104,7 @@ def _fetch_argnames_argvalues(method, args, kwargs):
     return (argnames, argvalues)
 
 if __name__ == '__main__':
-    class Test(cObject):
+    class Test(Cached):
         @cached
         def foo1(self, par1, par2=None):
             return 5

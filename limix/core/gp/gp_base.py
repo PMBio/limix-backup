@@ -5,12 +5,12 @@ import copy
 import sys
 import time
 from limix.core.type.observed import Observed
-from limix.core.type.cached import *
+from limix.core.type.cached import Cached, cached
 import limix.core.mean.mean_base
 from limix.core.covar.cov_reml import cov_reml
 import limix.core.optimize.optimize_bfgs_new as OPT
 
-class gp(cObject, Observed):
+class gp(Cached, Observed):
     """
     Gaussian Process regression class for linear mean (with REML)
     y ~ N(Fb,K)

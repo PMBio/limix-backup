@@ -1,5 +1,5 @@
 import scipy as sp
-from limix.core.type.cached import *
+from limix.core.type.cached import cached
 from covar_base import covariance
 import pdb
 
@@ -28,11 +28,11 @@ class fixed(covariance):
 
     @property
     def K0(self):
-        return self._K0 
+        return self._K0
 
     @property
     def Kcross0(self):
-        return self._Kcross0 
+        return self._Kcross0
 
     #####################
     # Setters
@@ -40,7 +40,7 @@ class fixed(covariance):
     @scale.setter
     def scale(self,value):
         assert value>=0, 'Scale must be >=0'
-        self.params[0] = sp.log(value) 
+        self.params[0] = sp.log(value)
         self.clear_all()
         self._notify()
 
@@ -94,5 +94,4 @@ class fixed(covariance):
         return SP.array([self.scale])
 
     def K_grad_interParam_i(self,i):
-        return self.K0 
-
+        return self.K0

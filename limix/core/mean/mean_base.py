@@ -1,16 +1,15 @@
 import sys
-sys.path.insert(0,'./../../..')
 from limix.core.type.observed import Observed
-from limix.core.type.cached import *
+from limix.core.type.cached import Cached, cached
 from limix.utils.preprocess import regressOut
 import scipy as sp
 import numpy as np
-		    
+
 import scipy.linalg as LA
 import copy
 import pdb
 
-class mean_base(cObject, Observed):
+class mean_base(Cached, Observed):
 
     def __init__(self,Y,F,Fstar=None):
         """
@@ -24,7 +23,7 @@ class mean_base(cObject, Observed):
         self.setFIinv(None)
 
     #########################################
-    # Properties 
+    # Properties
     #########################################
     @property
     def Y(self):
@@ -48,7 +47,7 @@ class mean_base(cObject, Observed):
 
     @property
     def y(self):
-        return sp.reshape(self.Y,(self._N*self._P,1),order='F') 
+        return sp.reshape(self.Y,(self._N*self._P,1),order='F')
 
     @property
     def b(self):
@@ -68,10 +67,10 @@ class mean_base(cObject, Observed):
 
     @property
     def use_to_predict(self):
-        return self._use_to_predict 
+        return self._use_to_predict
 
     #########################################
-    # Setters 
+    # Setters
     #########################################
     @Y.setter
     def Y(self,value):
@@ -127,16 +126,16 @@ class mean_base(cObject, Observed):
         self._use_to_predict = value
 
     #########################################
-    # Predictions 
+    # Predictions
     #########################################
     @cached
     def predict(self):
-        r = _predict_fun(self.Fstar) 
+        r = _predict_fun(self.Fstar)
         return r
 
     @cached
     def predict_in_sample(self):
-        r = _predict_fun(self.F) 
+        r = _predict_fun(self.F)
         return r
 
     def _predict_fun(self,M):
@@ -145,7 +144,7 @@ class mean_base(cObject, Observed):
     @cached
     def Yres(self):
         """ residual """
-        RV  = self.Y-self.predict_in_sample() 
+        RV  = self.Y-self.predict_in_sample()
         return RV
 
     #######################################
@@ -165,7 +164,7 @@ class mean_base(cObject, Observed):
     #    return rv
 
     #########################################
-    # Params manipulation TODO 
+    # Params manipulation TODO
     #########################################
     #def getParams(self):
     #    """ get params """
@@ -178,4 +177,3 @@ class mean_base(cObject, Observed):
     #        n_effects = self.B[i].size
     #        self.B[i] = np.reshape(params[start:start+n_effects],self.B[i].shape, order='F')
     #        start += n_effects
-
