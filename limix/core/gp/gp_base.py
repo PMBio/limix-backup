@@ -13,7 +13,7 @@ import limix.core.optimize.optimize_bfgs_new as OPT
 import logging
 logger = logging.getLogger(__name__)
 
-class gp(Cached, Observed):
+class GP(Cached, Observed):
     """
     Gaussian Process regression class for linear mean (with REML)
     y ~ N(Fb,K)

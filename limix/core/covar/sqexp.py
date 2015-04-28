@@ -2,11 +2,11 @@ import sys
 from limix.core.type.cached import cached
 import scipy as sp
 import numpy as np
-from covar_base import covariance
+from covar_base import Covariance
 import pdb
 import scipy.spatial as SS
 
-class sqexp(covariance):
+class SQExpCov(Covariance):
     """
     squared exponential covariance function
     """
@@ -92,7 +92,7 @@ class sqexp(covariance):
         self._Xstar = value
         self.clear_cache('Kcross')
 
-    @covariance.use_to_predict.setter
+    @Covariance.use_to_predict.setter
     def use_to_predict(self,value):
         assert self.Xstar is not None, 'set Xstar!'
         self._use_to_predict = value

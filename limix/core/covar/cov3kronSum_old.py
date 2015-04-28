@@ -7,11 +7,11 @@ import scipy.linalg as LA
 import scipy.sparse.linalg as SLA
 import scipy.stats.mstats as MST
 import warnings
-from covariance import covariance
+from covariance import Covariance
 
 import pdb
 
-class cov3kronSum(covariance):
+class cov3kronSum(Covariance):
 
     def __init__(self,C1=None,C2=None,C3=None,R1=None,R2=None):
         """
@@ -48,13 +48,13 @@ class cov3kronSum(covariance):
     def S_R(self,i):
         RV,U = LA.eigh(self.R[i])
         self.fill_cache_idxs('U_R',U,i)
-        return RV 
+        return RV
 
     @cached_idxs
     def U_R(self,i):
         S,RV = LA.eigh(self.R[i])
         self.fill_cache_idxs('S_R',S,i)
-        return RV 
+        return RV
 
     @cached_idxs
     def USi2_R(self,i):
@@ -65,7 +65,7 @@ class cov3kronSum(covariance):
         if i==2:    RV = SP.diag(1./self.S_R(j))
         elif j==2:  RV = self.R[i]
         else:       RV = SP.dot(self.USi2_R(j).T,SP.dot(self.R[i],self.USi2_R(j)))
-        return RV 
+        return RV
 
     @cached_idxs
     def S_Rstar(self,i,j):
@@ -354,4 +354,3 @@ class cov3kronSum(covariance):
             params[i] = params3[i]
             RV.append((fR-fL)/(2*h))
         return SP.array(RV)
-

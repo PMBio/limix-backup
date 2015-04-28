@@ -3,14 +3,14 @@ import unittest
 import scipy as SP
 import numpy as np
 import sys
-from limix.core.covar.freeform import freeform as FreeForm
+from limix.core.covar.freeform import FreeFormCov
 from limix.core.utils.check_grad import mcheck_grad
 
 class TestFreeForm(unittest.TestCase):
     def setUp(self):
         SP.random.seed(1)
         self.n=4
-        self.C = FreeForm(self.n)
+        self.C = FreeFormCov(self.n)
         self.name = 'freeform'
         self.n_params=self.C.getNumberParams()
         params=SP.randn(self.n_params)

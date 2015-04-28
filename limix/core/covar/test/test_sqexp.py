@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from limix.core.covar.sqexp import sqexp as SQExp
+from limix.core.covar.sqexp import SQExpCov
 from limix.core.utils.check_grad import mcheck_grad
 import scipy as sp
 
@@ -8,7 +8,7 @@ class TestSQExp(unittest.TestCase):
     def setUp(self):
         np.random.seed(1)
         self._X = np.random.randn(10, 5)
-        self._cov = SQExp(self._X)
+        self._cov = SQExpCov(self._X)
 
     def test_setX_retE(self):
         X1 = self._X

@@ -1,10 +1,10 @@
 import unittest
 
 from limix.core.mean.mean_base import mean_base as lin_mean
-from limix.core.covar.sqexp import sqexp
-from limix.core.covar.fixed import fixed
-from limix.core.covar.combinators import sumcov
-from limix.core.gp.gp_base import gp as gp_base
+from limix.core.covar.sqexp import SQExpCov
+from limix.core.covar.fixed import FixedCov
+from limix.core.covar.combinators import SumCov
+from limix.core.gp.gp_base import GP
 from limix.core.utils.check_grad import mcheck_grad
 
 import numpy as np
@@ -31,12 +31,12 @@ class TestGPBase(unittest.TestCase):
         mean = lin_mean(Y,F)
 
         # define covariance matrices
-        covar1 = sqexp(X,Xstar=Xstar)
-        covar2 = fixed(sp.eye(N))
-        covar  = sumcov(covar1,covar2)
+        covar1 = SQExpCov(X,Xstar=Xstar)
+        covar2 = FixedCov(sp.eye(N))
+        covar  = SumCov(covar1,covar2)
 
         # define gp
-        self._gp = gp_base(covar=covar,mean=mean)
+        self._gp = GP(covar=covar,mean=mean)
 
     def test_grad(self):
 

@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
-from limix.core.covar.sqexp import sqexp as SQExp
-from limix.core.covar.combinators import sumcov as SumCov
+from limix.core.covar.sqexp import SQExpCov
+from limix.core.covar.combinators import SumCov
 from limix.core.utils.check_grad import mcheck_grad
 import scipy as sp
 
@@ -10,8 +10,8 @@ class TestSumCov(unittest.TestCase):
         np.random.seed(1)
         self._X1 = np.random.randn(10, 5)
         self._X2 = np.random.randn(10, 8)
-        self._cov1 = SQExp(self._X1)
-        self._cov2 = SQExp(self._X2)
+        self._cov1 = SQExpCov(self._X1)
+        self._cov2 = SQExpCov(self._X2)
         self._cov = SumCov(self._cov1, self._cov2)
 
     def test_sum_combination(self):

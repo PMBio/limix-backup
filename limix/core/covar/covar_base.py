@@ -9,7 +9,7 @@ import warnings
 
 import logging as LG
 
-class covariance(Cached, Observed):
+class Covariance(Cached, Observed):
     """
     abstract super class for all implementations of covariance functions
     """

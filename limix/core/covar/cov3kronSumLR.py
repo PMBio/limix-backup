@@ -8,7 +8,7 @@ import scipy.linalg as LA
 import scipy.sparse.linalg as SLA
 import scipy.stats.mstats as MST
 import warnings
-from covariance import covariance
+from covariance import Covariance
 
 import pdb
 

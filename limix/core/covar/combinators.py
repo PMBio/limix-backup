@@ -1,10 +1,10 @@
-from covar_base import covariance
+from covar_base import Covariance
 import pdb
 import scipy as SP
-from limix.core.type.cached import *
+from limix.core.type.cached import Cached, cached
 import warnings
 
-class sumcov(covariance):
+class SumCov(Covariance):
 
     def __init__(self,*covars):
         self.dim = None

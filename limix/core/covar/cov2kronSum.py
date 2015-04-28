@@ -5,12 +5,12 @@ from limix.core.utils.eigen import *
 import scipy as SP
 import scipy.linalg as LA
 import warnings
-from covariance import covariance
+from covariance import Covariance
 
 import pdb
 
 # should be a child class of combinator
-class cov2kronSum(covariance):
+class cov2kronSum(Covariance):
 
     def __init__(self,Cg=None,Cn=None,XX=None):
         """
@@ -44,7 +44,7 @@ class cov2kronSum(covariance):
 
     @cached
     def logdet(self):
-        return SP.sum(SP.log(self.Cn.S()))*self.XX.shape[0] + SP.log(self.S()).sum() 
+        return SP.sum(SP.log(self.Cn.S()))*self.XX.shape[0] + SP.log(self.S()).sum()
 
     @cached
     def Cstar(self):
@@ -53,13 +53,13 @@ class cov2kronSum(covariance):
     @cached
     def S_Cstar(self):
         RV,U = LA.eigh(self.Cstar())
-        self.fill_cache('U_Cstar',U) 
+        self.fill_cache('U_Cstar',U)
         return RV
 
     @cached
     def U_Cstar(self):
         S,RV = LA.eigh(self.Cstar())
-        self.fill_cache('S_Cstar',S) 
+        self.fill_cache('S_Cstar',S)
         return RV
 
     @cached
@@ -72,7 +72,7 @@ class cov2kronSum(covariance):
 
     @cached
     def Lc(self):
-        return SP.dot(self.U_Cstar().T,self.Cn.USi2().T) 
+        return SP.dot(self.U_Cstar().T,self.Cn.USi2().T)
 
     @cached
     def Sr(self):
@@ -108,11 +108,11 @@ class cov2kronSum(covariance):
         return dU_dti(self.CstarGrad_n(i),U=self.U_Cstar(),S=self.S_Cstar())
 
     def LcGrad_g(self,i):
-        return SP.dot(self.U_CstarGrad_g(i).T,self.Cn.USi2().T) 
+        return SP.dot(self.U_CstarGrad_g(i).T,self.Cn.USi2().T)
 
     def LcGrad_n(self,i):
-        RV  = SP.dot(self.U_CstarGrad_n(i).T,self.Cn.USi2().T) 
-        RV += SP.dot(self.U_Cstar().T,self.Cn.USi2grad(i).T) 
+        RV  = SP.dot(self.U_CstarGrad_n(i).T,self.Cn.USi2().T)
+        RV += SP.dot(self.U_Cstar().T,self.Cn.USi2grad(i).T)
         return RV
 
     def Sgrad_g(self,i):
@@ -120,4 +120,3 @@ class cov2kronSum(covariance):
 
     def Sgrad_n(self,i):
         return SP.kron(self.S_CstarGrad_n(i),self.Sr())
-

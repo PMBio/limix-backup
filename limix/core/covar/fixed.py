@@ -1,9 +1,9 @@
 import scipy as sp
 from limix.core.type.cached import cached
-from covar_base import covariance
+from covar_base import Covariance
 import pdb
 
-class fixed(covariance):
+class FixedCov(Covariance):
     """
     squared exponential covariance function
     """
@@ -60,7 +60,7 @@ class fixed(covariance):
         self._Kcross0 = value
         self.clear_cache('Kcross')
 
-    @covariance.use_to_predict.setter
+    @Covariance.use_to_predict.setter
     def use_to_predict(self,value):
         assert self.Kcross0 is not None, 'set Kcross0!'
         self._use_to_predict = value

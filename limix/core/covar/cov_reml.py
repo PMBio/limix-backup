@@ -1,14 +1,14 @@
 import sys
 from limix.core.type.cached import cached
 import scipy as sp
-from covariance import covariance
+from covariance import Covariance
 import pdb
 import scipy.linalg as LA
 import warnings
 
 import logging as LG
 
-class cov_reml(covariance):
+class cov_reml(Covariance):
     """
     abstract super class for all implementations of covariance functions
     """
