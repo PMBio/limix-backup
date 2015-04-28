@@ -35,6 +35,7 @@ class LmmKronecker(cObject):
         #TODO: block diagonal Areml computations efficient
         if Asnps is not None:
             if (Asnps.shape[0]==Asnps.shape[1]) and Asnps == np.eye(Asnps.shape[0]):
+                pass
         LL_snps = np.zeros(snps.shape[1])
         LL_new = np.zeros(snps.shape[1])
         LL_snps_0 = np.zeros(snps.shape[1])
