@@ -11595,6 +11595,74 @@ class CMemGenotypeContainer(AGenotypeContainer):
 CMemGenotypeContainer_swigregister = _core.CMemGenotypeContainer_swigregister
 CMemGenotypeContainer_swigregister(CMemGenotypeContainer)
 
+
+def best_split_full_model(*args):
+  """
+    best_split_full_model(MatrixXd const & X, MatrixXd const & UTy, MatrixXd const & C, MatrixXd const & S, 
+        MatrixXd const & U, VectorXi const & noderange, limix::mfloat_t delta)
+
+    Parameters:
+        X: MatrixXd const &
+        UTy: MatrixXd const &
+        C: MatrixXd const &
+        S: MatrixXd const &
+        U: MatrixXd const &
+        noderange: VectorXi const &
+        delta: limix::mfloat_t
+
+    """
+  return _core.best_split_full_model(*args)
+
+def predict_lmm_forest(*args):
+  """
+    predict_lmm_forest(VectorXi const & tree_nodes, VectorXi const & left_children, VectorXi const & right_children, 
+        VectorXi const & best_predictor, MatrixXd const & mean, MatrixXd const & splitting_value, 
+        MatrixXd const & X, limix::mfloat_t depth)
+
+    Parameters:
+        tree_nodes: VectorXi const &
+        left_children: VectorXi const &
+        right_children: VectorXi const &
+        best_predictor: VectorXi const &
+        mean: MatrixXd const &
+        splitting_value: MatrixXd const &
+        X: MatrixXd const &
+        depth: limix::mfloat_t
+
+    """
+  return _core.predict_lmm_forest(*args)
+
+def argOutSwigTest2(*args):
+  """
+    argOutSwigTest2(limix::mint_t in1, limix::mint_t in2)
+
+    Parameters:
+        in1: limix::mint_t
+        in2: limix::mint_t
+
+    """
+  return _core.argOutSwigTest2(*args)
+
+def argOutSwigTest3(*args):
+  """
+    argOutSwigTest3(limix::mint_t in1, limix::mint_t in2)
+
+    Parameters:
+        in1: limix::mint_t
+        in2: limix::mint_t
+
+    """
+  return _core.argOutSwigTest3(*args)
+
+def argOutSwigTest4(*args):
+  """
+    argOutSwigTest4(MatrixXd const & m)
+
+    Parameters:
+        m: MatrixXd const &
+
+    """
+  return _core.argOutSwigTest4(*args)
 # This file is compatible with both classic and new-style classes.
 
 
