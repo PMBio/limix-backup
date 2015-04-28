@@ -10,6 +10,9 @@ import limix.core.mean.mean_base
 from limix.core.covar.cov_reml import cov_reml
 import limix.core.optimize.optimize_bfgs_new as OPT
 
+import logging
+logger = logging.getLogger(__name__)
+
 class gp(Cached, Observed):
     """
     Gaussian Process regression class for linear mean (with REML)
@@ -189,62 +192,62 @@ class gp(Cached, Observed):
     #########################
     # OPTIMIZATION
     #########################
-    def optimize(self,calc_ste=False,verbose=True,Ifilter=None,bounds=None,opts={},*args,**kw_args):
-        if verbose: print '.. Optimize marginal likelihood'
+    def optimize(self,calc_ste=False,Ifilter=None,bounds=None,opts={},*args,**kw_args):
+        logger.info('Marginal likelihood optimization.')
         t0 = time.time()
         OPT.opt_hyper(self,Ifilter=Ifilter,bounds=bounds,opts=opts,*args,**kw_args)
         t1 = time.time()
-        if verbose:
-            print 'Time elapsed: %.2f s' % (t1-t0)
+
+        if logger.levelno == logger.DEBUG:
+            logger.debug('Time elapsed: %.2fs', t1-t0)
             grad = self.LML_grad()
             grad_norm = 0
             for key in grad.keys():
                 grad_norm += (grad[key]**2).sum()
             grad_norm = sp.sqrt(grad_norm)
-            print 'Log Marginal Likelihood:', self.LML()
-            print 'Gradient norm:', grad_norm
+            logger.debug('Log Marginal Likelihood: %.7f.', self.LML())
+            logger.debug('Gradient norm: %.7f.', grad_norm)
 
         if calc_ste:
-            if verbose: print '.. Calculate standard error'
+            logger.info('Standard error calculation.')
             t0 = time.time()
             I_covar = self.covar.getFisherInf()
             I_mean = self.Areml.K()
             self.covar.setFIinv(sp.linalg.inv(I_covar))
             self.mean.setFIinv(sp.linalg.inv(I_mean))
             t1 = time.time()
-            if verbose:
-                print 'Time elapsed: %.2f s' % (t1-t0)
+            logger.debug('Time elapsed: %.2fs', t1-t0)
 
-    ############################
-    # DEBUGGING
-    ############################
-
-    def checkGradient(self,h=1e-4,verbose=True,fun='LML'):
-        """
-        utility function to check the analytical gradient of
-        a scalar function in the gp
-        """
-        f = getattr(self,fun)
-        f_grad = getattr(self,fun+'_grad')
-        grad_an = f_grad()
-        grad_num = {}
-        params = self.getParams()
-        for key in params.keys():
-            paramsL = params.copy()
-            paramsR = params.copy()
-            grad_num[key] = sp.zeros_like(params[key])
-            e = sp.zeros(params[key].shape[0])
-            for i in range(params[key].shape[0]):
-                e[i] = 1
-                paramsL[key]=params[key]-h*e
-                paramsR[key]=params[key]+h*e
-                self.setParams(paramsL)
-                lml_L = f()
-                self.setParams(paramsR)
-                lml_R = f()
-                grad_num[key][i] = (lml_R-lml_L)/(2*h)
-                e[i] = 0
-            if verbose:
-                print '%s:'%key
-                print abs((grad_an[key]-grad_num[key]))
-                print ''
+    # ############################
+    # # DEBUGGING
+    # ############################
+    #
+    # def checkGradient(self,h=1e-4,verbose=True,fun='LML'):
+    #     """
+    #     utility function to check the analytical gradient of
+    #     a scalar function in the gp
+    #     """
+    #     f = getattr(self,fun)
+    #     f_grad = getattr(self,fun+'_grad')
+    #     grad_an = f_grad()
+    #     grad_num = {}
+    #     params = self.getParams()
+    #     for key in params.keys():
+    #         paramsL = params.copy()
+    #         paramsR = params.copy()
+    #         grad_num[key] = sp.zeros_like(params[key])
+    #         e = sp.zeros(params[key].shape[0])
+    #         for i in range(params[key].shape[0]):
+    #             e[i] = 1
+    #             paramsL[key]=params[key]-h*e
+    #             paramsR[key]=params[key]+h*e
+    #             self.setParams(paramsL)
+    #             lml_L = f()
+    #             self.setParams(paramsR)
+    #             lml_R = f()
+    #             grad_num[key][i] = (lml_R-lml_L)/(2*h)
+    #             e[i] = 0
+    #         if verbose:
+    #             print '%s:'%key
+    #             print abs((grad_an[key]-grad_num[key]))
+    #             print ''
