@@ -6,7 +6,7 @@ TODO list
 - Implement Unitests (D: OK)
 - Logging System (D)
 - move basic classes from utils to types (D, OK)
-- get rid of position specificity [not using sys.path.append(...)](D)
+- get rid of position specificity [not using sys.path.append(...)](D, OK)
 - Variance deocmpositaion module (P)
 - Kronecker Covariance (P)
 ...
@@ -16,14 +16,14 @@ TODO list
 ***************************
 0) Files that are in limix-dev at the moment
 ***************************
-    - gp/gp_base_new.py
+    - gp/gp_base.py
     - mean/mean_base.py
     - covar/combinators.py
     - covar/sqexp.py
     - covar/fixed.py
     - covar/cov_reml.py
     - optimize/optimize_bfgs_new.py
-    - test/test_gp_base_new_D.py
+    - test/test_gp_base.py
 
     The rest is used by Christoph too!
 

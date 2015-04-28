@@ -7,7 +7,7 @@ import numpy as NP
 import scipy as SP
 import scipy.linalg as LA
 import time as TIME
-from gp_base import GP
+from gp_base import gp as GP
 
 class gp2kronSum(GP):
 

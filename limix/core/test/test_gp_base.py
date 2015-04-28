@@ -4,7 +4,7 @@ from limix.core.mean.mean_base import mean_base as lin_mean
 from limix.core.covar.sqexp import sqexp
 from limix.core.covar.fixed import fixed
 from limix.core.covar.combinators import sumcov
-from limix.core.gp.gp_base_new import gp as gp_base
+from limix.core.gp.gp_base import gp as gp_base
 from limix.core.utils.check_grad import scheck_grad
 
 import numpy as np

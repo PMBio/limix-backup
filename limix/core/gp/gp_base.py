@@ -1,142 +1,250 @@
 import pdb
-import scipy as SP
-import scipy.linalg as LA
+import scipy as sp
+import scipy.linalg
 import copy
 import sys
-from limix.core.linalg.linalg_matrix import jitChol
-import limix.core.likelihood.likelihood_base
+import time
+from limix.core.type.observed import Observed
+from limix.core.type.cached import *
+import limix.core.mean.mean_base
+from limix.core.covar.cov_reml import cov_reml
+import limix.core.optimize.optimize_bfgs_new as OPT
 
-import logging as LG
-
-
-class GP(object):
+class gp(cObject, Observed):
     """
-    Gaussian Process regression class. Holds all information for the GP regression to take place.
+    Gaussian Process regression class for linear mean (with REML)
+    y ~ N(Fb,K)
     """
 
-    def __init__(self,Y,K):
+    def __init__(self,mean=None,covar=None):
         """
-        y:        phenotype vector
-        K:        sample-to-sample covariance matrix (includes noise!)
+        covar:        Covariance function
+        mean:         Linear Mean function
         """
-        self.covar = K
-        self.setY(Y)
+        self.covar = covar
+        self.mean  = mean
+        self.Areml = cov_reml(self)
+        self.clear_all()
+        self.update_b()
 
-    def setY(self,Y):
-        """
-        set pheno
-        """
-        if Y.ndim==1: Y = Y[:,SP.newaxis]
-        self.n,self.t = Y.shape
-        self.Y = Y
-        self.Y_has_changed = True
+    def clear_all(self):
+        self.clear_Areml()
+        self.clear_lml_terms()
+        self.clear_lmlgrad_terms_i()
+        self.clear_lmlgrad_terms()
 
-    def getParams(self):
-        params = {}
-        params['covar'] = self.covar.getParams()
-        return params
+    def clear_Areml(self):
+        self._notify()
+
+    def clear_lml_terms(self):
+        self.clear_cache('KiF','yKiF','KiFb','Kiy','yKiy','yKiFb','LML')
+
+    def clear_lmlgrad_terms_i(self):
+        self.clear_cache('DiKKiy','DiKKiF','DiKKiFb',
+                            'yKiy_grad_i','yKiFb_grad_i')
+
+    def clear_lmlgrad_terms(self):
+        self.clear_cache('yKiy_grad','yKiFb_grad','Areml_logdet_grad','LML_grad')
 
     def setParams(self,params):
-        self.params = params
-        self.updateParams()
+        self.covar.setParams(params['covar'])
+        self.clear_all()
+        self.update_b()
 
-    def updateParams(self):
-        self.covar.setParams(self.params['covar'])
+    def getParams(self):
+        RV = {}
+        RV['covar'] = self.covar.getParams()
+        return RV
 
-    def LML(self,params=None):
+    ######################
+    # Areml
+    ######################
+    def Areml_K(self):
+        return sp.dot(self.mean.F.T,self.KiF())
+
+    def Areml_K_grad_i(self,i):
+        return -sp.dot(self.KiF().T,self.DiKKiF(i))
+
+    #######################
+    # LML terms
+    #######################
+    @cached
+    def KiF(self):
+        return self.covar.solve(self.mean.F)
+
+    @cached
+    def yKiF(self):
+        return sp.dot(self.mean.y.T,self.KiF())
+
+    # b is calculated here but cached in the mean?
+    def update_b(self):
+        self.mean.b = self.Areml.solve(self.yKiF().T)
+
+    @cached
+    def KiFb(self):
+        return sp.dot(self.KiF(),self.mean.b)
+
+    @cached
+    def Kiy(self):
+        return self.covar.solve(self.mean.y)
+
+    @cached
+    def yKiy(self):
+        return (self.mean.y*self.Kiy()).sum()
+
+    @cached
+    def yKiFb(self):
+        return (self.mean.y*self.KiFb()).sum()
+
+    #######################
+    # gradients
+    #######################
+    @cached
+    def DiKKiy(self,i):
+        return sp.dot(self.covar.K_grad_i(i),self.Kiy())
+
+    @cached
+    def DiKKiF(self,i):
+        return sp.dot(self.covar.K_grad_i(i),self.KiF())
+
+    @cached
+    def DiKKiFb(self,i):
+        return sp.dot(self.DiKKiF(i),self.mean.b)
+
+
+    @cached
+    def yKiy_grad_i(self,i):
+        return -(self.Kiy()*self.DiKKiy(i)).sum()
+
+    @cached
+    def yKiFb_grad_i(self,i):
+        rv = -2*(self.Kiy()*self.DiKKiFb(i)).sum()
+        rv+= (self.KiFb()*self.DiKKiFb(i)).sum()
+        return rv
+
+    #######################
+    # LML and gradients
+    #######################
+
+    @cached
+    def LML(self):
+        #const term to add?
+        rv = 0.5*self.covar.logdet()
+        rv += 0.5*self.Areml.logdet()
+        rv += 0.5*self.yKiy()
+        rv -= 0.5*self.yKiFb()
+        return rv
+
+    @cached
+    def yKiy_grad(self):
+        n_params = self.getParams()['covar'].shape[0]
+        RV = {'covar': sp.zeros(n_params)}
+        for i in range(n_params):
+            RV['covar'][i] = self.yKiy_grad_i(i)
+        return RV
+
+    @cached
+    def yKiFb_grad(self):
+        n_params = self.getParams()['covar'].shape[0]
+        RV = {'covar': sp.zeros(n_params)}
+        for i in range(n_params):
+            RV['covar'][i] = self.yKiFb_grad_i(i)
+        return RV
+
+    @cached
+    def Areml_logdet_grad(self):
+        n_params = self.getParams()['covar'].shape[0]
+        RV = {'covar': sp.zeros(n_params)}
+        for i in range(n_params):
+            RV['covar'][i] = self.Areml.logdet_grad_i(i)
+        return RV
+
+    @cached
+    def LML_grad(self):
+        n_params = self.getParams()['covar'].shape[0]
+        RV = {'covar': sp.zeros(n_params)}
+        for i in range(n_params):
+            RV['covar'][i]  = 0.5*self.covar.logdet_grad_i(i)
+            RV['covar'][i] += 0.5*self.Areml.logdet_grad_i(i)
+            RV['covar'][i] += 0.5*self.yKiy_grad_i(i)
+            RV['covar'][i] -= 0.5*self.yKiFb_grad_i(i)
+        return RV
+
+    def predict(self):
+        R = None
+        if self.covar.use_to_predict:
+            Kcross = self.covar.Kcross()
+            Kiyres = self.Kiy()-self.KiFb()
+            R = sp.dot(Kcross,Kiyres)
+        if self.mean.use_to_predict:
+            _ = self.mean.predict()
+            if R is None:
+                R = _
+            else:
+                assert _.shape[0]==R.shape[0], 'Dimension mismatch'
+                assert _.shape[1]==R.shape[1], 'Dimension mismatch'
+                R += _
+        return R
+
+    #########################
+    # OPTIMIZATION
+    #########################
+    def optimize(self,calc_ste=False,verbose=True,Ifilter=None,bounds=None,opts={},*args,**kw_args):
+        if verbose: print '.. Optimize marginal likelihood'
+        t0 = time.time()
+        OPT.opt_hyper(self,Ifilter=Ifilter,bounds=bounds,opts=opts,*args,**kw_args)
+        t1 = time.time()
+        if verbose:
+            print 'Time elapsed: %.2f s' % (t1-t0)
+            grad = self.LML_grad()
+            grad_norm = 0
+            for key in grad.keys():
+                grad_norm += (grad[key]**2).sum()
+            grad_norm = sp.sqrt(grad_norm)
+            print 'Log Marginal Likelihood:', self.LML()
+            print 'Gradient norm:', grad_norm
+
+        if calc_ste:
+            if verbose: print '.. Calculate standard error'
+            t0 = time.time()
+            I_covar = self.covar.getFisherInf()
+            I_mean = self.Areml.K()
+            self.covar.setFIinv(sp.linalg.inv(I_covar))
+            self.mean.setFIinv(sp.linalg.inv(I_mean))
+            t1 = time.time()
+            if verbose:
+                print 'Time elapsed: %.2f s' % (t1-t0)
+
+    ############################
+    # DEBUGGING
+    ############################
+
+    def checkGradient(self,h=1e-4,verbose=True,fun='LML'):
         """
-        evalutes the log marginal likelihood for the given hyperparameters
-
-        hyperparams
+        utility function to check the analytical gradient of
+        a scalar function in the gp
         """
-        if params is not None:
-            self.setParams(params)
-
-        KV = self._update_cache()
-        alpha = KV['alpha']
-        L = KV['L']
-
-        lml_quad = 0.5 * (alpha*self.Y).sum()
-        lml_det = self.t *SP.log(SP.diag(L)).sum()
-        lml_const = 0.5*self.n*self.t*SP.log(2*SP.pi)
-        LML = lml_quad + lml_det + lml_const
-        return LML
-
-
-    def LMLgrad(self,params=None):
-        """
-        evaluates the gradient of the log marginal likelihood for the given hyperparameters
-        """
-        if params is not None:
-            self.setParams(params)
-        KV = self._update_cache()
-        W = KV['W']
-        LMLgrad = SP.zeros(self.covar.n_params)
-        for i in xrange(self.covar.n_params):
-            Kd = self.covar.Kgrad_param(i)
-            LMLgrad[i] = 0.5 * (W*Kd).sum()
-        return {'covar':LMLgrad}
-
-
-    def predict(self,Xstar):
-        """
-        predict on Xstar
-        """
-        KV = self._update_cache()
-        self.covar.setXstar(Xstar)
-        Kstar = self.covar.Kcross()
-        Ystar = SP.dot(Kstar,KV['alpha'])
-        return Ystar
-
-    def _update_cache(self):
-        """
-        INPUT:
-        hyperparams:  dictionary
-        OUTPUT: dictionary with the fields
-        K:     kernel
-        Kinv:  inverse of the kernel
-        L:     chol(K)
-        alpha: solve(K,y)
-        W:     D*Kinv * alpha*alpha^T
-        """
-        cov_params_have_changed = self.covar.params_have_changed
-
-        if cov_params_have_changed or self.Y_has_changed:
-            K = self.covar.K()
-            L = LA.cholesky(K).T# lower triangular
-            Kinv = LA.cho_solve((L,True),SP.eye(L.shape[0]))
-            alpha = LA.cho_solve((L,True),self.Y)
-            W = self.t*Kinv - SP.dot(alpha,alpha.T)
-            self._covar_cache = {}
-            self._covar_cache['K'] = K
-            self._covar_cache['Kinv'] = Kinv
-            self._covar_cache['L'] = L
-            self._covar_cache['alpha'] = alpha
-            self._covar_cache['W'] = W
-
-        return self._covar_cache
-
-
-    def checkGradient(self,h=1e-6,verbose=True):
-        """ utility function to check the gradient of the gp """
-        grad_an = self.LMLgrad()
+        f = getattr(self,fun)
+        f_grad = getattr(self,fun+'_grad')
+        grad_an = f_grad()
         grad_num = {}
-        params0 = self.params.copy()
-        for key in self.params.keys():
-            paramsL = params0.copy()
-            paramsR = params0.copy()
-            grad_num[key] = SP.zeros_like(self.params[key])
-            e = SP.zeros(self.params[key].shape[0])
-            for i in range(self.params[key].shape[0]):
+        params = self.getParams()
+        for key in params.keys():
+            paramsL = params.copy()
+            paramsR = params.copy()
+            grad_num[key] = sp.zeros_like(params[key])
+            e = sp.zeros(params[key].shape[0])
+            for i in range(params[key].shape[0]):
                 e[i] = 1
-                paramsL[key]=params0[key]-h*e
-                paramsR[key]=params0[key]+h*e
-                lml_L = self.LML(paramsL)
-                lml_R = self.LML(paramsR)
+                paramsL[key]=params[key]-h*e
+                paramsR[key]=params[key]+h*e
+                self.setParams(paramsL)
+                lml_L = f()
+                self.setParams(paramsR)
+                lml_R = f()
                 grad_num[key][i] = (lml_R-lml_L)/(2*h)
                 e[i] = 0
             if verbose:
                 print '%s:'%key
-                print abs(grad_an[key]-grad_num[key])
+                print abs((grad_an[key]-grad_num[key]))
                 print ''
-        self.setParams(params0)
