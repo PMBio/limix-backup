@@ -83,12 +83,13 @@ def plot_manhattan(posCum,pv,chromBounds=None,
 	if qv==None:
 		Isign = pv<thr
 	else:
-		Isign = pv<thr
+		Isign = qv<thr
 
 	pl.plot(posCum[~Isign],-sp.log10(pv[~Isign]),'.',color=colorNS,ms=5,alpha=alphaNS,label=labelNS)
 	pl.plot(posCum[Isign], -sp.log10(pv[Isign]), '.',color=colorS,ms=5,alpha=alphaS,label=labelS)
 
-	pl.plot([0,posCum.max()],[-sp.log10(thr),-sp.log10(thr)],'--',color='Gray')
+    if qv is not None:
+        pl.plot([0,posCum.max()],[-sp.log10(thr),-sp.log10(thr)],'--',color='Gray')
 
 	pl.ylim(0,lim)
 
