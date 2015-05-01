@@ -1,8 +1,9 @@
 - Covariances
+    - filter on parameters (1)
     - combinators as abstract sum (1)
-    - sum covariance (1)
     - kronecker covariance (1)
     - ZKZ covariance for Amelie's models (1)
+    - sum covariance (1)
     - 2kronSum combinator (2)
     - low-rank (3)
     - low-rank + full rank (3)

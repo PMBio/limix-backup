@@ -7,7 +7,6 @@ import numpy as np
 
 import scipy.linalg as LA
 import copy
-import pdb
 
 class mean_base(Cached, Observed):
 
