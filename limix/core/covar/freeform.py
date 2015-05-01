@@ -1,7 +1,7 @@
 import numpy as np
 import scipy as SP
 import scipy.linalg as LA
-from covariance import Covariance
+from covar_base import Covariance
 import pdb
 
 class FreeFormCov(Covariance):
@@ -60,7 +60,7 @@ class FreeFormCov(Covariance):
 
     def Kgrad_param(self,i):
         """
-        partial derivative with repspect to the i-th hyperparamter theta[i]
+        partial derivative with respect to the i-th hyperparameter theta[i]
         """
         self._updateL()
         self._updateLgrad(i)

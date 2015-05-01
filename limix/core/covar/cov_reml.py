@@ -1,8 +1,7 @@
 import sys
 from limix.core.type.cached import cached
 import scipy as sp
-from covariance import Covariance
-import pdb
+from covar_base import Covariance
 import scipy.linalg as LA
 import warnings
 

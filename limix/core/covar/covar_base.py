@@ -3,7 +3,6 @@ from limix.core.type.observed import Observed
 from limix.core.type.cached import Cached, cached
 from limix.core.utils.eigen import *
 import scipy as sp
-import pdb
 import scipy.linalg as LA
 import warnings
 
