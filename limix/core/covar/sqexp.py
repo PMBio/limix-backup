@@ -3,7 +3,6 @@ from limix.core.type.cached import cached
 import scipy as sp
 import numpy as np
 from covar_base import Covariance
-import pdb
 import scipy.spatial as SS
 
 class SQExpCov(Covariance):

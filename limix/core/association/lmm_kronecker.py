@@ -33,12 +33,19 @@ class LmmKronecker(cObject):
         """
 
         #TODO: block diagonal Areml computations efficient
-
+        if Asnps is not None:
+            if (Asnps.shape[0]==Asnps.shape[1]) and Asnps == np.eye(Asnps.shape[0]):
+                pass
         LL_snps = np.zeros(snps.shape[1])
         LL_new = np.zeros(snps.shape[1])
         LL_snps_0 = np.zeros(snps.shape[1])
         identity_trick_prev = self._gp.mean.identity_trick
         self._gp.mean.use_identity_trick(identity_trick=identity_trick)
+        if not identity_trick:
+            if Asnps is not None:
+                Asnps.dot(self._gp.mean.Lc.T)
+            else:
+                Asnps = self._gp.mean.Lc.T
         if inter is None:
             LL_snps_0[:] = self._LL_0
             for i_snp in xrange(snps.shape[1]):
@@ -211,7 +218,7 @@ class LmmKronecker(cObject):
         #quad1 = (self._gp.mean.Zstar(identity_trick=identity_trick)*self._gp.mean.DLZ(identity_trick=identity_trick)).sum()
         
         XKY = self._gp.mean.compute_XKY(M=self._gp.mean.Yhat())
-        beta___ = self._gp.mean.beta_hat()
+        import ipdb; ipdb.set_trace()
         beta = self._gp.mean.Areml_solve(XKY)
         var_total = (self._gp.mean.Yhat()*self._gp.mean.Ystar()).sum()
         var_expl = (XKY*beta).sum()

@@ -1,5 +1,5 @@
 import scipy as SP
-from covariance import Covariance
+from covar_base import Covariance
 
 class LowRankCov(Covariance):
     """

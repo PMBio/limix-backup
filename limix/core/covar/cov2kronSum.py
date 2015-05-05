@@ -5,7 +5,7 @@ from limix.core.utils.eigen import *
 import scipy as SP
 import scipy.linalg as LA
 import warnings
-from covariance import Covariance
+from covar_base import Covariance
 
 import pdb
 

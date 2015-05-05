@@ -15,8 +15,11 @@ class psd_solver(object):
         except la.LinAlgError:
             s,U = la.eigh(A,lower=lower)
             i_pos = (s>threshold)
-            self._s = s[i_pos]
-            self._U = U[:,i_pos]
+            if i_pos.any():
+                self._s = s[i_pos]
+                self._U = U[:,i_pos]
+            
+
             
 
             
@@ -30,7 +33,8 @@ class psd_solver(object):
             res = self._U.dot(res)
         elif self._chol is not None:
             res = la.cho_solve((self._chol,self._lower),b=b,overwrite_b=overwrite_b,check_finite=check_finite)
-
+        else:
+            res = np.zeros(b.shape)
         return res
 
 class psd_solver_any(object):

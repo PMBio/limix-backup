@@ -7,7 +7,7 @@ import scipy.linalg as LA
 import scipy.sparse.linalg as SLA
 import scipy.stats.mstats as MST
 import warnings
-from covariance import Covariance
+from covar_base import Covariance
 
 from scipy.optimize import fmin_l_bfgs_b as optimize
 
