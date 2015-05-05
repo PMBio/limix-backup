@@ -23,7 +23,7 @@ class TestFreeForm(unittest.TestCase):
 
         def grad(x, i):
             self.C.setParams(x)
-            return self.C.Kgrad_param(i)
+            return self.C.K_grad_i(i)
 
         x0 = self.C.getParams()
         err = mcheck_grad(func, grad, x0)

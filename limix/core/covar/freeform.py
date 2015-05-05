@@ -74,7 +74,7 @@ class FreeFormCov(Covariance):
         self._updateL()
         self._updateLgrad(i)
         RV = sp.dot(self.L,self.Lgrad.T)+sp.dot(self.Lgrad,self.L.T)
-        return RV[..., np.newaxis]
+        return RV
 
     ####################
     # Interpretable Params
