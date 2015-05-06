@@ -31,9 +31,8 @@ class DirIndirVD():
         # define gp
         self._gp = GP(covar=covar,mean=mean)
 
-    def optimize(self, init_params = 'standard'):
-
-        if 0:
+    def optimize(self):
+        if 1:
             # trial for inizialization it is complicated though
             cov = sp.array([[0.2,1e-4],[1e-4,1e-4]])
             self._genoCov.setCovariance(cov)
@@ -42,8 +41,27 @@ class DirIndirVD():
         else:
             self._gp.covar.setRandomParams()
 
+        # optimization
+        conv, info = self._gp.optimize()
+
         ipdb.set_trace()
-        self._gp.optimize()
+        # return stuff
+        R = {}
+        R['conv'] = conv
+        R['grad'] = info['grad']
+        R['LML']  = self._gp.LML() 
+
+        # panda dataframe here?
+        R['var_Ad'] = 1
+        R['var_As'] = 1
+        R['rho_Ads'] = 1
+        R['var_Ed'] = 1
+        R['var_Es'] = 1
+        R['rho_Eds'] = 1
+        R['var_C'] = 1
+
+        return R
+
 
     def getDirIndirGenoCovar(self):
         return self._genoCov.dirIndirCov_K()
@@ -57,7 +75,7 @@ class DirIndirVD():
 if __name__=='__main__':
 
     # generate data
-    n = 10
+    n = 100
     f = 2
     X  = 1.*(sp.rand(n,f)<0.2)
     X -= X.mean(0); X /= X.std(0)
