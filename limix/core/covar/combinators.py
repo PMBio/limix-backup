@@ -11,7 +11,7 @@ class SumCov(Covariance):
         self.covars = []
         for covar in covars:
             self.addCovariance(covar)
-        self.clear_all()
+            covar.register(self.clear_all)
 
     #####################
     # Covars handling

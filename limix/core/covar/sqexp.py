@@ -90,11 +90,13 @@ class SQExpCov(Covariance):
             self._use_to_predict = True
         self._Xstar = value
         self.clear_cache('Kcross')
+        self._notify()
 
     @Covariance.use_to_predict.setter
     def use_to_predict(self,value):
         assert self.Xstar is not None, 'set Xstar!'
         self._use_to_predict = value
+        self._notify()
 
     #####################
     # Params handling
