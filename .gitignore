@@ -157,3 +157,6 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+.sconf_temp
+.sconsign.dblite

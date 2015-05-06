@@ -113,7 +113,7 @@ class Covariance(Cached, Observed):
     def logdet(self):
         return 2*sp.log(sp.diag(self.chol())).sum()
 
-    @cached
+    # @cached
     def logdet_grad_i(self,i):
         return self.solve(self.K_grad_i(i)).diagonal().sum()
 
