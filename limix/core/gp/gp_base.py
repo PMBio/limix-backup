@@ -228,6 +228,8 @@ class GP(Cached, Observed):
             t1 = time.time()
             #logger.debug('Time elapsed: %.2fs', t1-t0)
 
+        return conv, info
+
     # ############################
     # # DEBUGGING
     # ############################
