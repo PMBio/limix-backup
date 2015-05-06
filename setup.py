@@ -111,14 +111,14 @@ def get_source_files(reswig=True):
         ]
     #limix sourcs files
     #python wrapper
-    #FL.extend(file_list_recursive('./src',exclude_list=['src/archive','src/testing','src/interfaces'],ext=['.cpp','.c']))
+    FL.extend(file_list_recursive('./src',exclude_list=['src/archive','src/testing','src/interfaces'],ext=['.cpp','.c']))
     #nlopt
     nlopt = ['./External/nlopt/%s' % fn for fn in nlopt] 
     if reswig:
         FL.extend(['src/interfaces/python/limix.i']) 
     else:        
         FL.extend(['src/interfaces/python/swigged/limix_wrap.cc'])
-    #FL.extend(nlopt)
+    FL.extend(nlopt)
     return FL
 
 def get_include_dirs():
