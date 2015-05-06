@@ -117,7 +117,7 @@ def get_source_files(reswig=True):
     if reswig:
         FL.extend(['src/interfaces/python/limix.i']) 
     else:        
-        FL.extend(['src/interfaces/python/swigged/limix_wrap.cc'])
+        FL.extend(['src/interfaces/python/swigged/limix_wrap.cpp'])
     FL.extend(nlopt)
     return FL
 
