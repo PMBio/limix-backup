@@ -168,7 +168,7 @@ setup(
     license = 'BSD',
     keywords = 'linear mixed models, GWAS, QTL, Variance component modelling',
     ext_package = 'limix',
-    ext_modules = [Extension('_core',get_source_files(reswig=reswig),include_dirs=get_include_dirs(),swig_opts=get_swig_opts())],
+    ext_modules = [Extension('_core',get_source_files(reswig=reswig),include_dirs=get_include_dirs(),swig_opts=get_swig_opts(),extra_compile_args = ['-std=c++0x'])],
     py_modules = ['limix.core'],
     #packages = find_packages(),
     packages = packages,
