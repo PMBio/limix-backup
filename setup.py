@@ -1,3 +1,8 @@
+#change CC to include -std=c++0x flags.
+#this is a hack as distutils does not permit specifying seperate build flags for .c and .cpp files
+import os
+#os.environ['CC'] = 'gcc -std=c++0x'
+
 import distutils.cmd
 from setuptools import find_packages
 import sys,os,re
@@ -14,19 +19,6 @@ import glob
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
-
-__revision__ = "src/script/scons.py  2013/03/03 09:48:35 garyo"
-
-__version__ = "2.3.0"
-
-__build__ = ""
-
-__buildsys__ = "reepicheep"
-
-__date__ = "2013/03/03 09:48:35"
-
-__developer__ = "garyo"
-
 
 def file_list_recursive(dir_name,exclude_list=[],ext=[]):
     """create a recursive file list"""
@@ -88,25 +80,25 @@ def get_source_files(reswig=True):
     version of the numpy python wrappers are retained"""
     FL = []
     #nlopt sources files
-    nlopt=['direct/DIRect.c',
-        'direct/direct_wrap.c',
-        'direct/DIRserial.c',
-        'direct/DIRsubrout.c',
-        'cdirect/cdirect.c','cdirect/hybrid.c',
-        'praxis/praxis.c','luksan/plis.c','luksan/plip.c','luksan/pnet.c', 'luksan/mssubs.c','luksan/pssubs.c',
-        'crs/crs.c',
-        'mlsl/mlsl.c',
-        'mma/mma.c','mma/ccsa_quadratic.c',
-        'cobyla/cobyla.c',
-        'newuoa/newuoa.c',
-        'neldermead/nldrmd.c','neldermead/sbplx.c',
-        'auglag/auglag.c',
-        'esch/esch.c',
-        'bobyqa/bobyqa.c',
-        'isres/isres.c',
-        'slsqp/slsqp.c',
-        'api/general.c','api/options.c','api/optimize.c','api/deprecated.c','api/f77api.c',
-        'util/mt19937ar.c','util/sobolseq.c','util/timer.c','util/stop.c','util/redblack.c','util/qsort_r.c','util/rescale.c',
+    nlopt=['direct/DIRect.cpp',
+        'direct/direct_wrap.cpp',
+        'direct/DIRserial.cpp',
+        'direct/DIRsubrout.cpp',
+        'cdirect/cdirect.cpp','cdirect/hybrid.cpp',
+        'praxis/praxis.cpp','luksan/plis.cpp','luksan/plip.cpp','luksan/pnet.cpp', 'luksan/mssubs.cpp','luksan/pssubs.cpp',
+        'crs/crs.cpp',
+        'mlsl/mlsl.cpp',
+        'mma/mma.cpp','mma/ccsa_quadratic.cpp',
+        'cobyla/cobyla.cpp',
+        'newuoa/newuoa.cpp',
+        'neldermead/nldrmd.cpp','neldermead/sbplx.cpp',
+        'auglag/auglag.cpp',
+        'esch/esch.cpp',
+        'bobyqa/bobyqa.cpp',
+        'isres/isres.cpp',
+        'slsqp/slsqp.cpp',
+        'api/general.cpp','api/options.cpp','api/optimize.cpp','api/deprecated.cpp','api/f77api.cpp',
+        'util/mt19937ar.cpp','util/sobolseq.cpp','util/timer.cpp','util/stop.cpp','util/redblack.cpp','util/qsort_r.cpp','util/rescale.cpp',
         'stogo/global.cc','stogo/linalg.cc','stogo/local.cc','stogo/stogo.cc','stogo/tools.cc'
         ]
     #limix sourcs files
@@ -117,6 +109,7 @@ def get_source_files(reswig=True):
     if reswig:
         FL.extend(['src/interfaces/python/limix.i']) 
     else:        
+        pass
         FL.extend(['src/interfaces/python/limix_wrap.cpp'])
     FL.extend(nlopt)
     return FL
@@ -135,6 +128,10 @@ def get_include_dirs():
 def get_swig_opts():
     swig_opts=['-c++', '-Isrc','-outdir','src/interfaces/python/limix']
     return swig_opts
+
+def get_extra_compile_args():
+    #return ['-std=c++0x']
+    return []
 
 import numpy
 
@@ -155,20 +152,22 @@ if '--reswig' in sys.argv:
 packages = ['limix', 'limix.io', 'limix.modules', 'limix.stats', 'limix.utils']
 reqs = ['numpy', 'scipy', 'pygp >=1.1.07', 'matplotlib >=1.2']
 
+FL = get_source_files(reswig=reswig)
+
 #create setup:
 setup(
     name = 'limix',
-    version = '0.6.6',
+    version = '0.7.0',
     cmdclass={'build': CustomBuild},
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
-    author_email = "lippert@microsoft.com, stegle@ebi.ac.uk",
+    author_email = "stegle@ebi.ac.uk",
     description = ('A flexible and fast mixed model toolbox written in C++/python'),
     url = "http://",
     long_description = read('README'),
     license = 'BSD',
     keywords = 'linear mixed models, GWAS, QTL, Variance component modelling',
     ext_package = 'limix',
-    ext_modules = [Extension('_core',get_source_files(reswig=reswig),include_dirs=get_include_dirs(),swig_opts=get_swig_opts(),extra_compile_args = ['-std=c++0x'])],
+    ext_modules = [Extension('_core',get_source_files(reswig=reswig),include_dirs=get_include_dirs(),swig_opts=get_swig_opts(),extra_compile_args = get_extra_compile_args())],
     py_modules = ['limix.core'],
     #packages = find_packages(),
     packages = packages,
