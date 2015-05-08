@@ -106,6 +106,7 @@ def get_source_files(reswig=True):
     FL.extend(file_list_recursive('./src',exclude_list=['src/archive','src/testing','src/interfaces'],ext=['.cpp','.c']))
     #nlopt
     nlopt = ['./External/nlopt/%s' % fn for fn in nlopt] 
+    #add header files
     if reswig:
         FL.extend(['src/interfaces/python/limix.i']) 
     else:        
@@ -157,7 +158,7 @@ FL = get_source_files(reswig=reswig)
 #create setup:
 setup(
     name = 'limix',
-    version = '0.7.0',
+    version = '0.7.3',
     cmdclass={'build': CustomBuild},
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
     author_email = "stegle@ebi.ac.uk",
@@ -169,6 +170,7 @@ setup(
     ext_package = 'limix',
     ext_modules = [Extension('_core',get_source_files(reswig=reswig),include_dirs=get_include_dirs(),swig_opts=get_swig_opts(),extra_compile_args = get_extra_compile_args())],
     py_modules = ['limix.core'],
+    scripts = ['src/interfaces/python/bin/limix_runner'],
     #packages = find_packages(),
     packages = packages,
     package_dir = {'limix': 'src/interfaces/python/limix'},
