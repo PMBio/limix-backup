@@ -11,6 +11,7 @@ class Cached(object):
         for method_name in method_names:
             setattr(self, '_cache_' + method_name, None)
             setattr(self, '_cached_' + method_name, False)
+            setattr(self, '_cached_args_' + method_name, dict())
 
 # This decorator works both with arguments or without
 # (i.e., @cached or @cached(exclude=['param1', 'param2', ...]))
@@ -25,7 +26,7 @@ def cached(*args, **kwargs):
 
     # cached_args stores the argument names and argument values with which
     # the method was called in
-    cached_args = dict()
+    # cached_args = dict()
     if deco_without_arg:
         filter_out = []
     else:
@@ -35,6 +36,7 @@ def cached(*args, **kwargs):
     def real_cached(method):
         cache_var_name = '_cache_' + method.__name__
         valid_var_name = '_cached_' + method.__name__
+        cached_args_name = '_cached_args_' + method.__name__
 
         debug = int(os.getenv('LIMIX_DEBUG', 0))
         if debug:
@@ -50,13 +52,16 @@ def cached(*args, **kwargs):
                 del provided_args[f]
 
             if getattr(self, valid_var_name, False) is False or\
-                    provided_args != cached_args:
+                    provided_args != getattr(self, cached_args_name, dict()):
 
                 result = method(self, *args, **kwargs)
                 setattr(self, cache_var_name, result)
                 setattr(self, valid_var_name, True)
-                cached_args.clear()
-                cached_args.update(provided_args)
+                if hasattr(self, cached_args_name):
+                    getattr(self, cached_args_name).clear()
+                    getattr(self, cached_args_name).update(provided_args)
+                else:
+                    setattr(self, cached_args_name, dict())
 
             return getattr(self, cache_var_name)
 

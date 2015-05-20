@@ -192,31 +192,43 @@ class GP(Cached, Observed):
     #########################
     # OPTIMIZATION
     #########################
-    def optimize(self,calc_ste=False,Ifilter=None,bounds=None,opts={},*args,**kw_args):
-        logger.info('Marginal likelihood optimization.')
+    def optimize(self,calc_ste=False,Ifilter=None,bounds=None,verbose=True,opts={},*args,**kw_args):
+        #logger.info('Marginal likelihood optimization.')
+
+        if verbose:
+            print 'Marginal likelihood optimization.'
         t0 = time.time()
-        OPT.opt_hyper(self,Ifilter=Ifilter,bounds=bounds,opts=opts,*args,**kw_args)
+        conv, info = OPT.opt_hyper(self,Ifilter=Ifilter,bounds=bounds,opts=opts,*args,**kw_args)
         t1 = time.time()
 
-        if logger.levelno == logger.DEBUG:
-            logger.debug('Time elapsed: %.2fs', t1-t0)
+        #if logger.levelno == logger.DEBUG:
+        if verbose:
+            #logger.debug('Time elapsed: %.2fs', t1-t0)
+            print 'Converged:', conv
+            print 'Time elapsed: %.2f s' % (t1-t0)
             grad = self.LML_grad()
             grad_norm = 0
             for key in grad.keys():
                 grad_norm += (grad[key]**2).sum()
             grad_norm = sp.sqrt(grad_norm)
-            logger.debug('Log Marginal Likelihood: %.7f.', self.LML())
-            logger.debug('Gradient norm: %.7f.', grad_norm)
+            print 'Log Marginal Likelihood: %.7f.' % self.LML()
+            print 'Gradient norm: %.7f.' % grad_norm
+            #logger.debug('Log Marginal Likelihood: %.7f.', self.LML())
+            #logger.debug('Gradient norm: %.7f.', grad_norm)
 
         if calc_ste:
-            logger.info('Standard error calculation.')
+            #logger.info('Standard error calculation.')
+            if verbose:
+                print 'Standard errors calculation.'
             t0 = time.time()
             I_covar = self.covar.getFisherInf()
             I_mean = self.Areml.K()
             self.covar.setFIinv(sp.linalg.inv(I_covar))
             self.mean.setFIinv(sp.linalg.inv(I_mean))
             t1 = time.time()
-            logger.debug('Time elapsed: %.2fs', t1-t0)
+            #logger.debug('Time elapsed: %.2fs', t1-t0)
+
+        return conv, info
 
     # ############################
     # # DEBUGGING

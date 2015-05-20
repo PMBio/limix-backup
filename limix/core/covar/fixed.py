@@ -59,6 +59,7 @@ class FixedCov(Covariance):
             self._use_to_predict = True
         self._Kcross0 = value
         self.clear_cache('Kcross')
+        self._notify()
 
     @Covariance.use_to_predict.setter
     def use_to_predict(self,value):
