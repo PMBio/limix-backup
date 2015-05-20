@@ -3,10 +3,11 @@ import ipdb
 import numpy.linalg as la 
 import numpy as np
 import scipy as sp
+import limix.core.mean.mean as mean
 
 
 class GeneraterKron(object):
-    def __init__(self,N=100,S=1000,R=1000,P=3,var_K1=0.6,var_K2=0.4,h2_1=0.9,h2_2=0.1,A=None, var_snps=None,h2=0.5):
+    def __init__(self,N=100,S=5,R=1000,P=3,var_K1=0.6,var_K2=0.4,h2_1=0.9,h2_2=0.1,A=None, var_snps=None,h2=0.5):
         assert var_K1>=0, "var_K1 has to be greater or equal to zero"
         assert var_K2>=0, "var_K2 has to be greater or equal to zero"
         assert h2_1<=1, "h2_1 has to be smaller or equal to one"
@@ -169,17 +170,13 @@ class GeneraterKron(object):
         sign,logdet = la.slogdet(K)
         return logdet
 
-    def logl_vec(self,reml=False):
-        if reml:
-            raise Exception("not implemented")
-        yKy = self.resKres_vec()
-        var_ml = yKy/(self.N*self.P)
-        
-        const = self.N*self.P *np.log(2.0*sp.pi)
-        logdet = self.logdet_K_vec()
-        dataterm = yKy/var_ml
-        logl =  -0.5 * (const + logdet + dataterm)
-        return logl
+    def logdet_XKX_vec(self):
+        XKX = self.XKX_vec()
+        sign,logdet = la.slogdet(XKX)
+        return logdet
+
+    def dof_vec(self):
+        return self.vecX().shape[1]
 
     def var_ml_vec(self):
         return self.resKres_vec()/(self.N*self.P)
@@ -213,7 +210,15 @@ class GeneraterKron(object):
     def XKX_vec(self):
         KX = self.KX_vec()
         X = self.vecX()
-        return X.T.dot(X)
+        XKX_vec = X.T.dot(X)
+        XKX = self.XKX()
+        diff = XKX_vec - XKX
+        jkj
+        return XKX_vec
+
+    def XKX(self):
+        return mean.compute_X1KX2(A1=self.A_rot(),A2=self.A_rot(), X1=self.snps_rot(),X2 = self.snps_rot())
+
 
     def vecY(self):
         return self.Y.flatten(order="C")
@@ -224,6 +229,12 @@ class GeneraterKron(object):
         else:
             return np.kron(self.A,self.snps)
 
+    def dof(self):
+        if self.A is None:
+            return self.P * self.S
+        else:
+            return self.A.shape[1] * self.S
+        
     def d_XKX(self):
         raise Exception("not yet impl")
 
@@ -233,7 +244,27 @@ class GeneraterKron(object):
     def d_K(self):
         raise Exception("not yet impl")
 
+    def logl_vec(self,reml=False):
+        
 
+        yKy = self.resKres_vec()
+    
+        logdet = self.logdet_K_vec()
+
+        if reml:
+            logdet += self.logdet_XKX_vec()
+            dof = self.dof_vec()
+            dof_ = self.dof()
+            assert dof == dof_, "dof"
+            var = yKy/(self.N*self.P - dof)
+            const = (self.N*self.P-dof) * np.log(2.0*sp.pi)
+        else:
+            var = yKy/(self.N*self.P)
+            const = self.N*self.P * np.log(2.0*sp.pi)
+
+        dataterm = yKy/var
+        logl =  -0.5 * (const + logdet + dataterm)
+        return logl
 
 def generate_kernel(N,R=100, h2=0.99999999):
     assert h2>=0.0
@@ -346,3 +377,5 @@ if __name__ == "__main__":
     data = GeneraterKron(N=N,S=S,R=R,P=P,var_K1=var_K1,var_K2=var_K2,h2_1=h2_1,h2_2=h2_2,h2=h2)
     
     XKX = data.XKX_vec()
+    mllogl = data.logl_vec(reml=False )
+    remllogl = data.logl_vec(reml=True)
