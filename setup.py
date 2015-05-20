@@ -151,7 +151,7 @@ if '--reswig' in sys.argv:
     reswig = True
 
 packages = ['limix', 'limix.io', 'limix.modules', 'limix.stats', 'limix.utils']
-reqs = ['numpy', 'scipy', 'pygp >=1.1.07', 'matplotlib >=1.2']
+reqs = ['numpy', 'scipy', 'matplotlib >=1.2']
 
 FL = get_source_files(reswig=reswig)
 
