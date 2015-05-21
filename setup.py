@@ -155,6 +155,12 @@ reqs = ['numpy', 'scipy', 'matplotlib >=1.2']
 
 FL = get_source_files(reswig=reswig)
 
+from sys import platform as _platform
+if _platform == 'darwin':
+    from distutils import sysconfig
+    import platform
+    sysconfig._config_vars['MACOSX_DEPLOYMENT_TARGET'] = platform.mac_ver()[0]
+
 #create setup:
 setup(
     name = 'limix',
