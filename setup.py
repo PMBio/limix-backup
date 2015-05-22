@@ -155,6 +155,8 @@ reqs = ['numpy', 'scipy', 'matplotlib >=1.2']
 
 FL = get_source_files(reswig=reswig)
 
+#fore deployment version to be the current MAC release and not what is stored in distutils
+#this is key for some distributions like anaconda, which otherwise build for an outdated target.
 from sys import platform as _platform
 if _platform == 'darwin':
     from distutils import sysconfig
@@ -164,7 +166,7 @@ if _platform == 'darwin':
 #create setup:
 setup(
     name = 'limix',
-    version = '0.7.3',
+    version = '0.7.4',
     cmdclass={'build': CustomBuild},
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
     author_email = "stegle@ebi.ac.uk",
