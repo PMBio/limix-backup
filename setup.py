@@ -166,7 +166,7 @@ if _platform == 'darwin':
 #create setup:
 setup(
     name = 'limix',
-    version = '0.7.4',
+    version = '0.7.6',
     cmdclass={'build': CustomBuild},
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
     author_email = "stegle@ebi.ac.uk",
