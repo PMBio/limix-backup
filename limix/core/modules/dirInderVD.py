@@ -1,3 +1,4 @@
+import h5py
 import scipy as sp
 from limix.core.gp.gp_base import GP
 from limix.core.mean.mean_base import mean_base as lin_mean
@@ -8,31 +9,42 @@ import ipdb
 
 class DirIndirVD():
 
-    def __init__(self, pheno = None, kinship = None, design = None, covs=None):
+    def __init__(self, pheno = None, kinship = None, cage = None, covs = None):
 
         assert pheno is not None, 'Specify pheno!'
         assert kinship is not None, 'Specify kinship!'
-        assert design is not None, 'Specify design!'
+        assert cage is not None, 'Specify cage!'
 
-        if covs is None:
-            covs = sp.ones((n,1)) 
+        if len(cage.shape)==1:
+            cage = cage[:,sp.newaxis]
 
         self.N = pheno.shape[0]
 
+        if covs is None:
+            covs = sp.ones((self.N,1)) 
+
+        # build design matrix and cage covariates
+        uCage = sp.unique(cage)
+        W = sp.zeros((self.N,uCage.shape[0])) # cage covariates n_samples x n_cages
+        for cv_i, cv in enumerate(uCage):
+            W[:,cv_i] = 1.*(cage[:,0]==cv)
+        WW = sp.dot(W,W.T)
+        Z  = WW - sp.eye(self.N)
+
         # define mean
-        mean = lin_mean(pheno,covs)
+        self.mean = lin_mean(pheno,covs)
 
         # define covariance matrices
-        self._genoCov = DirIndirCov(kinship,design)
-        self._envCov = DirIndirCov(sp.eye(self.N),design)
-        self._noisCov = FixedCov(sp.eye(self.N))
+        self._genoCov = DirIndirCov(kinship,Z)
+        self._envCov = DirIndirCov(sp.eye(self.N),Z)
+        self._noisCov = FixedCov(WW)
         covar = SumCov(self._genoCov,self._envCov,self._noisCov)
 
         # define gp
-        self._gp = GP(covar=covar,mean=mean)
+        self._gp = GP(covar=covar,mean=self.mean)
 
-    def optimize(self):
-        if 1:
+    def optimize(self,verbose=True):
+        if 0:
             # trial for inizialization it is complicated though
             cov = sp.array([[0.2,1e-4],[1e-4,1e-4]])
             self._genoCov.setCovariance(cov)
@@ -44,7 +56,6 @@ class DirIndirVD():
         # optimization
         conv, info = self._gp.optimize()
 
-        ipdb.set_trace()
         # return stuff
         R = {}
         R['conv'] = conv
@@ -52,13 +63,28 @@ class DirIndirVD():
         R['LML']  = self._gp.LML() 
 
         # panda dataframe here?
-        R['var_Ad'] = 1
-        R['var_As'] = 1
-        R['rho_Ads'] = 1
-        R['var_Ed'] = 1
-        R['var_Es'] = 1
-        R['rho_Eds'] = 1
-        R['var_C'] = 1
+        R['var_Ad'] = self._genoCov.covff.K()[0,0]
+        R['var_As'] = self._genoCov.covff.K()[1,1]
+        R['sigma_Ads'] = self._genoCov.covff.K()[0,1]
+        R['var_Ed'] = self._envCov.covff.K()[0,0]
+        R['var_Es'] = self._envCov.covff.K()[1,1]
+        R['sigma_Eds'] = self._envCov.covff.K()[0,1]
+        R['b'] = self.mean.b
+        R['var_C'] = self._noisCov.scale
+
+        # TODO: calculate rho
+
+        if verbose:
+            print '\ngeno variance components'
+            for key in ['var_Ad','var_As','sigma_Ads']:
+                print '%s:'%key, R[key]
+            print '\nenv variance components'
+            for key in ['var_Ed','var_Es','sigma_Eds']:
+                print '%s:'%key, R[key]
+            print '\ncage variance components'
+            for key in ['var_C']:
+                print '%s:'%key, R[key]
+            print ''
 
         return R
 
@@ -81,16 +107,49 @@ if __name__=='__main__':
     X -= X.mean(0); X /= X.std(0)
     kinship  = sp.dot(X,X.T)
     kinship /= kinship.diagonal().mean()
-    design = sp.zeros((n,n))
+    cage = sp.zeros((n,1))
     for i in range(n/2):
-        design[2*i,2*i+1] = 1
-        design[2*i+1,2*i] = 1
+        cage[2*i:2*i+2] = i
     Y = sp.randn(n,1)
+    covs = None
+
+    if 0:
+        # import data
+        in_file = '/Users/casale/Desktop/rat/dirIndirVD/data/HSrats_noHaplotypes.hdf5'
+        f = h5py.File(in_file,'r')
+
+        # get sample ID
+        geno_sampleID = f['kinships']['genotypes_IBS']['cols_subjects']['outbred'][:]
+        sampleID = f['phenotypesNcovariates']['rows_subjects']['outbred'][:]
+        has_geno = sp.array([sampleID[i] in geno_sampleID for i in range(sampleID.shape[0])])
+
+        # read trait and covariantes 
+        trait = 'Distance0_30_bc'
+        measures = f['phenotypesNcovariates']['cols_measures']['measures'][:]
+        Ip = measures==trait
+        covs = f['phenotypesNcovariates']['cols_measures']['covariates2use'][Ip][0].split(',')
+        Ic = sp.zeros(Ip.shape[0],dtype=bool)
+        for cov in covs:    Ic = sp.logical_or(Ic,measures==cov)
+        Y = f['phenotypesNcovariates']['array'][Ip,:].T
+        covs = f['phenotypesNcovariates']['array'][Ic,:].T
+        Is = sp.logical_and((covs!=-999).all(1),Y[:,0]!=-999)
+        Is = sp.logical_and(has_geno,Is)
+        Y = Y[Is,:]; covs = covs[Is,:]
+        cage = f['phenotypesNcovariates']['rows_subjects']['cage'][Is]
+        sampleID = sampleID[Is]
+
+        # normalize pheno (not needed if not for numerical stability)
+        Y-=Y.mean(0)
+        Y/=Y.std(0)
+
+        # grab kinship
+        idxs = sp.array([sp.where(geno_sampleID==sampleID[i])[0][0] for i in range(sampleID.shape[0])])
+        kinship = f['kinships']['genotypes_IBS']['array'][:][idxs][:,idxs]
 
     # define model and optimize
-    vc = DirIndirVD(pheno=Y, kinship=kinship, design=design)
-    vc.optimize()
-
-    ipdb.set_trace()
-
+    vc = DirIndirVD(pheno=Y, kinship=kinship, cage=cage, covs = covs)
+    for i in range(10):
+        rv = vc.optimize()
+        print 'lml:', rv['LML']
+        ipdb.set_trace()
 
