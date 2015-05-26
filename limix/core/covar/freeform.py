@@ -31,19 +31,29 @@ class FreeFormCov(Covariance):
 
     @property
     def correlation(self):
-        R = self.K()
+        R = self.K().copy()
         inv_diag = 1./sp.sqrt(R.diagonal())[:,sp.newaxis]
-        R /= inv_diag
-        R /= inv_diag.T
+        R *= inv_diag
+        R *= inv_diag.T
         return R
 
     @property
     def variance_ste(self):
-        LG.critical("Implement variance_ste")
+        if self.getFIinv() is None:
+            R = None
+        else:
+            R = sp.sqrt(self.getFIinv().diagonal()[:self.dim])
+        return R
 
     @property
     def correlation_ste(self):
-        LG.critical("Implement correlation_ste")
+        if self.getFIinv() is None:
+            R = None
+        else:
+            R = sp.zeros((self.dim, self.dim))
+            R[sp.tril_indices(self.dim, k = -1)] = sp.sqrt(self.getFIinv().diagonal()[self.dim:])
+            R += R.T
+        return R
 
     #####################
     # Params handling
@@ -80,13 +90,26 @@ class FreeFormCov(Covariance):
     # Interpretable Params
     ####################
     def getInterParams(self):
-        R1 = self.variance()
-        R2 = self.correlation()[sp.tril_indices(self.dim)] 
+        R1 = self.variance
+        R2 = self.correlation[sp.tril_indices(self.dim, k = -1)] 
         R = sp.concatenate([R1,R2])
         return R
 
-    def K_grad_interParam_i(self,i):
-        LG.critical("implement K_grad_interParam_i")
+    def K_grad_interParam_i(self, i):
+        if i < self.dim:
+            # derivative with respect to the variance
+            R = sp.zeros((self.dim,self.dim))
+            R[i,i] = 1
+        else:
+            # derivarice with respect to a correlation
+            ## 1. take the corresponding off diagonal element
+            ix, iy = sp.tril_indices(self.dim, k = -1)
+            ix = ix[i - self.dim]
+            iy = iy[i - self.dim]
+            ## 2. fill it with sqrt(var * var)
+            R = sp.zeros((self.dim,self.dim))
+            R[ix,iy] = R[iy,ix] = sp.sqrt(self.variance[ix] * self.variance[iy])
+        return R
 
     ######################
     # Private functions
