@@ -5,6 +5,7 @@ from limix.core.mean.mean_base import mean_base as lin_mean
 from limix.core.covar.dirIndirCov import DirIndirCov
 from limix.core.covar.fixed import FixedCov 
 from limix.core.covar.combinators import SumCov
+from limix.core.utils.normalization import covar_rescaling_factor
 import ipdb
 
 class DirIndirVD():
@@ -43,7 +44,7 @@ class DirIndirVD():
         # define gp
         self._gp = GP(covar=covar,mean=self.mean)
 
-    def optimize(self,verbose=True):
+    def optimize(self, calc_ste = False, verbose = True):
         if 0:
             # trial for inizialization it is complicated though
             cov = sp.array([[0.2,1e-4],[1e-4,1e-4]])
@@ -54,7 +55,7 @@ class DirIndirVD():
             self._gp.covar.setRandomParams()
 
         # optimization
-        conv, info = self._gp.optimize()
+        conv, info = self._gp.optimize(calc_ste = calc_ste)
 
         # return stuff
         R = {}
@@ -88,6 +89,13 @@ class DirIndirVD():
 
         return R
 
+    def getResidual(self):
+        K = self._envCov.K() + self._noisCov.K()
+        var = covar_rescaling_factor(K)
+        K /= var
+        R = {'normalized_residual': K,
+             'variance_explained': var}
+        return R
 
     def getDirIndirGenoCovar(self):
         return self._genoCov.dirIndirCov_K()
@@ -113,7 +121,7 @@ if __name__=='__main__':
     Y = sp.randn(n,1)
     covs = None
 
-    if 0:
+    if 1:
         # import data
         in_file = '/Users/casale/Desktop/rat/dirIndirVD/data/HSrats_noHaplotypes.hdf5'
         f = h5py.File(in_file,'r')
@@ -151,5 +159,11 @@ if __name__=='__main__':
     for i in range(10):
         rv = vc.optimize()
         print 'lml:', rv['LML']
+        res = vc.getResidual(calc_ste = True)
+        print 'residual:', res['variance_explained']
         ipdb.set_trace()
+        vc._genoCov.variance
+        vc._genoCov.variance_ste
+        vc._genoCov.correlation
+        vc._genoCov.correlation_ste
 
