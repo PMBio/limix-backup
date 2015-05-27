@@ -5,7 +5,7 @@ from limix.core.covar.sqexp import SQExpCov
 from limix.core.covar.fixed import FixedCov
 from limix.core.covar.combinators import SumCov
 from limix.core.gp.gp_base import GP
-from limix.core.utils.check_grad import mcheck_grad
+from limix.utils.check_grad import mcheck_grad
 
 import numpy as np
 import scipy as sp
