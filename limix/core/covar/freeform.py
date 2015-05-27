@@ -37,39 +37,42 @@ class FreeFormCov(Covariance):
         R *= inv_diag.T
         return R
 
-    # TODO: this should not be a propery
     @property
-    def K_ste(self): 
+    def variance_ste(self):
         if self.getFIinv() is None:
             R = None
         else:
-            R = sp.zeros((self.dim, self.dim))
-            R[sp.tril_indices(self.dim)] = sp.sqrt(self.getFIinv().diagonal())
-            # symmetrize
-            R = R + R.T - sp.diag(R.diagonal())
+            R = self.K_ste().diagonal()
+        # IN A VARIANCE / CORRELATION PARAMETRIZATION
+        #if self.getFIinv() is None:
+        #   R = None
+        #else:
+        #   R = sp.sqrt(self.getFIinv().diagonal()[:self.dim])
         return R
-        
 
-    # THE FOLLOWING ARE BASED ON VARIANCE/CORRELATION INTERPRETABLE PARAMETRIZATION
-    # TODO: reimplement those to calculate standard errors from K_ste
-
-    #@property
-    #def variance_ste(self):
-    #    if self.getFIinv() is None:
-    #        R = None
-    #    else:
-    #        R = sp.sqrt(self.getFIinv().diagonal()[:self.dim])
-    #    return R
-
-    #@property
-    #def correlation_ste(self):
-    #    if self.getFIinv() is None:
-    #        R = None
-    #    else:
-    #        R = sp.zeros((self.dim, self.dim))
-    #        R[sp.tril_indices(self.dim, k = -1)] = sp.sqrt(self.getFIinv().diagonal()[self.dim:])
-    #        R += R.T
-    #    return R
+    @property
+    def correlation_ste(self):
+        if self.getFIinv() is None:
+            R = None
+        else:
+            idx_M = sp.zeros((self.dim,self.dim)) 
+            idx_M[sp.tril_indices(self.dim)] = sp.arange( int( 0.5 * self.dim * (self.dim + 1) ) )
+            R = sp.zeros(idx_M)
+            for i in range(self.dim):
+                for j in range(0,self.dim):
+                    ij = idx_M[i,j] # index of cov_ij_ste from fisher
+                    ii = idx_M[i,i] # index of cov_ii_ste from fisher
+                    jj = idx_M[j,j] # index of cov_jj_ste from fisher
+                    #TODO: complete
+                    
+        # IN A VARIANCE / CORRELATION PARAMETRIZATION
+        #if self.getFIinv() is None:
+        #    R = None
+        #else:
+        #    R = sp.zeros((self.dim, self.dim))
+        #    R[sp.tril_indices(self.dim, k = -1)] = sp.sqrt(self.getFIinv().diagonal()[self.dim:])
+        #    R += R.T
+        return R
 
     #####################
     # Params handling
@@ -101,6 +104,16 @@ class FreeFormCov(Covariance):
         self._updateLgrad(i)
         RV = sp.dot(self.L,self.Lgrad.T)+sp.dot(self.Lgrad,self.L.T)
         return RV
+
+    def K_ste(self): 
+        if self.getFIinv() is None:
+            R = None
+        else:
+            R = sp.zeros((self.dim, self.dim))
+            R[sp.tril_indices(self.dim)] = sp.sqrt(self.getFIinv().diagonal())
+            # symmetrize
+            R = R + R.T - sp.diag(R.diagonal())
+        return R
 
     ####################
     # Interpretable Params
