@@ -4,8 +4,6 @@ import scipy.linalg as LA
 from covar_base import Covariance
 from freeform import FreeFormCov 
 from limix.core.type.cached import cached
-from limix.utils.preprocess import covar_rescaling_factor
-from limix.utils.preprocess import covar_rescale
 import pdb
 
 import logging as LG
@@ -17,21 +15,17 @@ class DirIndirCov(Covariance):
     def __init__(self, kinship, design, jitter = 1e-4):
         ff_dim = 2
         self.covff = FreeFormCov(ff_dim, jitter = 1e-4)
-        self._K = covar_rescale(kinship)
+        self._K = kinship
         self._ZK = sp.dot(design, kinship)
         self._KZ = sp.dot(kinship, design.T)
         self._ZKZ = sp.dot(self._ZK, design.T)
-        sf_ZKZ = covar_rescaling_factor(self._ZKZ)
-        self._ZK  *= sp.sqrt(sf_ZKZ)
-        self._KZ  *= sp.sqrt(sf_ZKZ)
-        self._ZKZ *= sf_ZKZ
         Covariance.__init__(self, kinship.shape[0])
 
     def dirIndirCov_K(self):
         return self.covff.K()
 
     def dirIndirCov_K_ste(self):
-        return self.covff.K_ste
+        return self.covff.K_ste()
 
     #####################
     # Properties
