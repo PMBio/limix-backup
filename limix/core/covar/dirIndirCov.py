@@ -4,8 +4,8 @@ import scipy.linalg as LA
 from covar_base import Covariance
 from freeform import FreeFormCov 
 from limix.core.type.cached import cached
-from limix.core.utils.normalization import covar_rescaling_factor
-from limix.core.utils.normalization import covar_rescale
+from limix.utils.preprocess import covar_rescaling_factor
+from limix.utils.preprocess import covar_rescale
 import pdb
 
 import logging as LG
