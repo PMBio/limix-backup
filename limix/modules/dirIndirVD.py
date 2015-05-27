@@ -5,7 +5,8 @@ from limix.core.mean.mean_base import mean_base as lin_mean
 from limix.core.covar.dirIndirCov import DirIndirCov
 from limix.core.covar.fixed import FixedCov 
 from limix.core.covar.combinators import SumCov
-from limix.core.utils.normalization import covar_rescaling_factor
+from limix.utils.preprocess import covar_rescaling_factor
+from limix.utils.preprocess import covar_rescale
 import ipdb
 
 class DirIndirVD():
@@ -32,14 +33,24 @@ class DirIndirVD():
         WW = sp.dot(W,W.T)
         Z  = WW - sp.eye(self.N)
 
+        # rescaling of covariances
+        kinship = covar_rescale(kinship)
+        WW = covar_rescale(WW)
+        _ZKZ = sp.dot(Z,sp.dot(kinship,Z))
+        _ZZ  = sp.dot(Z,Z)
+        sf_Zg = sp.sqrt(covar_rescaling_factor(_ZKZ))
+        sf_Ze = sp.sqrt(covar_rescaling_factor(_ZZ))
+        Zg = sf_Zg * Z
+        Ze = sf_Ze * Z
+
         # define mean
         self.mean = lin_mean(pheno,covs)
 
         # define covariance matrices
-        self._genoCov = DirIndirCov(kinship,Z)
-        self._envCov = DirIndirCov(sp.eye(self.N),Z)
-        self._noisCov = FixedCov(WW)
-        covar = SumCov(self._genoCov,self._envCov,self._noisCov)
+        self._genoCov = DirIndirCov(kinship,Zg)
+        self._envCov = DirIndirCov(sp.eye(self.N),Ze)
+        self._cageCov = FixedCov(WW)
+        covar = SumCov(self._genoCov,self._envCov,self._cageCov)
 
         #self._genoCov.setRandomParams()
         #print self._genoCov.covff.K_grad_interParam_i(0)
@@ -55,7 +66,7 @@ class DirIndirVD():
             cov = sp.array([[0.2,1e-4],[1e-4,1e-4]])
             self._genoCov.setCovariance(cov)
             self._envCov.setCovariance(cov)
-            self._noisCov.scale = 0.2
+            self._cageCov.scale = 0.2
         else:
             self._gp.covar.setRandomParams()
 
@@ -76,7 +87,7 @@ class DirIndirVD():
         R['var_Es'] = self._envCov.covff.K()[1,1]
         R['sigma_Eds'] = self._envCov.covff.K()[0,1]
         R['b'] = self.mean.b
-        R['var_C'] = self._noisCov.scale
+        R['var_C'] = self._cageCov.scale
 
         # TODO: calculate rho
 
@@ -95,7 +106,7 @@ class DirIndirVD():
         return R
 
     def getResidual(self):
-        K = self._envCov.K() + self._noisCov.K()
+        K = self._envCov.K() + self._cageCov.K()
         var = covar_rescaling_factor(K)
         K /= var
         R = {'normalized_residual': K,
@@ -109,7 +120,7 @@ class DirIndirVD():
         return self._envCov.dirIndirCov_K()
 
     def getDirInderNoisVar(self):
-        return self._noisCov.scale
+        return self._cageCov.scale
 
 if __name__=='__main__':
 
@@ -126,49 +137,16 @@ if __name__=='__main__':
     Y = sp.randn(n,1)
     covs = None
 
-    if 1:
-        # import data
-        in_file = '/Users/casale/Desktop/rat/dirIndirVD/data/HSrats_noHaplotypes.hdf5'
-        f = h5py.File(in_file,'r')
-
-        # get sample ID
-        geno_sampleID = f['kinships']['genotypes_IBS']['cols_subjects']['outbred'][:]
-        sampleID = f['phenotypesNcovariates']['rows_subjects']['outbred'][:]
-        has_geno = sp.array([sampleID[i] in geno_sampleID for i in range(sampleID.shape[0])])
-
-        # read trait and covariantes 
-        trait = 'Distance0_30_bc'
-        measures = f['phenotypesNcovariates']['cols_measures']['measures'][:]
-        Ip = measures==trait
-        covs = f['phenotypesNcovariates']['cols_measures']['covariates2use'][Ip][0].split(',')
-        Ic = sp.zeros(Ip.shape[0],dtype=bool)
-        for cov in covs:    Ic = sp.logical_or(Ic,measures==cov)
-        Y = f['phenotypesNcovariates']['array'][Ip,:].T
-        covs = f['phenotypesNcovariates']['array'][Ic,:].T
-        Is = sp.logical_and((covs!=-999).all(1),Y[:,0]!=-999)
-        Is = sp.logical_and(has_geno,Is)
-        Y = Y[Is,:]; covs = covs[Is,:]
-        cage = f['phenotypesNcovariates']['rows_subjects']['cage'][Is]
-        sampleID = sampleID[Is]
-
-        # normalize pheno (not needed if not for numerical stability)
-        Y-=Y.mean(0)
-        Y/=Y.std(0)
-
-        # grab kinship
-        idxs = sp.array([sp.where(geno_sampleID==sampleID[i])[0][0] for i in range(sampleID.shape[0])])
-        kinship = f['kinships']['genotypes_IBS']['array'][:][idxs][:,idxs]
+    # TODO: beautify the output and stuff
 
     # define model and optimize
     vc = DirIndirVD(pheno=Y, kinship=kinship, cage=cage, covs = covs)
-    for i in range(10):
-        rv = vc.optimize(calc_ste = True)
-        print 'lml:', rv['LML']
-        res = vc.getResidual()
-        print 'residual:', res['variance_explained']
-        print 'geno cov'
-        print vc._genoCov.dirIndirCov_K()
-        print 'ste on geno cov'
-        print vc._genoCov.dirIndirCov_K_ste()
-        ipdb.set_trace()
+    rv = vc.optimize(calc_ste = True)
+    print 'lml:', rv['LML']
+    res = vc.getResidual()
+    print 'residual:', res['variance_explained']
+    print 'geno cov'
+    print vc._genoCov.dirIndirCov_K()
+    print 'ste on geno cov'
+    print vc._genoCov.dirIndirCov_K_ste()
 

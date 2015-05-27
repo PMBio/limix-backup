@@ -5,7 +5,7 @@ from limix.core.covar.sqexp import SQExpCov
 from limix.core.covar.fixed import FixedCov
 from limix.core.covar.combinators import SumCov
 from limix.core.gp.gp_base import GP
-from limix.core.utils.check_grad import mcheck_grad
+from limix.utils.check_grad import mcheck_grad
 
 import numpy as np
 import scipy as sp
@@ -57,7 +57,7 @@ class TestGPBase(unittest.TestCase):
 
         x0 = gp.getParams()['covar']
         err = mcheck_grad(func, grad, x0)
-        np.testing.assert_almost_equal(err, 0., decimal=6)
+        np.testing.assert_almost_equal(err, 0., decimal=5)
 
 if __name__ == "__main__":
     unittest.main()

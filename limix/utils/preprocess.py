@@ -1,15 +1,35 @@
-import scipy as SP
-import scipy.linalg as LA
-import scipy.stats as ST
+import scipy as sp
+import scipy.linalg as la
+import scipy.stats as st
+
+def covar_rescaling_factor(C):
+    """
+    Returns the rescaling factor for the Gower normalizion on covariance matrix C
+    the rescaled covariance matrix has sample variance of 1
+    """
+    n = C.shape[0]
+    P = sp.eye(n) - sp.ones((n,n))/float(n)
+    trPCP = sp.trace(sp.dot(P,sp.dot(C,P)))
+    r = (n-1) / trPCP
+    return r
+
+def covar_rescale(C):
+    """
+    Perform Gower normalizion on covariance matrix C
+    the rescaled covariance matrix has sample variance of 1
+    """
+    sf = covar_rescaling_factor(C)
+    return sf * C
+
 
 def toRanks(A):
     """
     converts the columns of A to ranks
     """
-    AA=SP.zeros_like(A)
+    AA=sp.zeros_like(A)
     for i in range(A.shape[1]):
-        AA[:,i] = ST.rankdata(A[:,i])
-    AA=SP.array(SP.around(AA),dtype="int")-1
+        AA[:,i] = st.rankdata(A[:,i])
+    AA=sp.array(sp.around(AA),dtype="int")-1
     return AA
 
 def gaussianize(Y):
@@ -19,9 +39,9 @@ def gaussianize(Y):
     N,P = Y.shape
 
     YY=toRanks(Y)
-    quantiles=(SP.arange(N)+0.5)/N
-    gauss = ST.norm.isf(quantiles)
-    Y_gauss=SP.zeros((N,P))
+    quantiles=(sp.arange(N)+0.5)/N
+    gauss = st.norm.isf(quantiles)
+    Y_gauss=sp.zeros((N,P))
     for i in range(P):
         Y_gauss[:,i] = gauss[YY[:,i]]
     Y_gauss *= -1
@@ -31,7 +51,7 @@ def regressOut(Y,X):
     """
     regresses out X from Y
     """
-    Xd = LA.pinv(X)
+    Xd = la.pinv(X)
     Y_out = Y-X.dot(Xd.dot(Y))
     return Y_out
 

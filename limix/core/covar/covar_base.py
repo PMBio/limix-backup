@@ -1,7 +1,7 @@
 import sys
 from limix.core.type.observed import Observed
 from limix.core.type.cached import Cached, cached
-from limix.core.utils.eigen import *
+from limix.utils.eigen import *
 import scipy as sp
 import scipy.linalg as LA
 import warnings
