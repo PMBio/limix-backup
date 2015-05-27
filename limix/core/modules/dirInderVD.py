@@ -41,6 +41,11 @@ class DirIndirVD():
         self._noisCov = FixedCov(WW)
         covar = SumCov(self._genoCov,self._envCov,self._noisCov)
 
+        #self._genoCov.setRandomParams()
+        #print self._genoCov.covff.K_grad_interParam_i(0)
+        #print self._genoCov.covff.K_grad_interParam_i(1)
+        #print self._genoCov.covff.K_grad_interParam_i(2)
+
         # define gp
         self._gp = GP(covar=covar,mean=self.mean)
 
@@ -157,13 +162,13 @@ if __name__=='__main__':
     # define model and optimize
     vc = DirIndirVD(pheno=Y, kinship=kinship, cage=cage, covs = covs)
     for i in range(10):
-        rv = vc.optimize()
+        rv = vc.optimize(calc_ste = True)
         print 'lml:', rv['LML']
-        res = vc.getResidual(calc_ste = True)
+        res = vc.getResidual()
         print 'residual:', res['variance_explained']
+        print 'geno cov'
+        print vc._genoCov.dirIndirCov_K()
+        print 'ste on geno cov'
+        print vc._genoCov.dirIndirCov_K_ste()
         ipdb.set_trace()
-        vc._genoCov.variance
-        vc._genoCov.variance_ste
-        vc._genoCov.correlation
-        vc._genoCov.correlation_ste
 

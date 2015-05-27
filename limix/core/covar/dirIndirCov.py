@@ -30,6 +30,9 @@ class DirIndirCov(Covariance):
     def dirIndirCov_K(self):
         return self.covff.K()
 
+    def dirIndirCov_K_ste(self):
+        return self.covff.K_ste
+
     #####################
     # Properties
     #####################
@@ -40,14 +43,6 @@ class DirIndirCov(Covariance):
     @property
     def correlation(self):
         return self.covff.correlation
-
-    @property
-    def variance_ste(self):
-        return self.covff.variance_ste
-
-    @property
-    def correlation_ste(self):
-        return self.covff.correlation_ste
 
     #####################
     # Params handling
