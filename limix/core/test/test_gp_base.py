@@ -57,7 +57,7 @@ class TestGPBase(unittest.TestCase):
 
         x0 = gp.getParams()['covar']
         err = mcheck_grad(func, grad, x0)
-        np.testing.assert_almost_equal(err, 0., decimal=6)
+        np.testing.assert_almost_equal(err, 0., decimal=5)
 
 if __name__ == "__main__":
     unittest.main()

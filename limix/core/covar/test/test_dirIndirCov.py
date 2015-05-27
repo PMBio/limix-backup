@@ -38,7 +38,7 @@ class TestDirIndirCov(unittest.TestCase):
         x0 = self.C.getParams()
         err = mcheck_grad(func, grad, x0)
 
-        np.testing.assert_almost_equal(err, 1e-8)
+        np.testing.assert_almost_equal(err, 0., decimal=6)
 
 if __name__ == '__main__':
     unittest.main()
