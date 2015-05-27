@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from limix.core.covar.sqexp import SQExpCov
-from limix.core.utils.check_grad import mcheck_grad
+from limix.utils.check_grad import mcheck_grad
 import scipy as sp
 
 class TestSQExp(unittest.TestCase):
