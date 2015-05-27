@@ -4,6 +4,8 @@ import scipy.linalg as LA
 from covar_base import Covariance
 from freeform import FreeFormCov 
 from limix.core.type.cached import cached
+from limix.core.utils.normalization import covar_rescaling_factor
+from limix.core.utils.normalization import covar_rescale
 import pdb
 
 import logging as LG
@@ -15,33 +17,32 @@ class DirIndirCov(Covariance):
     def __init__(self, kinship, design, jitter = 1e-4):
         ff_dim = 2
         self.covff = FreeFormCov(ff_dim, jitter = 1e-4)
-        self._K = kinship
+        self._K = covar_rescale(kinship)
         self._ZK = sp.dot(design, kinship)
         self._KZ = sp.dot(kinship, design.T)
         self._ZKZ = sp.dot(self._ZK, design.T)
+        sf_ZKZ = covar_rescaling_factor(self._ZKZ)
+        self._ZK  *= sp.sqrt(sf_ZKZ)
+        self._KZ  *= sp.sqrt(sf_ZKZ)
+        self._ZKZ *= sf_ZKZ
         Covariance.__init__(self, kinship.shape[0])
 
     def dirIndirCov_K(self):
         return self.covff.K()
+
+    def dirIndirCov_K_ste(self):
+        return self.covff.K_ste
 
     #####################
     # Properties
     #####################
     @property
     def variance(self):
-        return self.ffcov.variance()
+        return self.covff.variance
 
     @property
     def correlation(self):
-        return self.ffcov.correlation()
-
-    @property
-    def variance_ste(self):
-        LG.critical("Implement variance_ste")
-
-    @property
-    def correlation_ste(self):
-        LG.critical("Implement correlation_ste")
+        return self.covff.correlation
 
     #####################
     # Params handling
@@ -84,10 +85,20 @@ class DirIndirCov(Covariance):
     # Interpretable Params
     ####################
     def getInterParams(self):
-        LG.critical("implement getInterParams")
+        return self.covff.getInterParams()
 
     def K_grad_interParam_i(self,i):
-        LG.critical("implement K_grad_interParam_i")
+        Cgrad = self.covff.K_grad_interParam_i(i)
+        RV  = Cgrad[0,0] * self._K
+        RV += Cgrad[0,1] * (self._KZ + self._ZK)
+        RV += Cgrad[1,1] * self._ZKZ
+        return RV
+
+    def setFIinv(self, value):
+        self.covff.setFIinv(value)
+
+    def getFIinv(self):
+        return self.covff.getFIinv()
 
 if __name__ == '__main__':
     # generate data

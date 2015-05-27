@@ -5,6 +5,7 @@ from limix.core.mean.mean_base import mean_base as lin_mean
 from limix.core.covar.dirIndirCov import DirIndirCov
 from limix.core.covar.fixed import FixedCov 
 from limix.core.covar.combinators import SumCov
+from limix.core.utils.normalization import covar_rescaling_factor
 import ipdb
 
 class DirIndirVD():
@@ -40,10 +41,15 @@ class DirIndirVD():
         self._noisCov = FixedCov(WW)
         covar = SumCov(self._genoCov,self._envCov,self._noisCov)
 
+        #self._genoCov.setRandomParams()
+        #print self._genoCov.covff.K_grad_interParam_i(0)
+        #print self._genoCov.covff.K_grad_interParam_i(1)
+        #print self._genoCov.covff.K_grad_interParam_i(2)
+
         # define gp
         self._gp = GP(covar=covar,mean=self.mean)
 
-    def optimize(self,verbose=True):
+    def optimize(self, calc_ste = False, verbose = True):
         if 0:
             # trial for inizialization it is complicated though
             cov = sp.array([[0.2,1e-4],[1e-4,1e-4]])
@@ -54,7 +60,7 @@ class DirIndirVD():
             self._gp.covar.setRandomParams()
 
         # optimization
-        conv, info = self._gp.optimize()
+        conv, info = self._gp.optimize(calc_ste = calc_ste)
 
         # return stuff
         R = {}
@@ -88,6 +94,13 @@ class DirIndirVD():
 
         return R
 
+    def getResidual(self):
+        K = self._envCov.K() + self._noisCov.K()
+        var = covar_rescaling_factor(K)
+        K /= var
+        R = {'normalized_residual': K,
+             'variance_explained': var}
+        return R
 
     def getDirIndirGenoCovar(self):
         return self._genoCov.dirIndirCov_K()
@@ -113,7 +126,7 @@ if __name__=='__main__':
     Y = sp.randn(n,1)
     covs = None
 
-    if 0:
+    if 1:
         # import data
         in_file = '/Users/casale/Desktop/rat/dirIndirVD/data/HSrats_noHaplotypes.hdf5'
         f = h5py.File(in_file,'r')
@@ -149,7 +162,13 @@ if __name__=='__main__':
     # define model and optimize
     vc = DirIndirVD(pheno=Y, kinship=kinship, cage=cage, covs = covs)
     for i in range(10):
-        rv = vc.optimize()
+        rv = vc.optimize(calc_ste = True)
         print 'lml:', rv['LML']
+        res = vc.getResidual()
+        print 'residual:', res['variance_explained']
+        print 'geno cov'
+        print vc._genoCov.dirIndirCov_K()
+        print 'ste on geno cov'
+        print vc._genoCov.dirIndirCov_K_ste()
         ipdb.set_trace()
 
