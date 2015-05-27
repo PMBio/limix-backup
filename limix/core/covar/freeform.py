@@ -37,23 +37,39 @@ class FreeFormCov(Covariance):
         R *= inv_diag.T
         return R
 
+    # TODO: this should not be a propery
     @property
-    def variance_ste(self):
-        if self.getFIinv() is None:
-            R = None
-        else:
-            R = sp.sqrt(self.getFIinv().diagonal()[:self.dim])
-        return R
-
-    @property
-    def correlation_ste(self):
+    def K_ste(self): 
         if self.getFIinv() is None:
             R = None
         else:
             R = sp.zeros((self.dim, self.dim))
-            R[sp.tril_indices(self.dim, k = -1)] = sp.sqrt(self.getFIinv().diagonal()[self.dim:])
-            R += R.T
+            R[sp.tril_indices(self.dim)] = sp.sqrt(self.getFIinv().diagonal())
+            # symmetrize
+            R = R + R.T - sp.diag(R.diagonal())
         return R
+        
+
+    # THE FOLLOWING ARE BASED ON VARIANCE/CORRELATION INTERPRETABLE PARAMETRIZATION
+    # TODO: reimplement those to calculate standard errors from K_ste
+
+    #@property
+    #def variance_ste(self):
+    #    if self.getFIinv() is None:
+    #        R = None
+    #    else:
+    #        R = sp.sqrt(self.getFIinv().diagonal()[:self.dim])
+    #    return R
+
+    #@property
+    #def correlation_ste(self):
+    #    if self.getFIinv() is None:
+    #        R = None
+    #    else:
+    #        R = sp.zeros((self.dim, self.dim))
+    #        R[sp.tril_indices(self.dim, k = -1)] = sp.sqrt(self.getFIinv().diagonal()[self.dim:])
+    #        R += R.T
+    #    return R
 
     #####################
     # Params handling
@@ -90,26 +106,41 @@ class FreeFormCov(Covariance):
     # Interpretable Params
     ####################
     def getInterParams(self):
-        R1 = self.variance
-        R2 = self.correlation[sp.tril_indices(self.dim, k = -1)] 
-        R = sp.concatenate([R1,R2])
+        # VARIANCE + CORRELATIONS
+        #R1 = self.variance
+        #R2 = self.correlation[sp.tril_indices(self.dim, k = -1)] 
+        #R = sp.concatenate([R1,R2])
+
+        # COVARIANCES
+        R = self.K()[sp.tril_indices(self.dim)]
         return R
 
+    # DERIVARIVE WITH RESPECT TO COVARIANCES
     def K_grad_interParam_i(self, i):
-        if i < self.dim:
-            # derivative with respect to the variance
-            R = sp.zeros((self.dim,self.dim))
-            R[i,i] = 1
-        else:
-            # derivarice with respect to a correlation
-            ## 1. take the corresponding off diagonal element
-            ix, iy = sp.tril_indices(self.dim, k = -1)
-            ix = ix[i - self.dim]
-            iy = iy[i - self.dim]
-            ## 2. fill it with sqrt(var * var)
-            R = sp.zeros((self.dim,self.dim))
-            R[ix,iy] = R[iy,ix] = sp.sqrt(self.variance[ix] * self.variance[iy])
+        ix, iy = sp.tril_indices(self.dim) 
+        ix = ix[i]
+        iy = iy[i]
+        R = sp.zeros((self.dim,self.dim))
+        R[ix, iy] = R[iy, ix] = 1
         return R
+
+    # DERIVARIVE WITH RESPECT TO VARIANCES AND CORRELATIONS
+    #def K_grad_interParam_i(self, i):
+    #    if i < self.dim:
+    #        # derivative with respect to the variance
+    #        R = sp.zeros((self.dim,self.dim))
+    #        R[i,:] = self.K()[i,:] / (2 * self.variance[i])
+    #        R += R.T
+    #    else:
+    #        # derivarice with respect to a correlation
+    #        ## 1. take the corresponding off diagonal element
+    #        ix, iy = sp.tril_indices(self.dim, k = -1)
+    #        ix = ix[i - self.dim]
+    #        iy = iy[i - self.dim]
+    #        ## 2. fill it with sqrt(var * var)
+    #        R = sp.zeros((self.dim,self.dim))
+    #        R[ix,iy] = R[iy,ix] = sp.sqrt(self.variance[ix] * self.variance[iy])
+    #    return R
 
     ######################
     # Private functions
