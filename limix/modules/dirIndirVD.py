@@ -47,8 +47,8 @@ class DirIndirVD():
         self.mean = lin_mean(pheno,covs)
 
         # define covariance matrices
-        self._genoCov = DirIndirCov(kinship,Z)
-        self._envCov = DirIndirCov(sp.eye(self.N),Z)
+        self._genoCov = DirIndirCov(kinship,Zg)
+        self._envCov = DirIndirCov(sp.eye(self.N),Ze)
         self._cageCov = FixedCov(WW)
         covar = SumCov(self._genoCov,self._envCov,self._cageCov)
 
