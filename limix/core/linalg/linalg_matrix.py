@@ -87,7 +87,7 @@ def jitChol(A, maxTries=10, warning=True):
 
 def jitEigh(A,maxTries=10,warning=True):
     """
-    Do a Eigenvalue Decompsition with Jitter,
+    Do a Eigenvalue Decomposition with Jitter,
 
     works as jitChol
     """
