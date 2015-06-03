@@ -52,22 +52,25 @@ class DirIndirVD():
             Z  = WW - sp.eye(self.N)
 
         # rescaling of covariances
-        kinship = covar_rescale(kinship)
+        ## cage effect
         WW = covar_rescale(WW)
-        _ZKZ = sp.dot(Z,sp.dot(kinship_cm,Z.T))
+        ## geno 
+        sf_K = covar_rescaling_factor(kinship)
+        _ZKcmZ = sp.dot(Z,sp.dot(kinship_cm,Z.T))
+        sf_ZKcmZ = covar_rescaling_factor(_ZKcmZ)
+        kinship *= sf_K
+        kinship_cm *= sf_ZKcmZ
+        kinship_cross *= sp.sqrt(sf_K * sf_ZKcmZ)
+        ## environment 
         _ZZ  = sp.dot(Z,Z.T)
-        sf_Zg = sp.sqrt(covar_rescaling_factor(_ZKZ))
         sf_Ze = sp.sqrt(covar_rescaling_factor(_ZZ))
-        Zg = sf_Zg * Z
         Ze = sf_Ze * Z
-
-        #TODO: rescale Kcross somehow...
 
         # define mean
         self.mean = lin_mean(pheno,covs)
 
         # define covariance matrices
-        self._genoCov = DirIndirCov(kinship,Zg,kinship_cm=kinship_cm,kinship_cross=kinship_cross)
+        self._genoCov = DirIndirCov(kinship,Z,kinship_cm=kinship_cm,kinship_cross=kinship_cross)
         self._envCov = DirIndirCov(sp.eye(self.N),Ze,kinship_cm=sp.eye(self.Ncm),kinship_cross=sp.eye(self.N,self.Ncm))
         self._cageCov = FixedCov(WW)
         covar = SumCov(self._genoCov,self._envCov,self._cageCov)
