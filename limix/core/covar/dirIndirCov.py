@@ -12,13 +12,15 @@ class DirIndirCov(Covariance):
     """
     freeform covariance function
     """
-    def __init__(self, kinship, design, jitter = 1e-4):
+    def __init__(self, kinship, design, kinship_cm = None, kinship_cross = None, jitter = 1e-4):
+        if kinship_cm is None:      kinship_cm = kinship
+        if kinship_cross is None:   kinship_cross = kinship
         ff_dim = 2
         self.covff = FreeFormCov(ff_dim, jitter = 1e-4)
         self._K = kinship
-        self._ZK = sp.dot(design, kinship)
-        self._KZ = sp.dot(kinship, design.T)
-        self._ZKZ = sp.dot(self._ZK, design.T)
+        self._ZK = sp.dot(design, kinship_cross.T)
+        self._KZ = sp.dot(kinship_cross, design.T)
+        self._ZKZ = sp.dot(design, sp.dot(kinship_cm, design.T))
         Covariance.__init__(self, kinship.shape[0])
 
     def dirIndirCov_K(self):
