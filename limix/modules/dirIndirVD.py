@@ -11,7 +11,7 @@ import ipdb
 
 class DirIndirVD():
 
-    def __init__(self, pheno = None, kinship = None, cage = None, covs = None):
+    def __init__(self, pheno = None, kinship = None, cage = None, covs = None, sampleID = None, kinship_cm = None, cage_cm = None, sampleID_cm = None, kinship_cross = None):
 
         assert pheno is not None, 'Specify pheno!'
         assert kinship is not None, 'Specify kinship!'
@@ -20,7 +20,19 @@ class DirIndirVD():
         if len(cage.shape)==1:
             cage = cage[:,sp.newaxis]
 
+        if kinship_cm is not None or cage_cm is not None or sampleID_cm or kinship_cross is not None:
+            self.complex_cm = True
+            assert sampleID is not None, 'Specify sampleID!'
+            assert sampleID_cm is not None, 'Specify sampleID_cm!'
+            assert kinship_cm is not None, 'Specify kinship_cm!'
+            assert kinship_cross is not None, 'Specify kinship_cross!'
+            assert cage_cm is not None, 'Specify cage_cm!'
+        else:
+            kinship_cm = kinship 
+            kinship_cross = kinship
+
         self.N = pheno.shape[0]
+        self.Ncm = kinship_cm.shape[0]
 
         if covs is None:
             covs = sp.ones((self.N,1)) 
@@ -31,24 +43,35 @@ class DirIndirVD():
         for cv_i, cv in enumerate(uCage):
             W[:,cv_i] = 1.*(cage[:,0]==cv)
         WW = sp.dot(W,W.T)
-        Z  = WW - sp.eye(self.N)
+
+        if self.complex_cm:
+            same_cage = 1. * (cage==cage_cm)
+            diff_inds = 1. * (sampleID[:,sp.newaxis]!=sampleID_cm)
+            Z = same_cage * diff_inds 
+        else:
+            Z  = WW - sp.eye(self.N)
 
         # rescaling of covariances
-        kinship = covar_rescale(kinship)
+        ## cage effect
         WW = covar_rescale(WW)
-        _ZKZ = sp.dot(Z,sp.dot(kinship,Z))
-        _ZZ  = sp.dot(Z,Z)
-        sf_Zg = sp.sqrt(covar_rescaling_factor(_ZKZ))
+        ## geno 
+        sf_K = covar_rescaling_factor(kinship)
+        _ZKcmZ = sp.dot(Z,sp.dot(kinship_cm,Z.T))
+        sf_ZKcmZ = covar_rescaling_factor(_ZKcmZ)
+        kinship *= sf_K
+        kinship_cm *= sf_ZKcmZ
+        kinship_cross *= sp.sqrt(sf_K * sf_ZKcmZ)
+        ## environment 
+        _ZZ  = sp.dot(Z,Z.T)
         sf_Ze = sp.sqrt(covar_rescaling_factor(_ZZ))
-        Zg = sf_Zg * Z
         Ze = sf_Ze * Z
 
         # define mean
         self.mean = lin_mean(pheno,covs)
 
         # define covariance matrices
-        self._genoCov = DirIndirCov(kinship,Zg)
-        self._envCov = DirIndirCov(sp.eye(self.N),Ze)
+        self._genoCov = DirIndirCov(kinship,Z,kinship_cm=kinship_cm,kinship_cross=kinship_cross)
+        self._envCov = DirIndirCov(sp.eye(self.N),Ze,kinship_cm=sp.eye(self.Ncm),kinship_cross=sp.eye(self.N,self.Ncm))
         self._cageCov = FixedCov(WW)
         covar = SumCov(self._genoCov,self._envCov,self._cageCov)
 
