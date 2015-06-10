@@ -3,7 +3,7 @@ import unittest
 import scipy as SP
 import numpy as np
 import sys
-from limix.core.covar.freeform import FreeFormCov
+from limix.core.covar import FreeFormCov
 from limix.utils.check_grad import mcheck_grad
 
 class TestFreeForm(unittest.TestCase):
