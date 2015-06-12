@@ -11,8 +11,8 @@ import pdb
 if __name__=='__main__':
 
     # define phenotype
-    N = 100
-    P = 3
+    N = 1000
+    P = 4
     Y = sp.randn(N,P)
 
     # define fixed effects
@@ -57,41 +57,7 @@ if __name__=='__main__':
     print 'Time elapsed:', time.time() - t0
 
     pdb.set_trace()
-    gp0.optimize()
-    gp0.covar.setRandomParams()
-    gp0.optimize()
-    gp0.covar.setRandomParams()
-    gp0.optimize()
-    gp0.covar.setRandomParams()
-    gp0.optimize()
 
-    if 1:
-        # check notification
-        for i in range(10):
-            gp.covar.setRandomParams()
-            print gp.LML()
-            print gp0.LML()
-        
-
-    if 0:
-        # check LMLgrad terms
-        print gp.Sr_DLrYLc_Ctilde(0)
-        print gp.Sr_vei_dLWb_Ctilde(0)
-        print gp.yKiy_grad_i(0)
-        print gp.yKiWb_grad_i(0)
-        print gp.Areml.K_grad_i(0)
-        print gp0.Areml.K_grad_i(0)
-
-    if 0:
-        # check LML terms
-        print gp.LrY()
-        print gp.LrYLc()
-        print gp.DLrYLc()
-        print gp.LrF()
-        print gp.ALc()
-        print gp.LW()
-        print gp.dLW()
-        print gp.WKiy()
-        gp.update_b()
-        print gp.LML()
+    gp.covar.setRandomParams()
+    gp.optimize()
 

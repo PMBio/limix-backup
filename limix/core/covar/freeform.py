@@ -13,7 +13,7 @@ class FreeFormCov(Covariance):
     """
     def __init__(self,dim,jitter=1e-4):
         Covariance.__init__(self, dim)
-        self.n_params = int(dim * (dim + 1.) / 2.)
+        self._calcNumberParams()
         self.dim = dim
         self.params = sp.zeros(self.n_params)
 
