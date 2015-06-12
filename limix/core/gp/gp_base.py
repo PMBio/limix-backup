@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class GP(Cached, Observed):
     """
     Gaussian Process regression class for linear mean (with REML)
-    y ~ N(Fb,K)
+    y ~ N(Wb,K)
     """
 
     def __init__(self,mean=None,covar=None):
@@ -40,14 +40,14 @@ class GP(Cached, Observed):
         self._notify()
 
     def clear_lml_terms(self):
-        self.clear_cache('KiF','yKiF','KiFb','Kiy','yKiy','yKiFb','LML')
+        self.clear_cache('KiW','yKiW','KiWb','Kiy','yKiy','yKiWb','LML')
 
     def clear_lmlgrad_terms_i(self):
-        self.clear_cache('DiKKiy','DiKKiF','DiKKiFb',
-                            'yKiy_grad_i','yKiFb_grad_i')
+        self.clear_cache('DiKKiy','DiKKiW','DiKKiWb',
+                            'yKiy_grad_i','yKiWb_grad_i')
 
     def clear_lmlgrad_terms(self):
-        self.clear_cache('yKiy_grad','yKiFb_grad','Areml_logdet_grad','LML_grad')
+        self.clear_cache('yKiy_grad','yKiWb_grad','Areml_logdet_grad','LML_grad')
 
     def setParams(self,params):
         self.covar.setParams(params['covar'])
@@ -63,29 +63,29 @@ class GP(Cached, Observed):
     # Areml
     ######################
     def Areml_K(self):
-        return sp.dot(self.mean.F.T,self.KiF())
+        return sp.dot(self.mean.W.T,self.KiW())
 
     def Areml_K_grad_i(self,i):
-        return -sp.dot(self.KiF().T,self.DiKKiF(i))
+        return -sp.dot(self.KiW().T,self.DiKKiW(i))
 
     #######################
     # LML terms
     #######################
     @cached
-    def KiF(self):
-        return self.covar.solve(self.mean.F)
+    def KiW(self):
+        return self.covar.solve(self.mean.W)
 
     @cached
-    def yKiF(self):
-        return sp.dot(self.mean.y.T,self.KiF())
+    def yKiW(self):
+        return sp.dot(self.mean.y.T,self.KiW())
 
     # b is calculated here but cached in the mean?
     def update_b(self):
-        self.mean.b = self.Areml.solve(self.yKiF().T)
+        self.mean.b = self.Areml.solve(self.yKiW().T)
 
     @cached
-    def KiFb(self):
-        return sp.dot(self.KiF(),self.mean.b)
+    def KiWb(self):
+        return sp.dot(self.KiW(),self.mean.b)
 
     @cached
     def Kiy(self):
@@ -96,8 +96,8 @@ class GP(Cached, Observed):
         return (self.mean.y*self.Kiy()).sum()
 
     @cached
-    def yKiFb(self):
-        return (self.mean.y*self.KiFb()).sum()
+    def yKiWb(self):
+        return (self.mean.y*self.KiWb()).sum()
 
     #######################
     # gradients
@@ -107,12 +107,12 @@ class GP(Cached, Observed):
         return sp.dot(self.covar.K_grad_i(i),self.Kiy())
 
     @cached
-    def DiKKiF(self,i):
-        return sp.dot(self.covar.K_grad_i(i),self.KiF())
+    def DiKKiW(self,i):
+        return sp.dot(self.covar.K_grad_i(i),self.KiW())
 
     @cached
-    def DiKKiFb(self,i):
-        return sp.dot(self.DiKKiF(i),self.mean.b)
+    def DiKKiWb(self,i):
+        return sp.dot(self.DiKKiW(i),self.mean.b)
 
 
     @cached
@@ -120,9 +120,9 @@ class GP(Cached, Observed):
         return -(self.Kiy()*self.DiKKiy(i)).sum()
 
     @cached
-    def yKiFb_grad_i(self,i):
-        rv = -2*(self.Kiy()*self.DiKKiFb(i)).sum()
-        rv+= (self.KiFb()*self.DiKKiFb(i)).sum()
+    def yKiWb_grad_i(self,i):
+        rv = -2*(self.Kiy()*self.DiKKiWb(i)).sum()
+        rv+= (self.KiWb()*self.DiKKiWb(i)).sum()
         return rv
 
     #######################
@@ -135,7 +135,7 @@ class GP(Cached, Observed):
         rv = 0.5*self.covar.logdet()
         rv += 0.5*self.Areml.logdet()
         rv += 0.5*self.yKiy()
-        rv -= 0.5*self.yKiFb()
+        rv -= 0.5*self.yKiWb()
         return rv
 
     @cached
@@ -147,11 +147,11 @@ class GP(Cached, Observed):
         return RV
 
     @cached
-    def yKiFb_grad(self):
+    def yKiWb_grad(self):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
         for i in range(n_params):
-            RV['covar'][i] = self.yKiFb_grad_i(i)
+            RV['covar'][i] = self.yKiWb_grad_i(i)
         return RV
 
     @cached
@@ -170,14 +170,14 @@ class GP(Cached, Observed):
             RV['covar'][i]  = 0.5*self.covar.logdet_grad_i(i)
             RV['covar'][i] += 0.5*self.Areml.logdet_grad_i(i)
             RV['covar'][i] += 0.5*self.yKiy_grad_i(i)
-            RV['covar'][i] -= 0.5*self.yKiFb_grad_i(i)
+            RV['covar'][i] -= 0.5*self.yKiWb_grad_i(i)
         return RV
 
     def predict(self):
         R = None
         if self.covar.use_to_predict:
             Kcross = self.covar.Kcross()
-            Kiyres = self.Kiy()-self.KiFb()
+            Kiyres = self.Kiy()-self.KiWb()
             R = sp.dot(Kcross,Kiyres)
         if self.mean.use_to_predict:
             _ = self.mean.predict()

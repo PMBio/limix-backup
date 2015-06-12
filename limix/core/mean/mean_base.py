@@ -10,15 +10,15 @@ import copy
 
 class mean_base(Cached, Observed):
 
-    def __init__(self,Y,F,Fstar=None):
+    def __init__(self,Y,W,Wstar=None):
         """
         y:        phenotype vector
-        F:        fixed effect design
+        W:        fixed effect design
         """
         self.Y = Y
-        self.F = F
+        self.W = W
         self.B = sp.zeros((self._K,1))
-        self.Fstar = Fstar
+        self.Wstar = Wstar
         self.setFIinv(None)
 
     #########################################
@@ -29,8 +29,8 @@ class mean_base(Cached, Observed):
         return self._Y
 
     @property
-    def F(self):
-        return self._F
+    def W(self):
+        return self._W
 
     @property
     def B(self):
@@ -61,8 +61,8 @@ class mean_base(Cached, Observed):
         return R
 
     @property
-    def Fstar(self):
-        return self._Fstar
+    def Wstar(self):
+        return self._Wstar
 
     @property
     def use_to_predict(self):
@@ -79,23 +79,23 @@ class mean_base(Cached, Observed):
         self._Y = value
         self.clear_cache('Yres')
 
-    @F.setter
-    def F(self,value):
+    @W.setter
+    def W(self,value):
         """ set fixed effect design """
         assert value.shape[0]==self._N, 'Dimension mismatch'
         self._K = value.shape[1]
-        self._F = value
+        self._W = value
         self.clear_cache('predict_in_sample','Yres')
 
-    @Fstar.setter
-    def Fstar(self,value):
+    @Wstar.setter
+    def Wstar(self,value):
         """ set fixed effect design for predictions """
         if value is None:
             self._use_to_predict = False
         else:
             assert value.shape[1]==self._K, 'Dimension mismatch'
             self._use_to_predict = True
-        self._Fstar = value
+        self._Wstar = value
         self.clear_cache('predict')
 
     @B.setter
@@ -121,7 +121,7 @@ class mean_base(Cached, Observed):
 
     @use_to_predict.setter
     def use_to_predict(self,value):
-        assert not (self.Fstar is None and value is True), 'set Fstar!'
+        assert not (self.Wstar is None and value is True), 'set Wstar!'
         self._use_to_predict = value
 
     #########################################
@@ -129,12 +129,12 @@ class mean_base(Cached, Observed):
     #########################################
     @cached
     def predict(self):
-        r = _predict_fun(self.Fstar)
+        r = _predict_fun(self.Wstar)
         return r
 
     @cached
     def predict_in_sample(self):
-        r = _predict_fun(self.F)
+        r = _predict_fun(self.W)
         return r
 
     def _predict_fun(self,M):
