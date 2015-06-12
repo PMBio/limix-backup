@@ -28,6 +28,33 @@ class GP2KronSum(GP):
         self.mean  = MeanKronSum(Y = Y, F = F, A = A)
         self.Areml = cov_reml(self)
         self.update_b()
+        self.covar.register(self.col_cov_has_changed, 'row_cov')
+        self.covar.register(self.col_cov_has_changed, 'col_cov')
+        self.mean.register(self.pheno_has_changed, 'pheno')
+        self.mean.register(self.designs_have_changed, 'designs')
+
+    def col_cov_has_changed(self):
+        self.clear_cache('LrYLc', 'DLrYLc', 'ALc', 'LW', 'dLW',
+                            'WKiy', 'vei_dLWb', 'yKiy', 'yKiWb', 'Sr_DLrYLc_Ctilde',
+                            'Sr_vei_dLWb_Ctilde', 'yKiy_grad_i', 'yKiWb_grad_i')
+        self.clear_all()
+
+    def row_cov_has_changed(self):
+        self.clear_cache('LrY', 'LrYLc', 'DLrYLc', 'LrF', 'LW', 'dLW',
+                            'WKiy', 'vei_dLWb', 'yKiy', 'yKiWb', 'Sr_DLrYLc_Ctilde',
+                            'Sr_vei_dLWb_Ctilde', 'yKiy_grad_i', 'yKiWb_grad_i')
+        self.clear_all()
+
+    def pheno_has_changed(self):
+        self.clear_cache('LrY', 'LrYLc', 'DLrYLc',
+                            'WKiy', 'vei_dLWb', 'yKiy', 'yKiWb', 'Sr_DLrYLc_Ctilde',
+                            'Sr_vei_dLWb_Ctilde', 'yKiy_grad_i', 'yKiWb_grad_i')
+        self.clear_all()
+
+    def designs_have_changed(self):
+        self.clear_cache('LrF', 'ALc', 'LW', 'dLW', 'WKiy', 'vei_dLWb',
+                            'yKiWb', 'Sr_vei_dLWb_Ctilde', 'yKiWb_grad_i')
+        self.clear_all()
 
     ######################
     # Areml
