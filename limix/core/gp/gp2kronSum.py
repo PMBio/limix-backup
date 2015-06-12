@@ -27,6 +27,7 @@ class GP2KronSum(GP):
         self.covar = Cov2KronSum(Cg = Cg, Cn = Cn, R = XX)
         self.mean  = MeanKronSum(Y = Y, F = F, A = A)
         self.Areml = cov_reml(self)
+        self.update_b()
 
     ######################
     # Areml
@@ -37,12 +38,12 @@ class GP2KronSum(GP):
     def Areml_K_grad_i(self,i):
         dLWt = self.dLW().reshape((self.mean._N, self.mean._P, self.mean.n_covs), order = 'F')
         if i < self.covar.Cg.getNumberParams():
-            SrdLWt = self.covar.Sr[:, sp.newaxis] * dLWt
+            SrdLWt = self.covar.Sr()[:, sp.newaxis, sp.newaxis] * dLWt
         else:
             SrdLWt = dLWt
         SrdLWtC = sp.tensordot(SrdLWt, self.covar.Ctilde(i), axes=(1, 1))
-        SroCdLW = SrdLWtC.reshape((self.mean._N * self.mean._P, self.mean.n_covs), order = 'F')
-        return sp.dot(self.dLW().T, SroCdLW)
+        SroCdLW = SrdLWtC.swapaxes(1,2).reshape((self.mean._N * self.mean._P, self.mean.n_covs), order = 'F')
+        return -sp.dot(self.dLW().T, SroCdLW)
 
     ######################
     # Transformed phenotype
@@ -118,7 +119,7 @@ class GP2KronSum(GP):
         return (self.LrYLc()*self.DLrYLc()).sum() 
 
     @cached
-    def yKiFb(self):
+    def yKiWb(self):
         return (self.LrYLc() * self.vei_dLWb()).sum()
 
     #########################
@@ -134,11 +135,11 @@ class GP2KronSum(GP):
 
     @cached
     def yKiy_grad_i(self,i):
-        return -(self.dLrYLc() * self.Sr_DLrYLc_Ctilde(i)).sum()
+        return -(self.DLrYLc() * self.Sr_DLrYLc_Ctilde(i)).sum()
 
     @cached
-    def yKiFb_grad_i(self,i):
-        rv = -2*(self.Kiy()*self.Sr_vei_dLWb_Ctilde(i)).sum()
+    def yKiWb_grad_i(self,i):
+        rv = -2*(self.DLrYLc()*self.Sr_vei_dLWb_Ctilde(i)).sum()
         rv+= (self.vei_dLWb()*self.Sr_vei_dLWb_Ctilde(i)).sum()
         return rv
 

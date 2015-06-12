@@ -19,6 +19,7 @@ class MeanKronSum(Cached, Observed):
         Fstar:    out-of-sample fixed effect design
         """
         assert Y is not None, 'MeanKronSum: Specify Y!'
+        print 'TODO: check caching'
         self.Y = Y
         self.setDesigns(F,A)
         self.Fstar = Fstar
@@ -87,6 +88,7 @@ class MeanKronSum(Cached, Observed):
         return self._use_to_predict
 
     @property
+    @cached
     def W(self):
         R = sp.zeros((self.Y.size, self.n_covs))
         istart = 0

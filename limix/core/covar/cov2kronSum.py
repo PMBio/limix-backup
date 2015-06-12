@@ -133,11 +133,11 @@ class Cov2KronSum(Covariance):
 
     @cached
     def LcGradCgLc(self, i):
-        return sp.dot(self.Lc(), sp.dot(self.Cg().K_grad_i(i), self.Lc().T))
+        return sp.dot(self.Lc(), sp.dot(self.Cg.K_grad_i(i), self.Lc().T))
 
     @cached
     def LcGradCnLc(self, i):
-        return sp.dot(self.Lc(), sp.dot(self.Cn().K_grad_i(i), self.Lc().T))
+        return sp.dot(self.Lc(), sp.dot(self.Cn.K_grad_i(i), self.Lc().T))
 
     def Ctilde(self, i):
         if i < self.Cg.getNumberParams():
@@ -149,11 +149,19 @@ class Cov2KronSum(Covariance):
 
     def Sr_X_Ctilde(self, X, i):
         if i < self.Cg.getNumberParams():
-            SrX = sp.dot(Sr,X)
+            SrX = self.Sr()[:, sp.newaxis] * X
             r = sp.dot(SrX, self.LcGradCgLc(i).T)
         else:
             _i = i - self.Cg.getNumberParams()
             r = sp.dot(X, self.LcGradCnLc(_i).T)
+        return r
+
+    def diag_Ctilde_o_Sr(self, i):
+        if i < self.Cg.getNumberParams():
+            r = sp.kron(sp.diag(self.LcGradCgLc(i)), self.Sr())
+        else:
+            _i = i - self.Cg.getNumberParams()
+            r = sp.kron(sp.diag(self.LcGradCnLc(_i)), sp.ones(self.R.shape[0]))
         return r
 
     #####################
@@ -177,12 +185,12 @@ class Cov2KronSum(Covariance):
 
     @cached
     def logdet(self):
-        return sp.sum(sp.log(self.Cn.S()))*self.R.shape[0] + sp.log(self.S()).sum()
+        return sp.sum(sp.log(self.Cn.S())) * self.R.shape[0] + sp.log(self.S()).sum()
 
     @cached
     def logdet_grad_i(self,i):
-        print 'TODO: think about it'
-        pass
+        return (self.d() * self.diag_Ctilde_o_Sr(i)).sum()
+        
 
 
 """ Gradients DEPRECATED """
