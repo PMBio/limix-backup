@@ -5,13 +5,14 @@ from limix.core.gp import GP2KronSum
 from limix.core.gp import GP
 from limix.utils.preprocess import covar_rescale
 import time
+import copy
 import pdb
 
 if __name__=='__main__':
 
     # define phenotype
-    N = 1000
-    P = 4
+    N = 100
+    P = 3
     Y = sp.randn(N,P)
 
     # define fixed effects
@@ -42,21 +43,42 @@ if __name__=='__main__':
 
     # compare with normal gp
     # assess compatibility with this GP
-    gp0 = GP(covar = gp.covar, mean = gp.mean)
+    gp0 = GP(covar = copy.deepcopy(gp.covar), mean = copy.deepcopy(gp.mean))
     t0 = time.time()
     print 'GP.LML():', gp0.LML()
     print 'Time elapsed:', time.time() - t0
 
+    t0 = time.time()
+    print 'GP2KronSum.LML_grad():', gp.LML_grad()
+    print 'Time elapsed:', time.time() - t0
+
+    t0 = time.time()
+    print 'GP.LML_grad():', gp0.LML_grad()
+    print 'Time elapsed:', time.time() - t0
+
     pdb.set_trace()
-    print gp.LML_grad()
-    print gp0.LML_grad()
+    gp0.optimize()
+    gp0.covar.setRandomParams()
+    gp0.optimize()
+    gp0.covar.setRandomParams()
+    gp0.optimize()
+    gp0.covar.setRandomParams()
+    gp0.optimize()
 
     if 1:
+        # check notification
+        for i in range(10):
+            gp.covar.setRandomParams()
+            print gp.LML()
+            print gp0.LML()
+        
+
+    if 0:
         # check LMLgrad terms
         print gp.Sr_DLrYLc_Ctilde(0)
         print gp.Sr_vei_dLWb_Ctilde(0)
         print gp.yKiy_grad_i(0)
-        print gp.yKiFb_grad_i(0)
+        print gp.yKiWb_grad_i(0)
         print gp.Areml.K_grad_i(0)
         print gp0.Areml.K_grad_i(0)
 
