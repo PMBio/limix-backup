@@ -16,13 +16,14 @@ class Cov2KronSum(Covariance):
         self.dim = self.dim_c * self.dim_r
         self._calcNumberParams()
         self._use_to_predict = False
+        print 'TODO: be notified by changes in Cg and Cn'
 
     def clear_cache_r(self):
-        self.clear_cache('Lr','Sr','S','d')
+        self.clear_cache('Lr','Sr','SpI','d')
         self.clear_all()
 
     def clear_cache_c(self):
-        self.clear_cache('Cstar','Cstar_S','Cstar_U','Lc','Sc','S','d','LcCgradLc')
+        self.clear_cache('Cstar','S_Cstar','U_Cstar','SpI','d','Lc','LcGradCgLc','LcGradCnLc')
         self.clear_all()
 
     #####################
@@ -58,6 +59,7 @@ class Cov2KronSum(Covariance):
         self._R = value 
         self.clear_cache_r()
         self._notify()
+        self._notify('row_cov')
 
     # normal setter for col covars 
     def setColCovars(self, Cg = None, Cn = None):
@@ -69,14 +71,17 @@ class Cov2KronSum(Covariance):
         self._Cn = Cn
         self.clear_cache_c()
         self._notify()
+        self._notify('col_cov')
 
     #####################
     # Params handling
     #####################
     def setParams(self,params):
         self.Cg.setParams(params[:self.Cg.getNumberParams()])
-        self.Cn.setParams(params[self.Cn.getNumberParams():])
+        self.Cn.setParams(params[self.Cg.getNumberParams():])
         self.clear_cache_c()
+        self._notify()
+        self._notify('col_cov')
 
     def getParams(self):
         return sp.concatenate([self.Cg.getParams(),self.Cn.getParams()])
@@ -105,12 +110,12 @@ class Cov2KronSum(Covariance):
         return RV
 
     @cached
-    def S(self):
+    def SpI(self):
         return sp.kron(self.S_Cstar(),self.Sr())+1
 
     @cached
     def d(self):
-        return 1./self.S()
+        return 1./self.SpI()
 
     def D(self):
         return self.d().reshape((self._dim_r, self._dim_c), order = 'F')
@@ -185,7 +190,7 @@ class Cov2KronSum(Covariance):
 
     @cached
     def logdet(self):
-        return sp.sum(sp.log(self.Cn.S())) * self.R.shape[0] + sp.log(self.S()).sum()
+        return sp.sum(sp.log(self.Cn.S())) * self.R.shape[0] + sp.log(self.SpI()).sum()
 
     @cached
     def logdet_grad_i(self,i):
