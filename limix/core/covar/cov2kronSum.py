@@ -13,14 +13,16 @@ class Cov2KronSum(Covariance):
     def __init__(self, Cg = None, Cn = None, R = None):
         self.setColCovars(Cg, Cn)
         self.R = R
-        Covariance.__init__(self, self.dim_c * self.dim_r)
+        self.dim = self.dim_c * self.dim_r
+        self._calcNumberParams()
+        self._use_to_predict = False
 
     def clear_cache_r(self):
-        self.clear_cache('Lr','Sr','S','D')
+        self.clear_cache('Lr','Sr','S','d')
         self.clear_all()
 
     def clear_cache_c(self):
-        self.clear_cache('Cstar','Cstar_S','Cstar_U','Lc','Sc','S','D')
+        self.clear_cache('Cstar','Cstar_S','Cstar_U','Lc','Sc','S','d','LcCgradLc')
         self.clear_all()
 
     #####################
@@ -107,8 +109,11 @@ class Cov2KronSum(Covariance):
         return sp.kron(self.S_Cstar(),self.Sr())+1
 
     @cached
-    def D(self):
+    def d(self):
         return 1./self.S()
+
+    def D(self):
+        return self.d().reshape((self._dim_r, self._dim_c), order = 'F')
 
     @cached
     def Lc(self):
@@ -116,15 +121,40 @@ class Cov2KronSum(Covariance):
 
     @cached
     def Sr(self):
-        RV,U = LA.eigh(self.XX)
+        RV,U = LA.eigh(self.R)
         self.fill_cache('Lr',U.T)
         return RV
 
     @cached
     def Lr(self):
-        S,U = LA.eigh(self.XX)
+        S,U = LA.eigh(self.R)
         self.fill_cache('Sr',S)
         return U.T
+
+    @cached
+    def LcGradCgLc(self, i):
+        return sp.dot(self.Lc(), sp.dot(self.Cg().K_grad_i(i), self.Lc().T))
+
+    @cached
+    def LcGradCnLc(self, i):
+        return sp.dot(self.Lc(), sp.dot(self.Cn().K_grad_i(i), self.Lc().T))
+
+    def Ctilde(self, i):
+        if i < self.Cg.getNumberParams():
+            r = self.LcGradCgLc(i)
+        else:
+            _i = i - self.Cg.getNumberParams()
+            r = self.LcGradCnLc(_i)
+        return r
+
+    def Sr_X_Ctilde(self, X, i):
+        if i < self.Cg.getNumberParams():
+            SrX = sp.dot(Sr,X)
+            r = sp.dot(SrX, self.LcGradCgLc(i).T)
+        else:
+            _i = i - self.Cg.getNumberParams()
+            r = sp.dot(X, self.LcGradCnLc(_i).T)
+        return r
 
     #####################
     # Overwritten covar_base methods
@@ -147,7 +177,7 @@ class Cov2KronSum(Covariance):
 
     @cached
     def logdet(self):
-        return sp.sum(sp.log(self.Cn.S()))*self.XX.shape[0] + sp.log(self.S()).sum()
+        return sp.sum(sp.log(self.Cn.S()))*self.R.shape[0] + sp.log(self.S()).sum()
 
     @cached
     def logdet_grad_i(self,i):
