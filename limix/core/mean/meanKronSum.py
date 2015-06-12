@@ -106,6 +106,8 @@ class MeanKronSum(Cached, Observed):
         self._N = value.shape[0]
         self._P = value.shape[1]
         self._Y = value
+        self._notify()
+        self._notify('pheno')
 
     def setDesigns(self,F,A):
         """ set fixed effect designs """
@@ -123,6 +125,8 @@ class MeanKronSum(Cached, Observed):
         self._A = A 
         self._b = sp.zeros((n_covs,1))
         self.clear_cache('predict_in_sample','Yres')
+        self._notify('designs')
+        self._notify()
 
     @Fstar.setter
     def Fstar(self,value):

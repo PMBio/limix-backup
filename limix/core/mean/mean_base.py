@@ -77,6 +77,7 @@ class mean_base(Cached, Observed):
         self._N = value.shape[0]
         self._P = value.shape[1]
         self._Y = value
+        self._notify()
         self.clear_cache('Yres')
 
     @W.setter
@@ -85,6 +86,7 @@ class mean_base(Cached, Observed):
         assert value.shape[0]==self._N, 'Dimension mismatch'
         self._K = value.shape[1]
         self._W = value
+        self._notify()
         self.clear_cache('predict_in_sample','Yres')
 
     @Wstar.setter

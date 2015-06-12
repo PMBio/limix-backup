@@ -38,6 +38,7 @@ class SumCov(Covariance):
             self.getCovariance(i).setParams(params[istart:istop])
             istart = istop
         self.clear_all()
+        self._notify()
 
     def getParams(self):
         istart = 0

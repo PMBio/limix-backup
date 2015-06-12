@@ -27,6 +27,11 @@ class GP(Cached, Observed):
         self.covar = covar
         self.mean  = mean
         self.Areml = cov_reml(self)
+        # different notification should be possible
+        # e.g. for mean: pheno and designs 
+        # see GP2KronSum
+        self.covar.register(self.clear_all)
+        self.mean.register(self.clear_all)
         self.clear_all()
         self.update_b()
 
@@ -51,7 +56,6 @@ class GP(Cached, Observed):
 
     def setParams(self,params):
         self.covar.setParams(params['covar'])
-        self.clear_all()
         self.update_b()
 
     def getParams(self):
@@ -113,7 +117,6 @@ class GP(Cached, Observed):
     @cached
     def DiKKiWb(self,i):
         return sp.dot(self.DiKKiW(i),self.mean.b)
-
 
     @cached
     def yKiy_grad_i(self,i):
@@ -229,6 +232,27 @@ class GP(Cached, Observed):
             #logger.debug('Time elapsed: %.2fs', t1-t0)
 
         return conv, info
+
+    def test_grad(self):
+        from limix.utils.check_grad import mcheck_grad
+
+        def func(x, i):
+            params = self.getParams()
+            params['covar'] = x
+            self.setParams(params)
+            return self.LML()
+
+        def grad(x, i):
+            params = self.getParams()
+            params['covar'] = x
+            self.setParams(params)
+            grad = self.LML_grad()
+            return grad['covar'][i]
+
+        x0 = self.getParams()['covar']
+        err = mcheck_grad(func, grad, x0)
+        print err
+        #np.testing.assert_almost_equal(err, 0., decimal=5)
 
     # ############################
     # # DEBUGGING
