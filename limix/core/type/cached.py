@@ -13,6 +13,10 @@ class Cached(object):
             setattr(self, '_cached_' + method_name, False)
             setattr(self, '_cached_args_' + method_name, dict())
 
+    def fill_cache(self,method_name,value):
+        setattr(self,'_cache_'+method_name,value)
+        setattr(self,'_cached_'+method_name,True)
+
 # This decorator works both with arguments or without
 # (i.e., @cached or @cached(exclude=['param1', 'param2', ...]))
 def cached(*args, **kwargs):
