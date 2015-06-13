@@ -237,6 +237,20 @@ if 0:
     def Sgrad_n(self,i):
         return sp.kron(self.S_CstarGrad_n(i),self.Sr())
 
+    #####################
+    # Debug methods
+    #####################
+    def inv_debug(self):
+        print 'IMPLEMENT ME'
+
+    @cached
+    def logdet_debug(self):
+        return 2*sp.log(sp.diag(self.chol())).sum()
+
+    @cached
+    def logdet_grad_i_debug(self,i):
+        return self.solve(self.K_grad_i(i)).diagonal().sum()
+
 if __name__ == '__main__':
     from limix.core.covar import FreeFormCov
     from limix.utils.preprocess import covar_rescale
