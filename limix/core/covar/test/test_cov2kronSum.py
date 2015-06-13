@@ -23,20 +23,6 @@ class TestCov2KronSum(unittest.TestCase):
         self.name = 'cov2kronSum'
         self.C.setRandomParams()
 
-    def test_grad(self):
-        def func(x, i):
-            self.C.setParams(x)
-            return self.C.K()
-
-        def grad(x, i):
-            self.C.setParams(x)
-            return self.C.K_grad_i(i)
-
-        x0 = self.C.getParams()
-        err = mcheck_grad(func, grad, x0)
-
-        np.testing.assert_almost_equal(err, 0., decimal = 6)
-
     def test_logdet_grad(self):
         def func(x, i):
             self.C.setParams(x)
