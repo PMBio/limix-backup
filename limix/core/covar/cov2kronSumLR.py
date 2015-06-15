@@ -132,6 +132,10 @@ class Cov2KronSumLR(Covariance):
         return self.Cn.USi2().T
 
     @cached
+    def Lr(self):
+        return self.eye(N) 
+
+    @cached
     def Estar(self):
         E = self.Cg.X
         # for a general covariance matrix
@@ -173,7 +177,7 @@ class Cov2KronSumLR(Covariance):
         return 1./self.SpI()
 
     def D(self):
-        return self.d().reshape((self._dim_r, self._dim_c), order = 'F')
+        return self.d().reshape((self.rank_r, self.rank_c), order = 'F')
 
     @cached
     def Ctilde(self, i):
@@ -189,19 +193,33 @@ class Cov2KronSumLR(Covariance):
         return sp.dot(self.Wc(), sp.dot(self.Ctilde(i), self.Wc().T))
 
     #####################
+    # Debug quantities
+    #####################
+    def L(self):
+        assert self.dim <= 5000, 'Cov2kronSum: dimension too big'
+        return sp.kron(self.Lc(), sp.eye(self.dim_r))
+
+    def W(self):
+        return sp.dot(self.Wc(), self.Wr())
+
+    def R(self):
+        assert self.dim <= 5000, 'Cov2kronSum: dimension too big'
+        return sp.dot(self.G, self.G.T)
+
+    #####################
     # Overwritten covar_base methods
     #####################
     @cached
     def K(self):
         assert self.dim <= 5000, 'Cov2kronSum: K method not available for matrix with dimensions > 5000'
-        rv = sp.kron(self.Cg.K(), sp.dot(self.G, self.G.T)) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
+        rv = sp.kron(self.Cg.K(), self.R()) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return rv
 
     @cached
     def K_grad_i(self,i):
         assert self.dim <= 5000, 'Cov2kronSum: Kgrad_i method not available for matrix with dimensions > 5000'
         if i < self.Cg.getNumberParams():
-            rv= sp.kron(self.Cg.K_grad_i(i), sp.dot(self.G, self.G.T))
+            rv= sp.kron(self.Cg.K_grad_i(i), self.R())
         else:
             _i = i - self.Cg.getNumberParams()
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
