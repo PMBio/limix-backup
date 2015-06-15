@@ -19,13 +19,16 @@ class Cov2KronSum(Covariance):
         self._use_to_predict = False
         print 'TODO: be notified by changes in Cg and Cn'
 
-    def clear_cache_r(self):
-        self.clear_cache('Lr','Sr','SpI','d')
-        self.clear_all()
+    #def clear_cache_r(self):
+    #    self.clear_cache('Lr','Sr','SpI','d')
+    #    self.clear_all()
 
-    def clear_cache_c(self):
-        self.clear_cache('Cstar','S_Cstar','U_Cstar','SpI','d','Lc','LcGradCgLc','LcGradCnLc')
-        self.clear_all()
+    #def clear_cache_c(self):
+    #    self.clear_cache('Cstar','S_Cstar','U_Cstar','SpI','d','Lc','LcGradCgLc','LcGradCnLc')
+    #    self.clear_all()
+
+    def cache_col_cov_debug():
+        pass
 
     #####################
     # Properties
@@ -58,9 +61,9 @@ class Cov2KronSum(Covariance):
         assert value is not None, 'Cov2KronSum: Specify R!'
         self._dim_r = value.shape[0]
         self._R = value
-        self.clear_cache_r()
         self._notify()
         self._notify('row_cov')
+        self.clear_cache('row_cov')
 
     # normal setter for col covars
     def setColCovars(self, Cg = None, Cn = None):
@@ -70,9 +73,9 @@ class Cov2KronSum(Covariance):
         self._dim_c = Cg.dim
         self._Cg = Cg
         self._Cn = Cn
-        self.clear_cache_c()
         self._notify()
         self._notify('col_cov')
+        self.clear_cache('col_cov')
 
     #####################
     # Params handling
@@ -80,9 +83,9 @@ class Cov2KronSum(Covariance):
     def setParams(self,params):
         self.Cg.setParams(params[:self.Cg.getNumberParams()])
         self.Cn.setParams(params[self.Cg.getNumberParams():])
-        self.clear_cache_c()
         self._notify()
         self._notify('col_cov')
+        self.clear_cache('col_cov')
 
     def getParams(self):
         return sp.concatenate([self.Cg.getParams(),self.Cn.getParams()])
@@ -94,57 +97,58 @@ class Cov2KronSum(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('col_cov')
     def Cstar(self):
         return sp.dot(self.Cn.USi2().T,sp.dot(self.Cg.K(),self.Cn.USi2()))
 
-    @cached
+    @cached('col_cov')
     def S_Cstar(self):
         RV,U = LA.eigh(self.Cstar())
         self.fill_cache('U_Cstar',U)
         return RV
 
-    @cached
+    @cached('col_cov')
     def U_Cstar(self):
         S,RV = LA.eigh(self.Cstar())
         self.fill_cache('S_Cstar',S)
         return RV
 
-    @cached
+    @cached(['col_cov', 'row_cov'])
     def SpI(self):
         return sp.kron(self.S_Cstar(),self.Sr())+1
 
-    @cached
+    @cached(['col_cov', 'row_cov'])
     def d(self):
         return 1./self.SpI()
 
     def D(self):
         return self.d().reshape((self._dim_r, self._dim_c), order = 'F')
 
-    @cached
+    @cached('col_cov')
     def Lc(self):
         return sp.dot(self.U_Cstar().T,self.Cn.USi2().T)
 
-    @cached
+    @cached('row_cov')
     def Sr(self):
         RV,U = LA.eigh(self.R)
         self.fill_cache('Lr',U.T)
         return RV
 
-    @cached
+    @cached('row_cov')
     def Lr(self):
         S,U = LA.eigh(self.R)
         self.fill_cache('Sr',S)
         return U.T
 
-    @cached
+    @cached('col_cov')
     def LcGradCgLc(self, i):
         return sp.dot(self.Lc(), sp.dot(self.Cg.K_grad_i(i), self.Lc().T))
 
-    @cached
+    @cached('col_cov')
     def LcGradCnLc(self, i):
         return sp.dot(self.Lc(), sp.dot(self.Cn.K_grad_i(i), self.Lc().T))
 
+    @cached('col_cov')
     def Ctilde(self, i):
         if i < self.Cg.getNumberParams():
             r = self.LcGradCgLc(i)
@@ -170,18 +174,23 @@ class Cov2KronSum(Covariance):
             r = sp.kron(sp.diag(self.LcGradCnLc(_i)), sp.ones(self.R.shape[0]))
         return r
 
+    @cached(['row_cov', 'col_cov'])
+    def L(self):
+        assert self.dim <= 5000, '%s: L method not available for matrix with dimensions > 5000' % self.__class__.__name__
+        return sp.kron(self.Lc(), self.Lr())
+
     #####################
     # Overwritten covar_base methods
     #####################
-    @cached
+    @cached(['row_cov', 'col_cov'])
     def K(self):
-        assert self.dim <= 5000, 'Cov2kronSum: K method not available for matrix with dimensions > 5000'
+        assert self.dim <= 5000, '%s: K method not available for matrix with dimensions > 5000' % self.__class__.__name__
         rv = sp.kron(self.Cg.K(), self.R) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return rv
 
-    @cached
+    @cached(['row_cov', 'col_cov'])
     def K_grad_i(self,i):
-        assert self.dim <= 5000, 'Cov2kronSum: Kgrad_i method not available for matrix with dimensions > 5000'
+        assert self.dim <= 5000, '%s: Kgrad_i method not available for matrix with dimensions > 5000' % self.__class__.__name__
         if i < self.Cg.getNumberParams():
             rv= sp.kron(self.Cg.K_grad_i(i), self.R)
         else:
@@ -189,15 +198,27 @@ class Cov2KronSum(Covariance):
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 
-    @cached
+    @cached(['row_cov', 'col_cov'])
     def logdet(self):
         return sp.sum(sp.log(self.Cn.S())) * self.R.shape[0] + sp.log(self.SpI()).sum()
 
-    @cached
+    @cached(['row_cov', 'col_cov'])
     def logdet_grad_i(self,i):
         return (self.d() * self.diag_Ctilde_o_Sr(i)).sum()
 
+    #####################
+    # Debug methods
+    #####################
+    def inv_debug(self):
+        return sp.dot(self.L().T, self.d[:, sp.newaxis] * self.L())
 
+    @cached
+    def logdet_debug(self):
+        return 2*sp.log(sp.diag(self.chol())).sum()
+
+    @cached
+    def logdet_grad_i_debug(self,i):
+        return self.solve(self.K_grad_i(i)).diagonal().sum()
 
 """ Gradients DEPRECATED """
 
@@ -238,19 +259,6 @@ if 0:
     def Sgrad_n(self,i):
         return sp.kron(self.S_CstarGrad_n(i),self.Sr())
 
-    #####################
-    # Debug methods
-    #####################
-    def inv_debug(self):
-        print 'IMPLEMENT ME'
-
-    @cached
-    def logdet_debug(self):
-        return 2*sp.log(sp.diag(self.chol())).sum()
-
-    @cached
-    def logdet_grad_i_debug(self,i):
-        return self.solve(self.K_grad_i(i)).diagonal().sum()
 
 if __name__ == '__main__':
     from limix.core.covar import FreeFormCov
