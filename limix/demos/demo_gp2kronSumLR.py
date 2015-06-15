@@ -46,7 +46,18 @@ if __name__=='__main__':
     print 'GP.LML():', gp0.LML()
     print 'Time elapsed:', time.time() - t0
 
-    print gp.LML_grad()['covar'] - gp0.LML_grad()['covar']
+    if 0:
+        pdb.set_trace()
+        print gp.LML() - gp0.LML()
+        print ((gp.LML_grad()['covar'] - gp0.LML_grad()['covar'])**2).mean()
+        pdb.set_trace()
+        gp.covar.setRandomParams()
+        gp0.covar.setParams(gp.covar.getParams())
+        print gp.LML() - gp0.LML()
+        print ((gp.LML_grad()['covar'] - gp0.LML_grad()['covar'])**2).mean()
+
+    pdb.set_trace()
+    gp.col_cov_has_changed_debug()
 
     print gp.yKiy_grad()
     print gp0.yKiy_grad()
