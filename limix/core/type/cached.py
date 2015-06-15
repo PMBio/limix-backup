@@ -1,5 +1,4 @@
 import inspect
-import collections
 import os
 
 # HOW TO USE: Please, look at the end of the file for an example.
@@ -47,7 +46,7 @@ def cached(*args, **kwargs):
 
     if not deco_without_arg:
         if len(args) > 0:
-            if isinstance(args[0], collections.Iterable):
+            if type(args[0]) is list or type(args[0]) is tuple:
                 groups += list(args[0])
             else:
                 groups.append(args[0])
