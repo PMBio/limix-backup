@@ -28,13 +28,16 @@ class GP(Cached, Observed):
         self.covar = covar
         self.mean  = mean
         self.Areml = cov_reml(self)
+        self._observe()
+        self.clear_all()
+        self.update_b()
+
+    def _observe(self):
         # different notification should be possible
         # e.g. for mean: pheno and designs
         # see GP2KronSum
         self.covar.register(self.clear_all)
         self.mean.register(self.clear_all)
-        self.clear_all()
-        self.update_b()
 
     def clear_all(self):
         self.clear_Areml()

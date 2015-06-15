@@ -22,15 +22,14 @@ class GP2KronSumLR(GP):
         rank:   rank of the region term
         G:      Region term NxS (Remark: fast inference requires S<<N)
         """
-        GP.__init__(self)
         print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
-        self.covar = Cov2KronSumLR(Cn = Cn, G = G, rank = rank)
-        print 'delete the following line when the caching will work'
-        self.covar.setRandomParams()
-        self.mean  = MeanKronSum(Y = Y, F = F, A = A)
-        assert self.mean.n_terms==1, 'GP2KronSum supports MeanKronSum means with 1 term!'
-        self.Areml = cov_reml(self)
-        self.update_b()
+        covar = Cov2KronSumLR(Cn = Cn, G = G, rank = rank)
+        covar.setRandomParams()
+        mean  = MeanKronSum(Y = Y, F = F, A = A)
+        assert mean.n_terms==1, 'GP2KronSum supports MeanKronSum means with 1 term!'
+        GP.__init__(self, covar = covar, mean = mean)
+
+    def _observe(self):
         self.covar.register(self.col_cov_has_changed, 'row_cov')
         self.covar.register(self.col_cov_has_changed, 'col_cov')
         self.mean.register(self.pheno_has_changed, 'pheno')

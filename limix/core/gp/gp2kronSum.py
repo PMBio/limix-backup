@@ -24,11 +24,11 @@ class GP2KronSum(GP):
         XX:     Matrix for fixed sample-to-sample covariance function
         """
         print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
-        GP.__init__(self)
-        self.covar = Cov2KronSum(Cg = Cg, Cn = Cn, R = XX)
-        self.mean  = MeanKronSum(Y = Y, F = F, A = A)
-        self.Areml = cov_reml(self)
-        self.update_b()
+        covar = Cov2KronSum(Cg = Cg, Cn = Cn, R = XX)
+        mean  = MeanKronSum(Y = Y, F = F, A = A)
+        GP.__init__(self, covar = covar, mean = mean)
+
+    def _observe(self):
         self.covar.register(self.col_cov_has_changed, 'row_cov')
         self.covar.register(self.col_cov_has_changed, 'col_cov')
         self.mean.register(self.pheno_has_changed, 'pheno')
