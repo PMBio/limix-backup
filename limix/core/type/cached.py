@@ -16,7 +16,7 @@ class Cached(object):
                 err += ' you never defined this group or'
                 err += ' you are trying to clear a cache group that'
                 err += ' has not been used yet.'
-                print err
+                #print err
                 raise Exception(err)
 
             for method_name in self._cache_groups[g]:
@@ -212,6 +212,7 @@ if __name__ == '__main__':
     print '\nClearing cache group A',
     test.clear_cache("A")
     print '\ntest.foo3(1)',
+
     test.foo3(1)
     print '\ntest.foo3(1)',
     test.foo3(1)
