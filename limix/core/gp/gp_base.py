@@ -24,11 +24,12 @@ class GP(Cached, Observed):
         covar:        Covariance function
         mean:         Linear Mean function
         """
+        Cached.__init__(self)
         self.covar = covar
         self.mean  = mean
         self.Areml = cov_reml(self)
         # different notification should be possible
-        # e.g. for mean: pheno and designs 
+        # e.g. for mean: pheno and designs
         # see GP2KronSum
         self.covar.register(self.clear_all)
         self.mean.register(self.clear_all)

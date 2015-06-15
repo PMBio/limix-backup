@@ -8,6 +8,7 @@ class FixedCov(Covariance):
     squared exponential covariance function
     """
     def __init__(self,K0,Kcross0=None):
+        Covariance.__init__(self)
         self.K0 = K0
         self.Kcross0 = Kcross0
 

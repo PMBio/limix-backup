@@ -13,6 +13,7 @@ class cov_reml(Covariance):
     abstract super class for all implementations of covariance functions
     """
     def __init__(self,gp):
+        Covariance.__init__(self)
         self.gp = gp
         gp.register(self.clear_all)
         self.dim = gp.mean.b.shape[0]

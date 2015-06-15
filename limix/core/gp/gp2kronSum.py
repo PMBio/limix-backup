@@ -1,6 +1,6 @@
 import sys
 from limix.core.mean import MeanKronSum
-from limix.core.covar import Cov2KronSum 
+from limix.core.covar import Cov2KronSum
 from limix.core.type.cached import *
 
 import pdb
@@ -24,6 +24,7 @@ class GP2KronSum(GP):
         XX:     Matrix for fixed sample-to-sample covariance function
         """
         print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
+        GP.__init__(self)
         self.covar = Cov2KronSum(Cg = Cg, Cn = Cn, R = XX)
         self.mean  = MeanKronSum(Y = Y, F = F, A = A)
         self.Areml = cov_reml(self)
@@ -73,7 +74,7 @@ class GP2KronSum(GP):
         return self.covar.D() * self.LrYLc()
 
     ######################
-    # Transformed fixed effects 
+    # Transformed fixed effects
     ######################
     @cached
     def LrF(self):
@@ -91,11 +92,11 @@ class GP2KronSum(GP):
 
     @cached
     def LW(self):
-        R = sp.zeros((self.mean.Y.size, self.mean.n_covs)) 
+        R = sp.zeros((self.mean.Y.size, self.mean.n_covs))
         istart = 0
         for ti in range(self.mean.n_terms):
             iend = istart + self.mean.F[ti].shape[1] * self.mean.A[ti].shape[0]
-            R[:, istart:iend] = sp.kron(self.ALc()[ti].T, self.LrF()[ti]) 
+            R[:, istart:iend] = sp.kron(self.ALc()[ti].T, self.LrF()[ti])
         return R
 
     @cached
@@ -106,7 +107,7 @@ class GP2KronSum(GP):
     # Areml
     ######################
     def Areml_K(self):
-        return sp.dot(self.LW().T, self.dLW()) 
+        return sp.dot(self.LW().T, self.dLW())
 
     def Areml_K_grad_i(self,i):
         dLWt = self.dLW().reshape((self.mean._N, self.mean._P, self.mean.n_covs), order = 'F')
@@ -127,9 +128,9 @@ class GP2KronSum(GP):
         istart = 0
         for ti in range(self.mean.n_terms):
             _dim = self.mean.F[ti].shape[1] * self.mean.A[ti].shape[0]
-            iend = istart + _dim 
-            FLrDLrYLc = sp.dot(self.LrF()[ti].T, self.DLrYLc()) 
-            R[istart:iend, 0] = sp.dot(FLrDLrYLc, self.ALc()[ti].T).reshape(_dim, order = 'F') 
+            iend = istart + _dim
+            FLrDLrYLc = sp.dot(self.LrF()[ti].T, self.DLrYLc())
+            R[istart:iend, 0] = sp.dot(FLrDLrYLc, self.ALc()[ti].T).reshape(_dim, order = 'F')
         return R
 
     def update_b(self):
@@ -144,7 +145,7 @@ class GP2KronSum(GP):
 
     @cached
     def yKiy(self):
-        return (self.LrYLc()*self.DLrYLc()).sum() 
+        return (self.LrYLc()*self.DLrYLc()).sum()
 
     @cached
     def yKiWb(self):
@@ -170,4 +171,3 @@ class GP2KronSum(GP):
         rv = -2*(self.DLrYLc()*self.Sr_vei_dLWb_Ctilde(i)).sum()
         rv+= (self.vei_dLWb()*self.Sr_vei_dLWb_Ctilde(i)).sum()
         return rv
-

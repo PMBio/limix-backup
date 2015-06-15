@@ -15,6 +15,7 @@ class mean_base(Cached, Observed):
         y:        phenotype vector
         W:        fixed effect design
         """
+        Cached.__init__(self)
         self.Y = Y
         self.W = W
         self.B = sp.zeros((self._K,1))

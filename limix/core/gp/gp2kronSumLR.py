@@ -1,6 +1,6 @@
 import sys
 from limix.core.mean import MeanKronSum
-from limix.core.covar import Cov2KronSumLR 
+from limix.core.covar import Cov2KronSumLR
 from limix.core.type.cached import *
 
 import pdb
@@ -16,12 +16,13 @@ class GP2KronSumLR(GP):
 
     def __init__(self,Y = None, F = None, A = None, Cn = None, G = None, rank = 1):
         """
-        GP2KronSum specialized when the first covariance is lowrank 
+        GP2KronSum specialized when the first covariance is lowrank
         Y:      Phenotype matrix
         Cn:     LIMIX trait-to-trait covariance for noise
         rank:   rank of the region term
         G:      Region term NxS (Remark: fast inference requires S<<N)
         """
+        GP.__init__(self)
         print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
         self.covar = Cov2KronSumLR(Cn = Cn, G = G, rank = rank)
         print 'delete the following line when the caching will work'
@@ -100,7 +101,7 @@ class GP2KronSumLR(GP):
             r = sp.array([((RV1[key]-RV2[key])**2)==0]).all()
             if r:   print key
         pdb.set_trace()
-        
+
 
     def row_cov_has_changed(self):
         self.clear_cache('WrY', 'GGY', 'WrGGY', 'WrYLc',
@@ -141,7 +142,7 @@ class GP2KronSumLR(GP):
     ######################
     @cached
     def FY(self):
-        return self.mean.Ft_dot(self.mean.Y) 
+        return self.mean.Ft_dot(self.mean.Y)
 
     @cached
     def WrY(self):
@@ -153,7 +154,7 @@ class GP2KronSumLR(GP):
 
     @cached
     def WrGGY(self):
-        return sp.dot(self.covar.Wr(), self.GGY()) 
+        return sp.dot(self.covar.Wr(), self.GGY())
 
     @cached
     def YLc(self):
@@ -177,7 +178,7 @@ class GP2KronSumLR(GP):
 
     @cached
     def GGYLc(self):
-        return sp.dot(self.GGY(), self.covar.Lc().T) 
+        return sp.dot(self.GGY(), self.covar.Lc().T)
 
     @cached
     def WrGGYLc(self):
@@ -185,7 +186,7 @@ class GP2KronSumLR(GP):
 
     @cached
     def DWrYLcWc(self):
-        return self.covar.D() * self.WrYLcWc() 
+        return self.covar.D() * self.WrYLcWc()
 
     @cached
     def RYLcCtilde(self, i):
@@ -198,7 +199,7 @@ class GP2KronSumLR(GP):
     @cached
     def SrDWrYLcWcCbar(self, i):
         if i < self.covar.Cg.getNumberParams():
-            SgDWrYLcWc = self.covar.Sg()[:, sp.newaxis] *  self.DWrYLcWc() 
+            SgDWrYLcWc = self.covar.Sg()[:, sp.newaxis] *  self.DWrYLcWc()
         else:
             SgDWrYLcWc = self.DWrYLcWc()
         return sp.dot(SgDWrYLcWc, self.covar.Cbar(i))
@@ -206,9 +207,9 @@ class GP2KronSumLR(GP):
     @cached
     def WrRYLcCtildeWc(self, i):
         if i < self.covar.Cg.getNumberParams():
-            WrRYLc = self.WrGGYLc() 
+            WrRYLc = self.WrGGYLc()
         else:
-            WrRYLc = self.WrYLc() 
+            WrRYLc = self.WrYLc()
         return sp.dot(WrRYLc, sp.dot(self.covar.Ctilde(i), self.covar.Wc().T))
 
     ###############################################
@@ -225,7 +226,7 @@ class GP2KronSumLR(GP):
 
     @cached
     def GGF(self):
-        return sp.dot(self.covar.G, self.GF()) 
+        return sp.dot(self.covar.G, self.GF())
 
     @cached
     def FGGF(self):
@@ -303,7 +304,7 @@ class GP2KronSumLR(GP):
     def WLW(self):
         # confusing notation the first W refers to kroneckered matrix
         # that brings to the low-dimensional space while the second refers to the weights
-        return sp.kron(self.ALcWc().T, self.WrF()) 
+        return sp.kron(self.ALcWc().T, self.WrF())
 
     @cached
     def dWLW(self):
@@ -334,13 +335,13 @@ class GP2KronSumLR(GP):
         return sp.dot(WrRFBALc, sp.dot(self.covar.Ctilde(i), self.covar.Wc().T))
 
     # fixed effect methods for Areml_grad
-    
+
     @cached
     def CtildeLcA(self, i):
         return sp.dot(self.covar.Ctilde(i), self.ALc().T)
 
     @cached
-    def ALcCtildeLcA_o_FRF(self, i): 
+    def ALcCtildeLcA_o_FRF(self, i):
         if i < self.covar.Cg.getNumberParams():
             FRF = self.FGGF()
         else:
@@ -351,9 +352,9 @@ class GP2KronSumLR(GP):
     @cached
     def Cbar_o_Sr_dWLW(self, i):
         if i < self.covar.Cg.getNumberParams():
-            Cbar_o_Sr = sp.kron(self.covar.Cbar(i), sp.diag(self.covar.Sg())) 
+            Cbar_o_Sr = sp.kron(self.covar.Cbar(i), sp.diag(self.covar.Sg()))
         else:
-            Cbar_o_Sr = sp.kron(self.covar.Cbar(i), sp.eye(self.covar.rank_r)) 
+            Cbar_o_Sr = sp.kron(self.covar.Cbar(i), sp.eye(self.covar.rank_r))
         return sp.dot(Cbar_o_Sr, self.dWLW())
 
     @cached
@@ -410,7 +411,7 @@ class GP2KronSumLR(GP):
         r = - (self.YLc() * self.RYLcCtilde(i)).sum()
         r+= - (self.DWrYLcWc() * self.SrDWrYLcWcCbar(i)).sum()
         r+= 2 * (self.WrRYLcCtildeWc(i) * self.DWrYLcWc()).sum()
-        return r 
+        return r
 
     @cached
     def yKiWb_grad_i(self,i):
@@ -421,6 +422,4 @@ class GP2KronSumLR(GP):
         r+= (self.FBALc() * self.RFBALcCtilde(i)).sum()
         r+= (self.DWrFBALcWc() * self.SrDWrFBALcWcCbar(i)).sum()
         r+= - 2 * (self.WrRFBALcCtildeWc(i) * self.DWrFBALcWc()).sum()
-        return r 
-
-
+        return r

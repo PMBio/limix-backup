@@ -13,11 +13,12 @@ class MeanKronSum(Cached, Observed):
 
     def __init__(self, Y = None, F = None, A = None, Fstar=None):
         """
-        Y:        phenotype matrix 
+        Y:        phenotype matrix
         F:        sample fixed effect design
         A:        trait fixed effect design
         Fstar:    out-of-sample fixed effect design
         """
+        Cached.__init__(self)
         assert Y is not None, 'MeanKronSum: Specify Y!'
         print 'TODO: check caching'
         self.Y = Y
@@ -56,7 +57,7 @@ class MeanKronSum(Cached, Observed):
             iend = istart + self.F[ti].shape[1] * self.A[ti].shape[0]
             B.append( sp.reshape(self.b[istart:iend], (self.F[ti].shape[1], self.A[ti].shape[0]), order = 'F'))
             istart = iend
-        return B 
+        return B
 
     @property
     def B_ste(self):
@@ -68,7 +69,7 @@ class MeanKronSum(Cached, Observed):
 
     @property
     def b(self):
-        return self._b 
+        return self._b
 
     @property
     def b_ste(self):
@@ -138,10 +139,10 @@ class MeanKronSum(Cached, Observed):
             l += A[ti].shape[0]
         self._n_terms = n_terms
         self._n_covs = n_covs
-        self._k = k 
-        self._l = l 
+        self._k = k
+        self._l = l
         self._F = F
-        self._A = A 
+        self._A = A
         self._b = sp.zeros((n_covs,1))
         self.clear_cache('predict_in_sample','Yres','W')
         self._notify('designs')
@@ -162,7 +163,7 @@ class MeanKronSum(Cached, Observed):
     def b(self,value):
         assert value.shape[0] == self._n_covs, 'Dimension mismatch'
         assert value.shape[1] == 1, 'Dimension mismatch'
-        self._b = value 
+        self._b = value
         self.clear_cache('predict_in_sample','Yres','predict')
 
     @use_to_predict.setter
@@ -212,15 +213,13 @@ if __name__=='__main__':
     P = 4
     Y = sp.randn(N,P)
 
-    # define fixed effects 
+    # define fixed effects
     F = []; A = []
-    F.append(sp.randn(N,3)) 
-    F.append(sp.randn(N,2)) 
+    F.append(sp.randn(N,3))
+    F.append(sp.randn(N,2))
     A.append(sp.eye(P))
     A.append(sp.ones((1,P)))
 
     pdb.set_trace()
 
     mean = MeanKronSum(Y,F,A)
-    
-
