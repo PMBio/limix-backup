@@ -98,6 +98,20 @@ class MeanKronSum(Cached, Observed):
         return R
 
     #########################################
+    # Utils function
+    #########################################
+    def Ft_dot(self, M):
+        dim0 = 0
+        R = sp.zeros((self._k, M.shape[1]))
+        istart = 0
+        for ti in range(self.n_terms):
+            _dim = self.F[ti].shape[1]
+            iend = istart + _dim
+            R[istart:iend] = sp.dot(self.F[ti].T, M)
+            istart = iend
+        return R
+
+    #########################################
     # Setters
     #########################################
     @Y.setter
@@ -115,16 +129,21 @@ class MeanKronSum(Cached, Observed):
         assert len(A) == len(F), 'MeanKronSum: A and F must have same length!'
         n_terms = len(F)
         n_covs = 0
+        k = 0; l = 0
         for ti in range(n_terms):
             assert F[ti].shape[0]==self._N, 'MeanKronSum: Dimension mismatch'
             assert A[ti].shape[1]==self._P, 'MeanKronSum: Dimension mismatch'
             n_covs += F[ti].shape[1] * A[ti].shape[0]
+            k += F[ti].shape[1]
+            l += A[ti].shape[0]
         self._n_terms = n_terms
         self._n_covs = n_covs
+        self._k = k 
+        self._l = l 
         self._F = F
         self._A = A 
         self._b = sp.zeros((n_covs,1))
-        self.clear_cache('predict_in_sample','Yres')
+        self.clear_cache('predict_in_sample','Yres','W')
         self._notify('designs')
         self._notify()
 
@@ -156,19 +175,19 @@ class MeanKronSum(Cached, Observed):
     #########################################
     @cached
     def predict(self):
-        r = _predict_fun(self.Fstar)
+        r = self._predict_fun(self.Fstar)
         return r
 
     @cached
     def predict_in_sample(self):
-        r = _predict_fun(self.F)
+        r = self._predict_fun(self.F)
         return r
 
     def _predict_fun(self,M):
         assert len(M) == self.n_terms, 'MeanKronSum: Dimension mismatch'
         rv = sp.zeros((self._N,self._P))
         for ti in range(self.n_terms):
-            rv += sp.dot( sp.dot(M[ti], B[ti]), A[ti])
+            rv += sp.dot( sp.dot(M[ti], self.B[ti]), self.A[ti])
         return rv
 
     @cached

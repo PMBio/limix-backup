@@ -59,5 +59,7 @@ if __name__=='__main__':
     pdb.set_trace()
 
     gp.covar.setRandomParams()
+    print gp.Areml.K()
     gp.optimize()
+    print gp.Areml.K()
 

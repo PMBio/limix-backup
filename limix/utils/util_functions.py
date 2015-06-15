@@ -3,6 +3,9 @@ import scipy as SP
 import h5py
 import pdb
 
+def vec(M):
+    return M.reshape((M.size, 1), order = 'F')
+
 def smartAppend(table,name,value):
     """
     helper function for apppending in a dictionary  

@@ -13,7 +13,7 @@ from limix.core.covar.cov_reml import cov_reml
 
 class GP2KronSum(GP):
 
-    def __init__(self,Y = None, F = None, A = None, Cg = None,Cn = None, XX=None, S_XX=None, U_XX=None,offset=1e-4):
+    def __init__(self,Y = None, F = None, A = None, Cg = None,Cn = None, XX=None, S_XX=None, U_XX=None):
         """
         Gaussian Process with a 2kronSum Covariance and a mean with kronecker terms(with REML)
         vec(Y) ~ N( vec( \sum_i A_i \kron F_i), Cg \kron R + Cn \kron I )
@@ -56,21 +56,6 @@ class GP2KronSum(GP):
                             'yKiWb', 'Sr_vei_dLWb_Ctilde', 'yKiWb_grad_i')
         self.clear_all()
 
-    ######################
-    # Areml
-    ######################
-    def Areml_K(self):
-        return sp.dot(self.LW().T, self.dLW()) 
-
-    def Areml_K_grad_i(self,i):
-        dLWt = self.dLW().reshape((self.mean._N, self.mean._P, self.mean.n_covs), order = 'F')
-        if i < self.covar.Cg.getNumberParams():
-            SrdLWt = self.covar.Sr()[:, sp.newaxis, sp.newaxis] * dLWt
-        else:
-            SrdLWt = dLWt
-        SrdLWtC = sp.tensordot(SrdLWt, self.covar.Ctilde(i), axes=(1, 1))
-        SroCdLW = SrdLWtC.swapaxes(1,2).reshape((self.mean._N * self.mean._P, self.mean.n_covs), order = 'F')
-        return -sp.dot(self.dLW().T, SroCdLW)
 
     ######################
     # Transformed phenotype
@@ -116,6 +101,22 @@ class GP2KronSum(GP):
     @cached
     def dLW(self):
         return self.covar.d()[:,sp.newaxis] * self.LW()
+
+    ######################
+    # Areml
+    ######################
+    def Areml_K(self):
+        return sp.dot(self.LW().T, self.dLW()) 
+
+    def Areml_K_grad_i(self,i):
+        dLWt = self.dLW().reshape((self.mean._N, self.mean._P, self.mean.n_covs), order = 'F')
+        if i < self.covar.Cg.getNumberParams():
+            SrdLWt = self.covar.Sr()[:, sp.newaxis, sp.newaxis] * dLWt
+        else:
+            SrdLWt = dLWt
+        SrdLWtC = sp.tensordot(SrdLWt, self.covar.Ctilde(i), axes=(1, 1))
+        SroCdLW = SrdLWtC.swapaxes(1,2).reshape((self.mean._N * self.mean._P, self.mean.n_covs), order = 'F')
+        return -sp.dot(self.dLW().T, SroCdLW)
 
     ########################
     # LML terms
