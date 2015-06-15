@@ -9,6 +9,7 @@ class LowRankCov(Covariance):
     lowrank covariance
     """
     def __init__(self, dim, rank = 1):
+        Covariance.__init__(self)
         self.initialize(dim, rank)
         self._initParams()
 
@@ -87,5 +88,3 @@ if __name__ == '__main__':
     cov.setRandomParams()
     print cov.K()
     print cov.K_grad_i(0)
-
-

@@ -7,6 +7,7 @@ import warnings
 class SumCov(Covariance):
 
     def __init__(self,*covars):
+        Covariance.__init__(self)
         self.dim = None
         self.covars = []
         for covar in covars:

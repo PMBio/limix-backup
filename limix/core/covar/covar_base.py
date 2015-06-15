@@ -12,8 +12,10 @@ class Covariance(Cached, Observed):
     """
     abstract super class for all implementations of covariance functions
     """
-    def __init__(self,dim):
-        self.initialize(dim)
+    def __init__(self,dim=None):
+        Cached.__init__(self)
+        if dim is not None:
+            self.initialize(dim)
 
     def initialize(self,dim):
         self.dim = dim

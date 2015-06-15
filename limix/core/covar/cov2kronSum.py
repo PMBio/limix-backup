@@ -11,6 +11,7 @@ import pdb
 class Cov2KronSum(Covariance):
 
     def __init__(self, Cg = None, Cn = None, R = None):
+        Covariance.__init__(self)
         self.setColCovars(Cg, Cn)
         self.R = R
         self.dim = self.dim_c * self.dim_r
@@ -56,18 +57,18 @@ class Cov2KronSum(Covariance):
     def R(self,value):
         assert value is not None, 'Cov2KronSum: Specify R!'
         self._dim_r = value.shape[0]
-        self._R = value 
+        self._R = value
         self.clear_cache_r()
         self._notify()
         self._notify('row_cov')
 
-    # normal setter for col covars 
+    # normal setter for col covars
     def setColCovars(self, Cg = None, Cn = None):
         assert Cg is not None, 'Cov2KronSum: Specify Cg!'
         assert Cn is not None, 'Cov2KronSum: Specify Cn!'
         assert Cg.dim==Cn.dim, 'Cov2KronSum: Cg and Cn must have same dimensions!'
         self._dim_c = Cg.dim
-        self._Cg = Cg 
+        self._Cg = Cg
         self._Cn = Cn
         self.clear_cache_c()
         self._notify()
@@ -87,8 +88,8 @@ class Cov2KronSum(Covariance):
         return sp.concatenate([self.Cg.getParams(),self.Cn.getParams()])
 
     def _calcNumberParams(self):
-        self.n_params = self.Cg.getNumberParams() + self.Cn.getNumberParams() 
-        
+        self.n_params = self.Cg.getNumberParams() + self.Cn.getNumberParams()
+
 
     #####################
     # Cached
@@ -195,7 +196,7 @@ class Cov2KronSum(Covariance):
     @cached
     def logdet_grad_i(self,i):
         return (self.d() * self.diag_Ctilde_o_Sr(i)).sum()
-        
+
 
 
 """ Gradients DEPRECATED """
@@ -270,6 +271,3 @@ if __name__ == '__main__':
 
     print cov.K()
     print cov.K_grad_i(0)
-
-
-

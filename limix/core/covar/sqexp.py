@@ -13,6 +13,7 @@ class SQExpCov(Covariance):
         """
         X   dim x d input matrix
         """
+        Covariance.__init__(self)
         self.X = X
         self.Xstar = Xstar
         self._initParams()

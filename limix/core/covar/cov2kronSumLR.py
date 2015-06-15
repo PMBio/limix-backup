@@ -12,6 +12,7 @@ import pdb
 class Cov2KronSumLR(Covariance):
 
     def __init__(self, Cn = None, G = None, rank = 1):
+        Covariance.__init__(self)
         self.setColCovars(Cn, rank = rank)
         self.G = G
         self.dim = self.dim_c * self.dim_r
@@ -66,17 +67,17 @@ class Cov2KronSumLR(Covariance):
         assert value is not None, 'Cov2KronSumLR: Specify G!'
         self._dim_r = value.shape[0]
         self._rank_r = value.shape[1]
-        self._G = value 
+        self._G = value
         self.clear_cache_r()
         self._notify()
         self._notify('row_cov')
 
-    # normal setter for col covars 
+    # normal setter for col covars
     def setColCovars(self, Cn = None, rank = 1):
         assert Cn is not None, 'Cov2KronSumLR: Specify Cn!'
         self._rank_c = rank
         self._dim_c = Cn.dim
-        self._Cg = LowRankCov(self._dim_c, rank) 
+        self._Cg = LowRankCov(self._dim_c, rank)
         self._Cn = Cn
         self.clear_cache_c()
         self._notify()
@@ -96,8 +97,8 @@ class Cov2KronSumLR(Covariance):
         return sp.concatenate([self.Cg.getParams(),self.Cn.getParams()])
 
     def _calcNumberParams(self):
-        self.n_params = self.Cg.getNumberParams() + self.Cn.getNumberParams() 
-        
+        self.n_params = self.Cg.getNumberParams() + self.Cn.getNumberParams()
+
 
     #####################
     # Cached
@@ -133,7 +134,7 @@ class Cov2KronSumLR(Covariance):
 
     @cached
     def Lr(self):
-        return self.eye(N) 
+        return self.eye(N)
 
     @cached
     def Estar(self):
@@ -170,7 +171,7 @@ class Cov2KronSumLR(Covariance):
 
     @cached
     def SpI(self):
-        return sp.kron(1./self.Se(), 1./self.Sg()) + 1 
+        return sp.kron(1./self.Se(), 1./self.Sg()) + 1
 
     @cached
     def d(self):
@@ -240,17 +241,17 @@ class Cov2KronSumLR(Covariance):
             diagR = self.Sg()
         else:
             trR = self.dim_r
-            diagR = sp.ones(self.rank_r) 
+            diagR = sp.ones(self.rank_r)
         rv = self.Ctilde(i).diagonal().sum() * trR
         rv-= (self.d() * sp.kron(sp.diag(self.Cbar(i)), diagR)).sum()
-        return rv 
+        return rv
 
     #####################
-    # Debug methods 
+    # Debug methods
     #####################
     def inv_debug(self):
         L = sp.kron(self.Lc(), sp.eye(self.dim_r))
-        W = sp.kron(self.Wc(), self.Wr()) 
+        W = sp.kron(self.Wc(), self.Wr())
         WdW = sp.dot(W.T, self.d()[:, sp.newaxis] * W)
         I_WdW = sp.eye(self.dim_c * self.dim_r) - WdW
         return sp.dot(L.T, sp.dot(I_WdW, L))
@@ -262,6 +263,3 @@ class Cov2KronSumLR(Covariance):
     @cached
     def logdet_grad_i_debug(self,i):
         return self.solve(self.K_grad_i(i)).diagonal().sum()
-        
-
-

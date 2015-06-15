@@ -9,15 +9,18 @@ class Cached(object):
         self._cache_groups = dict(default=[])
 
     def clear_cache(self, *cache_groups):
+        assert hasattr(self, '_cache_groups'), "Cache system failed because "\
+                                   + "you did not call Cached's constructor."
+
         for g in cache_groups:
             if g not in self._cache_groups:
-                err = 'Cache group %s does not exist.' % g
-                err += ' It might happen because of two reasons. Either'
-                err += ' you never defined this group or'
-                err += ' you are trying to clear a cache group that'
-                err += ' has not been used yet.'
-                #print err
-                raise Exception(err)
+                continue
+            #     err = 'Cache group %s does not exist.' % g
+            #     err += ' It might happen because of two reasons. Either'
+            #     err += ' you never defined this group or'
+            #     err += ' you are trying to clear a cache group that'
+            #     err += ' has not been used yet.'
+            #     raise Exception(err)
 
             for method_name in self._cache_groups[g]:
                 setattr(self, '_cache_' + method_name, None)
@@ -53,6 +56,8 @@ def cached(*args, **kwargs):
             assert 'exclude' in kwargs, "'exclude' is the only keyword allowed"\
                                              + " here."
             filter_out = kwargs['exclude']
+    else:
+        groups.append(args[0].__name__)
 
     def real_cached(method):
         cache_var_name = '_cache_' + method.__name__
@@ -64,6 +69,7 @@ def cached(*args, **kwargs):
             return method
 
         def method_wrapper(self, *args, **kwargs):
+
             (argnames, argvalues) = _fetch_argnames_argvalues(method, args, kwargs)
 
             t = zip(argnames, argvalues)
@@ -168,8 +174,8 @@ if __name__ == '__main__':
     test = Test()
     print '\ntest.foo1(2, par2=0)',
     test.foo1(2, par2=0)
-    print '\ntest.foo1(2, par2=0)',
-    test.foo1(2, par2=0)
+    print '\ntest.foo1(2, par2=1)',
+    test.foo1(2, par2=1)
     print '\ntest.foo1(2, par2=0)',
     test.foo1(2, par2=0)
     print '\ntest.foo1(2, par2=3)',
