@@ -1,5 +1,8 @@
 import scipy as sp
+import numpy as np
 from limix.core.type.cached import cached
+from limix.core.utils import assert_make_float_array
+from limix.core.utils import assert_finite_array
 from covar_base import Covariance
 import pdb
 
@@ -7,9 +10,15 @@ class FixedCov(Covariance):
     """
     squared exponential covariance function
     """
-    def __init__(self,K0,Kcross0=None):
+    def __init__(self, K0, Kcross0=None):
         Covariance.__init__(self)
-        self.K0 = K0
+        self.K0 = assert_make_float_array(K0, "K0")
+        assert_finite_array(self.K0)
+
+        if Kcross0 is not None:
+            Kcross0 = assert_make_float_array(Kcross0, "Kcross0")
+            assert_finite_array(Kcross0)
+
         self.Kcross0 = Kcross0
 
     #####################
@@ -40,7 +49,7 @@ class FixedCov(Covariance):
     #####################
     @scale.setter
     def scale(self,value):
-        assert value>=0, 'Scale must be >=0'
+        assert value >= 0, 'Scale must be >= 0.'
         self.params[0] = sp.log(value)
         self.clear_all()
         self._notify()
@@ -56,7 +65,7 @@ class FixedCov(Covariance):
         if value is None:
             self._use_to_predict = False
         else:
-            assert value.shape[1]==self.dim, 'Dimension mismatch'
+            assert value.shape[1] == self.dim, 'Dimension mismatch.'
             self._use_to_predict = True
         self._Kcross0 = value
         self.clear_cache('Kcross')
@@ -64,7 +73,7 @@ class FixedCov(Covariance):
 
     @Covariance.use_to_predict.setter
     def use_to_predict(self,value):
-        assert self.Kcross0 is not None, 'set Kcross0!'
+        assert self.Kcross0 is not None, 'Kcross0 has to be set before.'
         self._use_to_predict = value
 
     #####################

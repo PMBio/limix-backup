@@ -2,12 +2,17 @@ import sys
 from covar_base import Covariance
 from limix.core.covar import LowRankCov
 from limix.core.type.cached import cached
+from limix.core.type.exception import TooExpensiveOperationError
+from limix.core.utils import my_name
+from util import msg_too_expensive_dim
 import scipy as sp
 import scipy.linalg as la
 import numpy.linalg as nla
 import warnings
 
 import pdb
+
+_MAX_DIM = 5000
 
 class Cov2KronSumLR(Covariance):
 
@@ -64,7 +69,7 @@ class Cov2KronSumLR(Covariance):
     #####################
     @G.setter
     def G(self,value):
-        assert value is not None, 'Cov2KronSumLR: Specify G!'
+        assert value is not None, 'G cannot be set to None.'
         self._dim_r = value.shape[0]
         self._rank_r = value.shape[1]
         self._G = value
@@ -74,7 +79,7 @@ class Cov2KronSumLR(Covariance):
 
     # normal setter for col covars
     def setColCovars(self, Cn = None, rank = 1):
-        assert Cn is not None, 'Cov2KronSumLR: Specify Cn!'
+        assert Cn is not None, 'Cn has to be specified.'
         self._rank_c = rank
         self._dim_c = Cn.dim
         self._Cg = LowRankCov(self._dim_c, rank)
@@ -197,14 +202,20 @@ class Cov2KronSumLR(Covariance):
     # Debug quantities
     #####################
     def L(self):
-        assert self.dim <= 5000, 'Cov2kronSum: dimension too big'
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
+
         return sp.kron(self.Lc(), sp.eye(self.dim_r))
 
     def W(self):
         return sp.dot(self.Wc(), self.Wr())
 
     def R(self):
-        assert self.dim <= 5000, 'Cov2kronSum: dimension too big'
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
+
         return sp.dot(self.G, self.G.T)
 
     #####################
@@ -212,13 +223,19 @@ class Cov2KronSumLR(Covariance):
     #####################
     @cached
     def K(self):
-        assert self.dim <= 5000, 'Cov2kronSum: K method not available for matrix with dimensions > 5000'
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
+
         rv = sp.kron(self.Cg.K(), self.R()) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return rv
 
     @cached
     def K_grad_i(self,i):
-        assert self.dim <= 5000, 'Cov2kronSum: Kgrad_i method not available for matrix with dimensions > 5000'
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
+
         if i < self.Cg.getNumberParams():
             rv= sp.kron(self.Cg.K_grad_i(i), self.R())
         else:

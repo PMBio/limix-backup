@@ -2,7 +2,6 @@ from covar_base import Covariance
 import pdb
 import scipy as SP
 from limix.core.type.cached import Cached, cached
-import warnings
 
 class SumCov(Covariance):
 
@@ -21,7 +20,7 @@ class SumCov(Covariance):
         if self.dim is None:
             self.dim = covar.dim
         else:
-            assert covar.dim==self.dim, 'Dimension mismatch'
+            assert covar.dim==self.dim, 'Dimension mismatch.'
         self.covars.append(covar)
         covar.register(self.clear_all)
         self._calcNumberParams()
@@ -62,7 +61,8 @@ class SumCov(Covariance):
 
     @use_to_predict.setter
     def use_to_predict(self,value):
-        warnings.warn('Method not available for combinator covariances. Set use_to_predict for single covariance terms.')
+        raise NotImplementedError("This method is only implemented for single"
+                                  " covariance terms.")
 
     #####################
     # Cached
@@ -83,8 +83,8 @@ class SumCov(Covariance):
                 R = self.covars[i].Kcross()
             else:
                 _ = self.covars[i].Kcross()
-                assert _.shape[0]==R.shape[0], 'Dimension mismatch'
-                assert _.shape[1]==R.shape[1], 'Dimension mismatch'
+                assert _.shape[0]==R.shape[0], 'Dimension mismatch.'
+                assert _.shape[1]==R.shape[1], 'Dimension mismatch.'
                 R += _
         return R
 

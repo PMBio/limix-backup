@@ -1,14 +1,19 @@
 import sys
-from covar_base import Covariance 
-from limix.core.covar import Cov2KronSum 
+from covar_base import Covariance
+from limix.core.covar import Cov2KronSum
 from limix.core.covar import LowRankCov
 from limix.core.type.cached import cached
+from limix.core.type.exception import TooExpensiveOperationError
+from limix.core.utils import my_name
+from util import msg_too_expensive_dim
 import scipy as sp
 import numpy as np
 import scipy.linalg as la
 import warnings
 
 import pdb
+
+_MAX_DIM = 5000
 
 class Cov3KronSumLR(Cov2KronSum):
 
@@ -55,7 +60,7 @@ class Cov3KronSumLR(Cov2KronSum):
         self._notify()
         self.clear_all()
 
-    # normal setter for col covars 
+    # normal setter for col covars
     def setColCovars(self, Cg = None, Cn = None, rank = 1, Cr = None):
         assert Cg is not None, 'Cov2KronSum: Specify Cg!'
         assert Cn is not None, 'Cov2KronSum: Specify Cn!'
@@ -68,8 +73,8 @@ class Cov3KronSumLR(Cov2KronSum):
         else:
             self._rank_c = self.Cr.dim()
         self._dim_c = Cg.dim
-        self._Cr = Cr 
-        self._Cg = Cg 
+        self._Cr = Cr
+        self._Cg = Cg
         self._Cn = Cn
         self._notify('col_cov')
         self.clear_cache('col_cov')
@@ -94,16 +99,19 @@ class Cov3KronSumLR(Cov2KronSum):
         return sp.concatenate([self.Cr.getParams(), self.Cg.getParams(), self.Cn.getParams()])
 
     def _calcNumberParams(self):
-        self.n_params = self.Cr.getNumberParams() + self.Cg.getNumberParams() + self.Cn.getNumberParams() 
-        
+        self.n_params = self.Cr.getNumberParams() + self.Cg.getNumberParams() + self.Cn.getNumberParams()
+
 
     #####################
     # Cached
     #####################
     @cached('G')
     def GG(self):
-        assert self.dim <= 5000, '%s: matrices with dimensions > 5000'  % self.__class__.__name__
-        return sp.dot(self.G, self.G.T) 
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
+
+        return sp.dot(self.G, self.G.T)
 
     @cached(['G', 'row_cov'])
     def Wr(self):
@@ -120,11 +128,11 @@ class Cov3KronSumLR(Cov2KronSum):
 
     @cached(['col_cov', 'row_cov', 'G'])
     def DW(self):
-        return self.d()[:, sp.newaxis] * self.W() 
+        return self.d()[:, sp.newaxis] * self.W()
 
     @cached(['col_cov', 'row_cov', 'G'])
     def DWt(self):
-        return self.DW().reshape((self._dim_r, self.dim_c, self.rank_r * self.rank_c), order = 'F') 
+        return self.DW().reshape((self._dim_r, self.dim_c, self.rank_r * self.rank_c), order = 'F')
 
     @cached(['col_cov', 'row_cov', 'G'])
     def H_chol(self):
@@ -150,7 +158,7 @@ class Cov3KronSumLR(Cov2KronSum):
         if i < np_r:
             r = self.LcGradCrLc(i)
         elif i < (np_r + np_g):
-            _i = i - np_r 
+            _i = i - np_r
             r = self.LcGradCgLc(_i)
         else:
             _i = i - np_r - np_g
@@ -179,7 +187,7 @@ class Cov3KronSumLR(Cov2KronSum):
     def WrWrDWt(self):
         R = np.tensordot(self.Wr(), self.DWt(), axes=(0,0))
         R = np.tensordot(self.Wr(), R, axes=(1,0))
-        return R 
+        return R
 
     @cached(['col_cov', 'row_col', 'G'])
     def SrDWt(self):
@@ -211,7 +219,10 @@ class Cov3KronSumLR(Cov2KronSum):
     #####################
     @cached(['col_cov', 'row_cov', 'G'])
     def K(self):
-        assert self.dim <= 5000, '%s: K method not available for matrix with dimensions > 5000' % self.__class__.__name__
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
+
         R  = sp.kron(self.Cr.K(), self.GG())
         R += sp.kron(self.Cg.K(), self.R)
         R += sp.kron(self.Cn.K(), sp.eye(self.dim_r))
@@ -219,16 +230,19 @@ class Cov3KronSumLR(Cov2KronSum):
 
     @cached(['col_cov', 'row_cov', 'G'])
     def K_grad_i(self,i):
-        assert self.dim <= 5000, '%s: Kgrad_i method not available for matrix with dimensions > 5000' % self.__class__.__name__
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
+
         np_r = self.Cr.getNumberParams()
         np_g = self.Cg.getNumberParams()
-        if i < np_r: 
+        if i < np_r:
             rv= sp.kron(self.Cr.K_grad_i(i), self.GG())
         elif i < (np_r + np_g):
-            _i = i - np_r 
+            _i = i - np_r
             rv = sp.kron(self.Cg.K_grad_i(_i), self.R)
         else:
-            _i = i - np_r - np_g 
+            _i = i - np_r - np_g
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 
@@ -236,7 +250,7 @@ class Cov3KronSumLR(Cov2KronSum):
     def logdet(self):
         r = sp.log(self.SpI()).sum()
         r+= sp.sum(sp.log(self.Cn.S())) * self.R.shape[0]
-        r+= 2 * sp.log(sp.diag(self.H_chol())).sum() 
+        r+= 2 * sp.log(sp.diag(self.H_chol())).sum()
         return r
 
     @cached(['col_cov', 'row_cov', 'G'])
@@ -244,14 +258,14 @@ class Cov3KronSumLR(Cov2KronSum):
         r = (self.d() * self.diag_Ctilde_o_Sr(i)).sum()
         r-= (self.H_inv() * self.Kbar(i)).sum()
         return r
-        
+
 
     #####################
     # Debug methods
     #####################
     def H_chol_debug(self):
         R = sp.dot(self.W().T, self.DW())
-        R+= sp.eye(R.shape[0]) 
+        R+= sp.eye(R.shape[0])
         return la.cholesky(R).T
 
     def inv_debug(self):
@@ -287,6 +301,3 @@ if __name__ == '__main__':
 
     print cov.K()
     print cov.K_grad_i(0)
-
-
-

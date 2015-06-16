@@ -1,11 +1,16 @@
 import sys
 from covar_base import Covariance
 from limix.core.type.cached import cached
+from limix.core.type.exception import TooExpensiveOperationError
+from limix.core.utils import my_name
+from util import msg_too_expensive_dim
 import scipy as sp
 import scipy.linalg as LA
 import warnings
 
 import pdb
+
+_MAX_DIM = 5000
 
 # should be a child class of combinator
 class Cov2KronSum(Covariance):
@@ -47,7 +52,7 @@ class Cov2KronSum(Covariance):
     #####################
     @R.setter
     def R(self,value):
-        assert value is not None, 'Cov2KronSum: Specify R!'
+        assert value is not None, 'R cannot be set to None.'
         self._dim_r = value.shape[0]
         self._R = value
         self._notify('row_cov')
@@ -57,9 +62,9 @@ class Cov2KronSum(Covariance):
 
     # normal setter for col covars
     def setColCovars(self, Cg = None, Cn = None):
-        assert Cg is not None, 'Cov2KronSum: Specify Cg!'
-        assert Cn is not None, 'Cov2KronSum: Specify Cn!'
-        assert Cg.dim==Cn.dim, 'Cov2KronSum: Cg and Cn must have same dimensions!'
+        assert Cg is not None, 'Cg has to be specified.'
+        assert Cn is not None, 'Cn has to be specified.'
+        assert Cg.dim==Cn.dim, 'Cg and Cn must have the same dimensions.'
         self._dim_c = Cg.dim
         self._Cg = Cg
         self._Cn = Cn
@@ -169,7 +174,10 @@ class Cov2KronSum(Covariance):
 
     @cached(['row_cov', 'col_cov'])
     def L(self):
-        assert self.dim <= 5000, '%s: L method not available for matrix with dimensions > 5000' % self.__class__.__name__
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
+
         return sp.kron(self.Lc(), self.Lr())
 
     #####################
@@ -177,13 +185,19 @@ class Cov2KronSum(Covariance):
     #####################
     @cached(['row_cov', 'col_cov'])
     def K(self):
-        assert self.dim <= 5000, '%s: K method not available for matrix with dimensions > 5000' % self.__class__.__name__
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
+
         rv = sp.kron(self.Cg.K(), self.R) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return rv
 
     @cached(['row_cov', 'col_cov'])
     def K_grad_i(self,i):
-        assert self.dim <= 5000, '%s: Kgrad_i method not available for matrix with dimensions > 5000' % self.__class__.__name__
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
+
         if i < self.Cg.getNumberParams():
             rv= sp.kron(self.Cg.K_grad_i(i), self.R)
         else:

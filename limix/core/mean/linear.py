@@ -4,6 +4,8 @@ from limix.core.cobj import *
 from limix.utils.preprocess import regressOut
 #import scipy as SP
 import numpy as np
+from limix.core.utils import assert_make_float_array
+from limix.core.utils import assert_finite_array
 
 import scipy.linalg as LA
 import copy
@@ -61,8 +63,11 @@ def compute_X1KX2(Y, D, X1, X2, A1=None, A2=None):
 
 class Linear(cObject):
 
-    def __init__(self,Y, identity_trick=False):
+    def __init__(self, Y, identity_trick=False):
         """ init data term """
+        Y = assert_make_float_array(Y, 'Y')
+        assert_finite_array(Y)
+
         self.Y = Y
         self.identity_trick=identity_trick
         self.clearFixedEffect()
