@@ -113,6 +113,7 @@ class Cov2KronSum(Covariance):
     def d(self):
         return 1./self.SpI()
 
+    @cached(['col_cov', 'row_cov'])
     def D(self):
         return self.d().reshape((self._dim_r, self._dim_c), order = 'F')
 

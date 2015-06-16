@@ -96,6 +96,21 @@ class GP2KronSum(GP):
     def dLW(self):
         return self.covar.d()[:,sp.newaxis] * self.LW()
 
+    @cached(['row_cov', 'col_cov', 'pheno'])
+    def Sr_DLrYLc_Ctilde(self, i):
+        return self.covar.Sr_X_Ctilde(self.DLrYLc(), i)
+
+    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
+    def Sr_vei_dLWb_Ctilde(self, i):
+        return self.covar.Sr_X_Ctilde(self.vei_dLWb(), i)
+
+    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
+    def vei_dLWb(self):
+        # could be optimized but probably not worth it
+        # as it requires a for loop
+        r = sp.dot(self.dLW(), self.mean.b)
+        return r.reshape(self.mean.Y.shape, order = 'F')
+
     ######################
     # Areml
     ######################
@@ -127,14 +142,8 @@ class GP2KronSum(GP):
         return R
 
     def update_b(self):
-        self.mean.b = self.Areml.solve(self.WKiy())
-
-    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
-    def vei_dLWb(self):
-        # could be optimized but probably not worth it
-        # as it requires a for loop
-        r = sp.dot(self.dLW(), self.mean.b)
-        return r.reshape(self.mean.Y.shape, order = 'F')
+        if self.mean.n_terms > 0:
+            self.mean.b = self.Areml.solve(self.WKiy())
 
     @cached(['row_cov', 'col_cov', 'pheno'])
     def yKiy(self):
@@ -147,14 +156,6 @@ class GP2KronSum(GP):
     #########################
     # Gradients
     #########################
-    @cached(['row_cov', 'col_cov', 'pheno'])
-    def Sr_DLrYLc_Ctilde(self, i):
-        return self.covar.Sr_X_Ctilde(self.DLrYLc(), i)
-
-    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
-    def Sr_vei_dLWb_Ctilde(self, i):
-        return self.covar.Sr_X_Ctilde(self.vei_dLWb(), i)
-
     @cached(['row_cov', 'col_cov', 'pheno'])
     def yKiy_grad_i(self,i):
         return -(self.DLrYLc() * self.Sr_DLrYLc_Ctilde(i)).sum()

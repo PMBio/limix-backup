@@ -63,6 +63,7 @@ class Cov3KronSumLR(Cov2KronSum):
         assert Cr is None, '%s: more general covariance matrices are not supported at the moment' % self.__class__.__name__
         if Cr is None:
             Cr = LowRankCov(Cg.dim, rank)
+            Cr.setRandomParams()
             self._rank_c = rank
         else:
             self._rank_c = self.Cr.dim()
@@ -202,20 +203,8 @@ class Cov3KronSumLR(Cov2KronSum):
         ping = np.transpose(pong, (0,2,1))
         return ping.reshape((self.rank_c * self.rank_r, self.rank_c * self.rank_r),order='F')
 
-    # MOVE in GP
-
-    #@cached(['pheno', 'row_cov', 'G'])
-    #def WrLrY(self): 
-    #    return sp.dot(self.Wr().T, self.LrY())
-
-    #@cached(['pheno','col_cov', 'row_cov', 'G'])
-    #def ve_WrLrYLcWc(self):
-    #    R = sp.dot(self.WrLrY(), sp.dot(self.Lc().T, self.Wc()))
-    #    return R.reshape(self.rank_c * self.rank_r, order = 'F')
-
-    #@cached(['pheno','col_cov', 'row_cov', 'G'])
-    #def Hi_ve_WrLrYLcWc(self):
-    #    return la.cho_solve((self.H_chol(), True), self.ve_WrLrYLcWc)
+    def Sr_X_Ctilde(X, i):
+        pass
 
     #####################
     # Overwritten covar_base methods
