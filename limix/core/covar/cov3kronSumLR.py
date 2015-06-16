@@ -1,274 +1,303 @@
 import sys
-sys.path.insert(0,'./../../..')
-from limix.core.cobj import *
-from limix.core.utils.eigen import *
-from limix.core.covar import cov2kronSum
-import scipy as SP
-import scipy.linalg as LA
-import scipy.sparse.linalg as SLA
-import scipy.stats.mstats as MST
+from covar_base import Covariance 
+from limix.core.covar import Cov2KronSum 
+from limix.core.covar import LowRankCov
+from limix.core.type.cached import cached
+import scipy as sp
+import numpy as np
+import scipy.linalg as la
 import warnings
-from covariance import Covariance
 
 import pdb
 
-# should be a child class of combinator
-class cov3kronSum(cov2kronSum):
+class Cov3KronSumLR(Cov2KronSum):
 
-    def __init__(self,Cr=None,Cg=None,Cn=None,GG=None,XX=None):
-        """
-        initialization
-        """
-        assert Cr is not None, 'specify Cr'
-        assert Cg is not None, 'specify Cg'
-        assert Cn is not None, 'specify Cn'
-        assert GG is not None, 'specify GG'
-        assert XX is not None, 'specify XX'
-        self.Cr = Cr
-        self.Cg = Cg
-        self.Cn = Cn
-        self.P  = Cg.P
-        self.setXX(XX)
-        self.setGG(GG)
+    def __init__(self, Cg = None, Cn = None, G = None, R = None, rank = 1, Cr = None):
+        Covariance.__init__(self)
+        self.setColCovars(Cg = Cg, Cn = Cn, rank = rank, Cr = None)
+        self.R = R
+        self.G = G
+        self.dim = self.dim_c * self.dim_r
         self._calcNumberParams()
-        self._initParams()
+        self._use_to_predict = False
+        print 'TODO: be notified by changes in Cg and Cn'
 
+    #####################
+    # Properties
+    #####################
+    @property
+    def rank_r(self):
+        return self._rank_r
+
+    @property
+    def rank_c(self):
+        return self._rank_c
+
+    @property
+    def Cr(self):
+        return self._Cr
+
+    @property
+    def G(self):
+        return self._G
+
+    #####################
+    # Setters
+    #####################
+    @G.setter
+    def G(self, value):
+        assert value is not None, '%s: Specify G!' % self.__class__.__name__
+        assert self.dim_r == value.shape[0], '%s'
+        self._G = value
+        self._rank_r = value.shape[1]
+        self._notify('G')
+        self.clear_cache('G')
+        self._notify()
+        self.clear_all()
+
+    # normal setter for col covars 
+    def setColCovars(self, Cg = None, Cn = None, rank = 1, Cr = None):
+        assert Cg is not None, 'Cov2KronSum: Specify Cg!'
+        assert Cn is not None, 'Cov2KronSum: Specify Cn!'
+        assert Cg.dim==Cn.dim, 'Cov2KronSum: Cg and Cn must have same dimensions!'
+        assert Cr is None, '%s: more general covariance matrices are not supported at the moment' % self.__class__.__name__
+        if Cr is None:
+            Cr = LowRankCov(Cg.dim, rank)
+            self._rank_c = rank
+        else:
+            self._rank_c = self.Cr.dim()
+        self._dim_c = Cg.dim
+        self._Cr = Cr 
+        self._Cg = Cg 
+        self._Cn = Cn
+        self._notify('col_cov')
+        self.clear_cache('col_cov')
+        self._notify()
+        self.clear_all()
+
+    #####################
+    # Params handling
+    #####################
     def setParams(self,params):
-        self.Cr.setParams(params[:self.Cr.getNumberParams()])
-        self.Cg.setParams(params[self.Cr.getNumberParams():self.Cr.getNumberParams()+self.Cg.getNumberParams()])
-        self.Cn.setParams(params[self.Cr.getNumberParams()+self.Cg.getNumberParams():])
-        self.clear_cache('Cstar','S_Cstar','U_Cstar','S','D','Lc','CrStar','S_CrStar','logdet','logdet_up','logdet_low','logdet_rnd')
+        np_r = self.Cr.getNumberParams()
+        np_g = self.Cg.getNumberParams()
+        self.Cr.setParams(params[:np_r])
+        self.Cg.setParams(params[np_r:(np_r + np_g)])
+        self.Cn.setParams(params[(np_r + np_g):])
+        self._notify('col_cov')
+        self.clear_cache('col_cov')
+        self._notify()
+        self.clear_all()
 
     def getParams(self):
-        return SP.concatenate([Cr.getParams(),Cg.getParams(),Cn.getParams()])
+        return sp.concatenate([self.Cr.getParams(), self.Cg.getParams(), self.Cn.getParams()])
 
     def _calcNumberParams(self):
-        self.n_params = self.Cr.getNumberParams()+self.Cg.getNumberParams()+self.Cn.getNumberParams()
+        self.n_params = self.Cr.getNumberParams() + self.Cg.getNumberParams() + self.Cn.getNumberParams() 
+        
 
-    def setXX(self,XX):
-        self.XX = XX
-        self.N  = XX.shape[0]
-        self.clear_cache('Sr','Lr','GGstar','S_GGstar','U_GGstar','S','D','logdet','logdet_up','logdet_low','logdet_rnd')
+    #####################
+    # Cached
+    #####################
+    @cached('G')
+    def GG(self):
+        assert self.dim <= 5000, '%s: matrices with dimensions > 5000'  % self.__class__.__name__
+        return sp.dot(self.G, self.G.T) 
 
-    def setGG(self,GG):
-        self.GG = GG
-        self.clear_cache('GGstar','S_GGstar','U_GGstar','logdet','logdet_up','logdet_low')
+    @cached(['G', 'row_cov'])
+    def Wr(self):
+        return sp.dot(self.Lr(), self.G)
 
+    @cached('col_cov')
+    def Wc(self):
+        E = self.Cr.X
+        return sp.dot(self.Lc(), E)
+
+    # no need to cached
+    def W(self):
+        return sp.kron(self.Wc(), self.Wr())
+
+    @cached(['col_cov', 'row_cov', 'G'])
+    def DW(self):
+        return self.d()[:, sp.newaxis] * self.W() 
+
+    @cached(['col_cov', 'row_cov', 'G'])
+    def DWt(self):
+        return self.DW().reshape((self._dim_r, self.dim_c, self.rank_r * self.rank_c), order = 'F') 
+
+    @cached(['col_cov', 'row_cov', 'G'])
+    def H_chol(self):
+        H = np.tensordot(self.DWt(),self.Wc(),axes=(1,0))
+        H = np.transpose(H, (0, 2, 1))
+        H = np.tensordot(self.Wr(), H, axes=(0,0))
+        H = H.reshape((self.rank_c * self.rank_r, self.rank_c * self.rank_r), order='F')
+        H+= np.eye(self.rank_r * self.rank_c)
+        return la.cholesky(H).T
+
+    @cached(['col_cov', 'row_cov', 'G'])
+    def H_inv(self):
+        return la.cho_solve((self.H_chol(), True), sp.eye(self.rank_r * self.rank_c))
+
+    @cached('col_cov')
+    def LcGradCrLc(self, i):
+        return sp.dot(self.Lc(), sp.dot(self.Cr.K_grad_i(i), self.Lc().T))
+
+    @cached('col_cov')
+    def Ctilde(self, i):
+        np_r = self.Cr.getNumberParams()
+        np_g = self.Cg.getNumberParams()
+        if i < np_r:
+            r = self.LcGradCrLc(i)
+        elif i < (np_r + np_g):
+            _i = i - np_r 
+            r = self.LcGradCgLc(_i)
+        else:
+            _i = i - np_r - np_g
+            r = self.LcGradCnLc(_i)
+        return r
+
+    @cached(['row_cov', 'G'])
+    def diagWrWr(self):
+        return (self.Wr()**2).sum(1)
+
+    @cached(['col_cov', 'row_col', 'G'])
+    def diag_Ctilde_o_Sr(self, i):
+        np_r = self.Cr.getNumberParams()
+        np_g = self.Cg.getNumberParams()
+        if i < np_r:
+            r = sp.kron(sp.diag(self.LcGradCrLc(i)), self.diagWrWr())
+        elif i < (np_r + np_g):
+            _i = i - np_r
+            r = sp.kron(sp.diag(self.LcGradCgLc(_i)), self.Sr())
+        else:
+            _i = i - np_r - np_g
+            r = sp.kron(sp.diag(self.LcGradCnLc(_i)), sp.ones(self.R.shape[0]))
+        return r
+
+    @cached(['col_cov', 'row_col', 'G'])
+    def WrWrDWt(self):
+        R = np.tensordot(self.Wr(), self.DWt(), axes=(0,0))
+        R = np.tensordot(self.Wr(), R, axes=(1,0))
+        return R 
+
+    @cached(['col_cov', 'row_col', 'G'])
+    def SrDWt(self):
+        return self.Sr()[:, sp.newaxis, sp.newaxis] * self.DWt()
+
+    @cached(['col_cov', 'row_col', 'G'])
+    def Kbar(self, i):
+        # WrDRDWtCtildeWc
+        np_r = self.Cr.getNumberParams()
+        np_g = self.Cg.getNumberParams()
+        if i < np_r:
+            RDWt = self.WrWrDWt()
+        elif i < (np_r + np_g):
+            RDWt = self.SrDWt()
+        else:
+            RDWt = self.DWt()
+        ping = np.tensordot(RDWt, self.Ctilde(i), axes=(1,0))
+        pong = self.D()[:, sp.newaxis, :] * ping
+        ping = np.tensordot(pong, self.Wc(), axes=(2,0))
+        pong = np.tensordot(self.Wr(), ping, axes=(0,0))
+        ping = np.transpose(pong, (0,2,1))
+        return ping.reshape((self.rank_c * self.rank_r, self.rank_c * self.rank_r),order='F')
+
+    # MOVE in GP
+
+    #@cached(['pheno', 'row_cov', 'G'])
+    #def WrLrY(self): 
+    #    return sp.dot(self.Wr().T, self.LrY())
+
+    #@cached(['pheno','col_cov', 'row_cov', 'G'])
+    #def ve_WrLrYLcWc(self):
+    #    R = sp.dot(self.WrLrY(), sp.dot(self.Lc().T, self.Wc()))
+    #    return R.reshape(self.rank_c * self.rank_r, order = 'F')
+
+    #@cached(['pheno','col_cov', 'row_cov', 'G'])
+    #def Hi_ve_WrLrYLcWc(self):
+    #    return la.cho_solve((self.H_chol(), True), self.ve_WrLrYLcWc)
+
+    #####################
+    # Overwritten covar_base methods
+    #####################
+    @cached(['col_cov', 'row_cov', 'G'])
     def K(self):
-        assert self.XX.shape[0]*self.Cr.K().shape[0]<5000, 'dimension is too high'
-        RV = SP.kron(self.Cr.K(),self.GG)
-        RV+= SP.kron(self.Cg.K(),self.XX)
-        RV+= SP.kron(self.Cn.K(),SP.eye(self.N))
-        return RV
+        assert self.dim <= 5000, '%s: K method not available for matrix with dimensions > 5000' % self.__class__.__name__
+        R  = sp.kron(self.Cr.K(), self.GG())
+        R += sp.kron(self.Cg.K(), self.R)
+        R += sp.kron(self.Cn.K(), sp.eye(self.dim_r))
+        return R
 
-    def _Kx(self,x):
-        """
-        compute K x
-        """
-        X = SP.reshape(x,(self.N,self.P),order='F')
-        B = SP.dot(self.GG,SP.dot(X,self.Cr.K()))
-        B+= SP.dot(self.XX,SP.dot(X,self.Cg.K()))
-        B+= SP.dot(X,self.Cn.K())
-        b = SP.reshape(B,(self.N*self.P),order='F')
-        return b
+    @cached(['col_cov', 'row_cov', 'G'])
+    def K_grad_i(self,i):
+        assert self.dim <= 5000, '%s: Kgrad_i method not available for matrix with dimensions > 5000' % self.__class__.__name__
+        np_r = self.Cr.getNumberParams()
+        np_g = self.Cg.getNumberParams()
+        if i < np_r: 
+            rv= sp.kron(self.Cr.K_grad_i(i), self.GG())
+        elif i < (np_r + np_g):
+            _i = i - np_r 
+            rv = sp.kron(self.Cg.K_grad_i(_i), self.R)
+        else:
+            _i = i - np_r - np_g 
+            rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
+        return rv
 
-    def solve(self,Y,X0=None,tol=1E-9):
-        """ solve lin system Ki Y = X """
-        Kx_linop = SLA.LinearOperator((self.N*self.P,self.N*self.P),matvec=self._Kx,rmatvec=self._Kx,dtype='float64')
-        x0 = SP.reshape(X0,(self.N*self.P),order='F')
-        y  = SP.reshape(Y,(self.N*self.P),order='F')
-        x,_ = SLA.cgs(Kx_linop,y,x0=x0,tol=tol)
-        RV = SP.reshape(x,(self.N,self.P),order='F')
-        return RV
-
-    @cached
+    @cached(['col_cov', 'row_cov', 'G'])
     def logdet(self):
-        S,U = LA.eigh(self.K())
-        return SP.log(S).sum()
+        r = sp.log(self.SpI()).sum()
+        r+= sp.sum(sp.log(self.Cn.S())) * self.R.shape[0]
+        r+= 2 * sp.log(sp.diag(self.H_chol())).sum() 
+        return r
 
-    @cached
-    def CrStar(self):
-        return SP.dot(self.Lc(),SP.dot(self.Cr.K(),self.Lc().T))
-
-    @cached
-    def S_CrStar(self):
-        S,U = LA.eigh(self.CrStar())
-        self.fill_cache('U_CrStar',U)
-        return S
-
-    @cached
-    def U_CrStar(self):
-        S,U = LA.eigh(self.CrStar())
-        self.fill_cache('S_CrStar',S)
-        return U
-
-    @cached
-    def GGstar(self):
-        return SP.dot(self.Lr(),SP.dot(self.GG,self.Lr().T))
-
-    @cached
-    def S_GGstar(self):
-        S,U = LA.eigh(self.GGstar())
-        self.fill_cache('U_GGstar',U)
-        return S
-
-    @cached
-    def U_GGstar(self):
-        S,U = LA.eigh(self.GGstar())
-        self.fill_cache('S_GGstar',S)
-        return U
-
-    def logdet_bound(self,bound='up'):
-        Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        if bound=='up':
-            idx_r = Sr.argsort()[::-1]
-        elif bound=='low':
-            idx_r = Sr.argsort()
-        idx = self.S().argsort()
-        RV = SP.log(Sr[idx_r]+self.S()[idx]).sum()
-        RV+= SP.sum(SP.log(self.Cn.S()))*self.N
-        return RV
-
-    def logdet_rnd(self,n_perms=1):
-        Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        RV = []
-        for n in range(n_perms):
-            idx_r = SP.random.permutation(self.N*self.P)
-            RV.append(SP.log(Sr[idx_r]+self.S()).sum())
-        RV = MST.gmean(RV)
-        RV+= SP.sum(SP.log(self.Cn.S()))*self.N
-        return RV
+    @cached(['col_cov', 'row_cov', 'G'])
+    def logdet_grad_i(self, i):
+        r = (self.d() * self.diag_Ctilde_o_Sr(i)).sum()
+        r-= (self.H_inv() * self.Kbar(i)).sum()
+        return r
         
-    def logdet_up_debug(self):
-        assert self.XX.shape[0]*self.Cr.K().shape[0]<5000, 'dimension is too high'
-        A = SP.kron(self.Cr.K(),self.GG)
-        B = SP.kron(self.Cg.K(),self.XX)
-        B+= SP.kron(self.Cn.K(),SP.eye(self.XX.shape[0]))
-        Sa,Ua = LA.eigh(A)
-        Sb,Ub = LA.eigh(B)
-        return SP.log(Sa+Sb[::-1]).sum()
 
-    def logdet_low_debug(self):
-        assert self.XX.shape[0]*self.Cr.K().shape[0]<5000, 'dimension is too high'
-        A = SP.kron(self.Cr.K(),self.GG)
-        B = SP.kron(self.Cg.K(),self.XX)
-        B+= SP.kron(self.Cn.K(),SP.eye(self.XX.shape[0]))
-        Sa,Ua = LA.eigh(A)
-        Sb,Ub = LA.eigh(B)
-        return SP.log(Sa+Sb).sum()
+    #####################
+    # Debug methods
+    #####################
+    def H_chol_debug(self):
+        R = sp.dot(self.W().T, self.DW())
+        R+= sp.eye(R.shape[0]) 
+        return la.cholesky(R).T
 
-    def CrStarGrad_r(self,i):
-        return SP.dot(self.Lc(),SP.dot(self.Cr.Kgrad_param(i),self.Lc().T))
+    def inv_debug(self):
+        dL = self.d()[:,sp.newaxis] * self.L()
+        WdL = sp.dot(self.DW().T, self.L())
+        HiWdL = sp.dot(self.H_inv(), WdL)
+        return sp.dot(self.L().T, dL) - sp.dot(WdL.T, HiWdL)
 
-    def CrStarGrad_g(self,i):
-        RV = SP.dot(self.LcGrad_g(i),SP.dot(self.Cr.K(),self.Lc().T))
-        RV+= RV.T 
-        return RV
-        
-    def CrStarGrad_n(self,i):
-        RV = SP.dot(self.LcGrad_n(i),SP.dot(self.Cr.K(),self.Lc().T))
-        RV+= RV.T 
-        return RV
+    @cached
+    def logdet_debug(self):
+        return 2*sp.log(sp.diag(self.chol())).sum()
 
-    def S_CrStarGrad_r(self,i):
-        return dS_dti(self.CrStarGrad_r(i),U=self.U_CrStar())
+    @cached
+    def logdet_grad_i_debug(self,i):
+        return self.solve(self.K_grad_i(i)).diagonal().sum()
 
-    def S_CrStarGrad_g(self,i):
-        return dS_dti(self.CrStarGrad_g(i),U=self.U_CrStar())
+if __name__ == '__main__':
+    from limix.core.covar import FreeFormCov
+    from limix.utils.preprocess import covar_rescale
 
-    def S_CrStarGrad_n(self,i):
-        return dS_dti(self.CrStarGrad_n(i),U=self.U_CrStar())
+    # define row caoriance
+    dim_r = 10
+    X = sp.rand(dim_r, dim_r)
+    R = covar_rescale(sp.dot(X,X.T))
 
-    def logdet_bound_grad_r(self,i,bound='up'):
-        Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        SrGrad = SP.kron(self.S_CrStarGrad_r(i),self.S_GGstar())
-        if bound=='up':
-            idx_r = Sr.argsort()[::-1]
-        elif bound=='low':
-            idx_r = Sr.argsort()
-        idx = self.S().argsort()
-        RV = (SrGrad[idx_r]/(Sr[idx_r]+self.S()[idx])).sum()
-        return RV
+    # define col covariances
+    dim_c = 3
+    Cg = FreeFormCov(dim_c)
+    Cn = FreeFormCov(dim_c)
 
-    def logdet_bound_grad_g(self,i,bound='up'):
-        Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        SrGrad = SP.kron(self.S_CrStarGrad_g(i),self.S_GGstar())
-        Sgrad  = self.Sgrad_g(i)
-        if bound=='up':
-            idx_r = Sr.argsort()[::-1]
-        elif bound=='low':
-            idx_r = Sr.argsort()
-        idx = self.S().argsort()
-        RV = ((SrGrad[idx_r]+Sgrad[idx])/(Sr[idx_r]+self.S()[idx])).sum()
-        return RV
+    cov = Cov3KronSum(Cg = Cg, Cn = Cn, R = R)
+    cov.setRandomParams()
 
-    def logdet_bound_grad_n(self,i,bound='up'):
-        Sr = SP.kron(self.S_CrStar(),self.S_GGstar())
-        SrGrad = SP.kron(self.S_CrStarGrad_n(i),self.S_GGstar())
-        Sgrad  = self.Sgrad_n(i)
-        if bound=='up':
-            idx_r = Sr.argsort()[::-1]
-        elif bound=='low':
-            idx_r = Sr.argsort()
-        idx = self.S().argsort()
-        RV = ((SrGrad[idx_r]+Sgrad[idx])/(Sr[idx_r]+self.S()[idx])).sum()
-        RV+= SP.sum(self.Cn.Sgrad(i)/self.Cn.S())*self.N
-        return RV
+    print cov.K()
+    print cov.K_grad_i(0)
 
-    def numGrad_r(self,f,h=1e-4):
-        params_r  = self.Cr.getParams().copy()
-        params_g  = self.Cg.getParams().copy()
-        params_n  = self.Cn.getParams().copy()
-        params    = params_r.copy()
-        RV = []
-        for i in range(params.shape[0]):
-            params[i] = params_r[i]+h 
-            _params = SP.concatenate([params,params_g,params_n])
-            self.setParams(_params)
-            fR = f()
-            params[i] = params_r[i]-h 
-            _params = SP.concatenate([params,params_g,params_n])
-            self.setParams(_params)
-            fL = f()
-            params[i] = params_r[i]
-            RV.append((fR-fL)/(2*h))
-        return SP.array(RV)
 
-    def numGrad_g(self,f,h=1e-4):
-        params_r  = self.Cr.getParams().copy()
-        params_g  = self.Cg.getParams().copy()
-        params_n  = self.Cn.getParams().copy()
-        params    = params_g.copy()
-        RV = []
-        for i in range(params.shape[0]):
-            params[i] = params_g[i]+h 
-            _params = SP.concatenate([params_r,params,params_n])
-            self.setParams(_params)
-            fR = f()
-            params[i] = params_g[i]-h 
-            _params = SP.concatenate([params_r,params,params_n])
-            self.setParams(_params)
-            fL = f()
-            params[i] = params_g[i]
-            RV.append((fR-fL)/(2*h))
-        return SP.array(RV)
-
-    def numGrad_n(self,f,h=1e-4):
-        params_r  = self.Cr.getParams().copy()
-        params_g  = self.Cg.getParams().copy()
-        params_n  = self.Cn.getParams().copy()
-        params    = params_n.copy()
-        RV = []
-        for i in range(params.shape[0]):
-            params[i] = params_n[i]+h 
-            _params = SP.concatenate([params_r,params_g,params])
-            self.setParams(_params)
-            fR = f()
-            params[i] = params_n[i]-h 
-            _params = SP.concatenate([params_r,params_g,params])
-            self.setParams(_params)
-            fL = f()
-            params[i] = params_n[i]
-            RV.append((fR-fL)/(2*h))
-        return SP.array(RV)
 
