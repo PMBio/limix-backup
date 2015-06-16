@@ -143,7 +143,7 @@ class GP2KronSum(GP):
         return R
 
     def update_b(self):
-        if self.mean.n_terms > 0:
+        if self.mean.n_covs > 0:
             self.mean.b = self.Areml.solve(self.WKiy())
 
     @cached(['row_cov', 'col_cov', 'pheno'])

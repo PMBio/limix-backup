@@ -89,7 +89,7 @@ class GP(Cached, Observed):
 
     # b is calculated here but cached in the mean?
     def update_b(self):
-        if self.mean.n_terms > 0:
+        if self.mean.n_covs > 0:
             self.mean.b = self.Areml.solve(self.yKiW().T)
 
     @cached

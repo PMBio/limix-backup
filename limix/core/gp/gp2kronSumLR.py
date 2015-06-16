@@ -392,7 +392,8 @@ class GP2KronSumLR(GP):
         return R
 
     def update_b(self):
-        self.mean.b = self.Areml.solve(self.WKiy())
+        if self.mean.n_covs>0:
+            self.mean.b = self.Areml.solve(self.WKiy())
 
     @cached
     def yKiy(self):
