@@ -37,5 +37,9 @@ class TestSumCov(unittest.TestCase):
 
         np.testing.assert_almost_equal(err, 0.)
 
+    def test_use_to_predict_exception(self):
+        with self.assertRaises(NotImplementedError):
+            self._cov.use_to_predict = 1.
+
 if __name__ == '__main__':
     unittest.main()
