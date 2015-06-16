@@ -1,5 +1,7 @@
 import sys
 from limix.core.type.cached import cached
+from limix.core.utils import assert_make_float_array
+from limix.core.utils import assert_finite_array
 import scipy as sp
 import numpy as np
 from covar_base import Covariance
@@ -9,12 +11,20 @@ class SQExpCov(Covariance):
     """
     squared exponential covariance function
     """
-    def __init__(self,X,Xstar=None):
+    def __init__(self, X, Xstar=None):
         """
         X   dim x d input matrix
         """
         Covariance.__init__(self)
+
+        X = assert_make_float_array(X, "X")
+        assert_finite_array(X)
         self.X = X
+
+        if Xstar is not None:
+            Xstar = assert_make_float_array(Xstar, "Xstar")
+            assert_finite_array(Xstar)
+
         self.Xstar = Xstar
         self._initParams()
 

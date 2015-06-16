@@ -2,6 +2,7 @@ import unittest
 import numpy as np
 from limix.core.covar import SQExpCov
 from limix.utils.check_grad import mcheck_grad
+from limix.core.type.exception import NotArrayConvertibleError
 import scipy as sp
 
 class TestSQExp(unittest.TestCase):
@@ -52,6 +53,15 @@ class TestSQExp(unittest.TestCase):
         x0 = np.array([self._cov.scale])
         err = mcheck_grad(func, grad, x0)
 
+    def test_input(self):
+        with self.assertRaises(ValueError):
+            SQExpCov(np.array([[np.inf]]))
+
+        with self.assertRaises(ValueError):
+            SQExpCov(np.array([[np.nan]]))
+
+        with self.assertRaises(NotArrayConvertibleError):
+            SQExpCov("Ola meu querido.")
 
 if __name__ == '__main__':
     unittest.main()
