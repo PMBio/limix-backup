@@ -36,8 +36,8 @@ class LowRankCov(Covariance):
 
     @X.setter
     def X(self, value):
-        assert X.shape[0]==self.dim, 'LowRankCov: dimension mismatch'
-        assert X.shape[1]==self.rank, 'LowRankCov: dimension mismatch'
+        assert X.shape[0]==self.dim, 'Dimension mismatch.'
+        assert X.shape[1]==self.rank, 'Dimension mismatch.'
         self.setParams(X.reshape(X.size, order = 'F'))
 
     #####################
@@ -48,7 +48,7 @@ class LowRankCov(Covariance):
 
     def setCovariance(self, cov):
         """ makes lowrank approximation of cov """
-        assert cov.shape[0]==self.dim, 'LowRankCov: dimension mismatch'
+        assert cov.shape[0]==self.dim, 'Dimension mismatch.'
         S, U = la.eigh(cov)
         U = U[:,::-1]
         S = S[::-1]

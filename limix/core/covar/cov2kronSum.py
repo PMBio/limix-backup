@@ -3,6 +3,7 @@ from covar_base import Covariance
 from limix.core.type.cached import cached
 from limix.core.type.exception import TooExpensiveOperationError
 from limix.core.utils import my_name
+from util import msg_too_expensive_dim
 import scipy as sp
 import scipy.linalg as LA
 import warnings
@@ -10,11 +11,6 @@ import warnings
 import pdb
 
 _MAX_DIM = 5000
-
-def msg_too_expensive(method_name):
-    return('%s method is too expensive to be'
-           'run for matrices with dimension'
-           'greater than %d.' % (method_name, _MAX_DIM))
 
 # should be a child class of combinator
 class Cov2KronSum(Covariance):
@@ -177,8 +173,9 @@ class Cov2KronSum(Covariance):
 
     @cached(['row_cov', 'col_cov'])
     def L(self):
-        if self.dim > 5000:
-            raise TooExpensiveOperationError(msg_too_expensive(my_name()))
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
 
         return sp.kron(self.Lc(), self.Lr())
 
@@ -187,16 +184,18 @@ class Cov2KronSum(Covariance):
     #####################
     @cached(['row_cov', 'col_cov'])
     def K(self):
-        if self.dim > 5000:
-            raise TooExpensiveOperationError(msg_too_expensive(my_name()))
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
 
         rv = sp.kron(self.Cg.K(), self.R) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return rv
 
     @cached(['row_cov', 'col_cov'])
     def K_grad_i(self,i):
-        if self.dim > 5000:
-            raise TooExpensiveOperationError(msg_too_expensive(my_name()))
+        if self.dim > _MAX_DIM:
+            raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
+                                                                   _MAX_DIM))
 
         if i < self.Cg.getNumberParams():
             rv= sp.kron(self.Cg.K_grad_i(i), self.R)

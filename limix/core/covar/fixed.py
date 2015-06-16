@@ -40,7 +40,7 @@ class FixedCov(Covariance):
     #####################
     @scale.setter
     def scale(self,value):
-        assert value>=0, 'Scale must be >=0'
+        assert value >= 0, 'Scale must be >= 0.'
         self.params[0] = sp.log(value)
         self.clear_all()
         self._notify()
@@ -56,7 +56,7 @@ class FixedCov(Covariance):
         if value is None:
             self._use_to_predict = False
         else:
-            assert value.shape[1]==self.dim, 'Dimension mismatch'
+            assert value.shape[1] == self.dim, 'Dimension mismatch.'
             self._use_to_predict = True
         self._Kcross0 = value
         self.clear_cache('Kcross')
@@ -64,7 +64,7 @@ class FixedCov(Covariance):
 
     @Covariance.use_to_predict.setter
     def use_to_predict(self,value):
-        assert self.Kcross0 is not None, 'set Kcross0!'
+        assert self.Kcross0 is not None, 'Kcross0 has to be set before.'
         self._use_to_predict = value
 
     #####################
