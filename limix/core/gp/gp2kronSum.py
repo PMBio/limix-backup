@@ -13,7 +13,8 @@ from limix.core.covar.cov_reml import cov_reml
 
 class GP2KronSum(GP):
 
-    def __init__(self,Y = None, F = None, A = None, Cg = None,Cn = None, XX=None, S_XX=None, U_XX=None):
+    def __init__(self,Y=None, F=None, A=None, Cg=None,Cn=None, XX=None,
+                 S_XX=None, U_XX=None):
         """
         Gaussian Process with a 2kronSum Covariance and a mean with kronecker terms(with REML)
         vec(Y) ~ N( vec( \sum_i A_i \kron F_i), Cg \kron R + Cn \kron I )
@@ -24,9 +25,9 @@ class GP2KronSum(GP):
         XX:     Matrix for fixed sample-to-sample covariance function
         """
         print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
-        covar = Cov2KronSum(Cg = Cg, Cn = Cn, R = XX)
-        mean  = MeanKronSum(Y = Y, F = F, A = A)
-        GP.__init__(self, covar = covar, mean = mean)
+        covar = Cov2KronSum(Cg=Cg, Cn=Cn, R=XX)
+        mean  = MeanKronSum(Y=Y, F=F, A=A)
+        GP.__init__(self, covar=covar, mean=mean)
 
     def _observe(self):
         self.covar.register(self.col_cov_has_changed, 'row_cov')
@@ -164,4 +165,3 @@ class GP2KronSum(GP):
         rv = -2*(self.DLrYLc()*self.Sr_vei_dLWb_Ctilde(i)).sum()
         rv+= (self.vei_dLWb()*self.Sr_vei_dLWb_Ctilde(i)).sum()
         return rv
-

@@ -2,7 +2,9 @@ class TooExpensiveOperationError(RuntimeError):
     def __init__(self, msg):
         RuntimeError.__init__(self, msg)
 
-
+class NotArrayConvertibleError(ValueError):
+    def __init__(self, msg):
+        ValueError.__init__(self, msg)
 
 if __name__ == '__main__':
 
