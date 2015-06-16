@@ -31,7 +31,7 @@ class mean_base(Cached, Observed):
 
     @property
     def W(self):
-        return self._W
+        return self._K
 
     @property
     def B(self):
@@ -44,6 +44,10 @@ class mean_base(Cached, Observed):
         else:
             R = sp.reshape(self.b_ste,(self._K,self._P),order='F')
         return R
+
+    @property
+    def n_covs(self):
+        return self.W.shape[1] 
 
     @property
     def y(self):
@@ -84,6 +88,7 @@ class mean_base(Cached, Observed):
     @W.setter
     def W(self,value):
         """ set fixed effect design """
+        if W is None:   W = sp.zeros((self._N, 0))
         assert value.shape[0]==self._N, 'Dimension mismatch'
         self._K = value.shape[1]
         self._W = value

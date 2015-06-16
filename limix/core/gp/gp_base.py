@@ -89,7 +89,8 @@ class GP(Cached, Observed):
 
     # b is calculated here but cached in the mean?
     def update_b(self):
-        self.mean.b = self.Areml.solve(self.yKiW().T)
+        if self.mean.n_terms > 0:
+            self.mean.b = self.Areml.solve(self.yKiW().T)
 
     @cached
     def KiWb(self):
@@ -140,9 +141,10 @@ class GP(Cached, Observed):
     def LML(self):
         #const term to add?
         rv = 0.5*self.covar.logdet()
-        rv += 0.5*self.Areml.logdet()
         rv += 0.5*self.yKiy()
-        rv -= 0.5*self.yKiWb()
+        if self.mean.n_covs>0:
+            rv += 0.5*self.Areml.logdet()
+            rv -= 0.5*self.yKiWb()
         return rv
 
     @cached
@@ -157,16 +159,18 @@ class GP(Cached, Observed):
     def yKiWb_grad(self):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
-        for i in range(n_params):
-            RV['covar'][i] = self.yKiWb_grad_i(i)
+        if self.mean.n_covs > 0:
+            for i in range(n_params):
+                RV['covar'][i] = self.yKiWb_grad_i(i)
         return RV
 
     @cached
     def Areml_logdet_grad(self):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
-        for i in range(n_params):
-            RV['covar'][i] = self.Areml.logdet_grad_i(i)
+        if self.mean.n_covs > 0:
+            for i in range(n_params):
+                RV['covar'][i] = self.Areml.logdet_grad_i(i)
         return RV
 
     @cached
@@ -175,9 +179,10 @@ class GP(Cached, Observed):
         RV = {'covar': sp.zeros(n_params)}
         for i in range(n_params):
             RV['covar'][i]  = 0.5*self.covar.logdet_grad_i(i)
-            RV['covar'][i] += 0.5*self.Areml.logdet_grad_i(i)
             RV['covar'][i] += 0.5*self.yKiy_grad_i(i)
-            RV['covar'][i] -= 0.5*self.yKiWb_grad_i(i)
+            if self.mean.n_covs > 0:
+                RV['covar'][i] += 0.5*self.Areml.logdet_grad_i(i)
+                RV['covar'][i] -= 0.5*self.yKiWb_grad_i(i)
         return RV
 
     def predict(self):
@@ -258,36 +263,3 @@ class GP(Cached, Observed):
         print err
         #np.testing.assert_almost_equal(err, 0., decimal=5)
 
-    # ############################
-    # # DEBUGGING
-    # ############################
-    #
-    # def checkGradient(self,h=1e-4,verbose=True,fun='LML'):
-    #     """
-    #     utility function to check the analytical gradient of
-    #     a scalar function in the gp
-    #     """
-    #     f = getattr(self,fun)
-    #     f_grad = getattr(self,fun+'_grad')
-    #     grad_an = f_grad()
-    #     grad_num = {}
-    #     params = self.getParams()
-    #     for key in params.keys():
-    #         paramsL = params.copy()
-    #         paramsR = params.copy()
-    #         grad_num[key] = sp.zeros_like(params[key])
-    #         e = sp.zeros(params[key].shape[0])
-    #         for i in range(params[key].shape[0]):
-    #             e[i] = 1
-    #             paramsL[key]=params[key]-h*e
-    #             paramsR[key]=params[key]+h*e
-    #             self.setParams(paramsL)
-    #             lml_L = f()
-    #             self.setParams(paramsR)
-    #             lml_R = f()
-    #             grad_num[key][i] = (lml_R-lml_L)/(2*h)
-    #             e[i] = 0
-    #         if verbose:
-    #             print '%s:'%key
-    #             print abs((grad_an[key]-grad_num[key]))
-    #             print ''

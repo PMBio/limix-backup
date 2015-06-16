@@ -1,6 +1,7 @@
 import sys
 from mean_base import mean_base
 from limix.utils.preprocess import regressOut
+from limix.utils.util_functions import to_list
 from limix.core.type.cached import *
 from limix.core.type.observed import *
 import scipy as sp
@@ -126,7 +127,8 @@ class MeanKronSum(Cached, Observed):
 
     def setDesigns(self,F,A):
         """ set fixed effect designs """
-        print 'TODO: handle None, and non-list F and A'
+        F = to_list(F)
+        A = to_list(A)
         assert len(A) == len(F), 'MeanKronSum: A and F must have same length!'
         n_terms = len(F)
         n_covs = 0
