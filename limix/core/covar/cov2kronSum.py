@@ -22,7 +22,18 @@ class Cov2KronSum(Covariance):
         self.dim = self.dim_c * self.dim_r
         self._calcNumberParams()
         self._use_to_predict = False
-        print 'TODO: be notified by changes in Cg and Cn'
+
+    def col_covs_have_changed(self):
+        self.clear_cache('col_cov')
+        self.clear_all()
+        self._notify('col_cov')
+        self._notify()
+
+    def R_has_changed(self):
+        self.clear_cache('row_cov')
+        self.clear_all()
+        self._notify('row_cov')
+        self._notify()
 
     #####################
     # Properties
@@ -55,10 +66,7 @@ class Cov2KronSum(Covariance):
         assert value is not None, 'R cannot be set to None.'
         self._dim_r = value.shape[0]
         self._R = value
-        self._notify('row_cov')
-        self.clear_cache('row_cov')
-        self._notify()
-        self.clear_all()
+        self.R_has_changed()
 
     def setColCovars(self, Cg = None, Cn = None):
         assert Cg is not None, 'Cg has to be specified.'
@@ -67,10 +75,9 @@ class Cov2KronSum(Covariance):
         self._dim_c = Cg.dim
         self._Cg = Cg
         self._Cn = Cn
-        self._notify('col_cov')
-        self.clear_cache('col_cov')
-        self._notify()
-        self.clear_all()
+        self._Cg.register(self.col_covs_have_changed)
+        self._Cn.register(self.col_covs_have_changed)
+        self.col_covs_have_changed()
 
     #####################
     # Params handling
@@ -78,10 +85,6 @@ class Cov2KronSum(Covariance):
     def setParams(self,params):
         self.Cg.setParams(params[:self.Cg.getNumberParams()])
         self.Cn.setParams(params[self.Cg.getNumberParams():])
-        self._notify('col_cov')
-        self.clear_cache('col_cov')
-        self._notify()
-        self.clear_all()
 
     def getParams(self):
         return sp.concatenate([self.Cg.getParams(),self.Cn.getParams()])

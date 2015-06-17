@@ -23,15 +23,18 @@ class Cov2KronSumLR(Covariance):
         self.dim = self.dim_c * self.dim_r
         self._calcNumberParams()
         self._use_to_predict = False
-        print 'TODO: be notified by changes in Cg and Cn'
 
-    def clear_cache_r(self):
+    def G_has_changed(self):
         self.clear_cache('row_cov')
         self.clear_all()
+        self._notify('row_cov')
+        self._notify()
 
-    def clear_cache_c(self):
+    def col_covs_have_changed(self):
         self.clear_cache('col_cov')
         self.clear_all()
+        self._notify('col_cov')
+        self._notify()
 
     #####################
     # Properties
@@ -73,9 +76,7 @@ class Cov2KronSumLR(Covariance):
         self._dim_r = value.shape[0]
         self._rank_r = value.shape[1]
         self._G = value
-        self.clear_cache_r()
-        self._notify()
-        self._notify('row_cov')
+        self.G_has_changed()
 
     # normal setter for col covars
     def setColCovars(self, Cn = None, rank = 1):
@@ -84,9 +85,10 @@ class Cov2KronSumLR(Covariance):
         self._dim_c = Cn.dim
         self._Cg = LowRankCov(self._dim_c, rank)
         self._Cn = Cn
-        self.clear_cache_c()
-        self._notify()
-        self._notify('col_cov')
+        # register
+        self._Cg.register(self.col_covs_have_changed)
+        self._Cn.register(self.col_covs_have_changed)
+        self.col_covs_have_changed()
 
     #####################
     # Params handling
@@ -94,9 +96,6 @@ class Cov2KronSumLR(Covariance):
     def setParams(self,params):
         self.Cg.setParams(params[:self.Cg.getNumberParams()])
         self.Cn.setParams(params[self.Cg.getNumberParams():])
-        self.clear_cache_c()
-        self._notify()
-        self._notify('col_cov')
 
     def getParams(self):
         return sp.concatenate([self.Cg.getParams(),self.Cn.getParams()])

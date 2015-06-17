@@ -25,7 +25,12 @@ class Cov3KronSumLR(Cov2KronSum):
         self.dim = self.dim_c * self.dim_r
         self._calcNumberParams()
         self._use_to_predict = False
-        print 'TODO: be notified by changes in Cg and Cn'
+
+    def G_has_changed(self):
+        self.clear_cache('G')
+        self.clear_all()
+        self._notify('G')
+        self._notify()
 
     #####################
     # Properties
@@ -55,10 +60,7 @@ class Cov3KronSumLR(Cov2KronSum):
         assert self.dim_r == value.shape[0], '%s'
         self._G = value
         self._rank_r = value.shape[1]
-        self._notify('G')
-        self.clear_cache('G')
-        self._notify()
-        self.clear_all()
+        self.G_has_changed()
 
     # normal setter for col covars
     def setColCovars(self, Cg = None, Cn = None, rank = 1, Cr = None):
@@ -76,10 +78,9 @@ class Cov3KronSumLR(Cov2KronSum):
         self._Cr = Cr
         self._Cg = Cg
         self._Cn = Cn
-        self._notify('col_cov')
-        self.clear_cache('col_cov')
-        self._notify()
-        self.clear_all()
+        self._Cg.register(self.col_covs_have_changed)
+        self._Cn.register(self.col_covs_have_changed)
+        self.col_covs_have_changed()
 
     #####################
     # Params handling
@@ -90,10 +91,6 @@ class Cov3KronSumLR(Cov2KronSum):
         self.Cr.setParams(params[:np_r])
         self.Cg.setParams(params[np_r:(np_r + np_g)])
         self.Cn.setParams(params[(np_r + np_g):])
-        self._notify('col_cov')
-        self.clear_cache('col_cov')
-        self._notify()
-        self.clear_all()
 
     def getParams(self):
         return sp.concatenate([self.Cr.getParams(), self.Cg.getParams(), self.Cn.getParams()])
