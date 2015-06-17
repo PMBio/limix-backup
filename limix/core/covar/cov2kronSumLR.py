@@ -26,11 +26,11 @@ class Cov2KronSumLR(Covariance):
         print 'TODO: be notified by changes in Cg and Cn'
 
     def clear_cache_r(self):
-        self.clear_cache('Sg','Ug','Vg','Wr','SpI','d')
+        self.clear_cache('row_cov')
         self.clear_all()
 
     def clear_cache_c(self):
-        self.clear_cache('Lc','Estar','Se','Ue','Ve','Wc','SpI','d','Ctilde','Cbar')
+        self.clear_cache('col_cov')
         self.clear_all()
 
     #####################
@@ -108,32 +108,32 @@ class Cov2KronSumLR(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('row_cov')
     def Sg(self):
         Ug, Sgh, Vg = nla.svd(self.G, full_matrices=0)
         self.fill_cache('Ug', Ug)
         self.fill_cache('Vg', Vg)
         return Sgh**2
 
-    @cached
+    @cached('row_cov')
     def Ug(self):
         Ug, Sgh, Vg = nla.svd(self.G, full_matrices=0)
         self.fill_cache('Sg', Sgh**2)
         self.fill_cache('Vg', Vg)
         return Ug
 
-    @cached
+    @cached('row_cov')
     def Vg(self):
         Ug, Sgh, Vg = nla.svd(self.G, full_matrices=0)
         self.fill_cache('Ug', Ug)
         self.fill_cache('Sg', Sgh**2)
         return Vg
 
-    @cached
+    @cached('row_cov')
     def Wr(self):
         return self.Ug().T
 
-    @cached
+    @cached('col_cov')
     def Lc(self):
         return self.Cn.USi2().T
 
@@ -141,7 +141,7 @@ class Cov2KronSumLR(Covariance):
     def Lr(self):
         return self.eye(N)
 
-    @cached
+    @cached('col_cov')
     def Estar(self):
         E = self.Cg.X
         # for a general covariance matrix
@@ -149,43 +149,44 @@ class Cov2KronSumLR(Covariance):
         # or based on eigh decomposition if this fails
         return sp.dot(self.Lc(), E)
 
-    @cached
+    @cached('col_cov')
     def Se(self):
         Ue, Seh, Ve = nla.svd(self.Estar(), full_matrices=0)
         self.fill_cache('Ue',Ue)
         self.fill_cache('Ve',Ve)
         return Seh**2
 
-    @cached
+    @cached('col_cov')
     def Ue(self):
         Ue, Seh, Ve = nla.svd(self.Estar(), full_matrices=0)
         self.fill_cache('Se',Seh**2)
         self.fill_cache('Ve',Ve)
         return Ue
 
-    @cached
+    @cached('col_cov')
     def Ve(self):
         Ue, Seh, Ve = nla.svd(self.Estar(), full_matrices=0)
         self.fill_cache('Ue',Ue)
         self.fill_cache('Se',Seh**2)
         return Ve
 
-    @cached
+    @cached('col_cov')
     def Wc(self):
         return self.Ue().T
 
-    @cached
+    @cached(['row_cov', 'col_cov'])
     def SpI(self):
         return sp.kron(1./self.Se(), 1./self.Sg()) + 1
 
-    @cached
+    @cached(['row_cov', 'col_cov'])
     def d(self):
         return 1./self.SpI()
 
+    @cached(['row_cov', 'col_cov'])
     def D(self):
         return self.d().reshape((self.rank_r, self.rank_c), order = 'F')
 
-    @cached
+    @cached(['col_cov'])
     def Ctilde(self, i):
         if i < self.Cg.getNumberParams():
             C = self.Cg.K_grad_i(i)
@@ -194,7 +195,7 @@ class Cov2KronSumLR(Covariance):
             C = self.Cn.K_grad_i(_i)
         return sp.dot(self.Lc(), sp.dot(C, self.Lc().T))
 
-    @cached
+    @cached(['col_cov'])
     def Cbar(self, i):
         return sp.dot(self.Wc(), sp.dot(self.Ctilde(i), self.Wc().T))
 
@@ -221,7 +222,7 @@ class Cov2KronSumLR(Covariance):
     #####################
     # Overwritten covar_base methods
     #####################
-    @cached
+    @cached(['row_cov', 'col_cov'])
     def K(self):
         if self.dim > _MAX_DIM:
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
@@ -230,12 +231,11 @@ class Cov2KronSumLR(Covariance):
         rv = sp.kron(self.Cg.K(), self.R()) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return rv
 
-    @cached
+    @cached(['row_cov', 'col_cov'])
     def K_grad_i(self,i):
         if self.dim > _MAX_DIM:
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
                                                                    _MAX_DIM))
-
         if i < self.Cg.getNumberParams():
             rv= sp.kron(self.Cg.K_grad_i(i), self.R())
         else:
@@ -243,7 +243,7 @@ class Cov2KronSumLR(Covariance):
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 
-    @cached
+    @cached(['row_cov', 'col_cov'])
     def logdet(self):
         rv = sp.sum(sp.log(self.Cn.S())) * self.dim_r
         rv+= sp.log(self.SpI()).sum()
@@ -251,7 +251,7 @@ class Cov2KronSumLR(Covariance):
         rv+= sp.log(self.Sg()).sum() * self.rank_c
         return rv
 
-    @cached
+    @cached(['row_cov', 'col_cov'])
     def logdet_grad_i(self,i):
         if i < self.Cg.getNumberParams():
             trR = self.Sg().sum()
@@ -273,10 +273,9 @@ class Cov2KronSumLR(Covariance):
         I_WdW = sp.eye(self.dim_c * self.dim_r) - WdW
         return sp.dot(L.T, sp.dot(I_WdW, L))
 
-    @cached
     def logdet_debug(self):
         return 2*sp.log(sp.diag(self.chol())).sum()
 
-    @cached
     def logdet_grad_i_debug(self,i):
         return self.solve(self.K_grad_i(i)).diagonal().sum()
+
