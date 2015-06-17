@@ -60,7 +60,6 @@ class Cov2KronSum(Covariance):
         self._notify()
         self.clear_all()
 
-    # normal setter for col covars
     def setColCovars(self, Cg = None, Cn = None):
         assert Cg is not None, 'Cg has to be specified.'
         assert Cn is not None, 'Cn has to be specified.'
