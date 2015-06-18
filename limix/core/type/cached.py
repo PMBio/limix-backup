@@ -3,9 +3,32 @@ import os
 
 # HOW TO USE: Please, look at the end of the file for an example.
 
+# This is a hacky thing so that one can know that a method_wrapper object,
+# defined bellow, really came from here.
+_cache_identifier = 'pj97YCjgnp'
+
+
 class Cached(object):
+
     def __init__(self):
-        self._cache_groups = dict(default=[])
+        self._cache_groups = dict()
+
+        for (_, m) in inspect.getmembers(type(self),
+                                         predicate=inspect.ismethod):
+            pass
+            try:
+                fv = m.im_func.func_code.co_freevars
+            except AttributeError:
+                continue
+            closure = m.im_func.func_closure
+            if closure is None:
+                continue
+
+            # vs = dict(zip(fv, (c.cell_contents for c in closure)))
+            # groups = vs['groups']
+            # import ipdb; ipdb.set_trace()
+            # for g in groups:
+            #     self._cache_groups[g] = []
 
     def clear_cache(self, *cache_groups):
         assert hasattr(self, '_cache_groups'), "Cache system failed because "\
@@ -30,11 +53,11 @@ class Cached(object):
         setattr(self, '_cache_' + method_name, value)
         setattr(self, '_cached_' + method_name, True)
 
+
 # This decorator works both with arguments or without
 # (i.e., @cached, @cached("group_name"), @cached(["group_name_A",
 #       "group_name_B"]), or @cached(exclude=['param1', 'param2', ...]))
 def cached(*args, **kwargs):
-
 
     deco_without_arg = len(args) == 1 and inspect.isfunction(args[0])
 
@@ -44,6 +67,8 @@ def cached(*args, **kwargs):
     filter_out = []
     groups = ['default']
 
+    cache_identifier = _cache_identifier
+
     if not deco_without_arg:
         if len(args) > 0:
             if type(args[0]) is list or type(args[0]) is tuple:
@@ -52,8 +77,8 @@ def cached(*args, **kwargs):
                 groups.append(args[0])
 
         if len(kwargs) == 1:
-            assert 'exclude' in kwargs, "'exclude' is the only keyword allowed"\
-                                             + " here."
+            assert 'exclude' in kwargs, ("'exclude' is the only keyword "
+                                         "allowed here.")
             filter_out = kwargs['exclude']
     else:
         groups.append(args[0].__name__)
@@ -69,7 +94,8 @@ def cached(*args, **kwargs):
 
         def method_wrapper(self, *args, **kwargs):
 
-            (argnames, argvalues) = _fetch_argnames_argvalues(method, args, kwargs)
+            (argnames, argvalues) = _fetch_argnames_argvalues(method, args,
+                                                              kwargs)
 
             t = zip(argnames, argvalues)
             provided_args = dict((x, y) for x, y in t)
@@ -108,7 +134,7 @@ def cached(*args, **kwargs):
     return real_cached
 
 
-########################### INTERNAL USE ONLY ###########################
+# ------------------------ INTERNAL USE ONLY ------------------------
 
 
 def _map_args_kwargs_to_argvalues(args, kwargs, argnames, defaults):
@@ -126,6 +152,7 @@ def _map_args_kwargs_to_argvalues(args, kwargs, argnames, defaults):
 
     return argvalues
 
+
 # This function retrieves and organizes the method argument names and
 # their values at the moment of the call. For this task,
 # I need to both inspect the method (looking for default values) and
@@ -142,6 +169,7 @@ def _fetch_argnames_argvalues(method, args, kwargs):
     argvalues = _map_args_kwargs_to_argvalues(args, kwargs, argnames, defaults)
 
     return (argnames, argvalues)
+
 
 if __name__ == '__main__':
     class Test(Cached):
