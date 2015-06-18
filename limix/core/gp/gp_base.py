@@ -19,12 +19,18 @@ class GP(Cached, Observed):
     """
     Gaussian Process regression class for linear mean (with REML)
     y ~ N(Wb,K)
+    Notation:
+        N = number of samples
+        K = number of fixed effects
+        y = phenotype vector
+        W = fixed effect design
+        K = covariance function
     """
 
     def __init__(self, mean, covar):
         """
-        covar:        Covariance function
-        mean:         Linear Mean function
+        covar:        Limix covariance function
+        mean:         Limix linear Mean function
         """
         Cached.__init__(self)
 
