@@ -13,11 +13,12 @@ from gp_base import GP
 from limix.core.covar.cov_reml import cov_reml
 from limix.core.utils import assert_type_or_list_type
 from limix.core.utils import assert_type
+from limix.core.utils import assert_subtype
+
 
 class GP2KronSum(GP):
 
-    def __init__(self, Y, F, A, Cg, Cn, XX,
-                 S_XX=None, U_XX=None):
+    def __init__(self, Y, F, A, Cg, Cn, XX, S_XX=None, U_XX=None):
         """
         Gaussian Process with a 2kronSum Covariance and a mean with kronecker terms(with REML)
         vec(Y) ~ N( vec( \sum_i A_i \kron F_i), Cg \kron R + Cn \kron I )
@@ -29,14 +30,11 @@ class GP2KronSum(GP):
         """
         print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
 
-        if not issubclass(type(Cg), Covariance):
-            raise TypeError('Parameter Cg must have Covariance inheritance.')
-
-        if not issubclass(type(Cn), Covariance):
-            raise TypeError('Parameter Cn must have Covariance inheritance.')
-
+        assert_type(Y, NP.ndarray, 'Y')
         assert_type_or_list_type(F, NP.ndarray, 'F')
         assert_type_or_list_type(A, NP.ndarray, 'A')
+        assert_subtype(Cg, Covariance, 'Cg')
+        assert_subtype(Cn, Covariance, 'Cn')
         assert_type(XX, NP.ndarray, 'XX')
 
         assert S_XX is None, ('This constructor still does not support S_XX'
@@ -46,7 +44,7 @@ class GP2KronSum(GP):
                               ' different than None.')
 
         covar = Cov2KronSum(Cg=Cg, Cn=Cn, R=XX)
-        mean  = MeanKronSum(Y=Y, F=F, A=A)
+        mean = MeanKronSum(Y=Y, F=F, A=A)
 
         GP.__init__(self, covar=covar, mean=mean)
 

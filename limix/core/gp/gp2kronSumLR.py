@@ -1,6 +1,7 @@
 import sys
 from limix.core.mean import MeanKronSum
 from limix.core.covar import Cov2KronSumLR
+from limix.core.covar import Covariance
 from limix.core.type.cached import *
 
 import pdb
@@ -11,10 +12,14 @@ import time as TIME
 from limix.core.gp import GP
 from limix.core.covar.cov_reml import cov_reml
 from limix.utils.util_functions import vec
+from limix.core.utils import assert_type_or_list_type
+from limix.core.utils import assert_type
+from limix.core.utils import assert_subtype
+
 
 class GP2KronSumLR(GP):
 
-    def __init__(self,Y = None, F = None, A = None, Cn = None, G = None, rank = 1):
+    def __init__(self, Y, F, A, Cn, G, rank=1):
         """
         GP2KronSum specialized when the first covariance is lowrank
         Y:      Phenotype matrix
@@ -23,11 +28,19 @@ class GP2KronSumLR(GP):
         G:      Region term NxS (Remark: fast inference requires S<<N)
         """
         print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
-        covar = Cov2KronSumLR(Cn = Cn, G = G, rank = rank)
+
+        assert_type(Y, NP.ndarray, 'Y')
+        assert_type_or_list_type(F, NP.ndarray, 'F')
+        assert_type_or_list_type(A, NP.ndarray, 'A')
+        assert_subtype(Cn, Covariance, 'Cn')
+        assert_type(G, NP.ndarray, 'G')
+
+        covar = Cov2KronSumLR(Cn=Cn, G=G, rank=rank)
         covar.setRandomParams()
-        mean  = MeanKronSum(Y = Y, F = F, A = A)
-        assert mean.n_terms==1, 'GP2KronSum supports MeanKronSum means with 1 term!'
-        GP.__init__(self, covar = covar, mean = mean)
+        mean = MeanKronSum(Y=Y, F=F, A=A)
+        assert mean.n_terms == 1, ('GP2KronSum supports MeanKronSum'
+                                   ' means with 1 term!')
+        GP.__init__(self, covar=covar, mean=mean)
 
     def _observe(self):
         self.covar.register(self.col_cov_has_changed, 'row_cov')
@@ -45,9 +58,9 @@ class GP2KronSumLR(GP):
 
     def col_cov_has_changed_debug(self):
         # debug function for col_cov_has_changed_debug
-        RV1  = self._calc_all() 
+        RV1  = self._calc_all()
         self.covar.setRandomParams()
-        RV2  = self._calc_all() 
+        RV2  = self._calc_all()
         for key in list_keys:
             are_the_same = sp.array([((RV1[key]-RV2[key])**2)==0]).all()
             if are_the_same:   print key
@@ -235,7 +248,7 @@ class GP2KronSumLR(GP):
     @cached(['designs', 'row_col', 'col_cov'])
     def WLW(self):
         # confusing notation the first W refers to kroneckered matrix
-        # that brings to the low-dimensional space while the second refers to the fixed effect design 
+        # that brings to the low-dimensional space while the second refers to the fixed effect design
         return sp.kron(self.ALcWc().T, self.WrF())
 
     @cached(['designs', 'row_col', 'col_cov'])
