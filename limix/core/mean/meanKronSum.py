@@ -11,13 +11,24 @@ import copy
 import pdb
 
 class MeanKronSum(Cached, Observed):
+    """
+    Sum of Kronecker Mean for multi-trait gp regression
+    Notation:
+        N = number of individuals
+        No = number of out-of-sample individuals for predictions
+        P = number of traits
+    """
 
     def __init__(self, Y = None, F = None, A = None, Fstar=None):
         """
-        Y:        phenotype matrix
-        F:        sample fixed effect design
-        A:        trait fixed effect design
-        Fstar:    out-of-sample fixed effect design
+        Args:
+            Y:        phenotype matrix [N, P]
+            F:        list of sample fixed effect designs.
+                      Each term must have first dimension N
+            A:        list of trait fixed effect design.
+                      Each term must have second dimension P
+            Fstar:    list out-of-sample fixed effect design.
+                      Each term must have first dimension No
         """
         Cached.__init__(self)
         assert Y is not None, 'MeanKronSum: Specify Y!'
@@ -82,7 +93,7 @@ class MeanKronSum(Cached, Observed):
 
     @property
     def Fstar(self):
-        print 'TODO: asset staff'
+        print 'TODO: assert stuff'
         return self._Fstar
 
     @property
