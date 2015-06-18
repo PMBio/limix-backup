@@ -14,8 +14,17 @@ _MAX_DIM = 5000
 
 # should be a child class of combinator
 class Cov2KronSum(Covariance):
+    """
+    Covariance class for sum of two Kronecker products
+    """
 
     def __init__(self, Cg = None, Cn = None, R = None):
+        """
+        Args:
+            Cg:     column (LIMIX) covariance matrix for signal term
+            Cn:     column (LIMIX) covariance matrix for noise term
+            R:      row (NUMPY) semidemidefinite covariance matrix for signal term
+        """
         Covariance.__init__(self)
         self.setColCovars(Cg, Cn)
         self.R = R
@@ -219,7 +228,7 @@ class Cov2KronSum(Covariance):
     # Debug methods
     #####################
     def inv_debug(self):
-        return sp.dot(self.L().T, self.d[:, sp.newaxis] * self.L())
+        return sp.dot(self.L().T, self.d()[:, sp.newaxis] * self.L())
 
     @cached
     def logdet_debug(self):

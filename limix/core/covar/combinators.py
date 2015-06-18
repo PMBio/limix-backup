@@ -4,8 +4,16 @@ import scipy as SP
 from limix.core.type.cached import Cached, cached
 
 class SumCov(Covariance):
+    """
+    Sum of multiple covariance matrices.
+    The number of paramteters is the sum of the parameters of the single covariances.
+    """
 
     def __init__(self,*covars):
+        """
+        Args:
+            covars:     covariances to be considered in the sum
+        """
         Covariance.__init__(self)
         self.dim = None
         self.covars = []

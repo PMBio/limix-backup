@@ -9,9 +9,16 @@ import logging as LG
 
 class FreeFormCov(Covariance):
     """
-    freeform covariance function
+    General semi-definite positive matrix with no contraints.
+    A free-form covariance matrix of dimension d has 1/2 * d * (d + 1) params
     """
-    def __init__(self,dim,jitter=1e-4):
+    def __init__(self, dim, jitter=1e-4):
+        """
+        Args:
+            dim:        dimension of the free-form covariance
+            jitter:     extent of diagonal offset which is added for numerical stability
+                        (default value: 1e-4)
+        """
         Covariance.__init__(self, dim)
         self._calcNumberParams()
         self.dim = dim
