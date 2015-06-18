@@ -10,7 +10,7 @@ import logging as LG
 
 class cov_reml(Covariance):
     """
-    abstract super class for all implementations of covariance functions
+    REML covariance used by GP for restricted maximum likelihood
     """
     def __init__(self,gp):
         Covariance.__init__(self)

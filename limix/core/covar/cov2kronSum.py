@@ -16,14 +16,18 @@ _MAX_DIM = 5000
 class Cov2KronSum(Covariance):
     """
     Covariance class for sum of two Kronecker products
+    K = Cg \kron R + Cn \kron I
+    Notation:
+        - dim_c: dimension of col covariances
+        - dim_r: dimension of row covariances
     """
 
     def __init__(self, Cg = None, Cn = None, R = None):
         """
         Args:
-            Cg:     column (LIMIX) covariance matrix for signal term
-            Cn:     column (LIMIX) covariance matrix for noise term
-            R:      row (NUMPY) semidemidefinite covariance matrix for signal term
+            Cg:     Limix covariance matrix for Cg (dimension dim_c)
+            Cn:     Limix covariance matrix for Cn (dimension dim_c)
+            R:      [dim_r, dim_r] numpy semidemidefinite covariance matrix for R
         """
         Covariance.__init__(self)
         self.setColCovars(Cg, Cn)

@@ -10,7 +10,7 @@ import logging as LG
 
 class DirIndirCov(Covariance):
     """
-    freeform covariance function
+    Covariance matrix for decomposing direct and social genetic effects 
     """
     def __init__(self, kinship, design, kinship_cm = None, kinship_cross = None, jitter = 1e-4):
         if kinship_cm is None:      kinship_cm = kinship
