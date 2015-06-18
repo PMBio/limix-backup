@@ -17,3 +17,39 @@ def assert_make_float_array(arr, arg_name):
         raise NotArrayConvertibleError("%s has to be float-array "
                                        "convertible." % arg_name)
     return arr
+
+def assert_type(arg, type_, param_name):
+
+    err_msg = ("Parameter %s is not of type %s.%s."
+               % (param_name, type_.__module__, type_.__name__))
+
+    if type(arg) is not type_:
+        raise TypeError(err_msg)
+
+def assert_type_or_list_type(arg, type_, param_name):
+
+    err_msg = ("Parameter %s is not of type "
+               "%s.%s nor a list or a tuple of the same."
+               % (param_name, type_.__module__, type_.__name__))
+
+    if type(arg) in (list, tuple):
+        for a in arg:
+            if type(a) is not type_:
+                raise TypeError(err_msg)
+    else:
+        if type(arg) is not type_:
+            raise TypeError(err_msg)
+
+def assert_subtype_or_list_subtype(arg, type_, param_name):
+
+    err_msg = ("Parameter %s is not of type "
+               "%s.%s nor a list or a tuple of the same."
+               % (param_name, type_.__module__, type_.__name__))
+
+    if type(arg) in (list, tuple):
+        for a in arg:
+            if not issubclass(type(a),  type_):
+                raise TypeError(err_msg)
+    else:
+        if issubclass(type(arg),  type_):
+            raise TypeError(err_msg)

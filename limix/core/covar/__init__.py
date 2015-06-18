@@ -6,3 +6,4 @@ from combinators import SumCov
 from cov2kronSum import Cov2KronSum
 from cov2kronSumLR import Cov2KronSumLR
 from cov3kronSumLR import Cov3KronSumLR
+from covar_base import Covariance

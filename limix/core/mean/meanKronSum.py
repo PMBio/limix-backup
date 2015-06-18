@@ -4,13 +4,14 @@ from limix.utils.preprocess import regressOut
 from limix.utils.util_functions import to_list
 from limix.core.type.cached import *
 from limix.core.type.observed import *
+from mean_base import mean_base
 import scipy as sp
 import numpy as np
 import scipy.linalg as LA
 import copy
 import pdb
 
-class MeanKronSum(Cached, Observed):
+class MeanKronSum(mean_base):
     """
     Sum of Kronecker Mean for multi-trait gp regression
     Notation:

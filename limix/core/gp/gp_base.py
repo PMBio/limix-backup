@@ -6,7 +6,8 @@ import sys
 import time
 from limix.core.type.observed import Observed
 from limix.core.type.cached import Cached, cached
-import limix.core.mean.mean_base
+from limix.core.covar import Covariance
+from limix.core.mean import mean_base
 from limix.core.covar.cov_reml import cov_reml
 import limix.core.optimize.optimize_bfgs_new as OPT
 
@@ -19,12 +20,19 @@ class GP(Cached, Observed):
     y ~ N(Wb,K)
     """
 
-    def __init__(self,mean=None,covar=None):
+    def __init__(self, mean, covar):
         """
         covar:        Covariance function
         mean:         Linear Mean function
         """
         Cached.__init__(self)
+
+        if not issubclass(type(mean), mean_base):
+            raise TypeError('Parameter mean must have base_mean inheritance.')
+
+        if not issubclass(type(covar), Covariance):
+            raise TypeError('Parameter covar must have Covariance inheritance.')
+
         self.covar = covar
         self.mean  = mean
         self.Areml = cov_reml(self)
@@ -261,4 +269,3 @@ class GP(Cached, Observed):
         err = mcheck_grad(func, grad, x0)
         print err
         #np.testing.assert_almost_equal(err, 0., decimal=5)
-
