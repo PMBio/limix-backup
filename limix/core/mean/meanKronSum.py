@@ -1,16 +1,21 @@
 import sys
-from mean_base import mean_base
-from limix.utils.preprocess import regressOut
-from limix.utils.util_functions import to_list
-from limix.core.type.cached import *
-from limix.core.type.observed import *
 import scipy as sp
 import numpy as np
 import scipy.linalg as LA
 import copy
 import pdb
 
-class MeanKronSum(Cached, Observed):
+from mean_base import mean_base
+from limix.utils.preprocess import regressOut
+from limix.utils.util_functions import to_list
+from limix.core.type.cached import *
+from limix.core.type.observed import *
+from mean_base import mean_base
+from limix.core.utils import assert_make_float_array
+from limix.core.utils import assert_type_or_list_type
+
+
+class MeanKronSum(mean_base):
     """
     Sum of Kronecker Mean for multi-trait gp regression
     Notation:
@@ -19,7 +24,7 @@ class MeanKronSum(Cached, Observed):
         P = number of traits
     """
 
-    def __init__(self, Y = None, F = None, A = None, Fstar=None):
+    def __init__(self, Y, F=None, A=None, Fstar=None):
         """
         Args:
             Y:        phenotype matrix [N, P]
@@ -31,10 +36,26 @@ class MeanKronSum(Cached, Observed):
                       Each term must have first dimension No
         """
         Cached.__init__(self)
-        assert Y is not None, 'MeanKronSum: Specify Y!'
+        Y = assert_make_float_array(Y, 'Y')
+        if F is not None:
+            try:
+                assert_type_or_list_type(F, np.ndarray, 'F')
+            except TypeError as e:
+                raise TypeError(e.message + ' Parameter F might also be set'
+                                ' to None.')
+
+        if A is not None:
+            try:
+                assert_type_or_list_type(A, np.ndarray, 'A')
+            except TypeError as e:
+                raise TypeError(e.message + ' Parameter A might also be set'
+                                ' to None.')
+
+        assert Fstar is None, 'This constructor still does not support Fstar.'
+
         print 'TODO: check caching'
         self.Y = Y
-        self.setDesigns(F,A)
+        self.setDesigns(F, A)
         self.Fstar = Fstar
         self.setFIinv(None)
 
@@ -67,7 +88,8 @@ class MeanKronSum(Cached, Observed):
         istart = 0
         for ti in range(self.n_terms):
             iend = istart + self.F[ti].shape[1] * self.A[ti].shape[0]
-            B.append( sp.reshape(self.b[istart:iend], (self.F[ti].shape[1], self.A[ti].shape[0]), order = 'F'))
+            B.append(sp.reshape(self.b[istart:iend], (self.F[ti].shape[1],
+                     self.A[ti].shape[0]), order='F'))
             istart = iend
         return B
 
@@ -77,7 +99,7 @@ class MeanKronSum(Cached, Observed):
 
     @property
     def y(self):
-        return sp.reshape(self.Y,(self._N*self._P,1),order='F')
+        return sp.reshape(self.Y, (self._N*self._P, 1), order='F')
 
     @property
     def b(self):
@@ -88,7 +110,7 @@ class MeanKronSum(Cached, Observed):
         if self.getFIinv() is None:
             R = None
         else:
-            R = sp.sqrt(self.getFIinv().diagonal())[:,sp.newaxis]
+            R = sp.sqrt(self.getFIinv().diagonal())[:, sp.newaxis]
         return R
 
     @property
@@ -128,7 +150,7 @@ class MeanKronSum(Cached, Observed):
     # Setters
     #########################################
     @Y.setter
-    def Y(self,value):
+    def Y(self, value):
         """ set phenotype """
         self._N = value.shape[0]
         self._P = value.shape[1]
@@ -136,17 +158,18 @@ class MeanKronSum(Cached, Observed):
         self._notify()
         self._notify('pheno')
 
-    def setDesigns(self,F,A):
+    def setDesigns(self, F, A):
         """ set fixed effect designs """
         F = to_list(F)
         A = to_list(A)
         assert len(A) == len(F), 'MeanKronSum: A and F must have same length!'
         n_terms = len(F)
         n_covs = 0
-        k = 0; l = 0
+        k = 0
+        l = 0
         for ti in range(n_terms):
-            assert F[ti].shape[0]==self._N, 'MeanKronSum: Dimension mismatch'
-            assert A[ti].shape[1]==self._P, 'MeanKronSum: Dimension mismatch'
+            assert F[ti].shape[0] == self._N, 'MeanKronSum: Dimension mismatch'
+            assert A[ti].shape[1] == self._P, 'MeanKronSum: Dimension mismatch'
             n_covs += F[ti].shape[1] * A[ti].shape[0]
             k += F[ti].shape[1]
             l += A[ti].shape[0]
@@ -156,31 +179,31 @@ class MeanKronSum(Cached, Observed):
         self._l = l
         self._F = F
         self._A = A
-        self._b = sp.zeros((n_covs,1))
-        self.clear_cache('predict_in_sample','Yres','W')
+        self._b = sp.zeros((n_covs, 1))
+        self.clear_cache('predict_in_sample', 'Yres', 'W')
         self._notify('designs')
         self._notify()
 
     @Fstar.setter
-    def Fstar(self,value):
+    def Fstar(self, value):
         """ set fixed effect design for predictions """
         if value is None:
             self._use_to_predict = False
         else:
-            assert value.shape[1]==self._K, 'Dimension mismatch'
+            assert value.shape[1] == self._K, 'Dimension mismatch'
             self._use_to_predict = True
         self._Fstar = value
         self.clear_cache('predict')
 
     @b.setter
-    def b(self,value):
+    def b(self, value):
         assert value.shape[0] == self._n_covs, 'Dimension mismatch'
         assert value.shape[1] == 1, 'Dimension mismatch'
         self._b = value
-        self.clear_cache('predict_in_sample','Yres','predict')
+        self.clear_cache('predict_in_sample', 'Yres', 'predict')
 
     @use_to_predict.setter
-    def use_to_predict(self,value):
+    def use_to_predict(self, value):
         assert not (self.Fstar is None and value is True), 'set Fstar!'
         self._use_to_predict = value
 
@@ -197,17 +220,17 @@ class MeanKronSum(Cached, Observed):
         r = self._predict_fun(self.F)
         return r
 
-    def _predict_fun(self,M):
+    def _predict_fun(self, M):
         assert len(M) == self.n_terms, 'MeanKronSum: Dimension mismatch'
-        rv = sp.zeros((self._N,self._P))
+        rv = sp.zeros((self._N, self._P))
         for ti in range(self.n_terms):
-            rv += sp.dot( sp.dot(M[ti], self.B[ti]), self.A[ti])
+            rv += sp.dot(sp.dot(M[ti], self.B[ti]), self.A[ti])
         return rv
 
     @cached
     def Yres(self):
         """ residual """
-        RV  = self.Y - self.predict_in_sample()
+        RV = self.Y - self.predict_in_sample()
         return RV
 
     #######################################
@@ -219,20 +242,21 @@ class MeanKronSum(Cached, Observed):
     def getFIinv(self):
         return self._FIinv
 
-if __name__=='__main__':
+if __name__ == '__main__':
 
     # define phenotype
     N = 1000
     P = 4
-    Y = sp.randn(N,P)
+    Y = sp.randn(N, P)
 
     # define fixed effects
-    F = []; A = []
-    F.append(sp.randn(N,3))
-    F.append(sp.randn(N,2))
+    F = []
+    A = []
+    F.append(sp.randn(N, 3))
+    F.append(sp.randn(N, 2))
     A.append(sp.eye(P))
-    A.append(sp.ones((1,P)))
+    A.append(sp.ones((1, P)))
 
     pdb.set_trace()
 
-    mean = MeanKronSum(Y,F,A)
+    mean = MeanKronSum(Y, F, A)

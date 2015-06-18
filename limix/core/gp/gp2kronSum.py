@@ -1,6 +1,7 @@
 import sys
 from limix.core.mean import MeanKronSum
 from limix.core.covar import Cov2KronSum
+from limix.core.covar import Covariance
 from limix.core.type.cached import *
 
 import pdb
@@ -10,11 +11,14 @@ import scipy.linalg as LA
 import time as TIME
 from gp_base import GP
 from limix.core.covar.cov_reml import cov_reml
+from limix.core.utils import assert_type_or_list_type
+from limix.core.utils import assert_type
+from limix.core.utils import assert_subtype
+
 
 class GP2KronSum(GP):
 
-    def __init__(self,Y=None, F=None, A=None, Cg=None,Cn=None, XX=None,
-                 S_XX=None, U_XX=None):
+    def __init__(self, Y, F, A, Cg, Cn, XX, S_XX=None, U_XX=None):
         """
         Gaussian Process with a 2kronSum Covariance and a mean with kronecker terms(with REML)
         vec(Y) ~ N( vec( \sum_i A_i \kron F_i), Cg \kron R + Cn \kron I )
@@ -25,8 +29,23 @@ class GP2KronSum(GP):
         XX:     Matrix for fixed sample-to-sample covariance function
         """
         print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
+
+        assert_type(Y, NP.ndarray, 'Y')
+        assert_type_or_list_type(F, NP.ndarray, 'F')
+        assert_type_or_list_type(A, NP.ndarray, 'A')
+        assert_subtype(Cg, Covariance, 'Cg')
+        assert_subtype(Cn, Covariance, 'Cn')
+        assert_type(XX, NP.ndarray, 'XX')
+
+        assert S_XX is None, ('This constructor still does not support S_XX'
+                              ' different than None.')
+
+        assert U_XX is None, ('This constructor still does not support U_XX'
+                              ' different than None.')
+
         covar = Cov2KronSum(Cg=Cg, Cn=Cn, R=XX)
-        mean  = MeanKronSum(Y=Y, F=F, A=A)
+        mean = MeanKronSum(Y=Y, F=F, A=A)
+
         GP.__init__(self, covar=covar, mean=mean)
 
     def _observe(self):

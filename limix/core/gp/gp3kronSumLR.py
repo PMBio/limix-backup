@@ -54,7 +54,7 @@ class GP3KronSumLR(GP2KronSum):
 
     @cached(['pheno','col_cov', 'row_cov', 'G'])
     def vei_HiveWrDLrYLcWc(self):
-        return self.Hi_ve_WrDLrYLcWc().reshape((self.covar.rank_r, self.covar.rank_c), order = 'F') 
+        return self.Hi_ve_WrDLrYLcWc().reshape((self.covar.rank_r, self.covar.rank_c), order = 'F')
 
     @cached(['pheno','col_cov','row_col','G'])
     def DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc(self):
@@ -114,9 +114,8 @@ class GP3KronSumLR(GP2KronSum):
     #########################
     @cached(['row_cov', 'col_cov', 'pheno'])
     def yKiy_grad_i(self,i):
-        return -sp.sum(self.DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc() * self.Rtilde_DLrYLcmDWrveiHiveWrDLrYLcWcWc_Ctilde(i))  
+        return -sp.sum(self.DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc() * self.Rtilde_DLrYLcmDWrveiHiveWrDLrYLcWcWc_Ctilde(i))
 
     @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
     def yKiWb_grad_i(self,i):
         pass
-
