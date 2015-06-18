@@ -5,6 +5,7 @@ from limix.core.type.cached import cached
 from limix.core.type.exception import TooExpensiveOperationError
 from limix.core.utils import my_name
 from util import msg_too_expensive_dim
+from limix.utils.svd_utils import svd_reduce
 import scipy as sp
 import scipy.linalg as la
 import numpy.linalg as nla
@@ -75,7 +76,13 @@ class Cov2KronSumLR(Covariance):
         assert value is not None, 'G cannot be set to None.'
         self._dim_r = value.shape[0]
         self._rank_r = value.shape[1]
-        self._G = value
+        # perform svd on G
+        # excludes eigh < 1e-8 and recalcs G
+        _value, U, S, V = svd_reduce(value)
+        self._G  = _value
+        self._Ug = U 
+        self._Sg = S 
+        self._Vg = V 
         self.G_has_changed()
 
     # normal setter for col covars
@@ -107,26 +114,14 @@ class Cov2KronSumLR(Covariance):
     #####################
     # Cached
     #####################
-    @cached('row_cov')
     def Sg(self):
-        Ug, Sgh, Vg = nla.svd(self.G, full_matrices=0)
-        self.fill_cache('Ug', Ug)
-        self.fill_cache('Vg', Vg)
-        return Sgh**2
+        return self._Sg
 
-    @cached('row_cov')
     def Ug(self):
-        Ug, Sgh, Vg = nla.svd(self.G, full_matrices=0)
-        self.fill_cache('Sg', Sgh**2)
-        self.fill_cache('Vg', Vg)
-        return Ug
+        return self._Ug
 
-    @cached('row_cov')
     def Vg(self):
-        Ug, Sgh, Vg = nla.svd(self.G, full_matrices=0)
-        self.fill_cache('Ug', Ug)
-        self.fill_cache('Sg', Sgh**2)
-        return Vg
+        return self._Vg
 
     @cached('row_cov')
     def Wr(self):
