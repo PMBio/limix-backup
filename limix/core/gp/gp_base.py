@@ -30,7 +30,6 @@ class GP(Cached, Observed):
         self.Areml = cov_reml(self)
         self._observe()
         self.clear_all()
-        self.update_b()
 
     def _observe(self):
         # different notification should be possible
@@ -44,6 +43,7 @@ class GP(Cached, Observed):
         self.clear_lml_terms()
         self.clear_lmlgrad_terms_i()
         self.clear_lmlgrad_terms()
+        self.update_b()
 
     def clear_Areml(self):
         self._notify()
@@ -60,7 +60,6 @@ class GP(Cached, Observed):
 
     def setParams(self,params):
         self.covar.setParams(params['covar'])
-        self.update_b()
 
     def getParams(self):
         RV = {}
