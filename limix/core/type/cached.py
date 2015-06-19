@@ -3,10 +3,6 @@ import os
 
 # HOW TO USE: Please, look at the end of the file for an example.
 
-# This is a hacky thing so that one can know that a method_wrapper object,
-# defined bellow, really came from here.
-_cache_identifier = 'pj97YCjgnp'
-
 
 class Cached(object):
 
@@ -14,21 +10,40 @@ class Cached(object):
         self._cache_groups = dict()
 
         for (_, m) in inspect.getmembers(type(self),
-                                         predicate=inspect.ismethod):
-            pass
+                                         predicate=lambda p:
+                                         (inspect.ismethod or
+                                         inspect.isdatadescriptor)):
+
+            if hasattr(m, 'fget'):
+                f = m.fget
+            elif hasattr(m, 'im_func'):
+                f = m.im_func
+            else:
+                continue
+
+            fv = f.func_code.co_freevars
+
             try:
-                fv = m.im_func.func_code.co_freevars
+                closure = f.func_closure
             except AttributeError:
                 continue
-            closure = m.im_func.func_closure
+
             if closure is None:
                 continue
 
-            # vs = dict(zip(fv, (c.cell_contents for c in closure)))
-            # groups = vs['groups']
-            # import ipdb; ipdb.set_trace()
-            # for g in groups:
-            #     self._cache_groups[g] = []
+            vs = dict(zip(fv, (c.cell_contents for c in closure)))
+
+            # this is used to make sure we are in the right function
+            # i'm not proud of that, by the way
+            if '_cache_identifier_pj97YCjgnp' not in vs:
+                continue
+
+            try:
+                groups = vs['groups']
+            except KeyError:
+                continue
+            for g in groups:
+                self._cache_groups[g] = []
 
     def clear_cache(self, *cache_groups):
         assert hasattr(self, '_cache_groups'), "Cache system failed because "\
@@ -36,13 +51,14 @@ class Cached(object):
 
         for g in cache_groups:
             if g not in self._cache_groups:
-                continue
-            #     err = 'Cache group %s does not exist.' % g
-            #     err += ' It might happen because of two reasons. Either'
-            #     err += ' you never defined this group or'
-            #     err += ' you are trying to clear a cache group that'
-            #     err += ' has not been used yet.'
-            #     raise Exception(err)
+                # continue
+                # import ipdb; ipdb.set_trace()
+                err = 'Cache group %s does not exist.' % g
+                err += ' It might happen because of two reasons. Either'
+                err += ' you never defined this group or'
+                err += ' you are trying to clear a cache group that'
+                err += ' has not been used yet.'
+                raise Exception(err)
 
             for method_name in self._cache_groups[g]:
                 setattr(self, '_cache_' + method_name, None)
@@ -66,8 +82,9 @@ def cached(*args, **kwargs):
     # cached_args = dict()
     filter_out = []
     groups = ['default']
-
-    cache_identifier = _cache_identifier
+    # This is a hacky thing so that one can know that a method_wrapper
+    # object, defined bellow, really came from here.
+    _cache_identifier_pj97YCjgnp = [False]
 
     if not deco_without_arg:
         if len(args) > 0:
@@ -84,6 +101,10 @@ def cached(*args, **kwargs):
         groups.append(args[0].__name__)
 
     def real_cached(method):
+
+        # dont look at this miserable hacky variable
+        _cache_identifier_pj97YCjgnp[0] = True
+
         cache_var_name = '_cache_' + method.__name__
         valid_var_name = '_cached_' + method.__name__
         cached_args_name = '_cached_args_' + method.__name__
@@ -93,6 +114,9 @@ def cached(*args, **kwargs):
             return method
 
         def method_wrapper(self, *args, **kwargs):
+
+            # dont look at this miserable hacky variable
+            _cache_identifier_pj97YCjgnp[0] = True
 
             (argnames, argvalues) = _fetch_argnames_argvalues(method, args,
                                                               kwargs)
