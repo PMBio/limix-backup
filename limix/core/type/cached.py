@@ -1,13 +1,17 @@
 import inspect
 import os
+import pprint
 
 # HOW TO USE: Please, look at the end of the file for an example.
 
+def std_obj_repr(obj):
+    return "<%s instance at %s>" % (obj.__class__.__name__, hex(id(obj)))
 
 class Cached(object):
 
     def __init__(self):
         self._cache_groups = dict()
+        self._diff_running = False
 
         for (_, m) in inspect.getmembers(type(self),
                                          predicate=lambda p:
@@ -45,20 +49,69 @@ class Cached(object):
             for g in groups:
                 self._cache_groups[g] = []
 
+    def diff(self, func):
+        if self._diff_running:
+            return
+
+        self._diff_running = True
+
+        pp = pprint.PrettyPrinter(indent=4)
+
+        print '*** Cache diff ***'
+
+        self._print_groups()
+
+        print '-- Cached methods --'
+        cmethods = self._get_cached_methods()
+        pp.pprint(cmethods)
+
+        caches_before = self._get_caches()
+        func()
+        caches_after = self._get_caches()
+
+        print '-- Difference between caches -- '
+        for cm in cmethods:
+            if caches_before[cm] is not caches_after[cm]:
+                print '%s: %s --> %s' % (cm, std_obj_repr(caches_before[cm]),
+                                             std_obj_repr(caches_after[cm]))
+        print '*** End ***'
+        self._diff_running = False
+
+    def _get_caches(self):
+        methods = self._registered_methods()
+        caches = dict()
+        for m in methods:
+            if hasattr(self, '_cache_' + m):
+                caches[m] = getattr(self, '_cache_' + m)
+        return caches
+
+    def _get_cached_methods(self):
+        methods = self._registered_methods()
+        cmethods = []
+        for m in methods:
+            if hasattr(self, '_cache_' + m) and getattr(self, '_cached_' + m):
+                cmethods.append(m)
+        return cmethods
+
+    def _registered_methods(self):
+        methods = set()
+        for g in self._cache_groups.values():
+            for m in g:
+                methods.add(m)
+        return list(methods)
+
+    def _print_groups(self):
+        print '-- Cache groups and the respective registered methods --'
+        pp = pprint.PrettyPrinter(indent=4)
+        pp.pprint(self._cache_groups)
+
     def clear_cache(self, *cache_groups):
         assert hasattr(self, '_cache_groups'), "Cache system failed because "\
                                    + "you did not call Cached's constructor."
 
         for g in cache_groups:
             if g not in self._cache_groups:
-                # continue
-                # import ipdb; ipdb.set_trace()
-                err = 'Cache group %s does not exist.' % g
-                err += ' It might happen because of two reasons. Either'
-                err += ' you never defined this group or'
-                err += ' you are trying to clear a cache group that'
-                err += ' has not been used yet.'
-                raise Exception(err)
+                raise Exception('Cache group %s does not exist.' % g)
 
             for method_name in self._cache_groups[g]:
                 setattr(self, '_cache_' + method_name, None)

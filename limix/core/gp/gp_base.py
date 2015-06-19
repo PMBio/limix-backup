@@ -57,10 +57,6 @@ class GP(Cached, Observed):
     def clear_all(self):
         self.clear_cache('default')
         self._notify()
-        # self.clear_Areml()
-        # self.clear_lml_terms()
-        # self.clear_lmlgrad_terms_i()
-        # self.clear_lmlgrad_terms()
         self.update_b()
 
     def clear_Areml(self):

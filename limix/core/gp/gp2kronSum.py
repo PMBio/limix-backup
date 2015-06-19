@@ -27,9 +27,9 @@ class GP2KronSum(GP):
         F_i = sample fixed effect design for term i
         A_i = trait fixed effect design for term i
         B_i = effect sizes of fixed effect term i
-        Cg = column covariance matrix for signal term respectively 
-        Cn = column covariance matrix for noise term respectively 
-        R = row covariance matrix for signal term respectively 
+        Cg = column covariance matrix for signal term respectively
+        Cn = column covariance matrix for noise term respectively
+        R = row covariance matrix for signal term respectively
     """
 
     def __init__(self, Y, F, A, Cg, Cn, R, S_R=None, U_R=None):
@@ -44,7 +44,7 @@ class GP2KronSum(GP):
             Cn:     Limix covariance matrix for Cn (dimension P)
             R:      [N, N] numpy semidemidefinite covariance matrix for R.
                     In alternative to R, S_R and U_R can be specified.
-            S_R:    N vector of eigenvalues of R 
+            S_R:    N vector of eigenvalues of R
             U_R:    [N, N] eigenvector matrix of R
         """
         assert_type(Y, NP.ndarray, 'Y')
