@@ -46,8 +46,7 @@ class GP3KronSumLR(GP2KronSum):
             U_R:    [N, N] eigenvector matrix of R
             rank:   rank of column low-rank covariance (default = 1)
         """
-        print 'pass R and S_R to covariance: the covariance should be responsable of caching stuff'
-        covar = Cov3KronSumLR(Cg=Cg, Cn=Cn, R=R, G=G, rank=rank)
+        covar = Cov3KronSumLR(Cg=Cg, Cn=Cn, R=R, G=G, rank=rank, S_R=S_R, U_R=U_R)
         mean  = MeanKronSum(Y = Y)
         GP.__init__(self, covar = covar, mean = mean)
 

@@ -47,8 +47,6 @@ class GP2KronSum(GP):
             S_R:    N vector of eigenvalues of R 
             U_R:    [N, N] eigenvector matrix of R
         """
-        print 'pass R and S_R to covariance: the covariance should be responsable of caching stuff'
-
         assert_type(Y, NP.ndarray, 'Y')
         assert_type_or_list_type(F, NP.ndarray, 'F')
         assert_type_or_list_type(A, NP.ndarray, 'A')
@@ -56,13 +54,7 @@ class GP2KronSum(GP):
         assert_subtype(Cn, Covariance, 'Cn')
         assert_type(R, NP.ndarray, 'R')
 
-        assert S_R is None, ('This constructor still does not support S_R'
-                              ' different than None.')
-
-        assert U_R is None, ('This constructor still does not support U_R'
-                              ' different than None.')
-
-        covar = Cov2KronSum(Cg=Cg, Cn=Cn, R=R)
+        covar = Cov2KronSum(Cg=Cg, Cn=Cn, R=R, S_R=S_R, U_R=U_R)
         mean = MeanKronSum(Y=Y, F=F, A=A)
 
         GP.__init__(self, covar=covar, mean=mean)

@@ -22,16 +22,19 @@ class Cov2KronSum(Covariance):
         - dim_r: dimension of row covariances
     """
 
-    def __init__(self, Cg = None, Cn = None, R = None):
+    def __init__(self, Cg = None, Cn = None, R = None, S_R = None, U_R = None):
         """
         Args:
             Cg:     Limix covariance matrix for Cg (dimension dim_c)
             Cn:     Limix covariance matrix for Cn (dimension dim_c)
             R:      [dim_r, dim_r] numpy semidemidefinite covariance matrix for R
+                    In alternative to R, S_R and U_R can be specified.
+            S_R:    N vector of eigenvalues of R
+            U_R:    [N, N] eigenvector matrix of R
         """
         Covariance.__init__(self)
         self.setColCovars(Cg, Cn)
-        self.R = R
+        self.setR(R=R, S_R=S_R, U_R=U_R)
         self.dim = self.dim_c * self.dim_r
         self._calcNumberParams()
         self._use_to_predict = False
@@ -74,12 +77,20 @@ class Cov2KronSum(Covariance):
     #####################
     # Setters
     #####################
-    @R.setter
-    def R(self,value):
-        assert value is not None, 'R cannot be set to None.'
-        self._dim_r = value.shape[0]
-        self._R = value
-        self.R_has_changed()
+    def setR(self, R=None, S_R=None, U_R=None):
+        RnotNone  = R is not None
+        SUnotNone = S_R is not None and U_R is not None
+        assert RnotNone or SUnotNone, 'Either R or S_R and U_R must be specified.'
+        if R is not None:
+            self._dim_r = R.shape[0]
+            self._R = R
+            self.R_has_changed()
+        else:
+            #TODO: assert dimensions
+            self_dim_r = S_R.shape[0]
+            self.R_has_changed()
+            self.fill_cache('Lr', U_R.T)
+            self.fill_cache('Sr', S_R)
 
     def setColCovars(self, Cg = None, Cn = None):
         assert Cg is not None, 'Cg has to be specified.'
