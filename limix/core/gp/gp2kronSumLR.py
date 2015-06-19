@@ -45,8 +45,6 @@ class GP2KronSumLR(GP):
             G:      [N, rank_r] numpy covariance matrix for G
             rank:   rank of column low-rank covariance (default = 1)
         """
-        print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
-
         assert_type(Y, NP.ndarray, 'Y')
         assert_type_or_list_type(F, NP.ndarray, 'F')
         assert_type_or_list_type(A, NP.ndarray, 'A')
