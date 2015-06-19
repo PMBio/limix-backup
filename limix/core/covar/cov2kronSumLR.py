@@ -16,8 +16,23 @@ import pdb
 _MAX_DIM = 5000
 
 class Cov2KronSumLR(Covariance):
+    """
+    Covariance class for sum of 2 Kronecker products with one low rank term:
+        K = Cr \kron GG.T + Cn \kron I
+    Notation:
+        - dim_c: dimension of col covariances
+        - dim_r: dimension of row covariances
+        - rank_c: rank of low-rank col covariance
+        - rank_r: rank of low-rank row covariance
+    """
 
     def __init__(self, Cn = None, G = None, rank = 1):
+        """
+        Args:
+            Cn:     Limix covariance matrix for Cn (dimension dim_c)
+            G:      [dim_r, rank_r] numpy covariance matrix for G
+            rank:   rank of column low-rank covariance (default = 1)
+        """
         Covariance.__init__(self)
         self.setColCovars(Cn, rank = rank)
         self.G = G

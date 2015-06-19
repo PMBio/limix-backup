@@ -9,11 +9,15 @@ import scipy.spatial as SS
 
 class SQExpCov(Covariance):
     """
-    squared exponential covariance function
+    Unidimensional squared exponential covariance function (kernel) for GP regression.
+    A unidimensional squared exponential covariance function has two parameters:
+        scale:      scale of the covariance (propto explained variance)
+        length:     length scale of the input dimension 
     """
     def __init__(self, X, Xstar=None):
         """
-        X   dim x d input matrix
+        X:          [dim, 1] input matrix
+        Xstar:      [dim_star, 1] out-of-sample input matrix
         """
         Covariance.__init__(self)
 

@@ -18,17 +18,33 @@ from limix.core.utils import assert_subtype
 
 
 class GP2KronSumLR(GP):
+    """
+    Gaussian Process with a 2kronSumLR Covariance and a mean that is a sum of Kronecker products:
+        vec(Y) ~ N( vec( \sum_i F_i B_i A_i), Cr \kron GG.T + Cn \kron I )
+    The current implementation supports only 1 fixed effect term!
+    Notation:
+        N = number of samples
+        P = number of traits
+        Y = [N, P] phenotype matrix
+        F_i = sample fixed effect design for term i
+        A_i = trait fixed effect design for term i
+        B_i = effect sizes of fixed effect term i
+        Cr = column covariance matrix for low-rank term
+        Cn = column covariance matrix for noise term
+        rank_c = rank of low-rank col covariance
+        rank_r = rank of low-rank row covariance
+    """
 
     def __init__(self, Y, F, A, Cn, G, rank=1):
         """
-        GP2KronSum specialized when the first covariance is lowrank
-        Y:      Phenotype matrix
-        Cn:     LIMIX trait-to-trait covariance for noise
-        rank:   rank of the region term
-        G:      Region term NxS (Remark: fast inference requires S<<N)
+        Args:
+            Y:      [N, P] phenotype matrix
+            F:      Sample fixed effect design (first dimension must be N)
+            A:      Trait fixed effect design (second dimension must be P)
+            Cn:     Limix covariance matrix for Cn (dimension P)
+            G:      [N, rank_r] numpy covariance matrix for G
+            rank:   rank of column low-rank covariance (default = 1)
         """
-        print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
-
         assert_type(Y, NP.ndarray, 'Y')
         assert_type_or_list_type(F, NP.ndarray, 'F')
         assert_type_or_list_type(A, NP.ndarray, 'A')

@@ -35,7 +35,7 @@ class TestGPBase(unittest.TestCase):
         self.Cn.setCovariance(0.5 * sp.cov(self.Y.T))
         # define gp
         self.gp = GP2KronSum(Y=self.Y, F=self.F, A=self.A, Cg=self.Cg,
-                             Cn=self.Cn, XX=self.R)
+                             Cn=self.Cn, R=self.R)
 
     def test_grad(self):
 
@@ -61,7 +61,7 @@ class TestGPBase(unittest.TestCase):
     def test_correct_inputs(self):
         np.asarray(None, dtype=float)
         # self.gp = GP2KronSum(Y=self.Y, F=self.F, A=self.A, Cg=self.Cg,
-        #                      Cn=self.Cn, XX=self.R)
+        #                      Cn=self.Cn, R=self.R)
 
 if __name__ == "__main__":
     unittest.main()

@@ -16,11 +16,32 @@ import pdb
 _MAX_DIM = 5000
 
 class Cov3KronSumLR(Cov2KronSum):
+    """
+    Covariance class for sum of 3 Kronecker products with one low rank term:
+        K = Cr \kron GG.T + Cg \kron R + Cn \kron I
+    Notation:
+        - dim_c: dimension of col covariances
+        - dim_r: dimension of row covariances
+        - rank_c: rank of low-rank col covariance 
+        - rank_r: rank of low-rank row covariance 
+    """
 
-    def __init__(self, Cg = None, Cn = None, G = None, R = None, rank = 1, Cr = None):
+    def __init__(self, Cg=None, Cn=None, G=None, R=None, rank=1, Cr=None, S_R=None, U_R=None):
+        """
+        Args:
+            Cg:     Limix covariance matrix for Cg (dimension dim_c) 
+            Cn:     Limix covariance matrix for Cn (dimension dim_c) 
+            G:      [dim_r, rank_r] numpy covariance matrix for G
+            R:      [dim_r, dim_r] numpy semidemidefinite covariance matrix for R 
+            rank:   rank of column low-rank covariance (default = 1) 
+            Cr:     Limix covariance matrix for Cr (optional).
+                    If not specified, a low-rank covariance matrix is considered
+            S_R:    N vector of eigenvalues of R
+            U_R:    [N, N] eigenvector matrix of R
+        """
         Covariance.__init__(self)
-        self.setColCovars(Cg = Cg, Cn = Cn, rank = rank, Cr = None)
-        self.R = R
+        self.setColCovars(Cg=Cg, Cn=Cn, rank=rank, Cr=None)
+        self.setR(R=R, S_R=S_R, U_R=U_R)
         self.G = G
         self.dim = self.dim_c * self.dim_r
         self._calcNumberParams()
@@ -63,7 +84,7 @@ class Cov3KronSumLR(Cov2KronSum):
         self.G_has_changed()
 
     # normal setter for col covars
-    def setColCovars(self, Cg = None, Cn = None, rank = 1, Cr = None):
+    def setColCovars(self, Cg=None, Cn=None, rank=1, Cr=None):
         assert Cg is not None, 'Cov2KronSum: Specify Cg!'
         assert Cn is not None, 'Cov2KronSum: Specify Cn!'
         assert Cg.dim==Cn.dim, 'Cov2KronSum: Cg and Cn must have same dimensions!'

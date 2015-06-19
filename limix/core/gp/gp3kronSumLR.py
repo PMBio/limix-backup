@@ -14,19 +14,39 @@ from limix.core.gp import GP2KronSum
 from limix.core.covar.cov_reml import cov_reml
 
 class GP3KronSumLR(GP2KronSum):
+    """
+    Gaussian Process with a 3kronSumLR Covariance and a mean that is a sum of Kronecker products:
+        vec(Y) ~ N( vec( \sum_i F_i B_i A_i), Cr \kron GG.T + Cg \kron R + Cn \kron I )
+    The current implementation of this class does not support fixed effects!
+    Notation:
+        N = number of samples
+        P = number of traits
+        Y = [N, P] phenotype matrix
+        F_i = sample fixed effect design for term i
+        A_i = trait fixed effect design for term i
+        B_i = effect sizes of fixed effect term i
+        Cr = column covariance matrix for low-rank term 
+        Cg = column covariance matrix for full rank non-noise term
+        Cn = column covariance matrix for noise term
+        R = row covariance matrix for non-noise term
+        rank_c = rank of low-rank col covariance
+        rank_r = rank of low-rank row covariance
+    """
 
-    def __init__(self,Y = None, Cg = None, Cn = None, XX = None, S_XX = None, U_XX = None, G = None, rank = None):
+    def __init__(self,Y = None, Cg = None, Cn = None, R = None, S_R = None, U_R = None, G = None, rank = None):
         """
-        Gaussian Process with a 2kronSum Covariance and a mean with kronecker terms(with REML)
-        vec(Y) ~ N( vec( \sum_i A_i \kron F_i), Cg \kron R + Cn \kron I )
-        ---------------------------------------------------------------------------
-        Y:      Phenotype matrix
-        Cg:     LIMIX trait-to-trait covariance for genetic contribution
-        Cn:     LIMIX trait-to-trait covariance for noise
-        XX:     Matrix for fixed sample-to-sample covariance function
+        Args:
+            Y:      [N, P] phenotype matrix
+            Cg:     Limix covariance matrix for Cg (dimension P)
+            Cn:     Limix covariance matrix for Cn (dimension P)
+            G:      [N, rank_r] numpy covariance matrix for G
+            R:      [N, N] numpy semidemidefinite covariance matrix for R.
+                    In alternative to R, S_R and U_R can be specified.
+            S_R:    N vector of eigenvalues of R
+            U_R:    [N, N] eigenvector matrix of R
+            rank:   rank of column low-rank covariance (default = 1)
         """
-        print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
-        covar = Cov3KronSumLR(Cg = Cg, Cn = Cn, R = XX, G = G, rank = rank)
+        covar = Cov3KronSumLR(Cg=Cg, Cn=Cn, R=R, G=G, rank=rank, S_R=S_R, U_R=U_R)
         mean  = MeanKronSum(Y = Y)
         GP.__init__(self, covar = covar, mean = mean)
 

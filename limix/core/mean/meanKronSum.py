@@ -53,7 +53,6 @@ class MeanKronSum(mean_base):
 
         assert Fstar is None, 'This constructor still does not support Fstar.'
 
-        print 'TODO: check caching'
         self.Y = Y
         self.setDesigns(F, A)
         self.Fstar = Fstar

@@ -17,33 +17,44 @@ from limix.core.utils import assert_subtype
 
 
 class GP2KronSum(GP):
+    """
+    Gaussian Process with a 2kronSum Covariance and a mean that is a sum of Kronecker products:
+        vec(Y) ~ N( vec( \sum_i F_i B_i A_i), Cg \kron R + Cn \kron I )
+    Notation:
+        N = number of samples
+        P = number of traits
+        Y = [N, P] phenotype matrix
+        F_i = sample fixed effect design for term i
+        A_i = trait fixed effect design for term i
+        B_i = effect sizes of fixed effect term i
+        Cg = column covariance matrix for signal term respectively 
+        Cn = column covariance matrix for noise term respectively 
+        R = row covariance matrix for signal term respectively 
+    """
 
-    def __init__(self, Y, F, A, Cg, Cn, XX, S_XX=None, U_XX=None):
+    def __init__(self, Y, F, A, Cg, Cn, R, S_R=None, U_R=None):
         """
-        Gaussian Process with a 2kronSum Covariance and a mean with kronecker terms(with REML)
-        vec(Y) ~ N( vec( \sum_i A_i \kron F_i), Cg \kron R + Cn \kron I )
-        ---------------------------------------------------------------------------
-        Y:      Phenotype matrix
-        Cg:     LIMIX trait-to-trait covariance for genetic contribution
-        Cn:     LIMIX trait-to-trait covariance for noise
-        XX:     Matrix for fixed sample-to-sample covariance function
+        Args:
+            Y:      [N, P] phenotype matrix
+            F:      list of sample fixed effect designs.
+                    Each term must have first dimension N
+            A:      list of trait fixed effect design.
+                    Each term must have second dimension P
+            Cg:     Limix covariance matrix for Cg (dimension P)
+            Cn:     Limix covariance matrix for Cn (dimension P)
+            R:      [N, N] numpy semidemidefinite covariance matrix for R.
+                    In alternative to R, S_R and U_R can be specified.
+            S_R:    N vector of eigenvalues of R 
+            U_R:    [N, N] eigenvector matrix of R
         """
-        print 'pass XX and S_XX to covariance: the covariance should be responsable of caching stuff'
-
         assert_type(Y, NP.ndarray, 'Y')
         assert_type_or_list_type(F, NP.ndarray, 'F')
         assert_type_or_list_type(A, NP.ndarray, 'A')
         assert_subtype(Cg, Covariance, 'Cg')
         assert_subtype(Cn, Covariance, 'Cn')
-        assert_type(XX, NP.ndarray, 'XX')
+        assert_type(R, NP.ndarray, 'R')
 
-        assert S_XX is None, ('This constructor still does not support S_XX'
-                              ' different than None.')
-
-        assert U_XX is None, ('This constructor still does not support U_XX'
-                              ' different than None.')
-
-        covar = Cov2KronSum(Cg=Cg, Cn=Cn, R=XX)
+        covar = Cov2KronSum(Cg=Cg, Cn=Cn, R=R, S_R=S_R, U_R=U_R)
         mean = MeanKronSum(Y=Y, F=F, A=A)
 
         GP.__init__(self, covar=covar, mean=mean)

@@ -6,9 +6,17 @@ import pdb
 
 class LowRankCov(Covariance):
     """
-    lowrank covariance
+    Low-rank semi-definite positive matrix.
+    A low-rank semi-definite matrix has dim * rank parameters where:
+        dim = dimension of the low-rank covariance
+        rank = rank of the low-rank covariance
     """
     def __init__(self, dim, rank = 1):
+        """
+        Args:
+            dim:        dimension of the low-rank covariance
+            rank:       rank of the low-rank covariance
+        """
         Covariance.__init__(self)
         self.initialize(dim, rank)
         self._initParams()

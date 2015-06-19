@@ -9,11 +9,20 @@ import scipy.linalg as LA
 import copy
 
 class mean_base(Cached, Observed):
+    """
+    Basic mean function for gp regression
+    Notation:
+        N = number of individuals
+        No = number of out-of-sample individuals for predictions 
+        K = number of fixed effect covariates
+    """
 
-    def __init__(self,Y,W,Wstar=None):
+    def __init__(self, Y, W, Wstar=None):
         """
-        y:        phenotype vector
-        W:        fixed effect design
+        Args:
+            Y:        phenotype matrix [N, 1]
+            W:        fixed effect design [N, K]
+            Wstar:    out-of-sample fixed effect design for predictions [No, K]
         """
         Cached.__init__(self)
         self.Y = Y
@@ -108,7 +117,6 @@ class mean_base(Cached, Observed):
 
     @B.setter
     def B(self,value):
-        """ set phenotype """
         assert value.shape[0]==self._K, 'Dimension mismatch'
         assert value.shape[1]==self._P, 'Dimension mismatch'
         self._B = value
@@ -116,13 +124,11 @@ class mean_base(Cached, Observed):
 
     @y.setter
     def y(self,value):
-        """ set phenotype """
         assert value.shape[1] == 1, 'Dimension mismatch'
         self.Y = value
 
     @b.setter
     def b(self,value):
-        """ set phenotype """
         assert value.shape[0] == self._K*self._P, 'Dimension mismatch'
         assert value.shape[1] == 1, 'Dimension mismatch'
         self.B = sp.reshape(value,(self._K,self._P),order='F')

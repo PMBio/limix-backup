@@ -8,9 +8,16 @@ import pdb
 
 class FixedCov(Covariance):
     """
-    squared exponential covariance function
+    Fixed-form covariance matrix.
+    A fixed-form covariance matrix has only 1 parameter
     """
     def __init__(self, K0, Kcross0=None):
+        """
+        Args:
+            K0:         semi-definite positive matrix that defines the fixed-form covariance
+            Kcross0:    cross covariance between training and test samples
+                        (used only for out-of-sample predictions)
+        """
         Covariance.__init__(self)
         self.K0 = assert_make_float_array(K0, "K0")
         assert_finite_array(self.K0)

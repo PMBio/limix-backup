@@ -31,7 +31,7 @@ class TestGPBase(unittest.TestCase):
         Cg.setCovariance(0.5 * sp.cov(Y.T))
         Cn.setCovariance(0.5 * sp.cov(Y.T))
         # define gp
-        self.gp = GP3KronSumLR(Y = Y, Cg = Cg, Cn = Cn, XX = R, G = G, rank = 1)
+        self.gp = GP3KronSumLR(Y = Y, Cg = Cg, Cn = Cn, R = R, G = G, rank = 1)
 
     def test_grad(self):
 
