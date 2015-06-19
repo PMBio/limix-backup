@@ -348,7 +348,13 @@ class VarianceDecomposition:
     def optimize_with_repeates(self,fast=None,verbose=None,n_times=10,lambd=None,lambd_g=None,lambd_n=None):
         """
         Train the model repeadly up to a number specified by the users with random restarts and
-        return a list of all relative minima that have been found 
+        return a list of all relative minima that have been found. This list is sorted according to 
+        least likelihood. Each list term is a dictionary with keys "counter", "LML", and "scales". 
+        
+        After running this function, the vc object will be set at the last iteration. Thus, if you 
+        wish to get the vc object of one of the repeats, then set the scales. For example:
+        
+        vc.setScales(scales=optimize_with_repeates_output[0]["scales"])
         
         Args:
             fast:       Boolean. if set to True initalize kronSumGP
@@ -394,10 +400,11 @@ class VarianceDecomposition:
             print "\nLocal mimima\n"
             print "n_times\t\tLML"
             print "------------------------------------"
-            for i in range(len(opt_list)):
-                out.append(opt_list[index[i]])
-                if verbose:
-                    print "%d\t\t%f" % (opt_list[index[i]]['counter'], opt_list[index[i]]['LML'])
+            
+        for i in range(len(opt_list)):
+            out.append(opt_list[index[i]])
+            if verbose:
+                print "%d\t\t%f" % (opt_list[index[i]]['counter'], opt_list[index[i]]['LML'])
                 print ""
 
         return out
@@ -567,8 +574,9 @@ class VarianceDecomposition:
         """
         RV=sp.zeros((self.P,self.n_randEffs))
         for term_i in range(self.n_randEffs):
-            RV[:,term_i] = self.getTraitCovarStdErrors(term_i).diagonal()
-        var = getVarianceComps()
+            #RV[:,term_i] = self.getTraitCovarStdErrors(term_i).diagonal()
+            RV[:,term_i] = self.getTraitCovarStdErrors(term_i)
+        var = self.getVarianceComps()
         if univariance:
             RV /= var.sum(1)[:,sp.newaxis]
         return RV

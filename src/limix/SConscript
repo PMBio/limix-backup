@@ -1,8 +1,6 @@
-
 #get all the build variables we need
 Import('env','build_options')
 localenv = env.Clone()
-
 
 srclst = Glob('*/*.cpp')
 

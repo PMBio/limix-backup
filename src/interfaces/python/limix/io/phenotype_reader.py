@@ -98,9 +98,16 @@ class pheno_reader_tables():
         elif phenotype_query is not None:
             try:
                 I = self.index_frame.query(phenotype_query).values[:,0]
+
+                #if there are no results we won't actually get an exception, we just get an
+                #empty response
+                if len(I) == 0:
+                    print "query '%s' yielded no results!" % (phenotype_query)
+                    I = SP.zeros([0],dtype="int")
+
             except Exception, arg:
                 
-                print "query '%s' yielded no results: %s"%phenotype_query, str(arg) 
+                print "query '%s' yielded no results: %s" % (phenotype_query, str(arg))
                                 
                 I = SP.zeros([0],dtype="int") 
         else:

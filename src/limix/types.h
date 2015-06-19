@@ -75,8 +75,9 @@ typedef float float32_t;
 //get integer definitions from stdint or define manuall for MSVC
 
 
-typedef long int int64_t;
-typedef unsigned long int uint64_t;
+//typedef long int int64_t;
+//typedef unsigned long int uint64_t;
+#include <stdint.h>
 
 /*
 #ifdef _MSC_VER
@@ -158,6 +159,7 @@ inline mfloat_t inverse (mfloat_t x)
 
 //float
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::ColMajor> MatrixXd;
+typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, Eigen::Dynamic,Eigen::RowMajor> MatrixXdRM;
 typedef Eigen::Matrix<mfloat_t, 2, 2,Eigen::ColMajor> MatrixXd2;
 typedef Eigen::Matrix<mfloat_t, 3, 3,Eigen::ColMajor> MatrixXd3;
 typedef Eigen::Matrix<mfloat_t, Eigen::Dynamic, 1,Eigen::ColMajor> VectorXd;
