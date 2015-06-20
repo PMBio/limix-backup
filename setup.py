@@ -52,7 +52,7 @@ def check_versions(min_versions):
         npversion = numpy.__version__
     except ImportError:
         raise ImportError("LIMIX requires numpy")
- 
+
     try:
         import pandas
         pandasversion = pandas.__version__
@@ -105,11 +105,11 @@ def get_source_files(reswig=True):
     #python wrapper
     FL.extend(file_list_recursive('./src',exclude_list=['src/archive','src/testing','src/interfaces'],ext=['.cpp','.c']))
     #nlopt
-    nlopt = ['./External/nlopt/%s' % fn for fn in nlopt] 
+    nlopt = ['./External/nlopt/%s' % fn for fn in nlopt]
     #add header files
     if reswig:
-        FL.extend(['src/interfaces/python/limix.i']) 
-    else:        
+        FL.extend(['src/interfaces/python/limix.i'])
+    else:
         pass
         FL.extend(['src/interfaces/python/limix_wrap.cpp'])
     FL.extend(nlopt)
@@ -120,7 +120,7 @@ def get_include_dirs():
     include_dirs.extend(['External','External/nlopt'])
     nlopt_include_dir = ['stogo','util','direct','cdirect','praxis','luksan','crs','mlsl','mma','cobyla','newuoa','neldermead','auglag','bobyqa','isres','slsqp','api','esch']
     nlopt_include_dir = ['./External/nlopt/%s' % fn for fn in nlopt_include_dir]
-    include_dirs.extend(nlopt_include_dir)    
+    include_dirs.extend(nlopt_include_dir)
     #add numpy include dir
     numpy_inc_path = [numpy.get_include()]
     include_dirs.extend(numpy_inc_path)
@@ -138,9 +138,9 @@ import numpy
 
 class CustomBuild(build):
     sub_commands = [
-        ('build_ext', build.has_ext_modules), 
+        ('build_ext', build.has_ext_modules),
         ('build_py', build.has_pure_modules),
-        ('build_clib', build.has_c_libraries), 
+        ('build_clib', build.has_c_libraries),
         ('build_scripts', build.has_scripts),
     ]
 
@@ -151,11 +151,13 @@ if '--reswig' in sys.argv:
     reswig = True
 
 #1. find packages (parses the local 'limix' tree')
-# exclude limix.deprecated. This is a placeholder and will be replaced with the 
+# exclude limix.deprecated. This is a placeholder and will be replaced with the
 # actual deprecated limix source tree
 packages = find_packages(exclude=['limix.deprecated'])
 #3. add depcreated limix packages in src/interfaces/python (see below)
-packages.extend(['limix.deprecated', 'limix.deprecated.io', 'limix.deprecated.modules', 'limix.deprecated.stats', 'limix.deprecated.utils'])
+packages.extend(['limix.deprecated', 'limix.deprecated.io',
+                 'limix.deprecated.modules', 'limix.deprecated.stats',
+                 'limix.deprecated.utils', 'limix.deprecated.test'])
 reqs = ['numpy', 'scipy', 'matplotlib >=1.2']
 
 FL = get_source_files(reswig=reswig)
