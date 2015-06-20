@@ -157,7 +157,7 @@ packages = find_packages(exclude=['limix.deprecated'])
 #3. add depcreated limix packages in src/interfaces/python (see below)
 packages.extend(['limix.deprecated', 'limix.deprecated.io',
                  'limix.deprecated.modules', 'limix.deprecated.stats',
-                 'limix.deprecated.utils', 'limix.deprecated.test'])
+                 'limix.deprecated.utils'])
 reqs = ['numpy', 'scipy', 'matplotlib >=1.2']
 
 FL = get_source_files(reswig=reswig)

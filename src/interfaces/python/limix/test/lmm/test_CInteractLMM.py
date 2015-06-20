@@ -3,7 +3,8 @@ import unittest
 import scipy as SP
 import pdb
 import limix
-import data
+import limix.deprecated as dlimix
+from limix.deprecated.test import data
 import os
 
 class CIntearctLMM_test(unittest.TestCase):
@@ -11,10 +12,10 @@ class CIntearctLMM_test(unittest.TestCase):
     test class for CIntearctLMM
     Status: currenlty only testing the special case of a CinteractLMM that is equilvanet to LMM
     """
-    
+
     def setUp(self):
         self.datasets = ['lmm_data1']
-        self.dir_name = os.path.dirname(__file__)
+        self.dir_name = os.path.dirname(os.path.realpath(__file__))
 
     def test_lmm(self):
         """basic main effec tests"""
@@ -24,7 +25,7 @@ class CIntearctLMM_test(unittest.TestCase):
             N = D['X'].shape[0]
             inter0 = SP.zeros([N,0])#fixed verion: all 0 feature did not work: #inter0 = SP.zeros([N,1])N-by-0 matrix instead of N-by-1 works
             inter1 = SP.ones([N,1])
-            lmm = limix.CInteractLMM()        
+            lmm = dlimix.CInteractLMM()
             lmm.setK(D['K'])
             lmm.setSNPs(D['X'])
             lmm.setCovs(D['Cov'])
@@ -50,7 +51,7 @@ class CIntearctLMM_test(unittest.TestCase):
             inter1 = SP.ones([N,1])
 
             #1. set permuattion
-            lmm = limix.CInteractLMM()        
+            lmm = dlimix.CInteractLMM()
             lmm.setInter0(inter0)
             lmm.setInter(inter1)
             lmm.setK(D['K'])
@@ -64,7 +65,7 @@ class CIntearctLMM_test(unittest.TestCase):
             lmm.process()
             pv_perm1 = lmm.getPv().ravel()
             #2. do by hand
-            lmm = limix.CInteractLMM()        
+            lmm = dlimix.CInteractLMM()
             lmm.setInter0(inter0)
             lmm.setInter(inter1)
             lmm.setK(D['K'])

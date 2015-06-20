@@ -3,16 +3,17 @@ import unittest
 import scipy as SP
 import pdb
 import limix
-import data
+import limix.deprecated as dlimix
+from limix.deprecated.test import data
 import os
 
 
 class CKroneckerLMM_test(unittest.TestCase):
     """test class for CLMM"""
-    
+
     def setUp(self):
         self.datasets = ['lmm_data1']
-        self.dir_name = os.path.dirname(__file__)
+        self.dir_name = os.path.dirname(os.path.realpath(__file__))
 
     def test_lmm(self):
         """basic test, comparing pv to a standard LMM equivalent"""
@@ -29,13 +30,13 @@ class CKroneckerLMM_test(unittest.TestCase):
             Xcov  = D['Cov'][:,SP.newaxis]
             X      = D['X']
             Y      = D['Y'][:,SP.newaxis]
-                        
-            lmm = limix.CKroneckerLMM()
+
+            lmm = dlimix.CKroneckerLMM()
             lmm.setK1r(K1r)
             lmm.setK1c(K1c)
             lmm.setK2r(K2r)
             lmm.setK2c(K2c)
-            
+
             lmm.setSNPs(X)
             #add covariates
             lmm.addCovariates(Xcov,Acov)
@@ -44,7 +45,7 @@ class CKroneckerLMM_test(unittest.TestCase):
             lmm.setPheno(Y)
             lmm.setNumIntervalsAlt(0)
             lmm.setNumIntervals0(100)
-            
+
             lmm.process()
             pv = lmm.getPv().ravel()
             D2= ((SP.log10(pv)-SP.log10(D['pv']))**2)
@@ -79,13 +80,13 @@ class CKroneckerLMM_test(unittest.TestCase):
             X      = D['X']
             Y      = D['Y'][:,SP.newaxis]
             Y      = SP.tile(Y,(1,P))
-                        
-            lmm = limix.CKroneckerLMM()
+
+            lmm = dlimix.CKroneckerLMM()
             lmm.setK1r(K1r)
             lmm.setK1c(K1c)
             lmm.setK2r(K2r)
             lmm.setK2c(K2c)
-            
+
             lmm.setSNPs(X)
             #add covariates
             lmm.addCovariates(Xcov,Acov)
@@ -94,9 +95,9 @@ class CKroneckerLMM_test(unittest.TestCase):
             lmm.setPheno(Y)
             lmm.setNumIntervalsAlt(0)
             lmm.setNumIntervals0(100)
-            
+
             lmm.process()
-            
+
             #get p-values with P-dof:
             pv_Pdof = lmm.getPv().ravel()
             #transform in P-values with a single DOF:
@@ -121,7 +122,7 @@ class CKroneckerLMM_test(unittest.TestCase):
             D = data.load(os.path.join(self.dir_name,dn))
             perm = SP.random.permutation(D['X'].shape[0])
             #1. set permuattion
-            lmm = limix.CLMM()
+            lmm = dlimix.CLMM()
             lmm.setK(D['K'])
             lmm.setSNPs(D['X'])
             lmm.setCovs(D['Cov'])
@@ -133,7 +134,7 @@ class CKroneckerLMM_test(unittest.TestCase):
             lmm.process()
             pv_perm1 = lmm.getPv().ravel()
             #2. do by hand
-            lmm = limix.CLMM()
+            lmm = dlimix.CLMM()
             lmm.setK(D['K'])
             lmm.setSNPs(D['X'][perm])
             lmm.setCovs(D['Cov'])
