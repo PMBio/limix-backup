@@ -1,4 +1,4 @@
-#from modules2 import MTSet
+from modules2 import MTSet
 
 #import self
 import limix

@@ -48,8 +48,7 @@ class MTSet():
         # fixed effect
         if F is not None:
             if self.bgRE:
-                raise 'The current implementation of mtSEt does not support covariates.
-                       Please pre'
+                raise 'The current implementation of mtSEt does not support covariates. Please pre'
             F = remove_dependent_cols(F)
         #traitID
         if traitID is None:
