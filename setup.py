@@ -151,9 +151,11 @@ if '--reswig' in sys.argv:
     reswig = True
 
 #1. find packages (parses the local 'limix' tree')
-packages = find_packages()
-#2. add depcreated limix packages in src/interfaces/python (see below)
-packages.extend(['limix.dep', 'limix.dep.io', 'limix.dep.modules', 'limix.dep.stats', 'limix.dep.utils'])
+# exclude limix.deprecated. This is a placeholder and will be replaced with the 
+# actual deprecated limix source tree
+packages = find_packages(exclude=['limix.deprecated'])
+#3. add depcreated limix packages in src/interfaces/python (see below)
+packages.extend(['limix.deprecated', 'limix.deprecated.io', 'limix.deprecated.modules', 'limix.deprecated.stats', 'limix.deprecated.utils'])
 reqs = ['numpy', 'scipy', 'matplotlib >=1.2']
 
 FL = get_source_files(reswig=reswig)
@@ -178,12 +180,12 @@ setup(
     long_description = read('README'),
     license = 'BSD',
     keywords = 'linear mixed models, GWAS, QTL, Variance component modelling',
-    ext_package = 'limix.dep',
+    ext_package = 'limix.deprecated',
     ext_modules = [Extension('_core',get_source_files(reswig=reswig),include_dirs=get_include_dirs(),swig_opts=get_swig_opts(),extra_compile_args = get_extra_compile_args())],
-    py_modules = ['limix.dep.core'],
+    py_modules = ['limix.deprecated.core'],
     scripts = ['src/interfaces/python/bin/limix_runner'],
     packages = packages,
-    package_dir = {'limix.dep': 'src/interfaces/python/limix','limix': 'limix'},
+    package_dir = {'limix.deprecated': 'src/interfaces/python/limix','limix': 'limix'},
     #dependencies
     #requires = ['scipy','numpy','matplotlib','pandas','scons'],
     requires=map(lambda x: x.split(" ")[0], reqs),

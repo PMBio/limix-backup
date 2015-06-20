@@ -15,10 +15,9 @@
 """
 PANAMA module in limix
 """
-import limix.modules.qtl as qtl
-import limix.stats.fdr as fdr
-from limix.stats.pca import *
-import limix
+import limix.deprecated.modules.qtl as qtl
+import limix.deprecated.stats.fdr as fdr
+from limix.deprecated.stats.pca import *
 import scipy as sp 
 import pdb
 import scipy.linalg as linalg
@@ -67,67 +66,67 @@ class PANAMA:
         """train panama module"""
 
         if 0:
-            covar  = limix.CCovLinearISO(rank)
-            ll  = limix.CLikNormalIso()
+            covar  = limix.deprecarted.CCovLinearISO(rank)
+            ll  = limix.deprecated.CLikNormalIso()
             X0 = sp.random.randn(self.N,rank)
             X0 = PCA(self.Y,rank)[0]
             X0 /= sp.sqrt(rank)
             covar_params = sp.array([1.0])
             lik_params = sp.array([1.0])
 
-            hyperparams = limix.CGPHyperParams()
+            hyperparams = limix.deprecated.CGPHyperParams()
             hyperparams['covar'] = covar_params
             hyperparams['lik'] = lik_params
             hyperparams['X']   = X0
         
-            constrainU = limix.CGPHyperParams()
-            constrainL = limix.CGPHyperParams()
+            constrainU = limix.deprecated.CGPHyperParams()
+            constrainL = limix.deprecated.CGPHyperParams()
             constrainU['covar'] = +5*sp.ones_like(covar_params);
             constrainL['covar'] = 0*sp.ones_like(covar_params);
             constrainU['lik'] = +5*sp.ones_like(lik_params);
             constrainL['lik'] = 0*sp.ones_like(lik_params);
 
         if 1:
-            covar  = limix.CSumCF()
+            covar  = limix.deprecated.CSumCF()
             if LinearARD:
-                covar_1 =  limix.CCovLinearARD(rank)
+                covar_1 =  limix.deprecated.CCovLinearARD(rank)
                 covar_params = []
                 for d in range(rank):
                     covar_params.append(1/sp.sqrt(d+2))
             else:
-                covar_1 =  limix.CCovLinearISO(rank)
+                covar_1 =  limix.deprecated.CCovLinearISO(rank)
                 covar_params = [1.0]
             covar.addCovariance(covar_1)
 
             if self.use_Kpop:
-                covar_2 =  limix.CFixedCF(self.Kpop)
+                covar_2 =  limix.deprecated.CFixedCF(self.Kpop)
                 covar.addCovariance(covar_2)
                 covar_params.append(1.0)
 
-            ll  = limix.CLikNormalIso()
+            ll  = limix.deprecated.CLikNormalIso()
             X0 = PCA(self.Y,rank)[0]
             X0 /= sp.sqrt(rank)
             covar_params = sp.array(covar_params)
             lik_params = sp.array([1.0])
 
-            hyperparams = limix.CGPHyperParams()
+            hyperparams = limix.deprecated.CGPHyperParams()
             hyperparams['covar'] = covar_params
             hyperparams['lik'] = lik_params
             hyperparams['X']   = X0
         
-            constrainU = limix.CGPHyperParams()
-            constrainL = limix.CGPHyperParams()
+            constrainU = limix.deprecated.CGPHyperParams()
+            constrainL = limix.deprecated.CGPHyperParams()
             constrainU['covar'] = +5*sp.ones_like(covar_params);
             constrainL['covar'] = -5*sp.ones_like(covar_params);
             constrainU['lik'] = +5*sp.ones_like(lik_params);
 
             
-        gp=limix.CGPbase(covar,ll)
+        gp=limix.deprecated.CGPbase(covar,ll)
         gp.setY(self.Y)
         gp.setX(X0)
         lml0 = gp.LML(hyperparams)
         dlml0 = gp.LMLgrad(hyperparams)        
-        gpopt = limix.CGPopt(gp)
+        gpopt = limix.deprecated.CGPopt(gp)
         gpopt.setOptBoundLower(constrainL);
         gpopt.setOptBoundUpper(constrainU);
 
