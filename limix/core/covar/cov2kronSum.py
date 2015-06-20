@@ -81,13 +81,13 @@ class Cov2KronSum(Covariance):
         RnotNone  = R is not None
         SUnotNone = S_R is not None and U_R is not None
         assert RnotNone or SUnotNone, 'Either R or S_R and U_R must be specified.'
-        if R is not None:
+        if RnotNone:
             self._dim_r = R.shape[0]
             self._R = R
             self.R_has_changed()
-        else:
+        if SUnotNone:
             #TODO: assert dimensions
-            self_dim_r = S_R.shape[0]
+            self._dim_r = S_R.shape[0]
             self.R_has_changed()
             self.fill_cache('Lr', U_R.T)
             self.fill_cache('Sr', S_R)

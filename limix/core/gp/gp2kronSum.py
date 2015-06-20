@@ -48,11 +48,11 @@ class GP2KronSum(GP):
             U_R:    [N, N] eigenvector matrix of R
         """
         assert_type(Y, NP.ndarray, 'Y')
-        assert_type_or_list_type(F, NP.ndarray, 'F')
-        assert_type_or_list_type(A, NP.ndarray, 'A')
+        #assert_type_or_list_type(F, NP.ndarray, 'F')
+        #assert_type_or_list_type(A, NP.ndarray, 'A')
         assert_subtype(Cg, Covariance, 'Cg')
         assert_subtype(Cn, Covariance, 'Cn')
-        assert_type(R, NP.ndarray, 'R')
+        #assert_type(R, NP.ndarray, 'R')
 
         covar = Cov2KronSum(Cg=Cg, Cn=Cn, R=R, S_R=S_R, U_R=U_R)
         mean = MeanKronSum(Y=Y, F=F, A=A)
