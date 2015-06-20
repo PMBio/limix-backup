@@ -39,26 +39,30 @@ class MTSet():
             traiID:     P vector of the IDs of the phenotypes to analyze (optional)
             rank:       rank of the trait covariance matrix of the variance component to be tested (default is 1)
         """
-        # pheno 
-        self.Y = Y
-        self.N, self.P = Y.shape
         # data
         noneNone = S_R is not None and U_R is not None
-        self.bgRE = self.R is not None or noneNone
+        self.bgRE = R is not None or noneNone
         # fixed effect
+        msg = 'The current implementation of the full rank mtSet'
+        msg+= ' does not support covariates.'
+        msg+= ' We reccommend to regress out covariates and'
+        msg+= ' subsequently quantile normalize the phenotypes'
+        msg+= ' to a normal distribution prior to use mtSet.'
+        msg+= ' This can be done within the LIMIX framework using'
+        msg+= ' the methods limix.utils.preprocess.regressOut and'
+        msg+= ' limix.utils.preprocess.gaussianize'
+        assert not (F is not None and self.bgRE), msg
         if F is not None:
-            if self.bgRE:
-                raise 'The current implementation of mtSEt does not support covariates.
-                       Please pre'
             F = remove_dependent_cols(F)
         #traitID
         if traitID is None:
-            traitID = sp.array(['trait %d' % p for p in range(self.P)])
+            traitID = sp.array(['trait %d' % p for p in range(Y.shape[1])])
         self.setTraitID(traitID)
         #init covariance matrices and gp
-        Cg = FreeFormCov(self.P)
-        Cn = FreeFormCov(self.P)
-        gp = GP3KronSumLR(Y=Y, Cg = Cg, Cn = Cn, XX = R, G = G, rank = 1)
+        Cg = FreeFormCov(Y.shape[1])
+        Cn = FreeFormCov(Y.shape[1])
+        G  = 1. * (sp.rand(Y.shape[0],1)<0.2)
+        self._gp = GP3KronSumLR(Y=Y, Cg=Cg, Cn=Cn, S_R=S_R, U_R=U_R, G=G, rank = 1)
         # null model params
         self.null = None
         # calls itself for column-by-column trait analysis
@@ -68,28 +72,61 @@ class MTSet():
         self.infoOptST = None
         pass
 
-    def _setY(self, value):
-        assert Y is not None, 'MTSet:: set Y'
-        self.N, self.P = Y.shape
-        self.Y = Y
+    ##################################################
+    # Properties
+    ##################################################
+    @property
+    def N(self):    return self._gp.covar.dim_r
 
-    def setF(self, value):
-        if F is None:   F = []
-        self.F = F
+    @property
+    def P(self):    return self._gp.covar.dim_c
 
-        self.R  = R
-        self.S_R = S_R
-        self.U_R = U_R
+    @property
+    def Cr(self):   return self._gp.covar.Cr
+
+    @property
+    def Cg(self):   return self._gp.covar.Cg
+
+    @property
+    def Cn(self):   return self._gp.covar.Cn
+
+    @property
+    def Y(self):    return self._gp.mean.Y
+
+    @property
+    def S_R(self):
+        if self.bgRE:   RV = self._gp.covar.Sr()
+        else:           RV = None
+        return RV
+
+    @property
+    def U_R(self):
+        if self.bgRE:   RV = self._gp.covar.Lr().T
+        else:           RV = None
+        return RV
+
+    #########################################
+    # Setters
+    #########################################
+    @Y.setter
+    def Y(self, value):
+        assert value.shape[0]==self.N, 'Dimension mismatch'
+        assert value.shape[1]==self.P, 'Dimension mismatch'
+        self._gp.mean.Y = Y
 
     def setTraitID(self,traitID):
-        assert traitID.shape[0]==self.P, 'MultiTraitSetTest:: dimension dismatch'
         self.traitID = traitID
 
+    ################################################
+    # Fitting null model
+    ###############################################
     def fitNull(self,verbose=True,cache=False,out_dir='./cache',fname=None,rewrite=False,seed=None,n_times=10,factr=1e3,init_method=None):
         """
         Fit null model
         """
         if seed is not None:    sp.random.seed(seed)
+
+        pdb.set_trace()
 
         read_from_file = False
         if cache:
@@ -109,7 +146,9 @@ class MTSet():
         else:
             start = TIME.time()
             if self.bgRE:
-                self.gpNull = gp2kronSum(self.mean,self.Cg,self.Cn,R=self.R,S_R=self.S_R,U_R=self.U_R)
+                self._gpNull = GP2KronSum(Y=self.Y, F=None, A=None, Cg=self.Cg, Cn=self.Cn, R=None, S_R=self.S_R, U_R=self.U_R)
+                self._gpNull.covar.setRandomParams()
+                self._gpNull.optimize()
             else:
                 self.gpNull = gp2kronSumLR(self.Y,self.Cn,Xr=sp.ones((self.N,1)),F=self.F)
             for i in range(n_times):
@@ -150,6 +189,10 @@ class MTSet():
     def setNull(self,null):
         """ set null model info """
         self.null = null
+
+    ###########################################
+    # Fitting alternative model
+    ###########################################
 
     def optimize(self,Xr,params0=None,n_times=10,verbose=True,vmax=5,perturb=1e-3,factr=1e3):
         """
