@@ -19,9 +19,10 @@ import numpy as np
 import scipy.stats as st
 import limix
 import scipy as sp
-import limix.utils.preprocess as preprocess
-import limix.modules.varianceDecomposition as VAR
-import limix.stats.fdr as FDR
+import limix.deprecated
+import limix.deprecated.utils.preprocess as preprocess
+import limix.deprecated.stats.fdr as FDR
+import varianceDecomposition as VAR
 import time
 #import qtl module for self referencing
 import qtl
@@ -78,7 +79,7 @@ class lmm:
 	def process(self):
 		t0 = time.time()
 		if self._lmm is None:
-			self._lmm = limix.CLMM()
+			self._lmm = limix.deprecated.CLMM()
 			self._lmm.setK(self.K)
 			self._lmm.setSNPs(self.snps)
 			self._lmm.setPheno(self.pheno)
@@ -111,7 +112,7 @@ class lmm:
 			if self._lmm is not None:
 				raise Exception('cannot reuse a CLMM object if missing variables are present')
 			else:
-				self._lmm = limix.CLMM()
+				self._lmm = limix.deprecated.CLMM()
 			#test all phenotypes separately
 			self.pvalues = np.zeros((self.phenos.shape[1],self.snps.shape[1]))
 			self.beta_snp = np.zeros((self.phenos.shape[1],self.snps.shape[1]))
@@ -294,7 +295,7 @@ def test_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=
 
     #2. run kroneckerLMM
 
-    lmm = limix.CKroneckerLMM()
+    lmm = limix.deprecated.CKroneckerLMM()
     lmm.setK1r(K1r)
     lmm.setK1c(K1c)
     lmm.setK2r(K2r)
@@ -411,7 +412,7 @@ def test_interaction_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,
         assert K2c.shape[1]==P, 'K2c: dimensions dismatch'
 
     #2. run kroneckerLMM for null model
-    lmm = limix.CKroneckerLMM()
+    lmm = limix.deprecated.CKroneckerLMM()
     lmm.setK1r(K1r)
     lmm.setK1c(K1c)
     lmm.setK2r(K2r)
@@ -475,7 +476,7 @@ def test_interaction_lmm(snps,pheno,Inter,Inter0=None,covs=None,K=None,test='lrt
     if Inter0 is None:
         Inter0=np.ones([N,1])
     assert (pheno.shape[0]==N and K.shape[0]==N and K.shape[1]==N and covs.shape[0]==N and Inter0.shape[0]==N and Inter.shape[0]==N), "shapes missmatch"
-    lmi = limix.CInteractLMM()
+    lmi = limix.deprecated.CInteractLMM()
     lmi.setK(K)
     lmi.setSNPs(snps)
     lmi.setPheno(pheno)
@@ -891,7 +892,7 @@ def test_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asnps
         assert K2c.shape[1]==P, 'K2c: dimensions dismatch'
 
     #2. run kroneckerLMM for null model
-    lmm = limix.CKroneckerLMM()
+    lmm = limix.deprecated.CKroneckerLMM()
     lmm.setK1r(K1r)
     lmm.setK1c(K1c)
     lmm.setK2r(K2r)
