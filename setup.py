@@ -127,7 +127,7 @@ def get_include_dirs():
     return include_dirs
 
 def get_swig_opts():
-    swig_opts=['-c++', '-Isrc','-outdir','src/interfaces/python/limix']
+    swig_opts=['-c++', '-Isrc','-outdir','limix/deprecated']
     return swig_opts
 
 def get_extra_compile_args():
@@ -153,11 +153,12 @@ if '--reswig' in sys.argv:
 #1. find packages (parses the local 'limix' tree')
 # exclude limix.deprecated. This is a placeholder and will be replaced with the
 # actual deprecated limix source tree
-packages = find_packages(exclude=['limix.deprecated'])
+#packages = find_packages(exclude=['limix.deprecated'])
+packages = find_packages(exclude=['tests','test'])
 #3. add depcreated limix packages in src/interfaces/python (see below)
-packages.extend(['limix.deprecated', 'limix.deprecated.io',
-                 'limix.deprecated.modules', 'limix.deprecated.stats',
-                 'limix.deprecated.utils'])
+#packages.extend(['limix.deprecated', 'limix.deprecated.io',
+#                 'limix.deprecated.modules', 'limix.deprecated.stats',
+#                 'limix.deprecated.utils'])
 reqs = ['numpy', 'scipy', 'matplotlib >=1.2']
 
 FL = get_source_files(reswig=reswig)
@@ -185,9 +186,9 @@ setup(
     ext_package = 'limix.deprecated',
     ext_modules = [Extension('_core',get_source_files(reswig=reswig),include_dirs=get_include_dirs(),swig_opts=get_swig_opts(),extra_compile_args = get_extra_compile_args())],
     py_modules = ['limix.deprecated.core'],
-    scripts = ['src/interfaces/python/bin/limix_runner'],
+    scripts = ['scripts/limix_runner'],
     packages = packages,
-    package_dir = {'limix.deprecated': 'src/interfaces/python/limix','limix': 'limix'},
+    package_dir = {'limix': 'limix'},
     #dependencies
     #requires = ['scipy','numpy','matplotlib','pandas','scons'],
     requires=map(lambda x: x.split(" ")[0], reqs),
