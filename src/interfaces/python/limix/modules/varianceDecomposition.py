@@ -13,10 +13,10 @@
 # limitations under the License.
 
 import sys
-import scipy as sp 
+import scipy as sp
 import scipy.linalg
 import scipy.stats
-#import limix
+import limix.deprecated as dlimix
 import limix.deprecated.utils.preprocess as preprocess
 import pdb
 import time
@@ -38,11 +38,11 @@ class VarianceDecomposition:
     vc.addFixedEffect() # set intercept
     vc.addRandomEffectTerm(K=K) # set genetic random effect with genetic kinship as sample covariance matrix [N,N]
     vc.addRandomEffectTerm(is_noise=True) # set noisy random effect
-    vc.optimize() # train the gaussian process 
+    vc.optimize() # train the gaussian process
     vc.getTraitCovar(0) # get estimated trait covariance for random effect 1 [P,P]
     vc.getVarianceComps() # get variance components of the different terms for different traits as [P,n_randEffs]
     """
-    
+
     def __init__(self,Y,standardize=False):
         """
         Args:
@@ -54,7 +54,7 @@ class VarianceDecomposition:
         #check whether Y is a vector, if yes reshape
         if (len(Y.shape)==1):
             Y = Y[:,sp.newaxis]
-        
+
         #create column of 1 for fixed if nothing providede
         self.N       = Y.shape[0]
         self.P       = Y.shape[1]
@@ -66,7 +66,7 @@ class VarianceDecomposition:
             Y=preprocess.standardize(Y)
 
         self.Y  = Y
-        self.vd = limix.CVarianceDecomposition(Y)
+        self.vd = dlimix.CVarianceDecomposition(Y)
         self.n_randEffs  = 0
         self.n_fixedEffs = 0
         self.gp      = None
@@ -80,23 +80,23 @@ class VarianceDecomposition:
         self.Kstar = []
         self.Ntest = None
 
-        # for multi trait models 
+        # for multi trait models
         self.trait_covar_type = []
         self.rank     = []
         self.fixed_tc = []
         self.diag     = []
         self.jitter   = []
-        
+
         self.cache = {}
         self.cache['Sigma']   = None
         self.cache['Hessian'] = None
 
         pass
-    
+
     def setY(self,Y,standardize=False):
         """
         Set phenotype matrix
-        
+
         Args:
             Y:              phenotype matrix [N, P]
             standardize:    if True, phenotype is standardized (zero mean, unit variance)
@@ -104,7 +104,7 @@ class VarianceDecomposition:
         assert Y.shape[0]==self.N, 'VarianceDecomposition:: Incompatible shape'
         assert Y.shape[1]==self.P, 'VarianceDecomposition:: Incompatible shape'
 
-        
+
         if standardize:
             Y=preprocess.standardize(Y)
 
@@ -116,7 +116,7 @@ class VarianceDecomposition:
 
         self.init    = False
         self.optimum = None
-    
+
         self.cache['Sigma']   = None
         self.cache['Hessian'] = None
 
@@ -133,19 +133,19 @@ class VarianceDecomposition:
     def addRandomEffect(self,K=None,is_noise=False,normalize=True,Kcross=None,trait_covar_type='freeform',rank=1,fixed_trait_covar=None,jitter=1e-4,d=None):
         """
         Add random effects term.
-        
+
         Args:
             K:      Sample Covariance Matrix [N, N]
             is_noise:   Boolean indicator specifying if the matrix is homoscedastic noise (weighted identity covariance) (default False)
             normalize:  Boolean indicator specifying if K has to be normalized such that K.trace()=N.
             Kcross:            NxNtest cross covariance for predictions
-            trait_covar_type: type of covaraince to use. Default 'freeform'. possible values are 
-                            'freeform':  general semi-definite positive matrix, 
+            trait_covar_type: type of covaraince to use. Default 'freeform'. possible values are
+                            'freeform':  general semi-definite positive matrix,
                             'fixed': fixed matrix specified in fixed_trait_covar,
-                            'diag': diagonal matrix, 
+                            'diag': diagonal matrix,
                             'lowrank': low rank matrix. The rank of the lowrank part is specified in the variable rank,
-                            'lowrank_id': sum of a lowrank matrix and a multiple of the identity. The rank of the lowrank part is specified in the variable rank, 
-                            'lowrank_diag': sum of a lowrank and a diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+                            'lowrank_id': sum of a lowrank matrix and a multiple of the identity. The rank of the lowrank part is specified in the variable rank,
+                            'lowrank_diag': sum of a lowrank and a diagonal matrix. The rank of the lowrank part is specified in the variable rank,
                             'block': multiple of a matrix of ones,
                             'block_id': sum of a multiple of a matrix of ones and a multiple of the idenity,
                             'block_diag': sum of a multiple of a matrix of ones and a diagonal matrix,
@@ -154,7 +154,7 @@ class VarianceDecomposition:
             jitter:        diagonal contribution added to trait-to-trait covariance matrices for regularization
         """
         assert K is not None or is_noise, 'VarianceDecomposition:: Specify covariance structure'
-        
+
         if is_noise:
             assert self.noisPos is None, 'VarianceDecomposition:: Noise term already exists'
             K  = sp.eye(self.N)
@@ -167,7 +167,7 @@ class VarianceDecomposition:
             assert self.Ntest is not None, 'VarianceDecomposition:: specify Ntest for predictions (method VarianceDecomposition::setTestSampleSize)'
             assert Kcross.shape[0]==self.N, 'VarianceDecomposition:: Incompatible shape for Kcross'
             assert Kcross.shape[1]==self.Ntest, 'VarianceDecomposition:: Incompatible shape for Kcross'
-    
+
         if normalize:
             Norm = 1/K.diagonal().mean()
             K *= Norm
@@ -187,7 +187,7 @@ class VarianceDecomposition:
 
         self.Kstar.append(Kcross)
         self.n_randEffs+=1
-    
+
         self.gp         = None
         self.init       = False
         self.fast       = False
@@ -210,11 +210,11 @@ class VarianceDecomposition:
         if F is None:
             F = sp.ones((self.N,1))
             if self.Ntest is not None:
-                Ftest = sp.ones((self.Ntest,1)) 
-        
+                Ftest = sp.ones((self.Ntest,1))
+
         assert A.shape[1]==self.P, 'VarianceDecomposition:: A has incompatible shape'
         assert F.shape[0]==self.N, 'VarianceDecimposition:: F has incompatible shape'
-       
+
         for m in range(F.shape[1]):
             self.vd.addFixedEffTerm(A,F[:,m:m+1])
             self.n_fixedEffs += 1
@@ -237,7 +237,7 @@ class VarianceDecomposition:
     def trainGP(self,fast=None,scales0=None,fixed0=None,lambd=None,lambd_g=None,lambd_n=None):
         """
         Train the gp
-       
+
         Args:
             fast:       if true and the gp has not been initialized, initializes a kronSum gp
             scales0:    initial variance components params
@@ -271,16 +271,16 @@ class VarianceDecomposition:
 
         # LIMIX CVARIANCEDECOMPOSITION TRAINING
         conv =self.vd.trainGP()
-        
+
         self.cache['Sigma']   = None
         self.cache['Hessian'] = None
-            
+
         return conv
 
     def optimize(self,fast=None,scales0=None,fixed0=None,init_method=None,termx=0,n_times=10,perturb=True,pertSize=1e-3,verbose=None,lambd=None,lambd_g=None,lambd_n=None):
         """
         Train the model using the specified initialization strategy
-        
+
         Args:
             fast:            if true, fast gp is considered; if None (default), fast inference is considered if possible
             scales0:        if not None init_method is set to manual
@@ -293,9 +293,9 @@ class VarianceDecomposition:
             n_times:        number of restarts to converge
             perturb:        if true, the initial point (set manually opr through the single-trait model) is perturbed with gaussian noise
             perturbSize:    std of the gassian noise used to perturb the initial point
-            verbose:        print if convergence is achieved and how many restarted were needed 
+            verbose:        print if convergence is achieved and how many restarted were needed
         """
-        verbose = limix.getVerbose(verbose)
+        verbose = dlimix.getVerbose(verbose)
 
 
         if init_method is None:
@@ -305,7 +305,7 @@ class VarianceDecomposition:
         if not self.init:        self._initGP(fast=fast)
 
         if scales0 is not None and ~perturb:     init_method = 'manual'
-        
+
         if init_method=='diagonal':
             scales0 = self._getScalesDiag(termx=termx)
 
@@ -315,14 +315,14 @@ class VarianceDecomposition:
             i = (self.trait_covar_type[0]=='freeform')*(self.trait_covar_type[0]=='freeform')
             assert i, 'VarianceDecomposition:: pairwise initialization possible only with freeform matrices'
             scales0 = self._getScalesPairwise(verbose=verbose)
-            
-            
+
+
         if init_method in ['diagonal','manual','pairwise']:
             if not perturb:        n_times = 1
 
         if fixed0 is None:
             fixed0 = sp.zeros_like(self.gp.getParams()['dataTerm'])
-        
+
         for i in range(n_times):
             if init_method=='random':
                 scales1 = self._getScalesRand()
@@ -336,42 +336,42 @@ class VarianceDecomposition:
 
             conv = self.trainGP(scales0=scales1,fixed0=fixed1,lambd=lambd,lambd_g=lambd_g,lambd_n=lambd_n)
             if conv:    break
-    
+
         if verbose:
             if conv==False:
                 print 'No local minimum found for the tested initialization points'
             else:
                 print 'Local minimum found at iteration %d' % i
- 
+
         return conv
 
     def optimize_with_repeates(self,fast=None,verbose=None,n_times=10,lambd=None,lambd_g=None,lambd_n=None):
         """
         Train the model repeadly up to a number specified by the users with random restarts and
-        return a list of all relative minima that have been found. This list is sorted according to 
-        least likelihood. Each list term is a dictionary with keys "counter", "LML", and "scales". 
-        
-        After running this function, the vc object will be set at the last iteration. Thus, if you 
+        return a list of all relative minima that have been found. This list is sorted according to
+        least likelihood. Each list term is a dictionary with keys "counter", "LML", and "scales".
+
+        After running this function, the vc object will be set at the last iteration. Thus, if you
         wish to get the vc object of one of the repeats, then set the scales. For example:
-        
+
         vc.setScales(scales=optimize_with_repeates_output[0]["scales"])
-        
+
         Args:
             fast:       Boolean. if set to True initalize kronSumGP
             verbose:    Boolean. If set to True, verbose output is produced. (default True)
             n_times:    number of re-starts of the optimization. (default 10)
         """
-        verbose = limix.getVerbose(verbose)
+        verbose = dlimix.getVerbose(verbose)
 
         if not self.init:       self._initGP(fast)
-        
+
         opt_list = []
 
-        fixed0 = sp.zeros_like(self.gp.getParams()['dataTerm'])    
+        fixed0 = sp.zeros_like(self.gp.getParams()['dataTerm'])
 
         # minimize n_times
         for i in range(n_times):
-            
+
             scales1 = self._getScalesRand()
             fixed1  = 1e-1*sp.randn(fixed0.shape[0],fixed0.shape[1])
             conv = self.trainGP(fast=fast,scales0=scales1,fixed0=fixed1,lambd=lambd,lambd_g=lambd_g,lambd_n=lambd_n)
@@ -390,8 +390,8 @@ class VarianceDecomposition:
                     opt['LML'] = self.getLML()
                     opt['scales'] = self.getScales()
                     opt_list.append(opt)
-        
-        
+
+
         # sort by LML
         LML = sp.array([opt_list[i]['LML'] for i in range(len(opt_list))])
         index   = LML.argsort()[::-1]
@@ -400,7 +400,7 @@ class VarianceDecomposition:
             print "\nLocal mimima\n"
             print "n_times\t\tLML"
             print "------------------------------------"
-            
+
         for i in range(len(opt_list)):
             out.append(opt_list[index[i]])
             if verbose:
@@ -454,7 +454,7 @@ class VarianceDecomposition:
         """
         Returns Cholesky parameters
         To retrieve proper variances and covariances \see getVarComps and \see getTraitCovar
-        
+
         Args:
             term_i:     index of the term of which we want to retrieve the variance paramenters
         Returns:
@@ -488,7 +488,7 @@ class VarianceDecomposition:
             estimated trait correlation coefficie
         """
         assert self.P>1, 'Trait covars not defined for single trait analysis'
-        
+
         if term_i is None:
             RV=sp.zeros((self.P,self.P))
             for term_i in range(self.n_randEffs): RV+=self.vd.getTerm(term_i).getTraitCovar().K()
@@ -512,7 +512,7 @@ class VarianceDecomposition:
         stds=sp.sqrt(cov.diagonal())[:,sp.newaxis]
         RV = cov/stds/stds.T
         return RV
-    
+
 
     def getVarianceComps(self,univariance=False):
         """
@@ -545,7 +545,7 @@ class VarianceDecomposition:
         """
         assert self.init,        'GP not initialised'
         assert self.fast==False, 'Not supported for fast implementation'
-        
+
         if self.P==1:
             out = (2*self.getScales()[term_i])**2*self._getLaplaceCovar()[term_i,term_i]
         else:
@@ -584,7 +584,7 @@ class VarianceDecomposition:
     """
     CODE FOR PREDICTIONS
     """
-    
+
     def predictPhenos(self,use_fixed=None,use_random=None):
         """
         predict the conditional mean (BLUP)
@@ -598,15 +598,15 @@ class VarianceDecomposition:
         assert self.noisPos is not None,      'No noise element'
         assert self.init,               'GP not initialised'
         assert self.Ntest is not None,        'VarianceDecomposition:: specify Ntest for predictions (method VarianceDecomposition::setTestSampleSize)'
- 
+
         use_fixed  = range(self.n_fixedEffs)
         use_random = range(self.n_randEffs)
 
         KiY = self.gp.agetKEffInvYCache()
-                
+
         if self.fast==False:
             KiY = KiY.reshape(self.P,self.N).T
-                
+
         Ypred = sp.zeros((self.Ntest,self.P))
 
         # predicting from random effects
@@ -615,7 +615,7 @@ class VarianceDecomposition:
                 Kstar = self.Kstar[term_i]
                 if Kstar is None:
                     warnings.warn('warning: random effect term %d not used for predictions as it has None cross covariance'%term_i)
-                    continue 
+                    continue
                 term  = sp.dot(Kstar.T,KiY)
                 if self.P>1:
                     C    = self.getTraitCovar(term_i)
@@ -631,11 +631,11 @@ class VarianceDecomposition:
             Fstar = self.Fstar[term_i]
             if Fstar is None:
                 warnings.warn('warning: fixed effect term %d not used for predictions as it has None test sample design'%term_i)
-                continue 
+                continue
             if self.P==1:    A = sp.eye(1)
             else:            A = self.vd.getDesign(term_i)
             Fstar = self.Fstar[term_i]
-            W = weights[w_i:w_i+A.shape[0],0:1].T 
+            W = weights[w_i:w_i+A.shape[0],0:1].T
             term = sp.dot(Fstar,sp.dot(W,A))
             w_i += A.shape[0]
             Ypred += term
@@ -656,7 +656,7 @@ class VarianceDecomposition:
         Returns:
             Matrix of phenotype predictions [N,P]
         """
-        verbose = limix.getVerbose(verbose)
+        verbose = dlimix.getVerbose(verbose)
 
         # split samples into training and test
         sp.random.seed(seed)
@@ -719,7 +719,7 @@ class VarianceDecomposition:
 
             if fullVector:
                 assert conv, 'VarianceDecompositon:: not converged for fold %d. Stopped here' % fold_j
-            if conv: 
+            if conv:
                 Ystar[Itest,:] = vc.predictPhenos()
             else:
                 warnings.warn('not converged for fold %d' % fold_j)
@@ -733,7 +733,7 @@ class VarianceDecomposition:
     def _initGP(self,fast=None):
         """
         Initialize GP objetct
-        
+
         Args:
             fast:   Boolean indicator denoting if fast implementation is to consider
                     if fast is None (default) and possible in the specifc situation, fast implementation is considered
@@ -755,7 +755,7 @@ class VarianceDecomposition:
         Internal functions that builds the trait covariance matrix using the LIMIX framework
 
         Args:
-            trait_covar_type: type of covaraince to use. Default 'freeform'. possible values are 
+            trait_covar_type: type of covaraince to use. Default 'freeform'. possible values are
             rank:       rank of a possible lowrank component (default 1)
             fixed_trait_covar:   PxP matrix for the (predefined) trait-to-trait covariance matrix if fixed type is used
             jitter:        diagonal contribution added to trait-to-trait covariance matrices for regularization
@@ -763,63 +763,63 @@ class VarianceDecomposition:
             LIMIX::PCovarianceFunction for Trait covariance matrix
             vector labelling Cholesky parameters for different initializations
         """
-        cov = limix.CSumCF()
+        cov = dlimix.CSumCF()
         if trait_covar_type=='freeform':
-            cov.addCovariance(limix.CFreeFormCF(self.P))
+            cov.addCovariance(dlimix.CFreeFormCF(self.P))
             L = sp.eye(self.P)
             diag = sp.concatenate([L[i,:(i+1)] for i in range(self.P)])
         elif trait_covar_type=='fixed':
             assert fixed_trait_covar is not None, 'VarianceDecomposition:: set fixed_trait_covar'
             assert fixed_trait_covar.shape[0]==self.N, 'VarianceDecomposition:: Incompatible shape for fixed_trait_covar'
             assert fixed_trait_covar.shape[1]==self.N, 'VarianceDecomposition:: Incompatible shape for fixed_trait_covar'
-            cov.addCovariance(limix.CFixedCF(fixed_trait_covar))
+            cov.addCovariance(dlimix.CFixedCF(fixed_trait_covar))
             diag = sp.zeros(1)
         elif trait_covar_type=='diag':
-            cov.addCovariance(limix.CDiagonalCF(self.P))
+            cov.addCovariance(dlimix.CDiagonalCF(self.P))
             diag = sp.ones(self.P)
         elif trait_covar_type=='lowrank':
-            cov.addCovariance(limix.CLowRankCF(self.P,rank))
+            cov.addCovariance(dlimix.CLowRankCF(self.P,rank))
             diag = sp.zeros(self.P*rank)
         elif trait_covar_type=='lowrank_id':
-            cov.addCovariance(limix.CLowRankCF(self.P,rank))
-            cov.addCovariance(limix.CFixedCF(sp.eye(self.P)))
+            cov.addCovariance(dlimix.CLowRankCF(self.P,rank))
+            cov.addCovariance(dlimix.CFixedCF(sp.eye(self.P)))
             diag = sp.concatenate([sp.zeros(self.P*rank),sp.ones(1)])
         elif trait_covar_type=='lowrank_diag':
-            cov.addCovariance(limix.CLowRankCF(self.P,rank))
-            cov.addCovariance(limix.CDiagonalCF(self.P))
+            cov.addCovariance(dlimix.CLowRankCF(self.P,rank))
+            cov.addCovariance(dlimix.CDiagonalCF(self.P))
             diag = sp.concatenate([sp.zeros(self.P*rank),sp.ones(self.P)])
         elif trait_covar_type=='lowrank_diag1':
             assert d.shape[0]==self.P, 'dimension mismatch for d'
-            cov1 = limix.CSumCF()
-            cov1.addCovariance(limix.CLowRankCF(self.P,rank))
-            cov1.addCovariance(limix.CDiagonalCF(self.P))
-            cov.addCovariance(limix.CFixedDiagonalCF(cov1,d))
+            cov1 = dlimix.CSumCF()
+            cov1.addCovariance(dlimix.CLowRankCF(self.P,rank))
+            cov1.addCovariance(dlimix.CDiagonalCF(self.P))
+            cov.addCovariance(dlimix.CFixedDiagonalCF(cov1,d))
             diag = sp.concatenate([sp.zeros(self.P*rank),sp.ones(self.P)])
         elif trait_covar_type=='freeform1':
             assert d.shape[0]==self.P, 'dimension mismatch for d'
-            cov.addCovariance(limix.CFixedDiagonalCF(limix.CFreeFormCF(self.P),d))
+            cov.addCovariance(dlimix.CFixedDiagonalCF(dlimix.CFreeFormCF(self.P),d))
             L = sp.eye(self.P)
             diag = sp.concatenate([L[i,:(i+1)] for i in range(self.P)])
         elif trait_covar_type=='block':
-            cov.addCovariance(limix.CFixedCF(sp.ones((self.P,self.P))))
+            cov.addCovariance(dlimix.CFixedCF(sp.ones((self.P,self.P))))
             diag = sp.zeros(1)
         elif trait_covar_type=='block_id':
-            cov.addCovariance(limix.CFixedCF(sp.ones((self.P,self.P))))
-            cov.addCovariance(limix.CFixedCF(sp.eye(self.P)))
+            cov.addCovariance(dlimix.CFixedCF(sp.ones((self.P,self.P))))
+            cov.addCovariance(dlimix.CFixedCF(sp.eye(self.P)))
             diag = sp.concatenate([sp.zeros(1),sp.ones(1)])
         elif trait_covar_type=='block_diag':
-            cov.addCovariance(limix.CFixedCF(sp.ones((self.P,self.P))))
-            cov.addCovariance(limix.CDiagonalCF(self.P))
+            cov.addCovariance(dlimix.CFixedCF(sp.ones((self.P,self.P))))
+            cov.addCovariance(dlimix.CDiagonalCF(self.P))
             diag = sp.concatenate([sp.zeros(1),sp.ones(self.P)])
         else:
             assert True==False, 'VarianceDecomposition:: trait_covar_type not valid'
         if jitter>0:
-            _cov = limix.CFixedCF(sp.eye(self.P))
+            _cov = dlimix.CFixedCF(sp.eye(self.P))
             _cov.setParams(sp.array([sp.sqrt(jitter)]))
             _cov.setParamMask(sp.zeros(1))
             cov.addCovariance(_cov)
         return cov,diag
-        
+
 
 
 
@@ -830,14 +830,14 @@ class VarianceDecomposition:
         Internal function for parameter initialization
         estimate variance components and fixed effect using a linear mixed model with an intercept and 2 random effects (one is noise)
         Args:
-            K:        covariance matrix of the non-noise random effect term 
+            K:        covariance matrix of the non-noise random effect term
         """
-        verbose = limix.getVerbose(verbose)
+        verbose = dlimix.getVerbose(verbose)
         # Fit single trait model
         varg  = sp.zeros(self.P)
         varn  = sp.zeros(self.P)
         fixed = sp.zeros((1,self.P))
-        
+
         for p in range(self.P):
             y = self.Y[:,p:p+1]
             # check if some sull value
@@ -847,7 +847,7 @@ class VarianceDecomposition:
                 _K = K[~I,:][:,~I]
             else:
                 _K  = copy.copy(K)
-            lmm = limix.CLMM()
+            lmm = dlimix.CLMM()
             lmm.setK(_K)
             lmm.setSNPs(sp.ones((y.shape[0],1)))
             lmm.setPheno(y)
@@ -856,13 +856,13 @@ class VarianceDecomposition:
             lmm.process()
             delta = sp.exp(lmm.getLdelta0()[0,0])
             Vtot  = sp.exp(lmm.getLSigma()[0,0])
-    
+
             varg[p] = Vtot
             varn[p] = delta*Vtot
             fixed[:,p] = lmm.getBetaSNP()
-    
+
             if verbose: print p
-    
+
         sth = {}
         sth['varg']  = varg
         sth['varn']  = varn
@@ -874,11 +874,11 @@ class VarianceDecomposition:
         """
         Internal function for parameter initialization
         Uses 2 term single trait model to get covar params for initialization
-        
+
         Args:
-            termx:      non-noise term terms that is used for initialization 
+            termx:      non-noise term terms that is used for initialization
         """
-        assert self.P>1, 'VarianceDecomposition:: diagonal init_method allowed only for multi trait models' 
+        assert self.P>1, 'VarianceDecomposition:: diagonal init_method allowed only for multi trait models'
         assert self.noisPos is not None, 'VarianceDecomposition:: noise term has to be set'
         assert termx<self.n_randEffs-1, 'VarianceDecomposition:: termx>=n_randEffs-1'
         assert self.trait_covar_type[self.noisPos] not in ['lowrank','block','fixed'], 'VarianceDecomposition:: diagonal initializaiton not posible for such a parametrization'
@@ -919,7 +919,7 @@ class VarianceDecomposition:
 					K = self.vd.getTerm(term_i).getK()
 					vc.addRandomEffect(K=K)
 			scales0 = sp.sqrt(0.5)*sp.ones(2)
-			
+
 			for p in range(self.P):
 				if verbose: print '   .. trait %d' % p
 				vc.setY(self.Y[:,p:p+1])
@@ -927,10 +927,10 @@ class VarianceDecomposition:
 				if not conv:
 					print 'warning initialization not converged'
 				var[p,:] = vc.getVarianceComps()[0,:]
-		
+
 		elif fastlmm_present:
 			if verbose:
-				print '.. fit single-trait model for initialization (using fastlmm)'			
+				print '.. fit single-trait model for initialization (using fastlmm)'
 			for p in range(self.P):
 				if verbose: print '   .. trait %d' % p
 				covariates = None
@@ -979,8 +979,8 @@ class VarianceDecomposition:
 				rho_g[p2,p1] = rho_g[p1,p2]
 				rho_n[p2,p1] = rho_n[p1,p2]
 		#3. init
-		Cg0 = rho_g*sp.dot(sp.sqrt(var[:,0:1]),sp.sqrt(var[:,0:1].T)) 
-		Cn0 = rho_n*sp.dot(sp.sqrt(var[:,1:2]),sp.sqrt(var[:,1:2].T)) 
+		Cg0 = rho_g*sp.dot(sp.sqrt(var[:,0:1]),sp.sqrt(var[:,0:1].T))
+		Cn0 = rho_n*sp.dot(sp.sqrt(var[:,1:2]),sp.sqrt(var[:,1:2].T))
 		offset_g = abs(sp.minimum(sp.linalg.eigh(Cg0)[0].min(),0))+1e-4
 		offset_n = abs(sp.minimum(sp.linalg.eigh(Cn0)[0].min(),0))+1e-4
 		Cg0+=offset_g*sp.eye(self.P)
@@ -1032,31 +1032,31 @@ class VarianceDecomposition:
 
     def _getHessian(self):
         """
-        Internal function for estimating parameter uncertainty 
+        Internal function for estimating parameter uncertainty
         COMPUTES OF HESSIAN OF E(\theta) = - log L(\theta | X, y)
         """
         assert self.init,        'GP not initialised'
         assert self.fast==False, 'Not supported for fast implementation'
-        
+
         if self.cache['Hessian'] is None:
             ParamMask=self.gp.getParamMask()['covar']
             std=sp.zeros(ParamMask.sum())
             H=self.gp.LMLhess_covar()
             It= (ParamMask[:,0]==1)
             self.cache['Hessian']=H[It,:][:,It]
-        
+
         return self.cache['Hessian']
 
 
     def _getLaplaceCovar(self):
         """
-        Internal function for estimating parameter uncertainty 
+        Internal function for estimating parameter uncertainty
         Returns:
-            the 
+            the
         """
         assert self.init,        'GP not initialised'
         assert self.fast==False, 'Not supported for fast implementation'
-        
+
         if self.cache['Sigma'] is None:
             self.cache['Sigma'] = sp.linalg.inv(self._getHessian())
         return self.cache['Sigma']
@@ -1088,4 +1088,3 @@ class VarianceDecomposition:
         ModCompl = 0.5*n_params*sp.log(2*sp.pi)+0.5*sp.log(sp.linalg.det(Sigma))
         RV = min['LML']+ModCompl
         return RV
-

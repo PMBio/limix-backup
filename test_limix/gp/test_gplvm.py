@@ -2,7 +2,7 @@
 import unittest
 import scipy as SP
 import pdb
-import limix
+import limix.deprecated as dlimix
 import scipy.linalg as linalg
 
 
@@ -42,7 +42,7 @@ class CGPLVM_test(unittest.TestCase):
         X0 = PCA(Y,K)[0]
         RV = {'X0': X0,'Y':Y,'S':S,'W':W}
         return RV
-        
+
     def setUp(self):
         SP.random.seed(1)
 
@@ -55,31 +55,31 @@ class CGPLVM_test(unittest.TestCase):
         D = self.settings['D']
 
         #2. setup GP
-        covar  = limix.CCovLinearISO(K)
-        ll  = limix.CLikNormalIso()
-        #create hyperparm     
+        covar  = dlimix.CCovLinearISO(K)
+        ll  = dlimix.CLikNormalIso()
+        #create hyperparm
         covar_params = SP.array([1.0])
         lik_params = SP.array([1.0])
-        hyperparams = limix.CGPHyperParams()
+        hyperparams = dlimix.CGPHyperParams()
         hyperparams['covar'] = covar_params
         hyperparams['lik'] = lik_params
         hyperparams['X']   = self.simulation['X0']
         #cretae GP
-        self.gp=limix.CGPbase(covar,ll)
+        self.gp=dlimix.CGPbase(covar,ll)
         #set data
         self.gp.setY(self.simulation['Y'])
         self.gp.setX(self.simulation['X0'])
         self.gp.setParams(hyperparams)
         pass
 
-    
+
     def test_fit(self):
         #create optimization object
-        self.gpopt = limix.CGPopt(self.gp)
+        self.gpopt = dlimix.CGPopt(self.gp)
         #run
         RV = self.gpopt.opt()
         RV = self.gpopt.opt()
-        
+
         RV = RV & (SP.absolute(self.gp.LMLgrad()['X']).max()<1E-1)
         RV = RV & (SP.absolute(self.gp.LMLgrad()['covar']).max()<1E-1)
         RV = RV & (SP.absolute(self.gp.LMLgrad()['lik']).max()<1E-1)
@@ -100,26 +100,26 @@ class CGPLVM_test_constK(CGPLVM_test):
         K = self.settings['K']
         D = self.settings['D']
 
-        #2. setup GP        
+        #2. setup GP
         K0 = SP.dot(self.simulation['S'],self.simulation['S'].T)
         K0[:] = 0
 
-        covar1 = limix.CFixedCF(K0)
-        covar2 = limix.CCovLinearISO(K)
-        covar  = limix.CSumCF()
+        covar1 = dlimix.CFixedCF(K0)
+        covar2 = dlimix.CCovLinearISO(K)
+        covar  = dlimix.CSumCF()
         covar.addCovariance(covar1)
         covar.addCovariance(covar2)
-         
-        ll  = limix.CLikNormalIso()
-        #create hyperparm     
+
+        ll  = dlimix.CLikNormalIso()
+        #create hyperparm
         covar_params = SP.array([0.0,1.0])
         lik_params = SP.array([0.1])
-        hyperparams = limix.CGPHyperParams()
+        hyperparams = dlimix.CGPHyperParams()
         hyperparams['covar'] = covar_params
         hyperparams['lik'] = lik_params
         hyperparams['X']   = self.simulation['X0']
         #cretae GP
-        self.gp=limix.CGPbase(covar,ll)
+        self.gp=dlimix.CGPbase(covar,ll)
         #set data
         self.gp.setY(self.simulation['Y'])
         self.gp.setX(self.simulation['X0'])
@@ -130,5 +130,3 @@ class CGPLVM_test_constK(CGPLVM_test):
 
 if __name__ == '__main__':
     unittest.main()
-
-

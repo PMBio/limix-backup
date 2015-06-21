@@ -22,5 +22,3 @@ class Acovar_test(object):
                 D2[i,j]=((self.C.Khess_param(i,j)-self.C.Khess_param_num(self.C,i,j))**2).max()
         RV=D2.max()<1E-6
         self.assertTrue(RV)
-
-
