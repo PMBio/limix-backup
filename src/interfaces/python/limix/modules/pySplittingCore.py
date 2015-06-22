@@ -7,7 +7,7 @@ import sys
 import numpy as NP
 import scipy as SP
 import lmm_fast
-import limix
+import limix.deprecated as dlimix
 
 def is_leaf(node_ind, child_nodes):
     return child_nodes[node_ind] == 0
@@ -69,7 +69,7 @@ def cpp_best_split_full_model(X, Uy, C, S, U, noderange, delta,
     """wrappe calling cpp splitting function"""
 
     m_best, s_best, left_mean, right_mean, ll_score =\
-         limix.best_split_full_model(X, Uy, C, S, U, noderange, delta)
+         dlimix.best_split_full_model(X, Uy, C, S, U, noderange, delta)
     return int(m_best), s_best, left_mean, right_mean, ll_score
 
 def best_split_full_model(X,
