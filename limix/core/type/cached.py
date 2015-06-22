@@ -125,13 +125,14 @@ class Cached(object):
                 setattr(self, '_cached_args_' + method_name, dict())
 
     def fill_cache(self, method_name, value):
-
-        if method_name not in self._registered_methods():
-            raise ValueError("The method %s is not registered in this cache."
-                             % method_name)
-
+        #if method_name not in self._registered_methods():
+        #    raise ValueError("The method %s is not registered in this cache."
+        #                     % method_name)
         setattr(self, '_cache_' + method_name, value)
         setattr(self, '_cached_' + method_name, True)
+        for key in self._cache_groups.keys():
+            if method_name in self._cache_groups[key]:
+                self._cache_groups[key].remove(method_name)
 
 
 # This decorator works both with arguments or without
