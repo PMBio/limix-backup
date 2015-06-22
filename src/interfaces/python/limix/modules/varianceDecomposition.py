@@ -174,7 +174,7 @@ class VarianceDecomposition:
             if Kcross is not None: Kcross *= Norm
 
         if self.P==1:
-            self.vd.addTerm(limix.CSingleTraitTerm(K))
+            self.vd.addTerm(dlimix.CSingleTraitTerm(K))
         else:
             assert jitter>=0, 'VarianceDecomposition:: jitter must be >=0'
             cov,diag = self._buildTraitCovar(trait_covar_type=trait_covar_type,rank=rank,fixed_trait_covar=fixed_trait_covar,jitter=jitter,d=d)
