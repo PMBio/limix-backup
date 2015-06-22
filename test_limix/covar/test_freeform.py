@@ -2,7 +2,7 @@
 import unittest
 import scipy as SP
 import pdb
-import limix
+import limix.deprecated as dlimix
 from covar import Acovar_test
 
 class CFreeFormCF_test(unittest.TestCase,Acovar_test):
@@ -10,7 +10,7 @@ class CFreeFormCF_test(unittest.TestCase,Acovar_test):
     def setUp(self):
         SP.random.seed(1)
         self.n=4
-        self.C = limix.CFreeFormCF(self.n)
+        self.C = dlimix.CFreeFormCF(self.n)
         self.name = 'CFreeFormCF'
         self.n_params=self.C.getNumberParams()
         K = self.C.K()
@@ -22,7 +22,7 @@ class CRankOneCF_test(unittest.TestCase,Acovar_test):
     def setUp(self):
         SP.random.seed(1)
         self.n=4
-        self.C = limix.CRankOneCF(self.n)
+        self.C = dlimix.CRankOneCF(self.n)
         self.name = 'CRankOneCF'
         self.n_params=self.C.getNumberParams()
         K = self.C.K()
@@ -35,7 +35,7 @@ class CLowRankCF_test(unittest.TestCase,Acovar_test):
         SP.random.seed(1)
         self.n=4
         self.rank=2
-        self.C = limix.CLowRankCF(self.n,self.rank)
+        self.C = dlimix.CLowRankCF(self.n,self.rank)
         self.name = 'CLowRankCF'
         self.n_params=self.C.getNumberParams()
         params=SP.exp(SP.randn(self.n_params))
@@ -46,7 +46,7 @@ class CDiagonalCF_test(unittest.TestCase,Acovar_test):
     def setUp(self):
         SP.random.seed(1)
         self.n=2
-        self.C = limix.CDiagonalCF(self.n)
+        self.C = dlimix.CDiagonalCF(self.n)
         self.name = 'CDiagonalCF'
         self.n_params=self.C.getNumberParams()
         params=SP.exp(SP.randn(self.n_params))
@@ -57,10 +57,10 @@ class CFixedCF_test(unittest.TestCase,Acovar_test):
     def setUp(self):
         SP.random.seed(1)
         self.n=4
-        self.C = limix.CFixedCF(SP.ones((self.n,self.n)))
+        self.C = dlimix.CFixedCF(SP.ones((self.n,self.n)))
         self.name = 'CFixedCF'
         self.n_params=self.C.getNumberParams()
-        K = self.C.K()        
+        K = self.C.K()
         params=SP.exp(SP.randn(self.n_params))
         self.C.setParams(params)
 
@@ -69,7 +69,7 @@ class CRank1diagCF_test(unittest.TestCase,Acovar_test):
     def setUp(self):
         SP.random.seed(1)
         self.n=4
-        self.C = limix.CRank1diagCF(self.n)
+        self.C = dlimix.CRank1diagCF(self.n)
         self.name = 'CRank1diagCF'
         self.n_params=self.C.getNumberParams()
         params=SP.exp(SP.randn(self.n_params))
@@ -82,7 +82,7 @@ class CPolyCF_test(unittest.TestCase,Acovar_test):
         self.n=4
         self.d=2
         self.K=3
-        self.C = limix.CPolyCF(self.n,self.d,self.K)
+        self.C = dlimix.CPolyCF(self.n,self.d,self.K)
         self.name = 'CPolyCF'
         self.n_params=self.C.getNumberParams()
         params=SP.randn(self.n_params)
@@ -95,10 +95,10 @@ class CFixedDiagonalCF_test(unittest.TestCase,Acovar_test):
         self.n=4
         self.rank=1
         d = SP.rand(self.n)+1
-        C0 = limix.CSumCF()
-        C0.addCovariance(limix.CLowRankCF(self.n,self.rank))
-        C0.addCovariance(limix.CDiagonalCF(self.n))
-        self.C = limix.CFixedDiagonalCF(C0,d)
+        C0 = dlimix.CSumCF()
+        C0.addCovariance(dlimix.CLowRankCF(self.n,self.rank))
+        C0.addCovariance(dlimix.CDiagonalCF(self.n))
+        self.C = dlimix.CFixedDiagonalCF(C0,d)
         self.name = 'CFixedDiagonalCF'
         self.n_params=self.C.getNumberParams()
         params=SP.randn(self.n_params)

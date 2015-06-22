@@ -154,7 +154,7 @@ if '--reswig' in sys.argv:
 # exclude limix.deprecated. This is a placeholder and will be replaced with the
 # actual deprecated limix source tree
 #packages = find_packages(exclude=['limix.deprecated'])
-packages = find_packages(exclude=['tests','test'])
+packages = find_packages(exclude=['tests', 'test', 'test_limix*'])
 #3. add depcreated limix packages in src/interfaces/python (see below)
 #packages.extend(['limix.deprecated', 'limix.deprecated.io',
 #                 'limix.deprecated.modules', 'limix.deprecated.stats',

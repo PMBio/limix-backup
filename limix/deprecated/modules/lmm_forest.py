@@ -11,7 +11,7 @@ import pySplittingCore as SC
 import parMixedForest
 import mixedForestUtils as utils
 import BLUP
-import limix
+import limix.deprecated as dlimix
 
 class Forest(object):
     '''
@@ -498,7 +498,7 @@ class MixedForestTree(object):
     def predict_cpp(self, X, depth):
         # Ensure consistency to Cpp data type
         X = SP.array(X, dtype='float')
-        return limix.predict_lmm_forest(self.nodes, self.left_child,
+        return dlimix.predict_lmm_forest(self.nodes, self.left_child,
                                         self.right_child, self.best_predictor,
                                         self.mean, self.s, X, depth).reshape(-1)
 

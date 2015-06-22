@@ -7,7 +7,7 @@ Created on Feb 20, 2013
 import scipy.linalg as LA
 import scipy as SP
 import lmm_fast
-import limix
+import limix.deprecated as dlimix
 
 class BLUP(object):
     '''
@@ -33,7 +33,7 @@ class BLUP(object):
             if folds > 0:
                 self.ldelta = self.crossvalidate_delta(folds)
             else:
-                self.ldelta = limix.optdelta(self.Uy[:, 0], self.Uone, self.S,
+                self.ldelta = dlimix.optdelta(self.Uy[:, 0], self.Uone, self.S,
                                              100000, -5.0, 5.0)
             self.delta = SP.exp(self.ldelta)
         else:
@@ -43,7 +43,7 @@ class BLUP(object):
 
     def update_delta(self, mean):
         Umean = SP.dot(self.U.T, mean)
-        self.ldelta = limix.optdelta(self.Uy[:, 0], Umean, self.S, 100,
+        self.ldelta = dlimix.optdelta(self.Uy[:, 0], Umean, self.S, 100,
                                      self.ldelta-1., self.delta+1.)
         self.delta = SP.exp(self.ldelta)
         return self.delta

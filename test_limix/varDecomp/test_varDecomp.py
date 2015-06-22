@@ -6,8 +6,8 @@ import pdb
 import os
 import sys
 import limix
-import limix.modules.varianceDecomposition as VAR
-import data
+import limix.deprecated.modules.varianceDecomposition as VAR
+from test_limix import data
 
 
 class VarianceDecompoitionKronecker_test(unittest.TestCase):
@@ -19,7 +19,7 @@ class VarianceDecompoitionKronecker_test(unittest.TestCase):
         X  = (SP.rand(self.N,self.S)<0.2)*1.
         self.D['X'] = X
 
-    
+
     def genPheno(self):
         dp = SP.ones(self.P); dp[1]=-1
         Y = SP.zeros((self.N,self.P))
@@ -35,8 +35,8 @@ class VarianceDecompoitionKronecker_test(unittest.TestCase):
             Y[:,p]=y
         Y=SP.stats.zscore(Y,0)
         self.D['Y']= Y
-        
-    
+
+
     def setUp(self):
         #check: do we have a csv File?
         self.dir_name = os.path.dirname(__file__)
@@ -50,7 +50,7 @@ class VarianceDecompoitionKronecker_test(unittest.TestCase):
             self.S = 1000
             self.P = 2
             self.D = {}
-            self.genGeno()        
+            self.genGeno()
             self.genPheno()
             self.generate = True
         else:
@@ -68,7 +68,7 @@ class VarianceDecompoitionKronecker_test(unittest.TestCase):
         self.vc.addRandomEffect(self.Kg,jitter=0)
         self.vc.addRandomEffect(is_noise=True,jitter=0)
         self.vc.addFixedEffect()
-        
+
     def test_fit(self):
         """ optimization test """
         self.vc.optimize(verbose=False)
@@ -97,7 +97,7 @@ class VarianceDecompoitionKronecker_test(unittest.TestCase):
 
 class VarianceDecompositionSoftKronecker_test(unittest.TestCase):
     """test class for VarianceDecomposition
-         THis testing class assumes tests the ability to 
+         THis testing class assumes tests the ability to
     """
 
     def genGeno(self):
@@ -133,7 +133,7 @@ class VarianceDecompositionSoftKronecker_test(unittest.TestCase):
             self.S = 1000
             self.P = 2
             self.D = {}
-            self.genGeno()        
+            self.genGeno()
             self.genPheno()
             self.generate = True
         else:
@@ -157,7 +157,7 @@ class VarianceDecompositionSoftKronecker_test(unittest.TestCase):
         self.vc.addRandomEffect(self.Kg,jitter=0)
         self.vc.addRandomEffect(is_noise=True,jitter=0)
         self.vc.addFixedEffect()
-        
+
     def test_fit(self):
         """ optimization test """
         self.vc.optimize(verbose=False)
@@ -174,4 +174,3 @@ class VarianceDecompositionSoftKronecker_test(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

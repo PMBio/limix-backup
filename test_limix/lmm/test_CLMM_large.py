@@ -4,7 +4,7 @@ import scipy as SP
 import pdb
 import limix
 import limix.deprecated as dlimix
-from limix.deprecated.test import data
+from test_limix import data
 import os
 
 
