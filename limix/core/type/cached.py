@@ -1,6 +1,7 @@
 import inspect
 import os
 import pprint
+import re
 
 # HOW TO USE: Please, look at the end of the file for an example.
 
@@ -44,10 +45,15 @@ class Cached(object):
 
             try:
                 groups = vs['groups']
+                method_name = re.match('^_cache_(.+)$',
+                                       vs['cache_var_name']).group(1)
             except KeyError:
                 continue
+
             for g in groups:
-                self._cache_groups[g] = []
+                if g not in self._cache_groups:
+                    self._cache_groups[g] = []
+                self._cache_groups[g].append(method_name)
 
     def diff(self, func):
         if self._diff_running:
@@ -119,6 +125,11 @@ class Cached(object):
                 setattr(self, '_cached_args_' + method_name, dict())
 
     def fill_cache(self, method_name, value):
+
+        if method_name not in self._registered_methods():
+            raise ValueError("The method %s is not registered in this cache."
+                             % method_name)
+
         setattr(self, '_cache_' + method_name, value)
         setattr(self, '_cached_' + method_name, True)
 
