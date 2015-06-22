@@ -5,9 +5,9 @@ Created on Sep 19, 2013
 '''
 # create some test cases
 import scipy as SP
-import limix.modules.mixedForestUtils as utils
+import limix.deprecated.modules.mixedForestUtils as utils
 import h5py
-from limix.modules.lmm_forest import Forest as MF
+from limix.deprecated.modules.lmm_forest import Forest as MF
 import os
 #from sklearn.ensemble import RandomForestRegressor
 #from sklearn.metrics import metrics
@@ -19,7 +19,7 @@ import unittest
 class TestMixedForest(unittest.TestCase):
 
     def setUp(self, n=100, m=1):
-        self.dir_name = os.path.dirname(__file__)
+        self.dir_name = os.path.dirname(os.path.realpath(__file__))
         self.data = h5py.File(os.path.join(self.dir_name,
                                            'test_data/lmm_forest_toy_data.h5'),
                               'r')
@@ -108,7 +108,7 @@ class TestMixedForest(unittest.TestCase):
         small_kernel = utils.estimateKernel(X[:, 0:5], scale=False)
         small_kernel_test = utils.update_Kernel(kernel, X[:, 5:], scale=False)
         self.assertAlmostEqual((small_kernel -
-                                small_kernel_test).sum(), 0, places=14)
+                                small_kernel_test).sum(), 0)
 
     def test_depth_building(self):
         self.setUp(m=10)

@@ -5,9 +5,9 @@ import scipy.stats
 import pdb
 import os
 import sys
-import limix
-import limix.modules.lmmlasso as lmmlasso
-import data
+import limix.deprecated as dlimix
+import limix.deprecated.modules.lmmlasso as lmmlasso
+from test_limix import data
 
 
 class Lmmlasso_test(unittest.TestCase):
@@ -26,8 +26,8 @@ class Lmmlasso_test(unittest.TestCase):
         K /= SP.diag(K).mean()
         K += 1e-3*SP.eye(self.N)
         self.D['K'] = K
-        
-    
+
+
     def genPheno(self):
 
         idx_causal = SP.random.randint(0,self.S,10)
@@ -48,12 +48,12 @@ class Lmmlasso_test(unittest.TestCase):
         self.D['y']= y
         self.D['causal_idx'] = idx_causal
 
-    
-        
-    
+
+
+
     def setUp(self):
         #check: do we have a csv File?
-        self.dir_name = os.path.dirname(__file__)
+        self.dir_name = os.path.dirname(os.path.realpath(__file__))
         self.dataset = os.path.join(self.dir_name,'lmmlasso')
 
         if (not os.path.exists(self.dataset)) or 'recalc' in sys.argv:
@@ -72,17 +72,17 @@ class Lmmlasso_test(unittest.TestCase):
             self.D = data.load(self.dataset)
             self.N = self.D['X'].shape[0]
             self.S = self.D['X'].shape[1]
-          
+
         self.lmmlasso = lmmlasso.LmmLasso()
-        
-        
+
+
     def test_fit(self):
         """ test fitting """
         self.lmmlasso.set_params(alpha=1e-1)
         self.lmmlasso.fit(self.D['X'],self.D['y'],self.D['K'])
         params = self.lmmlasso.coef_
         yhat = self.lmmlasso.predict(self.D['X'],self.D['K'])
-        
+
         if self.generate:
             self.D['params_true'] = params
             self.D['yhat'] = yhat
@@ -90,7 +90,7 @@ class Lmmlasso_test(unittest.TestCase):
             self.generate=False
         params_true = self.D['params_true']
         yhat_true   = self.D['yhat']
-        
+
         RV = ((SP.absolute(params)-SP.absolute(params_true))**2).max()
         self.assertTrue(RV<1e-6)
 
@@ -101,4 +101,3 @@ class Lmmlasso_test(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

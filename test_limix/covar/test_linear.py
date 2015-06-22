@@ -2,7 +2,7 @@
 import unittest
 import scipy as SP
 import pdb
-import limix
+import limix.deprecated as dlimix
 from covar import Acovar_test
 
 class CCovLinearISO_test(unittest.TestCase,Acovar_test):
@@ -12,7 +12,7 @@ class CCovLinearISO_test(unittest.TestCase,Acovar_test):
         self.n=10
         self.n_dim=10
         X=SP.rand(self.n,self.n_dim)
-        self.C = limix.CCovLinearISO(self.n_dim)
+        self.C = dlimix.CCovLinearISO(self.n_dim)
         self.name = 'CCovLinearISO'
         self.C.setX(X)
         self.n_params=self.C.getNumberParams()
@@ -27,7 +27,7 @@ class CCovLinearARD_test(unittest.TestCase,Acovar_test):
         self.n=10
         self.n_dim=10
         X=SP.rand(self.n,self.n_dim)
-        self.C = limix.CCovLinearARD(self.n_dim)
+        self.C = dlimix.CCovLinearARD(self.n_dim)
         self.name = 'CCovLinearARD'
         self.C.setX(X)
         self.n_params=self.C.getNumberParams()
