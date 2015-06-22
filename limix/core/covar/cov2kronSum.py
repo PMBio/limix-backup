@@ -195,7 +195,7 @@ class Cov2KronSum(Covariance):
             r = sp.kron(sp.diag(self.LcGradCgLc(i)), self.Sr())
         else:
             _i = i - self.Cg.getNumberParams()
-            r = sp.kron(sp.diag(self.LcGradCnLc(_i)), sp.ones(self.R.shape[0]))
+            r = sp.kron(sp.diag(self.LcGradCnLc(_i)), sp.ones(self.dim_r))
         return r
 
     @cached(['row_cov', 'col_cov'])
@@ -233,7 +233,7 @@ class Cov2KronSum(Covariance):
 
     @cached(['row_cov', 'col_cov'])
     def logdet(self):
-        return sp.sum(sp.log(self.Cn.S())) * self.R.shape[0] + sp.log(self.SpI()).sum()
+        return sp.sum(sp.log(self.Cn.S())) * self.dim_r + sp.log(self.SpI()).sum()
 
     @cached(['row_cov', 'col_cov'])
     def logdet_grad_i(self,i):
