@@ -1,4 +1,7 @@
 import scipy as sp
+import scipy.linalg as la
+import pdb
+pdb.set_trace()
 from limix.core.covar import FreeFormCov
 from limix.core.mean import MeanKronSum
 from limix.core.gp import GP2KronSum
@@ -6,7 +9,6 @@ from limix.core.gp import GP
 from limix.utils.preprocess import covar_rescale
 import time
 import copy
-import pdb
 
 if __name__=='__main__':
 
@@ -27,6 +29,7 @@ if __name__=='__main__':
     X = 1.*(sp.rand(N, f)<0.2)
     R = covar_rescale(sp.dot(X,X.T))
     R+= 1e-4 * sp.eye(N)
+    S_R, U_R = la.eigh(R)
 
     # define col covariances
     Cg = FreeFormCov(P)
@@ -36,7 +39,7 @@ if __name__=='__main__':
 
     # define gp
     pdb.set_trace()
-    gp = GP2KronSum(Y = Y, F = F, A = A, Cg = Cg, Cn = Cn, XX = R)
+    gp = GP2KronSum(Y=Y, F=F, A=A, Cg=Cg, Cn=Cn, S_R=S_R, U_R=U_R)
     t0 = time.time()
     print 'GP2KronSum.LML():', gp.LML()
     print 'Time elapsed:', time.time() - t0

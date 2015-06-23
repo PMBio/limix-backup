@@ -187,7 +187,7 @@ class Cov3KronSumLR(Cov2KronSum):
     def diagWrWr(self):
         return (self.Wr()**2).sum(1)
 
-    @cached(['col_cov', 'row_col', 'G'])
+    @cached(['col_cov', 'row_cov', 'G'])
     def diag_Ctilde_o_Sr(self, i):
         np_r = self.Cr.getNumberParams()
         np_g = self.Cg.getNumberParams()
@@ -201,17 +201,17 @@ class Cov3KronSumLR(Cov2KronSum):
             r = sp.kron(sp.diag(self.LcGradCnLc(_i)), sp.ones(self.R.shape[0]))
         return r
 
-    @cached(['col_cov', 'row_col', 'G'])
+    @cached(['col_cov', 'row_cov', 'G'])
     def WrWrDWt(self):
         R = np.tensordot(self.Wr(), self.DWt(), axes=(0,0))
         R = np.tensordot(self.Wr(), R, axes=(1,0))
         return R
 
-    @cached(['col_cov', 'row_col', 'G'])
+    @cached(['col_cov', 'row_cov', 'G'])
     def SrDWt(self):
         return self.Sr()[:, sp.newaxis, sp.newaxis] * self.DWt()
 
-    @cached(['col_cov', 'row_col', 'G'])
+    @cached(['col_cov', 'row_cov', 'G'])
     def Kbar(self, i):
         # WrDRDWtCtildeWc
         np_r = self.Cr.getNumberParams()
