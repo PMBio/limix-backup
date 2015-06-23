@@ -5,17 +5,16 @@ import scipy.linalg as LA
 import copy
 import pdb
 
-from mean_base import mean_base
+from mean_base import MeanBase
 from limix.utils.preprocess import regressOut
 from limix.utils.util_functions import to_list
 from limix.core.type.cached import *
 from limix.core.type.observed import *
-from mean_base import mean_base
 from limix.core.utils import assert_make_float_array
 from limix.core.utils import assert_type_or_list_type
 
 
-class MeanKronSum(mean_base):
+class MeanKronSum(MeanBase):
     """
     Sum of Kronecker Mean for multi-trait gp regression
     Notation:

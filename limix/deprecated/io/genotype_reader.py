@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import scipy as sp 
-import limix.io.data_util as du
+import scipy as sp
+import limix.deprecated.io.data_util as du
 import pandas as pd
 
 class genotype_reader_h5py():
@@ -27,15 +27,15 @@ class genotype_reader_h5py():
 
     def load(self,cache_genotype=False,cache_phenotype=True):
         """load data file
-        
+
         Args:
             cache_genotype:     load genotypes fully into memory (default: False)
-            cache_phenotype:    load phentopyes fully intro memry (default: True)        
+            cache_phenotype:    load phentopyes fully intro memry (default: True)
         """
         import h5py
         self.f = h5py.File(self.file_name,'r')
         self.geno  = self.f['genotype']
-        
+
         #parse out these we always need for convenience
         self.geno_matrix = self.geno['matrix']
         #dimensions
@@ -49,7 +49,7 @@ class genotype_reader_h5py():
             }
         if 'pos_cum' in self.geno['col_header'].keys():
             position['pos_cum']   = self.geno['col_header']['pos_cum'][:]
-        
+
         if 'geno_ID' in self.geno['col_header'].keys():
             self.geno_ID   = self.geno['col_header']['geno_ID'][:]
         else:
@@ -58,13 +58,13 @@ class genotype_reader_h5py():
         #cache?
         if cache_genotype:
             self.geno_matrix = self.geno_matrix[:]
-        self.position=pd.DataFrame(data=position,index=self.geno_ID)        
+        self.position=pd.DataFrame(data=position,index=self.geno_ID)
 
-        
+
     def getGenotypes(self,sample_idx=None,idx_start=None,idx_end=None,chrom=None,pos_start=None,pos_end=None,center=True,unit=True,impute_missing=False,snp_idx=None,windowsize=0):
-        """load genotypes. 
+        """load genotypes.
         Optionally the indices for loading subgroups the genotypes for all people
-        based on position of cumulative position. 
+        based on position of cumulative position.
         Positions can be given as (pos_start-pos_end on chrom)
         If both of these are None (default), then all genotypes are returned
 
@@ -75,7 +75,7 @@ class genotype_reader_h5py():
             pos_start:       position based selection (start position) tuple of chrom, position
             pos_end:       position based selection (end position) tuple of chrom, position
             impute_missing: Boolean indicator variable if missing values should be imputed
-        
+
         Returns:
             X:          scipy.array of genotype values
         """
@@ -96,7 +96,7 @@ class genotype_reader_h5py():
         return X
 
     def getGenoIndex(self,pos_start=None,pos_end=None,windowsize=0):
-        """computes 0-based genotype index from position of cumulative position. 
+        """computes 0-based genotype index from position of cumulative position.
         Positions can be given as (pos_start-pos_end on chrom)
         If both of these are None (default), then all genotypes are returned
 
@@ -105,7 +105,7 @@ class genotype_reader_h5py():
             pos_start:      position based selection (start position) tuple of chrom, position
             pos_end:        position based selection (end position) tuple of chrom, position
             windowsize:     additionally include a flanking window around the selected positions (default 0)
-        
+
         Returns:
             idx_start:         genotype index based selection (start index)
             idx_end:         genotype index based selection (end index)
@@ -119,7 +119,7 @@ class genotype_reader_h5py():
             idx_end = I.max()
         elif (chrom is not None):
             I = self.position["chrom"]==chrom
-            
+
             idx_start = I.min()
             idx_end = I.max()
         else:
@@ -150,7 +150,7 @@ class genotype_reader_h5py():
             Nsnp=idx_end-idx_start
             while nread<idx_end:
                 thisblock=min(blocksize,idx_end-nread)
-                X=self.getGenotypes(sample_idx=sample_idx,idx_start=nread,idx_end=(nread+thisblock),center=center,unit=unit,impute_missing=True,**kw_args)    
+                X=self.getGenotypes(sample_idx=sample_idx,idx_start=nread,idx_end=(nread+thisblock),center=center,unit=unit,impute_missing=True,**kw_args)
                 if X.dtype!= sp.float64:
                     X= sp.array(X,dtype= sp.float64)
                 if K is None:
@@ -165,9 +165,9 @@ class genotype_reader_h5py():
         return K
 
     def getGenoID(self,snp_idx=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,pos_cum_start=None,pos_cum_end=None):
-        """get genotype IDs. 
+        """get genotype IDs.
         Optionally the indices for loading subgroups the genotype IDs for all people
-        can be given in one out of three ways: 
+        can be given in one out of three ways:
         - 0-based indexing (idx_start-idx_end)
         - position (pos_start-pos_end on chrom)
         - cumulative position (pos_cum_start-pos_cum_end)
@@ -181,7 +181,7 @@ class genotype_reader_h5py():
             chrom:      position based selection (chromosome)
             pos_cum_start:   cumulative position based selection (start position)
             pos_cum_end:   cumulative position based selection (end position)
-           
+
         Returns:
             ID:         scipy.array of genotype IDs (e.g. rs IDs)
         """
@@ -237,17 +237,17 @@ class genotype_reader_tables():
 
     def load(self,cache_genotype=False,cache_phenotype=True):
         """load data file
-        
+
         Args:
             cache_genotype:     load genotypes fully into memory (default: False)
-            cache_phenotype:    load phentopyes fully intro memry (default: True)        
+            cache_phenotype:    load phentopyes fully intro memry (default: True)
         """
         import tables
         #self.f = h5py.File(self.file_name,'r')
         #self.store = pd.HDFStore(self.file_name,'r')
         self.f = tables.openFile(self.file_name,'r')
         self.geno  = self.f.root.genotype
-        
+
         #parse out these we always need for convenience
         self.geno_matrix = self.geno.matrix
         #dimensions
@@ -258,12 +258,12 @@ class genotype_reader_tables():
             "chrom" : self.geno.col_header.chrom[:],
             "pos"   : self.geno.col_header.pos[:],
             }
-        
+
         if 'pos_cum' in self.geno.col_header:
             position["pos_cum"]   = self.geno.col_header.pos_cum[:]
         #else:
         #    position["geno_pos_cum"] = None
-        
+
         if 'geno_ID' in self.geno.col_header:
             self.geno_ID   = self.geno.col_header.geno_ID[:]
         else:
@@ -272,13 +272,13 @@ class genotype_reader_tables():
         #cache?
         if cache_genotype:
             self.geno_matrix = self.geno_matrix[:]
-        
 
-        
+
+
     def getGenotypes(self,sample_idx=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,center=True,unit=True,pos_cum_start=None,pos_cum_end=None,impute_missing=False,snp_idx=None):
-        """load genotypes. 
+        """load genotypes.
         Optionally the indices for loading subgroups the genotypes for all people
-        can be given in one out of three ways: 
+        can be given in one out of three ways:
         - 0-based indexing (idx_start-idx_end)
         - position (pos_start-pos_end on chrom)
         - cumulative position (pos_cum_start-pos_cum_end)
@@ -293,7 +293,7 @@ class genotype_reader_tables():
             pos_cum_start:   cumulative position based selection (start position)
             pos_cum_end:   cumulative position based selection (end position)
             impute_missing: Boolean indicator variable if missing values should be imputed
-        
+
         Returns:
             X:          scipy.array of genotype values
         """
@@ -314,8 +314,8 @@ class genotype_reader_tables():
         return X
 
     def getGenoIndex(self,pos_start=None,pos_end=None,chrom=None,windowsize=0):
-        """computes 0-based genotype index from position of cumulative position. 
-        Positions can be given in one out of two ways: 
+        """computes 0-based genotype index from position of cumulative position.
+        Positions can be given in one out of two ways:
         - position (pos_start-pos_end on chrom)
         - cumulative position (pos_cum_start-pos_cum_end)
         If all these are None (default), then all genotypes are returned
@@ -324,7 +324,7 @@ class genotype_reader_tables():
             pos_start:       position based selection (start position)
             pos_end:       position based selection (end position)
             chrom:      position based selection (chromosome)
-        
+
         Returns:
             idx_start:         genotype index based selection (start index)
             idx_end:         genotype index based selection (end index)
@@ -371,9 +371,9 @@ class genotype_reader_tables():
             Nsnp=idx_end-idx_start
             while nread<idx_end:
                 thisblock=min(blocksize,idx_end-nread)
-                X=self.getGenotypes(sample_idx=sample_idx,idx_start=nread,idx_end=(nread+thisblock),center=center,unit=unit,impute_missing=True,**kw_args)    
+                X=self.getGenotypes(sample_idx=sample_idx,idx_start=nread,idx_end=(nread+thisblock),center=center,unit=unit,impute_missing=True,**kw_args)
                 if X.dtype!= sp.float64:
-                    X= sp.array(X,dtype= sp.float64)                
+                    X= sp.array(X,dtype= sp.float64)
                 if K is None:
                     K=X.dot(X.T)
                 else:
@@ -386,9 +386,9 @@ class genotype_reader_tables():
         return K
 
     def getGenoID(self,snp_idx=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,windowsize=0):
-        """get genotype IDs. 
+        """get genotype IDs.
         Optionally the indices for loading subgroups the genotype IDs for all people
-        can be given in one out of three ways: 
+        can be given in one out of three ways:
         - 0-based indexing (idx_start-idx_end)
         - position (pos_start-pos_end on chrom)
         - cumulative position (pos_cum_start-pos_cum_end)
@@ -400,7 +400,7 @@ class genotype_reader_tables():
             pos_start:       position based selection (start position)
             pos_end:       position based selection (end position)
             chrom:      position based selection (chromosome)
-           
+
         Returns:
             ID:         scipy.array of genotype IDs (e.g. rs IDs)
         """
@@ -443,7 +443,7 @@ class genotype_reader_tables():
 
 """
     def to_table(self, filename):
-        file = tables.open 
+        file = tables.open
         pass
 
 class Genotype(tables.IsDescription):
@@ -453,4 +453,4 @@ class Genotype(tables.IsDescription):
     bp_position = tables.UInt32Col()    # unsigned byte
     values      = tables.CArray()
 
-"""   
+"""

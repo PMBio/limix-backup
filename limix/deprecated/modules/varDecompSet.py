@@ -15,11 +15,11 @@
 """
 PANAMA module in limix
 """
-import limix.modules.qtl as qtl
-import limix.stats.fdr as fdr
-from limix.stats.pca import *
-import limix
-import scipy as sp 
+import limix.deprecated.modules.qtl as qtl
+import limix.deprecated.stats.fdr as fdr
+from limix.deprecated.stats.pca import *
+import limix.deprecated as dlimix
+import scipy as sp
 import scipy.linalg as la
 import pdb
 import scipy.linalg as linalg
@@ -31,8 +31,8 @@ class varDecompSet:
         """
         Args:
             X: alternatively SNP data
-            Y: alternativel expression data 
-            Ks: list of covariance matrices 
+            Y: alternativel expression data
+            Ks: list of covariance matrices
             standardize: if True, phenotypes are standardized
         """
         assert Y is not None, 'Specify Y'
@@ -71,7 +71,7 @@ class varDecompSet:
 
         hyperparams = limix.CGPHyperParams()
         covar_params = sp.concatenate(covar_params)
-        hyperparams['covar'] = covar_params 
+        hyperparams['covar'] = covar_params
         constrainU = limix.CGPHyperParams()
         constrainL = limix.CGPHyperParams()
         constrainU['covar'] = +5*sp.ones_like(covar_params);
@@ -80,7 +80,7 @@ class varDecompSet:
         self.gp=limix.CGPbase(covar,limix.CLikNormalNULL())
         self.gp.setY(self.Y)
         lml0 = self.gp.LML(hyperparams)
-        dlml0 = self.gp.LMLgrad(hyperparams)        
+        dlml0 = self.gp.LMLgrad(hyperparams)
         gpopt = limix.CGPopt(self.gp)
         gpopt.setOptBoundLower(constrainL);
         gpopt.setOptBoundUpper(constrainU);
@@ -101,9 +101,8 @@ class varDecompSet:
             RV = self.gp.getParams()['covar'][:self.n_terms-1]**2
         else:
             RV = self.gp.getParams()['covar']**2
-        return RV 
+        return RV
 
     def getNoise(self):
         assert self.noise is 'correlated', 'work only if noise is \'correlated\'!'
         return self.gp.getParams()['covar'][self.n_terms-1]**2*self.cov_noise.K()
-

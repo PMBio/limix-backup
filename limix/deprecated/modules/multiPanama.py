@@ -15,11 +15,11 @@
 """
 PANAMA module in limix
 """
-import limix.modules.qtl as qtl
-import limix.stats.fdr as fdr
-from limix.stats.pca import *
-import limix
-import scipy as sp 
+import limix.deprecated.modules.qtl as qtl
+import limix.deprecated.stats.fdr as fdr
+from limix.deprecated.stats.pca import *
+import limix.deprecated as dlimix
+import scipy as sp
 import scipy.linalg as la
 import pdb
 import scipy.linalg as linalg
@@ -32,7 +32,7 @@ class PANAMA:
         Args:
             data: data object to feed form
             X: alternatively SNP data
-            Y: alternativel expression data 
+            Y: alternativel expression data
             Kpop: Kpop
             use_Kpop: if True (default), Kpop is considered in the model
             standardize: if True, phenotypes are standardized
@@ -54,7 +54,7 @@ class PANAMA:
             self.Kpop = [self.Kpop/self.Kpop.diagonal().mean()]
         else:
             assert use_Kpop==False, 'no Kpop'
-        
+
         if standardize:
             self.Y -= self.Y.mean(axis=0)
             self.Y /= self.Y.std(axis=0)
@@ -81,7 +81,7 @@ class PANAMA:
             hyperparams['covar'] = covar_params
             hyperparams['lik'] = lik_params
             hyperparams['X']   = X0
-        
+
             constrainU = limix.CGPHyperParams()
             constrainL = limix.CGPHyperParams()
             constrainU['covar'] = +5*sp.ones_like(covar_params);
@@ -115,19 +115,19 @@ class PANAMA:
             hyperparams['covar'] = covar_params
             hyperparams['lik'] = lik_params
             hyperparams['X']   = X0
-        
+
             constrainU = limix.CGPHyperParams()
             constrainL = limix.CGPHyperParams()
             constrainU['covar'] = +5*sp.ones_like(covar_params);
             constrainL['covar'] = -5*sp.ones_like(covar_params);
             constrainU['lik'] = +5*sp.ones_like(lik_params);
 
-            
+
         gp=limix.CGPbase(covar,ll)
         gp.setY(self.Y)
         gp.setX(X0)
         lml0 = gp.LML(hyperparams)
-        dlml0 = gp.LMLgrad(hyperparams)        
+        dlml0 = gp.LMLgrad(hyperparams)
         gpopt = limix.CGPopt(gp)
         gpopt.setOptBoundLower(constrainL);
         gpopt.setOptBoundUpper(constrainU);
@@ -166,7 +166,7 @@ class PANAMA:
 
     def get_Ypanama(self):
         """
-        get Ypanama 
+        get Ypanama
         """
         return self.Ypanama
 
@@ -176,25 +176,24 @@ class PANAMA:
             matrix of Xs
         """
         return self.Xpanama
-    
+
     def get_Kpanama(self):
         """
         Returns:
             Kpanama (normalized XX.T)
         """
         return self.Kpanama
-    
+
     def get_K(self,i):
         """
         Returns:
             Ktot (normalized Kpanama+Kpop)
         """
         return self.Ktot
-    
+
     def get_varianceComps(self):
         """
         Returns:
             vector of variance components of the PANAMA, Kpop and noise contributions
         """
         return self.varianceComps
-

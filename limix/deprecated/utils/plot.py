@@ -13,10 +13,10 @@
 #limitations under the License.
 
 import sys
-import scipy as sp 
+import scipy as sp
 import numpy as np
 import pdb
-import pylab as pl 
+import pylab as pl
 import matplotlib.pylab as plt
 import scipy.stats as st
 import copy
@@ -62,7 +62,7 @@ def plot_manhattan(posCum,pv,chromBounds=None,
 	else:
 		chromBounds = sp.concatenate([chromBounds,sp.array([posCum.max()])])
 
-	
+
 	n_chroms = chromBounds.shape[0]
 	for chrom_i in range(0,n_chroms-1,2):
 		pl.fill_between(posCum,0,lim,where=(posCum>chromBounds[chrom_i]) & (posCum<chromBounds[chrom_i+1]),facecolor='LightGray',linewidth=0,alpha=0.5)
@@ -72,7 +72,7 @@ def plot_manhattan(posCum,pv,chromBounds=None,
 			i_small = pv<thr_plotting
 		elif qv is not None:
 			i_small = qv<thr_plotting
-		
+
 		if qv is not None:
 			qv = qv[i_small]
 		if pv is not None:
@@ -88,8 +88,8 @@ def plot_manhattan(posCum,pv,chromBounds=None,
 	pl.plot(posCum[~Isign],-sp.log10(pv[~Isign]),'.',color=colorNS,ms=5,alpha=alphaNS,label=labelNS)
 	pl.plot(posCum[Isign], -sp.log10(pv[Isign]), '.',color=colorS,ms=5,alpha=alphaS,label=labelS)
 
-    if qv is not None:
-        pl.plot([0,posCum.max()],[-sp.log10(thr),-sp.log10(thr)],'--',color='Gray')
+	if qv is not None:
+		pl.plot([0,posCum.max()],[-sp.log10(thr),-sp.log10(thr)],'--',color='Gray')
 
 	pl.ylim(0,lim)
 
@@ -145,11 +145,11 @@ def qqplot(pv, distr = 'log10', alphaLevel = 0.05):
 
 	tests = pv.shape[0]
 	pnull = (0.5 + sp.arange(tests))/tests
-	# pnull = np.sort(np.random.uniform(size = tests))    
+	# pnull = np.sort(np.random.uniform(size = tests))
 	Ipv = sp.argsort(pv)
 
-	if distr == 'chi2':    
-	    qnull = sp.stats.chi2.isf(pnull, 1)   
+	if distr == 'chi2':
+	    qnull = sp.stats.chi2.isf(pnull, 1)
 	    qemp = (sp.stats.chi2.isf(pv[Ipv],1))
 	    xl = 'LOD scores'
 	    yl = '$\chi^2$ quantiles'
@@ -157,7 +157,7 @@ def qqplot(pv, distr = 'log10', alphaLevel = 0.05):
 	if distr == 'log10':
 	    qnull = -sp.log10(pnull)
 	    qemp = -sp.log10(pv[Ipv])
-	    
+
 	    xl = '-log10(P) observed'
 	    yl = '-log10(P) expected'
 
@@ -189,7 +189,7 @@ def plot_normal(x=None, mean_x=None,std_x=None,color='red',linewidth=2,alpha=1,b
     if std_x is None:
         #fit maximum likelihood Normal distribution standard deviation to samples X
         std_x = x.std()   #sample standard deviation
-        
+
     xvals=np.arange(mean_x-5*std_x,mean_x+5*std_x,.001)
     yvals=st.norm.pdf(xvals,mean_x,std_x)
     #plot normal distribution:
@@ -197,7 +197,7 @@ def plot_normal(x=None, mean_x=None,std_x=None,color='red',linewidth=2,alpha=1,b
     if x is not None and histogram:
         #plot histogram of x-values
         pylab.hist(x,bins,normed=True)
-    
+
     if plot_mean:
         #evaluate distribution at the mean:
         max_cdf=st.norm.pdf(mean_x,mean_x,std_x)

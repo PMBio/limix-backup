@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0,'./../../..')
 
-from limix.core.mean.mean_base import mean_base as lin_mean
+from limix.core.mean.mean_base import MeanBase as lin_mean
 from limix.core.covar import SQExpCov
 from limix.core.covar import FixedCov
 from limix.core.covar import SumCov

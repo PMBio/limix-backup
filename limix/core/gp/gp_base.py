@@ -7,7 +7,7 @@ import time
 from limix.core.type.observed import Observed
 from limix.core.type.cached import Cached, cached
 from limix.core.covar import Covariance
-from limix.core.mean import mean_base
+from limix.core.mean import MeanBase
 from limix.core.covar.cov_reml import cov_reml
 import limix.core.optimize.optimize_bfgs_new as OPT
 
@@ -34,8 +34,8 @@ class GP(Cached, Observed):
         """
         Cached.__init__(self)
 
-        if not issubclass(type(mean), mean_base):
-            raise TypeError('Parameter mean must have base_mean inheritance.')
+        if not issubclass(type(mean), MeanBase):
+            raise TypeError('Parameter mean must have MeanBase inheritance.')
 
         if not issubclass(type(covar), Covariance):
             raise TypeError('Parameter covar must have Covariance '

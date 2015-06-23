@@ -1,7 +1,7 @@
 import h5py
 import scipy as sp
 from limix.core.gp.gp_base import GP
-from limix.core.mean.mean_base import mean_base as lin_mean
+from limix.core.mean.mean_base import MeanBase as lin_mean
 from limix.core.covar.dirIndirCov import DirIndirCov
 from limix.core.covar.fixed import FixedCov 
 from limix.core.covar.combinators import SumCov

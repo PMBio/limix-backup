@@ -8,12 +8,12 @@ import numpy as np
 import scipy.linalg as LA
 import copy
 
-class mean_base(Cached, Observed):
+class MeanBase(Cached, Observed):
     """
     Basic mean function for gp regression
     Notation:
         N = number of individuals
-        No = number of out-of-sample individuals for predictions 
+        No = number of out-of-sample individuals for predictions
         K = number of fixed effect covariates
     """
 
@@ -56,7 +56,7 @@ class mean_base(Cached, Observed):
 
     @property
     def n_covs(self):
-        return self.W.shape[1] 
+        return self.W.shape[1]
 
     @property
     def y(self):

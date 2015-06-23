@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import scipy as SP
-import limix.io.data_util as du
+import limix.deprecated.io.data_util as du
 import pandas as pd
 
 class pheno_reader_tables():
@@ -23,14 +23,14 @@ class pheno_reader_tables():
 
     def load(self,cache_phenotype=True):
         """load data file
-        
+
         Args:
-            cache_phenotype:    load phentopyes fully intro memry (default: True)        
+            cache_phenotype:    load phentopyes fully intro memry (default: True)
         """
         import tables
         self.f = tables.openFile(self.file_name,'r')
         self.pheno = self.f.root.phenotype
-        
+
         #parse out thse we always need for convenience
         self.pheno_matrix = self.pheno.matrix
         self.sample_ID = self.pheno.row_header.sample_ID[:]
@@ -39,7 +39,7 @@ class pheno_reader_tables():
         #cache?
         if cache_phenotype:
             self.pheno_matrix = self.pheno_matrix[:]
-        
+
         # Additional pheno col header
         headers = self.pheno.col_header
 
@@ -76,19 +76,19 @@ class pheno_reader_tables():
         self.N = self.pheno_matrix.shape[0]
         self.P = self.pheno_matrix.shape[1]
 
-   
+
     def getPhenotypes(self,phenotype_IDs=None,phenotype_query=None,sample_idx=None,center=True,intersection=False):
         """load Phenotypes
-        
+
         Args:
             phenotype_IDs:      names of phenotypes to load
-            phenotype_query:    string hoding a pandas query (e.g. "(environment==1) & (phenotype_ID=='growth')" 
-                                selects all phenotypes that have a phenotype_ID equal to growth under environment 1.          
+            phenotype_query:    string hoding a pandas query (e.g. "(environment==1) & (phenotype_ID=='growth')"
+                                selects all phenotypes that have a phenotype_ID equal to growth under environment 1.
             sample_idx:         Boolean sample index for subsetting individuals
             center:             Boolean: mean center (and mean-fill in missing values if intersection==False)? (default True)
             impute:             imputation of missing values (default: True)
             intersection:       restrict observation to those obseved in all phenotypes? (default: False)
-        
+
         Returns:
             phenotypes:     [N x P] scipy.array of phenotype values for P phenotypes
             sample_idx_intersect:        index of individuals in phenotypes after filtering missing valuesS
@@ -106,10 +106,10 @@ class pheno_reader_tables():
                     I = SP.zeros([0],dtype="int")
 
             except Exception, arg:
-                
+
                 print "query '%s' yielded no results: %s" % (phenotype_query, str(arg))
-                                
-                I = SP.zeros([0],dtype="int") 
+
+                I = SP.zeros([0],dtype="int")
         else:
             I = SP.arange(self.phenotype_ID.shape[0])
         phenotypes = SP.array(self.pheno_matrix[:,I],dtype='float')
@@ -148,14 +148,14 @@ class pheno_reader_tables():
             try:
                 I = self.index_frame.query(phenotype_query).values[:,0]
             except Exception, arg:
-                
-                print "query '%s' yielded no results: %s"%phenotype_query, str(arg) 
-                                
-                I = SP.zeros([0],dtype="int")             
+
+                print "query '%s' yielded no results: %s"%phenotype_query, str(arg)
+
+                I = SP.zeros([0],dtype="int")
             return {"start" : self.gene_pos_start[I], "end" : self.gene_pos_start[I]}
         else:
             return {"start" : self.gene_pos_start, "end" : self.gene_pos_start}
-        
+
 
 class pheno_reader_h5py_deprecated():
     def __init__(self,file_name):
@@ -164,14 +164,14 @@ class pheno_reader_h5py_deprecated():
 
     def load(self,cache_phenotype=True):
         """load data file
-        
+
         Args:
-            cache_phenotype:    load phentopyes fully intro memry (default: True)        
+            cache_phenotype:    load phentopyes fully intro memry (default: True)
         """
         import h5py
         self.f = h5py.File(self.file_name,'r')
         self.pheno = self.f['phenotype']
-        
+
         #parse out thse we always need for convenience
         self.pheno_matrix = self.pheno['matrix']
         self.sample_ID = self.pheno['row_header']['sample_ID'][:]
@@ -180,7 +180,7 @@ class pheno_reader_h5py_deprecated():
         #cache?
         if cache_phenotype:
             self.pheno_matrix = self.pheno_matrix[:]
-        
+
         # Additional pheno col header
         headers = self.pheno['col_header'].keys()
         if 'gene_ID' in headers:
@@ -203,12 +203,12 @@ class pheno_reader_h5py_deprecated():
 
     def getPhenotypes_df(self,sample_idx=None,phenotype_IDs=None,center=True,impute=True,intersection=False):
         """load Phenotypes
-        
+
         Args:
             phenotype_IDs:  names of phenotypes to load
             impute:         imputation of missing values (default: True)
             intersection:   restrict observation to those obseved in all phenotypes? (default: False)
-        
+
         Returns:
             phenotypes:     [N x P] scipy.array of phenotype values for P phenotypes
             sample_idx_intersect:        index of individuals in phenotypes after filtering missing valuesS
@@ -240,12 +240,12 @@ class pheno_reader_h5py_deprecated():
 
     def getPhenotypes(self,sample_idx=None,phenotype_IDs=None,center=True,impute=True,intersection=False):
         """load Phenotypes
-        
+
         Args:
             phenotype_IDs:  names of phenotypes to load
             impute:         imputation of missing values (default: True)
             intersection:   restrict observation to those obseved in all phenotypes? (default: False)
-        
+
         Returns:
             phenotypes:     [N x P] scipy.array of phenotype values for P phenotypes
             sample_idx_intersect:        index of individuals in phenotypes after filtering missing valuesS

@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import scipy as sp 
+import scipy as sp
 import copy
 
-import limix.io.data_util as du
-import limix.io.genotype_reader as gr
-import limix.io.phenotype_reader as pr
+import limix.deprecated.io.data_util as du
+import limix.deprecated.io.genotype_reader as gr
+import limix.deprecated.io.phenotype_reader as pr
 import pandas as pd
 
 class QTLData(object):
@@ -36,7 +36,7 @@ class QTLData(object):
         self.sample_idx = du.merge_indices([self.geno_reader.sample_ID, self.pheno_reader.sample_ID],header=["geno","pheno"],join="inner")      #index of individuals
         self.sample_ID = self.geno_reader.sample_ID[ sp.array(self.sample_idx["geno"])]
         self.num_snps = self.geno_reader.num_snps
-        
+
 
     def range_query_geno_local(self, idx_start=None, idx_end=None, chrom=None,pos_start=None, pos_end=None,windowsize=0):
         """
@@ -56,7 +56,7 @@ class QTLData(object):
         elif pos_start is not None or pos_end is not None:
             if pos_start is not None and pos_end is not None:
                 assert pos_start[0] == pos_end[0], "chromosomes have to match"
-            
+
             if pos_start is None:
                 idx_larger =  sp.ones(self.num_snps,dtype=bool)
             else:
@@ -69,7 +69,7 @@ class QTLData(object):
         else:
             raise Exception("This should not be triggered")#res =  sp.ones(self.geno_pos.shape,dtype=bool)
         return  sp.where(res)[0]
-        
+
 
     def range_query_geno(self, idx_start=None, idx_end=None, chrom=None, pos_start=None, pos_end=None,windowsize=0):
         """
@@ -81,14 +81,14 @@ class QTLData(object):
             res = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end,windowsize=windowsize)
         if self.geno_snp_idx is None:
             return  sp.where(res)[0]
-        else:    
+        else:
             return self.geno_snp_idx[res]
 
-            
+
     def getGenotypes(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,windowsize=0,chrom=None,center=True,unit=True,impute_missing=False,cast_float=True):
-        """return genotypes. 
+        """return genotypes.
         Optionally the indices for loading subgroups the genotypes for all people
-        can be given in one out of three ways: 
+        can be given in one out of three ways:
         - 0-based indexing (idx_start-idx_end)
         - position (pos_start-pos_end on chrom)
         - cumulative position (pos_cum_start-pos_cum_end)
@@ -108,7 +108,7 @@ class QTLData(object):
             X:          scipy.array of genotype values
         """
         query_idx = self.range_query_geno(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start,windowsize=windowsize)
-        X = self.geno_reader.getGenotypes(sample_idx= sp.array(self.sample_idx["geno"]),snp_idx=query_idx) 
+        X = self.geno_reader.getGenotypes(sample_idx= sp.array(self.sample_idx["geno"]),snp_idx=query_idx)
         if impute_missing:
             X = du.imputeMissing(X,center=center,unit=unit)
         if cast_float:
@@ -121,9 +121,9 @@ class QTLData(object):
         return self.geno_reader.getCovariance(sample_idx= sp.array(self.sample_idx["geno"]),normalize=normalize,idx_start=idx_start,idx_end=idx_end,pos_start=pos_start,pos_end=pos_end,chrom=chrom,center=center,unit=unit,windowsize=windowsize,blocksize=blocksize,X=X,**kw_args)
 
     def getGenoID(self,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,windowsize=0):
-        """get genotype IDs. 
+        """get genotype IDs.
         Optionally the indices for loading subgroups the genotype IDs for all people
-        can be given in one out of three ways: 
+        can be given in one out of three ways:
         - 0-based indexing (idx_start-idx_end)
         - position (pos_start-pos_end on chrom)
         - cumulative position (pos_cum_start-pos_cum_end)
@@ -137,7 +137,7 @@ class QTLData(object):
             chrom:      position based selection (chromosome)
             pos_cum_start:   cumulative position based selection (start position)
             pos_cum_end:   cumulative position based selection (end position)
-           
+
         Returns:
             ID:         scipy.array of genotype IDs (e.g. rs IDs)
         """
@@ -147,18 +147,18 @@ class QTLData(object):
         else:
             return self.geno_ID[query_idx]
 
-       
+
 
     def getPhenotypes(self,phenotype_IDs=None,phenotype_query=None,center=True,intersection=False):
         """load Phenotypes
-        
+
         Args:
             idx_start:      phenotype indices to load (start individual index)
             idx_end:       phenotype indices to load (end individual index)
             phenotype_IDs:  names of phenotypes to load
             impute:         imputation of missing values (default: True)
             intersection:   restrict observation to those obseved in all phenotypes (true) or at least in one phenotype (false)? (default: False)
-        
+
         Returns:
             phenotypes:     phenotype values
             sample_idx_intersect:        index of individuals in phenotypes after filtering missing values
@@ -177,19 +177,19 @@ class QTLData(object):
             cumulative_position
         """
         query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, windowsize=windowsize)
-        if query_idx is None:            
+        if query_idx is None:
             return self.geno_pos
         else:
             return self.geno_pos.iloc[query_idx]
 
     def subsample(self,rows=None,cols_pheno=None,cols_geno=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None,windowsize=0.0):
         """sample a particular set of individuals (rows) or phenotypes (cols_pheno) or genotypes (cols_geno)
-        
+
         Args:
             rows:           indices for a set of individuals
             cols_pheno:     indices for a set of phenotypes
             cols_geno:      indices for a set of SNPs
-        
+
         Returns:
             QTLdata object holding the specified subset of the data
         """
@@ -197,11 +197,11 @@ class QTLData(object):
             query_idx = self.range_query_geno_local(idx_start=idx_start, idx_end=idx_end, chrom=chrom, pos_start=pos_start, pos_end=pos_end, windowsize=windowsize)
             return self.subsample(rows=rows,cols_pheno=cols_pheno,cols_geno=query_idx,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None)
         C = copy.copy(self)
-        
+
         if rows is not None:
             C.sample_ID = C.sample_ID[rows]         #IDs of individuals
             C.sample_idx = C.sample_idx.iloc[rows]  #index of individuals
-            
+
         if cols_geno is not None:
             assert cols_geno.dtype=="int"
             C.geno_pos = C.geno_pos.iloc[cols_geno]
@@ -219,14 +219,14 @@ class QTLData(object):
 
     def subsample_phenotypes(self,phenotype_IDs=None,phenotype_query=None,center=True,intersection=False):
         """load Phenotypes
-        
+
         Args:
             idx_start:      phenotype indices to load (start individual index)
             idx_end:       phenotype indices to load (end individual index)
             phenotype_IDs:  names of phenotypes to load
             center:         imputation of missing values (default: True)
             intersection:   restrict observation to those obseved in all phenotypes (true) or at least in one phenotype (false)? (default: False)
-        
+
         Returns:
             phenotypes:     phenotype values
             sample_idx_intersect:        index of individuals in phenotypes after filtering missing values
@@ -234,4 +234,3 @@ class QTLData(object):
 
         phenotypes, sample_idx_intersect = self.pheno_reader.getPhenotypes(phenotype_query=phenotype_query,sample_idx= sp.array(self.sample_idx["pheno"]),phenotype_IDs=phenotype_IDs,center=center,intersection=intersection)
         return self.subsample(rows=sample_idx_intersect,cols_pheno=None,cols_geno=None,idx_start=None,idx_end=None,pos_start=None,pos_end=None,chrom=None)
-            

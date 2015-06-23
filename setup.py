@@ -154,7 +154,8 @@ if '--reswig' in sys.argv:
 # exclude limix.deprecated. This is a placeholder and will be replaced with the
 # actual deprecated limix source tree
 #packages = find_packages(exclude=['limix.deprecated'])
-packages = find_packages(exclude=['tests', 'test', 'test_limix*'])
+packages = find_packages(exclude=['tests', 'test', 'test_limix*',
+                                  'limix.modules2*'])
 #3. add depcreated limix packages in src/interfaces/python (see below)
 #packages.extend(['limix.deprecated', 'limix.deprecated.io',
 #                 'limix.deprecated.modules', 'limix.deprecated.stats',
@@ -170,6 +171,14 @@ if _platform == 'darwin':
     from distutils import sysconfig
     import platform
     sysconfig._config_vars['MACOSX_DEPLOYMENT_TARGET'] = platform.mac_ver()[0]
+
+
+def get_test_suite():
+    from unittest import TestLoader
+    from unittest import TestSuite
+    test_suite1 = TestLoader().discover('limix')
+    test_suite2 = TestLoader().discover('test_limix')
+    return TestSuite([test_suite1, test_suite2])
 
 #create setup:
 setup(
@@ -192,5 +201,6 @@ setup(
     #dependencies
     #requires = ['scipy','numpy','matplotlib','pandas','scons'],
     requires=map(lambda x: x.split(" ")[0], reqs),
-    install_requires = reqs
+    install_requires = reqs,
+    test_suite='setup.get_test_suite'
     )

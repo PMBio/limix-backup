@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from limix.core.mean.mean_base import mean_base as lin_mean
+from limix.core.mean.mean_base import MeanBase as lin_mean
 from limix.core.covar.sqexp import sqexp
 from limix.core.covar.fixed import fixed
 from limix.core.covar.combinators import sumcov

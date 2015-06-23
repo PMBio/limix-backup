@@ -6,14 +6,14 @@ import scipy as sp
 import os
 import pdb
 import subprocess, sys, os
-import limix.io.plink as PLINK
+import limix.deprecated.io.plink as PLINK
 
 
 class LIMIX_converter(object):
     '''
     A class to help with file conversion in LIMIX
     '''
-    __slots__=["options","args","data", "result","infostring","hdf"] 
+    __slots__=["options","args","data", "result","infostring","hdf"]
 
     def __init__(self,infostring=None):
         '''
@@ -26,7 +26,7 @@ class LIMIX_converter(object):
         self.infostring=infostring
         if self.infostring is not None:
             self.result["infostring"]=self.infostring
-        pass    
+        pass
 
     def parse_args(self):
         usage = "usage: %prog [options]"
@@ -69,7 +69,7 @@ class LIMIX_converter(object):
     def convert_phenotype_csv(self,hdf,csv_file,sep=None,transpose=False,num_samples=None,num_phenotypes=None,*args,**kw_args):
         """
         convert phenotype csv file to LIMIX hdf5
-        
+
         Arguments:
             hdf: handle for hdf5 file (target)
             csv_file: filename of csv file with phenoyptes
@@ -93,7 +93,7 @@ class LIMIX_converter(object):
             del(hdf['phenotype'])
         phenotype = hdf.create_group('phenotype')
         col_header = phenotype.create_group('col_header')
-        row_header = phenotype.create_group('row_header')   
+        row_header = phenotype.create_group('row_header')
         #write phenotype
         phenotype.create_dataset(name='matrix',data=matrix)
         #write row header

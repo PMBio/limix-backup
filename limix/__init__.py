@@ -1,4 +1,4 @@
-from modules2 import MTSet
+#from modules2 import MTSet
 
 #import self
 import limix
@@ -8,7 +8,6 @@ import deprecated.modules as modules
 
 #verbose flags for the entire module
 verbose = False
-
 
 def getVerbose(verbose):
     """resolve verbose flag, using module settings if verbose=None"""

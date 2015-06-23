@@ -1,4 +1,4 @@
-import gp_base
+from limix.core.gp import gp_base
 import scipy.optimize as OPT
 import pdb
 import scipy as SP
@@ -21,7 +21,7 @@ def param_list_to_dict(list,param_struct,skeys):
     i0= 0
     for key in skeys:
         val = param_struct[key]
-        shape = SP.array(val) 
+        shape = SP.array(val)
         np = shape.prod()
         i1 = i0+np
         params = list[i0:i1].reshape(shape)
@@ -32,18 +32,18 @@ def param_list_to_dict(list,param_struct,skeys):
 def checkgrad(f, fprime, x, *args,**kw_args):
     """
     Analytical gradient calculation using a 3-point method
-    
+
     """
     LG.debug("Checking gradient ...")
     import numpy as np
-    
+
     # using machine precision to choose h
     eps = np.finfo(float).eps
     step = np.sqrt(eps)*(x.min())
 
     # shake things up a bit by taking random steps for each x dimension
     h = step*np.sign(np.random.uniform(-1, 1, x.size))
-    
+
     f_ph = f(x+h, *args, **kw_args)
     f_mh = f(x-h, *args, **kw_args)
     numerical_gradient = (f_ph - f_mh)/(2*h)
@@ -61,13 +61,13 @@ def checkgrad(f, fprime, x, *args,**kw_args):
 	ratio = (f_ph - f_mh)/(2*step*analytical_gradient)
 	h[i] = 0
         LG.debug("[%d] numerical: %f, analytical: %f, ratio: %f" % (i, numerical_gradient,analytical_gradient,ratio))
-	    
 
-            
+
+
 def opt_hyper(gpr,hyperparams,Ifilter=None,bounds=None,opts={},*args,**kw_args):
     """
     optimize hyperparams
-    
+
     Input:
     gpr: GP regression class
     hyperparams: dictionary filled with starting hyperparameters
@@ -85,7 +85,7 @@ def opt_hyper(gpr,hyperparams,Ifilter=None,bounds=None,opts={},*args,**kw_args):
         pgtol = opts['pgtol']
     else:
         pgtol = 1e-10
-        
+
     def f(x):
         x_ = X0
         x_[Ifilter_x] = x
@@ -103,7 +103,7 @@ def opt_hyper(gpr,hyperparams,Ifilter=None,bounds=None,opts={},*args,**kw_args):
             idx = (~SP.isfinite(rv))
             rv[idx] = 1E6
         return rv[Ifilter_x]
-    
+
     skeys = SP.sort(hyperparams.keys())
     param_struct = dict([(name,hyperparams[name].shape) for name in skeys])
 
@@ -124,17 +124,17 @@ def opt_hyper(gpr,hyperparams,Ifilter=None,bounds=None,opts={},*args,**kw_args):
                 _b.extend([[-SP.inf,+SP.inf]]*hyperparams[key].size)
         bounds = SP.array(_b)
         bounds = bounds[Ifilter_x]
-   
+
     LG.info('Starting optimization ...')
     t = time.time()
 
-    
+
     x = X0.copy()[Ifilter_x]
     RVopt = OPT.fmin_tnc(f,x,fprime=df,messages=True,maxfun=int(max_iter),pgtol=pgtol,bounds=bounds)
     LG.info('%s'%OPT.tnc.RCSTRINGS[RVopt[2]])
     LG.info('Optimization is converged at iteration %d'%RVopt[1])
     LG.info('Total time: %.2fs'%(time.time()-t))
-    
+
     xopt = RVopt[0]
     Xopt = X0.copy()
     Xopt[Ifilter_x] = xopt
@@ -145,5 +145,5 @@ def opt_hyper(gpr,hyperparams,Ifilter=None,bounds=None,opts={},*args,**kw_args):
         err = OPT.check_grad(f,df,xopt)
         LG.info("check_grad (post): %.2f"%err)
 
-    
+
     return [hyperparams_opt,lml_opt]

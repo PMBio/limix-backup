@@ -16,12 +16,12 @@ import scipy as sp
 import glob
 import pdb, sys, pickle
 import matplotlib.pylab as plt
-from optparse import OptionParser 
-from util import *
+from optparse import OptionParser
+# from util import *
 import os, shutil
 import subprocess as s
 #import covar
-#import one_chr 
+#import one_chr
 np.random.seed(1)
 #from recode import *
 
@@ -34,22 +34,22 @@ def get_column(filename, col, skiprows = 1, dtype = float):
     import pdb
     f = open(filename, 'r')
     results = []
-    skipped = 0  
+    skipped = 0
     for line in f:
         if skipped < skiprows:
             skipped += 1
             continue
         data = sp.array(line.strip('\n').split('\t'))
         results.append(data[col])
-        
+
     try:
         results = np.asarray(results, dtype = dtype)
     except ValueError:
         results = np.asarray(results, dtype = str)
         results = np.asarray(results[results != 'NA'], dtype = dtype)
     return results
-        
-#1) determine covariance matrix 
+
+#1) determine covariance matrix
 #1.1) full RRM
 #1.2) SNPs list
 #1.2.1) subsampling (equally spaced)
@@ -75,13 +75,13 @@ def extract_topN(N, selsnps_file, linreg_out):
     ordered_snps = get_column(linreg_out, 0, dtype = str)[:N]
     np.savetxt(selsnps_file, ordered_snps, fmt = '%s')
 
-def run_select_topN(pheno_file,linreg_out,file_test=None,bfile_test = None,tfile_test = None,bfile_sim = None,file_sim = None,tfile_sim= None, out_dir='./tmp', covariates = None, excl_dist = None, excl_pos = 
+def run_select_topN(pheno_file,linreg_out,file_test=None,bfile_test = None,tfile_test = None,bfile_sim = None,file_sim = None,tfile_sim= None, out_dir='./tmp', covariates = None, excl_dist = None, excl_pos =
 None, chr_only = None, quiet = False, refit_delta = False, command=None, Nmin=0, Nmax=1000, increment=100 ,Nsnps = None,recompute = False):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     selsnps_file =  os.path.join(out_dir, 'selectlist.txt')
     extract_topN( Nmax,selsnps_file, linreg_out )
-    
+
     if Nsnps is None:
         Nsnps = sp.arange(Nmin,Nmax,increment)
     lambdas = sp.zeros(Nsnps.shape)
@@ -103,10 +103,10 @@ def run_linreg(pheno_file,file_test=None,bfile_test = None,tfile_test = None, ou
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     out_file = os.path.join(out_dir, 'results_linreg.txt')
-    
+
     if command is None:
         command = ('%s -pheno %s -verboseOut -out %s -linreg' %(fastlmm_path, pheno_file, out_file))
-        
+
     #SNP files for testing
     if bfile_test is not None: #binary PED format
         command += ' -bfile %s' % bfile_test
@@ -116,19 +116,19 @@ def run_linreg(pheno_file,file_test=None,bfile_test = None,tfile_test = None, ou
         command += ' -file %s' % file_test
     else:
         pass
-    
+
     if covariates != None:
         command += " -covar %s" % covariates
-    
+
     out_log = os.path.join(out_dir,'results_linreg.log')
-    
+
     if len(glob.glob(out_log)) == 1:
         f = open(out_log,'r')
         for line in f:
             commandold = line.strip('\n')
             if commandold == command:
                 run  = False
-    np.savetxt(out_log, sp.array([command]),'%s')        
+    np.savetxt(out_log, sp.array([command]),'%s')
     if (run or recompute):
         if quiet:
             print 'Running linear regression ...'
@@ -166,7 +166,7 @@ def run_fastlmm(pheno_file,file_test=None,bfile_test = None,tfile_test = None,bf
         pass
     if covariates != None:
         command += " -covar %s" % covariates
-    
+
     if N is not None:
         command+= " -extractSimTopK %s %d" %(selsnps_file,N)
 
@@ -175,14 +175,14 @@ def run_fastlmm(pheno_file,file_test=None,bfile_test = None,tfile_test = None,bf
     elif excl_pos != None:
         command += ' -excludebyposition %d' %  (excl_pos)
     out_log = os.path.join(out_dir,'results_LMM.log')
-    
+
     if len(glob.glob(out_log)) == 1:
         f = open(out_log,'r')
         for line in f:
             commandold = line.strip('\n')
             if commandold == command:
                 run  = False
-    np.savetxt(out_log, sp.array([command]),'%s')        
+    np.savetxt(out_log, sp.array([command]),'%s')
     if (run or recompute):
         if quiet:
             print 'Running LMM ...'
@@ -225,7 +225,7 @@ def get_options(opt = None):
 
 if __name__ == '__main__':
     (options, args) = get_options()
-    
+
     #command_LMM = run_fastlmm(pheno_file = options.pheno_file,file_test=options.file_test,bfile_test = options.bfile_test,tfile_test = options.tfile_test,bfile_sim = options.bfile_sim,file_sim = options.file_sim,tfile_sim= options.tfile_sim, out_dir=options.out_dir, covariates = options.covariates, excl_dist = options.excl_dist, excl_pos = options.excl_pos, chr_only = options.chr_only, testing = False, quiet = False, N=None,refit_delta = False)
 
 #    command_linreg = run_linreg(pheno_file = options.pheno_file, file_test=options.file_test, bfile_test = options.bfile_test, tfile_test = options.tfile_test, out_dir=options.out_dir, covariates = options.covariates, chr_only = options.chr_only, testing = False, quiet = False)
@@ -234,7 +234,7 @@ if __name__ == '__main__':
     pvals = load_pvals(linreg_out,True,True )
 
 
-    
+
     #Nsnps0,lambdas0 = run_select_topN(pheno_file= options.pheno_file, linreg_out=linreg_out,file_test=options.file_test,bfile_test = options.bfile_test,tfile_test = options.tfile_test,bfile_sim = options.bfile_sim,file_sim = options.file_sim, tfile_sim = options.tfile_sim, out_dir=options.out_dir, covariates = options.covariates, excl_dist = options.excl_dist, excl_pos = options.excl_pos, chr_only = options.chr_only, quiet = False, refit_delta = False, command=None, Nmin=0, Nmax=100, increment=10 )
 
     #Nsnps = sp.arange(20)
