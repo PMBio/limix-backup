@@ -32,7 +32,7 @@ class SQExpCov(Covariance):
             assert_finite_array(Xstar)
 
         self.Xstar = Xstar
-        self._initParams()
+        self.params = np.zeros(2)
 
     def get_input_dim(self):
         return self.X.shape[1]

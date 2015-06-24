@@ -28,15 +28,39 @@ class TestGPBase(unittest.TestCase):
         G = 1.*(sp.rand(N, f)<0.2)
         # define col covariances
         Cg = FreeFormCov(P)
+        self._Cg = Cg
         Cn = FreeFormCov(P)
         Cg.setCovariance(0.5 * sp.cov(Y.T))
         Cn.setCovariance(0.5 * sp.cov(Y.T))
         # define gp
-        self.gp = GP2KronSumLR(Y = Y, F = F, A = A, Cn = Cn, G = G) 
+        self.gp = GP2KronSumLR(Y = Y, F = F, A = A, Cn = Cn, G = G)
 
     def test_grad(self):
 
         gp = self.gp
+
+        def func(x, i):
+            params = gp.getParams()
+            params['covar'] = x
+            gp.setParams(params)
+            return gp.LML()
+
+        def grad(x, i):
+            params = gp.getParams()
+            params['covar'] = x
+            gp.setParams(params)
+            grad = gp.LML_grad()
+            return grad['covar'][i]
+
+        x0 = gp.getParams()['covar']
+        err = mcheck_grad(func, grad, x0)
+        np.testing.assert_almost_equal(err, 0., decimal=4)
+
+    def test_grad_activation(self):
+
+        gp = self.gp
+
+        self._Cg._K_act = False
 
         def func(x, i):
             params = gp.getParams()

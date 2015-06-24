@@ -20,13 +20,13 @@ class LowRankCov(Covariance):
         """
         Covariance.__init__(self)
         self.initialize(dim, rank)
-        self._initParams()
 
     def initialize(self, dim, rank):
         self._X_act = True
         self.dim = dim
         self.rank = rank
         self._calcNumberParams()
+        self.params = np.zeros(self.n_params)
         self._use_to_predict = False
 
     def clear_all(self):

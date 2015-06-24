@@ -19,6 +19,7 @@ class FixedCov(Covariance):
                         (used only for out-of-sample predictions)
         """
         Covariance.__init__(self)
+        self._scale_act = True
         self.K0 = assert_make_float_array(K0, "K0")
         assert_finite_array(self.K0)
 
@@ -27,6 +28,7 @@ class FixedCov(Covariance):
             assert_finite_array(Kcross0)
 
         self.Kcross0 = Kcross0
+        self.params = np.zeros(1)
 
     #####################
     # Properties
@@ -84,10 +86,35 @@ class FixedCov(Covariance):
         self._use_to_predict = value
 
     #####################
+    # Activation handling
+    #####################
+    @property
+    def act_scale(self):
+        return self._scale_act
+
+    @act_scale.setter
+    def act_scale(self, act):
+        self._scale_act = bool(act)
+        self._notify()
+
+    #####################
     # Params handling
     #####################
+    def setParams(self, params):
+        if int(self._scale_act) != len(params):
+            raise ValueError("The number of parameters passed to setParams "
+                             "differs from the number of active parameters.")
+        self.params[:] = params
+        self.clear_all()
+        self._notify()
+
     def _calcNumberParams(self):
         self.n_params = 1
+
+    def getParams(self):
+        if self._scale_act:
+            return self.params[0]
+        return np.array([])
 
     #####################
     # Cached
@@ -102,6 +129,10 @@ class FixedCov(Covariance):
 
     @cached
     def K_grad_i(self,i):
+        if i >= int(self._scale_act):
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+
         r = self.scale * self.K0
         return r
 
