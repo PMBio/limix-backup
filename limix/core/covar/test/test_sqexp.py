@@ -27,6 +27,35 @@ class TestSQExp(unittest.TestCase):
         self._cov.X = X2
         np.testing.assert_almost_equal(E2, self._cov.E())
 
+    def test_param_activation(self):
+        self._cov.act_scale = False
+        self._cov.act_length = False
+        self.assertEqual(len(self._cov.getParams()), 0)
+
+        self._cov.act_scale = False
+        self._cov.act_length = True
+        self.assertEqual(len(self._cov.getParams()), 1)
+
+        self._cov.act_scale = True
+        self._cov.act_length = False
+        self.assertEqual(len(self._cov.getParams()), 1)
+
+        self._cov.act_scale = True
+        self._cov.act_length = True
+        self.assertEqual(len(self._cov.getParams()), 2)
+
+        self._cov.act_scale = False
+        self._cov.act_length = False
+        self._cov.setParams(np.array([]))
+        with self.assertRaises(ValueError):
+            self._cov.setParams(np.array([0]))
+
+        with self.assertRaises(ValueError):
+            self._cov.K_grad_i(0)
+
+        with self.assertRaises(ValueError):
+            self._cov.K_grad_i(1)
+
     def test_Kgrad(self):
 
         def func(x, i):

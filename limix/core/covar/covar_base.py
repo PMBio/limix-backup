@@ -33,13 +33,13 @@ class Covariance(Cached, Observed):
     #######################
     # Param Handling
     #######################
-    def getParams(self):
-        return self.params
-
-    def setParams(self,params):
-        self.params = params
-        self.clear_all()
-        self._notify()
+    # def getParams(self):
+    #     return self.params
+    #
+    # def setParams(self,params):
+    #     self.params = params
+    #     self.clear_all()
+    #     self._notify()
 
     def setRandomParams(self):
         """
@@ -78,8 +78,7 @@ class Covariance(Cached, Observed):
          """
          initialize paramters to vector of zeros
          """
-         params = sp.zeros(self.getNumberParams())
-         self.setParams(params)
+         self.params = sp.zeros(self.getNumberParams())
 
     ####################################
     # cached

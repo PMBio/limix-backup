@@ -48,5 +48,35 @@ class TestCov2KronSum(unittest.TestCase):
         with self.assertRaises(TooExpensiveOperationError):
             C.K_grad_i(0)
 
+    def test_param_activation(self):
+        self.C.act_Cg = False
+        self.C.act_Cn = False
+        self.assertEqual(len(self.C.getParams()), 0)
+
+        # self.C.act_scale = False
+        # self.C.act_length = True
+        # self.assertEqual(len(self.C.getParams()), 1)
+        #
+        # self.C.act_scale = True
+        # self.C.act_length = False
+        # self.assertEqual(len(self.C.getParams()), 1)
+        #
+        # self.C.act_scale = True
+        # self.C.act_length = True
+        # self.assertEqual(len(self.C.getParams()), 2)
+        #
+        # self.C.act_scale = False
+        # self.C.act_length = False
+        # self.C.setParams(np.array([]))
+        # with self.assertRaises(ValueError):
+        #     self.C.setParams(np.array([0]))
+        #
+        with self.assertRaises(ValueError):
+            self.C.K_grad_i(0)
+        #
+        # with self.assertRaises(ValueError):
+        #     self.C.K_grad_i(1)
+
+
 if __name__ == '__main__':
     unittest.main()

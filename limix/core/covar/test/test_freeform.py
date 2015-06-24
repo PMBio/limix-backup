@@ -30,5 +30,17 @@ class TestFreeForm(unittest.TestCase):
 
         np.testing.assert_almost_equal(err, 0.)
 
+    def test_param_activation(self):
+        self.assertEqual(len(self.C.getParams()), 10)
+        self.C.act_K = False
+        self.assertEqual(len(self.C.getParams()), 0)
+
+        self.C.setParams(np.array([]))
+        with self.assertRaises(ValueError):
+            self.C.setParams(np.array([0]))
+
+        with self.assertRaises(ValueError):
+            self.C.K_grad_i(0)
+
 if __name__ == '__main__':
     unittest.main()
