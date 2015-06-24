@@ -131,7 +131,7 @@ def get_swig_opts():
     return swig_opts
 
 def get_extra_compile_args():
-    return ['-std=c++0x']
+    return ['-std=c++0x', '--stdlib=libc++']
     #return []
 
 import numpy
