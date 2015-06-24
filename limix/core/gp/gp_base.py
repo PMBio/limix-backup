@@ -55,23 +55,9 @@ class GP(Cached, Observed):
         self.mean.register(self.clear_all)
 
     def clear_all(self):
-        self.clear_cache('default')
-        self._notify()
+        self._notify() # notify Areml
+        self.clear_cache('gp_base')
         self.update_b()
-
-    def clear_Areml(self):
-        self._notify()
-
-    def clear_lml_terms(self):
-        self.clear_cache('KiW', 'yKiW', 'KiWb', 'Kiy', 'yKiy', 'yKiWb', 'LML')
-
-    def clear_lmlgrad_terms_i(self):
-        self.clear_cache('DiKKiy', 'DiKKiW', 'DiKKiWb',
-                         'yKiy_grad_i', 'yKiWb_grad_i')
-
-    def clear_lmlgrad_terms(self):
-        self.clear_cache('yKiy_grad', 'yKiWb_grad', 'Areml_logdet_grad',
-                         'LML_grad')
 
     def setParams(self, params):
         self.covar.setParams(params['covar'])
@@ -93,11 +79,11 @@ class GP(Cached, Observed):
     #######################
     # LML terms
     #######################
-    @cached
+    @cached('gp_base')
     def KiW(self):
         return self.covar.solve(self.mean.W)
 
-    @cached
+    @cached('gp_base')
     def yKiW(self):
         return sp.dot(self.mean.y.T, self.KiW())
 
@@ -106,42 +92,42 @@ class GP(Cached, Observed):
         if self.mean.n_covs > 0:
             self.mean.b = self.Areml.solve(self.yKiW().T)
 
-    @cached
+    @cached('gp_base')
     def KiWb(self):
         return sp.dot(self.KiW(), self.mean.b)
 
-    @cached
+    @cached('gp_base')
     def Kiy(self):
         return self.covar.solve(self.mean.y)
 
-    @cached
+    @cached('gp_base')
     def yKiy(self):
         return (self.mean.y*self.Kiy()).sum()
 
-    @cached
+    @cached('gp_base')
     def yKiWb(self):
         return (self.mean.y*self.KiWb()).sum()
 
     #######################
     # gradients
     #######################
-    @cached
+    @cached('gp_base')
     def DiKKiy(self, i):
         return sp.dot(self.covar.K_grad_i(i), self.Kiy())
 
-    @cached
+    @cached('gp_base')
     def DiKKiW(self, i):
         return sp.dot(self.covar.K_grad_i(i), self.KiW())
 
-    @cached
+    @cached('gp_base')
     def DiKKiWb(self, i):
         return sp.dot(self.DiKKiW(i), self.mean.b)
 
-    @cached
+    @cached('gp_base')
     def yKiy_grad_i(self, i):
         return -(self.Kiy()*self.DiKKiy(i)).sum()
 
-    @cached
+    @cached('gp_base')
     def yKiWb_grad_i(self, i):
         rv = -2*(self.Kiy()*self.DiKKiWb(i)).sum()
         rv += (self.KiWb()*self.DiKKiWb(i)).sum()
@@ -151,7 +137,7 @@ class GP(Cached, Observed):
     # LML and gradients
     #######################
 
-    @cached
+    @cached('gp_base')
     def LML(self):
         # const term to add?
         rv = 0.5*self.covar.logdet()
@@ -161,7 +147,7 @@ class GP(Cached, Observed):
             rv -= 0.5*self.yKiWb()
         return rv
 
-    @cached
+    @cached('gp_base')
     def yKiy_grad(self):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
@@ -169,7 +155,7 @@ class GP(Cached, Observed):
             RV['covar'][i] = self.yKiy_grad_i(i)
         return RV
 
-    @cached
+    @cached('gp_base')
     def yKiWb_grad(self):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
@@ -178,7 +164,7 @@ class GP(Cached, Observed):
                 RV['covar'][i] = self.yKiWb_grad_i(i)
         return RV
 
-    @cached
+    @cached('gp_base')
     def Areml_logdet_grad(self):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}
@@ -187,7 +173,7 @@ class GP(Cached, Observed):
                 RV['covar'][i] = self.Areml.logdet_grad_i(i)
         return RV
 
-    @cached
+    @cached('gp_base')
     def LML_grad(self):
         n_params = self.getParams()['covar'].shape[0]
         RV = {'covar': sp.zeros(n_params)}

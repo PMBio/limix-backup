@@ -117,7 +117,8 @@ class Cached(object):
 
         for g in cache_groups:
             if g not in self._cache_groups:
-                raise Exception('Cache group %s does not exist.' % g)
+                #raise Exception('Cache group %s does not exist.' % g)
+                continue
 
             for method_name in self._cache_groups[g]:
                 setattr(self, '_cache_' + method_name, None)

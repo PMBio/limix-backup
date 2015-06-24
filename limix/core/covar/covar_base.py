@@ -24,11 +24,11 @@ class Covariance(Cached, Observed):
         self._use_to_predict = False
 
     def clear_all(self):
-        # self.clear_cache('K','Kcross','K_grad_i',
-        #                     'logdet','logdet_grad_i',
-        #                     'inv','chol','S','U',
-        #                     'USi2','Sgrad','Ugrad')
-        self.clear_cache('default')
+        # TODO: define groups for those
+        self.clear_cache('K','Kcross','K_grad_i',
+                             'logdet','logdet_grad_i',
+                             'inv','chol','S','U',
+                             'USi2','Sgrad','Ugrad')
 
     #######################
     # Param Handling

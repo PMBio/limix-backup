@@ -126,8 +126,6 @@ class MTSet():
         """
         if seed is not None:    sp.random.seed(seed)
 
-        pdb.set_trace()
-
         read_from_file = False
         if cache:
             assert fname is not None, 'MultiTraitSetTest:: specify fname'
@@ -146,6 +144,7 @@ class MTSet():
         else:
             start = TIME.time()
             if self.bgRE:
+                pdb.set_trace()
                 self._gpNull = GP2KronSum(Y=self.Y, F=None, A=None, Cg=self.Cg, Cn=self.Cn, R=None, S_R=self.S_R, U_R=self.U_R)
                 self._gpNull.covar.setRandomParams()
                 self._gpNull.optimize()

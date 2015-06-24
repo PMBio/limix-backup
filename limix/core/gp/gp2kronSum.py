@@ -32,7 +32,7 @@ class GP2KronSum(GP):
         R = row covariance matrix for signal term respectively
     """
 
-    def __init__(self, Y, F, A, Cg, Cn, R, S_R=None, U_R=None):
+    def __init__(self, Y, Cg, Cn, F=None, A=None, R=None, S_R=None, U_R=None):
         """
         Args:
             Y:      [N, P] phenotype matrix
@@ -48,11 +48,8 @@ class GP2KronSum(GP):
             U_R:    [N, N] eigenvector matrix of R
         """
         assert_type(Y, NP.ndarray, 'Y')
-        #assert_type_or_list_type(F, NP.ndarray, 'F')
-        #assert_type_or_list_type(A, NP.ndarray, 'A')
         assert_subtype(Cg, Covariance, 'Cg')
         assert_subtype(Cn, Covariance, 'Cn')
-        #assert_type(R, NP.ndarray, 'R')
 
         covar = Cov2KronSum(Cg=Cg, Cn=Cn, R=R, S_R=S_R, U_R=U_R)
         mean = MeanKronSum(Y=Y, F=F, A=A)

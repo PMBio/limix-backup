@@ -1,7 +1,6 @@
 import scipy as sp
 import scipy.linalg as la
 import pdb
-pdb.set_trace()
 from limix.core.covar import FreeFormCov
 from limix.core.mean import MeanKronSum
 from limix.core.gp import GP2KronSum
@@ -38,8 +37,13 @@ if __name__=='__main__':
     Cn.setRandomParams()
 
     # define gp
+    gp = GP2KronSum(Y=Y, F=F, A=A, Cg=Cg, Cn=Cn, S_R=S_R, U_R=U_R)
     pdb.set_trace()
-    gp = GP2KronSum(Y=Y, F=F, A=A, Cg=Cg, Cn=Cn, R=None, S_R=S_R, U_R=U_R)
+    print gp.covar.Sr()
+    print gp.LML()
+    print gp.covar.Sr()
+    print Cg.setRandomParams()
+
     t0 = time.time()
     print 'GP2KronSum.LML():', gp.LML()
     print 'Time elapsed:', time.time() - t0
