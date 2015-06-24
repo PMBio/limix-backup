@@ -313,6 +313,9 @@ class Cov3KronSumLR(Cov2KronSum):
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
                                                                    _MAX_DIM))
 
+        i += nCr * int(not self._Cr_act)
+        i += nCg * int(not self._Cg_act)
+
         if i < np_r:
             rv= sp.kron(self.Cr.K_grad_i(i), self.GG())
         elif i < (np_r + np_g):

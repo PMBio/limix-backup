@@ -273,6 +273,8 @@ class Cov2KronSum(Covariance):
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
                                                                    _MAX_DIM))
 
+        i += nCg * int(not self._Cg_act)
+
         if i < nCg:
             rv= sp.kron(self.Cg.K_grad_i(i), self.R)
         else:
