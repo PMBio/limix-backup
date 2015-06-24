@@ -125,6 +125,7 @@ class SQExpCov(Covariance):
     @act_scale.setter
     def act_scale(self, act):
         self._scale_act = bool(act)
+        self._notify()
 
     @property
     def act_length(self):
@@ -133,6 +134,7 @@ class SQExpCov(Covariance):
     @act_length.setter
     def act_length(self, act):
         self._length_act = bool(act)
+        self._notify()
 
     #####################
     # Params handling

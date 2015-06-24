@@ -92,6 +92,7 @@ class FreeFormCov(Covariance):
     @act_K.setter
     def act_K(self, act):
         self._K_act = bool(act)
+        self._notify()
 
     #####################
     # Params handling

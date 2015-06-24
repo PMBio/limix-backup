@@ -60,6 +60,7 @@ class LowRankCov(Covariance):
     @act_X.setter
     def act_X(self, act):
         self._X_act = bool(act)
+        self._notify()
 
     #####################
     # Params handling

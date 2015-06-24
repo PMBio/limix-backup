@@ -116,6 +116,7 @@ class Cov2KronSum(Covariance):
     @act_Cg.setter
     def act_Cg(self, act):
         self._Cg_act = bool(act)
+        self._notify()
 
     @property
     def act_Cn(self):
@@ -124,6 +125,7 @@ class Cov2KronSum(Covariance):
     @act_Cn.setter
     def act_Cn(self, act):
         self._Cn_act = bool(act)
+        self._notify()
 
     #####################
     # Params handling
@@ -260,8 +262,7 @@ class Cov2KronSum(Covariance):
         n = (int(self._Cg_act) * self.Cg.getNumberParams() +
              int(self._Cn_act) * self.Cn.getNumberParams())
 
-        print n
-        if i > n:
+        if i >= n:
             raise ValueError("Trying to retrieve the gradient over a "
                              "parameter that is inactive.")
 
