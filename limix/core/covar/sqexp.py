@@ -175,7 +175,12 @@ class SQExpCov(Covariance):
         return self.scale * sp.exp(-self.E()/(2*self.length))
 
     @cached
-    def K_grad_i(self,i):
+    def K_grad_i(self, i):
+        if i >= int(self._scale_act) + int(self._length_act):
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+
+        i += int(not self._scale_act)
         r = self.K_grad_interParam_i(i)
         if i==0:
             r *= self.scale
@@ -192,9 +197,9 @@ class SQExpCov(Covariance):
         return SP.array([self.scale,self.length])
 
     def K_grad_interParam_i(self,i):
-        if self._scale_act and i == 0:
+        if i == 0:
             r = sp.exp(-self.E()/(2*self.length))
-        elif self._length_act and i + int(not self._scale_act) == 1:
+        elif i == 1:
             A = sp.exp(-self.E()/(2*self.length))*self.E()
             r = self.scale * A / (2*self.length**2)
         else:

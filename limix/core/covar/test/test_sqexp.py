@@ -82,6 +82,37 @@ class TestSQExp(unittest.TestCase):
         x0 = np.array([self._cov.scale])
         err = mcheck_grad(func, grad, x0)
 
+    def test_Kgrad_activation(self):
+        self._cov.act_length = False
+        def func(x, i):
+            self._cov.scale = x[i]
+            return self._cov.K()
+
+        def grad(x, i):
+            self._cov.scale = x[i]
+            return self._cov.K_grad_i(0)
+
+        x0 = np.array([self._cov.scale])
+        err = mcheck_grad(func, grad, x0)
+
+        np.testing.assert_almost_equal(err, 0.)
+
+        self._cov.act_scale = False
+        self._cov.act_length = True
+        def func(x, i):
+            self._cov.length = x[i]
+            return self._cov.K()
+
+        def grad(x, i):
+            self._cov.length = x[i]
+            return self._cov.K_grad_i(0)
+
+        x0 = np.array([self._cov.length])
+        err = mcheck_grad(func, grad, x0)
+
+        np.testing.assert_almost_equal(err, 0.)
+
+
     def test_input(self):
         with self.assertRaises(ValueError):
             SQExpCov(np.array([[np.inf]]))
