@@ -139,8 +139,8 @@ class Cov2KronSum(Covariance):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
 
-        self.Cg.setParams(params[:self.Cg.getNumberParams()])
-        self.Cn.setParams(params[self.Cn.getNumberParams():])
+        self.Cg.setParams(params[:nCg])
+        self.Cn.setParams(params[nCg:])
 
     def getParams(self):
         params = []
@@ -259,8 +259,11 @@ class Cov2KronSum(Covariance):
 
     @cached(['row_cov', 'col_cov'])
     def K_grad_i(self,i):
-        n = (int(self._Cg_act) * self.Cg.getNumberParams() +
-             int(self._Cn_act) * self.Cn.getNumberParams())
+        nCg = self.Cg.getNumberParams()
+        nCn = self.Cn.getNumberParams()
+
+        n = (int(self._Cg_act) * nCg +
+             int(self._Cn_act) * nCn)
 
         if i >= n:
             raise ValueError("Trying to retrieve the gradient over a "
@@ -270,10 +273,10 @@ class Cov2KronSum(Covariance):
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
                                                                    _MAX_DIM))
 
-        if i < self.Cg.getNumberParams():
+        if i < nCg:
             rv= sp.kron(self.Cg.K_grad_i(i), self.R)
         else:
-            _i = i - self.Cg.getNumberParams()
+            _i = i - nCg
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 
