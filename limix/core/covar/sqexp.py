@@ -152,6 +152,9 @@ class SQExpCov(Covariance):
         sel = np.asarray((self._scale_act, self._length_act))
         return self.params[sel]
 
+    def getNumberParams(self):
+        return np.sum([self._scale_act, self._length_act])
+
     def _calcNumberParams(self):
         self.n_params = 2
 

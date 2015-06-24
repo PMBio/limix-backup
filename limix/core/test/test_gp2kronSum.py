@@ -58,6 +58,49 @@ class TestGPBase(unittest.TestCase):
         err = mcheck_grad(func, grad, x0)
         np.testing.assert_almost_equal(err, 0., decimal=4)
 
+    def test_grad_activation(self):
+
+        gp = self.gp
+
+        self.Cg._K_act = False
+
+        def func(x, i):
+            params = gp.getParams()
+            params['covar'] = x
+            gp.setParams(params)
+            return gp.LML()
+
+        def grad(x, i):
+            params = gp.getParams()
+            params['covar'] = x
+            gp.setParams(params)
+            grad = gp.LML_grad()
+            return grad['covar'][i]
+
+        x0 = gp.getParams()['covar']
+        err = mcheck_grad(func, grad, x0)
+        np.testing.assert_almost_equal(err, 0., decimal=4)
+
+        self.Cg._K_act = True
+        self.Cn._K_act = False
+
+        def func(x, i):
+            params = gp.getParams()
+            params['covar'] = x
+            gp.setParams(params)
+            return gp.LML()
+
+        def grad(x, i):
+            params = gp.getParams()
+            params['covar'] = x
+            gp.setParams(params)
+            grad = gp.LML_grad()
+            return grad['covar'][i]
+
+        x0 = gp.getParams()['covar']
+        err = mcheck_grad(func, grad, x0)
+        np.testing.assert_almost_equal(err, 0., decimal=4)
+
     def test_correct_inputs(self):
         np.asarray(None, dtype=float)
         # self.gp = GP2KronSum(Y=self.Y, F=self.F, A=self.A, Cg=self.Cg,

@@ -111,6 +111,9 @@ class FreeFormCov(Covariance):
             return np.array([])
         return self.params
 
+    def getNumberParams(self):
+        return int(self._K_act) * self.n_params
+
     def _calcNumberParams(self):
         self.n_params = int(0.5*self.dim*(self.dim+1))
 

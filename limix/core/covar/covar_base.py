@@ -20,7 +20,6 @@ class Covariance(Cached, Observed):
     def initialize(self,dim):
         self.dim = dim
         self._calcNumberParams()
-        self._initParams()
         self._use_to_predict = False
 
     def clear_all(self):
@@ -73,12 +72,6 @@ class Covariance(Cached, Observed):
         calculates the number of parameters
         """
         warnings.warn('not implemented')
-
-    def _initParams(self):
-         """
-         initialize paramters to vector of zeros
-         """
-         self.params = sp.zeros(self.getNumberParams())
 
     ####################################
     # cached
