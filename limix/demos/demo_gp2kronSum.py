@@ -39,7 +39,7 @@ if __name__=='__main__':
 
     # define gp
     pdb.set_trace()
-    gp = GP2KronSum(Y=Y, F=F, A=A, Cg=Cg, Cn=Cn, S_R=S_R, U_R=U_R)
+    gp = GP2KronSum(Y=Y, F=F, A=A, Cg=Cg, Cn=Cn, R=None, S_R=S_R, U_R=U_R)
     t0 = time.time()
     print 'GP2KronSum.LML():', gp.LML()
     print 'Time elapsed:', time.time() - t0
