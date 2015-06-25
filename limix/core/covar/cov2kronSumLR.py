@@ -135,6 +135,16 @@ class Cov2KronSumLR(Covariance):
         self._Cn_act = bool(act)
         self._notify()
 
+    def _actindex2index(self, i):
+        nCg = self.Cg.getNumberParams()
+        i += nCg * int(not self._Cg_act)
+        return i
+
+    def _index2actindex(self, i):
+        nCg = self.Cg.getNumberParams()
+        i -= nCg * int(not self._Cg_act)
+        return i
+
 
     #####################
     # Params handling
@@ -282,9 +292,6 @@ class Cov2KronSumLR(Covariance):
 
     @cached(['row_cov', 'col_cov'])
     def K_grad_i(self,i):
-        nCg = self.Cg.getNumberParams()
-        nCn = self.Cn.getNumberParams()
-
         n = self.getNumberParams()
 
         if i >= n:
@@ -295,7 +302,9 @@ class Cov2KronSumLR(Covariance):
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
                                                                    _MAX_DIM))
 
-        i += nCg * int(not self._Cg_act)
+        i = self._actindex2index(i)
+
+        nCg = self.Cg.getNumberParams()
 
         if i < nCg:
             rv= sp.kron(self.Cg.K_grad_i(i), self.R())

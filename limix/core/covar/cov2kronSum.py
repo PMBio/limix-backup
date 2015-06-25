@@ -152,7 +152,18 @@ class Cov2KronSum(Covariance):
         return sp.concatenate(params)
 
     def getNumberParams(self):
-        return self.Cg.getNumberParams() + self.Cn.getNumberParams()
+        return (int(self._Cg_act) * self.Cg.getNumberParams() +
+                int(self._Cn_act) * self.Cn.getNumberParams())
+
+    def _actindex2index(self, i):
+        nCg = self.Cg.getNumberParams()
+        i += nCg * int(not self._Cg_act)
+        return i
+
+    def _index2actindex(self, i):
+        nCg = self.Cg.getNumberParams()
+        i -= nCg * int(not self._Cg_act)
+        return i
 
     #####################
     # Cached
@@ -258,12 +269,8 @@ class Cov2KronSum(Covariance):
     @cached(['row_cov', 'col_cov'])
     def K_grad_i(self,i):
         nCg = self.Cg.getNumberParams()
-        nCn = self.Cn.getNumberParams()
 
-        n = (int(self._Cg_act) * nCg +
-             int(self._Cn_act) * nCn)
-
-        if i >= n:
+        if i >= self.getNumberParams():
             raise ValueError("Trying to retrieve the gradient over a "
                              "parameter that is inactive.")
 
@@ -271,12 +278,12 @@ class Cov2KronSum(Covariance):
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
                                                                    _MAX_DIM))
 
-        ii = i + nCg * int(not self._Cg_act)
+        i = self._actindex2index(i)
 
-        if ii < nCg:
-            rv= sp.kron(self.Cg.K_grad_i(ii), self.R)
+        if i < nCg:
+            rv= sp.kron(self.Cg.K_grad_i(i), self.R)
         else:
-            _i = ii - nCg
+            _i = i - nCg
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 
