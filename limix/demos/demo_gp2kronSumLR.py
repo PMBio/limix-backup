@@ -29,12 +29,20 @@ if __name__=='__main__':
         print (cov.logdet_grad_i_debug(0)-cov.logdet_grad_i(0))**2
 
     # define fixed effects and pheno
-    F = []; A = []
-    F.append(1.*(sp.rand(N,2)<0.5))
-    A.append(sp.eye(P))
+    F = 1.*(sp.rand(N,2)<0.5)
+    A = sp.eye(P)
     Y = sp.randn(N, P)
 
     gp = GP2KronSumLR(Y = Y, F = F, A = A, Cn = Cn, G = X)
+    print 'before activation:'
+    print gp.getParams()
+    gp.Cg_act = False
+    print 'after activation:'
+    print gp.getParams()
+    print 'NO CHANGE?!?'
+    
+    pdb.set_trace()
+
     t0 = time.time()
     print 'GP2KronSum.LML():', gp.LML()
     print 'Time elapsed:', time.time() - t0
