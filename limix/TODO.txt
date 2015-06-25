@@ -13,6 +13,7 @@ test diff
 MeanKronSum:
     - clean it up
     - check caching
+        (pheno_has_changed and designs_have_changed for mean base)
 
 MAke this consistent throughout:
     - all things that might change either are set in init or method check=True/False
@@ -30,6 +31,10 @@ WE NEED MORE TESTS:
         (cov2kronSum, cov3kronSum, cov3KronSumLR, ...)
 
 PRINT method for all classes
+
+Solve caching strategy for covariances:
+    clear_all should clear_cache('covar_base')
+    REMEMBER: once this is fixed we can go back to throw an exeption in cached.clear_cachewhen the group does not exist
 
 --------------------------------------- NON URGENT TODOs --------------------------------
 
