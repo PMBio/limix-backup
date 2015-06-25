@@ -12,6 +12,7 @@ from limix.core.covar import FreeFormCov
 import h5py
 import pdb
 import scipy as sp
+import scipy.linalg as la
 import scipy.stats as st
 import time as TIME
 import copy
@@ -144,21 +145,22 @@ class MTSet():
         else:
             start = TIME.time()
             if self.bgRE:
-                pdb.set_trace()
                 self._gpNull = GP2KronSum(Y=self.Y, F=None, A=None, Cg=self.Cg, Cn=self.Cn, R=None, S_R=self.S_R, U_R=self.U_R)
-                self._gpNull.covar.setRandomParams()
-                self._gpNull.optimize()
             else:
-                self.gpNull = gp2kronSumLR(self.Y,self.Cn,Xr=sp.ones((self.N,1)),F=self.F)
+                self._gpNull = gp2kronSumLR(self.Y,self.Cn,Xr=sp.ones((self.N,1)),F=self.F)
             for i in range(n_times):
                 params0,Ifilter=self._initParams(init_method=init_method)
-                conv,info = OPT.opt_hyper(self.gpNull,params0,Ifilter=Ifilter,factr=factr)
+                self._gpNull.setParams(params0)
+                conv, info = self._gpNull.optimize()
                 if conv: break
             if not conv:    warnings.warn("not converged")
-            LMLgrad = sp.concatenate([self.gpNull.LMLgrad()[key]**2 for key in self.gpNull.LMLgrad().keys()]).mean()
-            LML = self.gpNull.LML()
-            if 'mean' in params0.keys():
-                RV['params_mean'] = self.gpNull.mean.getParams()
+            pdb.set_trace()
+            LMLgrad = (self._gpNull.LML_grad()['covar']**2).mean()
+            LML = self._gpNull.LML()
+            if self._gpNull.mean.n_terms==1:
+                RV['B'] = self._gpNull.mean.B[0]
+            elif self._gpNull.mean.n_terms>1:
+                warning.warn('generalize to more than 1 fixed effect term')
             RV['params0_g'] = self.Cg.getParams()
             RV['params0_n'] = self.Cn.getParams()
             RV['Cg'] = self.Cg.K()
@@ -169,11 +171,6 @@ class MTSet():
             RV['LMLgrad'] = sp.array([LMLgrad])
             RV['nit'] = sp.array([info['nit']])
             RV['funcalls'] = sp.array([info['funcalls']])
-            if self.bgRE:
-                RV['h2'] = self.gpNull.h2()
-                RV['h2_ste'] = self.gpNull.h2_ste()
-                RV['Cg_ste'] = self.gpNull.ste('Cg')
-                RV['Cn_ste'] = self.gpNull.ste('Cn')
             self.null = RV
             if cache:
                 f = h5py.File(out_file,'w')
@@ -386,51 +383,31 @@ class MTSet():
         """ get time profiling """
         return self.timeProfilingST
 
-    def _initParams(self,init_method=None):
+    def _initParams(self, init_method=None):
         """ this function initializes the paramenter and Ifilter """
-        if self.P==1:
-            if self.bgRE:
-                params0 = {'Cg':sp.sqrt(0.5)*sp.ones(1),'Cn':sp.sqrt(0.5)*sp.ones(1)}
-                Ifilter = None
+        if self.bgRE:
+            if init_method=='random':
+                params0 = {'covar': sp.randn(self._gpNull.covar.getNumberParams())}
             else:
-                params0 = {'Cr':1e-9*sp.ones(1),'Cn':sp.ones(1)}
-                Ifilter = {'Cr':sp.zeros(1,dtype=bool),'Cn':sp.ones(1,dtype=bool)}
-        else:
-            if self.bgRE:
-                if self.colCovarType_g=='freeform' and self.colCovarType_n=='freeform':
-                    if init_method=='pairwise':
-                        _RV = fitPairwiseModel(self.Y,R=self.R,S_R=self.S_R,U_R=self.U_R,verbose=False)
-                        params0 = {'Cg':_RV['params0_Cg'],'Cn':_RV['params0_Cn']}
-                    elif init_method=='random':
-                        params0 = {'Cg':sp.randn(self.Cg.getNumberParams()),'Cn':sp.randn(self.Cn.getNumberParams())}
-                    else:
-                        cov = 0.5*sp.cov(self.Y.T)+1e-4*sp.eye(self.P)
-                        chol = LA.cholesky(cov,lower=True)
-                        params = chol[sp.tril_indices(self.P)]
-                        params0 = {'Cg':params.copy(),'Cn':params.copy()}
-            
-                Ifilter = None
-                
-            else:
-                if self.colCovarType_n=='freeform':
-                    cov = sp.cov(self.Y.T)+1e-4*sp.eye(self.P)
-                    chol = LA.cholesky(cov,lower=True)
+                if self.P==1:
+                    params0 = {'covar':sp.sqrt(0.5) * sp.ones(2)}
+                else:
+                    cov = 0.5*sp.cov(self.Y.T) + 1e-4*sp.eye(self.P)
+                    chol = la.cholesky(cov, lower=True)
                     params = chol[sp.tril_indices(self.P)]
-                #else:
-                #    S,U=LA.eigh(cov)
-                #    a = sp.sqrt(S[-self.rank_r:])[:,sp.newaxis]*U[:,-self.rank_r:]
-                #    if self.colCovarType=='lowrank_id':
-                #        c = sp.sqrt(S[:-self.rank_r].mean())*sp.ones(1)
-                #    else:
-                #        c = sp.sqrt(S[:-self.rank_r].mean())*sp.ones(self.P)
-                #    params0_Cn = sp.concatenate([a.T.ravel(),c])
-                params0 = {'Cr':1e-9*sp.ones(self.P),'Cn':params}
-                Ifilter = {'Cr':sp.zeros(self.P,dtype=bool),
-                            'Cn':sp.ones(params.shape[0],dtype=bool)}
-        if self.mean.F is not None and self.bgRE:
-            params0['mean'] = 1e-6*sp.randn(self.mean.getParams().shape[0])
-            if Ifilter is not None:
-                Ifilter['mean'] = sp.ones(self.mean.getParams().shape[0],dtype=bool)
+                    params0 = {'covar': sp.concatenate([params, params])}
+            Ifilter = None
+        else:
+            if self.P==1: 
+                params_cn = sp.array([1.])
+            else:
+                cov = sp.cov(self.Y.T) + 1e-4*sp.eye(self.P)
+                chol = la.cholesky(cov, lower=True)
+                params_cn = chol[sp.tril_indices(self.P)]
+            params0 = {'covar': params_cn}
+            # UPDATE THE FOLLOWING
+            Ifilter = {'Cr':sp.zeros(self.P,dtype=bool),
+                        'Cn':sp.ones(params.shape[0],dtype=bool)}
         return params0,Ifilter
 
 if __name__=='__main__':
