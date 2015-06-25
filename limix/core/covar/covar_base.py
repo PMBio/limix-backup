@@ -19,7 +19,6 @@ class Covariance(Cached, Observed):
 
     def initialize(self,dim):
         self.dim = dim
-        self._calcNumberParams()
         self._use_to_predict = False
 
     def clear_all(self):
@@ -60,12 +59,6 @@ class Covariance(Cached, Observed):
         """
         params = self.getParams()
         self.setParams(params+pertSize*sp.randn(params.shape[0]))
-
-    def getNumberParams(self):
-        """
-        return the number of hyperparameters
-        """
-        return self.n_params
 
     def _calcNumberParams(self):
         """

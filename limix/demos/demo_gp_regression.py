@@ -33,7 +33,10 @@ if __name__ == "__main__":
 
     # define covariance matrices
     sqexp = SQExpCov(X, Xstar = Xstar)
+    sqexp.act_scale = True
+    sqexp.act_length = True
     noise = FixedCov(sp.eye(N))
+    noise.act_scale = False
     covar  = SumCov(sqexp, noise)
 
     # define gp
@@ -55,8 +58,8 @@ if __name__ == "__main__":
     print sqexp.scale, '+/-', sqexp.scale_ste
     print 'length of sqexp'
     print sqexp.length, '+/-', sqexp.length_ste
-    print 'scale of fixed'
-    print noise.scale, '+/-', noise.scale_ste
+    # print 'scale of fixed'
+    # print noise.scale, '+/-', noise.scale_ste
 
     # plot
     pl.subplot(111)
@@ -68,4 +71,3 @@ if __name__ == "__main__":
     pl.legend(loc = 4)
     pl.tight_layout()
     pl.show()
-

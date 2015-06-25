@@ -136,6 +136,20 @@ class Cov3KronSumLR(Cov2KronSum):
         self._Cn_act = bool(act)
         self._notify()
 
+    def _actindex2index(self, i):
+        nCr = self.Cr.getNumberParams()
+        nCg = self.Cg.getNumberParams()
+        i += nCr * int(not self._Cr_act)
+        i += nCg * int(not self._Cg_act)
+        return i
+
+    def _index2actindex(self, i):
+        nCr = self.Cr.getNumberParams()
+        nCg = self.Cg.getNumberParams()
+        i -= nCr * int(not self._Cr_act)
+        i -= nCg * int(not self._Cg_act)
+        return i
+
     #####################
     # Params handling
     #####################
@@ -143,10 +157,8 @@ class Cov3KronSumLR(Cov2KronSum):
         np_r = self.Cr.getNumberParams()
         np_g = self.Cg.getNumberParams()
         np_n = self.Cn.getNumberParams()
-        nact = np_r * int(self._Cr_act) + np_g * int(self._Cg_act) +\
-               np_n * int(self._Cn_act)
 
-        if len(params) != nact:
+        if len(params) != self.getNumberParams():
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
 
@@ -165,6 +177,14 @@ class Cov3KronSumLR(Cov2KronSum):
         if len(params) == 0:
             return np.array([])
         return sp.concatenate(params)
+
+    def getNumberParams(self):
+        np_r = self.Cr.getNumberParams()
+        np_g = self.Cg.getNumberParams()
+        np_n = self.Cn.getNumberParams()
+        nact = (np_r * int(self._Cr_act) + np_g * int(self._Cg_act) +
+                np_n * int(self._Cn_act))
+        return nact
 
     def _calcNumberParams(self):
         self.n_params = self.Cr.getNumberParams() + self.Cg.getNumberParams() + self.Cn.getNumberParams()
@@ -302,10 +322,7 @@ class Cov3KronSumLR(Cov2KronSum):
         np_g = self.Cg.getNumberParams()
         np_n = self.Cn.getNumberParams()
 
-        n = (int(self._Cr_act) * np_r + int(self._Cg_act) * np_g +
-             int(self._Cn_act) * np_n)
-
-        if i >= n:
+        if i >= self.getNumberParams():
             raise ValueError("Trying to retrieve the gradient over a "
                              "parameter that is inactive.")
 
@@ -313,8 +330,7 @@ class Cov3KronSumLR(Cov2KronSum):
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
                                                                    _MAX_DIM))
 
-        i += nCr * int(not self._Cr_act)
-        i += nCg * int(not self._Cg_act)
+        i = self._actindex2index(i)
 
         if i < np_r:
             rv= sp.kron(self.Cr.K_grad_i(i), self.GG())
