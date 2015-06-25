@@ -79,5 +79,6 @@ class TestGPBase(unittest.TestCase):
         err = mcheck_grad(func, grad, x0)
         np.testing.assert_almost_equal(err, 0., decimal=4)
 
+
 if __name__ == "__main__":
     unittest.main()

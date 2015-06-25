@@ -70,15 +70,6 @@ class GP2KronSumLR(GP):
             except: R[key] = getattr(self, key)(0)
         return R
 
-    def col_cov_has_changed_debug(self):
-        # debug function for col_cov_has_changed_debug
-        RV1  = self._calc_all()
-        self.covar.setRandomParams()
-        RV2  = self._calc_all()
-        for key in list_keys:
-            are_the_same = sp.array([((RV1[key]-RV2[key])**2)==0]).all()
-            if are_the_same:   print key
-
     def col_cov_has_changed(self):
         self.clear_cache('col_cov')
         self.clear_all()
