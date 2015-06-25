@@ -23,8 +23,6 @@ MAke this consistent throughout:
 
 -------------------------------------- DISCUSSION WITH DANILO --------------------------------
 
-- Freeze parameters option
-
 WE NEED MORE TESTS:
     - remove debug methods and move to tests
         (cov2kronSum, cov3kronSum, cov3KronSumLR, ...)
@@ -37,7 +35,7 @@ PRINT method for all classes
 Fix notation with PEP8 or whatever...
 
 EXCEPTIONS:
-    - we need dimension mismatch 
+    - we need dimension mismatch
 
 GPs:
     - new caching system for general gp
@@ -56,7 +54,7 @@ Cov2KeonSum:
         we do not need all those methods (e.g., LcGradCgLc, LcGradCnLc) but can squeeze stuff in Ctilde (see GP2KronSumLR)
 
 Cov2KronSumLR:
-    - generalize lowrank-rank1 to any covariance-type 
+    - generalize lowrank-rank1 to any covariance-type
         (should be updated in Cov2KronSumLR::Estar)
     - for now supports only 1 Kroneckered fixed effect term
         (with a generalization to multiple terms the FF term breaks apart)
@@ -69,7 +67,7 @@ NAMING INCONSISTENCIES
     - W makes the dimensionality in all cases
         W is also the design matrix of fixed effects though!
     - for consistency in gp2kronSumLR: row_cov -> G
-    - 3kronSumLR and 2kronSumLR are not consistent 
+    - 3kronSumLR and 2kronSumLR are not consistent
         - in the first (W.T * y) does the dimensionality reduction
         - in the second (W * y) does the dimensionality reduction
     - cov2KronSumLR: make notation consistent with other gps R -> GG (also in gp2KronSumLR)
@@ -79,7 +77,7 @@ Predictions:
 
 General questions:
     - Phenotype outsid of mean?
-    - define a rotated mean class?? 
+    - define a rotated mean class??
     - undertand how Areml is informed
         this is not clear to me at all
 
@@ -91,5 +89,3 @@ TO DISABLE THE CASH:
 
 ALL UNITESTES:
     python -m unittest discover .
-
-
