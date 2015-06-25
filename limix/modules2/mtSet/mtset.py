@@ -158,7 +158,7 @@ class MTSet():
                 # freezes Cg to 0
                 n_params = self._gpNull.covar.Cg.getNumberParams()
                 self._gpNull.covar.Cg.setParams(1e-9 * sp.ones(n_params))
-                self._gpNull.act_Cg = False
+                self._gpNull.covar.act_Cg = False
             for i in range(n_times):
                 params0,Ifilter=self._initParams(init_method=init_method)
                 self._gpNull.setParams(params0)
@@ -200,26 +200,25 @@ class MTSet():
     # Fitting alternative model
     ###########################################
 
-    def optimize(self, Xr, params0=None, n_times=10, verbose=True, vmax=5, perturb=1e-3, factr=1e3):
+    def optimize(self, G, params0=None, n_times=10, verbose=True, vmax=5, perturb=1e-3, factr=1e3):
         """
-        Optimize the model considering Xr
+        Optimize the model considering G
         """
-        pdb.set_trace()
         # set params0 from null if params0 is None
         if params0 is None:
             if self.null is None:
                 if verbose:     print ".. fitting null model upstream"
                 self.fitNull()
             if self.bgRE:
-                params0 = {'Cg':self.null['params0_g'],'Cn':self.null['params0_n']}
+                params0 = {'covar': sp.concatenate([self.null['params0_g'], self.null['params0_n']])}
             else:
-                params0 = {'Cn':self.null['params0_n']}
+                params0 = {'covar': self.null['params0_n']}
             params_was_None = True
-            
         else:
             params_was_None = False
-        Xr *= sp.sqrt(self.N/(Xr**2).sum())
-        self.gp.set_Xr(Xr)
+        pdb.set_trace()
+        G *= sp.sqrt(self.N/(G**2).sum())
+        self.gp.set_G(G)
         self.gp.restart()
         start = TIME.time()
         for i in range(n_times):
@@ -364,7 +363,7 @@ class MTSet():
                 f.close()
         return RV
 
-    def optimizeTraitByTrait(self,Xr,verbose=True,n_times=10,factr=1e3):
+    def optimizeTraitByTrait(self,G,verbose=True,n_times=10,factr=1e3):
         """ Optimize trait by trait """
         assert self.nullST is not None, 'fit null model beforehand'
         if self.mtssST is None:
@@ -378,7 +377,7 @@ class MTSet():
             trait_id = self.traitID[p]
             self.mtssST._setY(y)
             self.mtssST.setNull(self.nullST[trait_id])
-            RV[trait_id] = self.mtssST.optimize(Xr,n_times=n_times,factr=factr)
+            RV[trait_id] = self.mtssST.optimize(G,n_times=n_times,factr=factr)
             self.infoOptST[trait_id] = self.mtssST.getInfoOpt()
             self.timeProfilingST[trait_id] = self.mtssST.getTimeProfiling()
         return RV

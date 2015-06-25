@@ -33,14 +33,6 @@ if __name__=='__main__':
     A = sp.eye(P)
     Y = sp.randn(N, P)
 
-    gp = GP2KronSumLR(Y = Y, F = F, A = A, Cn = Cn, G = X)
-    print 'before activation:'
-    print gp.getParams()
-    gp.Cg_act = False
-    print 'after activation:'
-    print gp.getParams()
-    print 'NO CHANGE?!?'
-    
     pdb.set_trace()
 
     t0 = time.time()
