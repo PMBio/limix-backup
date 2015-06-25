@@ -323,6 +323,11 @@ class Cov2KronSumLR(Covariance):
 
     @cached(['row_cov', 'col_cov'])
     def logdet_grad_i(self,i):
+        if i >= self.getNumberParams():
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+        i = self._actindex2index(i)
+
         if i < self.Cg.getNumberParams():
             trR = self.Sg().sum()
             diagR = self.Sg()

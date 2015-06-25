@@ -56,6 +56,11 @@ class TestCov2KronSum(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.C.K_grad_i(0)
 
+    # def test_inv(self):
+    #
+    #     def inv_debug(self):
+    #         return sp.dot(self.L().T, self.d()[:, sp.newaxis] * self.L())
+
 
 if __name__ == '__main__':
     unittest.main()

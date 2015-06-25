@@ -293,6 +293,10 @@ class Cov2KronSum(Covariance):
 
     @cached(['row_cov', 'col_cov'])
     def logdet_grad_i(self,i):
+        if i >= self.getNumberParams():
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+        i = self._actindex2index(i)
         return (self.d() * self.diag_Ctilde_o_Sr(i)).sum()
 
     #####################
