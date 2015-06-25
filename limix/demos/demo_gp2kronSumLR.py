@@ -1,6 +1,6 @@
 import scipy as sp
 from limix.core.covar import Cov2KronSumLR
-from limix.core.covar import FreeFormCov 
+from limix.core.covar import FreeFormCov
 from limix.core.gp import GP2KronSumLR
 from limix.core.gp import GP
 from limix.utils.preprocess import covar_rescale
@@ -61,7 +61,7 @@ if __name__=='__main__':
         print ((gp.LML_grad()['covar'] - gp0.LML_grad()['covar'])**2).mean()
 
     pdb.set_trace()
-    gp.col_cov_has_changed_debug()
+    # gp.col_cov_has_changed_debug()
 
     print gp.yKiy_grad()
     print gp0.yKiy_grad()
@@ -89,4 +89,3 @@ if __name__=='__main__':
         print gp.WKiy()
         print gp.mean.b
         print gp.LML()
-
