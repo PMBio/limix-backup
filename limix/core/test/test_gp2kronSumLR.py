@@ -60,8 +60,9 @@ class TestGPBase(unittest.TestCase):
 
         gp = self.gp
 
+        print type(gp.covar)
         gp.covar.act_Cg = False
-        #self._Cg._K_act = False
+        #self._Cg.act_K = False
 
         def func(x, i):
             params = gp.getParams()
