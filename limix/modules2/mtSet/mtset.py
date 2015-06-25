@@ -157,8 +157,10 @@ class MTSet():
                 self._gpNull = GP2KronSumLR(self.Y, self.Cn, G=sp.ones((self.N,1)), F=self.F, A=sp.eye(self.P))
                 # freezes Cg to 0
                 n_params = self._gpNull.covar.Cg.getNumberParams()
-                self._gpNull.covar.Cg.setParams(1e-9 * sp.ones(n_params))
-                self._gpNull.covar.act_Cg = False
+                self.Cg.setParams(1e-6 * sp.ones(n_params))
+                print self.Cg.getParams()
+                self.Cg.act_K = False
+                print self.Cg.getParams()
             for i in range(n_times):
                 params0,Ifilter=self._initParams(init_method=init_method)
                 self._gpNull.setParams(params0)
@@ -210,24 +212,23 @@ class MTSet():
                 if verbose:     print ".. fitting null model upstream"
                 self.fitNull()
             if self.bgRE:
-                params0 = {'covar': sp.concatenate([self.null['params0_g'], self.null['params0_n']])}
+                params0 = sp.concatenate([self.null['params0_g'], self.null['params0_n']])
             else:
-                params0 = {'covar': self.null['params0_n']}
+                params0 = self.null['params0_n']
             params_was_None = True
         else:
             params_was_None = False
-        pdb.set_trace()
         G *= sp.sqrt(self.N/(G**2).sum())
-        self.gp.set_G(G)
-        self.gp.restart()
+        self._gp.covar.G = G
         start = TIME.time()
         for i in range(n_times):
             if params_was_None:
                 n_params = self.Cr.getNumberParams()
-                params0['Cr'] = 1e-3*sp.randn(n_params)
-            conv,info = OPT.opt_hyper(self.gp,params0,factr=factr)
-            conv *= self.gp.Cr.K().diagonal().max()<vmax
-            conv *= self.getLMLgrad()<0.1
+                _params0 = {'covar': sp.concatenate([1e-3*sp.randn(n_params), params0])}
+            self._gp.setParams(_params0)
+            conv, info = self._gp.optimize(factr=factr)
+            conv *= self.Cr.K().diagonal().max()<vmax
+            conv *= self.getLMLgrad() < 0.1
             if conv or not params_was_None: break
         self.infoOpt = info
         if not conv:
@@ -235,11 +236,11 @@ class MTSet():
         # return value
         RV = {}
         if self.P>1:
-            RV['Cr']  = self.getCr()
-            if self.bgRE: RV['Cg']  = self.getCg()
-            RV['Cn']  = self.getCn()
+            RV['Cr']  = self.Cr.K()
+            if self.bgRE: RV['Cg']  = self.Cg.K()
+            RV['Cn']  = self.Cn.K()
         RV['time']  = sp.array([TIME.time()-start])
-        RV['params0'] = params0
+        RV['params0'] = _params0
         RV['nit'] = sp.array([info['nit']])
         RV['funcalls'] = sp.array([info['funcalls']])
         RV['var']    = self.getVariances()
@@ -253,80 +254,42 @@ class MTSet():
         """ get information for the optimization """
         return self.infoOpt
 
-    def getTimeProfiling(self):
-        """ get time profiling """
-        rv = {'time':self.gp.get_time(),'count':self.gp.get_count()}
-        return rv
-
-    def getCr(self):
-        """
-        get estimated region trait covariance
-        """
-        assert self.P>1, 'this is a multitrait model'
-        return self.gp.Cr.K()
-        
-    def getCg(self):
-        """
-        get estimated genetic trait covariance
-        """
-        assert self.P>1, 'this is a multitrait model'
-        return self.gp.Cg.K()
-
-    def getCn(self):
-        """
-        get estimated noise trait covariance
-        """
-        assert self.P>1, 'this is a multitrait model'
-        return self.gp.Cn.K()
-
     def getVariances(self):
         """
         get variances
         """
-        if self.P==1:
-            params = self.gp.getParams()
-            if self.bgRE:       keys = ['Cr','Cg','Cn']
-            else:               keys = ['Cr','Cn']
-            var = sp.array([params[key][0]**2 for key in keys])
-        else:
-            var = []
-            var.append(self.getCr().diagonal())
-            if self.bgRE:
-                var.append(self.getCg().diagonal())
-            var.append(self.getCn().diagonal())
-            var = sp.array(var)
+        var = []
+        var.append(self.Cr.K().diagonal())
+        if self.bgRE:
+            var.append(self.Cg.K().diagonal())
+        var.append(self.Cn.K().diagonal())
+        var = sp.array(var)
         return var
 
     def getNLLAlt(self):
         """
         get negative log likelihood of the alternative
         """
-        return self.gp.LML()
+        return self._gp.LML()
 
     def getLLR(self):
         """
         get log likelihood ratio
         """
         assert self.null is not None, 'null model needs to be fitted!'
-        return self.null['NLL0'][0]-self.getNLLAlt()
+        return self.null['NLL0'][0] - self.getNLLAlt()
 
     def getLMLgrad(self):
         """
         get norm LML gradient
         """
-        LMLgrad = self.gp.LMLgrad()
-        lmlgrad  = 0
-        n_params = 0
-        for key in LMLgrad.keys():
-            lmlgrad  += (LMLgrad[key]**2).sum()
-            n_params += LMLgrad[key].shape[0]
-        lmlgrad /= float(n_params)
-        return lmlgrad
+        return (self._gp.LML_grad()['covar']**2).mean()
 
     def fitNullTraitByTrait(self,verbose=True,cache=False,out_dir='./cache',fname=None,rewrite=False):
         """
         Fit null model trait by trait
         """
+        pdb.set_trace()
         read_from_file = False
         if cache:
             assert fname is not None, 'MultiTraitSetTest:: specify fname'
@@ -379,16 +342,11 @@ class MTSet():
             self.mtssST.setNull(self.nullST[trait_id])
             RV[trait_id] = self.mtssST.optimize(G,n_times=n_times,factr=factr)
             self.infoOptST[trait_id] = self.mtssST.getInfoOpt()
-            self.timeProfilingST[trait_id] = self.mtssST.getTimeProfiling()
         return RV
 
     def getInfoOptST(self):
         """ get information for the optimization """
         return self.infoOptST
-
-    def getTimeProfilingST(self):
-        """ get time profiling """
-        return self.timeProfilingST
 
     def _initParams(self, init_method=None):
         """ this function initializes the paramenter and Ifilter """
