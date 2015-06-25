@@ -64,13 +64,13 @@ class MTSet():
         Cn = FreeFormCov(Y.shape[1])
         G  = 1. * (sp.rand(Y.shape[0],1)<0.2)
         if self.bgRE:
-            self._gp = GP3KronSumLR(Y=Y, Cg=Cg, Cn=Cn, S_R=S_R, U_R=U_R, G=G, rank = 1)
+            self._gp = GP3KronSumLR(Y=Y, Cg=Cg, Cn=Cn, R=R, S_R=S_R, U_R=U_R, G=G, rank = 1)
         else:
             self._gp = GP2KronSumLR(Y=Y, Cn=Cn, G=G, F=F, A=sp.eye(Y.shape[1]))
         # null model params
         self.null = None
         # calls itself for column-by-column trait analysis
-        self.mtssST = None
+        self.stSet = None
         self.nullST = None
         self.infoOpt   = None
         self.infoOptST = None
@@ -98,7 +98,11 @@ class MTSet():
     def Y(self):    return self._gp.mean.Y
 
     @property
-    def F(self):    return self._gp.mean.F[0]
+    def F(self):
+        try:
+            return self._gp.mean.F[0]
+        except:
+            return None
 
     @property
     def S_R(self):
@@ -153,7 +157,6 @@ class MTSet():
             if self.bgRE:
                 self._gpNull = GP2KronSum(Y=self.Y, F=None, A=None, Cg=self.Cg, Cn=self.Cn, R=None, S_R=self.S_R, U_R=self.U_R)
             else:
-                pdb.set_trace()
                 self._gpNull = GP2KronSumLR(self.Y, self.Cn, G=sp.ones((self.N,1)), F=self.F, A=sp.eye(self.P))
                 # freezes Cg to 0
                 n_params = self._gpNull.covar.Cg.getNumberParams()
@@ -289,7 +292,6 @@ class MTSet():
         """
         Fit null model trait by trait
         """
-        pdb.set_trace()
         read_from_file = False
         if cache:
             assert fname is not None, 'MultiTraitSetTest:: specify fname'
@@ -309,16 +311,15 @@ class MTSet():
             f.close()
             self.nullST=RV
         else:
-            """ create mtssST and fit null column by column returns all info """
-            if self.mtssST is None:
+            """ create stSet and fit null column by column returns all info """
+            if self.stSet is None:
                 y = sp.zeros((self.N,1)) 
-                self.mtssST = MultiTraitSetTest(y,R=self.R,S_R=self.S_R,U_R=self.U_R,F=self.F)
+                self.stSet = MTSet(Y=y, S_R=self.S_R, U_R=self.U_R, F=self.F)
             RV = {}
             for p in range(self.P):
                 trait_id = self.traitID[p]
-                y = self.Y[:,p:p+1]
-                self.mtssST._setY(y)
-                RV[trait_id] = self.mtssST.fitNull()
+                self.stSet.Y = self.Y[:,p:p+1]
+                RV[trait_id] = self.stSet.fitNull()
             self.nullST = RV
             if cache:
                 f = h5py.File(out_file,'w')
@@ -326,22 +327,17 @@ class MTSet():
                 f.close()
         return RV
 
-    def optimizeTraitByTrait(self,G,verbose=True,n_times=10,factr=1e3):
+    def optimizeTraitByTrait(self, G, verbose=True, n_times=10, factr=1e3):
         """ Optimize trait by trait """
         assert self.nullST is not None, 'fit null model beforehand'
-        if self.mtssST is None:
-            y = sp.zeros((self.N,1)) 
-            self.mtssST = MultiTraitSetTest(y,R=self.R,S_R=self.S_R,U_R=self.U_R,F=self.F)
         RV = {}
         self.infoOptST = {}
-        self.timeProfilingST = {}
         for p in range(self.P):
-            y = self.Y[:,p:p+1]
             trait_id = self.traitID[p]
-            self.mtssST._setY(y)
-            self.mtssST.setNull(self.nullST[trait_id])
-            RV[trait_id] = self.mtssST.optimize(G,n_times=n_times,factr=factr)
-            self.infoOptST[trait_id] = self.mtssST.getInfoOpt()
+            self.stSet.Y = self.Y[:, p:p+1] 
+            self.stSet.setNull(self.nullST[trait_id])
+            RV[trait_id] = self.stSet.optimize(G, n_times=n_times, factr=factr)
+            self.infoOptST[trait_id] = self.stSet.getInfoOpt()
         return RV
 
     def getInfoOptST(self):
@@ -390,8 +386,6 @@ if __name__=='__main__':
     R = sp.dot(X, X.T)
     R = covar_rescale(R)
     
-    pdb.set_trace()
-
     mts = mtset(Y, R=R)
     nullMTInfo = mts.fitNull(cache=False)
     mts.optimize(G)
