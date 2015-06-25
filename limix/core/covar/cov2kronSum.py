@@ -1,4 +1,5 @@
 import sys
+import numpy as np
 from covar_base import Covariance
 from limix.core.type.cached import cached
 from limix.core.type.exception import TooExpensiveOperationError
@@ -33,6 +34,8 @@ class Cov2KronSum(Covariance):
             U_R:    [N, N] eigenvector matrix of R
         """
         Covariance.__init__(self)
+        self._Cg_act = True
+        self._Cn_act = True
         self.setColCovars(Cg, Cn)
         self.setR(R=R, S_R=S_R, U_R=U_R)
         self.dim = self.dim_c * self.dim_r
@@ -104,14 +107,50 @@ class Cov2KronSum(Covariance):
         self.col_covs_have_changed()
 
     #####################
+    # Activation handling
+    #####################
+    @property
+    def act_Cg(self):
+        return self._Cg_act
+
+    @act_Cg.setter
+    def act_Cg(self, act):
+        self._Cg_act = bool(act)
+        self._notify()
+
+    @property
+    def act_Cn(self):
+        return self._Cn_act
+
+    @act_Cn.setter
+    def act_Cn(self, act):
+        self._Cn_act = bool(act)
+        self._notify()
+
+    #####################
     # Params handling
     #####################
     def setParams(self,params):
-        self.Cg.setParams(params[:self.Cg.getNumberParams()])
-        self.Cn.setParams(params[self.Cg.getNumberParams():])
+        nCg = self.Cg.getNumberParams()
+        nCn = self.Cn.getNumberParams()
+        nact = nCg * int(self._Cg_act) + nCn * int(self._Cn_act)
+
+        if len(params) != nact:
+            raise ValueError("The number of parameters passed to setParams "
+                             "differs from the number of active parameters.")
+
+        self.Cg.setParams(params[:nCg])
+        self.Cn.setParams(params[nCg:])
 
     def getParams(self):
-        return sp.concatenate([self.Cg.getParams(),self.Cn.getParams()])
+        params = []
+        if self._Cg_act:
+            params.append(self.Cg.getParams())
+        if self._Cn_act:
+            params.append(self.Cn.getParams())
+        if len(params) == 0:
+            return np.array([])
+        return sp.concatenate(params)
 
     def _calcNumberParams(self):
         self.n_params = self.Cg.getNumberParams() + self.Cn.getNumberParams()
@@ -220,14 +259,26 @@ class Cov2KronSum(Covariance):
 
     @cached(['row_cov', 'col_cov'])
     def K_grad_i(self,i):
+        nCg = self.Cg.getNumberParams()
+        nCn = self.Cn.getNumberParams()
+
+        n = (int(self._Cg_act) * nCg +
+             int(self._Cn_act) * nCn)
+
+        if i >= n:
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+
         if self.dim > _MAX_DIM:
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
                                                                    _MAX_DIM))
 
-        if i < self.Cg.getNumberParams():
+        i += nCg * int(not self._Cg_act)
+
+        if i < nCg:
             rv= sp.kron(self.Cg.K_grad_i(i), self.R)
         else:
-            _i = i - self.Cg.getNumberParams()
+            _i = i - nCg
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 

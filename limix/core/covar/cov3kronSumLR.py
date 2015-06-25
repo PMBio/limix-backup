@@ -22,24 +22,27 @@ class Cov3KronSumLR(Cov2KronSum):
     Notation:
         - dim_c: dimension of col covariances
         - dim_r: dimension of row covariances
-        - rank_c: rank of low-rank col covariance 
-        - rank_r: rank of low-rank row covariance 
+        - rank_c: rank of low-rank col covariance
+        - rank_r: rank of low-rank row covariance
     """
 
     def __init__(self, Cg=None, Cn=None, G=None, R=None, rank=1, Cr=None, S_R=None, U_R=None):
         """
         Args:
-            Cg:     Limix covariance matrix for Cg (dimension dim_c) 
-            Cn:     Limix covariance matrix for Cn (dimension dim_c) 
+            Cg:     Limix covariance matrix for Cg (dimension dim_c)
+            Cn:     Limix covariance matrix for Cn (dimension dim_c)
             G:      [dim_r, rank_r] numpy covariance matrix for G
-            R:      [dim_r, dim_r] numpy semidemidefinite covariance matrix for R 
-            rank:   rank of column low-rank covariance (default = 1) 
+            R:      [dim_r, dim_r] numpy semidemidefinite covariance matrix for R
+            rank:   rank of column low-rank covariance (default = 1)
             Cr:     Limix covariance matrix for Cr (optional).
                     If not specified, a low-rank covariance matrix is considered
             S_R:    N vector of eigenvalues of R
             U_R:    [N, N] eigenvector matrix of R
         """
         Covariance.__init__(self)
+        self._Cr_act = True
+        self._Cg_act = True
+        self._Cn_act = True
         self.setColCovars(Cg=Cg, Cn=Cn, rank=rank, Cr=None)
         self.setR(R=R, S_R=S_R, U_R=U_R)
         self.G = G
@@ -104,17 +107,64 @@ class Cov3KronSumLR(Cov2KronSum):
         self.col_covs_have_changed()
 
     #####################
+    # Activation handling
+    #####################
+    @property
+    def act_Cr(self):
+        return self._Cr_act
+
+    @act_Cr.setter
+    def act_Cr(self, act):
+        self._Cr_act = bool(act)
+        self._notify()
+
+    @property
+    def act_Cg(self):
+        return self._Cg_act
+
+    @act_Cg.setter
+    def act_Cg(self, act):
+        self._Cg_act = bool(act)
+        self._notify()
+
+    @property
+    def act_Cn(self):
+        return self._Cn_act
+
+    @act_Cn.setter
+    def act_Cn(self, act):
+        self._Cn_act = bool(act)
+        self._notify()
+
+    #####################
     # Params handling
     #####################
     def setParams(self,params):
         np_r = self.Cr.getNumberParams()
         np_g = self.Cg.getNumberParams()
+        np_n = self.Cn.getNumberParams()
+        nact = np_r * int(self._Cr_act) + np_g * int(self._Cg_act) +\
+               np_n * int(self._Cn_act)
+
+        if len(params) != nact:
+            raise ValueError("The number of parameters passed to setParams "
+                             "differs from the number of active parameters.")
+
         self.Cr.setParams(params[:np_r])
         self.Cg.setParams(params[np_r:(np_r + np_g)])
         self.Cn.setParams(params[(np_r + np_g):])
 
     def getParams(self):
-        return sp.concatenate([self.Cr.getParams(), self.Cg.getParams(), self.Cn.getParams()])
+        params = []
+        if self._Cr_act:
+            params.append(self.Cr.getParams())
+        if self._Cg_act:
+            params.append(self.Cg.getParams())
+        if self._Cn_act:
+            params.append(self.Cn.getParams())
+        if len(params) == 0:
+            return np.array([])
+        return sp.concatenate(params)
 
     def _calcNumberParams(self):
         self.n_params = self.Cr.getNumberParams() + self.Cg.getNumberParams() + self.Cn.getNumberParams()
@@ -248,12 +298,24 @@ class Cov3KronSumLR(Cov2KronSum):
 
     @cached(['col_cov', 'row_cov', 'G'])
     def K_grad_i(self,i):
+        np_r = self.Cr.getNumberParams()
+        np_g = self.Cg.getNumberParams()
+        np_n = self.Cn.getNumberParams()
+
+        n = (int(self._Cr_act) * np_r + int(self._Cg_act) * np_g +
+             int(self._Cn_act) * np_n)
+
+        if i >= n:
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+
         if self.dim > _MAX_DIM:
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
                                                                    _MAX_DIM))
 
-        np_r = self.Cr.getNumberParams()
-        np_g = self.Cg.getNumberParams()
+        i += nCr * int(not self._Cr_act)
+        i += nCg * int(not self._Cg_act)
+
         if i < np_r:
             rv= sp.kron(self.Cr.K_grad_i(i), self.GG())
         elif i < (np_r + np_g):
@@ -314,8 +376,8 @@ if __name__ == '__main__':
     Cg = FreeFormCov(dim_c)
     Cn = FreeFormCov(dim_c)
 
-    cov = Cov3KronSum(Cg = Cg, Cn = Cn, R = R)
-    cov.setRandomParams()
-
-    print cov.K()
-    print cov.K_grad_i(0)
+    # cov = Cov3KronSum(Cg = Cg, Cn = Cn, R = R)
+    # cov.setRandomParams()
+    #
+    # print cov.K()
+    # print cov.K_grad_i(0)

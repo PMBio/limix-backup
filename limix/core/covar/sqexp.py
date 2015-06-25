@@ -12,7 +12,7 @@ class SQExpCov(Covariance):
     Unidimensional squared exponential covariance function (kernel) for GP regression.
     A unidimensional squared exponential covariance function has two parameters:
         scale:      scale of the covariance (propto explained variance)
-        length:     length scale of the input dimension 
+        length:     length scale of the input dimension
     """
     def __init__(self, X, Xstar=None):
         """
@@ -20,6 +20,8 @@ class SQExpCov(Covariance):
         Xstar:      [dim_star, 1] out-of-sample input matrix
         """
         Covariance.__init__(self)
+        self._scale_act = True
+        self._length_act = True
 
         X = assert_make_float_array(X, "X")
         assert_finite_array(X)
@@ -30,7 +32,7 @@ class SQExpCov(Covariance):
             assert_finite_array(Xstar)
 
         self.Xstar = Xstar
-        self._initParams()
+        self.params = np.zeros(2)
 
     def get_input_dim(self):
         return self.X.shape[1]
@@ -114,8 +116,45 @@ class SQExpCov(Covariance):
         self._notify()
 
     #####################
+    # Activation handling
+    #####################
+    @property
+    def act_scale(self):
+        return self._scale_act
+
+    @act_scale.setter
+    def act_scale(self, act):
+        self._scale_act = bool(act)
+        self._notify()
+
+    @property
+    def act_length(self):
+        return self._length_act
+
+    @act_length.setter
+    def act_length(self, act):
+        self._length_act = bool(act)
+        self._notify()
+
+    #####################
     # Params handling
     #####################
+    def setParams(self, params):
+        sel = np.asarray((self._scale_act, self._length_act))
+        if np.sum(sel) != len(params):
+            raise ValueError("The number of parameters passed to setParams "
+                             "differs from the number of active parameters.")
+        self.params[sel] = params
+        self.clear_all()
+        self._notify()
+
+    def getParams(self):
+        sel = np.asarray((self._scale_act, self._length_act))
+        return self.params[sel]
+
+    def getNumberParams(self):
+        return np.sum([self._scale_act, self._length_act])
+
     def _calcNumberParams(self):
         self.n_params = 2
 
@@ -139,7 +178,12 @@ class SQExpCov(Covariance):
         return self.scale * sp.exp(-self.E()/(2*self.length))
 
     @cached
-    def K_grad_i(self,i):
+    def K_grad_i(self, i):
+        if i >= int(self._scale_act) + int(self._length_act):
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+
+        i += int(not self._scale_act)
         r = self.K_grad_interParam_i(i)
         if i==0:
             r *= self.scale
@@ -156,9 +200,12 @@ class SQExpCov(Covariance):
         return SP.array([self.scale,self.length])
 
     def K_grad_interParam_i(self,i):
-        if i==0:
+        if i == 0:
             r = sp.exp(-self.E()/(2*self.length))
-        else:
+        elif i == 1:
             A = sp.exp(-self.E()/(2*self.length))*self.E()
             r = self.scale * A / (2*self.length**2)
+        else:
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
         return r

@@ -58,5 +58,14 @@ class TestCov3KronSumLR(unittest.TestCase):
         with self.assertRaises(TooExpensiveOperationError):
             C.K_grad_i(0)
 
+    def test_param_activation(self):
+        self.C.act_Cr = False
+        self.C.act_Cg = False
+        self.C.act_Cn = False
+        self.assertEqual(len(self.C.getParams()), 0)
+
+        with self.assertRaises(ValueError):
+            self.C.K_grad_i(0)
+
 if __name__ == '__main__':
     unittest.main()

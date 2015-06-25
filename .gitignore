@@ -161,3 +161,6 @@ $RECYCLE.BIN/
 .sconf_temp
 .sconsign.dblite
 limix.egg-info/
+
+limix/deprecated/core.py
+src/interfaces/python/limix_wrap.cpp

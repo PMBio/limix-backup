@@ -20,7 +20,6 @@ class Covariance(Cached, Observed):
     def initialize(self,dim):
         self.dim = dim
         self._calcNumberParams()
-        self._initParams()
         self._use_to_predict = False
 
     def clear_all(self):
@@ -33,13 +32,13 @@ class Covariance(Cached, Observed):
     #######################
     # Param Handling
     #######################
-    def getParams(self):
-        return self.params
-
-    def setParams(self,params):
-        self.params = params
-        self.clear_all()
-        self._notify()
+    # def getParams(self):
+    #     return self.params
+    #
+    # def setParams(self,params):
+    #     self.params = params
+    #     self.clear_all()
+    #     self._notify()
 
     def setRandomParams(self):
         """
@@ -73,13 +72,6 @@ class Covariance(Cached, Observed):
         calculates the number of parameters
         """
         warnings.warn('not implemented')
-
-    def _initParams(self):
-         """
-         initialize paramters to vector of zeros
-         """
-         params = sp.zeros(self.getNumberParams())
-         self.setParams(params)
 
     ####################################
     # cached

@@ -1,3 +1,4 @@
+import numpy as np
 import scipy as sp
 import scipy.linalg as la
 from limix.core.type.cached import cached
@@ -19,12 +20,13 @@ class LowRankCov(Covariance):
         """
         Covariance.__init__(self)
         self.initialize(dim, rank)
-        self._initParams()
 
     def initialize(self, dim, rank):
+        self._X_act = True
         self.dim = dim
         self.rank = rank
         self._calcNumberParams()
+        self.params = np.zeros(self.n_params)
         self._use_to_predict = False
 
     def clear_all(self):
@@ -49,8 +51,37 @@ class LowRankCov(Covariance):
         self.setParams(X.reshape(X.size, order = 'F'))
 
     #####################
+    # Activation handling
+    #####################
+    @property
+    def act_X(self):
+        return self._X_act
+
+    @act_X.setter
+    def act_X(self, act):
+        self._X_act = bool(act)
+        self._notify()
+
+    #####################
     # Params handling
     #####################
+    def setParams(self, params):
+        if not self._X_act and len(params) > 0:
+            raise ValueError("Trying to set a parameter via setParams that "
+                             "is not active.")
+        if self._X_act:
+            self.params[:] = params
+            self.clear_all()
+            self._notify()
+
+    def getParams(self):
+        if not self._X_act:
+            return np.array([])
+        return self.params
+
+    def getNumberParams(self):
+        return int(self._X_act) * self.n_params
+
     def _calcNumberParams(self):
         self.n_params = int(self.dim * self.rank)
 
@@ -78,6 +109,10 @@ class LowRankCov(Covariance):
 
     @cached
     def K_grad_i(self,i):
+        if not self._X_act:
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+
         R  = sp.dot(self.X,self.Xgrad(i).T)
         R += R.T
         return R
