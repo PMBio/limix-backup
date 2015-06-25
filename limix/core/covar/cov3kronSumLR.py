@@ -268,7 +268,7 @@ class Cov3KronSumLR(Cov2KronSum):
             r = sp.kron(sp.diag(self.LcGradCgLc(_i)), self.Sr())
         else:
             _i = i - np_r - np_g
-            r = sp.kron(sp.diag(self.LcGradCnLc(_i)), sp.ones(self.R.shape[0]))
+            r = sp.kron(sp.diag(self.LcGradCnLc(_i)), sp.ones(self.dim_r))
         return r
 
     @cached(['col_cov', 'row_cov', 'G'])
@@ -345,7 +345,7 @@ class Cov3KronSumLR(Cov2KronSum):
     @cached(['col_cov', 'row_cov', 'G'])
     def logdet(self):
         r = sp.log(self.SpI()).sum()
-        r+= sp.sum(sp.log(self.Cn.S())) * self.R.shape[0]
+        r+= sp.sum(sp.log(self.Cn.S())) * self.dim_r
         r+= 2 * sp.log(sp.diag(self.H_chol())).sum()
         return r
 
