@@ -293,21 +293,11 @@ class Cov2KronSum(Covariance):
 
     @cached(['row_cov', 'col_cov'])
     def logdet_grad_i(self,i):
+        if i >= self.getNumberParams():
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+        i = self._actindex2index(i)
         return (self.d() * self.diag_Ctilde_o_Sr(i)).sum()
-
-    #####################
-    # Debug methods
-    #####################
-    def inv_debug(self):
-        return sp.dot(self.L().T, self.d()[:, sp.newaxis] * self.L())
-
-    @cached
-    def logdet_debug(self):
-        return 2*sp.log(sp.diag(self.chol())).sum()
-
-    @cached
-    def logdet_grad_i_debug(self,i):
-        return self.solve(self.K_grad_i(i)).diagonal().sum()
 
 """ Gradients DEPRECATED """
 

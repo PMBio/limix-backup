@@ -323,6 +323,11 @@ class Cov2KronSumLR(Covariance):
 
     @cached(['row_cov', 'col_cov'])
     def logdet_grad_i(self,i):
+        if i >= self.getNumberParams():
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+        i = self._actindex2index(i)
+
         if i < self.Cg.getNumberParams():
             trR = self.Sg().sum()
             diagR = self.Sg()
@@ -332,19 +337,3 @@ class Cov2KronSumLR(Covariance):
         rv = self.Ctilde(i).diagonal().sum() * trR
         rv-= (self.d() * sp.kron(sp.diag(self.Cbar(i)), diagR)).sum()
         return rv
-
-    #####################
-    # Debug methods
-    #####################
-    def inv_debug(self):
-        L = sp.kron(self.Lc(), sp.eye(self.dim_r))
-        W = sp.kron(self.Wc(), self.Wr())
-        WdW = sp.dot(W.T, self.d()[:, sp.newaxis] * W)
-        I_WdW = sp.eye(self.dim_c * self.dim_r) - WdW
-        return sp.dot(L.T, sp.dot(I_WdW, L))
-
-    def logdet_debug(self):
-        return 2*sp.log(sp.diag(self.chol())).sum()
-
-    def logdet_grad_i_debug(self,i):
-        return self.solve(self.K_grad_i(i)).diagonal().sum()
