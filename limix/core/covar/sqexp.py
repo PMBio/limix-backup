@@ -51,18 +51,24 @@ class SQExpCov(Covariance):
 
     @property
     def scale_ste(self):
+        if not self._scale_act:
+            raise ValueError("Scale is an inactive.")
         if self.getFIinv() is None:
             R = None
         else:
-            R = sp.sqrt(self.getFIinv()[0,0])
+            i = self._index2actindex(0)
+            R = sp.sqrt(self.getFIinv()[i,i])
         return R
 
     @property
     def length_ste(self):
+        if not self._length_act:
+            raise ValueError("Length is an inactive.")
         if self.getFIinv() is None:
             R = None
         else:
-            R = sp.sqrt(self.getFIinv()[1,1])
+            i = self._index2actindex(1)
+            R = sp.sqrt(self.getFIinv()[i,i])
         return R
 
     @property
@@ -136,6 +142,12 @@ class SQExpCov(Covariance):
         self._length_act = bool(act)
         self._notify()
 
+    def _actindex2index(self, i):
+        return i + int(not self._scale_act)
+
+    def _index2actindex(self, i):
+        return i - int(not self._scale_act)
+
     #####################
     # Params handling
     #####################
@@ -154,9 +166,6 @@ class SQExpCov(Covariance):
 
     def getNumberParams(self):
         return np.sum([self._scale_act, self._length_act])
-
-    def _calcNumberParams(self):
-        self.n_params = 2
 
     #####################
     # Cached
@@ -183,8 +192,8 @@ class SQExpCov(Covariance):
             raise ValueError("Trying to retrieve the gradient over a "
                              "parameter that is inactive.")
 
-        i += int(not self._scale_act)
         r = self.K_grad_interParam_i(i)
+        i = self._actindex2index(i)
         if i==0:
             r *= self.scale
         elif i==1:
@@ -197,9 +206,15 @@ class SQExpCov(Covariance):
     # Interpretable Params
     ####################
     def getInterParams(self):
-        return SP.array([self.scale,self.length])
+        params = []
+        if self._scale_act:
+            params.append(self.scale)
+        if self._length_act:
+            params.append(self.length)
+        return np.array(params)
 
-    def K_grad_interParam_i(self,i):
+    def K_grad_interParam_i(self, i):
+        i = self._actindex2index(i)
         if i == 0:
             r = sp.exp(-self.E()/(2*self.length))
         elif i == 1:

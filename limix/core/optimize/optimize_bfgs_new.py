@@ -1,4 +1,4 @@
-from scipy.optimize import fmin_l_bfgs_b as optimize 
+from scipy.optimize import fmin_l_bfgs_b as optimize
 import pdb
 import scipy as SP
 import logging as LG
@@ -20,7 +20,7 @@ def param_list_to_dict(list,param_struct,skeys):
     i0= 0
     for key in skeys:
         val = param_struct[key]
-        shape = SP.array(val) 
+        shape = SP.array(val)
         np = shape.prod()
         i1 = i0+np
         params = list[i0:i1].reshape(shape)
@@ -31,18 +31,18 @@ def param_list_to_dict(list,param_struct,skeys):
 def checkgrad(f, fprime, x, *args,**kw_args):
     """
     Analytical gradient calculation using a 3-point method
-    
+
     """
     LG.debug("Checking gradient ...")
     import numpy as np
-    
+
     # using machine precision to choose h
     eps = np.finfo(float).eps
     step = np.sqrt(eps)*(x.min())
 
     # shake things up a bit by taking random steps for each x dimension
     h = step*np.sign(np.random.uniform(-1, 1, x.size))
-    
+
     f_ph = f(x+h, *args, **kw_args)
     f_mh = f(x-h, *args, **kw_args)
     numerical_gradient = (f_ph - f_mh)/(2*h)
@@ -60,13 +60,13 @@ def checkgrad(f, fprime, x, *args,**kw_args):
 	ratio = (f_ph - f_mh)/(2*step*analytical_gradient)
 	h[i] = 0
         LG.debug("[%d] numerical: %f, analytical: %f, ratio: %f" % (i, numerical_gradient,analytical_gradient,ratio))
-	    
 
-            
+
+
 def opt_hyper(gpr,Ifilter=None,bounds=None,opts={},*args,**kw_args):
     """
     optimize params
-    
+
     Input:
     gpr: GP regression class
     params0: dictionary filled with starting hyperparameters
@@ -84,10 +84,11 @@ def opt_hyper(gpr,Ifilter=None,bounds=None,opts={},*args,**kw_args):
         pgtol = opts['pgtol']
     else:
         pgtol = 1e-10
-        
+
     params0 = gpr.getParams()
 
     def f(x):
+        print x
         x_ = X0
         x_[Ifilter_x] = x
         gpr.setParams(param_list_to_dict(x_,param_struct,skeys))
@@ -121,7 +122,7 @@ def opt_hyper(gpr,Ifilter=None,bounds=None,opts={},*args,**kw_args):
                 _b.extend([[-SP.inf,+SP.inf]]*params0[key].size)
         bounds = SP.array(_b)
         bounds = bounds[Ifilter_x]
-   
+
     LG.info('Starting optimization ...')
     t = time.time()
 
@@ -131,7 +132,7 @@ def opt_hyper(gpr,Ifilter=None,bounds=None,opts={},*args,**kw_args):
     #LG.info('%s'%OPT.tnc.RCSTRINGS[RVopt[2]])
     #LG.info('Optimization is converged at iteration %d'%RVopt[1])
     #LG.info('Total time: %.2fs'%(time.time()-t))
-    
+
     info = RV[2]
     conv = info['warnflag']==0
 
@@ -140,4 +141,3 @@ def opt_hyper(gpr,Ifilter=None,bounds=None,opts={},*args,**kw_args):
         LG.info("check_grad (post): %.2f"%err)
 
     return conv,info
-
