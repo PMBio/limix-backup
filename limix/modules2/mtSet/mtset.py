@@ -63,7 +63,10 @@ class MTSet():
         Cg = FreeFormCov(Y.shape[1])
         Cn = FreeFormCov(Y.shape[1])
         G  = 1. * (sp.rand(Y.shape[0],1)<0.2)
-        self._gp = GP3KronSumLR(Y=Y, Cg=Cg, Cn=Cn, S_R=S_R, U_R=U_R, G=G, rank = 1)
+        if self.bgRE:
+            self._gp = GP3KronSumLR(Y=Y, Cg=Cg, Cn=Cn, S_R=S_R, U_R=U_R, G=G, rank = 1)
+        else:
+            self._gp = GP2KronSumLR(Y=Y, Cn=Cn, G=G, F=F, A=sp.eye(Y.shape[1]))
         # null model params
         self.null = None
         # calls itself for column-by-column trait analysis
@@ -93,6 +96,9 @@ class MTSet():
 
     @property
     def Y(self):    return self._gp.mean.Y
+
+    @property
+    def F(self):    return self._gp.mean.F[0]
 
     @property
     def S_R(self):
@@ -147,14 +153,18 @@ class MTSet():
             if self.bgRE:
                 self._gpNull = GP2KronSum(Y=self.Y, F=None, A=None, Cg=self.Cg, Cn=self.Cn, R=None, S_R=self.S_R, U_R=self.U_R)
             else:
-                self._gpNull = gp2kronSumLR(self.Y,self.Cn,Xr=sp.ones((self.N,1)),F=self.F)
+                pdb.set_trace()
+                self._gpNull = GP2KronSumLR(self.Y, self.Cn, G=sp.ones((self.N,1)), F=self.F, A=sp.eye(self.P))
+                # freezes Cg to 0
+                n_params = self._gpNull.covar.Cg.getNumberParams()
+                self._gpNull.covar.Cg.setParams(1e-9 * sp.ones(n_params))
+                self._gpNull.act_Cg = False
             for i in range(n_times):
                 params0,Ifilter=self._initParams(init_method=init_method)
                 self._gpNull.setParams(params0)
                 conv, info = self._gpNull.optimize()
                 if conv: break
             if not conv:    warnings.warn("not converged")
-            pdb.set_trace()
             LMLgrad = (self._gpNull.LML_grad()['covar']**2).mean()
             LML = self._gpNull.LML()
             if self._gpNull.mean.n_terms==1:
@@ -190,11 +200,12 @@ class MTSet():
     # Fitting alternative model
     ###########################################
 
-    def optimize(self,Xr,params0=None,n_times=10,verbose=True,vmax=5,perturb=1e-3,factr=1e3):
+    def optimize(self, Xr, params0=None, n_times=10, verbose=True, vmax=5, perturb=1e-3, factr=1e3):
         """
         Optimize the model considering Xr
         """
-        # set params0 from null if params0==Null
+        pdb.set_trace()
+        # set params0 from null if params0 is None
         if params0 is None:
             if self.null is None:
                 if verbose:     print ".. fitting null model upstream"
@@ -203,9 +214,6 @@ class MTSet():
                 params0 = {'Cg':self.null['params0_g'],'Cn':self.null['params0_n']}
             else:
                 params0 = {'Cn':self.null['params0_n']}
-            if 'params_mean' in self.null:
-                if self.null['params_mean'].shape[0]>0:
-                    params0['mean'] = self.null['params_mean']
             params_was_None = True
             
         else:

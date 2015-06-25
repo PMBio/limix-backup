@@ -35,7 +35,7 @@ class GP2KronSumLR(GP):
         rank_r = rank of low-rank row covariance
     """
 
-    def __init__(self, Y, F, A, Cn, G, rank=1):
+    def __init__(self, Y, Cn, G, F=None, A=None, rank=1):
         """
         Args:
             Y:      [N, P] phenotype matrix
@@ -46,8 +46,6 @@ class GP2KronSumLR(GP):
             rank:   rank of column low-rank covariance (default = 1)
         """
         assert_type(Y, NP.ndarray, 'Y')
-        assert_type_or_list_type(F, NP.ndarray, 'F')
-        assert_type_or_list_type(A, NP.ndarray, 'A')
         assert_subtype(Cn, Covariance, 'Cn')
         assert_type(G, NP.ndarray, 'G')
 
