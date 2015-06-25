@@ -35,7 +35,7 @@ class Cov2KronSumLR(Covariance):
             rank:   rank of column low-rank covariance (default = 1)
         """
         Covariance.__init__(self)
-        self._Cg_act = True
+        self._Cr_act = True
         self._Cn_act = True
         self.setColCovars(Cn, rank = rank)
         self.G = G
@@ -62,8 +62,8 @@ class Cov2KronSumLR(Covariance):
         return self._G
 
     @property
-    def Cg(self):
-        return self._Cg
+    def Cr(self):
+        return self._Cr
 
     @property
     def Cn(self):
@@ -107,10 +107,10 @@ class Cov2KronSumLR(Covariance):
         assert Cn is not None, 'Cn has to be specified.'
         self._rank_c = rank
         self._dim_c = Cn.dim
-        self._Cg = LowRankCov(self._dim_c, rank)
+        self._Cr = LowRankCov(self._dim_c, rank)
         self._Cn = Cn
         # register
-        self._Cg.register(self.col_covs_have_changed)
+        self._Cr.register(self.col_covs_have_changed)
         self._Cn.register(self.col_covs_have_changed)
         self.col_covs_have_changed()
 
@@ -118,12 +118,12 @@ class Cov2KronSumLR(Covariance):
     # Activation handling
     #####################
     @property
-    def act_Cg(self):
-        return self._Cg_act
+    def act_Cr(self):
+        return self._Cr_act
 
-    @act_Cg.setter
-    def act_Cg(self, act):
-        self._Cg_act = bool(act)
+    @act_Cr.setter
+    def act_Cr(self, act):
+        self._Cr_act = bool(act)
         self._notify()
 
     @property
@@ -136,13 +136,13 @@ class Cov2KronSumLR(Covariance):
         self._notify()
 
     def _actindex2index(self, i):
-        nCg = self.Cg.getNumberParams()
-        i += nCg * int(not self._Cg_act)
+        nCr = self.Cr.getNumberParams()
+        i += nCr * int(not self._Cr_act)
         return i
 
     def _index2actindex(self, i):
-        nCg = self.Cg.getNumberParams()
-        i -= nCg * int(not self._Cg_act)
+        nCr = self.Cr.getNumberParams()
+        i -= nCr * int(not self._Cr_act)
         return i
 
 
@@ -150,22 +150,21 @@ class Cov2KronSumLR(Covariance):
     # Params handling
     #####################
     def setParams(self,params):
-        nCg = int(self._Cg_act) * self.Cg.getNumberParams()
+        nCr = int(self._Cr_act) * self.Cr.getNumberParams()
         nCn = int(self._Cn_act) * self.Cn.getNumberParams()
 
         if len(params) != self.getNumberParams():
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
-        import ipdb; ipdb.set_trace()
-        if self._Cg_act:
-            self.Cg.setParams(params[:nCg])
+        if self._Cr_act:
+            self.Cr.setParams(params[:nCr])
         if self._Cn_act:
-            self.Cn.setParams(params[nCg:])
+            self.Cn.setParams(params[nCr:])
 
     def getParams(self):
         params = []
-        if self._Cg_act:
-            params.append(self.Cg.getParams())
+        if self._Cr_act:
+            params.append(self.Cr.getParams())
         if self._Cn_act:
             params.append(self.Cn.getParams())
         if len(params) == 0:
@@ -173,7 +172,7 @@ class Cov2KronSumLR(Covariance):
         return sp.concatenate(params)
 
     def getNumberParams(self):
-        return (int(self._Cg_act) * self.Cg.getNumberParams() +
+        return (int(self._Cr_act) * self.Cr.getNumberParams() +
                 int(self._Cn_act) * self.Cn.getNumberParams())
 
 
@@ -203,7 +202,7 @@ class Cov2KronSumLR(Covariance):
 
     @cached('col_cov')
     def Estar(self):
-        E = self.Cg.X
+        E = self.Cr.X
         # for a general covariance matrix
         # E = LA.chol(C.K())
         # or based on eigh decomposition if this fails
@@ -248,10 +247,10 @@ class Cov2KronSumLR(Covariance):
 
     @cached(['col_cov'])
     def Ctilde(self, i):
-        if i < self.Cg.getNumberParams():
-            C = self.Cg.K_grad_i(i)
+        if i < self.Cr.getNumberParams():
+            C = self.Cr.K_grad_i(i)
         else:
-            _i = i - self.Cg.getNumberParams()
+            _i = i - self.Cr.getNumberParams()
             C = self.Cn.K_grad_i(_i)
         return sp.dot(self.Lc(), sp.dot(C, self.Lc().T))
 
@@ -288,7 +287,7 @@ class Cov2KronSumLR(Covariance):
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
                                                                    _MAX_DIM))
 
-        rv = sp.kron(self.Cg.K(), self.R()) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
+        rv = sp.kron(self.Cr.K(), self.R()) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return rv
 
     @cached(['row_cov', 'col_cov'])
@@ -305,12 +304,12 @@ class Cov2KronSumLR(Covariance):
 
         i = self._actindex2index(i)
 
-        nCg = self.Cg.getNumberParams()
+        nCr = self.Cr.getNumberParams()
 
-        if i < nCg:
-            rv= sp.kron(self.Cg.K_grad_i(i), self.R())
+        if i < nCr:
+            rv= sp.kron(self.Cr.K_grad_i(i), self.R())
         else:
-            _i = i - nCg
+            _i = i - nCr
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 
@@ -330,7 +329,7 @@ class Cov2KronSumLR(Covariance):
                              "parameter that is inactive.")
         i = self._actindex2index(i)
 
-        if i < self.Cg.getNumberParams():
+        if i < self.Cr.getNumberParams():
             trR = self.Sg().sum()
             diagR = self.Sg()
         else:

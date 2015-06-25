@@ -140,7 +140,7 @@ class GP2KronSumLR(GP):
 
     @cached(['row_col', 'col_cov', 'pheno'])
     def RYLcCtilde(self, i):
-        if i < self.covar.Cg.getNumberParams():
+        if i < self.covar.Cr.getNumberParams():
             RYLc = self.GGYLc()
         else:
             RYLc = self.YLc()
@@ -148,7 +148,7 @@ class GP2KronSumLR(GP):
 
     @cached(['row_col', 'col_cov', 'pheno'])
     def SrDWrYLcWcCbar(self, i):
-        if i < self.covar.Cg.getNumberParams():
+        if i < self.covar.Cr.getNumberParams():
             SgDWrYLcWc = self.covar.Sg()[:, sp.newaxis] *  self.DWrYLcWc()
         else:
             SgDWrYLcWc = self.DWrYLcWc()
@@ -156,7 +156,7 @@ class GP2KronSumLR(GP):
 
     @cached(['row_col', 'col_cov', 'pheno'])
     def WrRYLcCtildeWc(self, i):
-        if i < self.covar.Cg.getNumberParams():
+        if i < self.covar.Cr.getNumberParams():
             WrRYLc = self.WrGGYLc()
         else:
             WrRYLc = self.WrYLc()
@@ -262,7 +262,7 @@ class GP2KronSumLR(GP):
 
     @cached(['designs', 'row_col', 'col_cov', 'pheno'])
     def RFBALcCtilde(self, i):
-        if i < self.covar.Cg.getNumberParams():
+        if i < self.covar.Cr.getNumberParams():
             RFBALc = self.GGFBALc()
         else:
             RFBALc = self.FBALc()
@@ -270,7 +270,7 @@ class GP2KronSumLR(GP):
 
     @cached(['designs', 'row_col', 'col_cov', 'pheno'])
     def SrDWrFBALcWcCbar(self, i):
-        if i < self.covar.Cg.getNumberParams():
+        if i < self.covar.Cr.getNumberParams():
             SgDWrFBALcWc = self.covar.Sg()[:, sp.newaxis] *  self.DWrFBALcWc()
         else:
             SgDWrFBALcWc = self.DWrFBALcWc()
@@ -278,7 +278,7 @@ class GP2KronSumLR(GP):
 
     @cached(['designs', 'row_col', 'col_cov', 'pheno'])
     def WrRFBALcCtildeWc(self, i):
-        if i < self.covar.Cg.getNumberParams():
+        if i < self.covar.Cr.getNumberParams():
             WrRFBALc = self.WrGGFBALc()
         else:
             WrRFBALc = self.WrFBALc()
@@ -292,7 +292,7 @@ class GP2KronSumLR(GP):
 
     @cached(['designs', 'row_col', 'col_cov'])
     def ALcCtildeLcA_o_FRF(self, i):
-        if i < self.covar.Cg.getNumberParams():
+        if i < self.covar.Cr.getNumberParams():
             FRF = self.FGGF()
         else:
             FRF = self.FF()
@@ -301,7 +301,7 @@ class GP2KronSumLR(GP):
 
     @cached(['designs', 'row_col', 'col_cov'])
     def Cbar_o_Sr_dWLW(self, i):
-        if i < self.covar.Cg.getNumberParams():
+        if i < self.covar.Cr.getNumberParams():
             Cbar_o_Sr = sp.kron(self.covar.Cbar(i), sp.diag(self.covar.Sg()))
         else:
             Cbar_o_Sr = sp.kron(self.covar.Cbar(i), sp.eye(self.covar.rank_r))
@@ -309,7 +309,7 @@ class GP2KronSumLR(GP):
 
     @cached(['designs', 'row_col', 'col_cov'])
     def WcCtildeLcA_o_WrRF(self, i):
-        if i < self.covar.Cg.getNumberParams():
+        if i < self.covar.Cr.getNumberParams():
             self.WrRF = self.WrGGF()
         else:
             self.WrRF = self.WrF()
