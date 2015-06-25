@@ -58,5 +58,30 @@ class TestCov2KronSum(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.C.K_grad_i(0)
 
+    def test_param_activation(self):
+        self.C.act_Cg = False
+        self.C.act_Cn = False
+        self.assertEqual(len(self.C.getParams()), 0)
+
+        with self.assertRaises(ValueError):
+            self.C.K_grad_i(0)
+
+    def test_inv(self):
+        C = self.C
+
+        L = sp.kron(C.Lc(), sp.eye(C.dim_r))
+        W = sp.kron(C.Wc(), C.Wr())
+        WdW = sp.dot(W.T, C.d()[:, sp.newaxis] * W)
+        I_WdW = sp.eye(C.dim_c * C.dim_r) - WdW
+        inv1 = sp.dot(L.T, sp.dot(I_WdW, L))
+
+        inv2 = C.inv()
+        np.testing.assert_array_almost_equal(inv1, inv2)
+
+    def test_logdet(self):
+        d1 = 2*np.log(np.diag(self.C.chol())).sum()
+        d2 = self.C.logdet()
+        np.testing.assert_almost_equal(d1, d2)
+
 if __name__ == '__main__':
     unittest.main()

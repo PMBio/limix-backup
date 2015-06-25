@@ -56,10 +56,15 @@ class TestCov2KronSum(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.C.K_grad_i(0)
 
-    # def test_inv(self):
-    #
-    #     def inv_debug(self):
-    #         return sp.dot(self.L().T, self.d()[:, sp.newaxis] * self.L())
+    def test_inv(self):
+        inv1 = np.dot(self.C.L().T, self.C.d()[:, sp.newaxis] * self.C.L())
+        inv2 = self.C.inv()
+        np.testing.assert_array_almost_equal(inv1, inv2)
+
+    def test_logdet(self):
+        d1 = 2*np.log(np.diag(self.C.chol())).sum()
+        d2 = self.C.logdet()
+        np.testing.assert_almost_equal(d1, d2)
 
 
 if __name__ == '__main__':

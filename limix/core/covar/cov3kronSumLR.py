@@ -356,28 +356,6 @@ class Cov3KronSumLR(Cov2KronSum):
         return r
 
 
-    #####################
-    # Debug methods
-    #####################
-    def H_chol_debug(self):
-        R = sp.dot(self.W().T, self.DW())
-        R+= sp.eye(R.shape[0])
-        return la.cholesky(R).T
-
-    def inv_debug(self):
-        dL = self.d()[:,sp.newaxis] * self.L()
-        WdL = sp.dot(self.DW().T, self.L())
-        HiWdL = sp.dot(self.H_inv(), WdL)
-        return sp.dot(self.L().T, dL) - sp.dot(WdL.T, HiWdL)
-
-    @cached
-    def logdet_debug(self):
-        return 2*sp.log(sp.diag(self.chol())).sum()
-
-    @cached
-    def logdet_grad_i_debug(self,i):
-        return self.solve(self.K_grad_i(i)).diagonal().sum()
-
 if __name__ == '__main__':
     from limix.core.covar import FreeFormCov
     from limix.utils.preprocess import covar_rescale

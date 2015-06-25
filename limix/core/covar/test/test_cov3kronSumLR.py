@@ -67,5 +67,31 @@ class TestCov3KronSumLR(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.C.K_grad_i(0)
 
+    def test_H_chol(self):
+        C = self.C
+
+        R  = sp.dot(C.W().T, C.DW())
+        R += sp.eye(R.shape[0])
+        chol1 = np.linalg.cholesky(R)
+        chol2 = C.H_chol()
+
+        np.testing.assert_array_almost_equal(chol1, chol2)
+
+    def test_inv(self):
+        C = self.C
+
+        dL = C.d()[:,sp.newaxis] * C.L()
+        WdL = sp.dot(C.DW().T, C.L())
+        HiWdL = sp.dot(C.H_inv(), WdL)
+        inv1 = sp.dot(C.L().T, dL) - sp.dot(WdL.T, HiWdL)
+        inv2 = C.inv()
+
+        np.testing.assert_array_almost_equal(inv1, inv2)
+
+    def test_logdet(self):
+        d1 = 2*sp.log(sp.diag(self.C.chol())).sum()
+        d2 = self.C.logdet()
+        np.testing.assert_almost_equal(d1, d2)
+
 if __name__ == '__main__':
     unittest.main()
