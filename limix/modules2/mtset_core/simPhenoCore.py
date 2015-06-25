@@ -1,13 +1,11 @@
-import sys
-sys.path.append('./../../..')
 from optparse import OptionParser
 import scipy as SP
 
 import os
-import mtSet.pycore.utils.simulator as sim
-from mtSet.pycore.utils.read_utils import readCovarianceMatrixFile
-from mtSet.pycore.utils.read_utils import readBimFile 
-from mtSet.pycore.external.limix import plink_reader
+import simulator as sim
+from read_utils import readCovarianceMatrixFile
+from read_utils import readBimFile 
+
 def genPhenoCube(sim,Xr,vTotR=4e-3,nCausalR=10,pCommonR=0.8,vTotBg=0.4,pHidd=0.6,pCommon=0.8):
     # region
     nCommonR  = int(SP.around(nCausalR*pCommonR))

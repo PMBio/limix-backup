@@ -1,27 +1,23 @@
-import sys
-sys.path.append('./../../..')
 import matplotlib
 matplotlib.use('PDF')
-import pylab as PL
+import pylab as pl
 import os
 import subprocess
 import pdb
-import sys
-import numpy as NP
-import numpy.linalg as LA
+import numpy as np
+import numpy.linalg as la
 from optparse import OptionParser
 import time
-import mtSet.pycore.modules.multiTraitSetTest as MTST
-from mtSet.pycore.utils.read_utils import readBimFile
-from mtSet.pycore.utils.read_utils import readCovarianceMatrixFile
-from mtSet.pycore.utils.read_utils import readPhenoFile
-from mtSet.pycore.utils.read_utils import readCovariatesFile 
-from mtSet.pycore.utils.splitter_bed import splitGeno
-import mtSet.pycore.external.limix.plink_reader as plink_reader
-import scipy as SP
+import limix
+from read_utils import readBimFile
+from read_utils import readCovarianceMatrixFile
+from read_utils import readPhenoFile
+from read_utils import readCovariatesFile 
+from splitter_bed import splitGeno
+import plink_reader
+import scipy as sp
 import warnings
-import mtSet.pycore.external.limix.plink_reader as plink_reader
-import scipy.sparse.linalg as SSL
+import scipy.sparse.linalg as ssl
 
 def computeCovarianceMatrixPlink(plink_path,out_dir,bfile,cfile,sim_type='RRM'):
     """
@@ -66,11 +62,11 @@ def computePCsPlink(plink_path,k,out_dir,bfile,ffile):
     cmd+= '--out %s'%(os.path.join(out_dir,'plink'))
     subprocess.call(cmd,shell=True)
     plink_fn = os.path.join(out_dir, 'plink.eigenvec')
-    M = SP.loadtxt(plink_fn,dtype=str)
-    U = SP.array(M[:,2:],dtype=float)
+    M = sp.loadtxt(plink_fn,dtype=str)
+    U = sp.array(M[:,2:],dtype=float)
     U-= U.mean(0)
     U/= U.std(0)
-    SP.savetxt(ffile,U)
+    sp.savetxt(ffile,U)
 
 
 
@@ -86,21 +82,21 @@ def computePCsPython(out_dir,k,bfile,ffile):
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        X /= SP.sqrt(2*p_ref*(1-p_ref))
+        X /= sp.sqrt(2*p_ref*(1-p_ref))
         
-    hasNan = SP.any(SP.isnan(X),axis=0)
+    hasNan = sp.any(sp.isnan(X),axis=0)
     print '%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()
     X  = X[:,~hasNan]
 
     
     """ computing prinicipal components """
-    U,S,Vt = SSL.svds(X,k=k)
+    U,S,Vt = ssl.svds(X,k=k)
     U -= U.mean(0)
     U /= U.std(0)
     U  = U[:,::-1]
  
     """ saving to output """
-    NP.savetxt(ffile, U, delimiter='\t',fmt='%.6f')    
+    np.savetxt(ffile, U, delimiter='\t',fmt='%.6f')    
     
     
     
@@ -125,22 +121,22 @@ def computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type='RRM'):
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        X /= SP.sqrt(2*p_ref*(1-p_ref))
+        X /= sp.sqrt(2*p_ref*(1-p_ref))
         
-    hasNan = SP.any(SP.isnan(X),axis=0)
+    hasNan = sp.any(sp.isnan(X),axis=0)
     print '%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()
 
     """ computing covariance matrix """
     print 'Computing relationship matrix...'
-    K = SP.dot(X[:,~hasNan],X[:,~hasNan].T)
+    K = sp.dot(X[:,~hasNan],X[:,~hasNan].T)
     K/= 1.*N
     print 'Relationship matrix calculation complete'
     print 'Relationship matrix written to %s.cov.'%cfile
     print 'IDs written to %s.cov.id.'%cfile
 
     """ saving to output """
-    NP.savetxt(cfile + '.cov', K, delimiter='\t',fmt='%.6f')
-    NP.savetxt(cfile + '.cov.id', iid, delimiter=' ',fmt='%s')
+    np.savetxt(cfile + '.cov', K, delimiter='\t',fmt='%.6f')
+    np.savetxt(cfile + '.cov.id', iid, delimiter=' ',fmt='%s')
     
 
 
@@ -156,7 +152,7 @@ def computePCs(plink_path,k,bfile,ffile):
     ffile        :   name of output file
     """
     try:
-        output    = subprocess.check_output('%s --version --noweb'%plink_path,shell=True)
+        output = subprocess.check_output('%s --version --noweb'%plink_path,shell=True)
         use_plink = float(output.split(' ')[1][1:-3])>=1.9
     except:
         use_plink = False
@@ -180,14 +176,14 @@ def computePCs(plink_path,k,bfile,ffile):
 def eighCovarianceMatrix(cfile):
     
     pdb.set_trace()
-    S = NP.loadtxt(cfile+'.cov.eval') #S
-    U = NP.loadtxt(cfile+'.cov.evec') #U
+    S = np.loadtxt(cfile+'.cov.eval') #S
+    U = np.loadtxt(cfile+'.cov.evec') #U
     pcs = U[:,:k]
 
     pcs -= pcs.mean(axis=0)
     pcs /= pcs.std(axis=0)
 
-    NP.savetxt(ffile,pcs,fmt='%.6f')
+    np.savetxt(ffile,pcs,fmt='%.6f')
     
 
 
@@ -235,11 +231,11 @@ def eighCovarianceMatrix(cfile):
                         be written to cfile.cov.eval and cfile.cov.evec respectively
     """
     # precompute eigenvalue decomposition
-    K = NP.loadtxt(cfile+'.cov')
-    K+= 1e-4*SP.eye(K.shape[0])
-    S,U = LA.eigh(K); S=S[::-1]; U=U[:,::-1]
-    NP.savetxt(cfile+'.cov.eval',S,fmt='%.6f')
-    NP.savetxt(cfile+'.cov.evec',U,fmt='%.6f')
+    K = np.loadtxt(cfile+'.cov')
+    K+= 1e-4*sp.eye(K.shape[0])
+    S,U = la.eigh(K); S=S[::-1]; U=U[:,::-1]
+    np.savetxt(cfile+'.cov.eval',S,fmt='%.6f')
+    np.savetxt(cfile+'.cov.evec',U,fmt='%.6f')
 
 
 def fit_null(Y,S_XX,U_XX,nfile,F):
@@ -250,15 +246,15 @@ def fit_null(Y,S_XX,U_XX,nfile,F):
     S_XX    eigenvalues of the relatedness matrix 
     U_XX    eigen vectors of the relatedness matrix
     """
-    mtSet = MTST.MultiTraitSetTest(Y,S_XX=S_XX,U_XX=U_XX,F=F)
+    mtSet = limix.MTSet(Y, S_R=S_XX, U_R=U_XX, F=F)
 
     RV = mtSet.fitNull(cache=False)
-    params = NP.array([RV['params0_g'],RV['params0_n']])
-    NP.savetxt(nfile+'.p0',params)
-    NP.savetxt(nfile+'.nll0',RV['NLL0'])
-    NP.savetxt(nfile+'.cg0',RV['Cg'])
-    NP.savetxt(nfile+'.cn0',RV['Cn'])
-    #if F is not None: NP.savetxt(nfile+'.f0',RV['params_mean'])
+    params = np.array([RV['params0_g'],RV['params0_n']])
+    np.savetxt(nfile+'.p0',params)
+    np.savetxt(nfile+'.nll0',RV['NLL0'])
+    np.savetxt(nfile+'.cg0',RV['Cg'])
+    np.savetxt(nfile+'.cn0',RV['Cn'])
+    #if F is not None: np.savetxt(nfile+'.f0',RV['params_mean'])
     
 
 def preprocess(options):
@@ -335,8 +331,8 @@ def preprocess(options):
     if options.plot_windows:
         print 'Plotting ditribution of number of SNPs'
         plot_file = options.wfile+'.wnd.pdf'
-        plt = PL.subplot(1,1,1)
-        PL.hist(nSnps,30)
-        PL.xlabel('Number of SNPs')
-        PL.ylabel('Number of windows')
-        PL.savefig(plot_file)
+        plt = pl.subplot(1,1,1)
+        pl.hist(nSnps,30)
+        pl.xlabel('Number of SNPs')
+        pl.ylabel('Number of windows')
+        pl.savefig(plot_file)
