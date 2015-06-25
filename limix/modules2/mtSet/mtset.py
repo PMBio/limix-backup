@@ -369,7 +369,7 @@ class MTSet():
             # UPDATE THE FOLLOWING
             Ifilter = {'Cr':sp.zeros(self.P,dtype=bool),
                         'Cn':sp.ones(params.shape[0],dtype=bool)}
-        return params0,Ifilter
+        return params0, Ifilter
 
 if __name__=='__main__':
     from limix.utils.preprocess import covar_rescale 
