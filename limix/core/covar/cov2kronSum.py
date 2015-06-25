@@ -39,7 +39,6 @@ class Cov2KronSum(Covariance):
         self.setColCovars(Cg, Cn)
         self.setR(R=R, S_R=S_R, U_R=U_R)
         self.dim = self.dim_c * self.dim_r
-        self._calcNumberParams()
         self._use_to_predict = False
 
     def col_covs_have_changed(self):
@@ -152,9 +151,8 @@ class Cov2KronSum(Covariance):
             return np.array([])
         return sp.concatenate(params)
 
-    def _calcNumberParams(self):
-        self.n_params = self.Cg.getNumberParams() + self.Cn.getNumberParams()
-
+    def getNumberParams(self):
+        return self.Cg.getNumberParams() + self.Cn.getNumberParams()
 
     #####################
     # Cached
@@ -273,12 +271,12 @@ class Cov2KronSum(Covariance):
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
                                                                    _MAX_DIM))
 
-        i += nCg * int(not self._Cg_act)
+        ii = i + nCg * int(not self._Cg_act)
 
-        if i < nCg:
-            rv= sp.kron(self.Cg.K_grad_i(i), self.R)
+        if ii < nCg:
+            rv= sp.kron(self.Cg.K_grad_i(ii), self.R)
         else:
-            _i = i - nCg
+            _i = ii - nCg
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 

@@ -146,7 +146,13 @@ class FixedCov(Covariance):
     # Interpretable Params
     ####################
     def getInterParams(self):
-        return SP.array([self.scale])
+        if self._scale_act:
+            return SP.array([self.scale])
+        return np.array([])
 
     def K_grad_interParam_i(self,i):
+        if i >= int(self._scale_act):
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+
         return self.K0

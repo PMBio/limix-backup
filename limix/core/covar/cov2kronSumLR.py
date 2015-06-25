@@ -40,7 +40,6 @@ class Cov2KronSumLR(Covariance):
         self.setColCovars(Cn, rank = rank)
         self.G = G
         self.dim = self.dim_c * self.dim_r
-        self._calcNumberParams()
         self._use_to_predict = False
 
     def G_has_changed(self):
@@ -162,8 +161,9 @@ class Cov2KronSumLR(Covariance):
             return np.array([])
         return sp.concatenate(params)
 
-    def _calcNumberParams(self):
-        self.n_params = self.Cg.getNumberParams() + self.Cn.getNumberParams()
+    def getNumberParams(self):
+        return (int(self._Cg_act) * self.Cg.getNumberParams() +
+                int(self._Cn_act) * self.Cn.getNumberParams())
 
 
     #####################
@@ -285,8 +285,7 @@ class Cov2KronSumLR(Covariance):
         nCg = self.Cg.getNumberParams()
         nCn = self.Cn.getNumberParams()
 
-        n = (int(self._Cg_act) * nCg +
-             int(self._Cn_act) * nCn)
+        n = self.getNumberParams()
 
         if i >= n:
             raise ValueError("Trying to retrieve the gradient over a "
