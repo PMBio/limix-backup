@@ -116,6 +116,12 @@ class FixedCov(Covariance):
             return self.params[0]
         return np.array([])
 
+    def getNumberParams(self):
+        """
+        return the number of hyperparameters
+        """
+        return int(self._scale_act)
+
     #####################
     # Cached
     #####################

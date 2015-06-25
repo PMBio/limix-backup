@@ -33,9 +33,10 @@ if __name__ == "__main__":
 
     # define covariance matrices
     sqexp = SQExpCov(X, Xstar = Xstar)
-    sqexp.act_scale = False
+    sqexp.act_scale = True
     sqexp.act_length = True
     noise = FixedCov(sp.eye(N))
+    noise.act_scale = False
     covar  = SumCov(sqexp, noise)
 
     # define gp
@@ -53,12 +54,12 @@ if __name__ == "__main__":
     print 'weights of fixed effects'
     print mean.b[0, 0], '+/-', mean.b_ste[0, 0]
     print mean.b[1, 0], '+/-', mean.b_ste[1, 0]
-    # print 'scale of sqexp'
-    # print sqexp.scale, '+/-', sqexp.scale_ste
+    print 'scale of sqexp'
+    print sqexp.scale, '+/-', sqexp.scale_ste
     print 'length of sqexp'
     print sqexp.length, '+/-', sqexp.length_ste
-    print 'scale of fixed'
-    print noise.scale, '+/-', noise.scale_ste
+    # print 'scale of fixed'
+    # print noise.scale, '+/-', noise.scale_ste
 
     # plot
     pl.subplot(111)

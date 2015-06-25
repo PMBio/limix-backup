@@ -61,12 +61,6 @@ class Covariance(Cached, Observed):
         params = self.getParams()
         self.setParams(params+pertSize*sp.randn(params.shape[0]))
 
-    def getNumberParams(self):
-        """
-        return the number of hyperparameters
-        """
-        return self.n_params
-
     def _calcNumberParams(self):
         """
         calculates the number of parameters

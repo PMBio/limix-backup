@@ -1,5 +1,6 @@
 from covar_base import Covariance
 import pdb
+import numpy as np
 import scipy as SP
 from limix.core.type.cached import Cached, cached
 
@@ -41,20 +42,26 @@ class SumCov(Covariance):
     #####################
     def setParams(self,params):
         istart = 0
-        for i in range(len(self.covars)):
-            istop = istart + self.getCovariance(i).getNumberParams()
-            self.getCovariance(i).setParams(params[istart:istop])
+        cs = filter(lambda c: c.getNumberParams() > 0, self.covars)
+        for c in cs:
+            n = c.getNumberParams()
+            istop = istart + n
+            c.setParams(params[istart:istop])
             istart = istop
         self._notify()
 
     def getParams(self):
         istart = 0
         params = SP.zeros(self.getNumberParams())
-        for i in range(len(self.covars)):
-            istop = istart + self.getCovariance(i).getNumberParams()
-            params[istart:istop] = self.getCovariance(i).getParams()
+        cs = filter(lambda c: c.getNumberParams() > 0, self.covars)
+        for c in cs:
+            istop = istart + c.getNumberParams()
+            params[istart:istop] = c.getParams()
             istart = istop
         return params
+
+    def getNumberParams(self):
+        return np.sum([c.getNumberParams() for c in self.covars])
 
     ####################
     # Predictions
