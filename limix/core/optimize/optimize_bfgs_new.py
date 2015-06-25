@@ -88,7 +88,6 @@ def opt_hyper(gpr,Ifilter=None,bounds=None,opts={},*args,**kw_args):
     params0 = gpr.getParams()
 
     def f(x):
-        print x
         x_ = X0
         x_[Ifilter_x] = x
         gpr.setParams(param_list_to_dict(x_,param_struct,skeys))
