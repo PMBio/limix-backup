@@ -131,7 +131,7 @@ class MTSet():
     ################################################
     # Fitting null model
     ###############################################
-    def fitNull(self,verbose=True,cache=False,out_dir='./cache',fname=None,rewrite=False,seed=None,n_times=10,factr=1e3,init_method=None):
+    def fitNull(self, verbose=False, cache=False, out_dir='./cache', fname=None, rewrite=False, seed=None, n_times=10, factr=1e3, init_method=None):
         """
         Fit null model
         """
@@ -167,7 +167,7 @@ class MTSet():
             for i in range(n_times):
                 params0,Ifilter=self._initParams(init_method=init_method)
                 self._gpNull.setParams(params0)
-                conv, info = self._gpNull.optimize()
+                conv, info = self._gpNull.optimize(verbose=verbose)
                 if conv: break
             if not conv:    warnings.warn("not converged")
             LMLgrad = (self._gpNull.LML_grad()['covar']**2).mean()
@@ -205,14 +205,14 @@ class MTSet():
     # Fitting alternative model
     ###########################################
 
-    def optimize(self, G, params0=None, n_times=10, verbose=True, vmax=5, perturb=1e-3, factr=1e3):
+    def optimize(self, G, params0=None, n_times=10, verbose=False, vmax=5, perturb=1e-3, factr=1e3):
         """
         Optimize the model considering G
         """
         # set params0 from null if params0 is None
         if params0 is None:
             if self.null is None:
-                if verbose:     print ".. fitting null model upstream"
+                if verbose:     print ".. fitting null model"
                 self.fitNull()
             if self.bgRE:
                 params0 = sp.concatenate([self.null['params0_g'], self.null['params0_n']])
@@ -229,7 +229,7 @@ class MTSet():
                 n_params = self.Cr.getNumberParams()
                 _params0 = {'covar': sp.concatenate([1e-3*sp.randn(n_params), params0])}
             self._gp.setParams(_params0)
-            conv, info = self._gp.optimize(factr=factr)
+            conv, info = self._gp.optimize(factr=factr, verbose=verbose)
             conv *= self.Cr.K().diagonal().max()<vmax
             conv *= self.getLMLgrad() < 0.1
             if conv or not params_was_None: break
@@ -288,7 +288,7 @@ class MTSet():
         """
         return (self._gp.LML_grad()['covar']**2).mean()
 
-    def fitNullTraitByTrait(self,verbose=True,cache=False,out_dir='./cache',fname=None,rewrite=False):
+    def fitNullTraitByTrait(self, verbose=False, cache=False, out_dir='./cache', fname=None, rewrite=False):
         """
         Fit null model trait by trait
         """
@@ -327,7 +327,7 @@ class MTSet():
                 f.close()
         return RV
 
-    def optimizeTraitByTrait(self, G, verbose=True, n_times=10, factr=1e3):
+    def optimizeTraitByTrait(self, G, verbose=False, n_times=10, factr=1e3):
         """ Optimize trait by trait """
         assert self.nullST is not None, 'fit null model beforehand'
         RV = {}
@@ -336,7 +336,7 @@ class MTSet():
             trait_id = self.traitID[p]
             self.stSet.Y = self.Y[:, p:p+1] 
             self.stSet.setNull(self.nullST[trait_id])
-            RV[trait_id] = self.stSet.optimize(G, n_times=n_times, factr=factr)
+            RV[trait_id] = self.stSet.optimize(G, n_times=n_times, factr=factr, verbose=verbose)
             self.infoOptST[trait_id] = self.stSet.getInfoOpt()
         return RV
 
