@@ -35,6 +35,10 @@ if __name__=='__main__':
 
     pdb.set_trace()
 
+    gp = GP2KronSumLR(Y = Y, F = F, A = A, Cn = Cn, G = X)
+    gp.covar.act_Cg = False
+    gp.optimize()
+
     t0 = time.time()
     print 'GP2KronSum.LML():', gp.LML()
     print 'Time elapsed:', time.time() - t0
