@@ -122,19 +122,23 @@ class Covariance(Cached, Observed):
         # U * S**(-1/2)
         return self.U()*(self.S()**(-0.5))
 
-    @cached
-    def Sgrad(self,i):
-        return dS_dti(self.Kgrad_param(i),U=self.U())
+    ###########################
+    # The following methods are deprecated
+    ############################
 
-    @cached
-    def Ugrad(self,i):
-        return dU_dti(self.Kgrad_param(i),U=self.U(),S=self.S())
+    #@cached
+    #def Sgrad(self,i):
+    #    return dS_dti(self.Kgrad_param(i),U=self.U())
 
-    @cached
-    def USi2grad(self,i):
-        # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
-        Si2grad = -0.5*self.S()**(-1.5)*self.Sgrad(i)
-        return self.Ugrad(i)*(self.S()**(-0.5)) + self.U()*Si2grad
+    #@cached
+    #def Ugrad(self,i):
+    #    return dU_dti(self.Kgrad_param(i),U=self.U(),S=self.S())
+
+    #@cached
+    #def USi2grad(self,i):
+    #    # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
+    #    Si2grad = -0.5*self.S()**(-1.5)*self.Sgrad(i)
+    #    return self.Ugrad(i)*(self.S()**(-0.5)) + self.U()*Si2grad
 
     ###########################
     # Predictions

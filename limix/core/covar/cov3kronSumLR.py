@@ -86,6 +86,9 @@ class Cov3KronSumLR(Cov2KronSum):
         self._rank_r = value.shape[1]
         self.G_has_changed()
 
+    def setG(self, value):
+        self.G = value
+
     # normal setter for col covars
     def setColCovars(self, Cg=None, Cn=None, rank=1, Cr=None):
         assert Cg is not None, 'Cov2KronSum: Specify Cg!'

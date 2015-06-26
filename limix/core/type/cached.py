@@ -55,7 +55,7 @@ class Cached(object):
                     self._cache_groups[g] = []
                 self._cache_groups[g].append(method_name)
 
-    def diff(self, func):
+    def diff(self, func, *args, **kwargs):
         if self._diff_running:
             return
 
@@ -68,18 +68,23 @@ class Cached(object):
         self._print_groups()
 
         print '-- Cached methods --'
-        cmethods = self._get_cached_methods()
+        #cmethods = self._get_cached_methods()
+        cmethods = self._registered_methods()
         pp.pprint(cmethods)
 
         caches_before = self._get_caches()
-        func()
+        func(*args, **kwargs)
         caches_after = self._get_caches()
 
         print '-- Difference between caches -- '
         for cm in cmethods:
-            if caches_before[cm] is not caches_after[cm]:
-                print '%s: %s --> %s' % (cm, std_obj_repr(caches_before[cm]),
-                                             std_obj_repr(caches_after[cm]))
+
+            changed = caches_before[cm] is not caches_after[cm]
+            print cm+':', changed
+
+            #if caches_before[cm] is not caches_after[cm]:
+            #    print '%s: %s --> %s' % (cm, std_obj_repr(caches_before[cm]),
+            #                                 std_obj_repr(caches_after[cm]))
         print '*** End ***'
         self._diff_running = False
 
@@ -87,8 +92,15 @@ class Cached(object):
         methods = self._registered_methods()
         caches = dict()
         for m in methods:
-            if hasattr(self, '_cache_' + m):
-                caches[m] = getattr(self, '_cache_' + m)
+            #if hasattr(self, '_cache_' + m):
+            #    caches[m] = getattr(self, '_cache_' + m)
+            try:
+                caches[m] = getattr(self, m)()
+            except:
+                try:
+                    caches[m] = getattr(self, m)(0)
+                except:
+                    continue
         return caches
 
     def _get_cached_methods(self):

@@ -42,7 +42,25 @@ if __name__=='__main__':
         print (cov.logdet_grad_i_debug(0)-cov.logdet_grad_i(0))**2
 
     # define GP
-    gp = GP3KronSumLR(Y = Y, Cg = Cg, Cn = Cn, XX = R, G = G, rank = 1)
+    gp = GP3KronSumLR(Y = Y, Cg = Cg, Cn = Cn, R = R, G = G, rank = 1)
+    #gp.diff(gp.covar.setRandomParams)
+    #pdb.set_trace()
+
+    # change params
+    #gp.covar.diff(gp.covar.setRandomParams)
+    #gp.covar.Lr()
+    #gp.covar.diff(gp.covar.setRandomParams)
+    import ipdb
+    ipdb.set_trace()
+    gp.covar.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
+    ipdb.set_trace()
+    gp.covar.Wr()
+    gp.covar.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
+    ipdb.set_trace()
+
+
+
+
     gp0 = GP(covar = copy.deepcopy(gp.covar), mean = copy.deepcopy(gp.mean))
 
     t0 = time.time()
