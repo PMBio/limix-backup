@@ -186,6 +186,8 @@ class MTSet():
                 warning.warn('generalize to more than 1 fixed effect term')
             if self.bgRE:
                 RV['params0_g'] = self.Cg.getParams()
+            else:
+                RV['params0_g'] = sp.zeros_like(self.Cn.getParams())
             RV['params0_n'] = self.Cn.getParams()
             if self.bgRE:
                 RV['Cg'] = self.Cg.K()
