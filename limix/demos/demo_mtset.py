@@ -26,8 +26,12 @@ if __name__ == '__main__':
     ipdb.set_trace()
 
     # mtSet not PC
-    #setTest = limix.MTSet(Y=Y, F=F)
-    setTest = limix.MTSet(Y=Y, S_R=S_R, U_R=U_R)
+    if 1:
+        # mtSetPC
+        setTest = limix.MTSet(Y=Y, F=F)
+    else:
+        # mtSet
+        setTest = limix.MTSet(Y=Y, S_R=S_R, U_R=U_R)
     nullMTInfo = setTest.fitNull(cache=False)
     nullSTInfo = setTest.fitNullTraitByTrait(cache=False)
 

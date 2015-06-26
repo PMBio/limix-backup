@@ -159,13 +159,11 @@ class MTSet():
             else:
                 self._gpNull = GP2KronSumLR(self.Y, self.Cn, G=sp.ones((self.N,1)), F=self.F, A=sp.eye(self.P))
                 # freezes Cg to 0
-                n_params = self._gpNull.covar.Cg.getNumberParams()
-                self.Cg.setParams(1e-6 * sp.ones(n_params))
-                print self.Cg.getParams()
-                self.Cg.act_K = False
-                print self.Cg.getParams()
+                n_params = self._gpNull.covar.Cr.getNumberParams()
+                self._gpNull.covar.Cr.setParams(1e-6 * sp.ones(n_params))
+                self._gpNull.covar.act_Cr = False
             for i in range(n_times):
-                params0,Ifilter=self._initParams(init_method=init_method)
+                params0 = self._initParams(init_method=init_method)
                 self._gpNull.setParams(params0)
                 conv, info = self._gpNull.optimize(verbose=verbose)
                 if conv: break
@@ -176,9 +174,11 @@ class MTSet():
                 RV['B'] = self._gpNull.mean.B[0]
             elif self._gpNull.mean.n_terms>1:
                 warning.warn('generalize to more than 1 fixed effect term')
-            RV['params0_g'] = self.Cg.getParams()
+            if self.bgRE:
+                RV['params0_g'] = self.Cg.getParams()
             RV['params0_n'] = self.Cn.getParams()
-            RV['Cg'] = self.Cg.K()
+            if self.bgRE:
+                RV['Cg'] = self.Cg.K()
             RV['Cn'] = self.Cn.K()
             RV['conv'] = sp.array([conv])
             RV['time'] = sp.array([TIME.time()-start])
@@ -357,7 +357,6 @@ class MTSet():
                     chol = la.cholesky(cov, lower=True)
                     params = chol[sp.tril_indices(self.P)]
                     params0 = {'covar': sp.concatenate([params, params])}
-            Ifilter = None
         else:
             if self.P==1: 
                 params_cn = sp.array([1.])
@@ -366,10 +365,7 @@ class MTSet():
                 chol = la.cholesky(cov, lower=True)
                 params_cn = chol[sp.tril_indices(self.P)]
             params0 = {'covar': params_cn}
-            # UPDATE THE FOLLOWING
-            Ifilter = {'Cr':sp.zeros(self.P,dtype=bool),
-                        'Cn':sp.ones(params.shape[0],dtype=bool)}
-        return params0, Ifilter
+        return params0
 
 if __name__=='__main__':
     from limix.utils.preprocess import covar_rescale 
