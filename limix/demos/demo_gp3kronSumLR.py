@@ -28,8 +28,6 @@ if __name__=='__main__':
     # define pheno
     Y = sp.randn(N, P)
 
-    pdb.set_trace()
-
     if 0:
         # debug covarianec
         cov = Cov3KronSumLR(Cn = Cn, Cg = Cg, R = R, G = G, rank = 1)
@@ -46,6 +44,19 @@ if __name__=='__main__':
     #gp.diff(gp.covar.setRandomParams)
     #pdb.set_trace()
 
+    import ipdb
+    ipdb.set_trace()
+    gp.LML()
+    import pylab as pl
+    pl.ion()
+    pl.figure(1, figsize=(20,10))
+    #gp.covar._profile(show=True)
+    gp._profile(show=True, rot=90)
+    pl.figure(2, figsize=(20,10))
+    gp.covar._profile(show=True, rot=90)
+    ipdb.set_trace()
+
+
     # change params
     import ipdb
     print 'Change Params covar:'
@@ -61,9 +72,6 @@ if __name__=='__main__':
     ipdb.set_trace()
     gp.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
     ipdb.set_trace()
-
-
-
 
     gp0 = GP(covar = copy.deepcopy(gp.covar), mean = copy.deepcopy(gp.mean))
 

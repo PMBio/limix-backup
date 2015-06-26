@@ -2,6 +2,9 @@ import inspect
 import os
 import pprint
 import re
+from time import time
+from limix.utils.util_functions import smartSum
+
 
 # HOW TO USE: Please, look at the end of the file for an example.
 
@@ -55,6 +58,16 @@ class Cached(object):
                     self._cache_groups[g] = []
                 self._cache_groups[g].append(method_name)
 
+        self._reset_profiler()
+
+    def _reset_profiler(self):
+        self.time = {}
+        self.counter = {}
+        cmethods = self._registered_methods()
+        for m in cmethods:
+            self.time[m] = 0
+            self.counter[m] = 0
+
     def diff(self, func, *args, **kwargs):
         if self._diff_running:
             return
@@ -68,7 +81,6 @@ class Cached(object):
         self._print_groups()
 
         print '-- Cached methods --'
-        #cmethods = self._get_cached_methods()
         cmethods = self._registered_methods()
         pp.pprint(cmethods)
 
@@ -147,6 +159,33 @@ class Cached(object):
             if method_name in self._cache_groups[key]:
                 self._cache_groups[key].remove(method_name)
 
+    def get_time_profile(self):
+        return self.time
+
+    def get_count_profile(self):
+        return self.counter
+
+    def _profile(self, show=False, fs=10, rot=0):
+        import pylab as pl
+        import scipy as sp
+        labels = self.time.keys()
+        t = sp.array([self.time[m] for m in labels])
+        c = sp.array([self.counter[m] for m in labels])
+        x = sp.arange(t.shape[0])
+        #import pdb
+        #pdb.set_trace()
+        plt = pl.subplot(211)
+        pl.bar(x,t)
+        plt.set_xticks(x + 0.5)
+        plt.set_xticklabels(labels, fontsize=fs, rotation=rot)
+        plt = pl.subplot(212)
+        pl.bar(x,c)
+        plt.set_xticks(x + 0.5)
+        plt.set_xticklabels(labels, fontsize=fs, rotation=rot)
+        if show:
+            pl.tight_layout()
+            pl.show()
+
 
 # This decorator works both with arguments or without
 # (i.e., @cached, @cached("group_name"), @cached(["group_name_A",
@@ -193,6 +232,8 @@ def cached(*args, **kwargs):
 
         def method_wrapper(self, *args, **kwargs):
 
+            t0 = time()
+
             # dont look at this miserable hacky variable
             _cache_identifier_pj97YCjgnp[0] = True
 
@@ -225,6 +266,9 @@ def cached(*args, **kwargs):
                     getattr(self, cached_args_name).update(provided_args)
                 else:
                     setattr(self, cached_args_name, dict())
+                self.counter[method.__name__] += 1. 
+
+            self.time[method.__name__] += time() - t0
 
             return getattr(self, cache_var_name)
 
