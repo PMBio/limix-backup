@@ -57,7 +57,7 @@ class GP2KronSumLR(GP):
         GP.__init__(self, covar=covar, mean=mean)
 
     def _observe(self):
-        self.covar.register(self.col_cov_has_changed, 'row_cov')
+        self.covar.register(self.row_cov_has_changed, 'row_cov')
         self.covar.register(self.col_cov_has_changed, 'col_cov')
         self.mean.register(self.pheno_has_changed, 'pheno')
         self.mean.register(self.designs_have_changed, 'designs')
@@ -73,7 +73,6 @@ class GP2KronSumLR(GP):
     def col_cov_has_changed(self):
         self.clear_cache('col_cov')
         self.clear_all()
-
 
     def row_cov_has_changed(self):
         self.clear_cache('row_cov')
@@ -110,11 +109,11 @@ class GP2KronSumLR(GP):
     def YLc(self):
         return sp.dot(self.mean.Y, self.covar.Lc().T)
 
-    @cached(['row_col', 'col_cov', 'pheno'])
+    @cached(['row_cov', 'col_cov', 'pheno'])
     def WrYLc(self):
         return sp.dot(self.WrY(), self.covar.Lc().T)
 
-    @cached(['row_col', 'col_cov', 'pheno'])
+    @cached(['row_cov', 'col_cov', 'pheno'])
     def WrYLcWc(self):
         return sp.dot(self.WrYLc(), self.covar.Wc().T)
 
@@ -126,19 +125,19 @@ class GP2KronSumLR(GP):
     def FYLcALc(self):
         return sp.dot(self.FYLc(), self.ALc().T)
 
-    @cached(['row_col', 'col_cov', 'pheno'])
+    @cached(['row_cov', 'col_cov', 'pheno'])
     def GGYLc(self):
         return sp.dot(self.GGY(), self.covar.Lc().T)
 
-    @cached(['row_col', 'col_cov', 'pheno'])
+    @cached(['row_cov', 'col_cov', 'pheno'])
     def WrGGYLc(self):
         return sp.dot(self.WrGGY(), self.covar.Lc().T)
 
-    @cached(['row_col', 'col_cov', 'pheno'])
+    @cached(['row_cov', 'col_cov', 'pheno'])
     def DWrYLcWc(self):
         return self.covar.D() * self.WrYLcWc()
 
-    @cached(['row_col', 'col_cov', 'pheno'])
+    @cached(['row_cov', 'col_cov', 'pheno'])
     def RYLcCtilde(self, i):
         if i < self.covar.Cr.getNumberParams():
             RYLc = self.GGYLc()
@@ -146,7 +145,7 @@ class GP2KronSumLR(GP):
             RYLc = self.YLc()
         return sp.dot(RYLc, self.covar.Ctilde(i))
 
-    @cached(['row_col', 'col_cov', 'pheno'])
+    @cached(['row_cov', 'col_cov', 'pheno'])
     def SrDWrYLcWcCbar(self, i):
         if i < self.covar.Cr.getNumberParams():
             SgDWrYLcWc = self.covar.Sg()[:, sp.newaxis] *  self.DWrYLcWc()
@@ -154,7 +153,7 @@ class GP2KronSumLR(GP):
             SgDWrYLcWc = self.DWrYLcWc()
         return sp.dot(SgDWrYLcWc, self.covar.Cbar(i))
 
-    @cached(['row_col', 'col_cov', 'pheno'])
+    @cached(['row_cov', 'col_cov', 'pheno'])
     def WrRYLcCtildeWc(self, i):
         if i < self.covar.Cr.getNumberParams():
             WrRYLc = self.WrGGYLc()
@@ -166,19 +165,19 @@ class GP2KronSumLR(GP):
     # Fixed effects
     # uses that MeanKronSum has only one term
     ###############################################
-    @cached(['designs', 'row_col'])
+    @cached(['designs', 'row_cov'])
     def WrF(self):
         return sp.dot(self.covar.Wr(), self.mean.F[0])
 
-    @cached(['designs', 'row_col'])
+    @cached(['designs', 'row_cov'])
     def GF(self):
         return sp.dot(self.covar.G.T, self.mean.F[0])
 
-    @cached(['designs', 'row_col'])
+    @cached(['designs', 'row_cov'])
     def GGF(self):
         return sp.dot(self.covar.G, self.GF())
 
-    @cached(['designs', 'row_col'])
+    @cached(['designs', 'row_cov'])
     def FGGF(self):
         return sp.dot(self.GF().T, self.GF())
 
@@ -186,55 +185,55 @@ class GP2KronSumLR(GP):
     def FF(self):
         return self.mean.Ft_dot(self.mean.F[0])
 
-    @cached(['designs', 'row_col'])
+    @cached(['designs', 'row_cov'])
     def WrGGF(self):
         return sp.dot(self.covar.Wr(), self.GGF())
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def FB(self):
         return sp.dot(self.mean.F[0], self.mean.B[0])
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def WrFB(self):
         return sp.dot(self.WrF(), self.mean.B[0])
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def GGFB(self):
         return sp.dot(self.GGF(), self.mean.B[0])
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def WrGGFB(self):
         return sp.dot(self.WrGGF(), self.mean.B[0])
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def FBALc(self):
         return sp.dot(self.FB(), self.ALc())
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def WrFBALc(self):
         return sp.dot(self.WrFB(), self.ALc())
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def GGFBALc(self):
         return sp.dot(self.GGFB(), self.ALc())
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def WrGGFBALc(self):
         return sp.dot(self.WrGGFB(), self.ALc())
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def WrGGFBALcWc(self):
         return sp.dot(self.WrGGFBALc(), self.covar.Wc().T)
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def WrFBALcWc(self):
         return sp.dot(self.WrFBALc(), self.covar.Wc().T)
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def DWrGGFBALcWc(self):
         return self.covar.D() * self.WrGGFBALcWc()
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def DWrFBALcWc(self):
         return self.covar.D() * self.WrFBALcWc()
 
@@ -250,17 +249,17 @@ class GP2KronSumLR(GP):
     def ALcWc(self):
         return sp.dot(self.ALc(), self.covar.Wc().T)
 
-    @cached(['designs', 'row_col', 'col_cov'])
+    @cached(['designs', 'row_cov', 'col_cov'])
     def WLW(self):
         # confusing notation the first W refers to kroneckered matrix
         # that brings to the low-dimensional space while the second refers to the fixed effect design
         return sp.kron(self.ALcWc().T, self.WrF())
 
-    @cached(['designs', 'row_col', 'col_cov'])
+    @cached(['designs', 'row_cov', 'col_cov'])
     def dWLW(self):
         return self.covar.d()[:,sp.newaxis] * self.WLW()
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def RFBALcCtilde(self, i):
         if i < self.covar.Cr.getNumberParams():
             RFBALc = self.GGFBALc()
@@ -268,7 +267,7 @@ class GP2KronSumLR(GP):
             RFBALc = self.FBALc()
         return sp.dot(RFBALc, self.covar.Ctilde(i))
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def SrDWrFBALcWcCbar(self, i):
         if i < self.covar.Cr.getNumberParams():
             SgDWrFBALcWc = self.covar.Sg()[:, sp.newaxis] *  self.DWrFBALcWc()
@@ -276,7 +275,7 @@ class GP2KronSumLR(GP):
             SgDWrFBALcWc = self.DWrFBALcWc()
         return sp.dot(SgDWrFBALcWc, self.covar.Cbar(i))
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def WrRFBALcCtildeWc(self, i):
         if i < self.covar.Cr.getNumberParams():
             WrRFBALc = self.WrGGFBALc()
@@ -290,7 +289,7 @@ class GP2KronSumLR(GP):
     def CtildeLcA(self, i):
         return sp.dot(self.covar.Ctilde(i), self.ALc().T)
 
-    @cached(['designs', 'row_col', 'col_cov'])
+    @cached(['designs', 'row_cov', 'col_cov'])
     def ALcCtildeLcA_o_FRF(self, i):
         if i < self.covar.Cr.getNumberParams():
             FRF = self.FGGF()
@@ -299,7 +298,7 @@ class GP2KronSumLR(GP):
         ALcCtildeALc = sp.dot(self.ALc(), self.CtildeLcA(i))
         return sp.kron(ALcCtildeALc, FRF)
 
-    @cached(['designs', 'row_col', 'col_cov'])
+    @cached(['designs', 'row_cov', 'col_cov'])
     def Cbar_o_Sr_dWLW(self, i):
         if i < self.covar.Cr.getNumberParams():
             Cbar_o_Sr = sp.kron(self.covar.Cbar(i), sp.diag(self.covar.Sg()))
@@ -307,7 +306,7 @@ class GP2KronSumLR(GP):
             Cbar_o_Sr = sp.kron(self.covar.Cbar(i), sp.eye(self.covar.rank_r))
         return sp.dot(Cbar_o_Sr, self.dWLW())
 
-    @cached(['designs', 'row_col', 'col_cov'])
+    @cached(['designs', 'row_cov', 'col_cov'])
     def WcCtildeLcA_o_WrRF(self, i):
         if i < self.covar.Cr.getNumberParams():
             self.WrRF = self.WrGGF()
@@ -336,7 +335,7 @@ class GP2KronSumLR(GP):
     ########################
     # LML terms
     ########################
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def WKiy(self):
         R = vec(self.FYLcALc())
         # the following could be further optimized but do not care for now
@@ -347,18 +346,18 @@ class GP2KronSumLR(GP):
         if self.mean.n_covs>0:
             self.mean.b = self.Areml.solve(self.WKiy())
 
-    @cached(['row_col', 'col_cov', 'pheno'])
+    @cached(['row_cov', 'col_cov', 'pheno'])
     def yKiy(self):
         return (self.YLc() * self.YLc()).sum() - (self.WrYLcWc() * self.DWrYLcWc()).sum()
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def yKiWb(self):
         return (self.WKiy() * self.mean.b).sum()
 
     #########################
     # Gradients
     #########################
-    @cached(['row_col', 'col_cov', 'pheno'])
+    @cached(['row_cov', 'col_cov', 'pheno'])
     def yKiy_grad_i(self,i):
         i = self.covar._actindex2index(i)
         r = - (self.YLc() * self.RYLcCtilde(i)).sum()
@@ -366,7 +365,7 @@ class GP2KronSumLR(GP):
         r+= 2 * (self.WrRYLcCtildeWc(i) * self.DWrYLcWc()).sum()
         return r
 
-    @cached(['designs', 'row_col', 'col_cov', 'pheno'])
+    @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def yKiWb_grad_i(self,i):
         i = self.covar._actindex2index(i)
         r = -2 * (self.YLc() * self.RFBALcCtilde(i)).sum()

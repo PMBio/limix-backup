@@ -57,7 +57,7 @@ class GP2KronSum(GP):
         GP.__init__(self, covar=covar, mean=mean)
 
     def _observe(self):
-        self.covar.register(self.col_cov_has_changed, 'row_cov')
+        self.covar.register(self.row_cov_has_changed, 'row_cov')
         self.covar.register(self.col_cov_has_changed, 'col_cov')
         self.mean.register(self.pheno_has_changed, 'pheno')
         self.mean.register(self.designs_have_changed, 'designs')

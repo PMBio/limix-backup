@@ -51,7 +51,7 @@ class GP3KronSumLR(GP2KronSum):
         GP.__init__(self, covar = covar, mean = mean)
 
     def _observe(self):
-        self.covar.register(self.col_cov_has_changed, 'row_cov')
+        self.covar.register(self.row_cov_has_changed, 'row_cov')
         self.covar.register(self.col_cov_has_changed, 'col_cov')
         self.covar.register(self.G_has_changed, 'G')
         self.mean.register(self.pheno_has_changed, 'pheno')
@@ -76,14 +76,14 @@ class GP3KronSumLR(GP2KronSum):
     def vei_HiveWrDLrYLcWc(self):
         return self.Hi_ve_WrDLrYLcWc().reshape((self.covar.rank_r, self.covar.rank_c), order = 'F')
 
-    @cached(['pheno','col_cov','row_col','G'])
+    @cached(['pheno','col_cov','row_cov','G'])
     def DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc(self):
         R  = sp.dot(self.covar.Wr(), sp.dot(self.vei_HiveWrDLrYLcWc(), self.covar.Wc().T))
         R *= -self.covar.D()
         R += self.DLrYLc()
         return R
 
-    @cached(['pheno','col_cov','row_col','G'])
+    @cached(['pheno','col_cov','row_cov','G'])
     def Rtilde_DLrYLcmDWrveiHiveWrDLrYLcWcWc_Ctilde(self, i):
         np_r = self.covar.Cr.getNumberParams()
         np_g = self.covar.Cg.getNumberParams()
