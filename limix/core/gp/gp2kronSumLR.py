@@ -326,6 +326,7 @@ class GP2KronSumLR(GP):
         return R
 
     def Areml_K_grad_i(self,i):
+        i = self.covar._actindex2index(i)
         R = sp.dot(self.WcCtildeLcA_o_WrRF(i).T, self.dWLW())
         R+= R.T
         R+= -self.ALcCtildeLcA_o_FRF(i)
@@ -359,6 +360,7 @@ class GP2KronSumLR(GP):
     #########################
     @cached(['row_col', 'col_cov', 'pheno'])
     def yKiy_grad_i(self,i):
+        i = self.covar._actindex2index(i)
         r = - (self.YLc() * self.RYLcCtilde(i)).sum()
         r+= - (self.DWrYLcWc() * self.SrDWrYLcWcCbar(i)).sum()
         r+= 2 * (self.WrRYLcCtildeWc(i) * self.DWrYLcWc()).sum()
@@ -366,6 +368,7 @@ class GP2KronSumLR(GP):
 
     @cached(['designs', 'row_col', 'col_cov', 'pheno'])
     def yKiWb_grad_i(self,i):
+        i = self.covar._actindex2index(i)
         r = -2 * (self.YLc() * self.RFBALcCtilde(i)).sum()
         r+= -2 * (self.DWrYLcWc() * self.SrDWrFBALcWcCbar(i)).sum()
         r+= 2 * (self.WrRYLcCtildeWc(i) * self.DWrFBALcWc()).sum()
