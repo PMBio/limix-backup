@@ -17,7 +17,7 @@ class cov_reml(Covariance):
         self.gp = gp
         gp.register(self.clear_all)
         self.dim = gp.mean.b.shape[0]
-        self._calcNumberParams()
+        # self._calcNumberParams()
 
     #####################
     # Params handling
@@ -28,8 +28,8 @@ class cov_reml(Covariance):
     def getParams(self,params):
         return self.gp.covar.getParams()
 
-    def _calcNumberParams(self):
-        self.n_params = self.gp.covar.getNumberParams()
+    # def _calcNumberParams(self):
+    #     self.n_params = self.gp.covar.getNumberParams()
 
     #####################
     # Cached

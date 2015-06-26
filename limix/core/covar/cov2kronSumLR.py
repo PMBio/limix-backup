@@ -156,7 +156,6 @@ class Cov2KronSumLR(Covariance):
         if len(params) != self.getNumberParams():
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
-        import ipdb; ipdb.set_trace()
         if self._Cg_act:
             self.Cg.setParams(params[:nCg])
         if self._Cn_act:
