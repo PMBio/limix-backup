@@ -47,15 +47,19 @@ if __name__=='__main__':
     #pdb.set_trace()
 
     # change params
-    #gp.covar.diff(gp.covar.setRandomParams)
-    #gp.covar.Lr()
-    #gp.covar.diff(gp.covar.setRandomParams)
     import ipdb
+    print 'Change Params covar:'
+    ipdb.set_trace()
+    gp.covar.diff(gp.covar.setRandomParams)
+    print 'Change Params gp:'
+    ipdb.set_trace()
+    gp.diff(gp.covar.setRandomParams)
+    print 'Change G covar:'
     ipdb.set_trace()
     gp.covar.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
+    print 'Change G gp:'
     ipdb.set_trace()
-    gp.covar.Wr()
-    gp.covar.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
+    gp.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
     ipdb.set_trace()
 
 
