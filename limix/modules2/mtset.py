@@ -55,6 +55,9 @@ class MTSet():
         assert not (F is not None and self.bgRE), msg
         if F is not None:
             F = remove_dependent_cols(F)
+            A = sp.eye(Y.shape[1])
+        else:
+            A = None
         #traitID
         if traitID is None:
             traitID = sp.array(['trait %d' % p for p in range(Y.shape[1])])
@@ -66,7 +69,7 @@ class MTSet():
         if self.bgRE:
             self._gp = GP3KronSumLR(Y=Y, Cg=Cg, Cn=Cn, R=R, S_R=S_R, U_R=U_R, G=G, rank = 1)
         else:
-            self._gp = GP2KronSumLR(Y=Y, Cn=Cn, G=G, F=F, A=sp.eye(Y.shape[1]))
+            self._gp = GP2KronSumLR(Y=Y, Cn=Cn, G=G, F=F, A=A)
         # null model params
         self.null = None
         # calls itself for column-by-column trait analysis
@@ -101,6 +104,13 @@ class MTSet():
     def F(self):
         try:
             return self._gp.mean.F[0]
+        except:
+            return None
+
+    @property
+    def A(self):
+        try:
+            return self._gp.mean.A[0]
         except:
             return None
 
@@ -157,10 +167,10 @@ class MTSet():
             if self.bgRE:
                 self._gpNull = GP2KronSum(Y=self.Y, F=None, A=None, Cg=self.Cg, Cn=self.Cn, R=None, S_R=self.S_R, U_R=self.U_R)
             else:
-                self._gpNull = GP2KronSumLR(self.Y, self.Cn, G=sp.ones((self.N,1)), F=self.F, A=sp.eye(self.P))
+                self._gpNull = GP2KronSumLR(self.Y, self.Cn, G=sp.ones((self.N,1)), F=self.F, A=self.A)
                 # freezes Cg to 0
                 n_params = self._gpNull.covar.Cr.getNumberParams()
-                self._gpNull.covar.Cr.setParams(1e-6 * sp.ones(n_params))
+                self._gpNull.covar.Cr.setParams(1e-9 * sp.ones(n_params))
                 self._gpNull.covar.act_Cr = False
             for i in range(n_times):
                 params0 = self._initParams(init_method=init_method)
@@ -179,6 +189,8 @@ class MTSet():
             RV['params0_n'] = self.Cn.getParams()
             if self.bgRE:
                 RV['Cg'] = self.Cg.K()
+            else:
+                RV['Cg'] = sp.zeros_like(self.Cn.K())
             RV['Cn'] = self.Cn.K()
             RV['conv'] = sp.array([conv])
             RV['time'] = sp.array([TIME.time()-start])

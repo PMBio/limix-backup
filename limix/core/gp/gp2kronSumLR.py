@@ -52,8 +52,8 @@ class GP2KronSumLR(GP):
         covar = Cov2KronSumLR(Cn=Cn, G=G, rank=rank)
         covar.setRandomParams()
         mean = MeanKronSum(Y=Y, F=F, A=A)
-        assert mean.n_terms == 1, ('GP2KronSum supports MeanKronSum'
-                                   ' means with 1 term!')
+        assert mean.n_terms <= 1, ('GP2KronSum supports MeanKronSum'
+                                   ' means with maximum 1 term!')
         GP.__init__(self, covar=covar, mean=mean)
 
     def _observe(self):
