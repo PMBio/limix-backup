@@ -51,7 +51,7 @@ class TestCov2KronSum(unittest.TestCase):
             C.K_grad_i(0)
 
     def test_param_activation(self):
-        self.C.act_Cg = False
+        self.C.act_Cr = False
         self.C.act_Cn = False
         self.assertEqual(len(self.C.getParams()), 0)
 
@@ -59,7 +59,7 @@ class TestCov2KronSum(unittest.TestCase):
             self.C.K_grad_i(0)
 
     def test_param_activation(self):
-        self.C.act_Cg = False
+        self.C.act_Cr = False
         self.C.act_Cn = False
         self.assertEqual(len(self.C.getParams()), 0)
 

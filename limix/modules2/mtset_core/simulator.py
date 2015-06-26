@@ -8,7 +8,7 @@ import pdb
 
 import sys
 sys.path.append('./../../..')
-import mtSet.pycore.external.limix.plink_reader as plink_reader
+import plink_reader
 
 
 def genBinormal(dim1,dim2,percSign=0.5,std=1e-1):

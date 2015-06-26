@@ -64,13 +64,13 @@ class MTSet():
         Cn = FreeFormCov(Y.shape[1])
         G  = 1. * (sp.rand(Y.shape[0],1)<0.2)
         if self.bgRE:
-            self._gp = GP3KronSumLR(Y=Y, Cg=Cg, Cn=Cn, S_R=S_R, U_R=U_R, G=G, rank = 1)
+            self._gp = GP3KronSumLR(Y=Y, Cg=Cg, Cn=Cn, R=R, S_R=S_R, U_R=U_R, G=G, rank = 1)
         else:
             self._gp = GP2KronSumLR(Y=Y, Cn=Cn, G=G, F=F, A=sp.eye(Y.shape[1]))
         # null model params
         self.null = None
         # calls itself for column-by-column trait analysis
-        self.mtssST = None
+        self.stSet = None
         self.nullST = None
         self.infoOpt   = None
         self.infoOptST = None
@@ -98,7 +98,11 @@ class MTSet():
     def Y(self):    return self._gp.mean.Y
 
     @property
-    def F(self):    return self._gp.mean.F[0]
+    def F(self):
+        try:
+            return self._gp.mean.F[0]
+        except:
+            return None
 
     @property
     def S_R(self):
@@ -127,7 +131,7 @@ class MTSet():
     ################################################
     # Fitting null model
     ###############################################
-    def fitNull(self,verbose=True,cache=False,out_dir='./cache',fname=None,rewrite=False,seed=None,n_times=10,factr=1e3,init_method=None):
+    def fitNull(self, verbose=False, cache=False, out_dir='./cache', fname=None, rewrite=False, seed=None, n_times=10, factr=1e3, init_method=None):
         """
         Fit null model
         """
@@ -153,7 +157,6 @@ class MTSet():
             if self.bgRE:
                 self._gpNull = GP2KronSum(Y=self.Y, F=None, A=None, Cg=self.Cg, Cn=self.Cn, R=None, S_R=self.S_R, U_R=self.U_R)
             else:
-                pdb.set_trace()
                 self._gpNull = GP2KronSumLR(self.Y, self.Cn, G=sp.ones((self.N,1)), F=self.F, A=sp.eye(self.P))
                 # freezes Cg to 0
                 n_params = self._gpNull.covar.Cg.getNumberParams()
@@ -164,7 +167,7 @@ class MTSet():
             for i in range(n_times):
                 params0,Ifilter=self._initParams(init_method=init_method)
                 self._gpNull.setParams(params0)
-                conv, info = self._gpNull.optimize()
+                conv, info = self._gpNull.optimize(verbose=verbose)
                 if conv: break
             if not conv:    warnings.warn("not converged")
             LMLgrad = (self._gpNull.LML_grad()['covar']**2).mean()
@@ -202,14 +205,14 @@ class MTSet():
     # Fitting alternative model
     ###########################################
 
-    def optimize(self, G, params0=None, n_times=10, verbose=True, vmax=5, perturb=1e-3, factr=1e3):
+    def optimize(self, G, params0=None, n_times=10, verbose=False, vmax=5, perturb=1e-3, factr=1e3):
         """
         Optimize the model considering G
         """
         # set params0 from null if params0 is None
         if params0 is None:
             if self.null is None:
-                if verbose:     print ".. fitting null model upstream"
+                if verbose:     print ".. fitting null model"
                 self.fitNull()
             if self.bgRE:
                 params0 = sp.concatenate([self.null['params0_g'], self.null['params0_n']])
@@ -226,7 +229,7 @@ class MTSet():
                 n_params = self.Cr.getNumberParams()
                 _params0 = {'covar': sp.concatenate([1e-3*sp.randn(n_params), params0])}
             self._gp.setParams(_params0)
-            conv, info = self._gp.optimize(factr=factr)
+            conv, info = self._gp.optimize(factr=factr, verbose=verbose)
             conv *= self.Cr.K().diagonal().max()<vmax
             conv *= self.getLMLgrad() < 0.1
             if conv or not params_was_None: break
@@ -285,11 +288,10 @@ class MTSet():
         """
         return (self._gp.LML_grad()['covar']**2).mean()
 
-    def fitNullTraitByTrait(self,verbose=True,cache=False,out_dir='./cache',fname=None,rewrite=False):
+    def fitNullTraitByTrait(self, verbose=False, cache=False, out_dir='./cache', fname=None, rewrite=False):
         """
         Fit null model trait by trait
         """
-        pdb.set_trace()
         read_from_file = False
         if cache:
             assert fname is not None, 'MultiTraitSetTest:: specify fname'
@@ -309,16 +311,15 @@ class MTSet():
             f.close()
             self.nullST=RV
         else:
-            """ create mtssST and fit null column by column returns all info """
-            if self.mtssST is None:
+            """ create stSet and fit null column by column returns all info """
+            if self.stSet is None:
                 y = sp.zeros((self.N,1)) 
-                self.mtssST = MultiTraitSetTest(y,R=self.R,S_R=self.S_R,U_R=self.U_R,F=self.F)
+                self.stSet = MTSet(Y=y, S_R=self.S_R, U_R=self.U_R, F=self.F)
             RV = {}
             for p in range(self.P):
                 trait_id = self.traitID[p]
-                y = self.Y[:,p:p+1]
-                self.mtssST._setY(y)
-                RV[trait_id] = self.mtssST.fitNull()
+                self.stSet.Y = self.Y[:,p:p+1]
+                RV[trait_id] = self.stSet.fitNull()
             self.nullST = RV
             if cache:
                 f = h5py.File(out_file,'w')
@@ -326,22 +327,17 @@ class MTSet():
                 f.close()
         return RV
 
-    def optimizeTraitByTrait(self,G,verbose=True,n_times=10,factr=1e3):
+    def optimizeTraitByTrait(self, G, verbose=False, n_times=10, factr=1e3):
         """ Optimize trait by trait """
         assert self.nullST is not None, 'fit null model beforehand'
-        if self.mtssST is None:
-            y = sp.zeros((self.N,1)) 
-            self.mtssST = MultiTraitSetTest(y,R=self.R,S_R=self.S_R,U_R=self.U_R,F=self.F)
         RV = {}
         self.infoOptST = {}
-        self.timeProfilingST = {}
         for p in range(self.P):
-            y = self.Y[:,p:p+1]
             trait_id = self.traitID[p]
-            self.mtssST._setY(y)
-            self.mtssST.setNull(self.nullST[trait_id])
-            RV[trait_id] = self.mtssST.optimize(G,n_times=n_times,factr=factr)
-            self.infoOptST[trait_id] = self.mtssST.getInfoOpt()
+            self.stSet.Y = self.Y[:, p:p+1] 
+            self.stSet.setNull(self.nullST[trait_id])
+            RV[trait_id] = self.stSet.optimize(G, n_times=n_times, factr=factr, verbose=verbose)
+            self.infoOptST[trait_id] = self.stSet.getInfoOpt()
         return RV
 
     def getInfoOptST(self):
@@ -373,7 +369,7 @@ class MTSet():
             # UPDATE THE FOLLOWING
             Ifilter = {'Cr':sp.zeros(self.P,dtype=bool),
                         'Cn':sp.ones(params.shape[0],dtype=bool)}
-        return params0,Ifilter
+        return params0, Ifilter
 
 if __name__=='__main__':
     from limix.utils.preprocess import covar_rescale 
@@ -390,8 +386,6 @@ if __name__=='__main__':
     R = sp.dot(X, X.T)
     R = covar_rescale(R)
     
-    pdb.set_trace()
-
     mts = mtset(Y, R=R)
     nullMTInfo = mts.fitNull(cache=False)
     mts.optimize(G)

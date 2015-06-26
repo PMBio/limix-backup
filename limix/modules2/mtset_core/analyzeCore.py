@@ -1,31 +1,28 @@
-import sys
-sys.path.append('./../../..')
 import os
-import subprocess
 import pdb
 import sys
 import csv
-import numpy as NP
+import numpy as np
 from optparse import OptionParser
 import time
-import mtSet.pycore.modules.multiTraitSetTest as MTST
-from mtSet.pycore.utils.read_utils import readNullModelFile
-from mtSet.pycore.utils.read_utils import readWindowsFile
-from mtSet.pycore.utils.read_utils import readCovarianceMatrixFile
-from mtSet.pycore.utils.read_utils import readCovariatesFile
-from mtSet.pycore.utils.read_utils import readPhenoFile
-from mtSet.pycore.external.limix import plink_reader
-import scipy as SP
+import limix
+from read_utils import readNullModelFile
+from read_utils import readWindowsFile
+from read_utils import readCovarianceMatrixFile
+from read_utils import readCovariatesFile
+from read_utils import readPhenoFile
+import plink_reader
+import scipy as sp
 import warnings
 
 def scan(bfile,Y,cov,null,wnds,minSnps,i0,i1,perm_i,resfile,F,colCovarType_r='lowrank',rank_r=1):
 
     if perm_i is not None:
         print 'Generating permutation (permutation %d)'%perm_i
-        NP.random.seed(perm_i)
-        perm = NP.random.permutation(Y.shape[0])
+        np.random.seed(perm_i)
+        perm = np.random.permutation(Y.shape[0])
 
-    mtSet = MTST.MultiTraitSetTest(Y,S_XX=cov['eval'],U_XX=cov['evec'],F=F,colCovarType_r=colCovarType_r,rank_r=rank_r)
+    mtSet = limix.MTSet(Y=Y, S_R=cov['eval'], U_R=cov['evec'], F=F, rank=rank_r)
     mtSet.setNull(null)
     bim = plink_reader.readBIM(bfile,usecols=(0,1,2,3))
     fam = plink_reader.readFAM(bfile,usecols=(0,1))
@@ -44,7 +41,7 @@ def scan(bfile,Y,cov,null,wnds,minSnps,i0,i1,perm_i,resfile,F,colCovarType_r='lo
         if perm_i is not None:
             Xr = Xr[perm,:]
         rv = mtSet.optimize(Xr)
-        line = NP.concatenate([wnds[wnd_i,:],rv['LLR']])
+        line = np.concatenate([wnds[wnd_i,:],rv['LLR']])
         wnd_file.writerow(line)
     pass
 
@@ -64,7 +61,7 @@ def analyze(options):
     F = None
     if options.ffile:
         F = readCovariatesFile(options.ffile)
-        #null['params_mean'] = SP.loadtxt(options.nfile + '.f0')
+        #null['params_mean'] = sp.loadtxt(options.nfile + '.f0')
         
 
     if F is not None: assert Y.shape[0]==F.shape[0], 'dimensions mismatch'

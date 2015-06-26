@@ -27,10 +27,10 @@ class TestGPBase(unittest.TestCase):
         f = 10
         G = 1.*(sp.rand(N, f)<0.2)
         # define col covariances
-        Cg = FreeFormCov(P)
-        self._Cg = Cg
+        Cr = FreeFormCov(P)
+        self._Cr = Cr
         Cn = FreeFormCov(P)
-        Cg.setCovariance(0.5 * sp.cov(Y.T))
+        Cr.setCovariance(0.5 * sp.cov(Y.T))
         Cn.setCovariance(0.5 * sp.cov(Y.T))
         # define gp
         self.gp = GP2KronSumLR(Y = Y, F = F, A = A, Cn = Cn, G = G)
@@ -60,8 +60,8 @@ class TestGPBase(unittest.TestCase):
 
         gp = self.gp
 
-        # gp.covar.act_Cg = False
-        self._Cg.act_K = False
+        # gp.covar.act_Cr = False
+        self._Cr.act_K = False
 
         def func(x, i):
             params = gp.getParams()

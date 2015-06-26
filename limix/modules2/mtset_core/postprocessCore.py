@@ -9,8 +9,8 @@ import glob
 import numpy as NP
 from optparse import OptionParser
 import time
-import mtSet.pycore.modules.chi2mixture as C2M
-import mtSet.pycore.external.limix.plot as plot
+import limix.stats.chi2mixture as C2M
+import limix.deprecated.utils.plot as plot
 import scipy as SP
 import utils
 
