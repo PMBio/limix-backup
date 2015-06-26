@@ -62,10 +62,12 @@ class Cached(object):
 
     def _reset_profiler(self):
         self.time = {}
+        self.time_in = {}
         self.counter = {}
         cmethods = self._registered_methods()
         for m in cmethods:
             self.time[m] = 0
+            self.time_in[m] = 0
             self.counter[m] = 0
 
     def diff(self, func, *args, **kwargs):
@@ -159,21 +161,39 @@ class Cached(object):
             if method_name in self._cache_groups[key]:
                 self._cache_groups[key].remove(method_name)
 
-    def get_time_profile(self):
-        return self.time
+    def get_time_profile(self, reduced=True):
+        if reduced:
+            # reduce time to fields taht have been caculated at least once
+            rv = {k:v for k,v in self.time.items() if self.counter[k]>0}
+        else:
+            rv = self.time
+        return rv 
 
-    def get_count_profile(self):
-        return self.counter
+    def get_timein_profile(self, reduced=True):
+        if reduced:
+            # reduce time to fields taht have been caculated at least once
+            rv = {k:v for k,v in self.time_in.items() if self.counter[k]>0}
+        else:
+            rv = self.intime
+        return rv
 
-    def _profile(self, show=False, fs=10, rot=0):
+    def get_counter_profile(self, reduced=True):
+        if reduced:
+            # reduce time to fields taht have been caculated at least once
+            rv = {k:v for k,v in self.counter.items() if v>0}
+        else:
+            rv = self.counter
+        return rv 
+
+    def _profile(self, show=False, fs=10, rot=0, reduced=True):
         import pylab as pl
         import scipy as sp
-        labels = self.time.keys()
-        t = sp.array([self.time[m] for m in labels])
-        c = sp.array([self.counter[m] for m in labels])
+        t_dict = self.get_time_profile(reduced=reduced)
+        c_dict = self.get_counter_profile(reduced=reduced)
+        labels = t_dict.keys() 
+        t = sp.array([t_dict[m] for m in labels])
+        c = sp.array([c_dict[m] for m in labels])
         x = sp.arange(t.shape[0])
-        #import pdb
-        #pdb.set_trace()
         plt = pl.subplot(211)
         pl.bar(x,t)
         plt.set_xticks(x + 0.5)
@@ -258,7 +278,9 @@ def cached(*args, **kwargs):
 
             if getattr(self, valid_var_name, False) is False or\
                     provided_args != getattr(self, cached_args_name, dict()):
+                t0in = time()
                 result = method(self, *args, **kwargs)
+                self.time_in[method.__name__] += time() - t0in 
                 setattr(self, cache_var_name, result)
                 setattr(self, valid_var_name, True)
                 if hasattr(self, cached_args_name):

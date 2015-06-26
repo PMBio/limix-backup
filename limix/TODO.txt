@@ -1,14 +1,24 @@
 --------- PAOLO ------------
 
 mtSet methods (gp2KronSum, gp3KronSum):
-    - copy mtSet function over and adapt
     - time check
 
-test diff
-    - gps:
-        change x and monitor was has been recomputed
-        x \in group_cache
-        {col_covars, row_covars, pheno, fixed effects}
+-------------------------------------- DISCUSSION WITH DANILO --------------------------------
+
+WE NEED MORE TESTS:
+    - remove debug methods and move to tests
+        (cov2kronSum, cov3kronSum, cov3KronSumLR, ...)
+
+--------------------------------------- NON URGENT TODOs --------------------------------
+
+Solve caching strategy for covariances:
+    clear_all should clear_cache('covar_base')
+    REMEMBER: once this is fixed we can go back to throw an exeption in cached.clear_cachewhen the group does not exist
+
+PRINT method for all classes
+
+
+Fix notation with PEP8 or whatever...
 
 MeanKronSum:
     - clean it up
@@ -21,23 +31,6 @@ MAke this consistent throughout:
         self._assert dimenstion()
         set stuff (with check=False)
     - you can set all the stuff you want
-
--------------------------------------- DISCUSSION WITH DANILO --------------------------------
-
-WE NEED MORE TESTS:
-    - remove debug methods and move to tests
-        (cov2kronSum, cov3kronSum, cov3KronSumLR, ...)
-
-PRINT method for all classes
-
-Solve caching strategy for covariances:
-    clear_all should clear_cache('covar_base')
-    REMEMBER: once this is fixed we can go back to throw an exeption in cached.clear_cachewhen the group does not exist
-
---------------------------------------- NON URGENT TODOs --------------------------------
-
-
-Fix notation with PEP8 or whatever...
 
 EXCEPTIONS:
     - we need dimension mismatch
