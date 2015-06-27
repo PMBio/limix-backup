@@ -4,7 +4,7 @@
 import limix
 
 #import a selection of key deprecated modules
-import deprecated.modules as modules
+#import deprecated.modules as modules
 from modules2 import *
 
 #verbose flags for the entire module

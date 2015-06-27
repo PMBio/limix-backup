@@ -195,7 +195,7 @@ setup(
     ext_package = 'limix.deprecated',
     ext_modules = [Extension('_core',get_source_files(reswig=reswig),include_dirs=get_include_dirs(),swig_opts=get_swig_opts(),extra_compile_args = get_extra_compile_args())],
     py_modules = ['limix.deprecated.core'],
-    scripts = ['scripts/limix_runner'],
+    scripts = ['scripts/limix_runner','scripts/mtSet_postprocess','scripts/mtSet_preprocess','scripts/mtSet_simPheno','scripts/mtSet_analyze'],
     packages = packages,
     package_dir = {'limix': 'limix'},
     #dependencies
