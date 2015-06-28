@@ -58,6 +58,10 @@ class Cached(object):
                     self._cache_groups[g] = []
                 self._cache_groups[g].append(method_name)
 
+            setattr(self, '_cache_' + method_name, None)
+            setattr(self, '_cached_' + method_name, False)
+            setattr(self, '_cached_args_' + method_name, dict())
+
         self._reset_profiler()
 
     def _reset_profiler(self):
@@ -93,7 +97,11 @@ class Cached(object):
         print '-- Difference between caches -- '
         for cm in cmethods:
 
-            changed = caches_before[cm] is not caches_after[cm]
+            try:
+                changed = caches_before[cm] is not caches_after[cm]
+            except:
+                import ipdb; ipdb.set_trace()
+
             print cm+':', changed
 
             #if caches_before[cm] is not caches_after[cm]:
@@ -106,23 +114,23 @@ class Cached(object):
         methods = self._registered_methods()
         caches = dict()
         for m in methods:
-            #if hasattr(self, '_cache_' + m):
-            #    caches[m] = getattr(self, '_cache_' + m)
-            try:
-                caches[m] = getattr(self, m)()
-            except:
-                try:
-                    caches[m] = getattr(self, m)(0)
-                except:
-                    continue
+            # if hasattr(self, '_cache_' + m):
+           caches[m] = getattr(self, '_cache_' + m)
+            # try:
+            #     caches[m] = getattr(self, m)()
+            # except:
+            #     try:
+            #         caches[m] = getattr(self, m)(0)
+            #     except:
+            #         continue
         return caches
 
     def _get_cached_methods(self):
         methods = self._registered_methods()
         cmethods = []
         for m in methods:
-            if hasattr(self, '_cache_' + m) and getattr(self, '_cached_' + m):
-                cmethods.append(m)
+            # if hasattr(self, '_cache_' + m) and getattr(self, '_cached_' + m):
+            cmethods.append(m)
         return cmethods
 
     def _registered_methods(self):
@@ -143,7 +151,7 @@ class Cached(object):
 
         for g in cache_groups:
             if g not in self._cache_groups:
-                #raise Exception('Cache group %s does not exist.' % g)
+                # raise Exception('Cache group %s does not exist.' % g)
                 continue
 
             for method_name in self._cache_groups[g]:
@@ -152,14 +160,11 @@ class Cached(object):
                 setattr(self, '_cached_args_' + method_name, dict())
 
     def fill_cache(self, method_name, value):
-        #if method_name not in self._registered_methods():
-        #    raise ValueError("The method %s is not registered in this cache."
-        #                     % method_name)
+        if method_name not in self._registered_methods():
+           raise ValueError("The method %s is not registered in this cache."
+                            % method_name)
         setattr(self, '_cache_' + method_name, value)
         setattr(self, '_cached_' + method_name, True)
-        for key in self._cache_groups.keys():
-            if method_name in self._cache_groups[key]:
-                self._cache_groups[key].remove(method_name)
 
     def get_time_profile(self, reduced=True):
         if reduced:
@@ -167,7 +172,7 @@ class Cached(object):
             rv = {k:v for k,v in self.time.items() if self.counter[k]>0}
         else:
             rv = self.time
-        return rv 
+        return rv
 
     def get_timein_profile(self, reduced=True):
         if reduced:
@@ -183,14 +188,14 @@ class Cached(object):
             rv = {k:v for k,v in self.counter.items() if v>0}
         else:
             rv = self.counter
-        return rv 
+        return rv
 
     def _profile(self, show=False, fs=10, rot=0, reduced=True):
         import pylab as pl
         import scipy as sp
         t_dict = self.get_time_profile(reduced=reduced)
         c_dict = self.get_counter_profile(reduced=reduced)
-        labels = t_dict.keys() 
+        labels = t_dict.keys()
         t = sp.array([t_dict[m] for m in labels])
         c = sp.array([c_dict[m] for m in labels])
         x = sp.arange(t.shape[0])
@@ -218,7 +223,7 @@ def cached(*args, **kwargs):
     # the method was called in
     # cached_args = dict()
     filter_out = []
-    groups = ['default']
+    _groups = ['default']
     # This is a hacky thing so that one can know that a method_wrapper
     # object, defined bellow, really came from here.
     _cache_identifier_pj97YCjgnp = [False]
@@ -226,16 +231,16 @@ def cached(*args, **kwargs):
     if not deco_without_arg:
         if len(args) > 0:
             if type(args[0]) is list or type(args[0]) is tuple:
-                groups += list(args[0])
+                _groups += list(args[0])
             else:
-                groups.append(args[0])
+                _groups.append(args[0])
 
         if len(kwargs) == 1:
             assert 'exclude' in kwargs, ("'exclude' is the only keyword "
                                          "allowed here.")
             filter_out = kwargs['exclude']
     else:
-        groups.append(args[0].__name__)
+        _groups.append(args[0].__name__)
 
     def real_cached(method):
 
@@ -245,6 +250,7 @@ def cached(*args, **kwargs):
         cache_var_name = '_cache_' + method.__name__
         valid_var_name = '_cached_' + method.__name__
         cached_args_name = '_cached_args_' + method.__name__
+        groups = _groups
 
         debug = int(os.getenv('LIMIX_DEBUG', 0))
         if debug:
@@ -256,6 +262,8 @@ def cached(*args, **kwargs):
 
             # dont look at this miserable hacky variable
             _cache_identifier_pj97YCjgnp[0] = True
+            # this is meant to insert groups in this scope
+            groups
 
             (argnames, argvalues) = _fetch_argnames_argvalues(method, args,
                                                               kwargs)
@@ -266,13 +274,6 @@ def cached(*args, **kwargs):
             for f in filter_out:
                 del provided_args[f]
 
-            for g in groups:
-                if g not in self._cache_groups:
-                    self._cache_groups[g] = []
-
-                if method.__name__ not in self._cache_groups[g]:
-                    self._cache_groups[g].append(method.__name__)
-
             if not hasattr(self, cached_args_name):
                 setattr(self, cached_args_name, dict())
 
@@ -280,7 +281,10 @@ def cached(*args, **kwargs):
                     provided_args != getattr(self, cached_args_name, dict()):
                 t0in = time()
                 result = method(self, *args, **kwargs)
-                self.time_in[method.__name__] += time() - t0in 
+                try:
+                    self.time_in[method.__name__] += time() - t0in
+                except:
+                    import ipdb; ipdb.set_trace()
                 setattr(self, cache_var_name, result)
                 setattr(self, valid_var_name, True)
                 if hasattr(self, cached_args_name):
@@ -288,7 +292,7 @@ def cached(*args, **kwargs):
                     getattr(self, cached_args_name).update(provided_args)
                 else:
                     setattr(self, cached_args_name, dict())
-                self.counter[method.__name__] += 1. 
+                self.counter[method.__name__] += 1.
 
             self.time[method.__name__] += time() - t0
 

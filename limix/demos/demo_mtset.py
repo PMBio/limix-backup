@@ -11,10 +11,10 @@ import limix
 if __name__ == '__main__':
 
     # generate data
-    N = 500
+    N = 5000
     f = 10
-    P = 3
-    K = 2
+    P = 4
+    K = 3
     Y = sp.randn(N, P)
     G = 1.*(sp.rand(N, f)<0.2)
     X = 1.*(sp.rand(N, f)<0.2)
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     S_R, U_R = la.eigh(R)
     F = sp.rand(N, K)
 
-    ipdb.set_trace()
+    # ipdb.set_trace()
 
     # mtSet not PC
     if 1:
@@ -37,4 +37,3 @@ if __name__ == '__main__':
 
     optInfo = setTest.optimize(G)
     optInfo = setTest.optimizeTraitByTrait(G)
-
