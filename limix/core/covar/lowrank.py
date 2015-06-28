@@ -30,8 +30,9 @@ class LowRankCov(Covariance):
         self._use_to_predict = False
 
     def clear_all(self):
-        self.clear_cache('Xgrad')
-        Covariance.clear_all(self)
+        # self.clear_cache('Xgrad')
+        # Covariance.clear_all(self)
+        self.clear_cache('default')
 
     #####################
     # Properties
@@ -71,7 +72,8 @@ class LowRankCov(Covariance):
                              "is not active.")
         if self._X_act:
             self.params[:] = params
-            self.clear_all()
+            # self.clear_all()
+            self.clear_cache('default')
             self._notify()
 
     def getParams(self):

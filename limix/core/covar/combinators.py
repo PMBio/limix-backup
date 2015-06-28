@@ -22,6 +22,9 @@ class SumCov(Covariance):
             self.addCovariance(covar)
             covar.register(self.clear_all)
 
+    def clear_all(self):
+        self.clear_cache('default')
+
     #####################
     # Covars handling
     #####################
