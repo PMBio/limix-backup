@@ -114,15 +114,7 @@ class Cached(object):
         methods = self._registered_methods()
         caches = dict()
         for m in methods:
-            # if hasattr(self, '_cache_' + m):
            caches[m] = getattr(self, '_cache_' + m)
-            # try:
-            #     caches[m] = getattr(self, m)()
-            # except:
-            #     try:
-            #         caches[m] = getattr(self, m)(0)
-            #     except:
-            #         continue
         return caches
 
     def _get_cached_methods(self):
@@ -151,8 +143,7 @@ class Cached(object):
 
         for g in cache_groups:
             if g not in self._cache_groups:
-                # raise Exception('Cache group %s does not exist.' % g)
-                continue
+                raise Exception('Cache group %s does not exist.' % g)
 
             for method_name in self._cache_groups[g]:
                 setattr(self, '_cache_' + method_name, None)
