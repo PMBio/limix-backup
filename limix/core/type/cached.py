@@ -331,9 +331,12 @@ def _fetch_argnames_argvalues(method, args, kwargs):
     if len(argnames) == 1:
         return ([],[])
 
-    del argnames[argnames.index('self')]
+    # assert argnames[0] == 'self'
+    # del argnames[argnames.index('self')]
+    del argnames[0]
 
-    defaults = inspect.getargspec(method)[3]
+    # defaults = inspect.getargspec(method)[3]
+    defaults = method.func_defaults
     if defaults is None:
         defaults = []
     argvalues = _map_args_kwargs_to_argvalues(args, kwargs, argnames, defaults)
