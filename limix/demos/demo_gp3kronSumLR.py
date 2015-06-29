@@ -41,8 +41,14 @@ if __name__=='__main__':
 
     # define GP
     gp = GP3KronSumLR(Y = Y, Cg = Cg, Cn = Cn, R = R, G = G, rank = 1)
+    gp.optimize()
+
+
+
     #gp.diff(gp.covar.setRandomParams)
     #pdb.set_trace()
+
+if 0:
 
     import ipdb
     ipdb.set_trace()
