@@ -323,7 +323,12 @@ def _map_args_kwargs_to_argvalues(args, kwargs, argnames, defaults):
 # information I can return (argnames, argvalues) with all the argument names
 # and argument values.
 def _fetch_argnames_argvalues(method, args, kwargs):
-    argnames = inspect.getargspec(method)[0]
+    # argnames = inspect.getargspec(method)[0]
+    argnames = method.func_code.co_varnames
+    if len(argnames) == 1:
+        return ([],[])
+
+    argnames = list(argnames)
     del argnames[argnames.index('self')]
 
     defaults = inspect.getargspec(method)[3]
