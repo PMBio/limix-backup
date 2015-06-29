@@ -42,7 +42,7 @@ if __name__=='__main__':
     out_file = './times.hdf5'
 
     if not os.path.exists(out_file) or 'recalc' in sys.argv:
-        Ns = sp.array([100,150,200,300,500,800,1200,1600,2000,3000,4000,5000])
+        Ns = sp.array([100,150,200,300,500,800,1200,1600,2000,3000])
         n_rips = 5 
         t = sp.zeros((Ns.shape[0], n_rips))
         t0 = sp.zeros((Ns.shape[0], n_rips))

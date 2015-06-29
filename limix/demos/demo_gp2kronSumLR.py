@@ -33,9 +33,26 @@ if __name__=='__main__':
     A = sp.eye(P)
     Y = sp.randn(N, P)
 
+    gp = GP2KronSumLR(Y = Y, F = F, A = A, Cn = Cn, G = X)
+    print gp.covar.counter['Wc']
+    gp.covar.debug = True
+    gp.covar.Cr.setRandomParams()
+    print gp.covar.counter['Wc']
     pdb.set_trace()
 
-    gp = GP2KronSumLR(Y = Y, F = F, A = A, Cn = Cn, G = X)
+    for i in range(10):
+        gp.covar.setRandomParams()
+        gp.LML()
+        #gp.LML_grad()
+
+    import pylab as PL
+    PL.ion()
+    PL.figure(1, figsize = (20,10))
+    gp._profile()
+    PL.figure(2, figsize = (20,10))
+    gp.covar._profile()
+    pdb.set_trace()
+
     gp.covar.act_Cg = False
     gp.optimize()
 
