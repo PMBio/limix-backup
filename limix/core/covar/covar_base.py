@@ -23,14 +23,9 @@ class Covariance(Cached, Observed):
 
     def clear_all(self):
         # TODO: define groups for those
-        try:
-            self.clear_cache('K','Kcross','K_grad_i',
-                              'logdet','logdet_grad_i',
-                              'inv','chol','S','U',
-                              'USi2','Sgrad','Ugrad')
-        except:
-            import ipdb; ipdb.set_trace()
-            pass
+        self.clear_cache('K','Kcross','K_grad_i',
+                          'logdet','logdet_grad_i',
+                          'inv','chol','S','U','USi2')
 
     #######################
     # Param Handling

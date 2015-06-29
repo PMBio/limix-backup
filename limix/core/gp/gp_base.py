@@ -45,7 +45,6 @@ class GP(Cached, Observed):
         self.mean = mean
         self.Areml = cov_reml(self)
         self._observe()
-        # self.clear_all()
 
     def _observe(self):
         # different notification should be possible

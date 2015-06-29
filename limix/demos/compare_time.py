@@ -7,7 +7,7 @@ from limix.core.gp import GP
 from limix.utils.preprocess import covar_rescale
 #import old version of mtSet
 import sys
-# sys.path.append('/Users/casale/Documents/mksum/mksum/mtSet_rev')
+sys.path.append('/Users/casale/Documents/mksum/mksum/mtSet_rev')
 from mtSet.pycore.gp.gp3kronSum import gp3kronSum as gp3ks0
 from mtSet.pycore.mean import mean
 import mtSet.pycore.covariance as covariance
@@ -52,7 +52,18 @@ if __name__=='__main__':
     gp0 = gp3ks0(mean(Y), covariance.freeform(P), covariance.freeform(P), S_XX=S, U_XX=U, rank=1)
     gp0.set_Xr(G)
 
-    gp._reset_profiler()
+#    gp._reset_profiler()
+
+    pdb.set_trace()
+    gp.covar.Sr()
+
+    t0 = time.time()
+    gp.LML()
+    t1 = time.time()
+    gp0.LML()
+    t2 = time.time()
+    print t1-t0
+    print t2-t1
 
     for i in range(100):
         print i
