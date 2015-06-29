@@ -43,16 +43,14 @@ class Cov2KronSumLR(Covariance):
         self._use_to_predict = False
 
     def G_has_changed(self):
-        # self.clear_cache('row_cov')
-        # self.clear_all()
-        self.clear_cache('default')
+        self.clear_cache('row_cov')
+        self.clear_all()
         self._notify('row_cov')
         self._notify()
 
     def col_covs_have_changed(self):
-        # self.clear_cache('col_cov')
-        # self.clear_all()
-        self.clear_cache('default')
+        self.clear_cache('col_cov')
+        self.clear_all()
         self._notify('col_cov')
         self._notify()
 
@@ -283,7 +281,7 @@ class Cov2KronSumLR(Covariance):
     #####################
     # Overwritten covar_base methods
     #####################
-    @cached(['row_cov', 'col_cov'])
+    @cached(['row_cov', 'col_cov', 'K'])
     def K(self):
         if self.dim > _MAX_DIM:
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
@@ -292,7 +290,7 @@ class Cov2KronSumLR(Covariance):
         rv = sp.kron(self.Cr.K(), self.R()) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return rv
 
-    @cached(['row_cov', 'col_cov'])
+    @cached(['row_cov', 'col_cov', 'K_grad_i'])
     def K_grad_i(self,i):
         n = self.getNumberParams()
 
@@ -315,7 +313,7 @@ class Cov2KronSumLR(Covariance):
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 
-    @cached(['row_cov', 'col_cov'])
+    @cached(['row_cov', 'col_cov', 'logdet'])
     def logdet(self):
         rv = sp.sum(sp.log(self.Cn.S())) * self.dim_r
         rv+= sp.log(self.SpI()).sum()
@@ -323,7 +321,7 @@ class Cov2KronSumLR(Covariance):
         rv+= sp.log(self.Sg()).sum() * self.rank_c
         return rv
 
-    @cached(['row_cov', 'col_cov'])
+    @cached(['row_cov', 'col_cov', 'logdet_grad_i'])
     def logdet_grad_i(self,i):
 
         if i >= self.getNumberParams():
