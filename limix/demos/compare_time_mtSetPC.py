@@ -8,8 +8,7 @@ from limix.utils.preprocess import covar_rescale
 #import old version of mtSet
 import sys
 sys.path.append('/Users/casale/Documents/mksum/mksum/mtSet_rev')
-from mtSet.pycore.gp.gp3kronSum import gp3kronSum as gp3ks0
-from mtSet.pycore.mean import mean
+from mtSet.pycore.gp.gp2kronSumLR.py import gp2kronSumLR.py as gp2ks0
 import mtSet.pycore.covariance as covariance
 import mtSet.pycore.optimize.optimize_bfgs as OPT
 import time
@@ -22,12 +21,9 @@ from limix.utils.util_functions import smartDumpDictHdf5
 def gen_data(N=100, P=4):
     f = 20
     G = 1.*(sp.rand(N, f)<0.2)
-    X = 1.*(sp.rand(N, f)<0.2)
-    R = covar_rescale(sp.dot(X,X.T))
-    R+= 1e-4 * sp.eye(N)
-    S, U = la.eigh(R)
+    F = sp.rand(N, 30)
     Y = sp.randn(N, P)
-    return Y, S, U, G 
+    return Y, F, G 
 
 if __name__=='__main__':
 
@@ -39,9 +35,10 @@ if __name__=='__main__':
     Cg.setRandomParams()
     Cn.setRandomParams()
 
-    out_file = './times.hdf5'
+    out_file = './times_PC.hdf5'
 
     if not os.path.exists(out_file) or 'recalc' in sys.argv:
+        pdb.set_trace()
         Ns = sp.array([100,150,200,300,500,800,1200,1600,2000,3000,4000,5000])
         n_rips = 5 
         t = sp.zeros((Ns.shape[0], n_rips))
@@ -51,13 +48,12 @@ if __name__=='__main__':
             for ri in range(n_rips):
                 print '.. %d individuals - rip %d' % (n, ri)
                 print '   .. generating data'
-                Y, S, U, G = gen_data(N=n, P=P)
+                Y, S, Cg, Cn, S, U, G = gen_data(N=n, P=P)
 
                 # define GPs
-                gp = GP3KronSumLR(Y = Y, Cg = Cg, Cn = Cn, S_R = S, U_R = U, G = G, rank = 1)
-                gp0 = gp3ks0(mean(Y), covariance.freeform(P), covariance.freeform(P), S_XX=S, U_XX=U, rank=1)
+                gp = GP2KronSumLR(Y=Y, F=F, A=sp.eye(P), Cn=Cn, G=G)
+                gp0 = gp2kronSumLR(Y, covariance.freeform(P), F=F, rank=1)
                 gp0.set_Xr(G)
-                gp._reset_profiler()
 
                 if 1:
                     gp.covar.setRandomParams()
