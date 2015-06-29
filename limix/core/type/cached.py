@@ -181,7 +181,7 @@ class Cached(object):
             rv = self.counter
         return rv
 
-    def _profile(self, show=False, fs=10, rot=0, reduced=True):
+    def _profile(self, show=False, fs=10, rot=90, reduced=True):
         import pylab as pl
         import scipy as sp
         t_dict = self.get_time_profile(reduced=reduced)
@@ -193,7 +193,7 @@ class Cached(object):
         plt = pl.subplot(211)
         pl.bar(x,t)
         plt.set_xticks(x + 0.5)
-        plt.set_xticklabels(labels, fontsize=fs, rotation=rot)
+        #plt.set_xticklabels(labels, fontsize=fs, rotation=rot)
         plt = pl.subplot(212)
         pl.bar(x,c)
         plt.set_xticks(x + 0.5)
