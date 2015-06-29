@@ -62,14 +62,6 @@ class GP2KronSumLR(GP):
         self.mean.register(self.pheno_has_changed, 'pheno')
         self.mean.register(self.designs_have_changed, 'designs')
 
-    def _calc_all(self):
-        # need computing of LML_grad otherwise default group is empty
-        R = {}
-        for key in self._cache_groups['default']:
-            try:    R[key] = getattr(self, key)()
-            except: R[key] = getattr(self, key)(0)
-        return R
-
     def col_cov_has_changed(self):
         self.clear_cache('col_cov')
         self.clear_all()
