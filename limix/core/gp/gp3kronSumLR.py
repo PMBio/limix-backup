@@ -84,13 +84,21 @@ class GP3KronSumLR(GP2KronSum):
         return R
 
     @cached(['pheno','col_cov','row_cov','G'])
+    def WrWr_DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc(self):
+        return sp.dot(self.covar.Wr(), sp.dot(self.covar.Wr().T, self.DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc()))
+
+    @cached(['pheno','col_cov','row_cov','G'])
+    def Sr_DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc(self):
+        return self.covar.Sr()[:, sp.newaxis] * self.DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc()
+
+    @cached(['pheno','col_cov','row_cov','G'])
     def Rtilde_DLrYLcmDWrveiHiveWrDLrYLcWcWc_Ctilde(self, i):
         np_r = self.covar.Cr.getNumberParams()
         np_g = self.covar.Cg.getNumberParams()
         if i < np_r:
-            R = sp.dot(self.covar.Wr(), sp.dot(self.covar.Wr().T, self.DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc()))
+            R = self.WrWr_DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc() 
         elif i < (np_r + np_g):
-            R = self.covar.Sr()[:, sp.newaxis] * self.DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc()
+            R = self.Sr_DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc() 
         else:
             R = self.DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc()
         return sp.dot(R, self.covar.Ctilde(i))
