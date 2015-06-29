@@ -96,11 +96,17 @@ if __name__=='__main__':
     pdb.set_trace()
 
     import pylab as PL
+    PL.title('MTSet')
     PL.subplot(211)
     PL.plot(R['Ns'], R['t'].mean(1),'g')
     PL.plot(R['Ns'], R['t0'].mean(1),'r')
+    PL.ylabel('time')
     PL.subplot(212)
     PL.plot(R['Ns'], R['r'].mean(1))
+    PL.ylabel('Time ratio')
+    PL.xlabel('Number of samples')
+
+    pdb.set_trace()
 
     #print '\n%d-th evaluation' % i
     #print 'LML'
