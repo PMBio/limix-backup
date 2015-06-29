@@ -51,8 +51,9 @@ class Cov3KronSumLR(Cov2KronSum):
         self._use_to_predict = False
 
     def G_has_changed(self):
-        self.clear_cache('G')
-        self.clear_all()
+        # self.clear_cache('G')
+        # self.clear_all()
+        self.clear_cache('default')
         self._notify('G')
         self._notify()
 

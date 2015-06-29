@@ -19,6 +19,9 @@ class cov_reml(Covariance):
         self.dim = gp.mean.b.shape[0]
         # self._calcNumberParams()
 
+    def clear_all(self):
+        self.clear_cache('default')
+
     #####################
     # Params handling
     #####################

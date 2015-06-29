@@ -1,13 +1,13 @@
 import scipy as sp
 import scipy.linalg as la
 from limix.core.covar import Cov3KronSumLR
-from limix.core.covar import FreeFormCov 
+from limix.core.covar import FreeFormCov
 from limix.core.gp import GP3KronSumLR
 from limix.core.gp import GP
 from limix.utils.preprocess import covar_rescale
 #import old version of mtSet
 import sys
-sys.path.append('/Users/casale/Documents/mksum/mksum/mtSet_rev')
+# sys.path.append('/Users/casale/Documents/mksum/mksum/mtSet_rev')
 from mtSet.pycore.gp.gp3kronSum import gp3kronSum as gp3ks0
 from mtSet.pycore.mean import mean
 import mtSet.pycore.covariance as covariance
@@ -17,7 +17,7 @@ import pdb
 
 if __name__=='__main__':
 
-    # define region and bg terms 
+    # define region and bg terms
     N = 2000
     f = 10
     P = 3
@@ -98,26 +98,27 @@ if __name__=='__main__':
         gp._profile(show=True, rot=90)
         pl.figure(2, figsize=(20,10))
         gp.covar._profile(show=True, rot=90)
-        ipdb.set_trace()
+        # ipdb.set_trace()
 
 
 
 
     # change params
-    import ipdb
+    # import ipdb
     print 'Change Params covar:'
-    ipdb.set_trace()
+    # ipdb.set_trace()
+    # import ipdb; ipdb.set_trace()
     gp.covar.diff(gp.covar.setRandomParams)
     print 'Change Params gp:'
-    ipdb.set_trace()
+    # ipdb.set_trace()
     gp.diff(gp.covar.setRandomParams)
     print 'Change G covar:'
-    ipdb.set_trace()
+    # ipdb.set_trace()
     gp.covar.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
     print 'Change G gp:'
-    ipdb.set_trace()
+    # ipdb.set_trace()
     gp.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
-    ipdb.set_trace()
+    # ipdb.set_trace()
 
     gp0 = GP(covar = copy.deepcopy(gp.covar), mean = copy.deepcopy(gp.mean))
 
@@ -141,4 +142,3 @@ if __name__=='__main__':
 
     pdb.set_trace()
     gp.optimize()
-

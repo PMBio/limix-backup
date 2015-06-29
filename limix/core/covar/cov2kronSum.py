@@ -42,14 +42,16 @@ class Cov2KronSum(Covariance):
         self._use_to_predict = False
 
     def col_covs_have_changed(self):
-        self.clear_cache('col_cov')
-        self.clear_all()
+        # self.clear_cache('col_cov')
+        # self.clear_all()
+        self.clear_cache('default')
         self._notify('col_cov')
         self._notify()
 
     def R_has_changed(self):
-        self.clear_cache('row_cov')
-        self.clear_all()
+        # self.clear_cache('row_cov')
+        # self.clear_all()
+        self.clear_cache('default')
         self._notify('row_cov')
         self._notify()
 
