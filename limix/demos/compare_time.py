@@ -83,6 +83,9 @@ if __name__=='__main__':
     print tp['Wr'], '(', tpin['Wr'], ')'
     print tp['Wr']/tpin['Wr']
 
+    print '\nThe whole thing'
+    print sp.sum(tp.values()), '(', sp.sum(tpin.values()), ')'
+
     import ipdb
     ipdb.set_trace()
 
