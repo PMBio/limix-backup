@@ -257,7 +257,7 @@ class Cov2KronSum(Covariance):
     #####################
     # Overwritten covar_base methods
     #####################
-    @cached(['row_cov', 'col_cov'])
+    @cached(['row_cov', 'col_cov', 'K'])
     def K(self):
         if self.dim > _MAX_DIM:
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
@@ -266,7 +266,7 @@ class Cov2KronSum(Covariance):
         rv = sp.kron(self.Cg.K(), self.R) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return rv
 
-    @cached(['row_cov', 'col_cov'])
+    @cached(['row_cov', 'col_cov', 'K_grad_i'])
     def K_grad_i(self,i):
         nCg = self.Cg.getNumberParams()
 
@@ -287,11 +287,11 @@ class Cov2KronSum(Covariance):
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 
-    @cached(['row_cov', 'col_cov'])
+    @cached(['row_cov', 'col_cov', 'logdet'])
     def logdet(self):
         return sp.sum(sp.log(self.Cn.S())) * self.dim_r + sp.log(self.SpI()).sum()
 
-    @cached(['row_cov', 'col_cov'])
+    @cached(['row_cov', 'col_cov', 'logdet_grad_i'])
     def logdet_grad_i(self,i):
         if i >= self.getNumberParams():
             raise ValueError("Trying to retrieve the gradient over a "
