@@ -4,7 +4,7 @@
 
 import sys
 import os
-from limix.modules2.mtset_core.analyzeCore import analyze
+from limix.mtSet.core.analyzeCore import analyze
 from optparse import OptionParser
 
 if __name__ == "__main__":

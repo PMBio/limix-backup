@@ -1,5 +1,4 @@
 import sys
-sys.path.append('./../../..')
 from limix.utils.preprocess import remove_dependent_cols
 from limix.utils.util_functions import smartDumpDictHdf5
 
