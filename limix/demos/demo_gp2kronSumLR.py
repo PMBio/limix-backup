@@ -11,13 +11,37 @@ import pdb
 if __name__=='__main__':
 
     # define row caoriance
-    N = 200
+    N = 1000
     f = 10
     P = 3
     X = 1.*(sp.rand(N, f)<0.2)
 
     # define col covariances
     Cn = FreeFormCov(P)
+
+
+    # define fixed effects and pheno
+    F = 1.*(sp.rand(N,2)<0.5)
+    A = sp.eye(P)
+    Y = sp.randn(N, P)
+
+    gp = GP2KronSumLR(Y = Y, F = F, A = A, Cn = Cn, G = X)
+    gp.covar.Cr.setRandomParams()
+    gp.optimize()
+
+    if 0:
+        # profile time
+        for i in range(10):
+            gp.covar.setRandomParams()
+            gp.LML()
+            gp.LML_grad()
+        import pylab as PL
+        PL.ion()
+        PL.figure(1, figsize = (20,10))
+        gp._profile()
+        PL.figure(2, figsize = (20,10))
+        gp.covar._profile()
+        pdb.set_trace()
 
     if 0:
         # debug covarianec
@@ -27,34 +51,7 @@ if __name__=='__main__':
         print ((cov.inv_debug()-cov.inv())**2).mean()<1e-9
         print (cov.logdet_debug()-cov.logdet())**2
         print (cov.logdet_grad_i_debug(0)-cov.logdet_grad_i(0))**2
-
-    # define fixed effects and pheno
-    F = 1.*(sp.rand(N,2)<0.5)
-    A = sp.eye(P)
-    Y = sp.randn(N, P)
-
-    gp = GP2KronSumLR(Y = Y, F = F, A = A, Cn = Cn, G = X)
-    print gp.covar.counter['Wc']
-    gp.covar.debug = True
-    gp.covar.Cr.setRandomParams()
-    print gp.covar.counter['Wc']
-    pdb.set_trace()
-
-    for i in range(10):
-        gp.covar.setRandomParams()
-        gp.LML()
-        #gp.LML_grad()
-
-    import pylab as PL
-    PL.ion()
-    PL.figure(1, figsize = (20,10))
-    gp._profile()
-    PL.figure(2, figsize = (20,10))
-    gp.covar._profile()
-    pdb.set_trace()
-
-    gp.covar.act_Cg = False
-    gp.optimize()
+if 0:
 
     t0 = time.time()
     print 'GP2KronSum.LML():', gp.LML()
