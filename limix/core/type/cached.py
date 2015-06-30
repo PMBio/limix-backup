@@ -265,9 +265,6 @@ def cached(*args, **kwargs):
             for f in filter_out:
                 del provided_args[f]
 
-            if not hasattr(self, cached_args_name):
-                setattr(self, cached_args_name, dict())
-
             if getattr(self, valid_var_name, False) is False or\
                     provided_args != getattr(self, cached_args_name, dict()):
                 t0in = time()
