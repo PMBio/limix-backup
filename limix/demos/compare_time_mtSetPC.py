@@ -38,7 +38,7 @@ if __name__=='__main__':
     out_file = './times_PC.hdf5'
 
     if not os.path.exists(out_file) or 'recalc' in sys.argv:
-        Ns = sp.array([100,150,200,300,500,800,1200,1600,2000,3000,4000,5000])
+        Ns = sp.array([100,150,200,300,500,800,1200,1600,2000,3000,4000,5000,6000,8000,10000,12000,14000,16000,20000,24000,32000,40000])
         n_rips = 5 
         t = sp.zeros((Ns.shape[0], n_rips))
         t0 = sp.zeros((Ns.shape[0], n_rips))
@@ -89,14 +89,18 @@ if __name__=='__main__':
     pdb.set_trace()
 
     import pylab as PL
-    PL.title('MTSet-PC')
     PL.subplot(211)
-    PL.plot(R['Ns'], R['t'].mean(1),'g')
-    PL.plot(R['Ns'], R['t0'].mean(1),'r')
+    PL.title('MTSet-PC')
+    PL.plot(R['Ns'], R['t'].mean(1),'g',label='new')
+    PL.plot(R['Ns'], R['t0'].mean(1),'r',label='old')
+    PL.plot(R['Ns'], R['t'].mean(1)-R['t0'].mean(1),'b',label='diff')
     PL.ylabel('time')
+    PL.legend()
     PL.subplot(212)
     PL.plot(R['Ns'], R['r'].mean(1))
     PL.ylabel('Time ratio')
     PL.xlabel('Number of samples')
+    PL.savefig('mtSetPC.pdf')
+    PL.show()
     pdb.set_trace()
 
