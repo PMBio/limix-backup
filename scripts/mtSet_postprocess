@@ -3,7 +3,7 @@
 # All rights reserved.
 
 sys.path.append(path_mtSet)
-from limix.modules2.mtset_core.postprocessCore import postprocess
+from limix.mtSet.core.postprocessCore import postprocess
 from optparse import OptionParser
 
 if __name__ == "__main__":

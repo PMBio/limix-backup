@@ -5,7 +5,8 @@ import scipy.linalg as LA
 import pdb
 import os
 
-base_folder = './../../test_limix/mtSet/data'
+dir_name = os.path.dirname(os.path.realpath(__file__))
+base_folder = os.path.join(dir_name, 'data')
 
 class TestMTSet(unittest.TestCase):
     """test class for optimization""" 
