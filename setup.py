@@ -8,6 +8,8 @@ from setuptools import find_packages
 import sys,os,re
 from distutils.core import Extension
 from distutils.command.build import build
+from distutils.command.build_ext import build_ext
+from distutils.errors import CompileError
 
 try:
     from setuptools import setup
@@ -131,8 +133,11 @@ def get_swig_opts():
     return swig_opts
 
 def get_extra_compile_args():
-    return ['-std=c++0x', '--stdlib=libc++']
-    #return []
+    # return ['-std=c++0x', '-stdlib=libc++']
+    return []
+
+def try_to_add_compile_args():
+    return ['-std=c++0x', '-stdlib=libc++']
 
 import numpy
 
@@ -143,6 +148,32 @@ class CustomBuild(build):
         ('build_clib', build.has_c_libraries),
         ('build_scripts', build.has_scripts),
     ]
+
+class CustomBuildExt(build_ext):
+    def build_extensions(self):
+        import tempfile
+
+        flags = try_to_add_compile_args()
+
+        f = tempfile.NamedTemporaryFile(suffix=".cpp", delete=True)
+        f.name
+        c = self.compiler
+
+        ok_flags = []
+
+        for flag in flags:
+            try:
+                c.compile([f.name], extra_postargs=ok_flags+[flag])
+            except CompileError:
+                pass
+            else:
+                ok_flags.append(flag)
+
+        for ext in self.extensions:
+            ext.extra_compile_args += ok_flags
+
+        f.close()
+        build_ext.build_extensions(self)
 
 reswig = False
 if '--reswig' in sys.argv:
@@ -180,11 +211,12 @@ def get_test_suite():
     test_suite2 = TestLoader().discover('test_limix')
     return TestSuite([test_suite1, test_suite2])
 
+
 #create setup:
 setup(
     name = 'limix',
     version = '0.7.6',
-    cmdclass={'build': CustomBuild},
+    cmdclass={'build': CustomBuild, 'build_ext': CustomBuildExt},
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
     author_email = "stegle@ebi.ac.uk",
     description = ('A flexible and fast mixed model toolbox written in C++/python'),
