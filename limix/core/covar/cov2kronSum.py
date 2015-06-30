@@ -202,7 +202,7 @@ class Cov2KronSum(Covariance):
 
     @cached('row_cov')
     def Sr(self):
-        RV, U = LA.eigh(self.R)
+        RV, U = LA.eigh(self.R, check_finite=False)
         self.fill_cache('Lr',U.T)
         return RV
 
