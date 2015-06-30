@@ -1,8 +1,3 @@
---------- PAOLO ------------
-
-mtSet methods (gp2KronSum, gp3KronSum):
-    - time check
-
 -------------------------------------- DISCUSSION WITH DANILO --------------------------------
 
 WE NEED MORE TESTS:
@@ -10,7 +5,9 @@ WE NEED MORE TESTS:
         (cov2kronSum, cov3kronSum, cov3KronSumLR, ...)
 
 IMPORTANT:
-    - b is now not synchronized in the mean..
+    - change combinators notification
+
+MOVE DEMOS WHEN BUILT
 
 --------------------------------------- NON URGENT TODOs --------------------------------
 
