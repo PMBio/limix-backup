@@ -66,7 +66,7 @@ class LowRankCov(Covariance):
     #####################
     # Params handling
     #####################
-    def setParams(self, params):
+    def setParams(self, params, notify=True):
         if not self._X_act and len(params) > 0:
             raise ValueError("Trying to set a parameter via setParams that "
                              "is not active.")
@@ -74,7 +74,8 @@ class LowRankCov(Covariance):
             self.params[:] = params
             # self.clear_all()
             self.clear_cache('default')
-            self._notify()
+            if notify:
+                self._notify()
 
     def getParams(self):
         if not self._X_act:

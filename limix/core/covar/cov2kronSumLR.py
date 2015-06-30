@@ -157,9 +157,10 @@ class Cov2KronSumLR(Covariance):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
         if self._Cr_act:
-            self.Cr.setParams(params[:nCr])
+            self.Cr.setParams(params[:nCr], notify=False)
         if self._Cn_act:
-            self.Cn.setParams(params[nCr:])
+            self.Cn.setParams(params[nCr:], notify=False)
+        self.col_covs_have_changed()
 
     def getParams(self):
         params = []
@@ -187,6 +188,14 @@ class Cov2KronSumLR(Covariance):
 
     def Vg(self):
         return self._Vg
+
+    @cached('row_cov')
+    def trSg(self):
+        return self.Sg().sum()
+
+    @cached('row_cov')
+    def logdetSg(self):
+        return sp.log(self.Sg()).sum()
 
     @cached('row_cov')
     def Wr(self):
@@ -255,6 +264,10 @@ class Cov2KronSumLR(Covariance):
         return sp.dot(self.Lc(), sp.dot(C, self.Lc().T))
 
     @cached(['col_cov'])
+    def LcCtildeLc(self, i):
+        return sp.dot(self.Lc().T, sp.dot(self.Ctilde(i), self.Lc()))
+
+    @cached(['col_cov'])
     def Cbar(self, i):
         return sp.dot(self.Wc(), sp.dot(self.Ctilde(i), self.Wc().T))
 
@@ -318,7 +331,7 @@ class Cov2KronSumLR(Covariance):
         rv = sp.sum(sp.log(self.Cn.S())) * self.dim_r
         rv+= sp.log(self.SpI()).sum()
         rv+= sp.log(self.Se()).sum() * self.rank_r
-        rv+= sp.log(self.Sg()).sum() * self.rank_c
+        rv+= self.logdetSg() * self.rank_c
         return rv
 
     @cached(['row_cov', 'col_cov', 'logdet_grad_i'])
@@ -330,7 +343,7 @@ class Cov2KronSumLR(Covariance):
         i = self._actindex2index(i)
 
         if i < self.Cr.getNumberParams():
-            trR = self.Sg().sum()
+            trR = self.trSg()
             diagR = self.Sg()
         else:
             trR = self.dim_r
