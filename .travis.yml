@@ -36,3 +36,4 @@ script:
   - pip install --upgrade wheel
   - travis_wait pip install --pre --upgrade --find-links . limix
   - popd
+  - python -c "import test_limix; test_limix.test()"

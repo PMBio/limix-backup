@@ -11,6 +11,7 @@ from distutils.command.build import build
 from distutils.command.build_ext import build_ext
 from distutils.errors import CompileError
 from redirect import stdout_redirected, merged_stderr_stdout
+from Cython.Build import cythonize
 
 try:
     from setuptools import setup
@@ -228,6 +229,16 @@ def get_test_suite():
     test_suite2 = TestLoader().discover('test_limix')
     return TestSuite([test_suite1, test_suite2])
 
+extensions = [Extension('deprecated._core',
+                         get_source_files(reswig=reswig),
+                         include_dirs=get_include_dirs(),
+                         swig_opts=get_swig_opts(),
+                         extra_compile_args=get_extra_compile_args())]
+extensions += cythonize(Extension(name="ensemble.SplittingCore",
+                        language="c++",
+                        sources=["cython/lmm_forest/SplittingCore.pyx"],
+                        include_dirs=get_include_dirs() + ['.'],
+                        extra_compile_args=get_extra_compile_args()))
 
 #create setup:
 setup(
@@ -241,8 +252,8 @@ setup(
     long_description = read('README'),
     license = 'BSD',
     keywords = 'linear mixed models, GWAS, QTL, Variance component modelling',
-    ext_package = 'limix.deprecated',
-    ext_modules = [Extension('_core',get_source_files(reswig=reswig),include_dirs=get_include_dirs(),swig_opts=get_swig_opts(),extra_compile_args = get_extra_compile_args())],
+    ext_package = 'limix',
+    ext_modules = extensions,
     py_modules = ['limix.deprecated.core'],
     scripts = ['scripts/limix_runner','scripts/mtSet_postprocess','scripts/mtSet_preprocess','scripts/mtSet_simPheno','scripts/mtSet_analyze'],
     packages = packages,

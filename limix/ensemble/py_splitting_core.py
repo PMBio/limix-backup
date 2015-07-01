@@ -8,7 +8,7 @@ import numpy as NP
 import scipy as SP
 import lmm_fast
 import limix
-import SplittingCore as CSP
+from limix.ensemble import SplittingCore as CSP
 
 def is_leaf(node_ind, child_nodes):
     return child_nodes[node_ind] == 0
