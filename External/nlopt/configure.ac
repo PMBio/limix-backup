@@ -175,7 +175,7 @@ if test $have_python = yes; then
   PYTHON_INCLUDES="$pinc"
   save_CPPFLAGS=$CPPFLAGS
   CPPFLAGS="$CPPFLAGS $PYTHON_INCLUDES"
-  AC_CHECK_HEADER([Python.h], [], [AC_MSG_WARN([disabling Python wrappers]) 
+  AC_CHECK_HEADER([Python.h], [], [AC_MSG_WARN([disabling Python wrappers])
                                    have_python=no])
   if test $have_python = yes; then
     AC_MSG_CHECKING([for Numpy include directory])
@@ -223,11 +223,11 @@ elif test x"$OCT_INSTALL_DIR" = "x"; then
 	# try to find installation directory
 	AC_CHECK_PROGS(OCTAVE, octave, echo)
 	AC_CHECK_PROGS(OCTAVE_CONFIG, octave-config, echo)
-	
+
 	AC_MSG_CHECKING(octave prefix)
 	OCTAVE_PREFIX=`$OCTAVE_CONFIG --print PREFIX 2> /dev/null`
 	AC_MSG_RESULT($OCTAVE_PREFIX)
-	
+
 	AC_MSG_CHECKING(where octave plugins go)
 	OCT_INSTALL_DIR=`$OCTAVE_CONFIG --oct-site-dir 2> /dev/null | grep '/'`
 	if test -z "$OCT_INSTALL_DIR"; then
@@ -356,13 +356,13 @@ dnl -----------------------------------------------------------------------
 dnl Check for broken Solaris HUGE_VAL macro under gcc 3.4.x and similar
 
 AC_MSG_CHECKING([for working HUGE_VAL])
-AC_TRY_COMPILE([#include <math.h>], [double x = -HUGE_VAL;], 
+AC_TRY_COMPILE([#include <math.h>], [double x = -HUGE_VAL;],
 [AC_MSG_RESULT([ok])],
 [AC_TRY_COMPILE([#include <math.h>
 #ifdef __GNUC__
 #undef HUGE_VAL
 #define HUGE_VAL __builtin_huge_val()
-#endif], [double x = -HUGE_VAL;], 
+#endif], [double x = -HUGE_VAL;],
 [AC_MSG_RESULT([__builtin_huge_val()])
 AC_DEFINE(REPLACEMENT_HUGE_VAL,[__builtin_huge_val()],
           [replacement for broken HUGE_VAL macro, if needed])],
@@ -388,7 +388,7 @@ dnl add gcc warnings, in debug/maintainer mode only
 if test "$enable_debug" = yes || test "$USE_MAINTAINER_MODE" = yes; then
 if test $ac_cv_prog_gcc = yes; then
    if test "$ac_test_CFLAGS" != "set"; then
-      CFLAGS="$CFLAGS -Wall -W -Wcast-qual -Wpointer-arith -Wcast-align -Wno-long-long -pedantic -Wshadow -Wbad-function-cast -Wwrite-strings -Wstrict-prototypes -Wredundant-decls -Wnested-externs -Wundef -Wconversion -Wmissing-prototypes -Wmissing-declarations"
+      CFLAGS="$CFLAGS -Wno-uninitialized -Wall -W -Wcast-qual -Wpointer-arith -Wcast-align -Wno-long-long -pedantic -Wshadow -Wbad-function-cast -Wwrite-strings -Wredundant-decls -Wnested-externs -Wundef -Wconversion -Wmissing-prototypes -Wmissing-declarations"
    fi
    if test "$ac_test_CXXFLAGS" != "set"; then
       CXXFLAGS="$CXXFLAGS -Wall -W -Wcast-qual -Wpointer-arith -Wcast-align -Wno-long-long -pedantic -Wshadow -Wwrite-strings -Wredundant-decls -Wundef -Wconversion"

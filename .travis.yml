@@ -3,9 +3,25 @@ language: python
 # - virtualenv --python=python venv
 #   - source venv/bin/activate
 before_install:
+  # system information
   - uname -a
   - free -m
   - df -h
   - ulimit -a
+
+  - mkdir builds
+  - pushd builds
+
+  # pip upgrade
+    - virtualenv --python=python venv
+  - source venv/bin/activate
+  - python -V
+  - pip install --upgrade pip setuptools
+
+  - pip install --install-option="--no-cython-compile" Cython
+  - sudo apt-get install -qq libatlas-dev libatlas-base-dev gfortran
+
+  - popd
+
 script:
   - pip install .
