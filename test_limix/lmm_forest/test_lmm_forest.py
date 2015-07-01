@@ -5,14 +5,10 @@ Created on Sep 19, 2013
 '''
 # create some test cases
 import scipy as SP
-import limix.deprecated.modules.mixedForestUtils as utils
+from limix.ensemble import lmm_forest_utils as utils
 import h5py
-from limix.deprecated.modules.lmm_forest import Forest as MF
+from limix.ensemble.lmm_forest import Forest as MF
 import os
-#from sklearn.ensemble import RandomForestRegressor
-#from sklearn.metrics import metrics
-#from sklearn import cross_validation as CV
-#import pylab as PL
 import unittest
 
 

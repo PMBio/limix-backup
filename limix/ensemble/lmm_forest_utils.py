@@ -1,5 +1,5 @@
 import scipy as SP
-import parMixedForest as parUtils
+import par_lmm_forest as parUtils
 import random
 
 def checkMaf(X, maf=None):

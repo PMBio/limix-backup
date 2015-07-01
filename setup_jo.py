@@ -229,7 +229,7 @@ setup(
                              include_dirs=get_include_dirs(),
                              swig_opts=get_swig_opts(),
                              extra_compile_args = get_extra_compile_args())] +
-                   cythonize(Extension(name="lmmforest.SplittingCore", language="c++",
+                   cythonize(Extension(name="ensemble.SplittingCore", language="c++",
                              sources=["cython/lmm_forest/SplittingCore.pyx"],
                              include_dirs=get_include_dirs() + ['.'],
                              extra_compile_args=get_extra_compile_args())),
