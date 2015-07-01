@@ -10,7 +10,7 @@ from distutils.core import Extension
 from distutils.command.build import build
 from distutils.command.build_ext import build_ext
 from distutils.errors import CompileError
-from redirect import stdout_redirected
+from redirect import stdout_redirected, merged_stderr_stdout
 
 try:
     from setuptools import setup
@@ -176,7 +176,7 @@ class CustomBuildExt(build_ext):
 
         ok_flags = []
 
-        with stdout_redirected():
+        with stdout_redirected(), merged_stderr_stdout():
             for flag in flags:
                 try:
                     c.compile([f.name], extra_postargs=ok_flags+[flag])
