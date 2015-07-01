@@ -7,7 +7,7 @@ WE NEED MORE TESTS:
 IMPORTANT:
     - change combinators notification
 
-MOVE DEMOS WHEN BUILT
+REMOVE splitter_bed (use splitter instead) and debug it
 
 --------------------------------------- NON URGENT TODOs --------------------------------
 
