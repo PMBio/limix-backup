@@ -250,5 +250,6 @@ setup(
     #requires = ['scipy','numpy','matplotlib','pandas','scons'],
     requires=map(lambda x: x.split(" ")[0], reqs),
     install_requires = reqs,
+    setup_requires = ['numpy'],
     test_suite='setup.get_test_suite'
     )
