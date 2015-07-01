@@ -7,10 +7,10 @@ Created on Apr 2, 2013
 import scipy as SP
 import scipy.linalg as LA
 import warnings
-import pySplittingCore as SC
-import parMixedForest
-import mixedForestUtils as utils
-import BLUP
+import py_splitting_core as SC
+import par_lmm_forest
+import lmm_forest_utils as utils
+import blup as BLUP
 import SplittingCore as CSP
 
 class Forest(object):
