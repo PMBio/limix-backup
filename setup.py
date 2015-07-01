@@ -10,6 +10,7 @@ from distutils.core import Extension
 from distutils.command.build import build
 from distutils.command.build_ext import build_ext
 from distutils.errors import CompileError
+from redirect import stdout_redirected
 
 try:
     from setuptools import setup
@@ -18,6 +19,21 @@ except ImportError:
 
 import pdb
 import glob
+
+import pip.commands.install
+def install_distributions(distributions):
+    command = pip.commands.install.InstallCommand()
+    opts, args = command.parser.parse_args()
+    # TBD, why do we have to run the next part here twice before actual install
+    requirement_set = command.run(opts, distributions)
+    requirement_set = command.run(opts, distributions)
+    requirement_set.install(opts)
+try:
+    import numpy as np
+except ImportError:
+    install_distributions(['numpy'])
+    import numpy as np
+
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
@@ -124,7 +140,7 @@ def get_include_dirs():
     nlopt_include_dir = ['./External/nlopt/%s' % fn for fn in nlopt_include_dir]
     include_dirs.extend(nlopt_include_dir)
     #add numpy include dir
-    numpy_inc_path = [numpy.get_include()]
+    numpy_inc_path = [np.get_include()]
     include_dirs.extend(numpy_inc_path)
     return include_dirs
 
@@ -133,7 +149,8 @@ def get_swig_opts():
     return swig_opts
 
 def get_extra_compile_args():
-    return ['-Wno-comment', '-Wno-unused-but-set-variable']
+    return ['-Wno-comment', '-Wno-unused-but-set-variable',
+            '-Wno-overloaded-virtual', '-Wuninitialized']
 
 def try_to_add_compile_args():
     return ['-std=c++0x', '-stdlib=libc++']
@@ -158,13 +175,14 @@ class CustomBuildExt(build_ext):
 
         ok_flags = []
 
-        for flag in flags:
-            try:
-                c.compile([f.name], extra_postargs=ok_flags+[flag])
-            except CompileError:
-                pass
-            else:
-                ok_flags.append(flag)
+        with stdout_redirected():
+            for flag in flags:
+                try:
+                    c.compile([f.name], extra_postargs=ok_flags+[flag])
+                except CompileError:
+                    pass
+                else:
+                    ok_flags.append(flag)
 
         for ext in self.extensions:
             ext.extra_compile_args += ok_flags
