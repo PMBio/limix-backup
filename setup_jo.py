@@ -212,11 +212,6 @@ def get_test_suite():
     test_suite2 = TestLoader().discover('test_limix')
     return TestSuite([test_suite1, test_suite2])
 
-compile_flags = ["-O3"]
-if sys.platform != "darwin" and sys.platform != "linux2":
-    compile_flags.append("-march=native")
-
-
 #create setup:
 setup(
     name = 'limix',
@@ -236,7 +231,7 @@ setup(
                              extra_compile_args = get_extra_compile_args())] +
                    cythonize(Extension(name="lmmforest.SplittingCore", language="c++",
                              sources=["cython/lmm_forest/SplittingCore.pyx"],
-                             include_dirs=[numpy.get_include(), '.'],
+                             include_dirs=get_include_dirs() + ['.'],
                              extra_compile_args=get_extra_compile_args())),
     py_modules = ['limix.deprecated.core'],
     scripts = ['scripts/limix_runner','scripts/mtSet_postprocess',
