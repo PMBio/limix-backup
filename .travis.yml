@@ -3,7 +3,6 @@ language: python
 # - virtualenv --python=python venv
 #   - source venv/bin/activate
 before_install:
-  # system information
   - uname -a
   - free -m
   - df -h
@@ -13,7 +12,7 @@ before_install:
   - pushd builds
 
   # pip upgrade
-    - virtualenv --python=python venv
+  - virtualenv --python=python venv
   - source venv/bin/activate
   - python -V
   - pip install --upgrade pip setuptools
