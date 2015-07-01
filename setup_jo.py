@@ -229,12 +229,12 @@ setup(
     long_description = read('README'),
     license = 'BSD',
     keywords = 'linear mixed models, GWAS, QTL, Variance component modelling',
-    ext_package = 'limix.deprecated',
-    ext_modules = [Extension('_core',get_source_files(reswig=reswig),
+    ext_package = 'limix',
+    ext_modules = [Extension('deprecated._core',get_source_files(reswig=reswig),
                              include_dirs=get_include_dirs(),
                              swig_opts=get_swig_opts(),
                              extra_compile_args = get_extra_compile_args())] +
-                   cythonize(Extension(name="SplittingCore", language="c++",
+                   cythonize(Extension(name="lmmforest.SplittingCore", language="c++",
                              sources=["cython/lmm_forest/SplittingCore.pyx"],
                              include_dirs=[numpy.get_include(), '.'],
                              extra_compile_args=get_extra_compile_args())),
@@ -249,4 +249,5 @@ setup(
     requires=map(lambda x: x.split(" ")[0], reqs),
     install_requires = reqs,
     test_suite='setup.get_test_suite'
+    # include_package_data=True
     )
