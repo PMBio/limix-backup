@@ -21,7 +21,15 @@ before_install:
   - pip install --install-option="--no-cython-compile" Cython
   - sudo apt-get install -qq libatlas-dev libatlas-base-dev gfortran
 
+  - pip install wheel
+  - pip install virtualenv
+
   - popd
 
 script:
-  - pip install .
+  - python setup.py bdist_wheel
+  - virtualenv --python=python venv-for-wheel
+  - . venv-for-wheel/bin/activate
+  - pushd dist
+  - pip install --pre --upgrade --find-links . limix
+  - popd
