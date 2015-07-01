@@ -1,6 +1,7 @@
 """Variance Decomposition testing code"""
 import unittest
 import scipy as SP
+import numpy as np
 import scipy.stats
 import pdb
 import os
@@ -92,10 +93,10 @@ class Lmmlasso_test(unittest.TestCase):
         yhat_true   = self.D['yhat']
 
         RV = ((SP.absolute(params)-SP.absolute(params_true))**2).max()
-        self.assertTrue(RV<1e-6)
+        np.testing.assert_almost_equal(RV, 0., decimal=5)
 
         RV = ((SP.absolute(yhat)-SP.absolute(yhat_true))**2).max()
-        self.assertTrue(RV<1e-3)
+        np.testing.assert_almost_equal(RV, 0., decimal=3)
 
 
 
