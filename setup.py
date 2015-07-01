@@ -208,7 +208,7 @@ packages = find_packages(exclude=['tests', 'test', 'test_limix*',
 #packages.extend(['limix.deprecated', 'limix.deprecated.io',
 #                 'limix.deprecated.modules', 'limix.deprecated.stats',
 #                 'limix.deprecated.utils'])
-reqs = ['numpy', 'scipy', 'matplotlib >=1.2']
+reqs = ['numpy', 'scipy', 'matplotlib >=1.2', 'h5py']
 
 FL = get_source_files(reswig=reswig)
 
