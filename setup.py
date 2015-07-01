@@ -150,7 +150,7 @@ def get_swig_opts():
 
 def get_extra_compile_args():
     return ['-Wno-comment', '-Wno-unused-but-set-variable',
-            '-Wno-overloaded-virtual', '-Wuninitialized',
+            '-Wno-overloaded-virtual', '-Wno-uninitialized',
             '-Wno-unused-const-variable', '-Wno-unknown-warning-option']
 
 def try_to_add_compile_args():
