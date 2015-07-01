@@ -202,7 +202,7 @@ class MTSet():
             self.null = RV
             if cache:
                 f = h5py.File(out_file,'w')
-                dumpDictHdf5(RV,f)
+                smartDumpDictHdf5(RV,f)
                 f.close()
         return RV
 
