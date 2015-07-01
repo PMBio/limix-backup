@@ -151,7 +151,8 @@ def get_swig_opts():
 def get_extra_compile_args():
     return ['-Wno-comment', '-Wno-unused-but-set-variable',
             '-Wno-overloaded-virtual', '-Wno-uninitialized',
-            '-Wno-unused-const-variable', '-Wno-unknown-warning-option']
+            '-Wno-unused-const-variable', '-Wno-unknown-warning-option',
+            '-Wno-shorten-64-to-32']
 
 def try_to_add_compile_args():
     return ['-std=c++0x', '-stdlib=libc++']

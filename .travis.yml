@@ -32,7 +32,7 @@ script:
   - . venv-for-wheel/bin/activate
   - pushd dist
   - pip install --upgrade numpy
-  - pip install --upgrade scipy
+  - travis_wait pip install --upgrade scipy
   - pip install --upgrade wheel
   - travis_wait pip install --pre --upgrade --find-links . limix
   - popd
