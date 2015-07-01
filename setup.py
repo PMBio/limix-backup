@@ -138,8 +138,6 @@ def get_extra_compile_args():
 def try_to_add_compile_args():
     return ['-std=c++0x', '-stdlib=libc++']
 
-import numpy
-
 class CustomBuild(build):
     sub_commands = [
         ('build_ext', build.has_ext_modules),
