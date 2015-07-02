@@ -5,6 +5,7 @@ import os
 
 import distutils.cmd
 from setuptools import find_packages
+from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
 import sys,os,re
 from distutils.core import Extension
 from distutils.command.build import build
@@ -13,10 +14,10 @@ from distutils.errors import CompileError
 from redirect import stdout_redirected, merged_stderr_stdout
 from Cython.Build import cythonize
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+# try:
+from setuptools import setup
+# except ImportError:
+    # from distutils.core import setup
 
 import pdb
 import glob
@@ -209,7 +210,9 @@ packages = find_packages(exclude=['tests', 'test', 'test_limix*',
 #packages.extend(['limix.deprecated', 'limix.deprecated.io',
 #                 'limix.deprecated.modules', 'limix.deprecated.stats',
 #                 'limix.deprecated.utils'])
-reqs = ['numpy', 'scipy', 'matplotlib >=1.2', 'h5py']
+# reqs = ['scikit-learn', 'h5py', 'numpy', 'scipy', 'matplotlib']
+reqs = ['h5py', 'numpy', 'scipy', 'matplotlib']
+# reqs = []
 
 FL = get_source_files(reswig=reswig)
 
@@ -258,10 +261,8 @@ setup(
     scripts = ['scripts/limix_runner','scripts/mtSet_postprocess','scripts/mtSet_preprocess','scripts/mtSet_simPheno','scripts/mtSet_analyze'],
     packages = packages,
     package_dir = {'limix': 'limix'},
-    #dependencies
-    #requires = ['scipy','numpy','matplotlib','pandas','scons'],
-    requires=map(lambda x: x.split(" ")[0], reqs),
-    install_requires = reqs,
+    requires=reqs,
+    install_requires=reqs,
     setup_requires = ['numpy'],
     test_suite='setup.get_test_suite'
     )
