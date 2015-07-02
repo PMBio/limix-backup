@@ -2,5 +2,4 @@
 recursive-include External/Eigen *
 recursive-include External/nlopt *
 recursive-include src/limix *.cpp *.h
-recursive-include tests *
-recursive-include cython/lmm_forest/*
+recursive-include cython/lmm_forest *

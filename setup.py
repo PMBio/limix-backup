@@ -316,7 +316,7 @@ extensions += cythonize(Extension(name="ensemble.SplittingCore",
 #create setup:
 setup(
     name = 'limix',
-    version = '0.7.6.3',
+    version = '0.7.6.5',
     cmdclass={'build': CustomBuild, 'build_ext': CustomBuildExt},
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
     author_email = "stegle@ebi.ac.uk",
