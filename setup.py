@@ -5,17 +5,19 @@ import os
 
 import distutils.cmd
 from setuptools import find_packages
+from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
 import sys,os,re
 from distutils.core import Extension
 from distutils.command.build import build
 from distutils.command.build_ext import build_ext
 from distutils.errors import CompileError
 from redirect import stdout_redirected, merged_stderr_stdout
+from Cython.Build import cythonize
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+# try:
+from setuptools import setup
+# except ImportError:
+    # from distutils.core import setup
 
 import pdb
 import glob
@@ -208,7 +210,9 @@ packages = find_packages(exclude=['tests', 'test', 'test_limix*',
 #packages.extend(['limix.deprecated', 'limix.deprecated.io',
 #                 'limix.deprecated.modules', 'limix.deprecated.stats',
 #                 'limix.deprecated.utils'])
-reqs = ['numpy', 'scipy', 'matplotlib >=1.2', 'h5py']
+# reqs = ['scikit-learn', 'h5py', 'numpy', 'scipy', 'matplotlib']
+reqs = ['h5py', 'numpy', 'scipy', 'matplotlib']
+# reqs = []
 
 FL = get_source_files(reswig=reswig)
 
@@ -233,6 +237,16 @@ def get_test_suite():
     test_suite2 = TestLoader().discover('test_limix')
     return TestSuite([test_suite1, test_suite2])
 
+extensions = [Extension('deprecated._core',
+                         get_source_files(reswig=reswig),
+                         include_dirs=get_include_dirs(),
+                         swig_opts=get_swig_opts(),
+                         extra_compile_args=get_extra_compile_args())]
+extensions += cythonize(Extension(name="ensemble.SplittingCore",
+                        language="c++",
+                        sources=["cython/lmm_forest/SplittingCore.pyx"],
+                        include_dirs=get_include_dirs() + ['.'],
+                        extra_compile_args=get_extra_compile_args()))
 
 #create setup:
 setup(
@@ -246,16 +260,14 @@ setup(
     long_description = read('README'),
     license = 'BSD',
     keywords = 'linear mixed models, GWAS, QTL, Variance component modelling',
-    ext_package = 'limix.deprecated',
-    ext_modules = [Extension('_core',get_source_files(reswig=reswig),include_dirs=get_include_dirs(),swig_opts=get_swig_opts(),extra_compile_args = get_extra_compile_args())],
+    ext_package = 'limix',
+    ext_modules = extensions,
     py_modules = ['limix.deprecated.core'],
     scripts = ['scripts/limix_runner','scripts/mtSet_postprocess','scripts/mtSet_preprocess','scripts/mtSet_simPheno','scripts/mtSet_analyze'],
     packages = packages,
     package_dir = {'limix': 'limix'},
-    #dependencies
-    #requires = ['scipy','numpy','matplotlib','pandas','scons'],
-    requires=map(lambda x: x.split(" ")[0], reqs),
-    install_requires = reqs,
+    requires=reqs,
+    install_requires=reqs,
     setup_requires = ['numpy'],
     test_suite='setup.get_test_suite'
     )

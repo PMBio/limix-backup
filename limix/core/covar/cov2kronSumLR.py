@@ -92,10 +92,10 @@ class Cov2KronSumLR(Covariance):
     def G(self,value):
         assert value is not None, 'G cannot be set to None.'
         self._dim_r = value.shape[0]
-        self._rank_r = value.shape[1]
         # perform svd on G
         # excludes eigh < 1e-8 and recalcs G
         _value, U, S, V = svd_reduce(value)
+        self._rank_r = _value.shape[1]
         self._G  = _value
         self._Ug = U
         self._Sg = S

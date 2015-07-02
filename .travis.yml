@@ -20,6 +20,7 @@ before_install:
 
   - pip install --install-option="--no-cython-compile" Cython
   - sudo apt-get install -qq libatlas-dev libatlas-base-dev gfortran
+  - sudo apt-get install libhdf5-dev
 
   - pip install wheel
   - pip install virtualenv
@@ -36,3 +37,4 @@ script:
   - pip install --upgrade wheel
   - travis_wait pip install --pre --upgrade --find-links . limix
   - popd
+  - python -c "import test_limix; test_limix.test()"

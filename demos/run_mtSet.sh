@@ -1,5 +1,5 @@
 #!/bin/bash 
-BFILE=./data/1000G_chr22/chrom22_subsample20_maf0.10 #specify here bed basename
+BFILE=./data/chrom22_subsample20_maf0.10 #specify here bed basename
 CFILE=./out/chrom22
 PFILE=./out/pheno
 WFILE=./out/windows
@@ -7,6 +7,20 @@ NFILE=./out/null
 WSIZE=30000
 RESDIR=./out/results
 OUTFILE=./out/final
+
+# download the data
+if [ ! -e data ]; then
+mkdir data
+fi
+if [ ! -e $BFILE.bed ]; then
+wget http://www.ebi.ac.uk/~casale/mtSet_demo/chrom22_subsample20_maf0.10.bed -P data
+fi
+if [ ! -e $BFILE.bim ]; then
+wget http://www.ebi.ac.uk/~casale/mtSet_demo/chrom22_subsample20_maf0.10.bim -P data
+fi
+if [ ! -e $BFILE.fam ]; then
+wget http://www.ebi.ac.uk/~casale/mtSet_demo/chrom22_subsample20_maf0.10.fam -P data
+fi
 
 # Compute covariance matrix 
 ./../scripts/mtSet_preprocess --compute_covariance --bfile $BFILE --cfile $CFILE 

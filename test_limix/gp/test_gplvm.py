@@ -1,6 +1,7 @@
 """GP testing code"""
 import unittest
 import scipy as SP
+import numpy as np
 import pdb
 import limix.deprecated as dlimix
 import scipy.linalg as linalg
@@ -80,10 +81,11 @@ class CGPLVM_test(unittest.TestCase):
         RV = self.gpopt.opt()
         RV = self.gpopt.opt()
 
-        RV = RV & (SP.absolute(self.gp.LMLgrad()['X']).max()<1E-1)
-        RV = RV & (SP.absolute(self.gp.LMLgrad()['covar']).max()<1E-1)
-        RV = RV & (SP.absolute(self.gp.LMLgrad()['lik']).max()<1E-1)
-        self.assertTrue(RV)
+        m = (SP.absolute(self.gp.LMLgrad()['X']).max() +
+             SP.absolute(self.gp.LMLgrad()['covar']).max() +
+             SP.absolute(self.gp.LMLgrad()['lik']).max())
+
+        np.testing.assert_almost_equal(m, 0., decimal=1)
 
 
 class CGPLVM_test_constK(CGPLVM_test):
