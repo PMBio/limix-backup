@@ -218,7 +218,12 @@ from sys import platform as _platform
 if _platform == 'darwin':
     from distutils import sysconfig
     import platform
-    sysconfig._config_vars['MACOSX_DEPLOYMENT_TARGET'] = platform.mac_ver()[0]
+    vers = platform.mac_ver()[0].split('.')
+    if len(vers) == 3:
+        sysconfig._config_vars['MACOSX_DEPLOYMENT_TARGET'] =\
+            vers[0] + '.' + vers[1]
+    else:
+        sysconfig._config_vars['MACOSX_DEPLOYMENT_TARGET'] = platform.mac_ver()[0]
 
 
 def get_test_suite():
@@ -232,7 +237,7 @@ def get_test_suite():
 #create setup:
 setup(
     name = 'limix',
-    version = '0.7.6',
+    version = '0.7.6.1',
     cmdclass={'build': CustomBuild, 'build_ext': CustomBuildExt},
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
     author_email = "stegle@ebi.ac.uk",
