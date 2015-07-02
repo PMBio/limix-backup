@@ -5,14 +5,13 @@ import os
 
 import distutils.cmd
 from setuptools import find_packages
-from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
 import sys,os,re
 from distutils.core import Extension
 from distutils.command.build import build
 from distutils.command.build_ext import build_ext
 from distutils.errors import CompileError
 # from redirect import stdout_redirected, merged_stderr_stdout
-from Cython.Build import cythonize
+
 
 # try:
 from setuptools import setup
@@ -99,6 +98,12 @@ try:
 except ImportError:
     install_distributions(['numpy'])
     import numpy as np
+try:
+    import Cython
+except ImportError:
+    install_distributions(['Cython'])
+
+from Cython.Build import cythonize
 
 
 def read(fname):
@@ -275,7 +280,7 @@ packages = find_packages(exclude=['tests', 'test', 'test_limix*',
 #                 'limix.deprecated.modules', 'limix.deprecated.stats',
 #                 'limix.deprecated.utils'])
 # reqs = ['scikit-learn', 'h5py', 'numpy', 'scipy', 'matplotlib']
-reqs = ['h5py', 'numpy', 'scipy', 'matplotlib']
+reqs = ['Cython', 'h5py', 'numpy', 'scipy', 'matplotlib']
 # reqs = []
 
 FL = get_source_files(reswig=reswig)
@@ -287,12 +292,14 @@ if _platform == 'darwin':
     from distutils import sysconfig
     import platform
     vers = platform.mac_ver()[0].split('.')
+    # if vers[0] == '10' or vers[0] == '9':
+    #     sysconfig._config_vars['MACOSX_DEPLOYMENT_TARGET'] = '10.8'
+    # else:
     if len(vers) == 3:
         sysconfig._config_vars['MACOSX_DEPLOYMENT_TARGET'] =\
             vers[0] + '.' + vers[1]
     else:
         sysconfig._config_vars['MACOSX_DEPLOYMENT_TARGET'] = platform.mac_ver()[0]
-
 
 def get_test_suite():
     from unittest import TestLoader
@@ -316,7 +323,7 @@ extensions += cythonize(Extension(name="ensemble.SplittingCore",
 #create setup:
 setup(
     name = 'limix',
-    version = '0.7.6.pre1',
+    version = '0.7.7',
     cmdclass={'build': CustomBuild, 'build_ext': CustomBuildExt},
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
     author_email = "stegle@ebi.ac.uk",
@@ -333,6 +340,6 @@ setup(
     package_dir = {'limix': 'limix'},
     # requires=reqs, seems that we dont need it, and it was causing trouble
     install_requires=reqs,
-    setup_requires = ['numpy'],
+    setup_requires = ['numpy', 'Cython'],
     test_suite='setup.get_test_suite'
     )
