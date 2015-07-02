@@ -11,7 +11,7 @@ from distutils.core import Extension
 from distutils.command.build import build
 from distutils.command.build_ext import build_ext
 from distutils.errors import CompileError
-from redirect import stdout_redirected, merged_stderr_stdout
+# from redirect import stdout_redirected, merged_stderr_stdout
 from Cython.Build import cythonize
 
 # try:
@@ -21,6 +21,70 @@ from setuptools import setup
 
 import pdb
 import glob
+
+
+
+
+
+
+
+
+###################### THIS SHOULD BE IN A MODULE ######################
+import os
+import sys
+from contextlib import contextmanager
+
+def fileno(file_or_fd):
+    fd = getattr(file_or_fd, 'fileno', lambda: file_or_fd)()
+    if not isinstance(fd, int):
+        raise ValueError("Expected a file (`.fileno()`) or a file descriptor")
+    return fd
+
+@contextmanager
+def stdout_redirected(to=os.devnull, stdout=None):
+    if stdout is None:
+       stdout = sys.stdout
+
+    stdout_fd = fileno(stdout)
+    # copy stdout_fd before it is overwritten
+    #NOTE: `copied` is inheritable on Windows when duplicating a standard stream
+    with os.fdopen(os.dup(stdout_fd), 'wb') as copied:
+        stdout.flush()  # flush library buffers that dup2 knows nothing about
+        try:
+            os.dup2(fileno(to), stdout_fd)  # $ exec >&to
+        except ValueError:  # filename
+            with open(to, 'wb') as to_file:
+                os.dup2(to_file.fileno(), stdout_fd)  # $ exec > to
+        try:
+            yield stdout # allow code to be run with the redirected stdout
+        finally:
+            # restore stdout to its previous value
+            #NOTE: dup2 makes stdout_fd inheritable unconditionally
+            stdout.flush()
+            os.dup2(copied.fileno(), stdout_fd)  # $ exec >&copied
+
+def merged_stderr_stdout():  # $ exec 2>&1
+    return stdout_redirected(to=sys.stdout, stdout=sys.stderr)
+###################### THIS SHOULD BE IN A MODULE ######################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import pip.commands.install
 def install_distributions(distributions):
@@ -211,7 +275,7 @@ packages = find_packages(exclude=['tests', 'test', 'test_limix*',
 #                 'limix.deprecated.modules', 'limix.deprecated.stats',
 #                 'limix.deprecated.utils'])
 # reqs = ['scikit-learn', 'h5py', 'numpy', 'scipy', 'matplotlib']
-reqs = ['h5py', 'numpy', 'scipy', 'matplotlib']
+reqs = ['scikit-learn', 'h5py', 'numpy', 'scipy', 'matplotlib']
 # reqs = []
 
 FL = get_source_files(reswig=reswig)
@@ -237,6 +301,7 @@ def get_test_suite():
     test_suite2 = TestLoader().discover('test_limix')
     return TestSuite([test_suite1, test_suite2])
 
+
 extensions = [Extension('deprecated._core',
                          get_source_files(reswig=reswig),
                          include_dirs=get_include_dirs(),
@@ -251,7 +316,7 @@ extensions += cythonize(Extension(name="ensemble.SplittingCore",
 #create setup:
 setup(
     name = 'limix',
-    version = '0.7.6.1',
+    version = '0.7.6.3',
     cmdclass={'build': CustomBuild, 'build_ext': CustomBuildExt},
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
     author_email = "stegle@ebi.ac.uk",
@@ -266,7 +331,7 @@ setup(
     scripts = ['scripts/limix_runner','scripts/mtSet_postprocess','scripts/mtSet_preprocess','scripts/mtSet_simPheno','scripts/mtSet_analyze'],
     packages = packages,
     package_dir = {'limix': 'limix'},
-    requires=reqs,
+    # requires=reqs, seems that we dont need it, and it was causing trouble
     install_requires=reqs,
     setup_requires = ['numpy'],
     test_suite='setup.get_test_suite'
