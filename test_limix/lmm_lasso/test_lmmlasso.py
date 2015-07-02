@@ -96,7 +96,7 @@ class Lmmlasso_test(unittest.TestCase):
         np.testing.assert_almost_equal(RV, 0., decimal=4)
 
         RV = ((SP.absolute(yhat)-SP.absolute(yhat_true))**2).max()
-        np.testing.assert_almost_equal(RV, 0., decimal=3)
+        np.testing.assert_almost_equal(RV, 0., decimal=2)
 
 
 

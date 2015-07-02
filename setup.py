@@ -275,7 +275,7 @@ packages = find_packages(exclude=['tests', 'test', 'test_limix*',
 #                 'limix.deprecated.modules', 'limix.deprecated.stats',
 #                 'limix.deprecated.utils'])
 # reqs = ['scikit-learn', 'h5py', 'numpy', 'scipy', 'matplotlib']
-reqs = ['scikit-learn', 'h5py', 'numpy', 'scipy', 'matplotlib']
+reqs = ['h5py', 'numpy', 'scipy', 'matplotlib']
 # reqs = []
 
 FL = get_source_files(reswig=reswig)
@@ -316,7 +316,7 @@ extensions += cythonize(Extension(name="ensemble.SplittingCore",
 #create setup:
 setup(
     name = 'limix',
-    version = '0.7.6.5',
+    version = '0.7.6.pre1',
     cmdclass={'build': CustomBuild, 'build_ext': CustomBuildExt},
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
     author_email = "stegle@ebi.ac.uk",

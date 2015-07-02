@@ -1,7 +1,7 @@
 #from modules2 import MTSet
 
 #import self
-import limix
+# import limix
 
 #import a selection of key deprecated modules
 #import deprecated.modules as modules
