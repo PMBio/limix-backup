@@ -3,6 +3,15 @@ import scipy as SP
 import h5py
 import pdb
 
+def vec(M):
+    return M.reshape((M.size, 1), order = 'F')
+
+def to_list(x):
+    if x is None:               r = []
+    elif type(x) is not list:   r = [x]
+    else:                       r = x
+    return r
+
 def smartAppend(table,name,value):
     """
     helper function for apppending in a dictionary  
@@ -31,31 +40,4 @@ def smartDumpDictHdf5(RV,o):
             smartDumpDictHdf5(RV[key],g)
         else:
             o.create_dataset(name=key,data=SP.array(RV[key]),chunks=True,compression='gzip')
-
-def getCumPos(chrom,pos):
-    """
-    getCumulativePosition
-    """
-    n_chroms = int(chrom.max())
-    x = 0
-    for chrom_i in range(1,n_chroms+1):
-        I = chrom==chrom_i
-
-        if I.any():
-            pos[I]+=x
-            x=pos[I].max()
-    return pos
-
-def getChromBounds(chrom,posCum):
-    """
-    getChromBounds
-    """
-    n_chroms = int(chrom.max())
-    chrom_bounds = []
-    for chrom_i in range(2,n_chroms+1):
-        I1 = chrom==chrom_i
-        I0 = chrom==chrom_i-1
-        _cb = 0.5*(posCum[I0].max()+posCum[I1].min())
-        chrom_bounds.append(_cb)
-    return chrom_bounds
 

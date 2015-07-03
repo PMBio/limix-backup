@@ -1,17 +1,29 @@
 from covar_base import Covariance
 import pdb
+import numpy as np
 import scipy as SP
 from limix.core.type.cached import Cached, cached
-import warnings
 
 class SumCov(Covariance):
+    """
+    Sum of multiple covariance matrices.
+    The number of paramteters is the sum of the parameters of the single covariances.
+    """
 
     def __init__(self,*covars):
+        """
+        Args:
+            covars:     covariances to be considered in the sum
+        """
+        Covariance.__init__(self)
         self.dim = None
         self.covars = []
         for covar in covars:
             self.addCovariance(covar)
             covar.register(self.clear_all)
+
+    def clear_all(self):
+        self.clear_cache('default')
 
     #####################
     # Covars handling
@@ -20,7 +32,7 @@ class SumCov(Covariance):
         if self.dim is None:
             self.dim = covar.dim
         else:
-            assert covar.dim==self.dim, 'Dimension mismatch'
+            assert covar.dim==self.dim, 'Dimension mismatch.'
         self.covars.append(covar)
         covar.register(self.clear_all)
         self._calcNumberParams()
@@ -33,20 +45,26 @@ class SumCov(Covariance):
     #####################
     def setParams(self,params):
         istart = 0
-        for i in range(len(self.covars)):
-            istop = istart + self.getCovariance(i).getNumberParams()
-            self.getCovariance(i).setParams(params[istart:istop])
+        cs = filter(lambda c: c.getNumberParams() > 0, self.covars)
+        for c in cs:
+            n = c.getNumberParams()
+            istop = istart + n
+            c.setParams(params[istart:istop])
             istart = istop
-        self.clear_all()
+        self._notify()
 
     def getParams(self):
         istart = 0
         params = SP.zeros(self.getNumberParams())
-        for i in range(len(self.covars)):
-            istop = istart + self.getCovariance(i).getNumberParams()
-            params[istart:istop] = self.getCovariance(i).getParams()
+        cs = filter(lambda c: c.getNumberParams() > 0, self.covars)
+        for c in cs:
+            istop = istart + c.getNumberParams()
+            params[istart:istop] = c.getParams()
             istart = istop
         return params
+
+    def getNumberParams(self):
+        return np.sum([c.getNumberParams() for c in self.covars])
 
     ####################
     # Predictions
@@ -60,7 +78,8 @@ class SumCov(Covariance):
 
     @use_to_predict.setter
     def use_to_predict(self,value):
-        warnings.warn('Method not available for combinator covariances. Set use_to_predict for single covariance terms.')
+        raise NotImplementedError("This method is only implemented for single"
+                                  " covariance terms.")
 
     #####################
     # Cached
@@ -81,8 +100,8 @@ class SumCov(Covariance):
                 R = self.covars[i].Kcross()
             else:
                 _ = self.covars[i].Kcross()
-                assert _.shape[0]==R.shape[0], 'Dimension mismatch'
-                assert _.shape[1]==R.shape[1], 'Dimension mismatch'
+                assert _.shape[0]==R.shape[0], 'Dimension mismatch.'
+                assert _.shape[1]==R.shape[1], 'Dimension mismatch.'
                 R += _
         return R
 

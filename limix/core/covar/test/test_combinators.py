@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
-from limix.core.covar.sqexp import SQExpCov
-from limix.core.covar.combinators import SumCov
+from limix.core.covar import SQExpCov
+from limix.core.covar import SumCov
 from limix.utils.check_grad import mcheck_grad
 import scipy as sp
 
@@ -36,6 +36,10 @@ class TestSumCov(unittest.TestCase):
         err = mcheck_grad(func, grad, x0)
 
         np.testing.assert_almost_equal(err, 0.)
+
+    def test_use_to_predict_exception(self):
+        with self.assertRaises(NotImplementedError):
+            self._cov.use_to_predict = 1.
 
 if __name__ == '__main__':
     unittest.main()

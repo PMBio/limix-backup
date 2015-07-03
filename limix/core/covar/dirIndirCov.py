@@ -2,7 +2,7 @@ import numpy as np
 import scipy as sp
 import scipy.linalg as LA
 from covar_base import Covariance
-from freeform import FreeFormCov 
+from freeform import FreeFormCov
 from limix.core.type.cached import cached
 import pdb
 
@@ -10,7 +10,7 @@ import logging as LG
 
 class DirIndirCov(Covariance):
     """
-    freeform covariance function
+    Covariance matrix for decomposing direct and social genetic effects
     """
     def __init__(self, kinship, design, kinship_cm = None, kinship_cross = None, jitter = 1e-4):
         if kinship_cm is None:      kinship_cm = kinship
@@ -48,11 +48,12 @@ class DirIndirCov(Covariance):
 
     def setParams(self,params):
         self.covff.setParams(params)
-        self.clear_all()
+        # self.clear_all()
+        self.clear_cache('default')
         self._notify()
 
-    def _calcNumberParams(self):
-        self.n_params = self.covff.getNumberParams() 
+    def getNumberParams(self):
+        return self.covff.getNumberParams()
 
     def setCovariance(self,cov):
         """ set hyperparameters from given covariance """

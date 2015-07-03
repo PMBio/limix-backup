@@ -1,0 +1,91 @@
+-------------------------------------- DISCUSSION WITH DANILO --------------------------------
+
+WE NEED MORE TESTS:
+    - remove debug methods and move to tests
+        (cov2kronSum, cov3kronSum, cov3KronSumLR, ...)
+
+IMPORTANT:
+    - change combinators notification
+
+REMOVE splitter_bed (use splitter instead) and debug it
+
+--------------------------------------- NON URGENT TODOs --------------------------------
+
+Solve caching strategy for covariances:
+    clear_all should clear_cache('covar_base')
+    REMEMBER: once this is fixed we can go back to throw an exeption in cached.clear_cachewhen the group does not exist
+
+PRINT method for all classes
+
+- clean up gp2KronSumLR
+
+
+Fix notation with PEP8 or whatever...
+
+MeanKronSum:
+    - clean it up
+    - check caching
+        (pheno_has_changed and designs_have_changed for mean base)
+
+MAke this consistent throughout:
+    - all things that might change either are set in init or method check=True/False
+    - __init__(lots of stuff):
+        self._assert dimenstion()
+        set stuff (with check=False)
+    - you can set all the stuff you want
+
+EXCEPTIONS:
+    - we need dimension mismatch
+
+GPs:
+    - new caching system for general gp
+    - gp with 1 kron
+    - GP2KronSumLR inherits from GPKron (the same manner GP3KronSumLR inherits from GP2KronSum)
+    - GP multi kron sum with missing value handling
+        (should handle lowrank-ness and so on so forth)
+
+MeanKronSum:
+    - implement Bste
+    - change covariates such that F and A are not list but long matrices
+        (all rotations on F and A are much faster and no need for for-loop)
+
+Cov2KeonSum:
+    - I wrote this not that I do not fully understand anymore:
+        we do not need all those methods (e.g., LcGradCgLc, LcGradCnLc) but can squeeze stuff in Ctilde (see GP2KronSumLR)
+
+Cov2KronSumLR:
+    - generalize lowrank-rank1 to any covariance-type
+        (should be updated in Cov2KronSumLR::Estar)
+    - for now supports only 1 Kroneckered fixed effect term
+        (with a generalization to multiple terms the FF term breaks apart)
+    - also Cg -> Cr in 2kronSumLR
+
+Covariances:
+    - introduce Gower rescaling method
+
+NAMING INCONSISTENCIES
+    - W makes the dimensionality in all cases
+        W is also the design matrix of fixed effects though!
+    - for consistency in gp2kronSumLR: row_cov -> G
+    - 3kronSumLR and 2kronSumLR are not consistent
+        - in the first (W.T * y) does the dimensionality reduction
+        - in the second (W * y) does the dimensionality reduction
+    - cov2KronSumLR: make notation consistent with other gps R -> GG (also in gp2KronSumLR)
+
+Predictions:
+    - set predictions up for Cov2KronSum, Cov2KronSumLR, Cov3KronSum
+
+General questions:
+    - Phenotype outsid of mean?
+    - define a rotated mean class??
+    - undertand how Areml is informed
+        this is not clear to me at all
+
+-------------------------------------- INFO ----------------------------------------------
+
+
+TO DISABLE THE CASH:
+    env LIMIX_DEBUG=1 python test_cov2kronSum.py
+
+ALL UNITESTES:
+    python -m unittest discover .

@@ -1,477 +1,195 @@
 import sys
-from limix.utils.utils import smartSum
-from limix.core.mean import mean
+from limix.core.mean import MeanKronSum
+from limix.core.covar import Cov2KronSum
+from limix.core.covar import Covariance
+from limix.core.type.cached import *
 
 import pdb
 import numpy as NP
-import scipy as SP
+import scipy as sp
 import scipy.linalg as LA
 import time as TIME
 from gp_base import GP
+from limix.core.covar.cov_reml import cov_reml
+from limix.core.utils import assert_type_or_list_type
+from limix.core.utils import assert_type
+from limix.core.utils import assert_subtype
 
-class gp2kronSum(GP):
 
-    def __init__(self,mean,Cg,Cn,XX=None,S_XX=None,U_XX=None,offset=1e-4):
-        """
-        Y:      Phenotype matrix
-        Cg:     LIMIX trait-to-trait covariance for genetic contribution
-        Cn:     LIMIX trait-to-trait covariance for noise
-        XX:     Matrix for fixed sample-to-sample covariance function
-        """
-        #cache init
-        self.cache = {}
-        # pheno
-        self.setMean(mean)
-        # colCovariances
-        self.setColCovars(Cg,Cn)
-        # row covars
-        self.set_XX(XX,S_XX,U_XX)
-        #offset for trait covariance matrices
-        self.setOffset(offset)
-        self.params = None
-        self.reml = True
-        # time
-        self.time = {}
-        self.count = {}
+class GP2KronSum(GP):
+    """
+    Gaussian Process with a 2kronSum Covariance and a mean that is a sum of Kronecker products:
+        vec(Y) ~ N( vec( \sum_i F_i B_i A_i), Cg \kron R + Cn \kron I )
+    Notation:
+        N = number of samples
+        P = number of traits
+        Y = [N, P] phenotype matrix
+        F_i = sample fixed effect design for term i
+        A_i = trait fixed effect design for term i
+        B_i = effect sizes of fixed effect term i
+        Cg = column covariance matrix for signal term respectively
+        Cn = column covariance matrix for noise term respectively
+        R = row covariance matrix for signal term respectively
+    """
 
-    def set_reml(self,value=True):
-        self.reml = value
+    def __init__(self, Y, Cg, Cn, F=None, A=None, R=None, S_R=None, U_R=None):
+        """
+        Args:
+            Y:      [N, P] phenotype matrix
+            F:      list of sample fixed effect designs.
+                    Each term must have first dimension N
+            A:      list of trait fixed effect design.
+                    Each term must have second dimension P
+            Cg:     Limix covariance matrix for Cg (dimension P)
+            Cn:     Limix covariance matrix for Cn (dimension P)
+            R:      [N, N] numpy semidemidefinite covariance matrix for R.
+                    In alternative to R, S_R and U_R can be specified.
+            S_R:    N vector of eigenvalues of R
+            U_R:    [N, N] eigenvector matrix of R
+        """
+        assert_type(Y, NP.ndarray, 'Y')
+        assert_subtype(Cg, Covariance, 'Cg')
+        assert_subtype(Cn, Covariance, 'Cn')
 
-    def get_time(self):
-        """ returns time dictionary """
-        return self.time
+        covar = Cov2KronSum(Cg=Cg, Cn=Cn, R=R, S_R=S_R, U_R=U_R)
+        mean = MeanKronSum(Y=Y, F=F, A=A)
 
-    def get_count(self):
-        """ return count dictionary """
-        return self.count
+        GP.__init__(self, covar=covar, mean=mean)
 
-    def restart(self):
-        """ set all times to 0 """
-        for key in self.time.keys():
-            self.time[key]  = 0
-            self.count[key] = 0
+    def _observe(self):
+        self.covar.register(self.row_cov_has_changed, 'row_cov')
+        self.covar.register(self.col_cov_has_changed, 'col_cov')
+        self.mean.register(self.pheno_has_changed, 'pheno')
+        self.mean.register(self.designs_have_changed, 'designs')
 
-    def setColCovars(self,Cg,Cn):
-        """
-        set column covariances
-        """
-        # col covars
-        self.Cg = Cg
-        self.Cn = Cn
+    def col_cov_has_changed(self):
+        self.clear_cache('col_cov')
+        self.clear_all()
 
-    def setMean(self,mean):
-        """
-        set gp mean
-        """
-        self.N, self.P = mean.getDimensions()
-        self.mean = mean
-        if self.cache.has_key("d"):
-            self.mean.d = self.cache['d']
-        if self.cache.has_key("Lr"):
-            self.mean.Lr = self.cache['Lr']
-        if self.cache.has_key("Lc"):
-            self.mean.Lc = self.cache['Lc']
+    def row_cov_has_changed(self):
+        self.clear_cache('row_cov')
+        self.clear_all()
 
-    def setY(self,Y):
-        """
-        set gp mean
-        """
-        self.mean.Y = Y
+    def pheno_has_changed(self):
+        self.clear_cache('pheno')
+        self.clear_all()
 
-    def setOffset(self,offset):
-        """
-        set offset
-        """
-        self.offset = offset
+    def designs_have_changed(self):
+        self.clear_cache('designs')
+        self.clear_all()
 
-    def set_XX(self,XX=None,S_XX=None,U_XX=None):
-        """
-        set pop struct row covariance
-        """
-        XXnotNone = XX is not None
-        SUnotNone = S_XX is not None and U_XX is not None
-        assert XXnotNone or SUnotNone, 'Specify either XX or S_XX and U_XX!'
-        if SUnotNone:
-            self.cache['Srstar'] = S_XX
-            self.cache['Lr'] = U_XX.T
-            raise NotImplementedError("self.mean.setRowRotation(Lr=self.cache['Lr'])#this function does not exist")
-            self.mean.setRowRotation(Lr=self.cache['Lr'])#this function does not exist
-            self.XX_has_changed = False
+
+    ######################
+    # Transformed phenotype
+    ######################
+    @cached('row_cov', 'pheno')
+    def LrY(self):
+        return sp.dot(self.covar.Lr(), self.mean.Y)
+
+    @cached(['row_cov', 'col_cov', 'pheno'])
+    def LrYLc(self):
+        return sp.dot(self.LrY(), self.covar.Lc().T)
+
+    @cached(['row_cov', 'col_cov', 'pheno'])
+    def DLrYLc(self):
+        return self.covar.D() * self.LrYLc()
+
+    ######################
+    # Transformed fixed effects
+    ######################
+    @cached(['row_cov', 'designs'])
+    def LrF(self):
+        R = []
+        for ti in range(self.mean.n_terms):
+            R.append(sp.dot(self.covar.Lr(), self.mean.F[ti]))
+        return R
+
+    @cached(['col_cov', 'designs'])
+    def ALc(self):
+        R = []
+        for ti in range(self.mean.n_terms):
+            R.append(sp.dot(self.mean.A[ti], self.covar.Lc().T))
+        return R
+
+    @cached(['row_cov', 'col_cov', 'designs'])
+    def LW(self):
+        R = sp.zeros((self.mean.Y.size, self.mean.n_covs))
+        istart = 0
+        for ti in range(self.mean.n_terms):
+            iend = istart + self.mean.F[ti].shape[1] * self.mean.A[ti].shape[0]
+            R[:, istart:iend] = sp.kron(self.ALc()[ti].T, self.LrF()[ti])
+        return R
+
+    @cached(['row_cov', 'col_cov', 'designs'])
+    def dLW(self):
+        return self.covar.d()[:,sp.newaxis] * self.LW()
+
+    @cached(['row_cov', 'col_cov', 'pheno'])
+    def Sr_DLrYLc_Ctilde(self, i):
+        return self.covar.Sr_X_Ctilde(self.DLrYLc(), i)
+
+    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
+    def Sr_vei_dLWb_Ctilde(self, i):
+        return self.covar.Sr_X_Ctilde(self.vei_dLWb(), i)
+
+    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
+    def vei_dLWb(self):
+        # could be optimized but probably not worth it
+        # as it requires a for loop
+        r = sp.dot(self.dLW(), self.mean.b)
+        return r.reshape(self.mean.Y.shape, order = 'F')
+
+    ######################
+    # Areml
+    ######################
+    def Areml_K(self):
+        return sp.dot(self.LW().T, self.dLW())
+
+    def Areml_K_grad_i(self,i):
+        dLWt = self.dLW().reshape((self.mean._N, self.mean._P, self.mean.n_covs), order = 'F')
+        if i < self.covar.Cg.getNumberParams():
+            SrdLWt = self.covar.Sr()[:, sp.newaxis, sp.newaxis] * dLWt
         else:
-            self.XX = XX
-            self.XX_has_changed = True
+            SrdLWt = dLWt
+        SrdLWtC = sp.tensordot(SrdLWt, self.covar.Ctilde(i), axes=(1, 1))
+        SroCdLW = SrdLWtC.swapaxes(1,2).reshape((self.mean._N * self.mean._P, self.mean.n_covs), order = 'F')
+        return -sp.dot(self.dLW().T, SroCdLW)
 
-    def getParams(self):
-        """
-        get hper parameters
-        """
-        params = {}
-        params['Cg'] = self.Cg.getParams()
-        params['Cn'] = self.Cn.getParams()
-        return params
+    ########################
+    # LML terms
+    ########################
+    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
+    def WKiy(self):
+        R = sp.zeros((self.mean.n_covs, 1))
+        istart = 0
+        for ti in range(self.mean.n_terms):
+            _dim = self.mean.F[ti].shape[1] * self.mean.A[ti].shape[0]
+            iend = istart + _dim
+            FLrDLrYLc = sp.dot(self.LrF()[ti].T, self.DLrYLc())
+            R[istart:iend, 0] = sp.dot(FLrDLrYLc, self.ALc()[ti].T).reshape(_dim, order = 'F')
+        return R
 
-    def setParams(self,params):
-        """
-        set hper parameters
-        """
-        self.params = params
-        self.updateParams()
+    def update_b(self):
+        if self.mean.n_covs > 0:
+            self.mean.b = self.Areml.solve(self.WKiy())
 
-    def updateParams(self):
-        """
-        update parameters
-        """
-        keys =self.params.keys()
-        if 'Cg' in keys:
-            self.Cg.setParams(self.params['Cg'])
-        if 'Cn' in keys:
-            self.Cn.setParams(self.params['Cn'])
+    @cached(['row_cov', 'col_cov', 'pheno'])
+    def yKiy(self):
+        return (self.LrYLc()*self.DLrYLc()).sum()
 
-    def _update_cache(self):
-        """
-        Update cache
-        """
-        cov_params_have_changed = self.Cg.params_have_changed or self.Cn.params_have_changed
+    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
+    def yKiWb(self):
+        return (self.LrYLc() * self.vei_dLWb()).sum()
 
-        if self.XX_has_changed:
-            start = TIME.time()
-            """ Row SVD Bg + Noise """
-            self.cache['Srstar'],Urstar  = LA.eigh(self.XX)
-            self.cache['Lr']   = Urstar.T
-            self.mean.Lr = self.cache['Lr']
+    #########################
+    # Gradients
+    #########################
+    @cached(['row_cov', 'col_cov', 'pheno'])
+    def yKiy_grad_i(self,i):
+        return -(self.DLrYLc() * self.Sr_DLrYLc_Ctilde(i)).sum()
 
-            smartSum(self.time,'cache_XXchanged',TIME.time()-start)
-            smartSum(self.count,'cache_XXchanged',1)
-
-        if cov_params_have_changed:
-            start = TIME.time()
-            """ Col SVD Bg + Noise """
-            S2,U2 = LA.eigh(self.Cn.K()+self.offset*SP.eye(self.P))
-            self.cache['Sc2'] = S2
-            US2   = SP.dot(U2,SP.diag(SP.sqrt(S2)))
-            USi2  = SP.dot(U2,SP.diag(SP.sqrt(1./S2)))
-            Cstar = SP.dot(USi2.T,SP.dot(self.Cg.K(),USi2))
-            self.cache['Scstar'],Ucstar = LA.eigh(Cstar)
-            self.cache['Lc'] = SP.dot(Ucstar.T,USi2.T)
-            """ pheno """
-            self.mean.Lc = self.cache['Lc']
-
-
-        if cov_params_have_changed or self.XX_has_changed:
-            """ S """
-            self.cache['s'] = SP.kron(self.cache['Scstar'],self.cache['Srstar'])+1
-            self.cache['d'] = 1./self.cache['s']
-            self.cache['D'] = SP.reshape(self.cache['d'],(self.N,self.P), order='F')
-
-            """ pheno """
-            self.mean.d = self.cache['d']
-            #self.cache['LZ']  = self.mean.Zstar()
-            #self.cache['DLZ'] = self.cache['D']*self.cache['LZ']
-
-            smartSum(self.time,'cache_colSVDpRot',TIME.time()-start)
-            smartSum(self.count,'cache_colSVDpRot',1)
-
-        self.XX_has_changed = False
-        self.Cg.params_have_changed = False
-        self.Cn.params_have_changed = False
-
-    def LML(self, params=None, *kw_args):
-        """
-        calculate LML
-        """
-        if params!=None:
-            self.setParams(params)
-
-        self._update_cache()
-
-        start = TIME.time()
-
-        #1. const term
-        lml  = self.N*self.P*SP.log(2.0*SP.pi)
-
-        #2. logdet term
-        lml += SP.sum(SP.log(self.cache['Sc2']))*self.N + SP.log(self.cache['s']).sum()
-
-        #3. quadratic term
-        lml += self.mean.var_total() - self.mean.var_explained()[0]
-
-        if self.reml and self.mean.n_fixed_effs>0:
-            #4. reml term
-            lml += 2*SP.log(SP.diag(self.mean.Areml_chol())).sum()
-
-        lml *= 0.5
-
-        smartSum(self.time,'lml',TIME.time()-start)
-        smartSum(self.count,'lml',1)
-
-        return lml
-
-
-
-
-    def LMLgrad(self,params=None,**kw_args):
-        """
-        LML gradient
-        """
-        if params is not None:
-            self.setParams(params)
-        self._update_cache()
-        RV = {}
-        covars = ['Cg','Cn']
-        for covar in covars:
-            RV[covar] = self._LMLgrad_covar(covar)
-        return RV
-
-    def _LMLgrad_covar(self,covar,**kw_args):
-        """
-        calculates LMLgrad for covariance parameters
-        """
-        # precompute some stuff
-        if covar=='Cg':
-            LRLdiag = self.cache['Srstar']
-            n_params = self.Cg.getNumberParams()
-        elif covar=='Cn':
-            LRLdiag = SP.ones(self.N)
-            n_params = self.Cn.getNumberParams()
-
-        # some stuff to cache
-        LRLdiag_DLZ = LRLdiag[:,SP.newaxis]*self.mean.DLZ()
-        self.mean.LRLdiag = LRLdiag
-
-        # fill gradient vector
-        RV = SP.zeros(n_params)
-        for i in range(n_params):
-
-            #0. calc LCL
-            start = TIME.time()
-            if covar=='Cg':     C = self.Cg.Kgrad_param(i)
-            elif covar=='Cn':   C = self.Cn.Kgrad_param(i)
-            LCL = SP.dot(self.cache['Lc'],SP.dot(C,self.cache['Lc'].T))
-            self.mean.LCL = LCL
-
-            #1. der of log det
-            start = TIME.time()
-            kronDiag  = SP.kron(LCL.diagonal(),LRLdiag)
-            RV[i] = SP.dot(self.cache['d'],kronDiag)
-            smartSum(self.time,'lmlgrad_trace',TIME.time()-start)
-            smartSum(self.count,'lmlgrad_trace',1)
-
-            #2. der of quad form
-            start = TIME.time()
-            KDLZ  = SP.dot(LRLdiag_DLZ,LCL.T)
-            KDLZ += self.mean.Xstar_beta_grad()
-            RV[i] -= (self.mean.DLZ()*KDLZ).sum()
-
-
-            smartSum(self.time,'lmlgrad_quadform',TIME.time()-start)
-            smartSum(self.count,'lmlgrad_quadform',1)
-
-            if self.reml and self.mean.n_fixed_effs>0:
-                # der of log det reml
-                RV[i] += SP.einsum('ij,ji->',self.mean.Areml_inv(),self.mean.Areml_grad())
-
-            RV[i] *= 0.5
-
-        return RV
-
-    def LMLgrad_debug(self,**kw_args):
-        """
-        LML gradient debug
-        """
-        RV = {}
-        covars = ['Cg','Cn']
-        for covar in covars:
-            RV[covar] = self._LMLgrad_covar_debug(covar)
-        return RV
-
-    def _LMLgrad_covar_debug(self,covar):
-
-        assert self.N*self.P<2000, 'gp2kronSum:: N*P>=2000'
-
-        y  = SP.reshape(self.Y,(self.N*self.P), order='F')
-
-        K  = SP.kron(self.Cg.K(),self.XX)
-        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
-
-        cholK = LA.cholesky(K).T
-        Ki  = LA.cho_solve((cholK,True),SP.eye(y.shape[0]))
-        Kiy  = LA.cho_solve((cholK,True),y)
-
-        if covar=='Cr':     n_params = self.Cr.getNumberParams()
-        elif covar=='Cg':   n_params = self.Cg.getNumberParams()
-        elif covar=='Cn':   n_params = self.Cn.getNumberParams()
-
-        RV = SP.zeros(n_params)
-
-        for i in range(n_params):
-            #0. calc grad_i
-            if covar=='Cg':
-                C   = self.Cg.Kgrad_param(i)
-                Kgrad  = SP.kron(C,self.XX)
-            elif covar=='Cn':
-                C   = self.Cn.Kgrad_param(i)
-                Kgrad  = SP.kron(C,SP.eye(self.N))
-
-            #1. der of log det
-            RV[i]  = 0.5*(Ki*Kgrad).sum()
-
-            #2. der of quad form
-            RV[i] -= 0.5*(Kiy*SP.dot(Kgrad,Kiy)).sum()
-
-        return RV
-
-    def predict(self,XXstar):
-        """
-        Make predictions:
-            XXstar:     cross covariance matrix Nstar,N
-        """
-        self._update_cache()
-        KiY = SP.dot(self.cache['Lr'].T,SP.dot(self.cache['DLY'],self.cache['Lc']))
-        rv = SP.dot(XXstar,SP.dot(KiY,self.Cg.K()))
+    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
+    def yKiWb_grad_i(self,i):
+        rv = -2*(self.DLrYLc()*self.Sr_vei_dLWb_Ctilde(i)).sum()
+        rv+= (self.vei_dLWb()*self.Sr_vei_dLWb_Ctilde(i)).sum()
         return rv
-
-
-    """ debug functions """
-
-    def check_Areml(self):
-        self.LML()
-        K  = SP.kron(self.Cg.K(),self.XX)
-        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
-        cholK = LA.cholesky(K).T
-        Ki    = LA.cho_solve((cholK,True),SP.eye(self.N*self.P))
-        X = []
-        for term_i in range(self.mean.n_terms):
-            X.append(SP.kron(self.mean.A[term_i].T,self.mean.F[term_i]))
-        X = SP.concatenate(X,1)
-        Areml = SP.dot(X.T,SP.dot(Ki,X))
-        print ((Areml-self.mean.Areml())**2).mean()<1e-6
-
-    def check_beta_hat(self):
-        self.LML()
-        y  = self.mean.Y.reshape((self.mean.Y.size,1),order='F')
-        K  = SP.kron(self.Cg.K(),self.XX)
-        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
-        cholK = LA.cholesky(K).T
-        Ki    = LA.cho_solve((cholK,True),SP.eye(self.N*self.P))
-        X = []
-        for term_i in range(self.mean.n_terms):
-            X.append(SP.kron(self.mean.A[term_i].T,self.mean.F[term_i]))
-        X = SP.concatenate(X,1)
-        XKiy = SP.dot(X.T,SP.dot(Ki,y))
-        beta_hat = SP.dot(self.mean.Areml_inv(),XKiy)
-        L = SP.kron(self.cache['Lc'],self.cache['Lr'])
-        zstar = SP.dot(L,self.mean.Y.reshape((self.mean.Y.size,1),order='F')-SP.dot(X,beta_hat))
-        zstar1 = self.mean.Zstar().reshape((self.mean.Y.size,1),order='F')
-
-        # beta 1
-        #L = SP.kron(self.cache['Lc'],self.cache['Lr'])
-        #Xstar = SP.dot(L,X)
-        #yhat  = SP.dot(L,self.mean.Y.reshape((self.mean.Y.size,1)))
-        #yhat *= self.cache['d'][:,SP.newaxis]
-        #beta_hat1 = SP.dot(self.mean.Areml_inv(),SP.dot(Xstar.T,yhat))
-
-        print ((beta_hat-self.mean.beta_hat())**2).mean()<1e-6
-        print ((zstar-zstar1)**2).mean()<1e-6
-
-    def LMLdebug(self):
-        """
-        LML function for debug
-        """
-        assert self.N*self.P<2000, 'gp2kronSum:: N*P>=2000'
-
-        y  = SP.reshape(self.mean.Y,(self.N*self.P,1), order='F')
-
-        K  = SP.kron(self.Cg.K(),self.XX)
-        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
-
-        cholK = LA.cholesky(K)
-
-        X = []
-        for term_i in range(self.mean.n_terms):
-            X.append(SP.kron(self.mean.A[term_i].T,self.mean.F[term_i]))
-        X = SP.concatenate(X,1)
-        z = y-SP.dot(X,self.mean.beta_hat())
-
-        Kiz   = LA.cho_solve((cholK,False),z)
-
-        lml  = y.shape[0]*SP.log(2*SP.pi)
-        lml += 2*SP.log(SP.diag(cholK)).sum()
-        lml += (z*Kiz).sum()
-        lml += 2*SP.log(SP.diag(self.mean.Areml_chol())).sum()
-        lml *= 0.5
-
-        return lml
-
-    def check_Agrad(self):
-        """
-        A = X.T Ki X
-        Agrad = - X.T Ki dK Ki X
-        """
-        self.LML()
-        K  = SP.kron(self.Cg.K(),self.XX)
-        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
-        cholK = LA.cholesky(K).T
-        Ki    = LA.cho_solve((cholK,True),SP.eye(self.N*self.P))
-        X = []
-        for term_i in range(self.mean.n_terms):
-            X.append(SP.kron(self.mean.A[term_i].T,self.mean.F[term_i]))
-        X = SP.concatenate(X,1)
-
-        i = 0
-        C   = self.Cg.Kgrad_param(i)
-        Kgrad = SP.kron(C,self.XX)
-
-        Agrad = -SP.dot(X.T,SP.dot(Ki,SP.dot(Kgrad,SP.dot(Ki,X))))
-
-        # Agrad1 = -Xstar.T D LCL\kronLRLdiag Xhat
-        LRLdiag = self.cache['Srstar']
-        LCL = SP.dot(self.cache['Lc'],SP.dot(C,self.cache['Lc'].T))
-        #dK    = SP.kron(LCL,SP.diag(LRLdiag))
-        #Xstar = self.mean.Xstar()
-        #Xhat  = self.mean.Xhat()
-        #DKiXhat = self.cache['d'][:,SP.newaxis]*SP.dot(dK,Xhat)
-        #Agrad2 = -SP.dot(Xstar.T,DKiXhat)
-
-        self.mean.LRLdiag = LRLdiag
-        self.mean.LCL = LCL
-        Agrad1 = self.mean.Areml_grad()
-
-        print ((Agrad-Agrad1)**2).mean()<1e-6
-
-    def check_beta_grad(self):
-        """
-        b = Ai Xt Ki y
-        bgrad = - Ai dA beta
-                - Ai Xt Ki dK Ki y
-        """
-        self.LML()
-        y  = SP.reshape(self.mean.Y,(self.N*self.P,1), order='F')
-        K  = SP.kron(self.Cg.K(),self.XX)
-        K += SP.kron(self.Cn.K()+self.offset*SP.eye(self.P),SP.eye(self.N))
-        cholK = LA.cholesky(K).T
-        Ki    = LA.cho_solve((cholK,True),SP.eye(self.N*self.P))
-        X = []
-        for term_i in range(self.mean.n_terms):
-            X.append(SP.kron(self.mean.A[term_i].T,self.mean.F[term_i]))
-        X = SP.concatenate(X,1)
-
-        i = 0
-        C   = self.Cg.Kgrad_param(i)
-        Kgrad = SP.kron(C,self.XX)
-
-        Agrad = -SP.dot(X.T,SP.dot(Ki,SP.dot(Kgrad,SP.dot(Ki,X))))
-
-        beta_grad = SP.dot(Agrad,self.mean.beta_hat())
-        beta_grad+= SP.dot(X.T,SP.dot(Ki,SP.dot(Kgrad,SP.dot(Ki,y))))
-        beta_grad = -SP.dot(self.mean.Areml_inv(),beta_grad)
-        Xstar_beta_grad = SP.dot(self.mean.Xstar(),beta_grad)
-
-        LRLdiag = self.cache['Srstar']
-        LCL = SP.dot(self.cache['Lc'],SP.dot(C,self.cache['Lc'].T))
-        self.mean.LRLdiag = LRLdiag
-        self.mean.LCL = LCL
-        beta_grad1 = self.mean.beta_grad()
-        Xstar_beta_grad1 = self.mean.Xstar_beta_grad().reshape((self.P*self.N,1),order='F')
-
-        print ((beta_grad-beta_grad1)**2).mean()<1e-6
-        print ((Xstar_beta_grad-Xstar_beta_grad1)**2).mean()<1e-6

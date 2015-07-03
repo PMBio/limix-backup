@@ -12,31 +12,31 @@ class Covariance(Cached, Observed):
     """
     abstract super class for all implementations of covariance functions
     """
-    def __init__(self,dim):
-        self.initialize(dim)
+    def __init__(self,dim=None):
+        Cached.__init__(self)
+        if dim is not None:
+            self.initialize(dim)
 
     def initialize(self,dim):
         self.dim = dim
-        self._calcNumberParams()
-        self._initParams()
         self._use_to_predict = False
 
     def clear_all(self):
+        # TODO: define groups for those
         self.clear_cache('K','Kcross','K_grad_i',
-                            'logdet','logdet_grad_i',
-                            'inv','chol','S','U',
-                            'USi2','Sgrad','Ugrad')
+                          'logdet','logdet_grad_i',
+                          'inv','chol','S','U','USi2')
 
     #######################
     # Param Handling
     #######################
-    def getParams(self):
-        return self.params
-
-    def setParams(self,params):
-        self.params = params
-        self.clear_all()
-        self._notify()
+    # def getParams(self):
+    #     return self.params
+    #
+    # def setParams(self,params):
+    #     self.params = params
+    #     self.clear_all()
+    #     self._notify()
 
     def setRandomParams(self):
         """
@@ -59,24 +59,11 @@ class Covariance(Cached, Observed):
         params = self.getParams()
         self.setParams(params+pertSize*sp.randn(params.shape[0]))
 
-    def getNumberParams(self):
-        """
-        return the number of hyperparameters
-        """
-        return self.n_params
-
     def _calcNumberParams(self):
         """
         calculates the number of parameters
         """
         warnings.warn('not implemented')
-
-    def _initParams(self):
-         """
-         initialize paramters to vector of zeros
-         """
-         params = sp.zeros(self.getNumberParams())
-         self.setParams(params)
 
     ####################################
     # cached
@@ -134,19 +121,23 @@ class Covariance(Cached, Observed):
         # U * S**(-1/2)
         return self.U()*(self.S()**(-0.5))
 
-    @cached
-    def Sgrad(self,i):
-        return dS_dti(self.Kgrad_param(i),U=self.U())
+    ###########################
+    # The following methods are deprecated
+    ############################
 
-    @cached
-    def Ugrad(self,i):
-        return dU_dti(self.Kgrad_param(i),U=self.U(),S=self.S())
+    #@cached
+    #def Sgrad(self,i):
+    #    return dS_dti(self.Kgrad_param(i),U=self.U())
 
-    @cached
-    def USi2grad(self,i):
-        # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
-        Si2grad = -0.5*self.S()**(-1.5)*self.Sgrad(i)
-        return self.Ugrad(i)*(self.S()**(-0.5)) + self.U()*Si2grad
+    #@cached
+    #def Ugrad(self,i):
+    #    return dU_dti(self.Kgrad_param(i),U=self.U(),S=self.S())
+
+    #@cached
+    #def USi2grad(self,i):
+    #    # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
+    #    Si2grad = -0.5*self.S()**(-1.5)*self.Sgrad(i)
+    #    return self.Ugrad(i)*(self.S()**(-0.5)) + self.U()*Si2grad
 
     ###########################
     # Predictions

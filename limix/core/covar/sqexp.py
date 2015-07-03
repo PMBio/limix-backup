@@ -1,5 +1,7 @@
 import sys
 from limix.core.type.cached import cached
+from limix.core.utils import assert_make_float_array
+from limix.core.utils import assert_finite_array
 import scipy as sp
 import numpy as np
 from covar_base import Covariance
@@ -7,15 +9,30 @@ import scipy.spatial as SS
 
 class SQExpCov(Covariance):
     """
-    squared exponential covariance function
+    Unidimensional squared exponential covariance function (kernel) for GP regression.
+    A unidimensional squared exponential covariance function has two parameters:
+        scale:      scale of the covariance (propto explained variance)
+        length:     length scale of the input dimension
     """
-    def __init__(self,X,Xstar=None):
+    def __init__(self, X, Xstar=None):
         """
-        X   dim x d input matrix
+        X:          [dim, 1] input matrix
+        Xstar:      [dim_star, 1] out-of-sample input matrix
         """
+        Covariance.__init__(self)
+        self._scale_act = True
+        self._length_act = True
+
+        X = assert_make_float_array(X, "X")
+        assert_finite_array(X)
         self.X = X
+
+        if Xstar is not None:
+            Xstar = assert_make_float_array(Xstar, "Xstar")
+            assert_finite_array(Xstar)
+
         self.Xstar = Xstar
-        self._initParams()
+        self.params = np.zeros(2)
 
     def get_input_dim(self):
         return self.X.shape[1]
@@ -34,18 +51,24 @@ class SQExpCov(Covariance):
 
     @property
     def scale_ste(self):
+        if not self._scale_act:
+            raise ValueError("Scale is an inactive.")
         if self.getFIinv() is None:
             R = None
         else:
-            R = sp.sqrt(self.getFIinv()[0,0])
+            i = self._index2actindex(0)
+            R = sp.sqrt(self.getFIinv()[i,i])
         return R
 
     @property
     def length_ste(self):
+        if not self._length_act:
+            raise ValueError("Length is an inactive.")
         if self.getFIinv() is None:
             R = None
         else:
-            R = sp.sqrt(self.getFIinv()[1,1])
+            i = self._index2actindex(1)
+            R = sp.sqrt(self.getFIinv()[i,i])
         return R
 
     @property
@@ -63,21 +86,24 @@ class SQExpCov(Covariance):
     def scale(self,value):
         assert value>=0, 'Scale must be >=0'
         self.params[0] = sp.log(value)
-        self.clear_all()
+        # self.clear_all()
+        self.clear_cache('default')
         self._notify()
 
     @length.setter
     def length(self,value):
         assert value>=0, 'Length must be >=0'
         self.params[1] = sp.log(value)
-        self.clear_all()
+        # self.clear_all()
+        self.clear_cache('default')
         self._notify()
 
     @X.setter
     def X(self,value):
         self._X = value
         self.initialize(value.shape[0])
-        self.clear_all()
+        # self.clear_all()
+        self.clear_cache('default')
         self.clear_cache('E')
         self._notify()
 
@@ -99,10 +125,51 @@ class SQExpCov(Covariance):
         self._notify()
 
     #####################
+    # Activation handling
+    #####################
+    @property
+    def act_scale(self):
+        return self._scale_act
+
+    @act_scale.setter
+    def act_scale(self, act):
+        self._scale_act = bool(act)
+        self._notify()
+
+    @property
+    def act_length(self):
+        return self._length_act
+
+    @act_length.setter
+    def act_length(self, act):
+        self._length_act = bool(act)
+        self._notify()
+
+    def _actindex2index(self, i):
+        return i + int(not self._scale_act)
+
+    def _index2actindex(self, i):
+        return i - int(not self._scale_act)
+
+    #####################
     # Params handling
     #####################
-    def _calcNumberParams(self):
-        self.n_params = 2
+    def setParams(self, params):
+        sel = np.asarray((self._scale_act, self._length_act))
+        if np.sum(sel) != len(params):
+            raise ValueError("The number of parameters passed to setParams "
+                             "differs from the number of active parameters.")
+        self.params[sel] = params
+        # self.clear_all()
+        self.clear_cache('default')
+        self._notify()
+
+    def getParams(self):
+        sel = np.asarray((self._scale_act, self._length_act))
+        return self.params[sel]
+
+    def getNumberParams(self):
+        return np.sum([self._scale_act, self._length_act])
 
     #####################
     # Cached
@@ -124,8 +191,13 @@ class SQExpCov(Covariance):
         return self.scale * sp.exp(-self.E()/(2*self.length))
 
     @cached
-    def K_grad_i(self,i):
+    def K_grad_i(self, i):
+        if i >= int(self._scale_act) + int(self._length_act):
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+
         r = self.K_grad_interParam_i(i)
+        i = self._actindex2index(i)
         if i==0:
             r *= self.scale
         elif i==1:
@@ -138,12 +210,21 @@ class SQExpCov(Covariance):
     # Interpretable Params
     ####################
     def getInterParams(self):
-        return SP.array([self.scale,self.length])
+        params = []
+        if self._scale_act:
+            params.append(self.scale)
+        if self._length_act:
+            params.append(self.length)
+        return np.array(params)
 
-    def K_grad_interParam_i(self,i):
-        if i==0:
+    def K_grad_interParam_i(self, i):
+        i = self._actindex2index(i)
+        if i == 0:
             r = sp.exp(-self.E()/(2*self.length))
-        else:
+        elif i == 1:
             A = sp.exp(-self.E()/(2*self.length))*self.E()
             r = self.scale * A / (2*self.length**2)
+        else:
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
         return r

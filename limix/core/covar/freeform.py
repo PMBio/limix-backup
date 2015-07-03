@@ -9,11 +9,19 @@ import logging as LG
 
 class FreeFormCov(Covariance):
     """
-    freeform covariance function
+    General semi-definite positive matrix with no contraints.
+    A free-form covariance matrix of dimension d has 1/2 * d * (d + 1) params
     """
-    def __init__(self,dim,jitter=1e-4):
+    def __init__(self, dim, jitter=1e-4):
+        """
+        Args:
+            dim:        dimension of the free-form covariance
+            jitter:     extent of diagonal offset which is added for numerical stability
+                        (default value: 1e-4)
+        """
         Covariance.__init__(self, dim)
-        self.n_params = int(dim * (dim + 1.) / 2.)
+        self._K_act = True
+        self._calcNumberParams()
         self.dim = dim
         self.params = sp.zeros(self.n_params)
 
@@ -27,7 +35,7 @@ class FreeFormCov(Covariance):
     #####################
     @property
     def variance(self):
-        return self.K().diagonal() 
+        return self.K().diagonal()
 
     @property
     def correlation(self):
@@ -55,7 +63,7 @@ class FreeFormCov(Covariance):
         if self.getFIinv() is None:
             R = None
         else:
-            idx_M = sp.zeros((self.dim,self.dim)) 
+            idx_M = sp.zeros((self.dim,self.dim))
             idx_M[sp.tril_indices(self.dim)] = sp.arange( int( 0.5 * self.dim * (self.dim + 1) ) )
             R = sp.zeros(idx_M)
             for i in range(self.dim):
@@ -64,7 +72,7 @@ class FreeFormCov(Covariance):
                     ii = idx_M[i,i] # index of cov_ii_ste from fisher
                     jj = idx_M[j,j] # index of cov_jj_ste from fisher
                     #TODO: complete
-                    
+
         # IN A VARIANCE / CORRELATION PARAMETRIZATION
         #if self.getFIinv() is None:
         #    R = None
@@ -75,8 +83,39 @@ class FreeFormCov(Covariance):
         return R
 
     #####################
+    # Activation handling
+    #####################
+    @property
+    def act_K(self):
+        return self._K_act
+
+    @act_K.setter
+    def act_K(self, act):
+        self._K_act = bool(act)
+        self._notify()
+
+    #####################
     # Params handling
     #####################
+    def setParams(self, params, notify=True):
+        if not self._K_act and len(params) > 0:
+            raise ValueError("Trying to set a parameter via setParams that "
+                             "is not active.")
+        if self._K_act:
+            self.params[:] = params
+            # self.clear_all()
+            self.clear_cache('default')
+            if notify:
+                self._notify()
+
+    def getParams(self):
+        if not self._K_act:
+            return np.array([])
+        return self.params
+
+    def getNumberParams(self):
+        return int(self._K_act) * self.n_params
+
     def _calcNumberParams(self):
         self.n_params = int(0.5*self.dim*(self.dim+1))
 
@@ -100,12 +139,16 @@ class FreeFormCov(Covariance):
 
     @cached
     def K_grad_i(self,i):
+        if not self._K_act:
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+
         self._updateL()
         self._updateLgrad(i)
         RV = sp.dot(self.L,self.Lgrad.T)+sp.dot(self.Lgrad,self.L.T)
         return RV
 
-    def K_ste(self): 
+    def K_ste(self):
         if self.getFIinv() is None:
             R = None
         else:
@@ -121,7 +164,7 @@ class FreeFormCov(Covariance):
     def getInterParams(self):
         # VARIANCE + CORRELATIONS
         #R1 = self.variance
-        #R2 = self.correlation[sp.tril_indices(self.dim, k = -1)] 
+        #R2 = self.correlation[sp.tril_indices(self.dim, k = -1)]
         #R = sp.concatenate([R1,R2])
 
         # COVARIANCES
@@ -130,7 +173,7 @@ class FreeFormCov(Covariance):
 
     # DERIVARIVE WITH RESPECT TO COVARIANCES
     def K_grad_interParam_i(self, i):
-        ix, iy = sp.tril_indices(self.dim) 
+        ix, iy = sp.tril_indices(self.dim)
         ix = ix[i]
         iy = iy[i]
         R = sp.zeros((self.dim,self.dim))

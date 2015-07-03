@@ -2,53 +2,44 @@
 import unittest
 import scipy as sp
 import numpy as np
-from limix.core.covar.lowrank import LowRankCov
+from limix.core.covar import LowRankCov
 from limix.utils.check_grad import mcheck_grad
-
-# class covariance_test(object):
-#     """abstract test class for covars"""
-#
-#     def test_grad(self):
-#         """test analytical gradient"""
-#         ss = 0
-#         for i in range(self.n_params):
-#             C_an  = self.C.Kgrad_param(i)
-#             C_num = self.C.Kgrad_param_num(i)
-#             _ss = ((C_an-C_num)**2).sum()
-#             #print i, _ss
-#             ss += _ss
-#         self.assertTrue(ss<1e-4)
 
 class TestLowRank(unittest.TestCase):
     """test class for CLowRankCF"""
     def setUp(self):
         sp.random.seed(1)
-        self.n=4
-        self.rank=2
+        self.n = 4
+        self.rank = 2
         self.C = LowRankCov(self.n,self.rank)
         self.name = 'lowrank'
-        self.n_params=self.C.getNumberParams()
-        params=sp.exp(sp.randn(self.n_params))
-        self.C.setParams(params)
+        self.C.setRandomParams()
 
     def test_grad(self):
-        pass
-        # Danilo: I'm assuming that lowrank.py is not finished yet...
+        def func(x, i):
+            self.C.setParams(x)
+            return self.C.K()
 
-        # params = self.C.getParams()
-        #
-        # for i in xrange(len(params)):
-        #     def set_param(x):
-        #         p = params.copy()
-        #         p[i] = x[0]
-        #         self.C.setParams(p)
-        #
-        #     err = scheck_grad(set_param,
-        #                       lambda: np.array([self.C.getParams()[i]]),
-        #                       lambda: self.C.K(),
-        #                       lambda: self.C.Kgrad_param(i))
-        #
-        #     np.testing.assert_almost_equal(err, 0.)
+        def grad(x, i):
+            self.C.setParams(x)
+            return self.C.K_grad_i(i)
+
+        x0 = self.C.getParams()
+        err = mcheck_grad(func, grad, x0)
+
+        np.testing.assert_almost_equal(err, 0., decimal = 6)
+
+    def test_param_activation(self):
+        self.assertEqual(len(self.C.getParams()), 8)
+        self.C.act_X = False
+        self.assertEqual(len(self.C.getParams()), 0)
+
+        self.C.setParams(np.array([]))
+        with self.assertRaises(ValueError):
+            self.C.setParams(np.array([0]))
+
+        with self.assertRaises(ValueError):
+            self.C.K_grad_i(0)
 
 if __name__ == '__main__':
     unittest.main()
