@@ -1,10 +1,4 @@
-#from modules2 import MTSet
-
-#import self
-# import limix
-
-#import a selection of key deprecated modules
-#import deprecated.modules as modules
+import limix
 from mtSet import MTSet
 
 #verbose flags for the entire module
