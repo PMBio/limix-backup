@@ -6,7 +6,7 @@ import scipy as sp
 import limix.core.mean.mean as mean
 
 
-class GeneraterKron(object):
+class GeneratorKron(object):
     def __init__(self,N=100,S=5,R=1000,P=3,var_K1=0.6,var_K2=0.4,h2_1=0.9,h2_2=0.1,A=None, var_snps=None,h2=0.5):
         assert var_K1>=0, "var_K1 has to be greater or equal to zero"
         assert var_K2>=0, "var_K2 has to be greater or equal to zero"
@@ -374,7 +374,7 @@ if __name__ == "__main__":
     h2 = 0.5
 
     A=None
-    data = GeneraterKron(N=N,S=S,R=R,P=P,var_K1=var_K1,var_K2=var_K2,h2_1=h2_1,h2_2=h2_2,h2=h2)
+    data = GeneratorKron(N=N,S=S,R=R,P=P,var_K1=var_K1,var_K2=var_K2,h2_1=h2_1,h2_2=h2_2,h2=h2)
     
     XKX = data.XKX_vec()
     mllogl = data.logl_vec(reml=False )

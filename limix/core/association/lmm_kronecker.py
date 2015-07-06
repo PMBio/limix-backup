@@ -323,5 +323,6 @@ class LmmKronecker(cObject):
         pv = stats.chi2.sf(LRT,dof)
         return pv,LL_snps,LL_snps_0
 
-
+if __name__ == '__main__':
+    pass
 
