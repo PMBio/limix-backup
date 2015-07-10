@@ -1,13 +1,47 @@
+PAOLO's TODO LIST
+
+- clean up covariances
+    - notify in clear cache
+    - remove notify outside of clear_cache
+    - define a covar_base group (clear_all -> clear_cache('covar_base'))
+    - define a Z group (to handle change of seeds in the covariance) 
+    - check that the group default is not used any longer
+
+- fix mean ste when no covariates are considered
+    
+- need methods for new gp inference: 
+    - solve_ls method in covariance
+    - need Kx or K_dot method (linear operator)
+    - sample_trace method???
+
+- we need more combinators (and more struture):
+    - parent class combinator
+    - child classes:
+        - sum
+        - prod
+        - kron
+        - 2kronSum, 2kronSumLR, 3kronSumLR, 3kronSum?
+    
+- generalize setParams notification
+    how to handle combinators of combinators
+
+- check the math for general GP base
+    - pseudo inverse of X -> Xp*y 
+        (sounds like a very good idea)
+
+- Improve mtSet: 2KronSum, 2KronSumLR, 3KronSumLR
+    - speed up using tensorization of gradient operations 
+    - finalize the math write-up
+    - generalization of 3KronSumLR to have a fixed effect
+    - remove splitter_bed (use splitter instead) and debug it
+    - set predictions up for Cov2KronSum, Cov2KronSumLR, Cov3KronSum
+
 -------------------------------------- DISCUSSION WITH DANILO --------------------------------
 
 WE NEED MORE TESTS:
     - remove debug methods and move to tests
         (cov2kronSum, cov3kronSum, cov3KronSumLR, ...)
 
-IMPORTANT:
-    - change combinators notification
-
-REMOVE splitter_bed (use splitter instead) and debug it
 
 --------------------------------------- NON URGENT TODOs --------------------------------
 
@@ -49,7 +83,7 @@ MeanKronSum:
     - change covariates such that F and A are not list but long matrices
         (all rotations on F and A are much faster and no need for for-loop)
 
-Cov2KeonSum:
+Cov2KronSum:
     - I wrote this not that I do not fully understand anymore:
         we do not need all those methods (e.g., LcGradCgLc, LcGradCnLc) but can squeeze stuff in Ctilde (see GP2KronSumLR)
 
@@ -71,9 +105,6 @@ NAMING INCONSISTENCIES
         - in the first (W.T * y) does the dimensionality reduction
         - in the second (W * y) does the dimensionality reduction
     - cov2KronSumLR: make notation consistent with other gps R -> GG (also in gp2KronSumLR)
-
-Predictions:
-    - set predictions up for Cov2KronSum, Cov2KronSumLR, Cov3KronSum
 
 General questions:
     - Phenotype outsid of mean?
