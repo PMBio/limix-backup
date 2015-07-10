@@ -48,8 +48,7 @@ class DirIndirCov(Covariance):
 
     def setParams(self,params):
         self.covff.setParams(params)
-        # self.clear_all()
-        self.clear_cache('default')
+        self.clear_all()
         self._notify()
 
     def getNumberParams(self):

@@ -86,24 +86,21 @@ class SQExpCov(Covariance):
     def scale(self,value):
         assert value>=0, 'Scale must be >=0'
         self.params[0] = sp.log(value)
-        # self.clear_all()
-        self.clear_cache('default')
+        self.clear_all()
         self._notify()
 
     @length.setter
     def length(self,value):
         assert value>=0, 'Length must be >=0'
         self.params[1] = sp.log(value)
-        # self.clear_all()
-        self.clear_cache('default')
+        self.clear_all()
         self._notify()
 
     @X.setter
     def X(self,value):
         self._X = value
         self.initialize(value.shape[0])
-        # self.clear_all()
-        self.clear_cache('default')
+        self.clear_all()
         self.clear_cache('E')
         self._notify()
 
@@ -154,15 +151,15 @@ class SQExpCov(Covariance):
     #####################
     # Params handling
     #####################
-    def setParams(self, params):
+    def setParams(self, params, notify=True):
         sel = np.asarray((self._scale_act, self._length_act))
         if np.sum(sel) != len(params):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
         self.params[sel] = params
-        # self.clear_all()
-        self.clear_cache('default')
-        self._notify()
+        self.clear_all()
+        if notify:
+            self._notify()
 
     def getParams(self):
         sel = np.asarray((self._scale_act, self._length_act))
@@ -202,6 +199,25 @@ class SQExpCov(Covariance):
             r *= self.scale
         elif i==1:
             r *= self.length
+        else:
+            assert False, 'There is no index %d on sqexp.' %i
+        return r
+
+    @cached
+    def K_hess_i_j(self, i, j):
+        if i >= int(self._scale_act) + int(self._length_act) or j >= int(self._scale_act) + int(self._length_act):
+            raise ValueError("Trying to retrieve the hessian over a "
+                             "parameter that is inactive.")
+
+        i = self._actindex2index(i)
+        j = self._actindex2index(j)
+        if i==0 and j==0:
+            r = self.K()
+        elif (i==0 and j==1) or (i==1 and j==0):
+            r = self.K_grad_i(1)
+        elif i==1 and j==1:
+            r = self.K_grad_i(1) - self.K_grad_i(0)
+            r*= self.E() / (2*self.length)
         else:
             assert False, 'There is no index %d on sqexp.' %i
         return r

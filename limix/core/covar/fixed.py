@@ -60,8 +60,7 @@ class FixedCov(Covariance):
     def scale(self,value):
         assert value >= 0, 'Scale must be >= 0.'
         self.params[0] = sp.log(value)
-        # self.clear_all()
-        self.clear_cache('default')
+        self.clear_all()
         self._notify()
 
     @K0.setter
@@ -101,14 +100,14 @@ class FixedCov(Covariance):
     #####################
     # Params handling
     #####################
-    def setParams(self, params):
+    def setParams(self, params, notify=True):
         if int(self._scale_act) != len(params):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
         self.params[:] = params
-        # self.clear_all()
-        self.clear_cache('default')
-        self._notify()
+        self.clear_all()
+        if notify:
+            self._notify()
 
     def _calcNumberParams(self):
         self.n_params = 1
@@ -143,6 +142,13 @@ class FixedCov(Covariance):
 
         r = self.scale * self.K0
         return r
+
+    @cached
+    def K_hess_i_j(self, i, j):
+        if i >= int(self._scale_act) or j >= int(self._scale_act):
+            raise ValueError("Trying to retrieve the hessian over a "
+                             "parameter that is inactive.")
+        return self.K()
 
     ####################
     # Interpretable Params

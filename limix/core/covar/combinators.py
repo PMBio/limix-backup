@@ -22,9 +22,6 @@ class SumCov(Covariance):
             self.addCovariance(covar)
             covar.register(self.clear_all)
 
-    def clear_all(self):
-        self.clear_cache('default')
-
     #####################
     # Covars handling
     #####################
@@ -49,8 +46,9 @@ class SumCov(Covariance):
         for c in cs:
             n = c.getNumberParams()
             istop = istart + n
-            c.setParams(params[istart:istop])
+            c.setParams(params[istart:istop], notify=False)
             istart = istop
+        self.clear_all()
         self._notify()
 
     def getParams(self):
@@ -115,6 +113,28 @@ class SumCov(Covariance):
                 return self.getCovariance(j).K_grad_i(idx)
             istart = istop
         return None
+
+    @cached
+    def K_hess_i_j(self, i, j):
+        istart = 0
+        jstart = 0
+        for c1 in range(len(self.covars)):
+            istop = istart + self.getCovariance(c1).getNumberParams()
+            if (i < istop):
+                i0 = i - istart
+                break
+            istart = istop
+        for c2 in range(len(self.covars)):
+            jstop = jstart + self.getCovariance(c2).getNumberParams()
+            if (j < jstop):
+                j0 = j - jstart
+                break
+            jstart = jstop
+        if c1==c2:
+            r = self.getCovariance(c1).K_hess_i_j(i0, j0)
+        else:
+            r = SP.zeros((self.dim, self.dim))
+        return r
 
     def _calcNumberParams(self):
         self.n_params = 0

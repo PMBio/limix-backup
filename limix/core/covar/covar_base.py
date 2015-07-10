@@ -4,6 +4,7 @@ from limix.core.type.cached import Cached, cached
 from limix.utils.eigen import *
 import scipy as sp
 import scipy.linalg as LA
+import scipy.sparse.linalg as sla
 import warnings
 
 import logging as LG
@@ -12,8 +13,11 @@ class Covariance(Cached, Observed):
     """
     abstract super class for all implementations of covariance functions
     """
-    def __init__(self,dim=None):
+    def __init__(self,dim=None,nIterMC=30):
         Cached.__init__(self)
+        self._nIterMC = nIterMC
+        self._reuse = True
+        self._KiZo = None
         if dim is not None:
             self.initialize(dim)
 
@@ -23,13 +27,19 @@ class Covariance(Cached, Observed):
 
     def clear_all(self):
         # TODO: define groups for those
-        self.clear_cache('K','Kcross','K_grad_i',
+        self.clear_cache('K','Kcross','K_grad_i', 'K_hess_i_j',
                           'logdet','logdet_grad_i',
+                          'DKZ', 'DDKZ', 'KiZ',
+                          'sample_logdet_grad_i',
+                          'sample_logdet_grad',
+                          'sample_trKiDDK',
                           'inv','chol','S','U','USi2')
+        self._notify()
 
     #######################
     # Param Handling
     #######################
+
     # def getParams(self):
     #     return self.params
     #
@@ -85,8 +95,28 @@ class Covariance(Cached, Observed):
         LG.critical("implement K_grad_i")
         print("%s: Function K not yet implemented"%(self.__class__))
 
+    @cached
+    def K_hess_i_j(self,i,j):
+        LG.critical("implement K_hess_i_j")
+        print("%s: Function Khess not yet implemented"%(self.__class__))
+
+    def dot(self, M):
+        return sp.dot(self.K(), M)
+
     def solve(self,M):
         return LA.cho_solve((self.chol(),True),M)
+
+    def solve_ls(self, M, M0=None, tol=1E-3):
+        if M0 is None:    M0 = 1E-3 * sp.randn(*M.shape)
+        def veKvei(m):
+            _M = m.reshape(M.shape, order='F')
+            return self.dot(_M).reshape(M.size, order='F')
+        Kx_O = sla.LinearOperator((M.size, M.size), matvec=veKvei, rmatvec=veKvei, dtype='float64')
+        # vectorize
+        m  = M.reshape(M.size, order='F')
+        m0 = M0.reshape(M0.size, order='F')
+        r, _ = sla.cgs(Kx_O, m, x0=m0, tol=tol)
+        return r.reshape(M.shape, order='F')
 
     @cached
     def chol(self):
@@ -103,6 +133,50 @@ class Covariance(Cached, Observed):
     @cached
     def logdet_grad_i(self,i):
         return self.solve(self.K_grad_i(i)).diagonal().sum()
+
+    @cached
+    def Z(self):
+        r = sp.randn(self.dim, self._nIterMC)
+        # norm Z to improve convergence
+        norm = sp.sqrt(self.dim / (float(self._nIterMC) * (r**2).sum(0)))
+        return norm * r
+
+    @cached
+    def DKZ(self):
+        R = sp.zeros((self.dim, self._nIterMC, self.getNumberParams()))
+        for i in range(R.shape[2]):
+            R[:, :, i] = sp.dot(self.K_grad_i(i), self.Z())
+        return R 
+
+    @cached
+    def DDKZ(self):
+        R = sp.zeros((self.dim, self._nIterMC, self.getNumberParams(), self.getNumberParams()))
+        for i in range(R.shape[2]):
+            R[:, :, i, i] = sp.dot(self.K_hess_i_j(i, i), self.Z())
+            for j in range(i):
+                R[:, :, i, j] = sp.dot(self.K_hess_i_j(i, j), self.Z())
+                R[:, :, j, i] = R[:, :, i, j]
+        return R 
+
+    @cached
+    def KiZ(self):
+        R = self.solve_ls(self.Z(), M0=self._KiZo)
+        if self._reuse:     self._KiZo = R
+        return R
+        
+
+    @cached
+    def sample_logdet_grad_i(self, i):
+        DiKZ = sp.dot(self.K_grad_i(i), self.Z())
+        return (DiKZ * self.KiZ()).sum()
+
+    @cached
+    def sample_logdet_grad(self):
+        return (self.DKZ() * self.KiZ()[:, :, sp.newaxis]).sum(axis=(0, 1))
+
+    @cached
+    def sample_trKiDDK(self):
+        return (self.DDKZ() * self.KiZ()[:, :, sp.newaxis, sp.newaxis]).sum(axis=(0, 1))
 
     @cached
     def S(self):
@@ -163,7 +237,8 @@ class Covariance(Cached, Observed):
         return self.getParams()
 
     def K_grad_interParam_i(self,i):
-        return K_grad_i_interParams(self,i)
+        LG.critical("implement K_grad_interParam_i")
+        print("%s: Function K_grad_interParam_i not yet implemented"%(self.__class__))
 
     def getFisherInf(self):
         n_params = self.getNumberParams()
