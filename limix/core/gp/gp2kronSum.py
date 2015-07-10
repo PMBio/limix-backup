@@ -14,6 +14,7 @@ from limix.core.covar.cov_reml import cov_reml
 from limix.core.utils import assert_type_or_list_type
 from limix.core.utils import assert_type
 from limix.core.utils import assert_subtype
+from relay import GPMeanRelay
 
 
 class GP2KronSum(GP):
@@ -52,7 +53,7 @@ class GP2KronSum(GP):
         assert_subtype(Cn, Covariance, 'Cn')
 
         covar = Cov2KronSum(Cg=Cg, Cn=Cn, R=R, S_R=S_R, U_R=U_R)
-        mean = MeanKronSum(Y=Y, F=F, A=A)
+        mean = MeanKronSum(Y, GPMeanRelay(self), F=F, A=A)
 
         GP.__init__(self, covar=covar, mean=mean)
 
