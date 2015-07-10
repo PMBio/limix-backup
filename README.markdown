@@ -2,10 +2,13 @@
 
 ## What is LIMIX?
 
-LIMIX is a flexible and efficient linear mixed model library with interfaces to Python and other scripting languages.
+LIMIX is a flexible and efficient linear mixed model library with interfaces to Python. 
+Limix is currently mainly developed by 
 
-By Christoph Lippert (lippert@microsoft.com),
-Franceso Paolo Casale (casale@ebi.ac.uk), and Oliver Stegle (stegle@ebi.ac.uk) 
+Franceso Paolo Casale (casale@ebi.ac.uk)
+Danilo Horta (horta@ebi.ac.uk) 
+Christoph Lippert (lippert@microsoft.com) 
+Oliver Stegle (stegle@ebi.ac.uk) 
 
 
 ## Philosophy 
@@ -22,10 +25,10 @@ LIMIX is smart about how particular models are fit to safe computational cost.
 
 * If you want to install LIMIX from source you require:
 Python:
-- scons, scipy, numpy, pandas
+- scipy, numpy, pandas, cython
 
 * Swig:
-- swig 2.0 or higher
+- swig 2.0 or higher (only required if you need to recompile C++ interfaces)
 
 ## How to use LIMIX?
 A good starting point is our package Vignettes. These tutorials can are available in this repository: https://github.com/PMBio/limix-tutorials.
