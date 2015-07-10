@@ -237,7 +237,7 @@ class GP(Cached, Observed):
             I_covar = self.covar.getFisherInf()
             I_mean = self.Areml.K()
             self.covar.setFIinv(sp.linalg.pinv(I_covar))
-            self.mean.setFIinv(sp.linalg.pinv(I_mean))
+            #self.mean.setFIinv(sp.linalg.pinv(I_mean))
             t1 = time.time()
             # logger.debug('Time elapsed: %.2fs', t1-t0)
 
