@@ -27,7 +27,6 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 	@A_snps.setter
 	def A_snps(self, value):
 		self.clear_cache("A_snps")
-		#self.clear_cache("default")
 		if type(value) is list:
 			self._A_snps = value
 		else:
@@ -40,7 +39,6 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 	@X_snps.setter
 	def X_snps(self, value):
 		self.clear_cache("X_snps")
-		#self.clear_cache("default")
 		if type(value) is list:
 			self._X_snps = value
 		else:
