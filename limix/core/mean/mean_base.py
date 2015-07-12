@@ -17,7 +17,7 @@ class MeanBase(Cached, Observed):
         K = number of fixed effect covariates
     """
 
-    def __init__(self, Y, W, Wstar=None):
+    def __init__(self, Y, W=None, Wstar=None):
         """
         Args:
             Y:        phenotype matrix [N, 1]

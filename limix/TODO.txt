@@ -1,55 +1,99 @@
--------------------------------------- DISCUSSION WITH DANILO --------------------------------
+***********************************************
+NEW RELEASE 1
+***********************************************
+- merge (Danilo & Paolo)
 
-WE NEED MORE TESTS:
-    - remove debug methods and move to tests
-        (cov2kronSum, cov3kronSum, cov3KronSumLR, ...)
+- GP-mean Association (Danilo)
 
-IMPORTANT:
-    - change combinators notification
+- remove setParams notify
 
-REMOVE splitter_bed (use splitter instead) and debug it
+- clean up covariances
+    - notify in clear cache
+    - remove notify outside of clear_cache
+    - define a covar_base group (clear_all -> clear_cache('covar_base'))
+    - define a Z group (to handle change of seeds in the covariance)
+    - check that the group default is not used any longer
 
---------------------------------------- NON URGENT TODOs --------------------------------
+- fix mean ste when no covariates are considered
 
-Solve caching strategy for covariances:
-    clear_all should clear_cache('covar_base')
-    REMEMBER: once this is fixed we can go back to throw an exeption in cached.clear_cachewhen the group does not exist
+***********************************************
+NEW RELEASE 2
+***********************************************
 
-PRINT method for all classes
+- Improve mtSet: 2KronSum, 2KronSumLR, 3KronSumLR
+    - finalize the math write-up
+    - set predictions up for Cov2KronSum, Cov2KronSumLR, Cov3KronSum
 
-- clean up gp2KronSumLR
 
+- we need more combinators (and more struture):
+    - parent class combinator
+    - child classes:
+        - sum
+        - kron
+        - 2kronSum, 2kronSumLR, 3kronSumLR
 
-Fix notation with PEP8 or whatever...
+- Variance Decomposition module 
 
-MeanKronSum:
+- PRINT method for all classes (Danilo)
+
+- MeanKronSum:
     - clean it up
     - check caching
         (pheno_has_changed and designs_have_changed for mean base)
+    - implement Bste
 
-MAke this consistent throughout:
+- group-based caching system for general gp
+
+- Logging system (Danilo)
+
+- Phenotype outside of mean
+    (think more...)
+
+****************************************************
+OTHER TODOs
+****************************************************
+- website with forum
+
+- check the math for general GP base
+    - pseudo inverse of X -> Xp*y 
+        (sounds like a very good idea)
+
+- we need more combinators (and more struture):
+    - child classes:
+        - prod
+        - 3kronSum
+
+- need methods for new gp inference: 
+    - solve_ls method in covariance
+    - need Kx or K_dot method (linear operator)
+    - sample_trace method???
+
+- MeanKronSum:
+    - change covariates such that F and A are not list but long matrices
+        (all rotations on F and A are much faster and no need for for-loop)
+
+- Improve mtSet: 2KronSum, 2KronSumLR, 3KronSumLR
+    - speed up using tensorization of gradient operations 
+    - generalization of 3KronSumLR to have a fixed effect
+    - remove splitter_bed (use splitter instead) and debug it
+
+- fix notation with PEP8 or whatever...
+
+Make this consistent throughout:
     - all things that might change either are set in init or method check=True/False
     - __init__(lots of stuff):
         self._assert dimenstion()
         set stuff (with check=False)
     - you can set all the stuff you want
 
-EXCEPTIONS:
-    - we need dimension mismatch
-
 GPs:
-    - new caching system for general gp
     - gp with 1 kron
     - GP2KronSumLR inherits from GPKron (the same manner GP3KronSumLR inherits from GP2KronSum)
     - GP multi kron sum with missing value handling
         (should handle lowrank-ness and so on so forth)
 
-MeanKronSum:
-    - implement Bste
-    - change covariates such that F and A are not list but long matrices
-        (all rotations on F and A are much faster and no need for for-loop)
 
-Cov2KeonSum:
+Cov2KronSum:
     - I wrote this not that I do not fully understand anymore:
         we do not need all those methods (e.g., LcGradCgLc, LcGradCnLc) but can squeeze stuff in Ctilde (see GP2KronSumLR)
 
@@ -72,18 +116,7 @@ NAMING INCONSISTENCIES
         - in the second (W * y) does the dimensionality reduction
     - cov2KronSumLR: make notation consistent with other gps R -> GG (also in gp2KronSumLR)
 
-Predictions:
-    - set predictions up for Cov2KronSum, Cov2KronSumLR, Cov3KronSum
-
-General questions:
-    - Phenotype outsid of mean?
-    - define a rotated mean class??
-    - undertand how Areml is informed
-        this is not clear to me at all
-
--------------------------------------- INFO ----------------------------------------------
-
-
+------------------------------------ INFO ----------------------------------------------
 TO DISABLE THE CASH:
     env LIMIX_DEBUG=1 python test_cov2kronSum.py
 

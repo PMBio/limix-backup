@@ -103,8 +103,7 @@ class FreeFormCov(Covariance):
                              "is not active.")
         if self._K_act:
             self.params[:] = params
-            # self.clear_all()
-            self.clear_cache('default')
+            self.clear_all()
             if notify:
                 self._notify()
 

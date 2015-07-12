@@ -149,7 +149,7 @@ class Cov2KronSumLR(Covariance):
     #####################
     # Params handling
     #####################
-    def setParams(self,params):
+    def setParams(self, params):
         nCr = int(self._Cr_act) * self.Cr.getNumberParams()
         nCn = int(self._Cn_act) * self.Cn.getNumberParams()
 
