@@ -2,13 +2,12 @@ from limix.core.type.cached import Cached, cached
 from limix.core.type.observed import Observed
 
 import sys
-import ipdb
 import numpy.linalg as la 
 import numpy as np
 import scipy as sp
 import limix.core.association.kron_util as kron_util
-import limix.core.fastany.fast_any as fast_any
-class LmmKronecker(Cached):
+
+class KroneckerLMM(Cached):
 	def __init__(self, Y, R1, C1, R2, C2, X, A=None, var_K1=1.0, var_K2=1.0):
 		Cached.__init__(self)
 		C = []
@@ -137,11 +136,11 @@ class LmmKronecker(Cached):
 
 	@cached(["R"])
 	def Rrot(self):
-		return LmmKronecker.rot_kron(self.R[0], self.R[1])#, h2=self.h2)
+		return KroneckerLMM.rot_kron(self.R[0], self.R[1])#, h2=self.h2)
 
 	@cached(["C"])
 	def Crot(self):
-		return LmmKronecker.rot_kron(self.C[0], self.C[1])#, h2=self.h2)
+		return KroneckerLMM.rot_kron(self.C[0], self.C[1])#, h2=self.h2)
 
 	@cached(["Y","C","R"])
 	def Yrot(self):
@@ -212,7 +211,8 @@ class LmmKronecker(Cached):
 		yKy = self.YKY()
 		beta = self.beta()
 		XKy = self.XKY()
-		return yKy - (beta*XKy).sum()
+		rss = yKy - (beta*XKy).sum()
+		return rss
 
 	@cached(["C","R"])
 	def logdet_K(self):
@@ -221,7 +221,8 @@ class LmmKronecker(Cached):
 		logdet_D = -logD.sum()
 		logdet_R = self.P * np.log(self.Rrot()[1][0]).sum()
 		logdet_C = self.N * np.log(self.Crot()[1][0]).sum()
-		return logdet_D + logdet_R + logdet_C
+		logdet = logdet_D + logdet_R + logdet_C
+		return logdet
 
 	@cached(["X","A","C","R"])
 	def logdet_XKX(self):
@@ -229,78 +230,20 @@ class LmmKronecker(Cached):
 		sign,logdet_XKX = la.slogdet(XKX)
 		return logdet_XKX
 
-	def nLL(self, reml=True):
-		
+	@cached(["X","A","Y","C","R"])
+	def LL(self, reml=True):
 		yKy = self.resKres()
-
 		logdet = self.logdet_K()
-
 		if reml:
 			logdet += self.logdet_XKX()
 			dof = self.dof.sum()
 			var = yKy/(self.N*self.P-dof)
-			const = (self.N*self.P-dof) * np.log(2.0*sp.pi)
+			const = (self.N*self.P-dof) * (np.log(2.0*sp.pi) + np.log(var))
 		else:
 			var = yKy/(self.N*self.P)
-			const = self.N*self.P * np.log(2.0*sp.pi)
-
+			const = self.N*self.P * (np.log(2.0*sp.pi) + np.log(var))
 		dataterm = yKy/var
 		logl =  -0.5 * (const + logdet + dataterm)
-
-		return logl
-
-
-	#these are needed to test SNPs:
-
-	def snpsKY(self, X_snps_rot, A_snps_rot):
-		dof = self.dof_X(X=X_snps_rot) * self.dof_A(A=A_snps_rot)
-		dof_cumsum = np.concatenate(([0],dof.cumsum()))
-		snpsKY = np.empty((dof.sum(),1))
-		DY = self.D_rot() * self.Yrot()
-		for i in xrange(len(X_snps_rot)):
-			snpsKY[dof_cumsum[i]:dof_cumsum[i+1],0] = kron_util.vec(kron_util.compute_XYA(DY=DY, X=X_snps_rot[i], A=A_snps_rot[i]))		
-		return snpsKY
-
-	def snpsKsnps(self, X_snps_rot, A_snps_rot):
-		dof = self.dof_X(X=X_snps_rot) * self.dof_A(A=A_snps_rot)
-		dof_cumsum = np.concatenate(([0],dof.cumsum()))
-		snpsKsnps = np.empty((dof.sum(),dof.sum()))
-		for i in xrange(len(X_snps_rot)):
-			snpsKsnps[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[i]:dof_cumsum[i+1]] = kron_util.compute_X1KX2(Y=self.Y, D=self.D_rot(), A1=A_snps_rot[i], A2=A_snps_rot[i], X1=X_snps_rot[i], X2=X_snps_rot[i])
-			for j in xrange(i+1,len(X_snps_rot)):
-				snpsKsnps[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]] = kron_util.compute_X1KX2(Y=self.Y, D=self.D_rot(), A1=A_snps_rot[i], A2=A_snps_rot[j], X1=X_snps_rot[i], X2=X_snps_rot[j])
-				snpsKsnps[dof_cumsum[j]:dof_cumsum[j+1],dof_cumsum[i]:dof_cumsum[i+1]] = snpsKsnps[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]].T
-		return snpsKsnps
-
-	def snpsKX(self, X_snps_rot, A_snps_rot):
-		dof = self.dof
-		dof_cumsum = np.concatenate(([0],dof.cumsum()))
-		dof_snps = self.dof_X(X=X_snps_rot) * self.dof_A(A=A_snps_rot)
-		dof_snps_cumsum = np.concatenate(([0],dof_snps.cumsum()))
-		snpsKX = np.empty((dof_snps.sum(),dof.sum()))
-		for i in xrange(len(X_snps_rot)):
-			for j in xrange(self.length):
-				snpsKX[dof_snps_cumsum[i]:dof_snps_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]] = kron_util.compute_X1KX2(Y=self.Y, D=self.D_rot(), A1=A_snps_rot[i], A2=self.A_rot()[j], X1=X_snps_rot[i], X2=self.X_rot()[j])
-		return snpsKX
-
-	def nLL_snps(self, X_snps, A_snps=None, reml=True):
-
-		yKy = self.resKres()
-
-		logdet = self.logdet_K()
-
-		if reml:
-			logdet += self.logdet_XKX()
-			dof = self.dof.sum()
-			var = yKy/(self.N*self.P-dof)
-			const = (self.N*self.P-dof) * np.log(2.0*sp.pi)
-		else:
-			var = yKy/(self.N*self.P)
-			const = self.N*self.P * np.log(2.0*sp.pi)
-
-		dataterm = yKy/var
-		logl =  -0.5 * (const + logdet + dataterm)
-
 		return logl
 	
 	@staticmethod
@@ -318,3 +261,4 @@ class LmmKronecker(Cached):
 		res = (s,sqrtC2i.dot(U))
 		ret = [res,res_C2["eigh"]]
 		return ret
+
