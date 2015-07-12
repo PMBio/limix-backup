@@ -12,6 +12,12 @@ class LmmKronecker_vec(lmm_kron.LmmKronecker):
 		lmm_kron.LmmKronecker.__init__(self, Y=Y, R1=R1, C1=C1, R2=R2, C2=C2, X=X, A=A, var_K1=var_K1, var_K2=var_K2)
 		self.diff_threshold=diff_threshold
 
+	def Y_vec(self):
+		#return self.Y.flatten(order="C")
+		#return self.Y.flatten(order="F")
+		result = kron_util.vec(self.Y)[:,np.newaxis]
+		return result
+
 	def dof_vec(self):
 		return self.X_vec().shape[1]
 
@@ -21,6 +27,16 @@ class LmmKronecker_vec(lmm_kron.LmmKronecker):
 			return np.kron(la.inv(self.Crot()[0][1]),self.X[i])
 		else:
 			return np.kron(self.A[i],self.X[i])
+
+	def logdet_K_vec(self):
+		K = self.K_vec()
+		sign,logdet_vec = la.slogdet(K)
+		logdet = self.logdet_K()
+		diff = logdet-logdet_vec
+		if np.absolute(diff).sum()>1e-8:
+			raise Exception("missmatch, diff = %f" % np.absolute(diff).sum())
+		return logdet_vec
+
 	
 	def X_vec(self):
 		dof = self.dof
@@ -161,9 +177,14 @@ if __name__ == "__main__":
 
 	A=None
 	data = fast_any.GeneratorKron(N=N,S=S,R=R,P=P,var_K1=var_K1,var_K2=var_K2,h2_1=h2_1,h2_2=h2_2,h2=h2)
-	lmm1 = lmm_kron.LmmKronecker(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=data.snps, A=np.eye(data.P))
-	lmm1_any = lmm_kron.LmmKronecker(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=data.snps, A=data.A)
-	lmm1_ = LmmKronecker_vec(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=data.snps, A=np.eye(data.P))
+
+	X = [data.snps, np.ones((N,1))]
+	A = [np.eye(data.P), np.eye(data.P)]
+	A_any = [None, None]
+
+	lmm1 = lmm_kron.LmmKronecker(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A)
+	lmm1_any = lmm_kron.LmmKronecker(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A_any)
+	lmm1_ = LmmKronecker_vec(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A)
 	#lmm2_ = LmmKronecker_vec(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=data.snps, A=data.A)
 	XKX1 = lmm1.XKX()
 	XKX1_any = lmm1_any.XKX()

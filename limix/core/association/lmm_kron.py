@@ -1,3 +1,6 @@
+from limix.core.type.cached import Cached, cached
+from limix.core.type.observed import Observed
+
 import sys
 import ipdb
 import numpy.linalg as la 
@@ -5,15 +8,17 @@ import numpy as np
 import scipy as sp
 import limix.core.association.kron_util as kron_util
 import limix.core.fastany.fast_any as fast_any
-
-class LmmKronecker(object):
+class LmmKronecker(Cached):
 	def __init__(self, Y, R1, C1, R2, C2, X, A=None, var_K1=1.0, var_K2=1.0):
-		self.C = []
-		self.R = []
-		self.C.append(C1)# * var_K1)
-		self.C.append(C2)# * var_K2)
-		self.R.append(R1 * var_K1)
-		self.R.append(R2 * var_K2)
+		Cached.__init__(self)
+		C = []
+		R = []
+		C.append(C1)# * var_K1)
+		C.append(C2)# * var_K2)
+		R.append(R1 * var_K1)
+		R.append(R2 * var_K2)
+		self.C = C
+		self.R = R
 		if type(X) is list:
 			self.X = X
 		else:
@@ -26,6 +31,50 @@ class LmmKronecker(object):
 		#self.var_total = var_K1 + var_K2
 		#self.h2 = var_K1 / self.var_total
 		self.Y=Y
+
+	@property
+	def C(self):
+		return self._C
+
+	@C.setter
+	def C(self, value):
+		assert len(value)==2, "length missmatch C, need 2 found %i" % len(value)
+		self.clear_cache("default")
+		self._C = value
+
+	@property
+	def R(self):
+		return self._R
+
+	@R.setter
+	def R(self, value):
+		assert len(value)==2, "length missmatch R, need 2 found %i" % len(value)
+		self.clear_cache("default")
+		self._R = value
+
+	@property
+	def A(self):
+		return self._A
+
+	@A.setter
+	def A(self, value):
+		self.clear_cache("fixed")
+		if type(value) is list:
+			self._A = value
+		else:
+			self._A = [value]
+
+	@property
+	def X(self):
+		return self._X
+
+	@X.setter
+	def X(self, value):
+		self.clear_cache("fixed")
+		if type(value) is list:
+			self._X = value
+		else:
+			self._X = [value]
 
 	@property
 	def P(self):
@@ -50,6 +99,7 @@ class LmmKronecker(object):
 				dof[i] = self.X[i].shape[1]*self.A[i].shape[0]
 		return dof
 
+	@cached
 	def D_rot(self):
 		sR = self.Rrot()[0][0]
 		sC = self.Crot()[0][0]
@@ -58,12 +108,15 @@ class LmmKronecker(object):
 	def covariance_vec(self, i):
 		return np.kron(self.C[i],self.R[i])
 
+	@cached
 	def Rrot(self):
 		return LmmKronecker.rot_kron(self.R[0], self.R[1])#, h2=self.h2)
 
+	@cached
 	def Crot(self):
 		return LmmKronecker.rot_kron(self.C[0], self.C[1])#, h2=self.h2)
 
+	@cached
 	def Yrot(self):
 		res = self.Rrot()[0][1].T.dot(self.Y).dot(self.Crot()[0][1])
 		return res
@@ -72,6 +125,7 @@ class LmmKronecker(object):
 		res = self.Rrot()[0][1].T.dot(self.X[i])
 		return res
 
+	@cached("fixed")
 	def X_rot(self):
 		res = []
 		for i in xrange(self.length):
@@ -85,12 +139,15 @@ class LmmKronecker(object):
 			return None
 		else:
 			return self.A[i].dot(self.Crot()[0][1])
+	
+	@cached("fixed")
 	def A_rot(self):
 		res = []
 		for i in xrange(self.length):
 			res.append(self.A_rot_i(i=i))
 		return res
 
+	@cached("fixed")
 	def XKX(self):
 		dof = self.dof
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
@@ -102,6 +159,7 @@ class LmmKronecker(object):
 				XKX[dof_cumsum[j]:dof_cumsum[j+1],dof_cumsum[i]:dof_cumsum[i+1]] = XKX[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]].T
 		return XKX
 
+	@cached("fixed")
 	def XKY(self):
 		dof = self.dof
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
@@ -111,38 +169,26 @@ class LmmKronecker(object):
 			XKY[dof_cumsum[i]:dof_cumsum[i+1],0] = kron_util.vec(kron_util.compute_XYA(DY=DY, X=self.X_rot()[i], A=self.A_rot()[i]))		
 		return XKY
 
+	@cached
 	def YKY(self):
 		YKY = (self.Yrot() * self.Yrot() * self.D_rot()).sum()
 		return YKY
 
-	def Y_vec(self):
-		#return self.Y.flatten(order="C")
-		#return self.Y.flatten(order="F")
-		result = kron_util.vec(self.Y)[:,np.newaxis]
-		return result
-
+	@cached("fixed")
 	def beta(self):
 		XKX = self.XKX()
 		XKy = self.XKY()
 		beta = la.solve(XKX,XKy)
 		return beta
 	
+	@cached("fixed")
 	def resKres(self):
 		yKy = self.YKY()
 		beta = self.beta()
 		XKy = self.XKY()
 		return yKy - (beta*XKy).sum()
 
-	def logdet_K_vec(self):
-		K = self.K_vec()
-		sign,logdet_vec = la.slogdet(K)
-		logdet = self.logdet_K()
-		diff = logdet-logdet_vec
-		if np.absolute(diff).sum()>1e-8:
-			print np.absolute(diff).sum()
-			import ipdb; ipdb.set_trace()
-		return logdet_vec
-
+	@cached
 	def logdet_K(self):
 		D = self.D_rot()
 		logD = np.log(D)
@@ -151,6 +197,7 @@ class LmmKronecker(object):
 		logdet_C = self.N * np.log(self.Crot()[1][0]).sum()
 		return logdet_D + logdet_R + logdet_C
 
+	@cached("fixed")
 	def logdet_XKX(self):
 		XKX = self.XKX()
 		sign,logdet_XKX = la.slogdet(XKX)
