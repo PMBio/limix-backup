@@ -228,13 +228,6 @@ class GWAS(object):
 		return pheno_input
 
 if __name__ == "__main__":
-	import logging
-	from pysnptools.snpreader import Bed
-	import pysnptools.standardizer
-	import pysnptools
-	import pysnptools.util
-	import pysnptools.util.pheno
-	import time
 
 	bed_fn = "../../test/data/plinkdata/toydata"
 	pheno_fn = bed_fn + ".phe6"#"../../test/data/plinkdata/toydata.phe"

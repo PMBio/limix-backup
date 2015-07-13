@@ -152,8 +152,8 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		return (lrt, p_value)
 
 	def run_gwas(self, snps, A_snps=None):
-		X_snps_sav = self.X_snps
-		A_snps_sav = self.A_snps
+		#X_snps_sav = self.X_snps
+		#A_snps_sav = self.A_snps
 		lrts = np.empty((snps.shape[1]))
 		p_values = np.empty((snps.shape[1]))
 		self.A_snps = [A_snps]
@@ -161,6 +161,6 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 			snp = snps[:,s:s+1]
 			self.X_snps = [snp]
 			lrts[s],p_values[s] = self.lrt_snps()
-		self.X_snps = X_snps_sav
-		self.A_snps = A_snps_sav
+		#self.X_snps = X_snps_sav
+		#self.A_snps = A_snps_sav
 		return lrts, p_values
