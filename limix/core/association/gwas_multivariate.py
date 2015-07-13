@@ -14,7 +14,7 @@ import pysnptools.util.pheno
 import time
 import kron_gwas
 from gwas import GWAS, create_dir
-
+import glob
 
 class MultivariateGWAS(GWAS):
 	def __init__(self, snps_test, phenotype, K=None, snps_K=None, covariates=None, 
@@ -101,6 +101,20 @@ class MultivariateGWAS(GWAS):
 		myfile = "%sblock_%0*d.csv" % (mydir, fill, stop)
 		res.to_csv(myfile)
 
+	@staticmethod
+	def load_results(dir_name):
+		result = None
+		mydir = dir_name + "/"
+		myfile_pattern = "%sblock_*.csv" % (mydir)
+		files = glob.glob(myfile_pattern)
+		for filename in files:
+			res = pd.read_csv(filename)
+			if result is None:
+				result = res
+			else:
+				result = pd.concat((result,res),0)
+		return result
+
 	def snps_test_block(self, block_start, block_end):
 		snps = self.snps_test[:,block_start:block_end].read().standardize(self.standardizer)
 		lrts, p_values = self.lmm.run_gwas(snps=snps.val, A_snps=self.A_snps)
@@ -138,7 +152,11 @@ if __name__ == "__main__":
 	covariates = GWAS._pheno_fixup(covariate_fn, iid_source_if_none=pheno)
 	print "intersecting data"
 	t00 = time.time()
-	snp_intersect, pheno_intersect = pysnptools.util.intersect_apply([snp_reader, pheno], sort_by_dataset=True)
+	snp_intersect, pheno_intersect, covariates_intersect = pysnptools.util.intersect_apply([snp_reader, pheno, covariates], sort_by_dataset=True)
+	
+	pheno_df = GWAS.check_pheno_format(pheno_intersect)
+	covariates_df = GWAS.check_pheno_format(covariates_intersect)
+
 	t1 = time.time()
 	print "done intersecting after %.4fs" % (t1-t00)
 
@@ -164,17 +182,33 @@ if __name__ == "__main__":
 		S,U = la.eigh(K)
 		t1 = time.time()
 		print "done computing eigenvalue decomposition of kernel after %.4fs" % (t1-t0)	
-		
+	if 1:
+		# define phenotype
+		N = pheno_intersect.shape[0]
+		P = pheno_intersect.shape[1]
+		Y = pheno_intersect.values
+		# define fixed effects
+		F = []; A = []
+		X_cov = np.concatenate((np.ones((N,1)),covariates_df.values),1)
+		F.append(X_cov)
+		A.append(np.eye(P))
+		# define row covariance
+		R  = K
+		# define col covariances
+		Cg = FreeFormCov(P)
+		Cn = FreeFormCov(P)
+		Cg.setCovariance(0.5 * np.eye(P))
+		Cn.setCovariance(0.5 * np.cov(Y.T))
+		# define gp
+		gp = GP2KronSum(Y=Y, F=F, A=A, Cg=Cg, Cn=Cn, R=R)
+		gp.optimize()
+
+		C1 = gp.covar.Cg.K()
+		C2 = gp.covar.Cn.K()
 	if 1:
 		print "running GWAS"
 		t0 = time.time()
-		if 1:#LMM with pre-built kernel K
-			mygwas = MultivariateGWAS(K=K, snps_K=None, snps_test=snp_intersect, phenotype=pheno, covariates=covariates, h2=None, interact_with_snp=None, nGridH2=10, standardizer=standardizer)
-		elif 0:#LMM building kernel inside from snps_K
-			mygwas = MultivariateGWAS(K=None, snps_K=snp_intersect, snps_test=snp_intersect, phenotype=pheno, covariates=covariates, h2=None, interact_with_snp=None, nGridH2=10, standardizer=standardizer)
-
-		else:#linear regression
-			mygwas = MultivariateGWAS(K=None, snps_K=None, snps_test=snp_intersect, phenotype=pheno, covariates=covariates, h2=None, interact_with_snp=None, nGridH2=10, standardizer=standardizer)
+		mygwas = MultivariateGWAS(K=K, snps_K=None, snps_test=snp_intersect, phenotype=pheno_df, covariates=covariates_df, h2=None, interact_with_snp=None, nGridH2=10, standardizer=standardizer,C1=C1,C2=C2)
 		if 1:
 			result = mygwas.compute_association(blocksize=blocksize, temp_dir=None)#'./temp_dir_testdata/')
 		else:
