@@ -6,16 +6,18 @@ import numpy.linalg as la
 import numpy as np
 import scipy as sp
 import limix.core.association.kron_util as kron_util
+import mingrid
+import time
 
 class KroneckerLMM(Cached):
-	def __init__(self, Y, R1, C1, R2, C2, X, A=None, var_K1=1.0, var_K2=1.0):
+	def __init__(self, Y, R1, C1, R2, C2, X, A=None, h2=0.5, reml=True):
 		Cached.__init__(self)
 		C = []
 		R = []
-		C.append(C1)# * var_K1)
-		C.append(C2)# * var_K2)
-		R.append(R1 * var_K1)
-		R.append(R2 * var_K2)
+		C.append(C1)
+		C.append(C2)
+		R.append(R1)
+		R.append(R2)
 		self.C = C
 		self.R = R
 		if type(X) is list:
@@ -27,9 +29,29 @@ class KroneckerLMM(Cached):
 		else:
 			self.A = [A]	
 		assert len(self.X)==len(self.A), "missmatch between len(X)=%i and len(A)=%i" % (len(self.X), len(self.A))
-		#self.var_total = var_K1 + var_K2
-		#self.h2 = var_K1 / self.var_total
+		self.h2 = h2
 		self.Y=Y
+		self.reml=reml
+
+	@property
+	def reml(self):
+		return self._reml
+
+	@reml.setter
+	def reml(self,value):
+		self.clear_cache("reml")
+		self._reml=value
+	
+	@property
+	def h2(self):
+		return self._h2
+
+	@h2.setter
+	def h2(self, value):
+		assert value>=0.0, "h2 has to be non-negative, found %f" % value
+		assert value<1.0, "h2 has to be smaller than 1.0, found %f" % valyue
+		self.clear_cache("h2")
+		self._h2 = value
 
 	@property
 	def Y(self):
@@ -125,11 +147,11 @@ class KroneckerLMM(Cached):
 		dof = self.dof_A(A=self.A) * self.dof_X(X=self.X)
 		return dof
 
-	@cached(["C","R"])
+	@cached(["C","R","h2"])
 	def D_rot(self):
 		sR = self.Rrot()[0][0]
 		sC = self.Crot()[0][0]
-		return 1.0 / (sR[:,np.newaxis] * sC[np.newaxis,:] + 1.0)
+		return 1.0 / (self.h2 * sR[:,np.newaxis] * sC[np.newaxis,:] + (1.0-self.h2))
 
 	def covariance_vec(self, i):
 		return np.kron(self.C[i],self.R[i])
@@ -172,7 +194,7 @@ class KroneckerLMM(Cached):
 			res.append(self.rotate_A(A=self.A[i]))
 		return res
 
-	@cached(["X","A","C","R"])
+	@cached(["X","A","C","R","h2"])
 	def XKX(self):
 		dof = self.dof
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
@@ -184,7 +206,7 @@ class KroneckerLMM(Cached):
 				XKX[dof_cumsum[j]:dof_cumsum[j+1],dof_cumsum[i]:dof_cumsum[i+1]] = XKX[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]].T
 		return XKX
 
-	@cached(["X","A","C","R","Y"])
+	@cached(["X","A","C","R","Y","h2"])
 	def XKY(self):
 		dof = self.dof
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
@@ -194,19 +216,19 @@ class KroneckerLMM(Cached):
 			XKY[dof_cumsum[i]:dof_cumsum[i+1],0] = kron_util.vec(kron_util.compute_XYA(DY=DY, X=self.X_rot()[i], A=self.A_rot()[i]))		
 		return XKY
 
-	@cached(["C","R","Y"])
+	@cached(["C","R","Y","h2"])
 	def YKY(self):
 		YKY = (self.Yrot() * self.Yrot() * self.D_rot()).sum()
 		return YKY
 
-	@cached(["X","A","Y","C","R"])
+	@cached(["X","A","Y","C","R","h2"])
 	def beta(self):
 		XKX = self.XKX()
 		XKy = self.XKY()
 		beta = la.solve(XKX,XKy)
 		return beta
 	
-	@cached(["X","A","Y","C","R"])
+	@cached(["X","A","Y","C","R","h2"])
 	def resKres(self):
 		yKy = self.YKY()
 		beta = self.beta()
@@ -214,7 +236,7 @@ class KroneckerLMM(Cached):
 		rss = yKy - (beta*XKy).sum()
 		return rss
 
-	@cached(["C","R"])
+	@cached(["C","R","h2"])
 	def logdet_K(self):
 		D = self.D_rot()
 		logD = np.log(D)
@@ -224,17 +246,17 @@ class KroneckerLMM(Cached):
 		logdet = logdet_D + logdet_R + logdet_C
 		return logdet
 
-	@cached(["X","A","C","R"])
+	@cached(["X","A","C","R","h2"])
 	def logdet_XKX(self):
 		XKX = self.XKX()
 		sign,logdet_XKX = la.slogdet(XKX)
 		return logdet_XKX
 
-	@cached(["X","A","Y","C","R"])
-	def LL(self, reml=True):
+	@cached(["X","A","Y","C","R","h2","reml"])
+	def LL(self):
 		yKy = self.resKres()
 		logdet = self.logdet_K()
-		if reml:
+		if self.reml:
 			logdet += self.logdet_XKX()
 			dof = self.dof.sum()
 			var = yKy/(self.N*self.P-dof)
@@ -245,15 +267,50 @@ class KroneckerLMM(Cached):
 		dataterm = yKy/var
 		logl =  -0.5 * (const + logdet + dataterm)
 		return logl
+
+	def find_h2(self, nGridH2=10, minH2=0.0, maxH2=0.99999, verbose=False):
+		'''
+		Finds the optimal kernel mixture weight h2 (heritability) and returns the log-likelihood
+		
+		(default maxA2 value is set to less than 1 as loss of positive definiteness of the final model covariance depends on h2)
+		
+		Args:
+			nGridH2 : number of h2-grid points to evaluate the negative log-likelihood at. Number of grid points for Brent search intervals (default: 10)
+			minH2   : minimum value for h2 optimization
+			maxH2   : maximum value for h2 optimization
+			verbose : verbose output? (default: False)
+			
+		Returns:
+			max log likelihood obtained
+		'''
+		
+		self.numcalls = 0
+		resmin = [None]
+		def f(x,resmin=resmin, **kwargs):
+			self.numcalls+=1
+			t0 = time.time()
+			self.h2 = x
+			res = -self.LL()
+			
+			if (resmin[0] is None) or (res < resmin[0]['nLL']):
+				resmin[0] = {
+				'nLL':res,
+				'h2':x
+				}
+			t1 = time.time()
+			if verbose:
+				print "one objective function call took %.2f seconds" % (t1-t0)
+			return res
+		if verbose:
+			print "findh2"
+		minimum = mingrid.minimize1D(f=f, nGrid=nGridH2, minval=minH2, maxval=maxH2, verbose=verbose)
+		if verbose:
+			print "numcalls to log likelihood= " + str(self.numcalls)
+		self.h2 = resmin[0]['h2']
+		return -resmin[0]['nLL']
 	
 	@staticmethod
-	def rot_kron(C1, C2, h2=None):
-		if h2 is not None:
-			raise NotImplementedError("h2 not supported yet")
-			assert h2>=0.0, "h2 has to be positive, found %f" % h2
-			assert h2<=1.0, "h2 has to be smaller than 1.0, found %f" % h2
-			C1 = h2 * C1
-			C2 = (1.0-h2) * C2
+	def rot_kron(C1, C2):
 		res_C2 = kron_util.pexph(C2,exp=-0.5)
 		sqrtC2i = res_C2["res"]
 		C1_rot = sqrtC2i.T.dot(C1).dot(sqrtC2i.T)

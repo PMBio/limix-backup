@@ -8,8 +8,8 @@ import limix.core.association.kron_util as kron_util
 import limix.core.association.kron_lmm as kron_lmm
 
 class KroneckerGWAS(kron_lmm.KroneckerLMM):
-	def __init__(self, Y, R1, C1, R2, C2, X, A=None, var_K1=1.0, var_K2=1.0, X_snps=None, A_snps=None):
-		kron_lmm.KroneckerLMM.__init__(self, Y=Y, R1=R1, C1=C1, R2=R2, C2=C2, X=X, A=A, var_K1=var_K1, var_K2=var_K2)
+	def __init__(self, Y, R1, C1, R2, C2, X, A=None, h2=0.5, reml=True, X_snps=None, A_snps=None):
+		kron_lmm.KroneckerLMM.__init__(self, Y=Y, R1=R1, C1=C1, R2=R2, C2=C2, X=X, A=A, h2=h2, reml=reml)
 		
 		if X_snps is not None:
 			self.X_snps = X_snps
@@ -65,7 +65,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		return len(self.X_snps)
 
 	#these are needed to test SNPs:
-	@cached(["Y","C","R","X_snps","A_snps"])
+	@cached(["Y","C","R","X_snps","A_snps","h2"])
 	def snpsKY(self):
 		dof = self.dof_snps
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
@@ -75,7 +75,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 			snpsKY[dof_cumsum[i]:dof_cumsum[i+1],0] = kron_util.vec(kron_util.compute_XYA(DY=DY, X=self.X_snps_rot()[i], A=self.A_snps_rot()[i]))		
 		return snpsKY
 
-	@cached(["C","R","X_snps","A_snps"])
+	@cached(["C","R","X_snps","A_snps","h2"])
 	def snpsKsnps(self):
 		dof = self.dof_snps
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
@@ -87,7 +87,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 				snpsKsnps[dof_cumsum[j]:dof_cumsum[j+1],dof_cumsum[i]:dof_cumsum[i+1]] = snpsKsnps[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]].T
 		return snpsKsnps
 
-	@cached(["X","A","C","R","X_snps","A_snps"])
+	@cached(["X","A","C","R","X_snps","A_snps","h2"])
 	def snpsKX(self):
 		dof = self.dof
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
@@ -99,7 +99,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 				snpsKX[dof_snps_cumsum[i]:dof_snps_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]] = kron_util.compute_X1KX2(Y=self.Y, D=self.D_rot(), A1=self.A_snps_rot()[i], A2=self.A_rot()[j], X1=self.X_snps_rot()[i], X2=self.X_rot()[j])
 		return snpsKX
 
-	@cached(["X","A","Y","C","R","X_snps","A_snps"])
+	@cached(["X","A","Y","C","R","X_snps","A_snps","h2"])
 	def beta_snps(self):
 		XKX = self.XKX()
 		XKY = self.XKY()
@@ -115,7 +115,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		#beta_X = beta + beta_up
 		return (beta_up, beta_snps)
 
-	@cached(["X","A","Y","C","R","X_snps","A_snps"])
+	@cached(["X","A","Y","C","R","X_snps","A_snps","h2"])
 	def resKres_snps(self):
 		resKres = self.resKres()
 		beta_up, beta_snps = self.beta_snps()
@@ -124,11 +124,11 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		rss = resKres - (beta_up*XKy).sum() - (beta_snps*snpsKy).sum()
 		return rss
 
-	@cached(["X","A","Y","C","R","X_snps","A_snps"])
-	def LL_snps(self, reml=True):
+	@cached(["X","A","Y","C","R","X_snps","A_snps","h2","reml"])
+	def LL_snps(self):
 		yKy = self.resKres_snps()
 		logdet = self.logdet_K()
-		if reml:
+		if self.reml:
 			logdet += self.logdet_XKX()
 			dof = self.dof.sum()
 			var = yKy/(self.N*self.P-dof)
@@ -140,10 +140,10 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		logl =  -0.5 * (const + logdet + dataterm)
 		return logl
 
-	@cached(["X","A","Y","C","R","X_snps","A_snps"])
-	def lrt_snps(self, reml=True):
-		LL_0 = self.LL(reml=reml)
-		LL_alt = self.LL_snps(reml=reml)
+	@cached(["X","A","Y","C","R","X_snps","A_snps","h2","reml"])
+	def lrt_snps(self):
+		LL_0 = self.LL()
+		LL_alt = self.LL_snps()
 		if LL_0-1e-8 > LL_alt:
 			raise Exception("invalid LRT")
 		lrt = 2.0 * (LL_alt - LL_0)
@@ -151,7 +151,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		p_value = st.chi2.sf(lrt,dof_lrt)
 		return (lrt, p_value)
 
-	def run_gwas(self, snps, A_snps=None, reml=True):
+	def run_gwas(self, snps, A_snps=None):
 		X_snps_sav = self.X_snps
 		A_snps_sav = self.A_snps
 		lrts = np.empty((snps.shape[1]))
@@ -160,7 +160,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		for s in xrange(snps.shape[1]):
 			snp = snps[:,s:s+1]
 			self.X_snps = [snp]
-			lrts[s],p_values[s] = self.lrt_snps(reml=reml)
+			lrts[s],p_values[s] = self.lrt_snps()
 		self.X_snps = X_snps_sav
 		self.A_snps = A_snps_sav
 		return lrts, p_values

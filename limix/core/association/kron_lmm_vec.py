@@ -11,8 +11,8 @@ import ipdb
 import limix.core.fastany.fast_any as fast_any
 
 class KroneckerLMM_vec(kron_gwas.KroneckerGWAS):
-	def __init__(self, Y, R1, C1, R2, C2, X, A=None, var_K1=1.0, var_K2=1.0, diff_threshold=1e-8):
-		kron_gwas.KroneckerGWAS.__init__(self, Y=Y, R1=R1, C1=C1, R2=R2, C2=C2, X=X, A=A, var_K1=var_K1, var_K2=var_K2)
+	def __init__(self, Y, R1, C1, R2, C2, X, A=None, h2=0.5, reml=True, diff_threshold=1e-8):
+		kron_gwas.KroneckerGWAS.__init__(self, Y=Y, R1=R1, C1=C1, R2=R2, C2=C2, X=X, A=A, h2=h2, reml=reml)
 		self.diff_threshold=diff_threshold
 
 	def Y_vec(self):
@@ -113,7 +113,7 @@ class KroneckerLMM_vec(kron_gwas.KroneckerGWAS):
 
 	def K_vec(self):
 		#return self.h2*self.covariance_vec(i=0) + (1.0-self.h2)*self.covariance_vec(i=1)
-		return self.covariance_vec(i=0) + self.covariance_vec(i=1)
+		return self.h2*self.covariance_vec(i=0) + (1.0-self.h2)*self.covariance_vec(i=1)
 
 	def resKres_vec(self):
 		res = self.residual_vec()
@@ -193,10 +193,10 @@ class KroneckerLMM_vec(kron_gwas.KroneckerGWAS):
 			raise Exception("beta_snps missmatch, diff = %f" % np.absolute(diff).sum())
 		return beta_snps_vec
 
-	def LL_snps_vec(self, reml=True):
+	def LL_snps_vec(self):
 		yKy = self.resKres_snps_vec()
 		logdet = self.logdet_K()
-		if reml:
+		if self.reml:
 			logdet += self.logdet_XKX()
 			dof = self.dof.sum()
 			var = yKy/(self.N*self.P-dof)
@@ -206,16 +206,16 @@ class KroneckerLMM_vec(kron_gwas.KroneckerGWAS):
 			const = self.N*self.P * (np.log(2.0*sp.pi) + np.log(var))
 		dataterm = yKy/var
 		logl_vec =  -0.5 * (const + logdet + dataterm)
-		logl = self.LL_snps(reml=reml)
+		logl = self.LL_snps()
 		diff = logl_vec - logl
 		if np.absolute(diff).sum()>self.diff_threshold:
 			raise Exception("log likelihood snps missmatch, diff = %f" % np.absolute(diff).sum())		
 		return logl_vec
 
-	def LL_vec(self, reml=True):
+	def LL_vec(self):
 		yKy = self.resKres_vec()
 		logdet = self.logdet_K_vec()
-		if reml:
+		if self.reml:
 			logdet += self.logdet_XKX_vec()
 			dof = self.dof.sum()
 			var = yKy/(self.N*self.P-dof)
@@ -225,21 +225,21 @@ class KroneckerLMM_vec(kron_gwas.KroneckerGWAS):
 			const = self.N*self.P * (np.log(2.0*sp.pi) + np.log(var))
 		dataterm = yKy/var
 		logl_vec =  -0.5 * (const + logdet + dataterm)
-		logl = self.LL(reml=reml)
+		logl = self.LL()
 		diff = logl_vec - logl
 		if np.absolute(diff).sum()>self.diff_threshold:
 			raise Exception("log likelihood missmatch, diff = %f" % np.absolute(diff).sum())
 		return logl_vec
 
-	def lrt_snps_vec(self, reml=True):
-		LL_0 = self.LL(reml=reml)
-		LL_alt = self.LL_snps_vec(reml=reml)
-		if LL_0 > LL_alt:
-			import ipdb; ipdb.set_trace()
+	def lrt_snps_vec(self):
+		LL_0 = self.LL()
+		LL_alt = self.LL_snps_vec()
+		if LL_0 > (LL_alt+1e-8):
+			raise Exception("null model likelihood is smaller than alternative model likelihood. LL_0=%f, LL_alt=%f" % (LL_0, LL_alt))
 		lrt_vec = 2.0 * (LL_alt - LL_0)
 		dof_lrt = self.dof_snps.sum()
 		p_value_vec = st.chi2.sf(lrt_vec,dof_lrt)
-		lrt,p_value = self.lrt_snps(reml=reml)
+		lrt,p_value = self.lrt_snps()
 		diff_p = np.log(p_value)-np.log(p_value_vec)
 		if np.absolute(diff_p)>self.diff_threshold:
 			raise Exception("p_value missmatch, diff = %f" % np.absolute(diff_p))
@@ -262,29 +262,37 @@ if __name__ == "__main__":
 	h2_1=0.9
 	h2_2=0.1
 
-	h2 = 0.5
+	h2_sim = 0.5
 
 	A=None
-	data = fast_any.GeneratorKron(N=N,S=S,R=R,P=P,var_K1=var_K1,var_K2=var_K2,h2_1=h2_1,h2_2=h2_2,h2=h2)
+	data = fast_any.GeneratorKron(N=N,S=S,R=R,P=P,var_K1=var_K1,var_K2=var_K2,h2_1=h2_1,h2_2=h2_2,h2=h2_sim)
 
+	h2 = data.var_K1/(data.var_K1+data.var_K2)
 	X = [data.snps[:,:-1], np.ones((N,1))]
 	A = [np.eye(data.P), np.eye(data.P)]
 	A_any = [None, None]
 
-	lmm1 = kron_lmm.KroneckerLMM(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A)
-	lmm1_any = kron_lmm.KroneckerLMM(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A_any)
-	lmm1_ = KroneckerLMM_vec(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A)
+	lmm1 = kron_lmm.KroneckerLMM(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A, h2=h2)
+	lmm1_any = kron_lmm.KroneckerLMM(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A_any, h2=h2)
+	lmm1_ = KroneckerLMM_vec(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A, h2=h2)
 	#lmm2_ = LmmKronecker_vec(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=data.snps, A=data.A)
 	XKX1 = lmm1.XKX()
 	XKX1_any = lmm1_any.XKX()
 	XKX1_ = lmm1_.XKX_vec()
 	#XKX2_ = lmm2_.XKX_vec()
-	mllogl1 = lmm1.LL(reml=False )
-	remllogl1 = lmm1.LL(reml=True)
-	mllogl1_any = lmm1_any.LL(reml=False)
-	remllogl1_any = lmm1_any.LL(reml=True)
-	mllogl1_ = lmm1_.LL_vec(reml=False)
-	remllogl1_ = lmm1_.LL_vec(reml=True)
+	lmm1.reml=False
+	mllogl1 = lmm1.LL()
+	lmm1.reml=True
+	remllogl1 = lmm1.LL()
+	lmm1_any.reml=False
+	mllogl1_any = lmm1_any.LL()
+	lmm1_any.reml=True
+	remllogl1_any = lmm1_any.LL()
+	lmm1_.reml=False
+	mllogl1_ = lmm1_.LL_vec()
+	lmm1_.reml=True
+	remllogl1_ = lmm1_.LL_vec()
+
 	#mllogl2_ = lmm2_.nLL_vec(reml=False )
 	#remllogl2_ = lmm2_.nLL_vec(reml=True)
 	diff_ml = np.absolute(mllogl1 - mllogl1_any)
@@ -294,8 +302,8 @@ if __name__ == "__main__":
 	X_snps = [data.snps[:,-1:]]
 	A_snps = [np.eye(data.P)]
 	A_snps_any = [None]
-	gwas = kron_gwas.KroneckerGWAS(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A_any, X_snps=X_snps, A_snps=A_snps)
-	gwas_vec = KroneckerLMM_vec(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A_any)
+	gwas = kron_gwas.KroneckerGWAS(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A_any, X_snps=X_snps, A_snps=A_snps, h2=h2)
+	gwas_vec = KroneckerLMM_vec(Y=data.Y, R1=data.R1, C1=data.C1, R2=data.R2, C2=data.C2, X=X, A=A_any, h2=h2)
 	gwas_vec.A_snps = A_snps
 	gwas_vec.X_snps = X_snps
 	
@@ -313,5 +321,5 @@ if __name__ == "__main__":
 
 	snps_0 = np.random.randn(N,10000)
 	snps_test = np.concatenate((data.snps[:,-1:],snps_0),1)
-	lrts,p_values = gwas.run_gwas(snps=snps_test, A_snps=None, reml=True)
+	lrts,p_values = gwas.run_gwas(snps=snps_test, A_snps=None)
 	
