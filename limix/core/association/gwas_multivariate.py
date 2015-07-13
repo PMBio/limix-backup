@@ -16,6 +16,14 @@ import kron_gwas
 from gwas import GWAS, create_dir
 import glob
 
+from limix.core.covar import FreeFormCov
+from limix.core.mean import MeanKronSum
+from limix.core.gp import GP2KronSum
+from limix.core.gp import GP
+from limix.utils.preprocess import covar_rescale
+from limix.utils.check_grad import mcheck_grad
+
+
 class MultivariateGWAS(GWAS):
 	def __init__(self, snps_test, phenotype, K=None, snps_K=None, covariates=None, 
 				 h2=None, interact_with_snp=None, nGridH2=10, standardizer=None, add_bias=True, normalize_K=True, blocksize=10000, A_snps=None, R2=None, C1=None, C2=None):
@@ -184,9 +192,9 @@ if __name__ == "__main__":
 		print "done computing eigenvalue decomposition of kernel after %.4fs" % (t1-t0)	
 	if 1:
 		# define phenotype
-		N = pheno_intersect.shape[0]
-		P = pheno_intersect.shape[1]
-		Y = pheno_intersect.values
+		N = pheno_df.shape[0]
+		P = pheno_df.shape[1]
+		Y = pheno_df.values
 		# define fixed effects
 		F = []; A = []
 		X_cov = np.concatenate((np.ones((N,1)),covariates_df.values),1)
