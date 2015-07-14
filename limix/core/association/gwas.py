@@ -22,8 +22,10 @@ import scipy.optimize as opt
 import scipy.stats as st
 import scipy.special as ss
 import pandas as pd
-from mingrid import *
-from util import *
+#from mingrid import *
+#from util import *
+from fastlmm.util.mingrid import *
+from fastlmm.util import *
 import time, os
 import ipdb
 from pysnptools.snpreader import Bed

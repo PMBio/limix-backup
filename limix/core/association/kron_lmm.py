@@ -7,6 +7,7 @@ import numpy as np
 import scipy as sp
 import limix.core.association.kron_util as kron_util
 import mingrid
+#import fastlmm.util.mingrid as mingrid
 import time
 
 class KroneckerLMM(Cached):
