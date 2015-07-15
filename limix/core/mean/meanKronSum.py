@@ -23,7 +23,7 @@ class MeanKronSum(MeanBase):
         P = number of traits
     """
 
-    def __init__(self, Y, gpmean_relay, F=None, A=None, Fstar=None):
+    def __init__(self, Y, F=None, A=None, Fstar=None):
         """
         Args:
             Y:        phenotype matrix [N, P]
@@ -35,7 +35,6 @@ class MeanKronSum(MeanBase):
                       Each term must have first dimension No
         """
         Cached.__init__(self)
-        self._gpmean_relay = gpmean_relay
         Y = assert_make_float_array(Y, 'Y')
         if F is not None:
             try:
@@ -83,7 +82,6 @@ class MeanKronSum(MeanBase):
 
     @property
     def B(self):
-        self._gpmean_relay._update_mean()
         B = []
         istart = 0
         for ti in range(self.n_terms):
