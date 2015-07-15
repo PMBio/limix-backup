@@ -12,8 +12,6 @@ import time as TIME
 from gp_base import GP
 from limix.core.gp import GP2KronSum
 from limix.core.covar.cov_reml import cov_reml
-from relay import GPMeanRelay
-
 
 class GP3KronSumLR(GP2KronSum):
     """
@@ -27,7 +25,7 @@ class GP3KronSumLR(GP2KronSum):
         F_i = sample fixed effect design for term i
         A_i = trait fixed effect design for term i
         B_i = effect sizes of fixed effect term i
-        Cr = column covariance matrix for low-rank term
+        Cr = column covariance matrix for low-rank term 
         Cg = column covariance matrix for full rank non-noise term
         Cn = column covariance matrix for noise term
         R = row covariance matrix for non-noise term
@@ -49,7 +47,7 @@ class GP3KronSumLR(GP2KronSum):
             rank:   rank of column low-rank covariance (default = 1)
         """
         covar = Cov3KronSumLR(Cg=Cg, Cn=Cn, R=R, G=G, rank=rank, S_R=S_R, U_R=U_R)
-        mean  = MeanKronSum(Y, GPMeanRelay(self))
+        mean  = MeanKronSum(Y = Y)
         GP.__init__(self, covar = covar, mean = mean)
 
     def _observe(self):
@@ -98,9 +96,9 @@ class GP3KronSumLR(GP2KronSum):
         np_r = self.covar.Cr.getNumberParams()
         np_g = self.covar.Cg.getNumberParams()
         if i < np_r:
-            R = self.WrWr_DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc()
+            R = self.WrWr_DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc() 
         elif i < (np_r + np_g):
-            R = self.Sr_DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc()
+            R = self.Sr_DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc() 
         else:
             R = self.DLrYLc_m_DWr_veiHiveWrDLrYLcWc_Wc()
         return sp.dot(R, self.covar.Ctilde(i))
