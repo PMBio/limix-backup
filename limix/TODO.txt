@@ -1,30 +1,12 @@
 ***********************************************
 NEW RELEASE 1
 ***********************************************
-- merge (Danilo & Paolo)
-
-- GP-mean Association (Danilo)
-
-- remove setParams notify
-
 - clean up covariances
-    - notify in clear cache
     - remove notify outside of clear_cache
-    - define a covar_base group (clear_all -> clear_cache('covar_base'))
-    - define a Z group (to handle change of seeds in the covariance)
-    - check that the group default is not used any longer
-
-- fix mean ste when no covariates are considered
 
 ***********************************************
 NEW RELEASE 2
 ***********************************************
-
-- Improve mtSet: 2KronSum, 2KronSumLR, 3KronSumLR
-    - finalize the math write-up
-    - set predictions up for Cov2KronSum, Cov2KronSumLR, Cov3KronSum
-
-
 - we need more combinators (and more struture):
     - parent class combinator
     - child classes:
@@ -34,6 +16,12 @@ NEW RELEASE 2
 
 - Variance Decomposition module 
 
+- group-based caching system for general gp
+
+- Improve mtSet: 2KronSum, 2KronSumLR, 3KronSumLR
+    - finalize the math write-up
+    - set predictions up for Cov2KronSum, Cov2KronSumLR, Cov3KronSum
+
 - PRINT method for all classes (Danilo)
 
 - MeanKronSum:
@@ -42,17 +30,26 @@ NEW RELEASE 2
         (pheno_has_changed and designs_have_changed for mean base)
     - implement Bste
 
-- group-based caching system for general gp
-
 - Logging system (Danilo)
 
 - Phenotype outside of mean
     (think more...)
 
+************************************************
+Discuss with DANILO
+***********************************************
+- cache disabling does not work
+- I modified a minor thing in the caching to discuss
+    (commit: bd50719)
+
 ****************************************************
 OTHER TODOs
 ****************************************************
 - website with forum
+
+- montecarlo sampling for trace
+    - interface MC options
+        (number of Montecarlo seed, regenerate Z, reuse starting point, etc)
 
 - check the math for general GP base
     - pseudo inverse of X -> Xp*y 
