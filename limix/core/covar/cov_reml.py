@@ -16,7 +16,7 @@ class cov_reml(Covariance):
         Covariance.__init__(self)
         self.gp = gp
         gp.register(self.clear_all)
-        self.dim = gp.mean.b.shape[0]
+        self.dim = gp.mean.n_covs
         # self._calcNumberParams()
 
     #####################

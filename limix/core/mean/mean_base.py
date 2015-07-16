@@ -27,9 +27,12 @@ class MeanBase(Cached, Observed):
         Cached.__init__(self)
         self.Y = Y
         self.W = W
-        self.B = sp.zeros((self._K,1))
         self.Wstar = Wstar
         self.setFIinv(None)
+        self._set_relay(None)
+
+    def _set_relay(self, relay):
+        self._relay = relay
 
     #########################################
     # Properties
@@ -44,14 +47,14 @@ class MeanBase(Cached, Observed):
 
     @property
     def B(self):
-        return self._B
+        return sp.reshape(self.b, (self._K, self._P), order='F')
 
     @property
     def B_ste(self):
         if self.getFIinv() is None:
             R = None
         else:
-            R = sp.reshape(self.b_ste,(self._K,self._P),order='F')
+            R = sp.reshape(self.b_ste, (self._K, self._P), order='F')
         return R
 
     @property
@@ -60,11 +63,11 @@ class MeanBase(Cached, Observed):
 
     @property
     def y(self):
-        return sp.reshape(self.Y,(self._N*self._P,1),order='F')
+        return sp.reshape(self.Y, (self._N*self._P,1),order='F')
 
     @property
     def b(self):
-        return sp.reshape(self.B,(self._K*self._P,1),order='F')
+        return self._relay.b()
 
     @property
     def b_ste(self):
@@ -115,23 +118,10 @@ class MeanBase(Cached, Observed):
         self._Wstar = value
         self.clear_cache('predict')
 
-    @B.setter
-    def B(self,value):
-        assert value.shape[0]==self._K, 'Dimension mismatch'
-        assert value.shape[1]==self._P, 'Dimension mismatch'
-        self._B = value
-        self.clear_cache('predict_in_sample','Yres','predict')
-
     @y.setter
     def y(self,value):
         assert value.shape[1] == 1, 'Dimension mismatch'
         self.Y = value
-
-    @b.setter
-    def b(self,value):
-        assert value.shape[0] == self._K*self._P, 'Dimension mismatch'
-        assert value.shape[1] == 1, 'Dimension mismatch'
-        self.B = sp.reshape(value,(self._K,self._P),order='F')
 
     @use_to_predict.setter
     def use_to_predict(self,value):

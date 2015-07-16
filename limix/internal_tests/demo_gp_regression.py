@@ -1,5 +1,6 @@
 import sys
-sys.path.insert(0,'./../../..')
+#sys.path.insert(0, '/Users/casale/Documents/limix/limix/limix')
+sys.path.insert(0, '../..')
 
 from limix.core.mean.mean_base import MeanBase as lin_mean
 from limix.core.covar import SQExpCov
@@ -46,6 +47,8 @@ if __name__ == "__main__":
     gp.optimize(calc_ste=True)
     # predict out-of-sample
     Ystar = gp.predict()
+
+    pdb.set_trace()
 
     # print optimized values and standard errors
     print 'weights of fixed effects'
