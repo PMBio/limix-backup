@@ -180,3 +180,4 @@ class MeanBase(Cached, Observed):
     #        n_effects = self.B[i].size
     #        self.B[i] = np.reshape(params[start:start+n_effects],self.B[i].shape, order='F')
     #        start += n_effects
+
