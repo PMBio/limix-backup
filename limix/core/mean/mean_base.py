@@ -63,7 +63,7 @@ class MeanBase(Cached, Observed):
 
     @property
     def y(self):
-        return sp.reshape(self.Y, (self._N*self._P,1),order='F')
+        return sp.reshape(self.Y, (self._N * self._P,1),order='F')
 
     @property
     def b(self):

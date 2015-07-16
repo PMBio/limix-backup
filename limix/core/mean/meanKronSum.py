@@ -96,14 +96,6 @@ class MeanKronSum(MeanBase):
         print 'TODO: implement me'
 
     @property
-    def y(self):
-        return sp.reshape(self.Y, (self._N*self._P, 1), order='F')
-
-    @property
-    def b(self):
-        return self._b
-
-    @property
     def b_ste(self):
         if self.getFIinv() is None:
             R = None
@@ -117,10 +109,6 @@ class MeanKronSum(MeanBase):
         return self._Fstar
 
     @property
-    def use_to_predict(self):
-        return self._use_to_predict
-
-    @property
     @cached
     def W(self):
         R = sp.zeros((self.Y.size, self.n_covs))
@@ -129,6 +117,10 @@ class MeanKronSum(MeanBase):
             iend = istart + self.F[ti].shape[1] * self.A[ti].shape[0]
             R[:, istart:iend] = sp.kron(self.A[ti].T, self.F[ti])
         return R
+
+    @property
+    def use_to_predict(self):
+        return self._use_to_predict
 
     #########################################
     # Utils function
@@ -193,13 +185,6 @@ class MeanKronSum(MeanBase):
         self._Fstar = value
         self.clear_cache('predict')
 
-    @b.setter
-    def b(self, value):
-        assert value.shape[0] == self._n_covs, 'Dimension mismatch'
-        assert value.shape[1] == 1, 'Dimension mismatch'
-        self._b = value
-        self.clear_cache('predict_in_sample', 'Yres', 'predict')
-
     @use_to_predict.setter
     def use_to_predict(self, value):
         assert not (self.Fstar is None and value is True), 'set Fstar!'
@@ -224,21 +209,6 @@ class MeanKronSum(MeanBase):
         for ti in range(self.n_terms):
             rv += sp.dot(sp.dot(M[ti], self.B[ti]), self.A[ti])
         return rv
-
-    @cached
-    def Yres(self):
-        """ residual """
-        RV = self.Y - self.predict_in_sample()
-        return RV
-
-    #######################################
-    # Standard errors
-    ########################################
-    def setFIinv(self, value):
-        self._FIinv = value
-
-    def getFIinv(self):
-        return self._FIinv
 
 if __name__ == '__main__':
 
