@@ -129,13 +129,13 @@ class FreeFormCov(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('covar_base')
     def K(self):
         self._updateL()
         RV = sp.dot(self.L,self.L.T)+self.jitter*sp.eye(self.dim)
         return RV
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self,i):
         if not self._K_act:
             raise ValueError("Trying to retrieve the gradient over a "

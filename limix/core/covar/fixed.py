@@ -77,7 +77,7 @@ class FixedCov(Covariance):
             assert value.shape[1] == self.dim, 'Dimension mismatch.'
             self._use_to_predict = True
         self._Kcross0 = value
-        self.clear_cache('Kcross')
+        self.clear_cache('Kcross0')
         self._notify()
 
     @Covariance.use_to_predict.setter
@@ -125,15 +125,15 @@ class FixedCov(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('covar_base')
     def K(self):
         return self.scale * self.K0
 
-    @cached
+    @cached(['Kcross0', 'covar_base'])
     def Kcross(self):
         return self.scale * self.Kcross0
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self,i):
         if i >= int(self._scale_act):
             raise ValueError("Trying to retrieve the gradient over a "
@@ -142,7 +142,7 @@ class FixedCov(Covariance):
         r = self.scale * self.K0
         return r
 
-    @cached
+    @cached('covar_base')
     def K_hess_i_j(self, i, j):
         if i >= int(self._scale_act) or j >= int(self._scale_act):
             raise ValueError("Trying to retrieve the hessian over a "

@@ -34,10 +34,10 @@ class cov_reml(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('covar_base')
     def K(self):
         return self.gp.Areml_K()
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self,i):
         return self.gp.Areml_K_grad_i(i)

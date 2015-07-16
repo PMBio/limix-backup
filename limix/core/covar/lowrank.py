@@ -29,10 +29,6 @@ class LowRankCov(Covariance):
         self.params = np.zeros(self.n_params)
         self._use_to_predict = False
 
-    def clear_all(self):
-        self.clear_cache('Xgrad')
-        Covariance.clear_all(self)
-
     #####################
     # Properties
     #####################
@@ -97,17 +93,17 @@ class LowRankCov(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('covar_base')
     def K(self):
         return sp.dot(self.X,self.X.T)
 
-    @cached
+    @cached('covar_base')
     def Xgrad(self,i):
         Xgrad = sp.zeros(self.getNumberParams())
         Xgrad[i] = 1
         return sp.reshape(Xgrad, (self.dim, self.rank), order='F')
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self,i):
         if not self._X_act:
             raise ValueError("Trying to retrieve the gradient over a "

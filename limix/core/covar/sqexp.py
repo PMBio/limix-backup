@@ -100,8 +100,8 @@ class SQExpCov(Covariance):
     def X(self,value):
         self._X = value
         self.initialize(value.shape[0])
+        self.clear_cache('X')
         self.clear_all()
-        self.clear_cache('E')
         self._notify()
 
     @Xstar.setter
@@ -112,7 +112,7 @@ class SQExpCov(Covariance):
             assert value.shape[1]==self.X.shape[1], 'Dimension mismatch'
             self._use_to_predict = True
         self._Xstar = value
-        self.clear_cache('Kcross')
+        self.clear_cache('Xstar')
         self._notify()
 
     @Covariance.use_to_predict.setter
@@ -170,23 +170,23 @@ class SQExpCov(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('X')
     def E(self):
         rv = SS.distance.pdist(self.X,'euclidean')**2
         rv = SS.distance.squareform(rv)
         return rv
 
-    @cached
+    @cached(['X', 'Xstar', 'covar_base'])
     def Kcross(self):
         assert self.Xstar.shape[1]==1, 'only implemented for 1-dim input'
         Estar = (self.Xstar - self.X.T)**2
         return  self.scale * sp.exp(-Estar/(2*self.length))
 
-    @cached
+    @cached('covar_base')
     def K(self):
         return self.scale * sp.exp(-self.E()/(2*self.length))
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self, i):
         if i >= int(self._scale_act) + int(self._length_act):
             raise ValueError("Trying to retrieve the gradient over a "
@@ -202,7 +202,7 @@ class SQExpCov(Covariance):
             assert False, 'There is no index %d on sqexp.' %i
         return r
 
-    @cached
+    @cached('covar_base')
     def K_hess_i_j(self, i, j):
         if i >= int(self._scale_act) + int(self._length_act) or j >= int(self._scale_act) + int(self._length_act):
             raise ValueError("Trying to retrieve the hessian over a "

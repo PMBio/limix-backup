@@ -82,14 +82,14 @@ class SumCov(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('covar_base')
     def K(self):
         K = SP.zeros((self.dim,self.dim))
         for i in range(len(self.covars)):
             K += self.getCovariance(i).K()
         return K
 
-    @cached
+    @cached('covar_base')
     def Kcross(self):
         R = None
         for i in range(len(self.covars)):
@@ -103,7 +103,7 @@ class SumCov(Covariance):
                 R += _
         return R
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self,i):
         istart = 0
         for j in range(len(self.covars)):
@@ -114,7 +114,7 @@ class SumCov(Covariance):
             istart = istop
         return None
 
-    @cached
+    @cached('covar_base')
     def K_hess_i_j(self, i, j):
         istart = 0
         jstart = 0
