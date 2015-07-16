@@ -114,7 +114,17 @@ class Cached(object):
         methods = self._registered_methods()
         caches = dict()
         for m in methods:
-           caches[m] = getattr(self, '_cache_' + m)
+           #caches[m] = getattr(self, '_cache_' + m)
+            try:
+               caches[m] = getattr(self, m)()
+            except:
+                try:
+                    try:
+                       caches[m] = getattr(self, m)(0)
+                    except:
+                       caches[m] = getattr(self, m)(0, 0)
+                except:
+                    import ipdb; ipdb.set_trace()
         return caches
 
     def _get_cached_methods(self):
