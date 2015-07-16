@@ -100,14 +100,13 @@ class FixedCov(Covariance):
     #####################
     # Params handling
     #####################
-    def setParams(self, params, notify=True):
+    def setParams(self, params):
         if int(self._scale_act) != len(params):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
         self.params[:] = params
         self.clear_all()
-        if notify:
-            self._notify()
+        self._notify()
 
     def _calcNumberParams(self):
         self.n_params = 1

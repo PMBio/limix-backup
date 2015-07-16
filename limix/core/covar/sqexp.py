@@ -151,15 +151,14 @@ class SQExpCov(Covariance):
     #####################
     # Params handling
     #####################
-    def setParams(self, params, notify=True):
+    def setParams(self, params):
         sel = np.asarray((self._scale_act, self._length_act))
         if np.sum(sel) != len(params):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
         self.params[sel] = params
         self.clear_all()
-        if notify:
-            self._notify()
+        self._notify()
 
     def getParams(self):
         sel = np.asarray((self._scale_act, self._length_act))
