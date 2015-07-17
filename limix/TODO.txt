@@ -1,20 +1,22 @@
 ***********************************************
-NEW RELEASE 1
-***********************************************
-- clean up covariances
-    - remove notify outside of clear_cache
-
-***********************************************
 NEW RELEASE 2
 ***********************************************
 - we need more combinators (and more struture):
-    - parent class combinator
-    - child classes:
+    - parent class combinator (acombinator)
+        - check
+        - set freezing of covariances (Danilo)
+    - make them child too
         - sum
-        - kron
         - 2kronSum, 2kronSumLR, 3kronSumLR
 
+- kronecker at the moment is not a combinator
+    - make it a combinator?
+    - generalize all covariances such that R is also a covariance?
+
 - Variance Decomposition module 
+
+- add Hessian to all covariances
+    - add hessian test to test_kronecker
 
 - group-based caching system for general gp
 
