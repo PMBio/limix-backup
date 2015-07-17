@@ -61,7 +61,6 @@ class FixedCov(Covariance):
         assert value >= 0, 'Scale must be >= 0.'
         self.params[0] = sp.log(value)
         self.clear_all()
-        self._notify()
 
     @K0.setter
     def K0(self,value):
@@ -106,7 +105,6 @@ class FixedCov(Covariance):
                              "differs from the number of active parameters.")
         self.params[:] = params
         self.clear_all()
-        self._notify()
 
     def _calcNumberParams(self):
         self.n_params = 1

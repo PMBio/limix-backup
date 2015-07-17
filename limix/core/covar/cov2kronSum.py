@@ -43,15 +43,13 @@ class Cov2KronSum(Covariance):
 
     def col_covs_have_changed(self):
         self.clear_cache('col_cov')
-        self.clear_all()
         self._notify('col_cov')
-        self._notify()
+        self.clear_all()
 
     def R_has_changed(self):
         self.clear_cache('row_cov')
-        self.clear_all()
         self._notify('row_cov')
-        self._notify()
+        self.clear_all()
 
     #####################
     # Properties

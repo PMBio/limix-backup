@@ -104,7 +104,6 @@ class FreeFormCov(Covariance):
         if self._K_act:
             self.params[:] = params
             self.clear_all()
-            self._notify()
 
     def getParams(self):
         if not self._K_act:

@@ -87,14 +87,12 @@ class SQExpCov(Covariance):
         assert value>=0, 'Scale must be >=0'
         self.params[0] = sp.log(value)
         self.clear_all()
-        self._notify()
 
     @length.setter
     def length(self,value):
         assert value>=0, 'Length must be >=0'
         self.params[1] = sp.log(value)
         self.clear_all()
-        self._notify()
 
     @X.setter
     def X(self,value):
@@ -102,7 +100,6 @@ class SQExpCov(Covariance):
         self.initialize(value.shape[0])
         self.clear_cache('X')
         self.clear_all()
-        self._notify()
 
     @Xstar.setter
     def Xstar(self,value):
@@ -158,7 +155,6 @@ class SQExpCov(Covariance):
                              "differs from the number of active parameters.")
         self.params[sel] = params
         self.clear_all()
-        self._notify()
 
     def getParams(self):
         sel = np.asarray((self._scale_act, self._length_act))

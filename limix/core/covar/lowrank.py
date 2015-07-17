@@ -68,7 +68,6 @@ class LowRankCov(Covariance):
         if self._X_act:
             self.params[:] = params
             self.clear_all()
-            self._notify()
 
     def getParams(self):
         if not self._X_act:

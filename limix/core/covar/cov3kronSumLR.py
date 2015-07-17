@@ -52,9 +52,8 @@ class Cov3KronSumLR(Cov2KronSum):
 
     def G_has_changed(self):
         self.clear_cache('G')
-        self.clear_all()
         self._notify('G')
-        self._notify()
+        self.clear_all()
 
     #####################
     # Properties
