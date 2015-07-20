@@ -1,4 +1,5 @@
 from mtSet import MTSet
+from varDecomp import VarianceDecomposition 
 
 #verbose flags for the entire module
 verbose = False
