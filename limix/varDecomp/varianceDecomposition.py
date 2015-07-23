@@ -64,17 +64,18 @@ class VarianceDecomposition:
         # set properties
         self.Y = Y
         self.n_randEffs  = 0
-        self.gp = None
-        self._inference = None
         self.noisPos = None
 
-        # covariances and fixed effs 
+        # fixed and ranodm effects 
         self.sample_covars = []
         self.sample_cross_covars = []
         self.trait_covars = []
         self.sample_designs = []
         self.sample_test_designs = []
         self.trait_designs = []
+
+        # desinc
+        self._desync()
 
     def setY(self,Y,standardize=False):
         """
@@ -356,6 +357,7 @@ class VarianceDecomposition:
     # INTERNAL METHODS
     #################################
     def _desync(self):
+        self._inference = None
         self.gp = None
 
     @property
