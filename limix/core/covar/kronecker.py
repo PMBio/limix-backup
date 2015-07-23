@@ -9,7 +9,7 @@ class KronCov(Covariance):
     Kronecker product between two covariances
     """
 
-    def __init__(self, C, R):
+    def __init__(self, C, R, Iok=None):
         """
         Args:
             C:     column LIMIX covariance 
@@ -19,6 +19,7 @@ class KronCov(Covariance):
         self.dim = C.dim * R.shape[0]
         self._C = C
         self._R = R
+        self.Iok = Iok 
         C.register(self.clear_all)
 
     #####################
@@ -31,6 +32,20 @@ class KronCov(Covariance):
     @property
     def R(self):
         return self._R
+
+    @property
+    def Iok(self):
+        return self._Iok
+
+    #####################
+    # Setters
+    #####################
+    @Iok.setter
+    def Iok(self, value):
+        if value is not None:
+            assert len(value.shape)==1, 'must be a 1-dimensioanal array'
+            assert value.shape[0]==self.dim, 'Dimension mismatch'
+        self._Iok = value
 
     #####################
     # Params handling
@@ -60,7 +75,10 @@ class KronCov(Covariance):
     #####################
     @cached('covar_base')
     def K(self):
-        return sp.kron(self.C.K(), self.R)
+        R = sp.kron(self.C.K(), self.R)
+        if self.Iok is not None:
+            R = R[self.Iok][:, self.Iok]
+        return R
 
     @cached('covar_base')
     def Kcross(self):
@@ -71,11 +89,17 @@ class KronCov(Covariance):
 
     @cached('covar_base')
     def K_grad_i(self,i):
-        return sp.kron(self.C.K_grad_i(i), self.R)
+        R = sp.kron(self.C.K_grad_i(i), self.R)
+        if self.Iok is not None:
+            R = R[self.Iok][:, self.Iok]
+        return R
 
     @cached('covar_base')
     def K_hess_i_j(self, i, j):
-        return sp.kron(self.C.K_hess_i_j(i, j), self.R)
+        R = sp.kron(self.C.K_hess_i_j(i, j), self.R)
+        if self.Iok is not None:
+            R = R[self.Iok][:, self.Iok]
+        return R
 
     def _calcNumberParams(self):
         self.n_params = self.C.getNumberParams() 
@@ -88,7 +112,10 @@ class KronCov(Covariance):
         return self.C.getInterParams()
 
     def K_grad_interParam_i(self,i):
-        return sp.kron(self.C.K_grad_interParam_i(i), self.R)
+        R = sp.kron(self.C.K_grad_interParam_i(i), self.R)
+        if self.Iok is not None:
+            R = R[self.Iok][:,self.Iok]
+        return R
 
     def setFIinv(self, value):
         self.C.setFIinv(value)

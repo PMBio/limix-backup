@@ -6,7 +6,7 @@ from limix.utils.preprocess import covar_rescale
 from limix.utils.check_grad import mcheck_grad
 import scipy as sp
 
-class TestSumCov(unittest.TestCase):
+class TestKronCov(unittest.TestCase):
     def setUp(self):
         np.random.seed(1)
         dim_r = 10
@@ -15,10 +15,29 @@ class TestSumCov(unittest.TestCase):
         R = covar_rescale(sp.dot(X,X.T))
         C = FreeFormCov(dim_c)
         self._cov = KronCov(C, R)
+        self._Iok = sp.randn(self._cov.dim)<0.9
 
     def test_Kgrad(self):
 
         cov = self._cov
+
+        def func(x, i):
+            cov.setParams(x)
+            return cov.K()
+
+        def grad(x, i):
+            cov.setParams(x)
+            return cov.K_grad_i(i)
+
+        x0 = cov.getParams()
+        err = mcheck_grad(func, grad, x0)
+
+        np.testing.assert_almost_equal(err, 0., decimal=5)
+
+    def test_softKronKgrad(self):
+
+        cov = self._cov
+        cov.Iok = self._Iok
 
         def func(x, i):
             cov.setParams(x)
