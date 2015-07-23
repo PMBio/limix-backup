@@ -42,9 +42,9 @@ class LowRankCov(Covariance):
 
     @X.setter
     def X(self, value):
-        assert X.shape[0]==self.dim, 'Dimension mismatch.'
-        assert X.shape[1]==self.rank, 'Dimension mismatch.'
-        self.setParams(X.reshape(X.size, order = 'F'))
+        assert self.X.shape[0]==self.dim, 'Dimension mismatch.'
+        assert self.X.shape[1]==self.rank, 'Dimension mismatch.'
+        self.setParams(self.X.reshape(self.X.size, order = 'F'))
 
     #####################
     # Activation handling
