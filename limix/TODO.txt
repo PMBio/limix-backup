@@ -14,6 +14,17 @@ NEW RELEASE 2
     - generalize all covariances such that R is also a covariance?
 
 - Variance Decomposition module 
+    - add missing data to Kronecker Covariance 
+    - set Random params and perturb should be feature of the gp? 
+    - row covariance can be specified by using low-rank representation
+    - add gp2KronSumLR and gp3KronSumLR as possible inference methods 
+    - initialization for some models does not work as it relied on the setCovariance matrix (that does not work for combinators)
+
+- jitter is a freeform-specific property
+    - 2kronSum, 2kronSumLR, and 3KronSum should have it as well (they should jitter Cn) 
+    - or not?
+
+- add diagonal covariance (also in variance decomposition)
 
 - make the rescaling of the covariance in preprocess efficient
 
