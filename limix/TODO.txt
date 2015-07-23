@@ -1,6 +1,26 @@
 ***********************************************
 NEW RELEASE 2
 ***********************************************
+- Missing data strategy:
+    - mean_base does not handle missing data
+        (it makes no sense to have a univariate model with missing data)
+    - meanKronSum can handle missing data 
+        - Y, F, A, Yres is the matrix representation (can have missing data)
+        - y, W, yres is the vector representation without missing data
+    - GP2KronSum, GP2KRonSumLR GP3KronSumLR do not support missing data and they care about matrix-representaiotn
+        - TODO: GP2KronSum, GP2KronSumLR and GP3KronSumLR have to check that there are not missing data in the phenotype
+    - gp_base supports missing data only cares abouy y and W and g
+        The covariance will need to be aligned with gp_base
+    - kronecker covariance need to be instructed about row/cols not to considered through Iok label
+        -TODO: switch to Kronecker indicator (the soft Kronecker operation needs to be Cythoned)
+
+- Variance Decomposition module 
+    - add missing data to GP base
+    - set Random params and perturb should be feature of the gp? 
+    - row covariance can be specified by using low-rank representation
+    - add gp2KronSumLR and gp3KronSumLR as possible inference methods 
+    - initialization for some models does not work as it relied on the setCovariance matrix (that does not work for combinators)
+
 - we need more combinators (and more struture):
     - parent class combinator (acombinator)
         - check
@@ -12,13 +32,6 @@ NEW RELEASE 2
 - kronecker at the moment is not a combinator
     - make it a combinator?
     - generalize all covariances such that R is also a covariance?
-
-- Variance Decomposition module 
-    - add missing data to Kronecker Covariance 
-    - set Random params and perturb should be feature of the gp? 
-    - row covariance can be specified by using low-rank representation
-    - add gp2KronSumLR and gp3KronSumLR as possible inference methods 
-    - initialization for some models does not work as it relied on the setCovariance matrix (that does not work for combinators)
 
 - jitter is a freeform-specific property
     - 2kronSum, 2kronSumLR, and 3KronSum should have it as well (they should jitter Cn) 
