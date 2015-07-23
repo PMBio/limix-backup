@@ -12,6 +12,7 @@ from limix.core.type.cached import *
 from limix.core.type.observed import *
 from limix.core.utils import assert_make_float_array
 from limix.core.utils import assert_type_or_list_type
+from limix.utils.util_functions import vec 
 
 
 class MeanKronSum(MeanBase):
@@ -56,6 +57,7 @@ class MeanKronSum(MeanBase):
         self.setDesigns(F, A)
         self.Fstar = Fstar
         self.setFIinv(None)
+        self._set_relay(None)
 
     #########################################
     # Properties
@@ -71,6 +73,14 @@ class MeanKronSum(MeanBase):
     @property
     def Y(self):
         return self._Y
+
+    @property
+    @cached('pheno')
+    def y(self):
+        r = vec(self.Y)
+        if self._miss:
+            r = r[self._veIok]
+        return y
 
     @property
     def F(self):
@@ -104,18 +114,24 @@ class MeanKronSum(MeanBase):
         return R
 
     @property
+    def n_data_points(self):
+        return (~self._miss).sum()
+
+    @property
     def Fstar(self):
         print 'TODO: assert stuff'
         return self._Fstar
 
     @property
-    @cached
+    @cached('designs')
     def W(self):
         R = sp.zeros((self.Y.size, self.n_covs))
         istart = 0
         for ti in range(self.n_terms):
             iend = istart + self.F[ti].shape[1] * self.A[ti].shape[0]
             R[:, istart:iend] = sp.kron(self.A[ti].T, self.F[ti])
+        if self._miss:
+            R = R[self._veIok, :]
         return R
 
     @property
@@ -145,8 +161,18 @@ class MeanKronSum(MeanBase):
         self._N = value.shape[0]
         self._P = value.shape[1]
         self._Y = value
+        # missing data
+        self._Iok = ~sp.isnan(value)
+        self._veIok = vec(self._Iok)[:,0]
+        self._miss = (~self._Iok).any()
+        # notify and clear_cached
+        self.clear_cache('pheno')
         self._notify()
         self._notify('pheno')
+
+    @y.setter
+    def y(self, value):
+        print("%s: y.setter not available in this class"%(self.__class__))
 
     def setDesigns(self, F, A):
         """ set fixed effect designs """
@@ -170,7 +196,7 @@ class MeanKronSum(MeanBase):
         self._F = F
         self._A = A
         self._b = sp.zeros((n_covs, 1))
-        self.clear_cache('predict_in_sample', 'Yres', 'W')
+        self.clear_cache('predict_in_sample', 'Yres', 'designs')
         self._notify('designs')
         self._notify()
 
@@ -203,12 +229,30 @@ class MeanKronSum(MeanBase):
         r = self._predict_fun(self.F)
         return r
 
+    def _predict_fun_mv(self, M):
+        assert len(M) == self.n_terms, 'MeanKronSum: Dimension mismatch'
+        rv = sp.zeros((self._N, self._P))
+        for ti in range(self.n_terms):
+            rv += sp.dot(sp.dot(M[ti], self.B[ti]), self.A[ti])
+        return rv
+
     def _predict_fun(self, M):
         assert len(M) == self.n_terms, 'MeanKronSum: Dimension mismatch'
         rv = sp.zeros((self._N, self._P))
         for ti in range(self.n_terms):
             rv += sp.dot(sp.dot(M[ti], self.B[ti]), self.A[ti])
         return rv
+
+    @cached('Yres')
+    def Yres(self):
+        return self.Y - self.predict_in_sample()
+
+    @cached('Yres')
+    def yres(self):
+        r = vec(self.Yres()) 
+        if self._miss:
+            r = r[~self._veIok]
+        return r
 
 if __name__ == '__main__':
 
