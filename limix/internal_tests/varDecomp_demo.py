@@ -83,7 +83,7 @@ if __name__=='__main__':
         print vc.getVarianceComps()
         ipdb.set_trace()
 
-    if 1:
+    if 0:
         #5. test normal gp inference
         #tcts = ['diag', 'lowrank', 'lowrank_id', 'lowrank_diag', 'block', 'block_id', 'block_diag']
         tcts = ['freeform', 'lowrank', 'lowrank_id', 'block', 'block_id']
@@ -100,4 +100,18 @@ if __name__=='__main__':
             print vc.getTraitCovar(1)
             print vc.getTraitCovar(2)
             ipdb.set_trace()
+
+    if 1:
+        # missing data
+        Ym = Y.copy()
+        Inan = sp.rand(N, P) < 0.10
+        Ym[Inan] = sp.nan
+        vc = limix.VarianceDecomposition(Ym)
+        vc.addFixedEffect(F=F1,A=A1)
+        #vc.addFixedEffect(F=F2,A=A2)
+        vc.addRandomEffect(XX,trait_covar_type='freeform')
+        vc.addRandomEffect(is_noise=True,trait_covar_type='freeform')
+        vc.optimize()
+        print vc.getTraitCovar(0)
+        ipdb.set_trace()
 

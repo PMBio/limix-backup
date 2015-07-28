@@ -18,6 +18,7 @@ import scipy.linalg
 import scipy.stats
 import limix.deprecated.utils.preprocess as preprocess
 from limix.utils.preprocess import covar_rescaling_factor 
+from limix.utils.util_functions import vec 
 from limix.core.covar import *
 from limix.core.gp import *
 from limix.core.mean import *
@@ -368,8 +369,12 @@ class VarianceDecomposition:
         """
         Internal method for default parameter initialization
         """
-        if self.P==1:   C = sp.array([[self.Y.var()]])
-        else:           C = sp.cov(self.Y.T)
+        # if there are some nan -> mean impute
+        Yimp = self.Y.copy()
+        Inan = sp.isnan(Yimp)
+        Yimp[Inan] = Yimp[~Inan].mean()
+        if self.P==1:   C = sp.array([[Yimp.var()]])
+        else:           C = sp.cov(Yimp.T)
         C /= float(self.n_randEffs)
         for ti in range(self.n_randEffs):
             self.getTraitCovarFun(ti).setCovariance(C)
@@ -396,7 +401,6 @@ class VarianceDecomposition:
         # TODO: add GP3KronSumLR, GP2KronSumLR
 
 
-
     def _initGP(self):
         """
         Internal method for initialization of the GP inference objetct
@@ -408,7 +412,9 @@ class VarianceDecomposition:
                             R=self.sample_covars[signalPos])
         else:
             mean = MeanKronSum(self.Y, self.sample_designs, self.trait_designs) 
-            covar = SumCov(*[KronCov(self.trait_covars[i], self.sample_covars[i]) for i in range(self.n_randEffs)])
+            Iok = vec(~sp.isnan(mean.Y))[:,0] 
+            if Iok.all():   Iok = None
+            covar = SumCov(*[KronCov(self.trait_covars[i], self.sample_covars[i], Iok=Iok) for i in range(self.n_randEffs)])
             gp = GP(covar = covar, mean = mean) 
         self.gp = gp
 
