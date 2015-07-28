@@ -80,7 +80,7 @@ class MeanKronSum(MeanBase):
         r = vec(self.Y)
         if self._miss:
             r = r[self._veIok]
-        return y
+        return r
 
     @property
     def F(self):

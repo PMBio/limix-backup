@@ -16,9 +16,9 @@ class KronCov(Covariance):
             R:     row numpy covariance matrix 
         """
         Covariance.__init__(self)
-        self.dim = C.dim * R.shape[0]
         self._C = C
         self._R = R
+        self.dim = C.dim * R.shape[0]
         self.Iok = Iok 
         C.register(self.clear_all)
 
@@ -45,6 +45,7 @@ class KronCov(Covariance):
         if value is not None:
             assert len(value.shape)==1, 'must be a 1-dimensioanal array'
             assert value.shape[0]==self.dim, 'Dimension mismatch'
+            self.dim = value.sum()
         self._Iok = value
 
     #####################
