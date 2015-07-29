@@ -1,7 +1,7 @@
 from covar_base import Covariance
 import pdb
 import numpy as np
-import scipy as SP
+import scipy as sp
 from acombinators import ACombinatorCov
 from limix.core.type.cached import Cached, cached
 
@@ -19,17 +19,17 @@ class CovMultiKronSum(ACombinatorCov):
             R:     list of row covariances
         """
         assert len(C)==len(R), 'CovMultiKronSum: C and R must have the same length'
-        self._dim_c = self.C[0].dim
-        self._dim_r = self.R[0].shape[0]
+        self._dim_c = C[0].dim
+        self._dim_r = R[0].shape[0]
         self._n_terms = len(C)
         ACombinatorCov.__init__(self)
         self.dim = self._dim_c * self._dim_r
         for term_i in range(self.n_terms):
-            assert C[term_i].dim==self_dim_c, 'CovMultiKronSum:: Dimension mismatch'
-            assert R[term_i].shape[0]==self_dim_r, 'CovMultiKronSum:: Dimension mismatch'
-            assert R[term_i].shape[1]==self_dim_r, 'CovMultiKronSum:: Dimension mismatch'
-            self.covars.append(covar)
-            covar.register(self.clear_all)
+            assert C[term_i].dim==self._dim_c, 'CovMultiKronSum:: Dimension mismatch'
+            assert R[term_i].shape[0]==self._dim_r, 'CovMultiKronSum:: Dimension mismatch'
+            assert R[term_i].shape[1]==self._dim_r, 'CovMultiKronSum:: Dimension mismatch'
+            self.covars.append(C[term_i])
+            C[term_i].register(self.clear_all)
         self._R = sp.array(R)
 
     #####################
@@ -59,7 +59,7 @@ class CovMultiKronSum(ACombinatorCov):
 
     @property
     def C(self):
-        return self._C
+        return self.covars
 
     @property
     @cached('covar_base')
@@ -74,7 +74,7 @@ class CovMultiKronSum(ACombinatorCov):
     #####################
     @cached('covar_base')
     def K(self):
-        K = SP.zeros((self.dim,self.dim))
+        K = sp.zeros((self.dim,self.dim))
         for i in range(len(self.covars)):
             K += sp.kron(self.C[i].K(), self.R[i])
         return K
@@ -113,7 +113,7 @@ class CovMultiKronSum(ACombinatorCov):
         if c1==c2:
             r = sp.kron(self.C[c1].K_hess_i_j(i0, j0), self.R[c1])
         else:
-            r = SP.zeros((self.dim, self.dim))
+            r = sp.zeros((self.dim, self.dim))
         return r
 
     ####################
@@ -123,7 +123,7 @@ class CovMultiKronSum(ACombinatorCov):
         pdb.set_trace()
         vei_M = M.reshape((self.dim_r, self.dim_c, M.shape[1]), order='F') 
         R_veiM = sp.tensordot(self.R, vei_M, (1, 0))
-        R_veiM_C = sp.tensordot(R_veiM, self.C_K, ((0, 2), (0, 1))
+        R_veiM_C = sp.tensordot(R_veiM, self.C_K, ((0, 2), (0, 1)))
         return R_veiM_C.reshape(M.shape, order='F') 
 
     ####################
