@@ -4,74 +4,63 @@ import scipy.linalg
 import copy
 import sys
 import time
-from limix.core.type.observed import Observed
-from limix.core.type.cached import Cached, cached
+from gp_ls import GPLS
+from limix.core.type.cached import cached
 from limix.core.covar import Covariance
 from limix.core.mean import MeanBase
 from limix.core.covar.cov_reml import cov_reml
-import limix.core.optimize.optimize_trust as OPT
 
-import logging
-logger = logging.getLogger(__name__)
-
-
-class GPLS(Cached, Observed):
+class GPMKS(GPLS):
     """
-    Gaussian Process regression class for linear mean (with REML) where all computation is based on solving linear systems
-    y ~ N(Wb,K)
+    Gaussian Process with a covariance and a mean that are sums of multiple kronecker products:
+        vec(Y) ~ N( vec( \sum_i F_i B_i A_i), \sum_j C_j \kron R_j)
     Notation:
         N = number of samples
-        K = number of fixed effects
-        y = phenotype vector
-        W = fixed effect design
-        K = covariance function
+        P = number of traits
+        Y = [N, P] phenotype matrix
+        F_i = sample fixed effect design for term i
+        A_i = trait fixed effect design for term i
+        B_i = effect sizes of fixed effect term i
+        C_j = column covariance matrix for term j
+        R_j = column covariance matrix for noise term j 
     """
 
-    def __init__(self, Y, covar):
+    def __init__(self, Y, C, R, F=None, A=None):
         """
         Args:
-            Y:          [N, P] phenotype matrix
-            covar:      Limix covariance function
+            Y:      [N, P] phenotype matrix
+            C:      list of limix trait covariances. 
+                    Each term must be a limix covariance with dimension P 
+            C:      list of row covariance matrices. 
+                    Each term must be a numpy covariane matrix with dimension P 
+            F:      list of sample fixed effect designs.
+                    Each term must have first dimension N
+            A:      list of trait fixed effect design.
+                    Each term must have second dimension P
         """
-        Cached.__init__(self)
+        # assert types
+        assert_type(Y, NP.ndarray, 'Y')
+        assert len(C)==len(R), 'Dimension mismatch'
+        for i in range(len(C)):
+            assert_subtype(C[i], Covariance, 'C[%d]' % i)
+            assert_type(R[i], NP.ndarray, 'R[%d]' % i)
 
-        if not issubclass(type(covar), Covariance):
-            raise TypeError('Parameter covar must have Covariance '
-                            'inheritance.')
+        assert F is None and A is None, 'fixed effects not supported yet'
 
-        self.covar = covar
-        self.mean = MeanBase(Y = Y) 
-        self.Areml = cov_reml(self)
-        self._observe()
+        # build covariance matrix
+        #Iok = vec(~sp.isnan(Y))[:,0]
+        #if veIok.all():     Iok = None
+        covar = SumCov(*[KronCov(C[i], R[i]) for i in range(len(C))])
+
+        # init GPLS
+        GP.__init__(self, Y, covar)
 
     def _observe(self):
-        # different notification should be possible
-        # e.g. for mean: pheno and designs
-        # see GP2KronSum
-        self.covar.register(self.clear_all)
-        self.mean.register(self.clear_all)
-
-    def clear_all(self):
-        self._notify() # notify Areml
-        self.clear_cache('gp_base')
-        self.update_b()
-
-    def setParams(self, params):
-        self.covar.setParams(params['covar'])
-
-    def getParams(self):
-        RV = {}
-        RV['covar'] = self.covar.getParams()
-        return RV
-
-    ######################
-    # Areml
-    ######################
-    def Areml_K(self):
-        return sp.dot(self.mean.W.T, self.KiW())
-
-    def Areml_K_grad_i(self, i):
-        return -sp.dot(self.KiW().T, self.DiKKiW(i))
+        #TODO: check if we need row and col covariances
+        self.covar.register(self.row_cov_has_changed, 'row_cov')
+        self.covar.register(self.col_cov_has_changed, 'col_cov')
+        self.mean.register(self.pheno_has_changed, 'pheno')
+        self.mean.register(self.designs_have_changed, 'designs')
 
     #######################
     # LML terms
