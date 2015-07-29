@@ -10,6 +10,7 @@ class ACombinatorCov(Covariance):
     """
     def __init__(self):
         Covariance.__init__(self)
+        self.covars = []
 
     #####################
     # Covars handling

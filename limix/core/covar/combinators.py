@@ -18,10 +18,8 @@ class SumCov(ACombinatorCov):
         """
         ACombinatorCov.__init__(self)
         self.dim = None
-        self.covars = []
         for covar in covars:
             self.addCovariance(covar)
-            covar.register(self.clear_all)
 
     #####################
     # Cached
@@ -92,7 +90,7 @@ class SumCov(ACombinatorCov):
     def dot(self, M):
         R = sp.zeros_like(M)
         for i in range(len(self.covars)):
-            R = self.getCovariance(i).dot(R)
+            R += self.getCovariance(i).dot(R)
         return sp.dot(self.K(), M)
 
     ####################
@@ -107,4 +105,5 @@ class SumCov(ACombinatorCov):
                 return self.getCovariance(j).K_grad_interParam_i(idx)
             istart = istop
         return None
+
 
