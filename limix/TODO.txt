@@ -1,6 +1,15 @@
 ***********************************************
 NEW RELEASE 2
 ***********************************************
+- implement hessian for all covariances
+    - particularly: FreeForm and LowRank!!!
+
+- We have no tests for the mean
+        - add tests
+
+- test interface between gp_base and menaKronSum (test_gp_more)
+    - in particular how missing data are handled
+
 - Missing data strategy:
     - mean_base does not handle missing data
         (it makes no sense to have a univariate model with missing data)
