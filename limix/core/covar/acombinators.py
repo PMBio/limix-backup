@@ -61,6 +61,11 @@ class ACombinatorCov(Covariance):
             r = r or self.getCovariance(i).use_to_predict
         return r
 
+    @use_to_predict.setter
+    def use_to_predict(self,value):
+        raise NotImplementedError("This method is only implemented for single"
+                                  " covariance terms.")
+
     ####################
     # Interpretable Params and Ste
     ####################

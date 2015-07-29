@@ -2,9 +2,10 @@ from covar_base import Covariance
 import pdb
 import numpy as np
 import scipy as SP
+from acombinators import ACombinatorCov
 from limix.core.type.cached import Cached, cached
 
-class SumCov(Covariance):
+class SumCov(ACombinatorCov):
     """
     Sum of multiple covariance matrices.
     The number of paramteters is the sum of the parameters of the single covariances.
@@ -15,67 +16,12 @@ class SumCov(Covariance):
         Args:
             covars:     covariances to be considered in the sum
         """
-        Covariance.__init__(self)
+        ACombinatorCov.__init__(self)
         self.dim = None
         self.covars = []
         for covar in covars:
             self.addCovariance(covar)
             covar.register(self.clear_all)
-
-    #####################
-    # Covars handling
-    #####################
-    def addCovariance(self,covar):
-        if self.dim is None:
-            self.dim = covar.dim
-        else:
-            assert covar.dim==self.dim, 'Dimension mismatch.'
-        self.covars.append(covar)
-        covar.register(self.clear_all)
-        self._calcNumberParams()
-
-    def getCovariance(self,i):
-        return self.covars[i]
-
-    #####################
-    # Params handling
-    #####################
-    def setParams(self,params):
-        istart = 0
-        cs = filter(lambda c: c.getNumberParams() > 0, self.covars)
-        for c in cs:
-            n = c.getNumberParams()
-            istop = istart + n
-            c.setParams(params[istart:istop])
-            istart = istop
-
-    def getParams(self):
-        istart = 0
-        params = SP.zeros(self.getNumberParams())
-        cs = filter(lambda c: c.getNumberParams() > 0, self.covars)
-        for c in cs:
-            istop = istart + c.getNumberParams()
-            params[istart:istop] = c.getParams()
-            istart = istop
-        return params
-
-    def getNumberParams(self):
-        return np.sum([c.getNumberParams() for c in self.covars])
-
-    ####################
-    # Predictions
-    ####################
-    @property
-    def use_to_predict(self):
-        r = False
-        for i in range(len(self.covars)):
-            r = r or self.getCovariance(i).use_to_predict
-        return r
-
-    @use_to_predict.setter
-    def use_to_predict(self,value):
-        raise NotImplementedError("This method is only implemented for single"
-                                  " covariance terms.")
 
     #####################
     # Cached
@@ -141,17 +87,17 @@ class SumCov(Covariance):
         return self.n_params
 
     ####################
+    # Non-cached methods
+    ####################
+    def dot(self, M):
+        R = sp.zeros_like(M)
+        for i in range(len(self.covars)):
+            R = self.getCovariance(i).dot(R)
+        return sp.dot(self.K(), M)
+
+    ####################
     # Interpretable Params
     ####################
-    def getInterParams(self):
-        istart = 0
-        interParams = SP.zeros(self.getNumberParams())
-        for i in range(len(self.covars)):
-            istop = istart + self.getCovariance(i).getNumberParams()
-            params[istart:istop] = self.getCovariance(i).getInterParams()
-            istart = istop
-        return params
-
     def K_grad_interParam_i(self,i):
         istart = 0
         for j in range(len(self.covars)):
@@ -162,10 +108,3 @@ class SumCov(Covariance):
             istart = istop
         return None
 
-    def setFIinv(self, value):
-        self._FIinv = value
-        istart = 0
-        for i in range(len(self.covars)):
-            istop = istart + self.getCovariance(i).getNumberParams()
-            self.getCovariance(i).setFIinv(value[istart:istop][:,istart:istop])
-            istart = istop
