@@ -63,7 +63,6 @@ class Covariance(Cached, Observed):
     ###################################
     # Non-cached methods
     ###################################
-
     def dot(self, M):
         return sp.dot(self.K(), M)
 
