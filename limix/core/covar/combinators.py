@@ -1,7 +1,7 @@
 from covar_base import Covariance
 import pdb
 import numpy as np
-import scipy as SP
+import scipy as sp
 from acombinators import ACombinatorCov
 from limix.core.type.cached import Cached, cached
 
@@ -26,7 +26,7 @@ class SumCov(ACombinatorCov):
     #####################
     @cached('covar_base')
     def K(self):
-        K = SP.zeros((self.dim,self.dim))
+        K = sp.zeros((self.dim,self.dim))
         for i in range(len(self.covars)):
             K += self.getCovariance(i).K()
         return K
@@ -75,7 +75,7 @@ class SumCov(ACombinatorCov):
         if c1==c2:
             r = self.getCovariance(c1).K_hess_i_j(i0, j0)
         else:
-            r = SP.zeros((self.dim, self.dim))
+            r = sp.zeros((self.dim, self.dim))
         return r
 
     def _calcNumberParams(self):

@@ -4,6 +4,8 @@ import numpy as np
 import scipy as sp
 from acombinators import ACombinatorCov
 from limix.core.type.cached import Cached, cached
+import scipy.sparse.linalg as sla
+from limix.utils.linalg import vei_CoR_veX
 
 class CovMultiKronSum(ACombinatorCov):
     """
@@ -24,13 +26,13 @@ class CovMultiKronSum(ACombinatorCov):
         self._n_terms = len(C)
         ACombinatorCov.__init__(self)
         self.dim = self._dim_c * self._dim_r
+        self._R = R
         for term_i in range(self.n_terms):
             assert C[term_i].dim==self._dim_c, 'CovMultiKronSum:: Dimension mismatch'
             assert R[term_i].shape[0]==self._dim_r, 'CovMultiKronSum:: Dimension mismatch'
             assert R[term_i].shape[1]==self._dim_r, 'CovMultiKronSum:: Dimension mismatch'
             self.covars.append(C[term_i])
             C[term_i].register(self.clear_all)
-        self._R = sp.array(R)
 
     #####################
     # Covars handling
@@ -66,7 +68,7 @@ class CovMultiKronSum(ACombinatorCov):
     def C_K(self):
         RV = sp.zeros((self.n_terms, self.dim_c, self.dim_c))
         for ti in range(self.n_terms):
-            RV[ti, :, :] = self.C[i].K()
+            RV[ti, :, :] = self.C[ti].K()
         return RV
 
     #####################
@@ -120,11 +122,114 @@ class CovMultiKronSum(ACombinatorCov):
     # Non-cached methods
     ####################
     def dot(self, M):
-        pdb.set_trace()
-        vei_M = M.reshape((self.dim_r, self.dim_c, M.shape[1]), order='F') 
-        R_veiM = sp.tensordot(self.R, vei_M, (1, 0))
-        R_veiM_C = sp.tensordot(R_veiM, self.C_K, ((0, 2), (0, 1)))
-        return R_veiM_C.reshape(M.shape, order='F') 
+        vei_M = M.reshape((self.dim_r, self.dim_c, M.shape[1]), order='F')
+        return self.dot_NxPxS(vei_M).reshape(M.shape, order='F')
+
+    #def dot_NxP(self, M):
+    #    """ M is NxP """
+    #    RV = sp.zeros_like(M)
+    #    for ti in range(self.n_terms):
+    #        RV += sp.dot(sp.dot(self.R[ti], M), self.C[ti].K())
+    #    return RV
+
+    #def dot_NxSxP(self, M):
+    #    """ M is NxP """
+    #    RV = sp.zeros_like(M)
+    #    for ti in range(self.n_terms):
+    #        RV += sp.dot(sp.tensordot(self.R[ti], M, (1,0)), self.C[ti].K())
+    #    return RV
+
+    def dot_NxPxS(self, M):
+        """ M is NxPxS """
+        RV = sp.zeros_like(M)
+        for ti in range(self.n_terms):
+            RV += vei_CoR_veX(self.R[ti], self.C[ti].K(), M) 
+        return RV
+
+    def solve_ls1(self, M, X0=None, tol=1E-3):
+        # X is NxPxS tensor
+        if len(M.shape)==2:     Mt = M[:, :, sp.newaxis]
+        else:                   Mt = M
+        if X0 is None:          X0 = 1E-3 * sp.randn(*M.shape)
+        if len(X0.shape)==2:    Xt0 = X0[:, :, sp.newaxis]
+        else:                   Xt0 = X0
+        def veKvei(x):
+            _Xt = x.reshape((self.dim_r, self.dim_c, Mt.shape[2]), order='F')
+            return self.dot_NxPxS(_Xt).reshape(_Xt.size, order='F')
+        Kx_O = sla.LinearOperator((Mt.size, Mt.size), matvec=veKvei, rmatvec=veKvei, dtype='float64')
+        # vectorize
+        m  = Mt.reshape(Mt.size, order='F')
+        x0 = Xt0.reshape(Xt0.size, order='F')
+        r, _ = sla.cgs(Kx_O, m, x0=x0, tol=tol)
+        return r.reshape(M.shape, order='F')
+
+    #####################
+    # Montecarlo methods
+    #####################
+    @cached('Z')
+    def Z(self):
+        r = sp.randn(self.dim_r, self.dim_c, self._nIterMC)
+        # norm Z to improve convergence
+        norm = sp.sqrt(self.dim / (float(self._nIterMC) * (r**2).sum((0,1))))
+        return norm * r
+
+    @cached(['covar_base', 'Z'])
+    def DKZ(self):
+        R = sp.zeros((self.dim_r, self.dim_c, self._nIterMC, self.getNumberParams()))
+        pi = 0
+        for ti in range(self.n_terms):
+            for j in range(self.C[ti].getNumberParams()): 
+                R[:, :, :, pi] = vei_CoR_veX(self.R[ti], self.C[ti].K_grad_i(j), self.Z())
+                pi+=1
+        return R
+
+    @cached(['covar_base', 'Z'])
+    def DDKZ(self):
+        R = sp.zeros((self.dim_r, self.dim_c, self._nIterMC, self.getNumberParams(), self.getNumberParams()))
+        pi0 = 0
+        for ti in range(self.n_terms):
+            pj0 = 0
+            for tj in range(self.n_terms):
+                if ti==tj: 
+                    for i in range(self.C[ti].getNumberParams()): 
+                        pi = pi0 + i
+                        R[:, :, :, pi, pi] = vei_CoR_veX(self.R[ti], self.C[ti].K_hess_i_j(i, i), self.Z()) 
+                        for j in range(i): 
+                            pj = pj0 + j
+                            R[:, :, :, pi, pj] = vei_CoR_veX(self.R[ti], self.C[ti].K_hess_i_j(i, j), self.Z()) 
+                            R[:, :, :, pj, pi] = R[:, :, :, pi, pj] 
+                pj0 += self.C[tj].getNumberParams()
+            pi0 += self.C[ti].getNumberParams()
+        return R
+
+    @cached(['covar_base', 'Z'])
+    def KiZ(self):
+        R = self.solve_ls(self.Z(), M0=self._KiZo)
+        if self._reuse:     self._KiZo = R
+        return R
+
+
+    # followinf implementation of dot uses tensors and tensordot
+    # DEPRECATED as slower than an implementation working on lists
+    #def dot(self, M):
+    #    import time
+    #    t0 = time.time()
+    #    vei_M = M.reshape((self.dim_r, self.dim_c, M.shape[1]), order='F') 
+    #    t1 = time.time()
+    #    print t1-t0
+    #    t0 = time.time()
+    #    R_veiM = sp.tensordot(self.R, vei_M, (1, 0))
+    #    t1 = time.time()
+    #    print t1-t0
+    #    t0 = time.time()
+    #    R_veiM_C = sp.tensordot(R_veiM, self.C_K, ((0, 2), (0, 1)))
+    #    t1 = time.time()
+    #    print t1-t0
+    #    t0 = time.time()
+    #    RV = R_veiM_C.transpose((0,2,1)).reshape(M.shape, order='F') 
+    #    t1 = time.time()
+    #    print t1-t0
+    #    return RV
 
     ####################
     # Interpretable Params

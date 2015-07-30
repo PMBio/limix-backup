@@ -1,7 +1,7 @@
 from covar_base import Covariance
 import pdb
 import numpy as np
-import scipy as SP
+import scipy as sp
 from limix.core.type.cached import Cached, cached
 
 class ACombinatorCov(Covariance):
@@ -41,7 +41,7 @@ class ACombinatorCov(Covariance):
 
     def getParams(self):
         istart = 0
-        params = SP.zeros(self.getNumberParams())
+        params = sp.zeros(self.getNumberParams())
         cs = filter(lambda c: c.getNumberParams() > 0, self.covars)
         for c in cs:
             istop = istart + c.getNumberParams()
@@ -72,7 +72,7 @@ class ACombinatorCov(Covariance):
     ####################
     def getInterParams(self):
         istart = 0
-        interParams = SP.zeros(self.getNumberParams())
+        interParams = sp.zeros(self.getNumberParams())
         for i in range(len(self.covars)):
             istop = istart + self.getCovariance(i).getNumberParams()
             params[istart:istop] = self.getCovariance(i).getInterParams()
