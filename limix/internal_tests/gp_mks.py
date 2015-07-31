@@ -58,14 +58,14 @@ if __name__ == "__main__":
 
     ipdb.set_trace()
 
-    if 0:
+    if 1:
         # basic checks
         print ((covar.K()-covar0.K())**2).mean()
         print ((covar.K_grad_i(0)-covar0.K_grad_i(0))**2).mean()
         print ((covar.K_hess_i_j(0, 0)-covar0.K_hess_i_j(0, 0))**2).mean()
         ipdb.set_trace()
 
-    if 0:
+    if 1:
         # check linear system solve
         Z = sp.randn(N*P, 30)
         Zt = sp.zeros((N,P,30))
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     covar0.Z()
     covar0._cache_Z[:] = covar.Z().reshape((N*P, 30), order='F')
 
-    if 0:
+    if 1:
         # checking DKZ function 
         t0 = TIME.time()
         DKZ0 = covar0.DKZ()

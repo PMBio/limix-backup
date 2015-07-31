@@ -129,7 +129,7 @@ class CovMultiKronSum(ACombinatorCov):
         """ M is NxPxS """
         RV = sp.zeros_like(M)
         for ti in range(self.n_terms):
-            RV += vei_CoR_veX(self.R[ti], self.C[ti].K(), M) 
+            RV += vei_CoR_veX(M, C=self.C[ti].K(), R=self.R[ti]) 
         return RV
 
     def solve_ls_NxPxS(self, M, X0=None, tol=1E-3):
@@ -159,13 +159,20 @@ class CovMultiKronSum(ACombinatorCov):
         norm = sp.sqrt(self.dim / (float(self._nIterMC) * (r**2).sum((0,1))))
         return norm * r
 
+    @cached('Z')
+    def RZ(self):
+        RV = []
+        for ti in range(self.n_terms):
+            RV.append(vei_CoR_veX(self.Z(), R=self.R[ti]))
+        return RV
+
     @cached(['covar_base', 'Z'])
     def DKZ(self):
         R = sp.zeros((self.dim_r, self.dim_c, self._nIterMC, self.getNumberParams()))
         pi = 0
         for ti in range(self.n_terms):
             for j in range(self.C[ti].getNumberParams()): 
-                R[:, :, :, pi] = vei_CoR_veX(self.R[ti], self.C[ti].K_grad_i(j), self.Z())
+                R[:, :, :, pi] = vei_CoR_veX(self.RZ()[ti], C=self.C[ti].K_grad_i(j))
                 pi+=1
         return R
 
@@ -179,10 +186,10 @@ class CovMultiKronSum(ACombinatorCov):
                 if ti==tj: 
                     for i in range(self.C[ti].getNumberParams()): 
                         pi = pi0 + i
-                        R[:, :, :, pi, pi] = vei_CoR_veX(self.R[ti], self.C[ti].K_hess_i_j(i, i), self.Z()) 
+                        R[:, :, :, pi, pi] = vei_CoR_veX(self.RZ()[ti], C=self.C[ti].K_hess_i_j(i, i)) 
                         for j in range(i): 
                             pj = pj0 + j
-                            R[:, :, :, pi, pj] = vei_CoR_veX(self.R[ti], self.C[ti].K_hess_i_j(i, j), self.Z()) 
+                            R[:, :, :, pi, pj] = vei_CoR_veX(self.RZ()[ti], C=self.C[ti].K_hess_i_j(i, j)) 
                             R[:, :, :, pj, pi] = R[:, :, :, pi, pj] 
                 pj0 += self.C[tj].getNumberParams()
             pi0 += self.C[ti].getNumberParams()
