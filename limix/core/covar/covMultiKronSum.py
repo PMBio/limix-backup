@@ -125,20 +125,6 @@ class CovMultiKronSum(ACombinatorCov):
         vei_M = M.reshape((self.dim_r, self.dim_c, M.shape[1]), order='F')
         return self.dot_NxPxS(vei_M).reshape(M.shape, order='F')
 
-    #def dot_NxP(self, M):
-    #    """ M is NxP """
-    #    RV = sp.zeros_like(M)
-    #    for ti in range(self.n_terms):
-    #        RV += sp.dot(sp.dot(self.R[ti], M), self.C[ti].K())
-    #    return RV
-
-    #def dot_NxSxP(self, M):
-    #    """ M is NxP """
-    #    RV = sp.zeros_like(M)
-    #    for ti in range(self.n_terms):
-    #        RV += sp.dot(sp.tensordot(self.R[ti], M, (1,0)), self.C[ti].K())
-    #    return RV
-
     def dot_NxPxS(self, M):
         """ M is NxPxS """
         RV = sp.zeros_like(M)
@@ -146,7 +132,7 @@ class CovMultiKronSum(ACombinatorCov):
             RV += vei_CoR_veX(self.R[ti], self.C[ti].K(), M) 
         return RV
 
-    def solve_ls1(self, M, X0=None, tol=1E-3):
+    def solve_ls_NxPxS(self, M, X0=None, tol=1E-3):
         # X is NxPxS tensor
         if len(M.shape)==2:     Mt = M[:, :, sp.newaxis]
         else:                   Mt = M
@@ -164,7 +150,7 @@ class CovMultiKronSum(ACombinatorCov):
         return r.reshape(M.shape, order='F')
 
     #####################
-    # Montecarlo methods
+    # Monte Carlo methods
     #####################
     @cached('Z')
     def Z(self):
@@ -204,32 +190,17 @@ class CovMultiKronSum(ACombinatorCov):
 
     @cached(['covar_base', 'Z'])
     def KiZ(self):
-        R = self.solve_ls(self.Z(), M0=self._KiZo)
+        R = self.solve_ls_NxPxS(self.Z(), X0=self._KiZo)
         if self._reuse:     self._KiZo = R
         return R
 
+    @cached(['covar_base', 'Z'])
+    def sample_logdet_grad(self):
+        return sp.tensordot(self.DKZ(), self.KiZ(), ((0, 1, 2), (0, 1, 2)))
 
-    # followinf implementation of dot uses tensors and tensordot
-    # DEPRECATED as slower than an implementation working on lists
-    #def dot(self, M):
-    #    import time
-    #    t0 = time.time()
-    #    vei_M = M.reshape((self.dim_r, self.dim_c, M.shape[1]), order='F') 
-    #    t1 = time.time()
-    #    print t1-t0
-    #    t0 = time.time()
-    #    R_veiM = sp.tensordot(self.R, vei_M, (1, 0))
-    #    t1 = time.time()
-    #    print t1-t0
-    #    t0 = time.time()
-    #    R_veiM_C = sp.tensordot(R_veiM, self.C_K, ((0, 2), (0, 1)))
-    #    t1 = time.time()
-    #    print t1-t0
-    #    t0 = time.time()
-    #    RV = R_veiM_C.transpose((0,2,1)).reshape(M.shape, order='F') 
-    #    t1 = time.time()
-    #    print t1-t0
-    #    return RV
+    @cached(['covar_base', 'Z'])
+    def sample_trKiDDK(self):
+        return sp.tensordot(self.DDKZ(), self.KiZ(), ((0, 1, 2), (0, 1, 2)))
 
     ####################
     # Interpretable Params

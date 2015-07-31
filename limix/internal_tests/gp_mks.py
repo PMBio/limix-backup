@@ -58,14 +58,14 @@ if __name__ == "__main__":
 
     ipdb.set_trace()
 
-    if 1:
+    if 0:
         # basic checks
         print ((covar.K()-covar0.K())**2).mean()
         print ((covar.K_grad_i(0)-covar0.K_grad_i(0))**2).mean()
         print ((covar.K_hess_i_j(0, 0)-covar0.K_hess_i_j(0, 0))**2).mean()
         ipdb.set_trace()
 
-    if 1:
+    if 0:
         # check linear system solve
         Z = sp.randn(N*P, 30)
         Zt = sp.zeros((N,P,30))
@@ -75,7 +75,7 @@ if __name__ == "__main__":
         t1 = TIME.time()
         KiZ_0 = covar0.solve_ls(Z)
         t2 = TIME.time()
-        KiZ_1 = covar.solve_ls1(Zt).reshape((N*P, 30), order='F')
+        KiZ_1 = covar.solve_ls_NxPxS(Zt).reshape((N*P, 30), order='F')
         t3 = TIME.time()
         print ((KiZ-KiZ_0)**2).mean()
         print ((KiZ-KiZ_1)**2).mean()
@@ -85,13 +85,12 @@ if __name__ == "__main__":
         print 'improvement:', (t2-t1) / (t1-t0)
         ipdb.set_trace()
 
+    # coordinate zetas
+    Z = covar.Z()
+    covar0.Z()
+    covar0._cache_Z[:] = covar.Z().reshape((N*P, 30), order='F')
 
-    if 1:
-        # coordinate zetas
-        Z = covar.Z()
-        covar0.Z()
-        covar0._cache_Z[:] = covar.Z().reshape((N*P, 30), order='F')
-
+    if 0:
         # checking DKZ function 
         t0 = TIME.time()
         DKZ0 = covar0.DKZ()
@@ -115,4 +114,15 @@ if __name__ == "__main__":
         print 'time dot efficient:', t2-t1
         print 'improvement:', (t1-t0) / (t2-t1)
         ipdb.set_trace()
+
+    if 1:
+        # test logdet and trace functions
+        logdet = covar.sample_logdet_grad()
+        logdet0 = covar0.sample_logdet_grad()
+        print ((logdet-logdet0)**2).mean()
+
+        tr = covar.sample_trKiDDK()
+        tr0 = covar0.sample_trKiDDK()
+        print ((tr-tr0)**2).mean()
         
+
