@@ -191,7 +191,6 @@ class Covariance(Cached, Observed):
         if self._reuse:     self._KiZo = R
         return R
         
-
     @cached(['covar_base', 'Z'])
     def sample_logdet_grad_i(self, i):
         DiKZ = sp.dot(self.K_grad_i(i), self.Z())
@@ -204,8 +203,6 @@ class Covariance(Cached, Observed):
     @cached(['covar_base', 'Z'])
     def sample_trKiDDK(self):
         return (self.DDKZ() * self.KiZ()[:, :, sp.newaxis, sp.newaxis]).sum(axis=(0, 1))
-
-
 
 
     ###########################
