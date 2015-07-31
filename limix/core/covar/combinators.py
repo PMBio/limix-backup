@@ -85,15 +85,6 @@ class SumCov(ACombinatorCov):
         return self.n_params
 
     ####################
-    # Non-cached methods
-    ####################
-    def dot(self, M):
-        R = sp.zeros_like(M)
-        for i in range(len(self.covars)):
-            R += self.getCovariance(i).dot(R)
-        return sp.dot(self.K(), M)
-
-    ####################
     # Interpretable Params
     ####################
     def K_grad_interParam_i(self,i):

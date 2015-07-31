@@ -18,6 +18,7 @@ class Covariance(Cached, Observed):
         self._nIterMC = nIterMC
         self._reuse = True
         self._KiZo = None
+        self._tol = 1e-3
         if dim is not None:
             self.initialize(dim)
 
@@ -69,7 +70,7 @@ class Covariance(Cached, Observed):
     def solve(self,M):
         return LA.cho_solve((self.chol(),True),M)
 
-    def solve_ls(self, M, M0=None, tol=1E-3):
+    def solve_ls(self, M, M0=None):
         if M0 is None:    M0 = 1E-3 * sp.randn(*M.shape)
         def veKvei(m):
             _M = m.reshape(M.shape, order='F')
@@ -78,7 +79,7 @@ class Covariance(Cached, Observed):
         # vectorize
         m  = M.reshape(M.size, order='F')
         m0 = M0.reshape(M0.size, order='F')
-        r, _ = sla.cgs(Kx_O, m, x0=m0, tol=tol)
+        r, _ = sla.cgs(Kx_O, m, x0=m0, tol=self._tol)
         return r.reshape(M.shape, order='F')
 
     ####################################
@@ -160,6 +161,9 @@ class Covariance(Cached, Observed):
     ###########################
     # Monte Carlo methods
     ###########################
+    def resample(self):
+        self.clear_cache('Z')
+        self._notify()
 
     @cached('Z')
     def Z(self):

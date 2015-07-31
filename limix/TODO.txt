@@ -1,8 +1,13 @@
 ***********************************************
 NEW RELEASE 2
 ***********************************************
+- gp_mks and gp_ls
+    - the DKKi operator should be defined in the covariance and used in the gp
+    at the moment the code is copied twice: in the covariance and in the gp 
+    - distinguish Z has changed (resample) from params have changed
+    
 - implement hessian for all covariances
-    - particularly: FreeForm and LowRank!!!
+    - particularly LowRank!!!
 
 - We have no tests for the mean
         - add tests
