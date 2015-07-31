@@ -9,7 +9,7 @@ from limix.core.gp import GP
 from limix.core.gp import GPLS
 from limix.utils.preprocess import covar_rescale
 
-import pdb
+import ipdb
 import scipy as sp
 import scipy.linalg as LA
 import time as TIME
@@ -58,6 +58,15 @@ if __name__ == "__main__":
     gpls = GPLS(Y, covar)
     sp.random.seed(1)
     gpls.covar.Z()
+    ipdb.set_trace()
+
+    if 1:
+        for i in range(10):
+            # check gradient
+            covar.setRandomParams()
+            print gp.LML_grad()
+            print gpls.LML_grad()
+            ipdb.set_trace()
 
     if 0:
         # initialize params
@@ -71,7 +80,7 @@ if __name__ == "__main__":
         print sign2.scale, '+/-', sign2.scale_ste
         print sign3.scale, '+/-', sign3.scale_ste
         print noise.scale, '+/-', noise.scale_ste
-        pdb.set_trace()
+        ipdb.set_trace()
 
     # initialize params
     sign1.scale = 0.25
@@ -85,7 +94,7 @@ if __name__ == "__main__":
     print sign2.scale
     print sign3.scale
     print noise.scale
-    pdb.set_trace()
+    ipdb.set_trace()
 
     # initialize params
     sign1.scale = 0.25
@@ -100,5 +109,5 @@ if __name__ == "__main__":
     print sign2.scale
     print sign3.scale
     print noise.scale
-    pdb.set_trace()
+    ipdb.set_trace()
 
