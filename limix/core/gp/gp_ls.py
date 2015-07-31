@@ -27,7 +27,7 @@ class GPLS(Cached, Observed):
         K = covariance function
     """
 
-    def __init__(self, Y, covar):
+    def __init__(self, y, covar):
         """
         Args:
             Y:          [N, P] phenotype matrix
@@ -40,7 +40,7 @@ class GPLS(Cached, Observed):
                             'inheritance.')
 
         self.covar = covar
-        self.mean = MeanBase(Y = Y) 
+        self.mean = MeanBase(y) 
         self.Areml = cov_reml(self)
         self._observe()
 

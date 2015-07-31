@@ -32,7 +32,12 @@ class CovMultiKronSum(ACombinatorCov):
             assert R[term_i].shape[0]==self._dim_r, 'CovMultiKronSum:: Dimension mismatch'
             assert R[term_i].shape[1]==self._dim_r, 'CovMultiKronSum:: Dimension mismatch'
             self.covars.append(C[term_i])
-            C[term_i].register(self.clear_all)
+            C[term_i].register(self.col_cov_has_changed)
+
+    def col_cov_has_changed(self):
+        self.clear_all()
+        self.clear_cache('col_cov')
+        self._notify('col_cov')
 
     #####################
     # Covars handling
@@ -64,7 +69,7 @@ class CovMultiKronSum(ACombinatorCov):
         return self.covars
 
     @property
-    @cached('covar_base')
+    @cached('col_cov')
     def C_K(self):
         RV = sp.zeros((self.n_terms, self.dim_c, self.dim_c))
         for ti in range(self.n_terms):
@@ -159,14 +164,14 @@ class CovMultiKronSum(ACombinatorCov):
         norm = sp.sqrt(self.dim / (float(self._nIterMC) * (r**2).sum((0,1))))
         return norm * r
 
-    @cached('Z')
+    @cached(['Z', 'row_cov'])
     def RZ(self):
         RV = []
         for ti in range(self.n_terms):
             RV.append(vei_CoR_veX(self.Z(), R=self.R[ti]))
         return RV
 
-    @cached(['covar_base', 'Z'])
+    @cached(['row_cov', 'col_cov', 'Z'])
     def DKZ(self):
         R = sp.zeros((self.dim_r, self.dim_c, self._nIterMC, self.getNumberParams()))
         pi = 0
@@ -176,7 +181,7 @@ class CovMultiKronSum(ACombinatorCov):
                 pi+=1
         return R
 
-    @cached(['covar_base', 'Z'])
+    @cached(['row_cov', 'col_cov', 'Z'])
     def DDKZ(self):
         R = sp.zeros((self.dim_r, self.dim_c, self._nIterMC, self.getNumberParams(), self.getNumberParams()))
         pi0 = 0
@@ -195,17 +200,17 @@ class CovMultiKronSum(ACombinatorCov):
             pi0 += self.C[ti].getNumberParams()
         return R
 
-    @cached(['covar_base', 'Z'])
+    @cached(['row_cov', 'col_cov', 'Z'])
     def KiZ(self):
         R = self.solve_ls_NxPxS(self.Z(), X0=self._KiZo)
         if self._reuse:     self._KiZo = R
         return R
 
-    @cached(['covar_base', 'Z'])
+    @cached(['row_cov', 'col_cov', 'Z'])
     def sample_logdet_grad(self):
         return sp.tensordot(self.DKZ(), self.KiZ(), ((0, 1, 2), (0, 1, 2)))
 
-    @cached(['covar_base', 'Z'])
+    @cached(['row_cov', 'col_cov', 'Z'])
     def sample_trKiDDK(self):
         return sp.tensordot(self.DDKZ(), self.KiZ(), ((0, 1, 2), (0, 1, 2)))
 

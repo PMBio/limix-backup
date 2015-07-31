@@ -5,10 +5,15 @@ import copy
 import sys
 import time
 from gp_ls import GPLS
-from limix.core.type.cached import cached
+from limix.core.type.cached import Cached, cached
 from limix.core.covar import Covariance
-from limix.core.mean import MeanBase
+from limix.core.covar import CovMultiKronSum
+from limix.core.mean import MeanKronSum
 from limix.core.covar.cov_reml import cov_reml
+from limix.utils.util_functions import vec
+from limix.utils.linalg import vei_CoR_veX
+from limix.core.utils import assert_type
+from limix.core.utils import assert_subtype
 
 class GPMKS(GPLS):
     """
@@ -39,28 +44,46 @@ class GPMKS(GPLS):
                     Each term must have second dimension P
         """
         # assert types
-        assert_type(Y, NP.ndarray, 'Y')
+        assert_type(Y, sp.ndarray, 'Y')
         assert len(C)==len(R), 'Dimension mismatch'
         for i in range(len(C)):
             assert_subtype(C[i], Covariance, 'C[%d]' % i)
-            assert_type(R[i], NP.ndarray, 'R[%d]' % i)
+            assert_type(R[i], sp.ndarray, 'R[%d]' % i)
 
         assert F is None and A is None, 'fixed effects not supported yet'
 
         # build covariance matrix
         #Iok = vec(~sp.isnan(Y))[:,0]
         #if veIok.all():     Iok = None
-        covar = SumCov(*[KronCov(C[i], R[i]) for i in range(len(C))])
+        covar = CovMultiKronSum(C, R) 
 
-        # init GPLS
-        GP.__init__(self, Y, covar)
+        #TODO: should initialize the GPLS instead
+        #e.g.: GPLS.__init__(self, Y, covar)
+        Cached.__init__(self)
+        self.covar = covar
+        self.mean = MeanKronSum(Y=Y, F=F, A=A)
+        self.Areml = cov_reml(self)
+        self._observe()
+
 
     def _observe(self):
         #TODO: check if we need row and col covariances
         self.covar.register(self.row_cov_has_changed, 'row_cov')
         self.covar.register(self.col_cov_has_changed, 'col_cov')
         self.mean.register(self.pheno_has_changed, 'pheno')
-        self.mean.register(self.designs_have_changed, 'designs')
+        #self.mean.register(self.designs_have_changed, 'designs')
+
+    def row_cov_has_changed(self): 
+        self.clear_cache('row_cov')
+        self.clear_all()
+
+    def col_cov_has_changed(self): 
+        self.clear_cache('col_cov')
+        self.clear_all()
+
+    def pheno_has_changed(self): 
+        self.clear_cache('pheno')
+        self.clear_all()
 
     #######################
     # LML terms
@@ -69,13 +92,13 @@ class GPMKS(GPLS):
         if self.mean.n_covs > 0:
             self.mean.b = self.Areml.solve(self.yKiW().T)
 
-    @cached('gp_base')
-    def Kiy(self):
-        return self.covar.solve_ls(self.mean.y)
+    @cached(['pheno', 'col_cov', 'row_cov'])
+    def vei_Kiy(self):
+        return self.covar.solve_ls_NxPxS(self.mean.Y)
 
-    @cached('gp_base')
+    @cached(['pheno', 'col_cov', 'row_cov'])
     def yKiy(self):
-        return (self.mean.y*self.Kiy()).sum()
+        return float(sp.tensordot(self.mean.Y, self.vei_Kiy(), ((0,1), (0,1))))
 
     #@cached('gp_base')
     #def KiW(self):
@@ -99,25 +122,55 @@ class GPMKS(GPLS):
     #@cached('gp_base')
     #def DiKKiy(self, i):
     #    return sp.dot(self.covar.K_grad_i(i), self.Kiy())
+    @cached(['pheno', 'row_cov'])
+    def R_veiKiY(self):
+        RV = []
+        for ti in range(self.covar.n_terms):
+            RV.append(vei_CoR_veX(self.vei_Kiy()[:,:,sp.newaxis], R=self.covar.R[ti]))
+        return RV
 
-    @cached('gp_base')
+    @cached(['pheno', 'col_cov', 'row_cov'])
+    def vei_DKKiy(self):
+        n_params = self.getParams()['covar'].shape[0]
+        RV = sp.zeros((self.covar.dim_r, self.covar.dim_c, n_params))
+        pi = 0
+        for ti in range(self.covar.n_terms):
+            for j in range(self.covar.C[ti].getNumberParams()):
+                RV[:, :, pi] = vei_CoR_veX(self.R_veiKiY()[ti], C=self.covar.C[ti].K_grad_i(j))[:,:,0]
+                pi+=1
+        return RV
+
+    @cached(['pheno', 'col_cov', 'row_cov'])
+    def vei_DDKKiy(self):
+        n_params = self.getParams()['covar'].shape[0]
+        R = sp.zeros((self.covar.dim_r, self.covar.dim_c, n_params, n_params))
+        pi0 = 0
+        for ti in range(self.covar.n_terms):
+            pj0 = 0
+            for tj in range(self.covar.n_terms):
+                if ti==tj:
+                    for i in range(self.covar.C[ti].getNumberParams()):
+                        pi = pi0 + i
+                        R[:, :, pi, pi] = vei_CoR_veX(self.R_veiKiY()[ti], C=self.covar.C[ti].K_hess_i_j(i, i))[:,:,0]
+                        for j in range(i):
+                            pj = pj0 + j
+                            R[:, :, pi, pj] = vei_CoR_veX(self.R_veiKiY()[ti], C=self.covar.C[ti].K_hess_i_j(i, j))[:,:,0]
+                            R[:, :, pj, pi] = R[:, :, pi, pj]
+                pj0 += self.covar.C[tj].getNumberParams()
+            pi0 += self.covar.C[ti].getNumberParams()
+        return R
+
+    def Kiy(self):
+        return vec(self.vei_Kiy())
+
     def DKKiy(self):
-        n_params = self.getParams()['covar'].shape[0]
-        R = sp.zeros((self.mean.y.shape[0], n_params))
-        for i in range(n_params):
-            R[:, i:i+1] = sp.dot(self.covar.K_grad_i(i), self.Kiy()) 
-        return R
+        R = self.vei_DKKiy()
+        return R.reshape((R.shape[0] * R.shape[1], R.shape[2]), order='F')
 
-    @cached('gp_base')
     def DDKKiy(self):
-        n_params = self.getParams()['covar'].shape[0]
-        R = sp.zeros((self.mean.y.shape[0], n_params, n_params))
-        for i in range(n_params):
-            R[:, i, i] = sp.dot(self.covar.K_hess_i_j(i, i), self.Kiy()[:,0])
-            for j in range(i):
-                R[:, i, j] = sp.dot(self.covar.K_hess_i_j(i, j), self.Kiy()[:,0])
-                R[:, j, i] = R[:, i, j] 
-        return R
+        R = self.vei_DDKKiy()
+        return R.reshape((R.shape[0] * R.shape[1], R.shape[2], R.shape[3]), order='F')
+
 
     #@cached('gp_base')
     #def yKiy_grad_i(self, i):
@@ -141,20 +194,9 @@ class GPMKS(GPLS):
     #######################
     # LML and gradients
     #######################
-
-    @cached('gp_base')
-    def LML(self):
-        # const term to add?
-        rv = 0.5*self.covar.logdet()
-        rv += 0.5*self.yKiy()
-        #if self.mean.n_covs > 0:
-        #    rv += 0.5*self.Areml.logdet()
-        #    rv -= 0.5*self.yKiWb()
-        return rv
-
     @cached('gp_base')
     def yKiy_grad(self):
-        return -(self.Kiy() * self.DKKiy()).sum(0)
+        return -sp.tensordot(self.vei_Kiy(), self.vei_DKKiy(), ((0, 1), (0, 1)))
 
     #@cached('gp_base')
     #def yKiWb_grad(self):
@@ -165,34 +207,8 @@ class GPMKS(GPLS):
     #            RV['covar'][i] = self.yKiWb_grad_i(i)
     #    return RV
 
-    @cached('gp_base')
-    def Areml_logdet_grad(self):
-        n_params = self.getParams()['covar'].shape[0]
-        RV = {'covar': sp.zeros(n_params)}
-        if self.mean.n_covs > 0:
-            for i in range(n_params):
-                RV['covar'][i] = self.Areml.logdet_grad_i(i)
-        return RV
-
-    @cached('gp_base')
-    def LML_grad(self):
-        RV  = 0.5 * self.covar.sample_logdet_grad()
-        RV += 0.5 * self.yKiy_grad()
-        RV = {'covar': RV} 
-        #if self.mean.n_covs > 0:
-        #    RV['covar'][i] += 0.5*self.Areml.logdet_grad_i(i)
-        #    RV['covar'][i] -= 0.5*self.yKiWb_grad_i(i)
-        return RV
-
-    @cached('gp_base')
-    def AIM(self):
-        KiDKKiy = self.covar.solve_ls(self.DKKiy())
-        R = - 0.25 * self.covar.sample_trKiDDK()
-        R-= 0.5 * sp.dot(self.DKKiy().T, KiDKKiy)
-        R+= 0.25 * sp.tensordot(self.Kiy(), self.DDKKiy(), axes=(0,0))[0]
-        return R
-
     def predict(self):
+        #TODO: check
         R = None
         if self.covar.use_to_predict:
             Kcross = self.covar.Kcross()

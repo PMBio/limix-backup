@@ -5,7 +5,10 @@ from limix.core.covar import CovMultiKronSum
 from limix.core.covar import FreeFormCov 
 from limix.core.covar import SumCov 
 from limix.core.covar import KronCov 
+from limix.core.gp import GPLS 
+from limix.core.gp import GPMKS 
 from limix.utils.preprocess import covar_rescale
+from limix.utils.util_functions import vec
 
 import ipdb
 import scipy as sp
@@ -58,14 +61,14 @@ if __name__ == "__main__":
 
     ipdb.set_trace()
 
-    if 1:
+    if 0:
         # basic checks
         print ((covar.K()-covar0.K())**2).mean()
         print ((covar.K_grad_i(0)-covar0.K_grad_i(0))**2).mean()
         print ((covar.K_hess_i_j(0, 0)-covar0.K_hess_i_j(0, 0))**2).mean()
         ipdb.set_trace()
 
-    if 1:
+    if 0:
         # check linear system solve
         Z = sp.randn(N*P, 30)
         Zt = sp.zeros((N,P,30))
@@ -90,7 +93,7 @@ if __name__ == "__main__":
     covar0.Z()
     covar0._cache_Z[:] = covar.Z().reshape((N*P, 30), order='F')
 
-    if 1:
+    if 0:
         # checking DKZ function 
         t0 = TIME.time()
         DKZ0 = covar0.DKZ()
@@ -115,7 +118,7 @@ if __name__ == "__main__":
         print 'improvement:', (t1-t0) / (t2-t1)
         ipdb.set_trace()
 
-    if 1:
+    if 0:
         # test logdet and trace functions
         logdet = covar.sample_logdet_grad()
         logdet0 = covar0.sample_logdet_grad()
@@ -124,5 +127,66 @@ if __name__ == "__main__":
         tr = covar.sample_trKiDDK()
         tr0 = covar0.sample_trKiDDK()
         print ((tr-tr0)**2).mean()
-        
 
+    if 1:
+        # define gps
+        gpls = GPLS(vec(Y), covar0)
+        gpmks = GPMKS(Y, C, R)
+
+        # sync Z
+        gpmks.covar.Z()
+        gpmks.covar._cache_Z[:] = covar.Z()
+
+        # Kiy 
+        t0 = TIME.time()
+        Kiy = gpmks.Kiy()
+        t1 = TIME.time()
+        Kiy0 = gpls.Kiy()
+        t2 = TIME.time()
+        print ((Kiy-Kiy0)**2).mean()
+        print 'time dot efficient:', t1-t0
+        print 'time dot inefficient:', t2-t1
+        print 'improvement:', (t2-t1) / (t1-t0)
+        ipdb.set_trace()
+
+
+        # DKKiy
+        t0 = TIME.time()
+        DKKiy = gpmks.DKKiy()
+        t1 = TIME.time()
+        DKKiy0 = gpls.DKKiy()
+        t2 = TIME.time()
+        print ((DKKiy-DKKiy0)**2).mean()
+        print 'time dot efficient:', t1-t0
+        print 'time dot inefficient:', t2-t1
+        print 'improvement:', (t2-t1) / (t1-t0)
+        ipdb.set_trace()
+
+        # DDKKiy
+        t0 = TIME.time()
+        DDKKiy = gpmks.DDKKiy()
+        t1 = TIME.time()
+        DDKKiy0 = gpls.DDKKiy()
+        t2 = TIME.time()
+        print ((DDKKiy-DDKKiy0)**2).mean()
+        print 'time dot efficient:', t1-t0
+        print 'time dot inefficient:', t2-t1
+        print 'improvement:', (t2-t1) / (t1-t0)
+        ipdb.set_trace()
+
+        # AIM 
+        t0 = TIME.time()
+        AIM = gpmks.AIM()
+        t1 = TIME.time()
+        AIM0 = gpls.AIM()
+        t2 = TIME.time()
+        print ((AIM-AIM0)**2).mean()
+        print 'time dot efficient:', t1-t0
+        print 'time dot inefficient:', t2-t1
+        print 'improvement:', (t2-t1) / (t1-t0)
+        ipdb.set_trace()
+
+        print ((gpmks.LML()-gpls.LML())**2)
+        print ((gpmks.LML_grad()['covar'] - gpls.LML_grad()['covar'])**2).mean()
+        ipdb.set_trace()
+        
