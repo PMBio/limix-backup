@@ -34,7 +34,8 @@ def generate_data(N, P, f, n_terms):
         Z*= sp.sqrt(1. / (n_terms * Z.var(0).mean()))
         Y+= Z 
         _R = covar_rescale(sp.dot(X,X.T))
-        _R+= 1e-4 * sp.eye(N)
+        if term_i!=n_terms-1:
+            _R+= 1e-4 * sp.eye(N)
         R.append(_R)
         C.append(FreeFormCov(P))
     Y -= Y.mean(0)
@@ -45,9 +46,10 @@ if __name__ == "__main__":
 
     # generate data
     N = 1000
-    P = 4 
+    P = 2 
     f = 10
     n_terms = 3
+    n_seeds = 30
 
     Y, C, R = generate_data(N, P, f, n_terms)
     y = Y.reshape((Y.size,1))
@@ -56,8 +58,12 @@ if __name__ == "__main__":
     covar0 = SumCov(*[KronCov(C[i], R[i]) for i in range(len(C))])
     covar0.setRandomParams()
 
+    ipdb.set_trace()
+
     # specialized sum of Kroneckers
     covar = CovMultiKronSum(C, R) 
+    covar_rot = CovMultiKronSum(C, R, ls='rot')
+    covar_rot2 = CovMultiKronSum(C, R, ls='rot2')
 
     ipdb.set_trace()
 
@@ -70,9 +76,9 @@ if __name__ == "__main__":
 
     if 1:
         print 'One single dot'
-        Z = sp.randn(N*P, 30)
-        Zt = sp.zeros((N,P,30))
-        Zt[:] = Z.reshape((N,P,30),order='F')
+        Z = sp.randn(N*P, n_seeds)
+        Zt = sp.zeros((N,P,n_seeds))
+        Zt[:] = Z.reshape((N,P,n_seeds),order='F')
         t0 = TIME.time()
         covar0.dot(Z)
         t1 = TIME.time()
@@ -83,30 +89,53 @@ if __name__ == "__main__":
         print 'improvement:', (t1-t0) / (t2-t1)
         ipdb.set_trace()
 
+    if 0:
+        ipdb.set_trace()
+        import scipy.linalg as LA
+        Ki1 = LA.inv(covar.K())
+        T = sp.kron(covar.C[-1].USi2(), sp.eye(N))
+        Ki2 = sp.dot(T, sp.dot(LA.inv(covar.Kt()), T.T))
+        print ((K1i-Ki2)**2).mean()
+        Z = sp.randn(N*P, n_seeds)
+        Zt = sp.zeros((N,P,n_seeds))
+        Zt[:] = Z.reshape((N,P,n_seeds),order='F')
+        KtZ = sp.dot(covar.Kt(), Z)
+        KtZ1 = covar.dot_NxPxS_rot(Zt).reshape(KtZ.shape, order='F')
+        print ((KtZ-KtZ1)**2).mean()
+        KiZ = sp.dot(Ki1, Z)
+        _Z = sp.tensordot(Zt, covar.C[-1].USi2(), (1,0)).transpose((0,2,1)).reshape(Z.shape, order='F')
+        __Z = sp.dot(LA.inv(covar.Kt()), _Z).reshape(Zt.shape, order='F')
+        KiZ2 = sp.tensordot(__Z, covar.C[-1].USi2(), (1,1)).transpose((0,2,1)).reshape(Z.shape, order='F')
+        
+
     if 1:
         print 'Solve lin sys'
-        Z = sp.randn(N*P, 30)
-        Zt = sp.zeros((N,P,30))
-        Zt[:] = Z.reshape((N,P,30),order='F')
+        Z = sp.randn(N*P, n_seeds)
+        Zt = sp.zeros((N,P,n_seeds))
+        Zt[:] = Z.reshape((N,P,n_seeds),order='F')
         t0 = TIME.time()
-        KiZ = covar.solve_ls(Z)
-        t1 = TIME.time()
         KiZ_0 = covar0.solve_ls(Z)
+        t1 = TIME.time()
+        KiZ = covar.solve_ls_NxPxS(Zt).reshape((N*P, n_seeds), order='F')
         t2 = TIME.time()
-        KiZ_1 = covar.solve_ls_NxPxS(Zt).reshape((N*P, 30), order='F')
+        KiZr = covar_rot.solve_ls_NxPxS(Zt).reshape((N*P, n_seeds), order='F')
         t3 = TIME.time()
+        KiZr2 = covar_rot2.solve_ls_NxPxS(Zt).reshape((N*P, n_seeds), order='F')
+        t4 = TIME.time()
         print ((KiZ-KiZ_0)**2).mean()
-        print ((KiZ-KiZ_1)**2).mean()
-        print 'time dot efficient:', t1-t0
-        print 'time dot inefficient:', t2-t1
-        print 'time dot efficient new:', t3-t2
-        print 'improvement:', (t2-t1) / (t1-t0)
+        print ((KiZ-KiZr)**2).mean()
+        print ((KiZ-KiZr2)**2).mean()
+        print 'time dot inefficient:', t1-t0
+        print 'time dot efficient (default):', t2-t1
+        print 'time dot efficient (rot):', t3-t2
+        print 'time dot efficient (rot2):', t4-t3
+        #print 'improvement:', (t2-t1) / (t1-t0)
         ipdb.set_trace()
 
     # coordinate zetas
     Z = covar.Z()
     covar0.Z()
-    covar0._cache_Z[:] = covar.Z().reshape((N*P, 30), order='F')
+    covar0._cache_Z[:] = covar.Z().reshape((N*P, n_seeds), order='F')
 
     if 1:
         print 'DKZ'
