@@ -137,7 +137,7 @@ class CovMultiKronSum(ACombinatorCov):
             RV += vei_CoR_veX(M, C=self.C[ti].K(), R=self.R[ti]) 
         return RV
 
-    def solve_ls_NxPxS(self, M, X0=None, tol=1E-3):
+    def solve_ls_NxPxS(self, M, X0=None):
         # X is NxPxS tensor
         if len(M.shape)==2:     Mt = M[:, :, sp.newaxis]
         else:                   Mt = M
@@ -151,7 +151,7 @@ class CovMultiKronSum(ACombinatorCov):
         # vectorize
         m  = Mt.reshape(Mt.size, order='F')
         x0 = Xt0.reshape(Xt0.size, order='F')
-        r, _ = sla.cgs(Kx_O, m, x0=x0, tol=tol)
+        r, _ = sla.cgs(Kx_O, m, x0=x0, tol=self._tol)
         return r.reshape(M.shape, order='F')
 
     #####################

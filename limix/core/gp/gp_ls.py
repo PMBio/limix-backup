@@ -222,13 +222,13 @@ class GPLS(Cached, Observed):
     #########################
     # OPTIMIZATION
     #########################
-    def optimize(self, calc_ste=False, verbose=True, *args, **kw_args):
+    def optimize(self, calc_ste=False, verbose=True, **kw_args):
         # logger.info('Marginal likelihood optimization.')
 
         if verbose:
             print 'Marginal likelihood optimization.'
         t0 = time.time()
-        conv, info = OPT.opt_hyper(self, *args, **kw_args)
+        conv, info = OPT.opt_hyper(self, **kw_args)
         t1 = time.time()
 
         # if logger.levelno == logger.DEBUG:

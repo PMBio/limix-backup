@@ -122,7 +122,7 @@ class GPMKS(GPLS):
     #@cached('gp_base')
     #def DiKKiy(self, i):
     #    return sp.dot(self.covar.K_grad_i(i), self.Kiy())
-    @cached(['pheno', 'row_cov'])
+    @cached(['pheno', 'col_cov', 'row_cov'])
     def R_veiKiY(self):
         RV = []
         for ti in range(self.covar.n_terms):
@@ -223,4 +223,11 @@ class GPMKS(GPLS):
                 assert _.shape[1] == R.shape[1], 'Dimension mismatch'
                 R += _
         return R
+
+    ############################
+    # Optimize
+    ############################
+    def optimize(self, calc_ste=False, verbose=True, **kw_args):
+        if 'tr' not in kw_args.keys():  kw_args['tr'] = 0.1
+        return GPLS.optimize(self,calc_ste=calc_ste, verbose=verbose, **kw_args)
 

@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     # generate data
     N = 1000
-    P = 2 
+    P = 4 
     f = 10
     n_terms = 3
 
@@ -61,15 +61,30 @@ if __name__ == "__main__":
 
     ipdb.set_trace()
 
-    if 0:
+    if 1:
         # basic checks
         print ((covar.K()-covar0.K())**2).mean()
         print ((covar.K_grad_i(0)-covar0.K_grad_i(0))**2).mean()
         print ((covar.K_hess_i_j(0, 0)-covar0.K_hess_i_j(0, 0))**2).mean()
         ipdb.set_trace()
 
-    if 0:
-        # check linear system solve
+    if 1:
+        print 'One single dot'
+        Z = sp.randn(N*P, 30)
+        Zt = sp.zeros((N,P,30))
+        Zt[:] = Z.reshape((N,P,30),order='F')
+        t0 = TIME.time()
+        covar0.dot(Z)
+        t1 = TIME.time()
+        covar.dot_NxPxS(Zt)
+        t2 = TIME.time()
+        print 'time dot inefficient:', t1-t0
+        print 'time dot efficient:', t2-t1
+        print 'improvement:', (t1-t0) / (t2-t1)
+        ipdb.set_trace()
+
+    if 1:
+        print 'Solve lin sys'
         Z = sp.randn(N*P, 30)
         Zt = sp.zeros((N,P,30))
         Zt[:] = Z.reshape((N,P,30),order='F')
@@ -93,8 +108,8 @@ if __name__ == "__main__":
     covar0.Z()
     covar0._cache_Z[:] = covar.Z().reshape((N*P, 30), order='F')
 
-    if 0:
-        # checking DKZ function 
+    if 1:
+        print 'DKZ'
         t0 = TIME.time()
         DKZ0 = covar0.DKZ()
         t1 = TIME.time()
@@ -106,7 +121,7 @@ if __name__ == "__main__":
         print 'improvement:', (t1-t0) / (t2-t1)
         ipdb.set_trace()
 
-        # checking DDKZ function
+        print 'DDKZ'
         t0 = TIME.time()
         DDKZ0 = covar0.DDKZ()
         t1 = TIME.time()
@@ -118,7 +133,7 @@ if __name__ == "__main__":
         print 'improvement:', (t1-t0) / (t2-t1)
         ipdb.set_trace()
 
-    if 0:
+    if 1:
         # test logdet and trace functions
         logdet = covar.sample_logdet_grad()
         logdet0 = covar0.sample_logdet_grad()
@@ -137,7 +152,7 @@ if __name__ == "__main__":
         gpmks.covar.Z()
         gpmks.covar._cache_Z[:] = covar.Z()
 
-        # Kiy 
+        print 'Kiy' 
         t0 = TIME.time()
         Kiy = gpmks.Kiy()
         t1 = TIME.time()
@@ -150,7 +165,7 @@ if __name__ == "__main__":
         ipdb.set_trace()
 
 
-        # DKKiy
+        print 'DKKiy' 
         t0 = TIME.time()
         DKKiy = gpmks.DKKiy()
         t1 = TIME.time()
@@ -162,7 +177,7 @@ if __name__ == "__main__":
         print 'improvement:', (t2-t1) / (t1-t0)
         ipdb.set_trace()
 
-        # DDKKiy
+        print 'DDKKiy' 
         t0 = TIME.time()
         DDKKiy = gpmks.DDKKiy()
         t1 = TIME.time()
@@ -174,7 +189,7 @@ if __name__ == "__main__":
         print 'improvement:', (t2-t1) / (t1-t0)
         ipdb.set_trace()
 
-        # AIM 
+        print 'AIM' 
         t0 = TIME.time()
         AIM = gpmks.AIM()
         t1 = TIME.time()

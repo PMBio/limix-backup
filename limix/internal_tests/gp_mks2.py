@@ -19,7 +19,7 @@ import time as TIME
 import copy
 import pylab as pl
 
-sp.random.seed(1)
+sp.random.seed(2)
 
 def generate_data(N, P, f, n_terms):
     Y = sp.zeros((N, P))
@@ -47,10 +47,20 @@ def initCovars(C, value):
     for ti in range(len(C)):
         C[ti].setCovariance(value)
         
+
+def check_equal(gpls_f, gpmks_f):
+    y1 = gpls_f()
+    y2 = gpmks_f()
+    shape = list(y2.shape)
+    if len(shape)>1:
+        shape[0] = shape[0] * shape[1] 
+        del shape[1]
+    print ((y1-y2.reshape(shape, order='F'))**2).sum()
+
 if __name__ == "__main__":
 
     # generate data
-    N = 400
+    N = 800
     P = 2 
     f = 10
     n_terms = 3
@@ -62,14 +72,24 @@ if __name__ == "__main__":
 
     # standard sum of Kroneckers
     covar = SumCov(*[KronCov(C[i], R[i]) for i in range(len(C))])
-    covar._nIterMC = 200
-    covar._tol = 1e-6
 
     # define gps
     gp = GP(covar=covar, mean=MeanBase(y))
     gpls = GPLS(vec(Y), covar)
     gpmks = GPMKS(Y, C, R)
+
+    # set nIterMC and tol for gpls and gpls and coordinate Zs
+    n_seeds = 30 
+    covar._nIterMC = n_seeds
+    covar._tol = 1e-6
+    gpmks.covar._nIterMC = n_seeds
+    gpmks.covar._tol = 1e-6
+    gpls.covar.Z()
+    gpmks.covar.Z()
+    gpmks.covar._cache_Z[:] = gpls.covar.Z().reshape((N, P, n_seeds), order='F')
+    #gpls.covar._reuse = False
     ipdb.set_trace()
+    
 
     if 1:
         # compares gps 
@@ -98,15 +118,19 @@ if __name__ == "__main__":
     ipdb.set_trace()
 
     # optimize linsys
-    #initCovars(C, C0v)
-    gpls.optimize(debug=True)
+    initCovars(C, C0v)
+    gpls.optimize(debug=True,tr=0.1)
     print C[0].K() 
     print C[1].K() 
     print C[2].K() 
     ipdb.set_trace()
 
+    if 1:
+        # check why gpmks does not work
+        ipdb.set_trace()
+
     # optimize linsys mks
-    #initCovars(C, C0v)
+    initCovars(C, C0v)
     gpmks.optimize(debug=True)
     print C[0].K()
     print C[1].K()

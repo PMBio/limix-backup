@@ -64,13 +64,16 @@ def checkgrad(f, fprime, x, *args,**kw_args):
 
 
 
-def opt_hyper(gpr,theta=1e-2,max_iter=None,alpha=1,returnLML=False,noH=False,debug=False):
+def opt_hyper(gpr,theta=1e-2,max_iter=None,alpha=1,tr=None,returnLML=False,noH=False,debug=False):
 
     #maxiter
     if max_iter==None:
         max_iter = 100 * gpr.getParams()['covar'].shape[0] 
 
     LML = SP.zeros(max_iter)
+    if tr is not None: 
+        max_ap = tr * SP.ones(gpr.getParams()['covar'].shape[0])
+        min_ap = - tr * SP.ones(gpr.getParams()['covar'].shape[0])
 
     for i in range(max_iter):
         if debug:
@@ -90,7 +93,7 @@ def opt_hyper(gpr,theta=1e-2,max_iter=None,alpha=1,returnLML=False,noH=False,deb
 
         # update params 
         if noH:
-            p = - alpha * grad
+            p = - grad
         else:
             H = gpr.AIM()
             p = SP.dot(LA.pinv(H), grad)
@@ -100,7 +103,10 @@ def opt_hyper(gpr,theta=1e-2,max_iter=None,alpha=1,returnLML=False,noH=False,deb
             #    p = - alpha * LA.cho_solve((L, False), grad)
             #except:
             #    pdb.set_trace()
-        params = {'covar': gpr.getParams()['covar'] + alpha * p}
+        ap = alpha * p
+        if tr is not None:
+            ap = SP.clip(ap, min_ap, max_ap)
+        params = {'covar': gpr.getParams()['covar'] + ap}
         gpr.setParams(params)
 
     RV = {'n_iter': i, 'grad': grad}
