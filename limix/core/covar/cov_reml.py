@@ -16,7 +16,7 @@ class cov_reml(Covariance):
         Covariance.__init__(self)
         self.gp = gp
         gp.register(self.clear_all)
-        self.dim = gp.mean.b.shape[0]
+        self.dim = gp.mean.n_covs
         # self._calcNumberParams()
 
     #####################
@@ -34,10 +34,10 @@ class cov_reml(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('covar_base')
     def K(self):
         return self.gp.Areml_K()
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self,i):
         return self.gp.Areml_K_grad_i(i)

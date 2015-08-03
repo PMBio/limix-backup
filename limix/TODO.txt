@@ -1,38 +1,68 @@
 ***********************************************
-NEW RELEASE 1
-***********************************************
-- merge (Danilo & Paolo)
-
-- GP-mean Association (Danilo)
-
-- remove setParams notify
-
-- clean up covariances
-    - notify in clear cache
-    - remove notify outside of clear_cache
-    - define a covar_base group (clear_all -> clear_cache('covar_base'))
-    - define a Z group (to handle change of seeds in the covariance)
-    - check that the group default is not used any longer
-
-- fix mean ste when no covariates are considered
-
-***********************************************
 NEW RELEASE 2
 ***********************************************
+- gp_mks and gp_ls
+    - the DKKi operator should be defined in the covariance and used in the gp
+    at the moment the code is copied twice: in the covariance and in the gp 
+    - distinguish Z has changed (resample) from params have changed
+    
+- implement hessian for all covariances
+    - particularly LowRank!!!
+
+- We have no tests for the mean
+        - add tests
+
+- test interface between gp_base and menaKronSum (test_gp_more)
+    - in particular how missing data are handled
+
+- Missing data strategy:
+    - mean_base does not handle missing data
+        (it makes no sense to have a univariate model with missing data)
+    - meanKronSum can handle missing data 
+        - Y, F, A, Yres is the matrix representation (can have missing data)
+        - y, W, yres is the vector representation without missing data
+    - GP2KronSum, GP2KRonSumLR GP3KronSumLR do not support missing data and they care about matrix-representaiotn
+        - TODO: GP2KronSum, GP2KronSumLR and GP3KronSumLR have to check that there are not missing data in the phenotype
+    - gp_base supports missing data only cares abouy y and W and g
+        The covariance will need to be aligned with gp_base
+    - kronecker covariance need to be instructed about row/cols not to considered through Iok label
+        -TODO: switch to Kronecker indicator (the soft Kronecker operation needs to be Cythoned)
+
+- Variance Decomposition module 
+    - add missing data to GP base
+    - set Random params and perturb should be feature of the gp? 
+    - row covariance can be specified by using low-rank representation
+    - add gp2KronSumLR and gp3KronSumLR as possible inference methods 
+    - initialization for some models does not work as it relied on the setCovariance matrix (that does not work for combinators)
+
+- we need more combinators (and more struture):
+    - parent class combinator (acombinator)
+        - check
+        - set freezing of covariances (Danilo)
+    - make them child too
+        - sum
+        - 2kronSum, 2kronSumLR, 3kronSumLR
+
+- kronecker at the moment is not a combinator
+    - make it a combinator?
+    - generalize all covariances such that R is also a covariance?
+
+- jitter is a freeform-specific property
+    - 2kronSum, 2kronSumLR, and 3KronSum should have it as well (they should jitter Cn) 
+    - or not?
+
+- add diagonal covariance (also in variance decomposition)
+
+- make the rescaling of the covariance in preprocess efficient
+
+- add Hessian to all covariances
+    - add hessian test to test_kronecker
+
+- group-based caching system for general gp
 
 - Improve mtSet: 2KronSum, 2KronSumLR, 3KronSumLR
     - finalize the math write-up
     - set predictions up for Cov2KronSum, Cov2KronSumLR, Cov3KronSum
-
-
-- we need more combinators (and more struture):
-    - parent class combinator
-    - child classes:
-        - sum
-        - kron
-        - 2kronSum, 2kronSumLR, 3kronSumLR
-
-- Variance Decomposition module 
 
 - PRINT method for all classes (Danilo)
 
@@ -42,17 +72,26 @@ NEW RELEASE 2
         (pheno_has_changed and designs_have_changed for mean base)
     - implement Bste
 
-- group-based caching system for general gp
-
 - Logging system (Danilo)
 
 - Phenotype outside of mean
     (think more...)
 
+************************************************
+Discuss with DANILO
+***********************************************
+- cache disabling does not work
+- I modified a minor thing in the caching to discuss
+    (commit: bd50719)
+
 ****************************************************
 OTHER TODOs
 ****************************************************
 - website with forum
+
+- montecarlo sampling for trace
+    - interface MC options
+        (number of Montecarlo seed, regenerate Z, reuse starting point, etc)
 
 - check the math for general GP base
     - pseudo inverse of X -> Xp*y 

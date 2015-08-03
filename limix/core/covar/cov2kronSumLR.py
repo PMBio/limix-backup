@@ -44,15 +44,13 @@ class Cov2KronSumLR(Covariance):
 
     def G_has_changed(self):
         self.clear_cache('row_cov')
-        self.clear_all()
         self._notify('row_cov')
-        self._notify()
+        self.clear_all()
 
     def col_covs_have_changed(self):
         self.clear_cache('col_cov')
-        self.clear_all()
         self._notify('col_cov')
-        self._notify()
+        self.clear_all()
 
     #####################
     # Properties
@@ -157,10 +155,9 @@ class Cov2KronSumLR(Covariance):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
         if self._Cr_act:
-            self.Cr.setParams(params[:nCr], notify=False)
+            self.Cr.setParams(params[:nCr])
         if self._Cn_act:
-            self.Cn.setParams(params[nCr:], notify=False)
-        self.col_covs_have_changed()
+            self.Cn.setParams(params[nCr:])
 
     def getParams(self):
         params = []
@@ -294,7 +291,7 @@ class Cov2KronSumLR(Covariance):
     #####################
     # Overwritten covar_base methods
     #####################
-    @cached(['row_cov', 'col_cov', 'K'])
+    @cached(['row_cov', 'col_cov', 'covar_base'])
     def K(self):
         if self.dim > _MAX_DIM:
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
@@ -303,7 +300,7 @@ class Cov2KronSumLR(Covariance):
         rv = sp.kron(self.Cr.K(), self.R()) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return rv
 
-    @cached(['row_cov', 'col_cov', 'K_grad_i'])
+    @cached(['row_cov', 'col_cov', 'covar_base'])
     def K_grad_i(self,i):
         n = self.getNumberParams()
 
@@ -326,7 +323,7 @@ class Cov2KronSumLR(Covariance):
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 
-    @cached(['row_cov', 'col_cov', 'logdet'])
+    @cached(['row_cov', 'col_cov', 'covar_base'])
     def logdet(self):
         rv = sp.sum(sp.log(self.Cn.S())) * self.dim_r
         rv+= sp.log(self.SpI()).sum()
@@ -334,7 +331,7 @@ class Cov2KronSumLR(Covariance):
         rv+= self.logdetSg() * self.rank_c
         return rv
 
-    @cached(['row_cov', 'col_cov', 'logdet_grad_i'])
+    @cached(['row_cov', 'col_cov', 'covar_base'])
     def logdet_grad_i(self,i):
 
         if i >= self.getNumberParams():

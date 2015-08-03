@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 class GPLS(Cached, Observed):
     """
-    Gaussian Process regression class for linear mean (with REML)
+    Gaussian Process regression class for linear mean (with REML) where all computation is based on solving linear systems
     y ~ N(Wb,K)
     Notation:
         N = number of samples
@@ -27,10 +27,11 @@ class GPLS(Cached, Observed):
         K = covariance function
     """
 
-    def __init__(self, Y, covar):
+    def __init__(self, y, covar):
         """
-        covar:        Limix covariance function
-        mean:         Limix linear Mean function
+        Args:
+            Y:          [N, P] phenotype matrix
+            covar:      Limix covariance function
         """
         Cached.__init__(self)
 
@@ -39,7 +40,7 @@ class GPLS(Cached, Observed):
                             'inheritance.')
 
         self.covar = covar
-        self.mean = MeanBase(Y = Y) 
+        self.mean = MeanBase(y) 
         self.Areml = cov_reml(self)
         self._observe()
 
@@ -221,13 +222,13 @@ class GPLS(Cached, Observed):
     #########################
     # OPTIMIZATION
     #########################
-    def optimize(self, calc_ste=False, verbose=True, *args, **kw_args):
+    def optimize(self, calc_ste=False, verbose=True, **kw_args):
         # logger.info('Marginal likelihood optimization.')
 
         if verbose:
             print 'Marginal likelihood optimization.'
         t0 = time.time()
-        conv, info = OPT.opt_hyper(self, *args, **kw_args)
+        conv, info = OPT.opt_hyper(self, **kw_args)
         t1 = time.time()
 
         # if logger.levelno == logger.DEBUG:

@@ -15,7 +15,6 @@ from limix.utils.util_functions import vec
 from limix.core.utils import assert_type_or_list_type
 from limix.core.utils import assert_type
 from limix.core.utils import assert_subtype
-from relay import GPMeanRelay
 
 
 class GP2KronSumLR(GP):
@@ -52,7 +51,7 @@ class GP2KronSumLR(GP):
 
         covar = Cov2KronSumLR(Cn=Cn, G=G, rank=rank)
         covar.setRandomParams()
-        mean = MeanKronSum(Y, GPMeanRelay(self), F=F, A=A)
+        mean = MeanKronSum(Y=Y, F=F, A=A)
         assert mean.n_terms <= 1, ('GP2KronSum supports MeanKronSum'
                                    ' means with maximum 1 term!')
         GP.__init__(self, covar=covar, mean=mean)
@@ -100,7 +99,7 @@ class GP2KronSumLR(GP):
 
     @cached(['row_cov', 'pheno'])
     def YGGY(self):
-        return sp.dot(self.mean.Y.T, self.GGY())
+        return sp.dot(self.mean.Y.T, self.GGY()) 
 
     @cached(['row_cov', 'pheno'])
     def WrGGY(self):
@@ -182,7 +181,7 @@ class GP2KronSumLR(GP):
 
     @cached(['designs', 'row_cov'])
     def YGGF(self):
-        return sp.dot(self.mean.Y.T, self.GGF())
+        return sp.dot(self.mean.Y.T, self.GGF()) 
 
     @cached(['designs', 'row_cov'])
     def FGGF(self):
@@ -202,11 +201,11 @@ class GP2KronSumLR(GP):
 
     @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def YGGFBA(self):
-        return sp.dot(sp.dot(self.YGGF(), self.mean.B[0]), self.mean.A[0])
+        return sp.dot(sp.dot(self.YGGF(), self.mean.B[0]), self.mean.A[0]) 
 
     @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def YFBA(self):
-        return sp.dot(sp.dot(self.FY().T, self.mean.B[0]), self.mean.A[0])
+        return sp.dot(sp.dot(self.FY().T, self.mean.B[0]), self.mean.A[0]) 
 
     @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def WrFB(self):
@@ -363,9 +362,13 @@ class GP2KronSumLR(GP):
         R -= sp.dot(self.WLW().T, vec(self.DWrYLcWc()))
         return R
 
-    def update_b(self):
-        if self.mean.n_covs>0:
-            self.mean.b = self.Areml.solve(self.WKiy())
+    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
+    def b(self):
+        if self.mean.n_covs > 0:
+            R = self.Areml.solve(self.WKiy())
+        else:
+            R = None
+        return R
 
     @cached(['row_cov', 'col_cov', 'pheno'])
     def yKiy(self):
@@ -388,7 +391,7 @@ class GP2KronSumLR(GP):
 
     @cached(['designs', 'row_cov', 'col_cov', 'pheno'])
     def yKiWb_grad_i(self,i):
-        Areml_grad_i_b = sp.dot(self.Areml.K_grad_i(i), self.mean.b)
+        Areml_grad_i_b = sp.dot(self.Areml.K_grad_i(i), self.mean.b) 
         i = self.covar._actindex2index(i)
         #r = -2 * (self.YLc() * self.RFBALcCtilde(i)).sum()
         r = - 2 * (self.YRFBA(i).T * self.covar.LcCtildeLc(i)).sum()

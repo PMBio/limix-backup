@@ -52,9 +52,8 @@ class Cov3KronSumLR(Cov2KronSum):
 
     def G_has_changed(self):
         self.clear_cache('G')
-        self.clear_all()
         self._notify('G')
-        self._notify()
+        self.clear_all()
 
     #####################
     # Properties
@@ -308,7 +307,7 @@ class Cov3KronSumLR(Cov2KronSum):
     #####################
     # Overwritten covar_base methods
     #####################
-    @cached(['col_cov', 'row_cov', 'G', 'K'])
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
     def K(self):
         if self.dim > _MAX_DIM:
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
@@ -319,7 +318,7 @@ class Cov3KronSumLR(Cov2KronSum):
         R += sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return R
 
-    @cached(['col_cov', 'row_cov', 'G', 'K_grad_i'])
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
     def K_grad_i(self,i):
         np_r = self.Cr.getNumberParams()
         np_g = self.Cg.getNumberParams()
@@ -345,14 +344,14 @@ class Cov3KronSumLR(Cov2KronSum):
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 
-    @cached(['col_cov', 'row_cov', 'G', 'logdet'])
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
     def logdet(self):
         r = sp.log(self.SpI()).sum()
         r+= sp.sum(sp.log(self.Cn.S())) * self.dim_r
         r+= 2 * sp.log(sp.diag(self.H_chol())).sum()
         return r
 
-    @cached(['col_cov', 'row_cov', 'G', 'logdet_grad_i'])
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
     def logdet_grad_i(self, i):
         r = (self.d() * self.diag_Ctilde_o_Sr(i)).sum()
         r-= (self.H_inv() * self.Kbar(i)).sum()

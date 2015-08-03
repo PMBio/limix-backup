@@ -43,15 +43,13 @@ class Cov2KronSum(Covariance):
 
     def col_covs_have_changed(self):
         self.clear_cache('col_cov')
-        self.clear_all()
         self._notify('col_cov')
-        self._notify()
+        self.clear_all()
 
     def R_has_changed(self):
         self.clear_cache('row_cov')
-        self.clear_all()
         self._notify('row_cov')
-        self._notify()
+        self.clear_all()
 
     #####################
     # Properties
@@ -138,9 +136,8 @@ class Cov2KronSum(Covariance):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
 
-        self.Cg.setParams(params[:nCg], notify=False)
-        self.Cn.setParams(params[nCg:], notify=False)
-        self.col_covs_have_changed()
+        self.Cg.setParams(params[:nCg])
+        self.Cn.setParams(params[nCg:])
 
     def getParams(self):
         params = []
@@ -258,7 +255,7 @@ class Cov2KronSum(Covariance):
     #####################
     # Overwritten covar_base methods
     #####################
-    @cached(['row_cov', 'col_cov', 'K'])
+    @cached(['row_cov', 'col_cov', 'covar_base'])
     def K(self):
         if self.dim > _MAX_DIM:
             raise TooExpensiveOperationError(msg_too_expensive_dim(my_name(),
@@ -267,7 +264,7 @@ class Cov2KronSum(Covariance):
         rv = sp.kron(self.Cg.K(), self.R) + sp.kron(self.Cn.K(), sp.eye(self.dim_r))
         return rv
 
-    @cached(['row_cov', 'col_cov', 'K_grad_i'])
+    @cached(['row_cov', 'col_cov', 'covar_base'])
     def K_grad_i(self,i):
         nCg = self.Cg.getNumberParams()
 
@@ -288,11 +285,11 @@ class Cov2KronSum(Covariance):
             rv = sp.kron(self.Cn.K_grad_i(_i), sp.eye(self.dim_r))
         return rv
 
-    @cached(['row_cov', 'col_cov', 'logdet'])
+    @cached(['row_cov', 'col_cov', 'covar_base'])
     def logdet(self):
         return sp.sum(sp.log(self.Cn.S())) * self.dim_r + sp.log(self.SpI()).sum()
 
-    @cached(['row_cov', 'col_cov', 'logdet_grad_i'])
+    @cached(['row_cov', 'col_cov', 'covar_base'])
     def logdet_grad_i(self,i):
         if i >= self.getNumberParams():
             raise ValueError("Trying to retrieve the gradient over a "

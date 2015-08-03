@@ -13,11 +13,12 @@ class Covariance(Cached, Observed):
     """
     abstract super class for all implementations of covariance functions
     """
-    def __init__(self,dim=None,nIterMC=30):
+    def __init__(self, dim=None, nIterMC=30):
         Cached.__init__(self)
         self._nIterMC = nIterMC
         self._reuse = True
         self._KiZo = None
+        self._tol = 1e-3
         if dim is not None:
             self.initialize(dim)
 
@@ -26,27 +27,12 @@ class Covariance(Cached, Observed):
         self._use_to_predict = False
 
     def clear_all(self):
-        # TODO: define groups for those
-        self.clear_cache('K','Kcross','K_grad_i', 'K_hess_i_j',
-                          'logdet','logdet_grad_i',
-                          'DKZ', 'DDKZ', 'KiZ',
-                          'sample_logdet_grad_i',
-                          'sample_logdet_grad',
-                          'sample_trKiDDK',
-                          'inv','chol','S','U','USi2')
+        self.clear_cache('covar_base')
         self._notify()
 
     #######################
     # Param Handling
     #######################
-
-    # def getParams(self):
-    #     return self.params
-    #
-    # def setParams(self,params):
-    #     self.params = params
-    #     self.clear_all()
-    #     self._notify()
 
     def setRandomParams(self):
         """
@@ -62,7 +48,7 @@ class Covariance(Cached, Observed):
         warnings.warn('not implemented')
 
 
-    def perturbParams(self,pertSize=1e-3):
+    def perturbParams(self, pertSize=1e-3):
         """
         slightly perturbs the values of the parameters
         """
@@ -75,38 +61,16 @@ class Covariance(Cached, Observed):
         """
         warnings.warn('not implemented')
 
-    ####################################
-    # cached
-    ####################################
-    @cached
-    def K(self):
-        """
-        evaluates the kernel for given hyperparameters theta and inputs X
-        """
-        LG.critical("implement K")
-        print("%s: Function K not yet implemented"%(self.__class__))
-        return None
-
-    @cached
-    def K_grad_i(self,i):
-        """
-        partial derivative with repspect to the i-th hyperparamter theta[i]
-        """
-        LG.critical("implement K_grad_i")
-        print("%s: Function K not yet implemented"%(self.__class__))
-
-    @cached
-    def K_hess_i_j(self,i,j):
-        LG.critical("implement K_hess_i_j")
-        print("%s: Function Khess not yet implemented"%(self.__class__))
-
+    ###################################
+    # Non-cached methods
+    ###################################
     def dot(self, M):
         return sp.dot(self.K(), M)
 
     def solve(self,M):
         return LA.cho_solve((self.chol(),True),M)
 
-    def solve_ls(self, M, M0=None, tol=1E-3):
+    def solve_ls(self, M, M0=None):
         if M0 is None:    M0 = 1E-3 * sp.randn(*M.shape)
         def veKvei(m):
             _M = m.reshape(M.shape, order='F')
@@ -115,82 +79,63 @@ class Covariance(Cached, Observed):
         # vectorize
         m  = M.reshape(M.size, order='F')
         m0 = M0.reshape(M0.size, order='F')
-        r, _ = sla.cgs(Kx_O, m, x0=m0, tol=tol)
+        r, _ = sla.cgs(Kx_O, m, x0=m0, tol=self._tol)
         return r.reshape(M.shape, order='F')
 
-    @cached
+    ####################################
+    # cached
+    ####################################
+    @cached('covar_base')
+    def K(self):
+        """
+        evaluates the kernel for given hyperparameters theta and inputs X
+        """
+        LG.critical("implement K")
+        print("%s: Function K not yet implemented"%(self.__class__))
+        return None
+
+    @cached('covar_base')
+    def K_grad_i(self,i):
+        """
+        partial derivative with repspect to the i-th hyperparamter theta[i]
+        """
+        LG.critical("implement K_grad_i")
+        print("%s: Function K not yet implemented"%(self.__class__))
+
+    @cached('covar_base')
+    def K_hess_i_j(self,i,j):
+        LG.critical("implement K_hess_i_j")
+        print("%s: Function Khess not yet implemented"%(self.__class__))
+
+    @cached('covar_base')
     def chol(self):
         return LA.cholesky(self.K()).T
 
-    @cached
+    @cached('covar_base')
     def inv(self):
         return self.solve(sp.eye(self.dim))
 
-    @cached
+    @cached('covar_base')
     def logdet(self):
         return 2*sp.log(sp.diag(self.chol())).sum()
 
-    @cached
+    @cached('covar_base')
     def logdet_grad_i(self,i):
         return self.solve(self.K_grad_i(i)).diagonal().sum()
 
-    @cached
-    def Z(self):
-        r = sp.randn(self.dim, self._nIterMC)
-        # norm Z to improve convergence
-        norm = sp.sqrt(self.dim / (float(self._nIterMC) * (r**2).sum(0)))
-        return norm * r
-
-    @cached
-    def DKZ(self):
-        R = sp.zeros((self.dim, self._nIterMC, self.getNumberParams()))
-        for i in range(R.shape[2]):
-            R[:, :, i] = sp.dot(self.K_grad_i(i), self.Z())
-        return R 
-
-    @cached
-    def DDKZ(self):
-        R = sp.zeros((self.dim, self._nIterMC, self.getNumberParams(), self.getNumberParams()))
-        for i in range(R.shape[2]):
-            R[:, :, i, i] = sp.dot(self.K_hess_i_j(i, i), self.Z())
-            for j in range(i):
-                R[:, :, i, j] = sp.dot(self.K_hess_i_j(i, j), self.Z())
-                R[:, :, j, i] = R[:, :, i, j]
-        return R 
-
-    @cached
-    def KiZ(self):
-        R = self.solve_ls(self.Z(), M0=self._KiZo)
-        if self._reuse:     self._KiZo = R
-        return R
-        
-
-    @cached
-    def sample_logdet_grad_i(self, i):
-        DiKZ = sp.dot(self.K_grad_i(i), self.Z())
-        return (DiKZ * self.KiZ()).sum()
-
-    @cached
-    def sample_logdet_grad(self):
-        return (self.DKZ() * self.KiZ()[:, :, sp.newaxis]).sum(axis=(0, 1))
-
-    @cached
-    def sample_trKiDDK(self):
-        return (self.DDKZ() * self.KiZ()[:, :, sp.newaxis, sp.newaxis]).sum(axis=(0, 1))
-
-    @cached
+    @cached('covar_base')
     def S(self):
         RV,U = LA.eigh(self.K())
         self.fill_cache('U',U)
         return RV
 
-    @cached
+    @cached('covar_base')
     def U(self):
         S,RV = LA.eigh(self.K())
         self.fill_cache('S',S)
         return RV
 
-    @cached
+    @cached('covar_base')
     def USi2(self):
         # U * S**(-1/2)
         return self.U()*(self.S()**(-0.5))
@@ -212,6 +157,57 @@ class Covariance(Cached, Observed):
     #    # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
     #    Si2grad = -0.5*self.S()**(-1.5)*self.Sgrad(i)
     #    return self.Ugrad(i)*(self.S()**(-0.5)) + self.U()*Si2grad
+
+    ###########################
+    # Monte Carlo methods
+    ###########################
+    def resample(self):
+        self.clear_cache('Z')
+        self._notify()
+
+    @cached('Z')
+    def Z(self):
+        r = sp.randn(self.dim, self._nIterMC)
+        # norm Z to improve convergence
+        norm = sp.sqrt(self.dim / (float(self._nIterMC) * (r**2).sum(0)))
+        return norm * r
+
+    @cached(['covar_base', 'Z'])
+    def DKZ(self):
+        R = sp.zeros((self.dim, self._nIterMC, self.getNumberParams()))
+        for i in range(R.shape[2]):
+            R[:, :, i] = sp.dot(self.K_grad_i(i), self.Z())
+        return R 
+
+    @cached(['covar_base', 'Z'])
+    def DDKZ(self):
+        R = sp.zeros((self.dim, self._nIterMC, self.getNumberParams(), self.getNumberParams()))
+        for i in range(R.shape[2]):
+            R[:, :, i, i] = sp.dot(self.K_hess_i_j(i, i), self.Z())
+            for j in range(i):
+                R[:, :, i, j] = sp.dot(self.K_hess_i_j(i, j), self.Z())
+                R[:, :, j, i] = R[:, :, i, j]
+        return R 
+
+    @cached(['covar_base', 'Z'])
+    def KiZ(self):
+        R = self.solve_ls(self.Z(), M0=self._KiZo)
+        if self._reuse:     self._KiZo = R
+        return R
+        
+    @cached(['covar_base', 'Z'])
+    def sample_logdet_grad_i(self, i):
+        DiKZ = sp.dot(self.K_grad_i(i), self.Z())
+        return (DiKZ * self.KiZ()).sum()
+
+    @cached(['covar_base', 'Z'])
+    def sample_logdet_grad(self):
+        return (self.DKZ() * self.KiZ()[:, :, sp.newaxis]).sum(axis=(0, 1))
+
+    @cached(['covar_base', 'Z'])
+    def sample_trKiDDK(self):
+        return (self.DDKZ() * self.KiZ()[:, :, sp.newaxis, sp.newaxis]).sum(axis=(0, 1))
+
 
     ###########################
     # Predictions
