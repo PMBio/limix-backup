@@ -13,6 +13,6 @@ def vei_CoR_veX(X, C=None, R=None):
     _X = X.transpose((0,2,1))
     if R is not None:   RV = sp.tensordot(R, _X, (1,0))
     else:               RV = _X
-    if C is not None:   RV = sp.dot(RV, C)
+    if C is not None:   RV = sp.dot(RV, C.T)
     return RV.transpose((0,2,1))
 
