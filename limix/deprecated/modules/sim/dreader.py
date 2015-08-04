@@ -2,16 +2,24 @@ import h5py
 import numpy as np
 
 class DReader(object):
+    def choose_parents(self, pop_id, nparents):
+        raise NotImplemented
+
+    def generate_individual(self, par_indices, chroms):
+        raise NotImplemented
+
+    def mean_std(self, chrom, pop_ids):
+        raise NotImplemented
+
+    @property
+    def pop_ids(self):
+        raise NotImplemented
+
+    def pop_size(self, pop_id):
+        raise NotImplemented
+
     @property
     def nindividuals(self):
-        raise NotImplemented
-
-    @property
-    def npops(self):
-        raise NotImplemented
-
-    @property
-    def nsnps(self):
         raise NotImplemented
 
 def _random_sep_points(nseps, arr_size):
@@ -34,7 +42,19 @@ class DReader1000G(object):
             inds = f['genotypes']['chrom22']['row_headers']
             self._ind2subpop = inds['population'][:]
 
-    def random_choose_parents(self, pop_id, nparents=10):
+    @property
+    def pop_ids(self):
+        return DReader1000G.pop2subpop.keys()
+
+    def pop_size(self, pop_id):
+        if pop_id == 'all':
+            s = 0
+            for p in self.pop_ids:
+                s += self.pop_size(p)
+            return s
+        return len(self._individuals_from_pop(pop_id))
+
+    def choose_parents(self, pop_id, nparents=10):
         inds = self._individuals_from_pop(pop_id)
         if nparents >= len(inds):
             par_indices = ids
@@ -64,6 +84,24 @@ class DReader1000G(object):
         geno.extend(list(par_genos[-1, a:b]))
         return np.array(geno)
 
+    def mean_std(self, chrom, pop_ids='all'):
+        if pop_ids == 'all':
+            pop_ids = DReader1000G.pop2subpop.keys()
+
+        individuals = []
+        for pop_id in pop_ids:
+            inds = self._individuals_from_pop(pop_id)
+            individuals.extend(inds)
+        individuals = np.sort(individuals)
+
+        with h5py.File(self._filepath, 'r') as f:
+            f0 = f['genotypes']['chrom%d' % chrom]
+            genotypes = f0['matrix_inds_by_snps'][individuals, :]
+            m = np.mean(genotypes, axis=0)
+            v = np.std(genotypes, axis=0)
+
+        return (m, v)
+
     def _original_genotype(self, individual, chroms):
         geno = []
         with h5py.File(self._filepath, 'r') as f:
@@ -89,6 +127,8 @@ class DReader1000G(object):
 
 if __name__ == '__main__':
     dr = DReader1000G('/Users/horta/workspace/1000G_majors.hdf5')
-    par_parents = dr.random_choose_parents('EUR', 3)
+    par_parents = dr.choose_parents('EUR', 3)
     ind0 = dr.generate_individual(par_parents, [22, 1])
-    print ind0.shape
+    (m, s) = dr.mean_std(22, 'all')
+    print dr.pop_size('all')
+    print dr.pop_ids
