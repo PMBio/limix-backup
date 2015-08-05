@@ -40,16 +40,20 @@ class NormalSampler(object):
     def set_fixed_effects(self, beta):
         self._beta = np.asarray(beta, dtype=float)
 
-    def add_random_effects(self, name, nfeatures, var, causal_indices='all'):
+    def add_random_effects(self, name, var, nsnps, frac_causal):
 
-        if causal_indices == 'all':
-            causal_indices = np.arange(nfeatures, dtype=int)
+        if frac_causal == 'all':
+            causal_indices = np.arange(nsnps, dtype=int)
         else:
-            causal_indices = np.asarray(causal_indices, dtype=int)
+            causal_indices = np.random.choice(nsnps,
+                                              size=int(nsnps * frac_causal),
+                                              replace=False)
+            causal_indices = np.asarray(causal_indices, int)
 
         self._causal_indices = causal_indices
         self._vars[name] = var
-        self._us[name] = sample_effects(nfeatures, causal_indices, var)
+        self._us[name] = sample_effects(nsnps, causal_indices, var)
+        return causal_indices
 
     def set_covariates(self, covariates):
         self._covariates = covariates
@@ -79,48 +83,51 @@ if __name__ == '__main__':
     fore_var = 0.4
     back_var = 0.4
     noise_var = 0.2
-    fore_nsnps = 100
-    back_nsnps = 100
-    fore_chroms = [1, 4]
+    fore_chroms = [22]
     back_chroms = [22]
-    causal_fore_snps = np.random.choice(fore_nsnps,
-                                        fore_nsnps - int(0.5*fore_nsnps),
-                                        replace=False)
-    causal_back_snps = 'all'
+    pops = ['EUR']
+    maf = 0.05
+    fore_frac_causal = 0.5
+    back_frac_causal = 0.5
     y = []
-    with DReader1000G('/Users/horta/workspace/1000G_majors.hdf5') as dr:
+    with DReader1000G('/Users/horta/workspace/1000G_majors_c.hdf5',
+                      maf, pops) as dr:
         ns = NormalSampler()
 
         ns.set_fixed_effects(beta)
 
         # FOREGROUND
-        fore_snpsref = dr.snps_reference(fore_chroms, fore_nsnps)
-        ns.add_random_effects("foreground", fore_nsnps, fore_var,
-                              causal_fore_snps)
-        fore_mean_std = dr.mean_std(fore_snpsref, ['EUR'])
+        nsnps = dr.nsnps(fore_chroms)
+        fore_causal_indices =\
+            ns.add_random_effects("foreground", fore_var, nsnps,
+                                  fore_frac_causal)
+        fore_mean_std = dr.mean_std(fore_chroms)
 
         # BACKGROUND
-        back_snpsref = dr.snps_reference(back_chroms, back_nsnps)
-        ns.add_random_effects("background", back_nsnps, back_var,
-                              causal_back_snps)
-        back_mean_std = dr.mean_std(back_snpsref, ['EUR'])
+        nsnps = dr.nsnps(back_chroms)
+        back_causal_indices =\
+            ns.add_random_effects("background", back_var, nsnps,
+                                  back_frac_causal)
+        back_mean_std = dr.mean_std(back_chroms)
 
-        ns.add_random_effects("noise", 1, noise_var)
+        ns.add_random_effects("noise", noise_var, 1, 1.)
 
         for i in xrange(nindividuals):
-            parents = dr.choose_parents('EUR', nparents)
+            parents = dr.choose_parents(nparents)
 
-            fore_geno = dr.generate_genotype(parents, fore_snpsref)
-            back_geno = dr.generate_genotype(parents, back_snpsref)
+            fore_geno = dr.generate_genotype(parents, fore_chroms)
+            back_geno = dr.generate_genotype(parents, back_chroms)
 
             ns.set_covariates(np.random.randn(len(beta)))
 
             ns.set_features("foreground", normalize_genotype(fore_geno,
                                                              fore_mean_std))
+            import ipdb; ipdb.set_trace()
             ns.set_features("background", normalize_genotype(back_geno,
                                                              back_mean_std))
             ns.set_features("noise", [1.])
 
+            import ipdb; ipdb.set_trace()
             (z, zf, zr) = ns.sample_trait()
             y.append(z)
 

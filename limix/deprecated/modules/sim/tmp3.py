@@ -11,6 +11,9 @@ with h5py.File(filepath, 'r+') as f:
         if 'chrom' not in k:
             continue
         g = f['genotypes'][k]
+        del g["matrix_inds_by_snps"]
+        del g["matrix_snps_by_inds"]
+        
         # if 'matrix_inds_by_snps_c' in g:
         #     del g["matrix_inds_by_snps_c"]
 
@@ -19,7 +22,7 @@ with h5py.File(filepath, 'r+') as f:
         #                  chunks=(1, X.shape[1]),
         #                  compression="lzf")
 
-        X = g['matrix_snps_by_inds'][:]
-        g.create_dataset('matrix_snps_by_inds_c', data=X,
-                         chunks=(1, X.shape[1]),
-                         compression="lzf")
+        # X = g['matrix_snps_by_inds'][:]
+        # g.create_dataset('matrix_snps_by_inds_c', data=X,
+        #                  chunks=(1, X.shape[1]),
+        #                  compression="lzf")
