@@ -45,11 +45,11 @@ def generate_data(N, P, f, n_terms):
 if __name__ == "__main__":
 
     # generate data
-    N = 1000
+    N = 400
     P = 2 
     f = 10
     n_terms = 3
-    n_seeds = 30
+    n_seeds = 200
 
     Y, C, R = generate_data(N, P, f, n_terms)
     y = Y.reshape((Y.size,1))
@@ -57,13 +57,20 @@ if __name__ == "__main__":
     # standard sum of Kroneckers
     covar0 = SumCov(*[KronCov(C[i], R[i]) for i in range(len(C))])
     covar0.setRandomParams()
+    covar0._nIterMC = n_seeds
 
     ipdb.set_trace()
 
     # specialized sum of Kroneckers
-    covar = CovMultiKronSum(C, R) 
-    covar_rot = CovMultiKronSum(C, R, ls='rot')
-    covar_rot2 = CovMultiKronSum(C, R, ls='rot2')
+    ls = ['norot', 'rot', 'rot2']
+    dot_method = ['std', 'kron']
+    covard = {}
+    for _ls in ls:
+        for _dm in dot_method:
+            key = _ls+'-'+_dm
+            covard[key] = CovMultiKronSum(C, R, ls=_ls, dot_method=_dm) 
+            covard[key]._nIterMC = n_seeds
+    covar = covard['rot2-kron']
 
     ipdb.set_trace()
 
@@ -79,34 +86,18 @@ if __name__ == "__main__":
         Z = sp.randn(N*P, n_seeds)
         Zt = sp.zeros((N,P,n_seeds))
         Zt[:] = Z.reshape((N,P,n_seeds),order='F')
+        z = sp.zeros(N*P*n_seeds)
+        z[:] = Zt.transpose((2,1,0)).reshape(-1)
         t0 = TIME.time()
-        covar0.dot(Z)
+        ine = covar0.dot(Z)
         t1 = TIME.time()
-        covar.dot_NxPxS(Zt)
+        ce = covar.dot(Zt).reshape((N*P,n_seeds), order='F')
         t2 = TIME.time()
+        print ((ine-ce)**2).sum()
         print 'time dot inefficient:', t1-t0
         print 'time dot efficient:', t2-t1
         print 'improvement:', (t1-t0) / (t2-t1)
         ipdb.set_trace()
-
-    if 0:
-        ipdb.set_trace()
-        import scipy.linalg as LA
-        Ki1 = LA.inv(covar.K())
-        T = sp.kron(covar.C[-1].USi2(), sp.eye(N))
-        Ki2 = sp.dot(T, sp.dot(LA.inv(covar.Kt()), T.T))
-        print ((K1i-Ki2)**2).mean()
-        Z = sp.randn(N*P, n_seeds)
-        Zt = sp.zeros((N,P,n_seeds))
-        Zt[:] = Z.reshape((N,P,n_seeds),order='F')
-        KtZ = sp.dot(covar.Kt(), Z)
-        KtZ1 = covar.dot_NxPxS_rot(Zt).reshape(KtZ.shape, order='F')
-        print ((KtZ-KtZ1)**2).mean()
-        KiZ = sp.dot(Ki1, Z)
-        _Z = sp.tensordot(Zt, covar.C[-1].USi2(), (1,0)).transpose((0,2,1)).reshape(Z.shape, order='F')
-        __Z = sp.dot(LA.inv(covar.Kt()), _Z).reshape(Zt.shape, order='F')
-        KiZ2 = sp.tensordot(__Z, covar.C[-1].USi2(), (1,1)).transpose((0,2,1)).reshape(Z.shape, order='F')
-        
 
     if 1:
         print 'Solve lin sys'
@@ -115,21 +106,18 @@ if __name__ == "__main__":
         Zt[:] = Z.reshape((N,P,n_seeds),order='F')
         t0 = TIME.time()
         KiZ_0 = covar0.solve_ls(Z)
-        t1 = TIME.time()
-        KiZ = covar.solve_ls_NxPxS(Zt).reshape((N*P, n_seeds), order='F')
-        t2 = TIME.time()
-        KiZr = covar_rot.solve_ls_NxPxS(Zt).reshape((N*P, n_seeds), order='F')
-        t3 = TIME.time()
-        KiZr2 = covar_rot2.solve_ls_NxPxS(Zt).reshape((N*P, n_seeds), order='F')
-        t4 = TIME.time()
-        print ((KiZ-KiZ_0)**2).mean()
-        print ((KiZ-KiZr)**2).mean()
-        print ((KiZ-KiZr2)**2).mean()
-        print 'time dot inefficient:', t1-t0
-        print 'time dot efficient (default):', t2-t1
-        print 'time dot efficient (rot):', t3-t2
-        print 'time dot efficient (rot2):', t4-t3
-        #print 'improvement:', (t2-t1) / (t1-t0)
+        dt = TIME.time()-t0
+        t = {}
+        for key in covard.keys():
+            t0 = TIME.time()
+            KiZ = covard[key].solve_ls(Zt).reshape((N*P, n_seeds), order='F')
+            t[key] = TIME.time() - t0
+            print  ((KiZ-KiZ_0)**2).mean()
+        print 'time dot inefficient:', dt
+        for _ls in ls:
+            for _dm in dot_method:
+                key = _ls+'-'+_dm
+                print key+':', t[key] 
         ipdb.set_trace()
 
     # coordinate zetas
@@ -171,11 +159,12 @@ if __name__ == "__main__":
         tr = covar.sample_trKiDDK()
         tr0 = covar0.sample_trKiDDK()
         print ((tr-tr0)**2).mean()
+        ipdb.set_trace()
 
     if 1:
         # define gps
         gpls = GPLS(vec(Y), covar0)
-        gpmks = GPMKS(Y, C, R)
+        gpmks = GPMKS(Y, C, R, nIterMC=n_seeds)
 
         # sync Z
         gpmks.covar.Z()

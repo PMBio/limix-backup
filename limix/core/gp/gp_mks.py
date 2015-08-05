@@ -30,7 +30,7 @@ class GPMKS(GPLS):
         R_j = column covariance matrix for noise term j 
     """
 
-    def __init__(self, Y, C, R, F=None, A=None):
+    def __init__(self, Y, C, R, F=None, A=None, nIterMC=200):
         """
         Args:
             Y:      [N, P] phenotype matrix
@@ -61,6 +61,7 @@ class GPMKS(GPLS):
         #e.g.: GPLS.__init__(self, Y, covar)
         Cached.__init__(self)
         self.covar = covar
+        self.covar._nIterMC = nIterMC
         self.mean = MeanKronSum(Y=Y, F=F, A=A)
         self.Areml = cov_reml(self)
         self._observe()
@@ -94,7 +95,7 @@ class GPMKS(GPLS):
 
     @cached(['pheno', 'col_cov', 'row_cov'])
     def vei_Kiy(self):
-        return self.covar.solve_ls_NxPxS(self.mean.Y)
+        return self.covar.solve_ls(self.mean.Y)
 
     @cached(['pheno', 'col_cov', 'row_cov'])
     def yKiy(self):
@@ -126,7 +127,7 @@ class GPMKS(GPLS):
     def R_veiKiY(self):
         RV = []
         for ti in range(self.covar.n_terms):
-            RV.append(vei_CoR_veX(self.vei_Kiy()[:,:,sp.newaxis], R=self.covar.R[ti]))
+            RV.append(vei_CoR_veX(self.vei_Kiy(), R=self.covar.R[ti]))
         return RV
 
     @cached(['pheno', 'col_cov', 'row_cov'])
