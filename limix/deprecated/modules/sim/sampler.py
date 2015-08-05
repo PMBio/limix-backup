@@ -36,6 +36,7 @@ class NormalSampler(object):
         # random effects
         self._us = dict()
         self._covariates = None
+        self._noise_var = None
 
     def set_fixed_effects(self, beta):
         self._beta = np.asarray(beta, dtype=float)
@@ -58,6 +59,9 @@ class NormalSampler(object):
     def set_covariates(self, covariates):
         self._covariates = covariates
 
+    def set_noise(self, var):
+        self._noise_var = var
+
     def set_features(self, name, features):
         self._features[name] = features
 
@@ -71,26 +75,28 @@ class NormalSampler(object):
             u = self._us[fname]
             zr[fname] = dot(features, u)
 
-        z = zf + np.sum(zr.values())
-        return (z, zf, zr)
+        ze = np.random.randn() * np.sqrt(self._noise_var)
+        z = zf + np.sum(zr.values()) + ze
+        return (z, zf, zr, ze)
 
 if __name__ == '__main__':
     from dreader import DReader1000G
     from dreader import normalize_genotype
-    nindividuals = 100
+    nindividuals = 10000
     nparents = 5
     beta = [0.]
     fore_var = 0.4
     back_var = 0.4
     noise_var = 0.2
-    fore_chroms = [22]
-    back_chroms = [22]
+    fore_chroms = [1, 2]
+    back_chroms = [20, 21]
     pops = ['EUR']
     maf = 0.05
     fore_frac_causal = 0.5
     back_frac_causal = 0.5
     y = []
-    with DReader1000G('/Users/horta/workspace/1000G_majors_c.hdf5',
+    # with DReader1000G('/Users/horta/workspace/1000G_majors_c.hdf5',
+    with DReader1000G('/Users/horta/workspace/1000G_fake.hdf5',
                       maf, pops) as dr:
         ns = NormalSampler()
 
@@ -110,7 +116,7 @@ if __name__ == '__main__':
                                   back_frac_causal)
         back_mean_std = dr.mean_std(back_chroms)
 
-        ns.add_random_effects("noise", noise_var, 1, 1.)
+        ns.set_noise(noise_var)
 
         for i in xrange(nindividuals):
             parents = dr.choose_parents(nparents)
@@ -120,16 +126,14 @@ if __name__ == '__main__':
 
             ns.set_covariates(np.random.randn(len(beta)))
 
-            ns.set_features("foreground", normalize_genotype(fore_geno,
-                                                             fore_mean_std))
-            import ipdb; ipdb.set_trace()
-            ns.set_features("background", normalize_genotype(back_geno,
-                                                             back_mean_std))
-            ns.set_features("noise", [1.])
+            g = normalize_genotype(fore_geno, fore_mean_std)
+            ns.set_features("foreground", g)
+            g = normalize_genotype(back_geno, back_mean_std)
+            ns.set_features("background", g)
 
-            import ipdb; ipdb.set_trace()
-            (z, zf, zr) = ns.sample_trait()
+            (z, zf, zr, ze) = ns.sample_trait()
             y.append(z)
 
-    y = np.asarray(y)
+    y = np.asarray(y, float)
     print np.mean(y)
+    print np.var(y)
