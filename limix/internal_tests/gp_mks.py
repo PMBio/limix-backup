@@ -110,7 +110,7 @@ if __name__ == "__main__":
         t = {}
         for key in covard.keys():
             t0 = TIME.time()
-            KiZ = covard[key].solve_ls(Zt).reshape((N*P, n_seeds), order='F')
+            KiZ = covard[key].solve_ls_NxPxS(Zt).reshape((N*P, n_seeds), order='F')
             t[key] = TIME.time() - t0
             print  ((KiZ-KiZ_0)**2).mean()
         print 'time dot inefficient:', dt

@@ -95,7 +95,7 @@ class GPMKS(GPLS):
 
     @cached(['pheno', 'col_cov', 'row_cov'])
     def vei_Kiy(self):
-        return self.covar.solve_ls(self.mean.Y)
+        return self.covar.solve_ls_NxPxS(self.mean.Y)
 
     @cached(['pheno', 'col_cov', 'row_cov'])
     def yKiy(self):
@@ -127,7 +127,7 @@ class GPMKS(GPLS):
     def R_veiKiY(self):
         RV = []
         for ti in range(self.covar.n_terms):
-            RV.append(vei_CoR_veX(self.vei_Kiy(), R=self.covar.R[ti]))
+            RV.append(vei_CoR_veX(self.vei_Kiy()[:,:,sp.newaxis], R=self.covar.R[ti]))
         return RV
 
     @cached(['pheno', 'col_cov', 'row_cov'])

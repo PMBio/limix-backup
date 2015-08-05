@@ -259,6 +259,7 @@ class CovMultiKronSum(ACombinatorCov):
             R1 = vei_CoR_veX(R, C=self.c2ks.Lc().T, R=self.c2ks.Lr().T)
         elif self._ls=='norot':
             R1 = R
+        if len(M.shape)==2:     R1 = R1[:,:,0]
         return R1
 
     def solve_ls_std(self, M, X0=None):
@@ -293,13 +294,22 @@ class CovMultiKronSum(ACombinatorCov):
             R1 = vei_CoR_veX(R, C=self.c2ks.Lc().T, R=self.c2ks.Lr().T)
         elif self._ls=='norot':
             R1 = R
+        if len(M.shape)==2:     R1 = R1[:,:,0]
         return R1
 
-    def solve_ls(self, M, X0=None):
+    def solve_ls_NxPxS(self, M, X0=None):
         if self._dot_method=='std':
             return self.solve_ls_std(M, X0=X0)
         elif self._dot_method=='kron':
             return self.solve_ls_kron(M, X0=X0)
+
+    def solve_ls(self, M, X0=None):
+        Mt = M.reshape((self.dim_r, self.dim_c, M.shape[1]), order='F')
+        if X0 is not None:
+            X0t = X0.reshape((self.dim_r, self.dim_c, X0.shape[1]), order='F')
+        else:
+            X0t = None
+        return self.solve_ls_NxPxS(Mt, X0=X0t).reshape((self.dim_r * self.dim_c, M.shape[1]), order='F')
 
     #DEPRECATED
 
@@ -402,7 +412,7 @@ class CovMultiKronSum(ACombinatorCov):
 
     @cached(['row_cov', 'col_cov', 'Z'])
     def KiZ(self):
-        R = self.solve_ls(self.Z(), X0=self._KiZo)
+        R = self.solve_ls_NxPxS(self.Z(), X0=self._KiZo)
         if self._reuse:     self._KiZo = R
         return R
 
