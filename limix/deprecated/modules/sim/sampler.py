@@ -1,4 +1,6 @@
 import numpy as np
+import scipy as sp
+import scipy.stats
 from numpy import dot
 
 """Sample normally distruted effects (e.g., genetic effects) given the
@@ -10,7 +12,7 @@ the iid $u_1, u_2, \dots, u_p$ from a normal distribution such that
 $E[z] = 0$ and $E[z^2] = \sigma^2$.
 
 Args:
-    nfeatures: Number of features.
+    neffects: Number of effect sizes.
     causal_indices: Indices of the causal features.
     var: Total variance $\sigma^2$.
 
@@ -19,127 +21,184 @@ Returns:
 
 
 """
-def sample_effects(nfeatures, causal_indices, var):
-    u = np.zeros(nfeatures)
-    u[causal_indices] = np.random.randn(len(causal_indices)) * np.sqrt(var)
-    u[causal_indices] /= np.sqrt(len(causal_indices))
-    return u
 
-class NormalSampler(object):
+
+def _standardize_effects(effects, var):
+    m = np.mean(effects)
+    if len(effects) > 1:
+        v = np.std(effects)
+    else:
+        v = effects[0]
+    effects -= m
+    effects /= v
+    effects *= np.sqrt(var) / np.sqrt(len(effects))
+
+def static_effsiz_sampler(effects):
+    def sampler(n):
+        return effects
+    return sampler
+
+def normal_effsiz_sampler(var):
+    def sampler(n):
+        if n == 0:
+            return np.empty(0, float)
+        effects = np.random.randn(n)
+        _standardize_effects(effects, var)
+        return effects
+    return sampler
+
+def binary_effsiz_sampler(var):
+    def sampler(n):
+        if n == 0:
+            return np.empty(0, float)
+        effects = np.random.randn(n)
+        effects[effects >= 0] = +1.
+        effects[effects <  0] = -1.
+        _standardize_effects(effects, var)
+        return effects
+    return sampler
+
+def standardize_genotype(genotype, mean_std):
+    return (genotype - mean_std[0]) / mean_std[1]
+
+class TraitSampler(object):
     def __init__(self):
-        self._features = dict()
+        self._Gs = dict()
+        self._zs = dict()
         self._causal_indices = dict()
-        # random effect variances
-        self._vars = dict()
-        # fixed effects
-        self._beta = None
-        # random effects
         self._us = dict()
-        self._covariates = None
         self._noise_var = None
 
-    def set_fixed_effects(self, beta):
-        self._beta = np.asarray(beta, dtype=float)
+    def add_effects_design(self, name, effect_sampler, G, ncausal=None):
 
-    def add_random_effects(self, name, var, nsnps, frac_causal):
+        if ncausal is None:
+            ncausal = G.shape[1]
 
-        if frac_causal == 'all':
-            causal_indices = np.arange(nfeatures, dtype=int)
-        else:
-            causal_indices = np.random.choice(nfeatures,
-                                              size=int(nfeatures * frac_causal),
-                                              replace=False)
-            causal_indices = np.asarray(causal_indices, int)
+        self._Gs[name] = G
+        p = G.shape[1]
+        causal_indices = np.random.choice(p, size=int(ncausal),
+                                          replace=False)
+        causal_indices = np.asarray(causal_indices, int)
 
-        self._causal_indices = causal_indices
-        self._vars[name] = var
-        self._us[name] = sample_effects(nfeatures, causal_indices, var)
-        return causal_indices
+        self._causal_indices[name] = causal_indices
+        self._us[name] = effect_sampler(len(causal_indices))
 
-    def set_covariates(self, covariates):
-        covariates = np.asarray(covariates, float)
-        self._covariates = covariates
+    def add_effect_cov(self, name, K, var=1.):
+        zeros = np.zeros(K.shape[0])
+        self._zs[name] = sp.stats.multivariate_normal(zeros, var * K).rvs()
 
     def set_noise(self, var):
         self._noise_var = var
 
-    def set_features(self, name, features):
-        self._features[name] = features
-
-    def sample_trait(self):
-        assert self._beta is not None,
-            "You have to set the fixed effects first."\
-        assert self._covariates is not None,\
-            "You have to set the covariates first."
-
+    def sample_traits(self):
         z = 0
-        zf = dot(self._covariates, self._beta)
+        n = self._Gs.values()[0].shape[0]
+        ze = np.random.randn(n) * np.sqrt(self._noise_var)
+        z = ze
         zr = dict()
-        for (fname, ffeatures) in self._features.items():
-            var = self._vars[fname]
-            features = self._features.pop(fname)
-            u = self._us[fname]
-            zr[fname] = dot(features, u)
+        for effect_name in self._Gs.keys():
+            G = self._Gs.pop(effect_name)
+            u = self._us[effect_name]
+            idx = self._causal_indices[effect_name]
+            zr[effect_name] = dot(G[:, idx], u)
+            z += zr[effect_name]
 
-        ze = np.random.randn() * np.sqrt(self._noise_var)
-        z = zf + np.sum(zr.values()) + ze
-        return (z, zf, zr, ze)
+        for z_ in self._zs.values():
+            z += z_
+
+        return (z, zr, ze)
+
+# if __name__ == '__main__':
+#     neffects = 30
+#     causal_indices = np.random.choice(neffects, 15)
+#     var = 5.0
+#     u = sample_effects(neffects, causal_indices, 'Normal', var)
+#     print u
+#     print np.sum(u[causal_indices]**2)
+#
+#     u = sample_effects(neffects, causal_indices, 'Binary', var)
+#     print u
+#     print np.sum(u[causal_indices]**2)
 
 if __name__ == '__main__':
     from dreader import DReader1000G
     from dreader import normalize_genotype
-    nindividuals = 10000
-    nparents = 5
-    beta = [0.]
-    fore_var = 0.4
-    back_var = 0.4
-    noise_var = 0.2
-    fore_chroms = [1, 2]
-    back_chroms = [20, 21]
-    pops = ['EUR']
-    maf = 0.05
-    fore_frac_causal = 0.5
-    back_frac_causal = 0.5
-    y = []
+    import h5py
+    ncovariates = 1
+    # nindividuals = 500
+    # nparents = 2
+    #
+    # fore_chroms = [22]
+    # back_chroms = [21]
+    # pops = ['EUR']
+    # maf = 0.05
+    #
     # with DReader1000G('/Users/horta/workspace/1000G_majors_c.hdf5',
-    with DReader1000G('/Users/horta/workspace/1000G_fake.hdf5',
-                      maf, pops) as dr:
-        ns = NormalSampler()
+    # # with DReader1000G('/Users/horta/workspace/1000G_fake.hdf5',
+    #                   maf, pops) as dr:
+    #
+    #     fore_mean_std = dr.mean_std(fore_chroms)
+    #     back_mean_std = dr.mean_std(back_chroms)
+    #
+    #     fore_genos = []
+    #     back_genos = []
+    #     covariatess = []
+    #     for i in xrange(nindividuals):
+    #         parents = dr.choose_parents(nparents)
+    #         covariate = np.random.randn(ncovariates)
+    #         fore_geno = dr.generate_genotype(parents, fore_chroms)
+    #         back_geno = dr.generate_genotype(parents, back_chroms)
+    #
+    #         covariatess.append(covariate)
+    #         fore_genos.append(fore_geno)
+    #         back_genos.append(back_geno)
+    #
+    #     fG = np.array(fore_genos, float)
+    #     bG = np.array(back_genos, float)
+    #     X = np.array(covariatess, float)
+    #
+    #     with h5py.File("/Users/horta/workspace/sample500.hdf5", "w") as f:
+    #         ggrp = f.create_group("genotypes")
+    #         ggrp.create_dataset("fG_inds_by_snps", chunks=(1, fG.shape[1]),
+    #                             compression='lzf', data=fG)
+    #         ggrp.create_dataset("fG_snps_by_inds", chunks=(1, fG.shape[1]),
+    #                             compression='lzf', data=fG)
+    #         ggrp.create_dataset("fore_mean_std", data=np.asarray(fore_mean_std))
+    #         ggrp.create_dataset("bG_inds_by_snps", chunks=(1, bG.shape[1]),
+    #                             compression='lzf', data=bG)
+    #         ggrp.create_dataset("bG_snps_by_inds", chunks=(1, bG.shape[1]),
+    #                             compression='lzf', data=bG)
+    #         ggrp.create_dataset("back_mean_std", data=np.asarray(back_mean_std))
+    #         cgrp = f.create_group("covariates")
+    #         cgrp.create_dataset("X", data=X)
 
-        ns.set_fixed_effects(beta)
+    with h5py.File("/Users/horta/workspace/sample500.hdf5", "r") as f:
+        fore_var = 0.4
+        back_var = 0.4
+        back2_var = 1.0
+        noise_var = 0.2
 
-        # FOREGROUND
-        nsnps = dr.nsnps(fore_chroms)
-        fore_causal_indices =\
-            ns.add_random_effects("foreground", fore_var, nsnps,
-                                  fore_frac_causal)
-        fore_mean_std = dr.mean_std(fore_chroms)
+        X = f['covariates']['X'][:]
+        beta = np.array([0.] * X.shape[1])
+        genos = f['genotypes']
 
-        # BACKGROUND
-        nsnps = dr.nsnps(back_chroms)
-        back_causal_indices =\
-            ns.add_random_effects("background", back_var, nsnps,
-                                  back_frac_causal)
-        back_mean_std = dr.mean_std(back_chroms)
+        fG = standardize_genotype(genos['fG_inds_by_snps'][:],
+                                  genos['fore_mean_std'])
+
+        bG = standardize_genotype(genos['bG_inds_by_snps'][:],
+                                  genos['back_mean_std'][:])
+
+        ns = TraitSampler()
+
+        ns.add_effects_design("covariates", static_effsiz_sampler(beta), X)
+        ns.add_effects_design("foreground", binary_effsiz_sampler(fore_var), fG)
+        ns.add_effects_design("background", normal_effsiz_sampler(back_var), bG)
+
+        K = dot(bG, bG.T)
+        ns.add_effect_cov("background2", K, back2_var)
 
         ns.set_noise(noise_var)
+        (y, zr, ze) = ns.sample_traits()
 
-        for i in xrange(nindividuals):
-            parents = dr.choose_parents(nparents)
-
-            fore_geno = dr.generate_genotype(parents, fore_chroms)
-            back_geno = dr.generate_genotype(parents, back_chroms)
-
-            ns.set_covariates(np.random.randn(len(beta)))
-
-            g = normalize_genotype(fore_geno, fore_mean_std)
-            ns.set_features("foreground", g)
-            g = normalize_genotype(back_geno, back_mean_std)
-            ns.set_features("background", g)
-
-            (z, zf, zr, ze) = ns.sample_trait()
-            y.append(z)
-
-    y = np.asarray(y, float)
-    print np.mean(y)
-    print np.var(y)
+        print np.mean(y)
+        print np.var(y)
