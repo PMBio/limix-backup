@@ -29,7 +29,7 @@ class NormalSampler(object):
     def __init__(self):
         self._features = dict()
         self._causal_indices = dict()
-        # random effects variances
+        # random effect variances
         self._vars = dict()
         # fixed effects
         self._beta = None
@@ -44,19 +44,20 @@ class NormalSampler(object):
     def add_random_effects(self, name, var, nsnps, frac_causal):
 
         if frac_causal == 'all':
-            causal_indices = np.arange(nsnps, dtype=int)
+            causal_indices = np.arange(nfeatures, dtype=int)
         else:
-            causal_indices = np.random.choice(nsnps,
-                                              size=int(nsnps * frac_causal),
+            causal_indices = np.random.choice(nfeatures,
+                                              size=int(nfeatures * frac_causal),
                                               replace=False)
             causal_indices = np.asarray(causal_indices, int)
 
         self._causal_indices = causal_indices
         self._vars[name] = var
-        self._us[name] = sample_effects(nsnps, causal_indices, var)
+        self._us[name] = sample_effects(nfeatures, causal_indices, var)
         return causal_indices
 
     def set_covariates(self, covariates):
+        covariates = np.asarray(covariates, float)
         self._covariates = covariates
 
     def set_noise(self, var):
@@ -66,6 +67,11 @@ class NormalSampler(object):
         self._features[name] = features
 
     def sample_trait(self):
+        assert self._beta is not None,
+            "You have to set the fixed effects first."\
+        assert self._covariates is not None,\
+            "You have to set the covariates first."
+
         z = 0
         zf = dot(self._covariates, self._beta)
         zr = dict()
