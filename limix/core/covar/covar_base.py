@@ -18,7 +18,7 @@ class Covariance(Cached, Observed):
         self._nIterMC = nIterMC
         self._reuse = True
         self._KiZo = None
-        self._tol = 1e-3
+        self._tol = 1e-6
         if dim is not None:
             self.initialize(dim)
 
