@@ -1,29 +1,7 @@
-1. set_fixed_effects
-    actually this sets the eff size of the fixed effect
-
-    My proposal:
-    set_fixed_effect_design(X)
-    set fixed_effect_effsize(b)
-    set fixed_effect(design=X, effsize=b)
-
-    An other thought:
-    How about having add_fixed_effect instead of set_fixed_effect???
-
+1. multi-trait
     e.g. in the multi-trait case one has mean = \sum_i FBA
             F = sample design
             A = trait desig
             B = effect sizes
 
-2. add_random_effect
-
-    I think we want to have the number of causal not the fraction 
-
-3. the pheno simulator demo should not depend on the geno generator 
-
 ------------------------------
-
-
-Xf = # samples x # foreground snps
-add_fixed_effect(design=Xf, effesize=bf, var=0.2)
-
-
