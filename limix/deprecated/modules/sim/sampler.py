@@ -22,39 +22,49 @@ Returns:
 
 """
 
-
-def _standardize_effects(effects, var):
-    m = np.mean(effects)
-    if len(effects) > 1:
-        v = np.std(effects)
+def standardize_design(G, mean_var=None):
+    if mean_var is None:
+        mean_var = (0., 1./G.shape[1])
+        np.apply_along_axis(lambda x: _change_sample_stats(x, (0., 1.)), 0, G)
     else:
-        v = effects[0]
-    effects -= m
-    effects /= v
-    effects *= np.sqrt(var) / np.sqrt(len(effects))
+        G -= mean_var[0]
+        G /= np.sqrt(mean_var[1])
+
+def _sample_causal_indices(size, ncausal):
+    causal_indices = np.random.choice(size, size=int(ncausal), replace=False)
+    return np.asarray(causal_indices, int)
+
+
+def _change_sample_stats(x, mean_var=(None, None)):
+    if mean_var[0] is not None:
+        x -= np.mean(x)
+        x += mean_var[0]
+
+    if mean_var[1] is not None:
+        v = np.std(x) if len(x) > 1 else x[0]
+        x /= v
+        x *= np.sqrt(mean_var[1])
 
 def static_effsiz_sampler(effects):
     def sampler(n):
         return effects
     return sampler
 
-def normal_effsiz_sampler(var):
+def normal_effsiz_sampler():
     def sampler(n):
         if n == 0:
             return np.empty(0, float)
         effects = np.random.randn(n)
-        _standardize_effects(effects, var)
         return effects
     return sampler
 
-def binary_effsiz_sampler(var):
+def binary_effsiz_sampler():
     def sampler(n):
         if n == 0:
             return np.empty(0, float)
         effects = np.random.randn(n)
         effects[effects >= 0] = +1.
         effects[effects <  0] = -1.
-        _standardize_effects(effects, var)
         return effects
     return sampler
 
@@ -64,25 +74,43 @@ class TraitSampler(object):
         self._zc = dict()
         self._causal_indices = dict()
         self._us = dict()
+        self._eff_sample_mean_vars = dict()
         self._noise_var = None
 
-    def add_effects_design(self, name, effect_sampler, G, ncausal=None):
+    def add_effects_design(self, name, G, effsiz_sampler,
+                           effsiz_sample_mean_var=None,
+                           eff_sample_mean_var=None, ncausal=None):
 
         if ncausal is None:
             ncausal = G.shape[1]
 
         self._Gs[name] = G
-        p = G.shape[1]
-        causal_indices = np.random.choice(p, size=int(ncausal),
-                                          replace=False)
-        causal_indices = np.asarray(causal_indices, int)
 
+        causal_indices = _sample_causal_indices(G.shape[1], ncausal)
         self._causal_indices[name] = causal_indices
-        self._us[name] = effect_sampler(len(causal_indices))
 
-    def add_effect_cov(self, name, K, var=1.):
+        u = effsiz_sampler(len(causal_indices))
+
+        if effsiz_sample_mean_var is not None:
+            (m, v) = effsiz_sample_mean_var
+            _change_sample_stats(u, mean_var=(m, v))
+
+        self._us[name] = u
+        self._eff_sample_mean_vars[name] = eff_sample_mean_var
+
+    def add_effect_cov(self, name, K, effsize_sample_mean_var=None):
         zeros = np.zeros(K.shape[0])
-        self._zc[name] = sp.stats.multivariate_normal(zeros, var * K).rvs()
+        if effsize_sample_mean_var is None:
+            zc = sp.stats.multivariate_normal(zeros, K).rvs()
+        else:
+            L = np.linalg.cholesky(K)
+            u = np.random.randn(K.shape[0])
+            m = effsize_sample_mean_var[0]
+            v = effsize_sample_mean_var[1]
+            _change_sample_stats(u, (0., v))
+            zc = dot(L.T, u)
+
+        self._zc[name] = zc
 
     def set_noise(self, var):
         self._noise_var = var
@@ -98,6 +126,11 @@ class TraitSampler(object):
             u = self._us[effect_name]
             idx = self._causal_indices[effect_name]
             zd[effect_name] = dot(G[:, idx], u)
+
+            if self._eff_sample_mean_vars[effect_name] is not None:
+                zd[effect_name] = _change_sample_stats(zd[effect_name],
+                                               self._eff_sample_mean_vars)
+
             z += zd[effect_name]
 
         for z_ in self._zc.values():
@@ -122,7 +155,7 @@ if __name__ == '__main__':
     from dreader import normalize_genotype
     import h5py
     ncovariates = 1
-    # nindividuals = 1000
+    nindividuals = 1000
     # nparents = 2
     #
     # fore_chroms = [20]
@@ -184,33 +217,42 @@ if __name__ == '__main__':
     #         cgrp = f.create_group("covariates")
     #         cgrp.create_dataset("X", data=X)
 
-    with h5py.File("/Users/horta/workspace/sample1000.hdf5", "r") as f:
-        fore_var = 0.4
-        back_var = 0.4
-        back2_var = 1.0
-        noise_var = 0.2
+    fore_var = 0.4
+    back_var = 0.4
+    noise_var = 0.2
+    nsnps = 5000
 
-        X = f['covariates']['X'][:]
-        beta = np.array([0.] * X.shape[1])
-        genos = f['genotypes']
+    X = np.ones((nindividuals, 1))
+    beta = np.zeros(X.shape[1])
 
-        fG = standardize_genotype(genos['fG_inds_by_snps'][:],
-                                  genos['fore_mean_std'])
+    pop_means = np.random.randn(nsnps) * 0.1
+    pop_vars = np.random.gamma(1, size=nsnps) * 0.1
+    G = np.random.randn(nindividuals, nsnps)*np.sqrt(pop_vars) + pop_means
 
-        bG = standardize_genotype(genos['bG_inds_by_snps'][:],
-                                  genos['back_mean_std'][:])
+    K = np.random.randn(nindividuals, nindividuals)
+    K = dot(K, K.T)
 
-        ns = TraitSampler()
+    ns = TraitSampler()
 
-        ns.add_effects_design("covariates", static_effsiz_sampler(beta), X)
-        ns.add_effects_design("foreground", binary_effsiz_sampler(fore_var), fG)
-        ns.add_effects_design("background", normal_effsiz_sampler(back_var), bG)
+    ns.add_effects_design("covariates", X, static_effsiz_sampler(beta),
+                          effsiz_sample_mean_var=None, # default
+                          eff_sample_mean_var=None, # default
+                          ncausal=None) # default
 
-        K = genos['b2K'][:]
-        ns.add_effect_cov("background2", K, back2_var)
+    ncausal = nsnps
+    standardize_design(G, (pop_means, pop_vars))
 
-        ns.set_noise(noise_var)
-        (y, zd, zc, ze) = ns.sample_traits()
+    ns.add_effects_design("foreground", G, binary_effsiz_sampler(),
+                          effsiz_sample_mean_var=(0., fore_var/float(ncausal)),
+                          eff_sample_mean_var=None, # default
+                          ncausal=ncausal)
 
-        print np.mean(y)
-        print np.var(y)
+    from limix.utils.preprocess import covar_rescale
+    K = covar_rescale(K)
+    ns.add_effect_cov("background", K, (0., back_var))
+    #
+    ns.set_noise(noise_var)
+    (y, zd, zc, ze) = ns.sample_traits()
+    #
+    print np.var(y)
+    # print np.var(zd['foreground'])
