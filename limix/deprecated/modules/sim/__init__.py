@@ -1,4 +1,3 @@
-from util import standardize_genotype
-from util import standardize_covariance
-from dreader import DReader1000G
+from sampler import standardize_design
+from sampler import standardize_cov
 from sampler import TraitSampler

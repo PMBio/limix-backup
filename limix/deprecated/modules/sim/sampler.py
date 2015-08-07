@@ -3,25 +3,6 @@ import scipy as sp
 import scipy.stats
 from numpy import dot
 
-"""Sample normally distruted effects (e.g., genetic effects) given the
-total variance and the causal features.
-
-Let $z = \sum_{i=1}^p x_i u_i$ assuming that $E[x_i] = 0$, $E[x_i^2] = 1$, and
-$x_1, x_2, \dots, x_p$ are independent from each other. We want to sample
-the iid $u_1, u_2, \dots, u_p$ from a normal distribution such that
-$E[z] = 0$ and $E[z^2] = \sigma^2$.
-
-Args:
-    neffects: Number of effect sizes.
-    causal_indices: Indices of the causal features.
-    var: Total variance $\sigma^2$.
-
-Returns:
-    Sampled normally distributed effects $u$.
-
-
-"""
-
 def standardize_design(G, mean_var=None):
     if mean_var is None:
         mean_var = (0., 1./G.shape[1])
@@ -30,20 +11,9 @@ def standardize_design(G, mean_var=None):
         G -= mean_var[0]
         G /= np.sqrt(mean_var[1])
 
-def _sample_causal_indices(size, ncausal):
-    causal_indices = np.random.choice(size, size=int(ncausal), replace=False)
-    return np.asarray(causal_indices, int)
-
-
-def _change_sample_stats(x, mean_var=(None, None)):
-    if mean_var[0] is not None:
-        x -= np.mean(x)
-        x += mean_var[0]
-
-    if mean_var[1] is not None:
-        v = np.std(x) if len(x) > 1 else x[0]
-        x /= v
-        x *= np.sqrt(mean_var[1])
+def standardize_cov(K):
+    from limix.utils.preprocess import covar_rescale
+    return covar_rescale(K)
 
 def static_effsiz_sampler(effects):
     def sampler(n):
@@ -137,6 +107,20 @@ class TraitSampler(object):
             z += z_
 
         return (z, zd, self._zc, ze)
+
+def _sample_causal_indices(size, ncausal):
+    causal_indices = np.random.choice(size, size=int(ncausal), replace=False)
+    return np.asarray(causal_indices, int)
+
+def _change_sample_stats(x, mean_var=(None, None)):
+    if mean_var[0] is not None:
+        x -= np.mean(x)
+        x += mean_var[0]
+
+    if mean_var[1] is not None:
+        v = np.std(x) if len(x) > 1 else x[0]
+        x /= v
+        x *= np.sqrt(mean_var[1])
 
 # if __name__ == '__main__':
 #     neffects = 30
@@ -250,9 +234,9 @@ if __name__ == '__main__':
     from limix.utils.preprocess import covar_rescale
     K = covar_rescale(K)
     ns.add_effect_cov("background", K, (0., back_var))
-    #
+
     ns.set_noise(noise_var)
     (y, zd, zc, ze) = ns.sample_traits()
-    #
+
+    print np.mean(y)
     print np.var(y)
-    # print np.var(zd['foreground'])
