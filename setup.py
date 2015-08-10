@@ -323,7 +323,7 @@ extensions += cythonize(Extension(name="ensemble.SplittingCore",
 #create setup:
 setup(
     name = 'limix',
-    version = '0.7.7',
+    version = '0.7.9',
     cmdclass={'build': CustomBuild, 'build_ext': CustomBuildExt},
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
     author_email = "stegle@ebi.ac.uk",
@@ -335,7 +335,9 @@ setup(
     ext_package = 'limix',
     ext_modules = extensions,
     py_modules = ['limix.deprecated.core'],
-    scripts = ['scripts/limix_runner','scripts/mtSet_postprocess','scripts/mtSet_preprocess','scripts/mtSet_simPheno','scripts/mtSet_analyze'],
+    scripts = ['scripts/limix_runner','scripts/mtSet_postprocess',
+               'scripts/mtSet_preprocess','scripts/mtSet_simPheno',
+               'scripts/mtSet_analyze', 'scripts/limix_converter'],
     packages = packages,
     package_dir = {'limix': 'limix'},
     # requires=reqs, seems that we dont need it, and it was causing trouble
