@@ -122,17 +122,14 @@ def _change_sample_stats(x, mean_var=(None, None)):
         x /= v
         x *= np.sqrt(mean_var[1])
 
-# if __name__ == '__main__':
-#     neffects = 30
-#     causal_indices = np.random.choice(neffects, 15)
-#     var = 5.0
-#     u = sample_effects(neffects, causal_indices, 'Normal', var)
-#     print u
-#     print np.sum(u[causal_indices]**2)
-#
-#     u = sample_effects(neffects, causal_indices, 'Binary', var)
-#     print u
-#     print np.sum(u[causal_indices]**2)
+class BernoulliTraitSampler(TraitSampler):
+    TraitSampler.__init__(self)
+
+    def sample_traits(self, var_noise):
+        (z, _, _, _) = TraitSampler.sample_traits(self)
+        y = np.zeros(z.shape[0], float)
+        y[z >= 0] = 1.
+        return (y, z)
 
 if __name__ == '__main__':
     from dreader import DReader1000G
