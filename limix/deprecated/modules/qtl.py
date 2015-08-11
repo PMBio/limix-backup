@@ -20,6 +20,7 @@ import scipy.stats as st
 import limix
 import scipy as sp
 import limix.deprecated
+import limix.deprecated as dlimix
 import limix.deprecated.utils.preprocess as preprocess
 import limix.deprecated.stats.fdr as FDR
 import varianceDecomposition as VAR
@@ -52,7 +53,7 @@ class lmm:
 		if len(pheno.shape)==1:
 			pheno = pheno[:,sp.newaxis]
 
-		self.verbose = limix.getVerbose(verbose)
+		self.verbose = dlimix.getVerbose(verbose)
 		self.snps = snps
 		self.pheno = pheno
 		self.K = K
@@ -521,7 +522,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter
                                 before inclusion
                 RV['pvall']:    [Nadded x S] np.array of Pvalues for all iterations
     """
-    verbose = limix.getVerbose(verbose)
+    verbose = dlimix.getVerbose(verbose)
 
     if K is None:
         K=np.eye(snps.shape[0])
@@ -611,7 +612,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
             qvadded
             qvall
     """
-    verbose = limix.getVerbose(verbose)
+    verbose = dlimix.getVerbose(verbose)
     #0. checks
     N  = phenos.shape[0]
     P  = phenos.shape[1]
@@ -968,7 +969,7 @@ def test_interaction_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt',verbos
         pv:     [E x S] np.array of P values for interaction tests between all
                 E environmental variables and all S SNPs
     """
-    verbose = limix.getVerbose(verbose)
+    verbose = dlimix.getVerbose(verbose)
     N=snps.shape[0]
     if K is None:
         K=np.eye(N)
@@ -1024,5 +1025,3 @@ def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None,test='lrt'):
     Covitner= np.tile(covs(2,1))
     lm = test_interaction_lmm(snps=Xinter,pheno=Yinter,covs=Covinter,Inter=Inter,Inter0=Inter0,test=test)
     return lm
-
-

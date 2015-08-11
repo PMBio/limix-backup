@@ -1,7 +1,0 @@
-1. multi-trait
-    e.g. in the multi-trait case one has mean = \sum_i FBA
-            F = sample design
-            A = trait desig
-            B = effect sizes
-
-------------------------------

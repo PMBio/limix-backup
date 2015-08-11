@@ -9,7 +9,7 @@ from limix.core.type.cached import Cached, cached
 from limix.core.covar import Covariance
 from limix.core.mean import MeanBase
 from limix.core.covar.cov_reml import cov_reml
-import limix.core.optimize.optimize_bfgs_new as OPT
+import limix.core.optimize.optimize_bfgs as OPT
 from relay import GPMeanRelay
 
 import logging
