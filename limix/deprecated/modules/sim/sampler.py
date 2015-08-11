@@ -3,6 +3,15 @@ import scipy as sp
 import scipy.stats
 from numpy import dot
 
+def _QS_from_K(K):
+    min_eigval = np.sqrt(np.finfo(float).eps)
+
+    (S, Q) = np.linalg.eigh(K)
+    ok = S >= min_eigval
+    S = S[ok]
+    Q = Q[:, ok]
+    return (Q, S)
+
 def standardize_design(G, mean_var=None):
     if mean_var is None:
         mean_var = (0., 1./G.shape[1])
@@ -45,7 +54,7 @@ class TraitSampler(object):
         self._causal_indices = dict()
         self._us = dict()
         self._eff_sample_mean_vars = dict()
-        self._noise_var = None
+        self._noise_var = 0.
 
     def add_effects_design(self, name, G, effsiz_sampler,
                            effsiz_sample_mean_var=None,
@@ -68,17 +77,37 @@ class TraitSampler(object):
         self._us[name] = u
         self._eff_sample_mean_vars[name] = eff_sample_mean_var
 
+    def causal(self, name):
+        return self._causal_indices[name]
+
+    # def add_effect_cov(self, name, K, effsize_sample_mean_var=None):
+    #     zeros = np.zeros(K.shape[0])
+    #     if effsize_sample_mean_var is None:
+    #         zc = sp.stats.multivariate_normal(zeros, K).rvs()
+    #     else:
+    #         L = np.linalg.cholesky(K)
+    #         u = np.random.randn(K.shape[0])
+    #         m = effsize_sample_mean_var[0]
+    #         v = effsize_sample_mean_var[1]
+    #         _change_sample_stats(u, (0., v))
+    #         zc = dot(L.T, u)
+    #
+    #     self._zc[name] = zc
+
     def add_effect_cov(self, name, K, effsize_sample_mean_var=None):
         zeros = np.zeros(K.shape[0])
         if effsize_sample_mean_var is None:
             zc = sp.stats.multivariate_normal(zeros, K).rvs()
         else:
-            L = np.linalg.cholesky(K)
             u = np.random.randn(K.shape[0])
+            # L = np.linalg.cholesky(K)
+            (Q, S) = _QS_from_K(K)
             m = effsize_sample_mean_var[0]
             v = effsize_sample_mean_var[1]
             _change_sample_stats(u, (0., v))
-            zc = dot(L.T, u)
+            zc = dot((np.sqrt(S) * Q).T, u)
+            # zc = dot(L.T, u)
+
 
         self._zc[name] = zc
 
@@ -118,12 +147,18 @@ def _change_sample_stats(x, mean_var=(None, None)):
         x += mean_var[0]
 
     if mean_var[1] is not None:
-        v = np.std(x) if len(x) > 1 else x[0]
-        x /= v
-        x *= np.sqrt(mean_var[1])
+        v0 = np.mean(x**2)
+        v1 = mean_var[1]
+
+        if v0 == 0.:
+            x[:] = np.sqrt(v1)
+        else:
+            c = np.sqrt(v1/v0)
+            x *= c
 
 class BernoulliTraitSampler(TraitSampler):
-    TraitSampler.__init__(self)
+    def __init__(self):
+        TraitSampler.__init__(self)
 
     def sample_traits(self, var_noise):
         (z, _, _, _) = TraitSampler.sample_traits(self)
