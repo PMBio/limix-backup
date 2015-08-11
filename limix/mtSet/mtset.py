@@ -66,7 +66,7 @@ class MTSet():
         Cn = FreeFormCov(Y.shape[1])
         G  = 1. * (sp.rand(Y.shape[0],1)<0.2)
         if self.bgRE:
-            self._gp = GP3KronSumLR(Y=Y, Cg=Cg, Cn=Cn, R=R, S_R=S_R, U_R=U_R, G=G, rank = 1)
+            self._gp = GP3KronSumLR(Y=Y, Cg=Cg, Cn=Cn, R=R, S_R=S_R, U_R=U_R, G=G, rank = rank)
         else:
             self._gp = GP2KronSumLR(Y=Y, Cn=Cn, G=G, F=F, A=A)
         # null model params
@@ -241,6 +241,8 @@ class MTSet():
             if params_was_None:
                 n_params = self.Cr.getNumberParams()
                 _params0 = {'covar': sp.concatenate([1e-3*sp.randn(n_params), params0])}
+            else:
+                _params0 = {'covar': params0} 
             self._gp.setParams(_params0)
             conv, info = self._gp.optimize(factr=factr, verbose=verbose)
             conv *= self.Cr.K().diagonal().max()<vmax

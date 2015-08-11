@@ -362,9 +362,13 @@ class GP2KronSumLR(GP):
         R -= sp.dot(self.WLW().T, vec(self.DWrYLcWc()))
         return R
 
-    def update_b(self):
-        if self.mean.n_covs>0:
-            self.mean.b = self.Areml.solve(self.WKiy())
+    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
+    def b(self):
+        if self.mean.n_covs > 0:
+            R = self.Areml.solve(self.WKiy())
+        else:
+            R = None
+        return R
 
     @cached(['row_cov', 'col_cov', 'pheno'])
     def yKiy(self):

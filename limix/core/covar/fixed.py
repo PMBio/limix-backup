@@ -60,9 +60,7 @@ class FixedCov(Covariance):
     def scale(self,value):
         assert value >= 0, 'Scale must be >= 0.'
         self.params[0] = sp.log(value)
-        # self.clear_all()
-        self.clear_cache('default')
-        self._notify()
+        self.clear_all()
 
     @K0.setter
     def K0(self,value):
@@ -78,7 +76,7 @@ class FixedCov(Covariance):
             assert value.shape[1] == self.dim, 'Dimension mismatch.'
             self._use_to_predict = True
         self._Kcross0 = value
-        self.clear_cache('Kcross')
+        self.clear_cache('Kcross0')
         self._notify()
 
     @Covariance.use_to_predict.setter
@@ -106,9 +104,7 @@ class FixedCov(Covariance):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
         self.params[:] = params
-        # self.clear_all()
-        self.clear_cache('default')
-        self._notify()
+        self.clear_all()
 
     def _calcNumberParams(self):
         self.n_params = 1
@@ -127,15 +123,15 @@ class FixedCov(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('covar_base')
     def K(self):
         return self.scale * self.K0
 
-    @cached
+    @cached(['Kcross0', 'covar_base'])
     def Kcross(self):
         return self.scale * self.Kcross0
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self,i):
         if i >= int(self._scale_act):
             raise ValueError("Trying to retrieve the gradient over a "
@@ -143,6 +139,13 @@ class FixedCov(Covariance):
 
         r = self.scale * self.K0
         return r
+
+    @cached('covar_base')
+    def K_hess_i_j(self, i, j):
+        if i >= int(self._scale_act) or j >= int(self._scale_act):
+            raise ValueError("Trying to retrieve the hessian over a "
+                             "parameter that is inactive.")
+        return self.K()
 
     ####################
     # Interpretable Params

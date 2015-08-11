@@ -169,9 +169,13 @@ class GP2KronSum(GP):
             R[istart:iend, 0] = sp.dot(FLrDLrYLc, self.ALc()[ti].T).reshape(_dim, order = 'F')
         return R
 
-    def update_b(self):
+    @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
+    def b(self):
         if self.mean.n_covs > 0:
-            self.mean.b = self.Areml.solve(self.WKiy())
+            R = self.Areml.solve(self.WKiy())
+        else:
+            R = None
+        return R
 
     @cached(['row_cov', 'col_cov', 'pheno'])
     def yKiy(self):

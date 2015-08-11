@@ -29,11 +29,6 @@ class LowRankCov(Covariance):
         self.params = np.zeros(self.n_params)
         self._use_to_predict = False
 
-    def clear_all(self):
-        # self.clear_cache('Xgrad')
-        # Covariance.clear_all(self)
-        self.clear_cache('default')
-
     #####################
     # Properties
     #####################
@@ -47,9 +42,9 @@ class LowRankCov(Covariance):
 
     @X.setter
     def X(self, value):
-        assert X.shape[0]==self.dim, 'Dimension mismatch.'
-        assert X.shape[1]==self.rank, 'Dimension mismatch.'
-        self.setParams(X.reshape(X.size, order = 'F'))
+        assert self.X.shape[0]==self.dim, 'Dimension mismatch.'
+        assert self.X.shape[1]==self.rank, 'Dimension mismatch.'
+        self.setParams(self.X.reshape(self.X.size, order = 'F'))
 
     #####################
     # Activation handling
@@ -66,16 +61,13 @@ class LowRankCov(Covariance):
     #####################
     # Params handling
     #####################
-    def setParams(self, params, notify=True):
+    def setParams(self, params):
         if not self._X_act and len(params) > 0:
             raise ValueError("Trying to set a parameter via setParams that "
                              "is not active.")
         if self._X_act:
             self.params[:] = params
-            # self.clear_all()
-            self.clear_cache('default')
-            if notify:
-                self._notify()
+            self.clear_all()
 
     def getParams(self):
         if not self._X_act:
@@ -100,17 +92,17 @@ class LowRankCov(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('covar_base')
     def K(self):
         return sp.dot(self.X,self.X.T)
 
-    @cached
+    @cached('covar_base')
     def Xgrad(self,i):
         Xgrad = sp.zeros(self.getNumberParams())
         Xgrad[i] = 1
         return sp.reshape(Xgrad, (self.dim, self.rank), order='F')
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self,i):
         if not self._X_act:
             raise ValueError("Trying to retrieve the gradient over a "

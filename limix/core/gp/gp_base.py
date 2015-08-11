@@ -10,6 +10,7 @@ from limix.core.covar import Covariance
 from limix.core.mean import MeanBase
 from limix.core.covar.cov_reml import cov_reml
 import limix.core.optimize.optimize_bfgs_new as OPT
+from relay import GPMeanRelay
 
 import logging
 logger = logging.getLogger(__name__)
@@ -43,6 +44,7 @@ class GP(Cached, Observed):
 
         self.covar = covar
         self.mean = mean
+        self.mean._set_relay(GPMeanRelay(self))
         self.Areml = cov_reml(self)
         self._observe()
 
@@ -56,7 +58,6 @@ class GP(Cached, Observed):
     def clear_all(self):
         self._notify() # notify Areml
         self.clear_cache('gp_base')
-        self.update_b()
 
     def setParams(self, params):
         self.covar.setParams(params['covar'])
@@ -86,10 +87,13 @@ class GP(Cached, Observed):
     def yKiW(self):
         return sp.dot(self.mean.y.T, self.KiW())
 
-    # b is calculated here but cached in the mean?
-    def update_b(self):
+    @cached('gp_base')
+    def b(self):
         if self.mean.n_covs > 0:
-            self.mean.b = self.Areml.solve(self.yKiW().T)
+            R = self.Areml.solve(self.yKiW().T)
+        else:
+            R = None
+        return R
 
     @cached('gp_base')
     def KiWb(self):
@@ -230,18 +234,24 @@ class GP(Cached, Observed):
             # logger.debug('Gradient norm: %.7f.', grad_norm)
 
         if calc_ste:
-            # logger.info('Standard error calculation.')
-            if verbose:
-                print 'Standard errors calculation.'
-            t0 = time.time()
-            I_covar = self.covar.getFisherInf()
-            I_mean = self.Areml.K()
-            self.covar.setFIinv(sp.linalg.pinv(I_covar))
-            self.mean.setFIinv(sp.linalg.pinv(I_mean))
-            t1 = time.time()
-            # logger.debug('Time elapsed: %.2fs', t1-t0)
-
+            self.calc_ste(verbose=verbose)
         return conv, info
+
+    def calc_ste(self, verbose=True):
+        if verbose:
+            print 'Standard errors calculation.'
+            # logger.info('Standard error calculation.')
+        t0 = time.time()
+        I_covar = self.covar.getFisherInf()
+        I_mean = self.Areml.K()
+        self.covar.setFIinv(sp.linalg.pinv(I_covar))
+        if self.mean.n_covs>0:
+            self.mean.setFIinv(sp.linalg.pinv(I_mean))
+        t1 = time.time()
+        # logger.debug('Time elapsed: %.2fs', t1-t0)
+        if verbose:
+            print 'Time elapsed: %.2f s' % (t1-t0)
+
 
     def test_grad(self):
         from limix.utils.check_grad import mcheck_grad

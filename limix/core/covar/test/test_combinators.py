@@ -37,6 +37,24 @@ class TestSumCov(unittest.TestCase):
 
         np.testing.assert_almost_equal(err, 0.)
 
+    def test_Khess(self):
+
+        cov = self._cov
+
+        for j in range(cov.getNumberParams()):
+
+            def func(x, i):
+                cov.setParams(x)
+                return cov.K_grad_i(j)
+
+            def grad(x, i):
+                cov.setParams(x)
+                return cov.K_hess_i_j(j, i)
+
+            x0 = cov.getParams()
+            err = mcheck_grad(func, grad, x0)
+            np.testing.assert_almost_equal(err, 0.)
+
     def test_use_to_predict_exception(self):
         with self.assertRaises(NotImplementedError):
             self._cov.use_to_predict = 1.

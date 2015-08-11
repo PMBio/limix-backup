@@ -86,26 +86,20 @@ class SQExpCov(Covariance):
     def scale(self,value):
         assert value>=0, 'Scale must be >=0'
         self.params[0] = sp.log(value)
-        # self.clear_all()
-        self.clear_cache('default')
-        self._notify()
+        self.clear_all()
 
     @length.setter
     def length(self,value):
         assert value>=0, 'Length must be >=0'
         self.params[1] = sp.log(value)
-        # self.clear_all()
-        self.clear_cache('default')
-        self._notify()
+        self.clear_all()
 
     @X.setter
     def X(self,value):
         self._X = value
         self.initialize(value.shape[0])
-        # self.clear_all()
-        self.clear_cache('default')
-        self.clear_cache('E')
-        self._notify()
+        self.clear_cache('X')
+        self.clear_all()
 
     @Xstar.setter
     def Xstar(self,value):
@@ -115,7 +109,7 @@ class SQExpCov(Covariance):
             assert value.shape[1]==self.X.shape[1], 'Dimension mismatch'
             self._use_to_predict = True
         self._Xstar = value
-        self.clear_cache('Kcross')
+        self.clear_cache('Xstar')
         self._notify()
 
     @Covariance.use_to_predict.setter
@@ -160,9 +154,7 @@ class SQExpCov(Covariance):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
         self.params[sel] = params
-        # self.clear_all()
-        self.clear_cache('default')
-        self._notify()
+        self.clear_all()
 
     def getParams(self):
         sel = np.asarray((self._scale_act, self._length_act))
@@ -174,23 +166,23 @@ class SQExpCov(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('X')
     def E(self):
         rv = SS.distance.pdist(self.X,'euclidean')**2
         rv = SS.distance.squareform(rv)
         return rv
 
-    @cached
+    @cached(['X', 'Xstar', 'covar_base'])
     def Kcross(self):
         assert self.Xstar.shape[1]==1, 'only implemented for 1-dim input'
         Estar = (self.Xstar - self.X.T)**2
         return  self.scale * sp.exp(-Estar/(2*self.length))
 
-    @cached
+    @cached('covar_base')
     def K(self):
         return self.scale * sp.exp(-self.E()/(2*self.length))
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self, i):
         if i >= int(self._scale_act) + int(self._length_act):
             raise ValueError("Trying to retrieve the gradient over a "
@@ -202,6 +194,25 @@ class SQExpCov(Covariance):
             r *= self.scale
         elif i==1:
             r *= self.length
+        else:
+            assert False, 'There is no index %d on sqexp.' %i
+        return r
+
+    @cached('covar_base')
+    def K_hess_i_j(self, i, j):
+        if i >= int(self._scale_act) + int(self._length_act) or j >= int(self._scale_act) + int(self._length_act):
+            raise ValueError("Trying to retrieve the hessian over a "
+                             "parameter that is inactive.")
+
+        i = self._actindex2index(i)
+        j = self._actindex2index(j)
+        if i==0 and j==0:
+            r = self.K()
+        elif (i==0 and j==1) or (i==1 and j==0):
+            r = self.K_grad_i(1)
+        elif i==1 and j==1:
+            r = self.K_grad_i(1) - self.K_grad_i(0)
+            r*= self.E() / (2*self.length)
         else:
             assert False, 'There is no index %d on sqexp.' %i
         return r

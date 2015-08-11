@@ -48,9 +48,7 @@ class DirIndirCov(Covariance):
 
     def setParams(self,params):
         self.covff.setParams(params)
-        # self.clear_all()
-        self.clear_cache('default')
-        self._notify()
+        self.clear_all()
 
     def getNumberParams(self):
         return self.covff.getNumberParams()
@@ -62,7 +60,7 @@ class DirIndirCov(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('covar_base')
     def K(self):
         C = self.covff.K()
         RV  = C[0,0] * self._K
@@ -70,7 +68,7 @@ class DirIndirCov(Covariance):
         RV += C[1,1] * self._ZKZ
         return RV
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self,i):
         Cgrad = self.covff.K_grad_i(i)
         RV  = Cgrad[0,0] * self._K

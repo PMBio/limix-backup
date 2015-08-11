@@ -24,10 +24,7 @@ class FreeFormCov(Covariance):
         self._calcNumberParams()
         self.dim = dim
         self.params = sp.zeros(self.n_params)
-
-        self.L = sp.zeros((self.dim,self.dim))
-        self.Lgrad = sp.zeros((self.dim,self.dim))
-        self.zeros = sp.zeros(self.n_params)
+        self.idx_r, self.idx_c = sp.tril_indices(self.dim)
         self.set_jitter(jitter)
 
     #####################
@@ -97,16 +94,13 @@ class FreeFormCov(Covariance):
     #####################
     # Params handling
     #####################
-    def setParams(self, params, notify=True):
+    def setParams(self, params):
         if not self._K_act and len(params) > 0:
             raise ValueError("Trying to set a parameter via setParams that "
                              "is not active.")
         if self._K_act:
             self.params[:] = params
-            # self.clear_all()
-            self.clear_cache('default')
-            if notify:
-                self._notify()
+            self.clear_all()
 
     def getParams(self):
         if not self._K_act:
@@ -131,21 +125,26 @@ class FreeFormCov(Covariance):
     #####################
     # Cached
     #####################
-    @cached
+    @cached('covar_base')
     def K(self):
-        self._updateL()
-        RV = sp.dot(self.L,self.L.T)+self.jitter*sp.eye(self.dim)
+        RV = sp.dot(self.L(),self.L().T)+self.jitter*sp.eye(self.dim)
         return RV
 
-    @cached
+    @cached('covar_base')
     def K_grad_i(self,i):
         if not self._K_act:
             raise ValueError("Trying to retrieve the gradient over a "
                              "parameter that is inactive.")
+        RV = sp.dot(self.L(),self.Lgrad(i).T)+sp.dot(self.Lgrad(i),self.L(i).T)
+        return RV
 
-        self._updateL()
-        self._updateLgrad(i)
-        RV = sp.dot(self.L,self.Lgrad.T)+sp.dot(self.Lgrad,self.L.T)
+    @cached
+    def K_hess_i_j(self, i, j):
+        if not self._K_act:
+            raise ValueError("Trying to retrieve the gradient over a "
+                             "parameter that is inactive.")
+        RV = sp.dot(self.Lgrad(i),self.Lgrad(j).T)
+        RV+= RV.T
         return RV
 
     def K_ste(self):
@@ -201,20 +200,17 @@ class FreeFormCov(Covariance):
     ######################
     # Private functions
     ######################
+    @cached('covar_base')
+    def L(self):
+        R = sp.zeros((self.dim, self.dim))
+        R[(self.idx_r, self.idx_c)] = self.params
+        return R
 
-    def _updateL(self):
-        """
-        construct the cholesky factor from hyperparameters
-        """
-        self.L[sp.tril_indices(self.dim)] = self.params
-
-    def _updateLgrad(self,i):
-        """
-        construct the cholesky factor from hyperparameters
-        """
-        self.zeros[i] = 1
-        self.Lgrad[sp.tril_indices(self.dim)] = self.zeros
-        self.zeros[i] = 0
+    @cached
+    def Lgrad(self, i):
+        R = sp.zeros((self.dim, self.dim))
+        R[self.idx_r[i], self.idx_c[i]] = 1
+        return R
 
 if __name__ == '__main__':
     n = 2
