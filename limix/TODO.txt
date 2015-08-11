@@ -5,6 +5,15 @@ NEW RELEASE 2
     - the DKKi operator should be defined in the covariance and used in the gp
     at the moment the code is copied twice: in the covariance and in the gp 
     - distinguish Z has changed (resample) from params have changed
+
+- gp_mks linear system, dot and rotation
+    - there are two things that can arbitrarily be decided
+        1) if rotate col matrices so that last term is iid before solving linear system
+            rotating is always convenient as generally decreases the condition number
+            (by defauly the rotation is considered, but one can set it differently by using det)
+        2) considers one cubic operation and go in a space where one of the non-noise terms is diagonal before solving the linear system 
+        3) how to perform the final dot product 
+            this will be dictated by the theoretical run time (dimensions + 1. and 2. choices) - Or the user can always decide? 
     
 - implement hessian for all covariances
     - particularly LowRank!!!
