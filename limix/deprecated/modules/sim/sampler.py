@@ -3,15 +3,6 @@ import scipy as sp
 import scipy.stats
 from numpy import dot
 
-def _QS_from_K(K):
-    min_eigval = np.sqrt(np.finfo(float).eps)
-
-    (S, Q) = np.linalg.eigh(K)
-    ok = S >= min_eigval
-    S = S[ok]
-    Q = Q[:, ok]
-    return (Q, S)
-
 def standardize_design(G, mean_var=None):
     if mean_var is None:
         mean_var = (0., 1./G.shape[1])
@@ -101,7 +92,7 @@ class TraitSampler(object):
         else:
             u = np.random.randn(K.shape[0])
             # L = np.linalg.cholesky(K)
-            (Q, S) = _QS_from_K(K)
+            (S, Q) = np.linalg.eigh(K)
             m = effsize_sample_mean_var[0]
             v = effsize_sample_mean_var[1]
             _change_sample_stats(u, (0., v))
