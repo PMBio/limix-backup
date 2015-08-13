@@ -2,6 +2,7 @@ import numpy as np
 import scipy as sp
 import scipy.stats
 from numpy import dot
+from limix.core.linalg.linalg_matrix import QS_from_K
 
 def standardize_design(G, mean_var=None):
     if mean_var is None:
@@ -90,15 +91,12 @@ class TraitSampler(object):
         if effsize_sample_mean_var is None:
             zc = sp.stats.multivariate_normal(zeros, K).rvs()
         else:
-            u = np.random.randn(K.shape[0])
-            # L = np.linalg.cholesky(K)
-            (S, Q) = np.linalg.eigh(K)
+            (Q, S) = QS_from_K(K)
+            u = np.random.randn(S.shape[0])
             m = effsize_sample_mean_var[0]
             v = effsize_sample_mean_var[1]
             _change_sample_stats(u, (0., v))
-            zc = dot((np.sqrt(S) * Q).T, u)
-            # zc = dot(L.T, u)
-
+            zc = dot(Q, np.sqrt(S) * u)
 
         self._zc[name] = zc
 
