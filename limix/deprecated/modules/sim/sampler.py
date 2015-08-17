@@ -47,6 +47,7 @@ class TraitSampler(object):
         self._us = dict()
         self._eff_sample_mean_vars = dict()
         self._noise_var = 0.
+        self._nindividuals = None
 
     def add_effects_design(self, name, G, effsiz_sampler,
                            effsiz_sample_mean_var=None,
@@ -68,6 +69,9 @@ class TraitSampler(object):
 
         self._us[name] = u
         self._eff_sample_mean_vars[name] = eff_sample_mean_var
+
+        if self._nindividuals is None:
+            self._nindividuals = G.shape[0]
 
     def causal(self, name):
         return self._causal_indices[name]
@@ -98,6 +102,9 @@ class TraitSampler(object):
             _change_sample_stats(u, (0., v))
             zc = dot(Q, np.sqrt(S) * u)
 
+        if self._nindividuals is None:
+            self._nindividuals = K.shape[0]
+
         self._zc[name] = zc
 
     def set_noise(self, var):
@@ -105,7 +112,7 @@ class TraitSampler(object):
 
     def sample_traits(self):
         z = 0
-        n = self._Gs.values()[0].shape[0]
+        n = self._nindividuals
         ze = np.random.randn(n) * np.sqrt(self._noise_var)
         z = ze
         zd = dict()
@@ -151,6 +158,7 @@ class BernoulliTraitSampler(TraitSampler):
 
     def sample_traits(self, var_noise):
         (z, _, _, _) = TraitSampler.sample_traits(self)
+        z += np.random.randn(z.shape[0]) * np.sqrt(var_noise)
         y = np.zeros(z.shape[0], float)
         y[z >= 0] = 1.
         return (y, z)
