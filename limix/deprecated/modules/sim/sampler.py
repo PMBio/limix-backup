@@ -49,16 +49,18 @@ class TraitSampler(object):
         self._noise_var = 0.
         self._nindividuals = None
 
-    def add_effects_design(self, name, G, effsiz_sampler,
+    def add_effects_design(self, name, G, base_pos, effsiz_sampler,
                            effsiz_sample_mean_var=None,
-                           eff_sample_mean_var=None, ncausal=None):
+                           eff_sample_mean_var=None,
+                           ncausal=None,
+                           wsize=50000):
 
         if ncausal is None:
             ncausal = G.shape[1]
 
         self._Gs[name] = G
 
-        causal_indices = _sample_causal_indices(G.shape[1], ncausal)
+        causal_indices = self._sample_causal_indices(base_pos, ncausal, wsize)
         self._causal_indices[name] = causal_indices
 
         u = effsiz_sampler(len(causal_indices))
@@ -133,9 +135,10 @@ class TraitSampler(object):
 
         return (z, zd, self._zc, ze)
 
-def _sample_causal_indices(size, ncausal):
-    causal_indices = np.random.choice(size, size=int(ncausal), replace=False)
-    return np.asarray(causal_indices, int)
+    def _sample_causal_indices(self, base_pos, ncausal, wsize):
+        size = len(base_pos)
+        causal_indices = np.random.choice(size, size=int(ncausal), replace=False)
+        return np.asarray(causal_indices, int)
 
 def _change_sample_stats(x, mean_var=(None, None)):
     if mean_var[0] is not None:
