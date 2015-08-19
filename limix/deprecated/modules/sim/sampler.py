@@ -3,6 +3,7 @@ import scipy as sp
 import scipy.stats
 from numpy import dot
 from limix.core.linalg.linalg_matrix import QS_from_K
+import sys
 
 def standardize_design(G, mean_var=None):
     if mean_var is None:
@@ -42,7 +43,7 @@ def binary_effsiz_sampler():
 class TraitSampler(object):
     def __init__(self):
         self._Gs = dict()
-        self._zc = dict()
+        self._zc_coef = dict()
         self._causal_indices = dict()
         self._us = dict()
         self._eff_sample_mean_vars = dict()
@@ -90,24 +91,24 @@ class TraitSampler(object):
     #         _change_sample_stats(u, (0., v))
     #         zc = dot(L.T, u)
     #
-    #     self._zc[name] = zc
+    #     self._zc_coef[name] = zc
 
     def add_effect_cov(self, name, K, effsize_sample_mean_var=None):
         zeros = np.zeros(K.shape[0])
-        if effsize_sample_mean_var is None:
-            zc = sp.stats.multivariate_normal(zeros, K).rvs()
-        else:
-            (Q, S) = QS_from_K(K)
-            u = np.random.randn(S.shape[0])
-            m = effsize_sample_mean_var[0]
-            v = effsize_sample_mean_var[1]
-            _change_sample_stats(u, (0., v))
-            zc = dot(Q, np.sqrt(S) * u)
+        # if effsize_sample_mean_var is None:
+        #     zc = sp.stats.multivariate_normal(zeros, K).rvs()
+        # else:
+        (Q, S) = QS_from_K(K)
+            # u = np.random.randn(S.shape[0])
+            # m = effsize_sample_mean_var[0]
+            # v = effsize_sample_mean_var[1]
+            # _change_sample_stats(u, (0., v))
+            # zc = dot(Q, np.sqrt(S) * u)
 
         if self._nindividuals is None:
             self._nindividuals = K.shape[0]
 
-        self._zc[name] = zc
+        self._zc_coef[name] = (Q, np.sqrt(S), effsize_sample_mean_var)
 
     def set_noise(self, var):
         self._noise_var = var
@@ -130,10 +131,17 @@ class TraitSampler(object):
 
             z += zd[effect_name]
 
-        for z_ in self._zc.values():
-            z += z_
+        zcs = dict()
+        for (name, z_) in self._zc_coef.iteritems():
+            (Q, S, effsize_sample_mean_var) = z_
+            u = np.random.randn(S.shape[0])
+            m = effsize_sample_mean_var[0]
+            v = effsize_sample_mean_var[1]
+            _change_sample_stats(u, (m, v))
+            zcs[name] = dot(Q, S * u)
+            z += zcs[name]
 
-        return (z, zd, self._zc, ze)
+        return (z, zd, zcs, ze)
 
     def _sample_causal_indices(self, base_pos, ncausal, wsize):
         size = len(base_pos)
@@ -159,12 +167,69 @@ class BernoulliTraitSampler(TraitSampler):
     def __init__(self):
         TraitSampler.__init__(self)
 
-    def sample_traits(self, var_noise):
+    def _offset_due_prevalence(self, var_noise, prevalence):
+        sys.stdout.write("Calculating offset due to prevalence")
+        nsamples = 0
+        ste = np.inf
+        zs = np.array([], float)
+        while ste > 1e-3:
+            sys.stdout.write('.')
+            sys.stdout.flush()
+
+            self._sample_traits_once(var_noise, 0.)
+
+            nsamples += len(z)
+            zs = np.append(zs, z)
+            ste = np.std(zs) / np.sqrt(nsamples)
+        print ''
+        print "Done."
+        return np.percentile(zs, (1. - prevalence) * 100)
+
+    def _sample_traits_once(self, var_noise, offset):
+
         (z, _, _, _) = TraitSampler.sample_traits(self)
         z += np.random.randn(z.shape[0]) * np.sqrt(var_noise)
         y = np.zeros(z.shape[0], float)
-        y[z >= 0] = 1.
+        y[z >= offset] = 1.
+
         return (y, z)
+
+    def sample_traits(self, var_noise, prevalence=0.5, ascertainment=0.5):
+        print "Prevalence: %.3f." % prevalence
+        print "Ascertainment: %.3f." % ascertainment
+        offset = self._offset_due_prevalence(var_noise, prevalence)
+
+        print "Sampling traits..."
+        self._nindividuals
+        n1 = int(ascertainment * self._nindividuals)
+        n0 = self._nindividuals - n1
+
+        y = []
+        z = []
+        while n1 > 0 or n0 > 0:
+            (y_, z_) = self._sample_traits_once(var_noise, offset)
+            ok0 = np.where(y_ == 0.)[0]
+            ok1 = np.where(y_ == 1.)[0]
+
+            if len(ok0) > n0:
+                ok0 = ok0[:n0]
+
+            if len(ok1) > n1:
+                ok1 = ok1[:n1]
+
+            z.extend(list(z_[ok0]))
+            y.extend(list(y_[ok0]))
+
+            z.extend(list(z_[ok1]))
+            y.extend(list(y_[ok1]))
+
+            n0 -= len(ok0)
+            n1 -= len(ok1)
+
+        y = np.array(y, float)
+        z = np.array(z, float)
+        print "Done."
+        return (y, z, offset)
 
 if __name__ == '__main__':
     from dreader import DReader1000G
