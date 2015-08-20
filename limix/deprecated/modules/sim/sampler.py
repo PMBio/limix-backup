@@ -118,7 +118,7 @@ class TraitSampler(object):
         z = ze
         zd = dict()
         for effect_name in self._Gs.keys():
-            G = self._Gs.pop(effect_name)
+            G = self._Gs[effect_name]
             u = self._us[effect_name]
             idx = self._causal_indices[effect_name]
             zd[effect_name] = dot(G[:, idx], u)
