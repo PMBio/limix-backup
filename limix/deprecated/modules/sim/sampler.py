@@ -43,7 +43,7 @@ def binary_effsiz_sampler():
 class TraitSampler(object):
     def __init__(self):
         self._Gs = dict()
-        self._zc_coef = dict()
+        self._zc = dict()
         self._causal_indices = dict()
         self._us = dict()
         self._eff_sample_mean_vars = dict()
@@ -91,24 +91,22 @@ class TraitSampler(object):
     #         _change_sample_stats(u, (0., v))
     #         zc = dot(L.T, u)
     #
-    #     self._zc_coef[name] = zc
+    #     self._zc[name] = zc
 
     def add_effect_cov(self, name, K, effsize_sample_mean_var=None):
-        zeros = np.zeros(K.shape[0])
-        # if effsize_sample_mean_var is None:
-        #     zc = sp.stats.multivariate_normal(zeros, K).rvs()
-        # else:
         (Q, S) = QS_from_K(K)
-            # u = np.random.randn(S.shape[0])
-            # m = effsize_sample_mean_var[0]
-            # v = effsize_sample_mean_var[1]
-            # _change_sample_stats(u, (0., v))
-            # zc = dot(Q, np.sqrt(S) * u)
+        S = np.sqrt(S)
+
+        u = np.random.randn(S.shape[0])
+        if effsize_sample_mean_var is not None:
+            m = effsize_sample_mean_var[0]
+            v = effsize_sample_mean_var[1]
+            _change_sample_stats(u, (m, v))
+
+        self._zc[name] = dot(Q, S * u)
 
         if self._nindividuals is None:
             self._nindividuals = K.shape[0]
-
-        self._zc_coef[name] = (Q, np.sqrt(S), effsize_sample_mean_var)
 
     def set_noise(self, var):
         self._noise_var = var
@@ -131,17 +129,10 @@ class TraitSampler(object):
 
             z += zd[effect_name]
 
-        zcs = dict()
-        for (name, z_) in self._zc_coef.iteritems():
-            (Q, S, effsize_sample_mean_var) = z_
-            u = np.random.randn(S.shape[0])
-            m = effsize_sample_mean_var[0]
-            v = effsize_sample_mean_var[1]
-            _change_sample_stats(u, (m, v))
-            zcs[name] = dot(Q, S * u)
-            z += zcs[name]
+        for z_ in self._zc.values():
+            z += z_
 
-        return (z, zd, zcs, ze)
+        return (z, zd, self._zc, ze)
 
     def _sample_causal_indices(self, base_pos, ncausal, wsize):
         size = len(base_pos)
@@ -182,8 +173,9 @@ class BernoulliTraitSampler(TraitSampler):
             zs = np.append(zs, z)
             ste = np.std(zs) / np.sqrt(nsamples)
         print ''
-        print "Done."
-        return np.percentile(zs, (1. - prevalence) * 100)
+        offset = np.percentile(zs, (1. - prevalence) * 100)
+        print "Done. Offset: %.5f." % offset
+        return offset
 
     def _sample_traits_once(self, var_noise, offset):
 
