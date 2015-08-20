@@ -176,7 +176,7 @@ class BernoulliTraitSampler(TraitSampler):
             sys.stdout.write('.')
             sys.stdout.flush()
 
-            self._sample_traits_once(var_noise, 0.)
+            (_, z) = self._sample_traits_once(var_noise, 0.)
 
             nsamples += len(z)
             zs = np.append(zs, z)
