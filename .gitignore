@@ -166,3 +166,4 @@ limix.egg-info/
 #src/interfaces/python/limix_wrap.cpp
 
 dist/
+var/
