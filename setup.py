@@ -320,11 +320,14 @@ extensions += cythonize(Extension(name="ensemble.SplittingCore",
                         include_dirs=get_include_dirs() + ['.'],
                         extra_compile_args=get_extra_compile_args()))
 
-#create setup:
+import versioneer
+cmdclass = versioneer.get_cmdclass()
+cmdclass['build'] = CustomBuild
+cmdclass['build_ext'] = CustomBuildExt
 setup(
     name = 'limix',
-    version = '0.7.9',
-    cmdclass={'build': CustomBuild, 'build_ext': CustomBuildExt},
+    version = versioneer.get_version(),
+    cmdclass = cmdclass,
     author = 'Christoph Lippert, Paolo Casale, Oliver Stegle',
     author_email = "stegle@ebi.ac.uk",
     description = ('A flexible and fast mixed model toolbox written in C++/python'),
