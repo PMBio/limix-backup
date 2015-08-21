@@ -147,3 +147,19 @@ class GP3KronSumLR(GP2KronSum):
     @cached(['row_cov', 'col_cov', 'designs', 'pheno'])
     def yKiWb_grad_i(self,i):
         pass
+
+    ########################
+    # Multivariate score test
+    ########################
+    def score(self, **kwargs):
+        n_params = self.covar.Cr.getNumberParams()
+        u = sp.zeros(n_params)
+        for i in range(n_params):
+            u[i] = 0.5*self.covar.logdet_grad_i(i)
+            u[i] += 0.5*self.yKiy_grad_i(i)
+            if self.mean.n_covs > 0:
+                u[i] += 0.5*self.Areml.logdet_grad_i(i)
+                u[i] -= 0.5*self.yKiWb_grad_i(i)
+        I_inv = la.inv(self.covar._getIscoreTest(**kwargs))
+        return sp.dot(u, sp.dot(I_inv, u))
+
