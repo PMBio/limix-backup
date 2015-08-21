@@ -10,6 +10,7 @@ import scipy as sp
 import numpy as np
 import scipy.linalg as la
 import warnings
+from limix.utils.linalg import vei_CoR_veX
 
 import pdb
 
@@ -356,6 +357,77 @@ class Cov3KronSumLR(Cov2KronSum):
         r = (self.d() * self.diag_Ctilde_o_Sr(i)).sum()
         r-= (self.H_inv() * self.Kbar(i)).sum()
         return r
+
+    ########################
+    # Fisher information on foreground params to get score test
+    ########################
+    def _O_dot(self, Mt):
+        """ Mt is NxPxn_seeds """
+        DMt = self.D()[:, :, sp.newaxis] * Mt 
+        #WrDMtWc = sp.dot(self.Wr().T, sp.dot(DMt, self.Wc())) 
+        WrDMtWc = vei_CoR_veX(DMt, R=self.Wr().T, C=self.Wc().T) 
+        ve_WrDMtWc = sp.reshape(WrDMtWc, (WrDMtWc.shape[0] * WrDMtWc.shape[1], Mt.shape[2]), order='F')
+        Hi_ve_WrDMtWc = la.cho_solve((self.H_chol(), True), ve_WrDMtWc)
+        vei_HiveWrDMtWc = Hi_ve_WrDMtWc.reshape(WrDMtWc.shape, order = 'F')
+        #Wr_HiveWrDMtWc_Wc = sp.dot(self.Wr(), sp.dot(vei_HiveWrDMtWc, self.covar.Wc().T))
+        Wr_HiveWrDMtWc_Wc = vei_CoR_veX(vei_HiveWrDMtWc, R=self.Wr(), C=self.Wc())
+        DWrHiveWrDMtWcWc = self.D()[:,:,sp.newaxis] * Wr_HiveWrDMtWc_Wc
+        RV = DMt - DWrHiveWrDMtWcWc
+        return RV
+
+    def _getIscoreTest(self, n_seeds = 200, seed=None, debug=False, debug1=False, debug2=False):
+        """
+        I_{nm} = 0.5 * tr(Ki D_mK Ki D_nK)
+        """
+        n_params = self.Cr.getNumberParams()
+        R = sp.zeros((n_params,n_params))
+        if debug:
+            for m in range(n_params):
+                for n in range(n_params):
+                    DnK = self.K_grad_i(m)
+                    DmK = self.K_grad_i(n)
+                    KiDnK = self.solve(DnK)
+                    KiDmK = self.solve(DmK)
+                    R[m,n] = 0.5 * (KiDnK.T * KiDmK).sum()
+        elif debug1:
+            if seed is not None:
+                sp.random.seed(seed)
+            Z = sp.randn(self.dim_r, self.dim_c, n_seeds)
+            norm = sp.sqrt(self.dim / (float(n_seeds) * (Z**2).sum((0,1))))
+            Z*= norm[sp.newaxis, sp.newaxis, :]
+            z = Z.reshape((Z.shape[0]*Z.shape[1], Z.shape[2]), order='F')
+            for m in range(n_params):
+                for n in range(n_params):
+                    DnK = self.K_grad_i(n)
+                    DmK = self.K_grad_i(m)
+                    KiDnK = self.solve(DnK)
+                    KiDmK = self.solve(DmK)
+                    _z = sp.dot(KiDmK, sp.dot(KiDnK, z))
+                    R[m,n] = 0.5*(z * _z).sum()
+            R = 0.5 * (R + R.T)
+        else:
+            if seed is not None:
+                sp.random.seed(seed)
+            Z = sp.randn(self.dim_r, self.dim_c, n_seeds)
+            norm = sp.sqrt(self.dim / (float(n_seeds) * (Z**2).sum((0,1))))
+            Z*= norm
+            #WrWrZ = sp.dot(self.Wr(), sp.dot(self.Wr().T,Z))
+            WrWrZ = vei_CoR_veX(vei_CoR_veX(Z, R=self.Wr().T), R=self.Wr())
+            for m in range(n_params):
+                Cm = self.Ctilde(m)
+                #WrWrZCm = sp.dot(WrWrZ, Cm)
+                WrWrZCm = vei_CoR_veX(WrWrZ, C=Cm)
+                _Z = self._O_dot(WrWrZCm)
+                #_WrWrZ = sp.dot(self.Wr(), sp.dot(self.Wr().T, _Z))
+                _WrWrZ = vei_CoR_veX(vei_CoR_veX(_Z, R=self.Wr().T), R=self.Wr())
+                for n in range(n_params):
+                    Cn = self.Ctilde(n)
+                    #_WrWrZCn = sp.dot(_WrWrZ, Cn)
+                    _WrWrZCn = vei_CoR_veX(_WrWrZ, C=Cn)
+                    __Z = self._O_dot(_WrWrZCn)
+                    R[m, n] = 0.5 * (Z * __Z).sum()
+            R = 0.5 * (R + R.T)
+        return R
 
 
 if __name__ == '__main__':
