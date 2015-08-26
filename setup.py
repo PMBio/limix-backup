@@ -280,7 +280,7 @@ packages = find_packages(exclude=['tests', 'test', 'test_limix*',
 #                 'limix.deprecated.modules', 'limix.deprecated.stats',
 #                 'limix.deprecated.utils'])
 # reqs = ['scikit-learn', 'h5py', 'numpy', 'scipy', 'matplotlib']
-reqs = ['Cython', 'h5py', 'numpy', 'scipy', 'matplotlib']
+reqs = ['Cython', 'h5py']
 # reqs = []
 
 FL = get_source_files(reswig=reswig)
