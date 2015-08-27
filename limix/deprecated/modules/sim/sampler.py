@@ -55,14 +55,15 @@ class TraitSampler(object):
                            effsiz_sample_mean_var=None,
                            eff_sample_mean_var=None,
                            ncausal=None,
-                           wsize=50000):
+                           min_dist=1):
 
         if ncausal is None:
             ncausal = G.shape[1]
 
         self._Gs[name] = G
 
-        causal_indices = self._sample_causal_indices(base_pos, ncausal, wsize)
+        causal_indices = self._sample_causal_indices(base_pos, ncausal,
+                                                     min_dist)
         self._causal_indices[name] = causal_indices
 
         u = effsiz_sampler(len(causal_indices))
@@ -127,10 +128,36 @@ class TraitSampler(object):
 
         return (z, zd, self._zc, ze)
 
-    def _sample_causal_indices(self, base_pos, ncausal, wsize):
+    def _sample_causal_indices_trial(self, base_pos, ncausal, min_dist=1):
         size = len(base_pos)
-        causal_indices = np.random.choice(size, size=int(ncausal), replace=False)
-        return np.asarray(causal_indices, int)
+        causals = []
+
+        failed = 0
+        while len(causals) < ncausal and failed < ncausal * 100:
+            i = np.random.randint(size)
+            if self._distance_next_causal(i, causals, base_pos) >= min_dist:
+                causals.append(i)
+            else:
+                failed += 1
+
+        if len(causals) != ncausal:
+            return None
+
+        return np.array(causals, int)
+
+    def _sample_causal_indices(self, base_pos, ncausal, min_dist=1):
+        while True:
+            causals = self._sample_causal_indices_trial(base_pos, ncausal,
+                                                        min_dist)
+            if causals is not None:
+                return causals
+
+    def _distance_next_causal(self, causal, causals, base_pos):
+        if len(causals) == 0:
+            return np.inf
+        pos = base_pos[causal]
+        poss = base_pos[causals]
+        return np.min(np.abs(poss - pos))
 
     def _zmean(self):
         assert self.get_noise() == 0.
