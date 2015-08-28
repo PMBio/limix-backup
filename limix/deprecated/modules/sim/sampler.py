@@ -51,19 +51,23 @@ class TraitSampler(object):
         self._noise_var = 0.
         self._nindividuals = None
 
-    def add_effects_design(self, name, G, base_pos, effsiz_sampler,
+    def add_effects_design(self, name, G, effsiz_sampler,
                            effsiz_sample_mean_var=None,
                            eff_sample_mean_var=None,
                            ncausal=None,
-                           min_dist=1):
+                           min_dist=1,
+                           base_pos=None):
 
         if ncausal is None:
             ncausal = G.shape[1]
 
         self._Gs[name] = G
 
-        causal_indices = self._sample_causal_indices(base_pos, ncausal,
-                                                     min_dist)
+        if base_pos is None:
+            causal_indices = self._sample_causal_indices(G.shape[1], ncausal)
+        else:
+            causal_indices = self._sample_causal_indices_pos(base_pos, ncausal,
+                                                             min_dist)
         self._causal_indices[name] = causal_indices
 
         u = effsiz_sampler(len(causal_indices))
@@ -145,12 +149,15 @@ class TraitSampler(object):
 
         return np.array(causals, int)
 
-    def _sample_causal_indices(self, base_pos, ncausal, min_dist=1):
+    def _sample_causal_indices_pos(self, base_pos, ncausal, min_dist=1):
         while True:
             causals = self._sample_causal_indices_trial(base_pos, ncausal,
                                                         min_dist)
             if causals is not None:
                 return causals
+
+    def _sample_causal_indices(self, size, ncausal):
+        return np.random.choice(size, ncausal, replace=False)
 
     def _distance_next_causal(self, causal, causals, base_pos):
         if len(causals) == 0:
