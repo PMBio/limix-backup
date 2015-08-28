@@ -1,19 +1,29 @@
 import numpy as np
+import scipy as sp
+import scipy.stats
 
-def _calculate_maf(G):
+def _calculate_number_alleles(G):
+    G = np.asarray(G, int)
     assert len(G.shape) == 2
     u = np.unique(G[:])
-    assert len(u) <= 3
+    assert np.all([ui in [0, 1, 2] for ui in u])
 
-    s = np.full(G.shape[1], np.inf)
-    for ui in u:
-        s = np.minimum(np.sum(G == ui, axis=0), s)
+    b = np.sum(G, axis=0)
+    a = G.shape[0]*2 - b
 
-    print s / float(G.shape[0])
+    return (a, b)
+
+def _normalize_maf_allele(G):
+    (a, b) = _calculate_number_alleles(G)
+    change = b > a
+    G[:, change] = 2 - G[:, change]
+
+def _calculate_maf(G):
+    return np.sum(G, 0) / float(2*G.shape[0])
 
 # According to GCTA's paper
 def grm_unbiased(G):
-    import ipdb; ipdb.set_trace()
+    _normalize_maf_allele(G)
     p = _calculate_maf(G)
     n = G.shape[0]
 
@@ -38,6 +48,10 @@ def grm_unbiased(G):
     return K
 
 if __name__ == '__main__':
-    G = np.random.randint(0, 3, (10, 50))
+    np.random.seed(5)
+    # G = np.random.randint(0, 3, (100000, 1))
+    G = sp.stats.binom.rvs(2, 0.5, size=(1000, 10))
     # _calculate_maf(G)
     K = grm_unbiased(G)
+    import ipdb; ipdb.set_trace()
+    print K
