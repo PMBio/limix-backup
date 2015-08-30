@@ -252,16 +252,18 @@ class BernoulliTraitSampler(TraitSampler):
         y = y_[ok]
         z = z_[ok]
 
-        designs = dict()
-        for (effect_name, G) in self._Gs.iteritems():
-            designs[effect_name] = G[ok, :].copy()
+        selected_individuals = ok
 
-        covs = dict()
-        for (effect_name, K) in self._covs.iteritems():
-            covs[effect_name] = K[np.ix_(ok, ok)].copy()
+        # designs = dict()
+        # for (effect_name, G) in self._Gs.iteritems():
+        #     designs[effect_name] = G[ok, :].copy()
+        #
+        # covs = dict()
+        # for (effect_name, K) in self._covs.iteritems():
+        #     covs[effect_name] = K[np.ix_(ok, ok)].copy()
 
         print "Done."
-        return (y, z, offset, designs, covs)
+        return (y, z, offset, selected_individuals)
 
 if __name__ == '__main__':
     pass
