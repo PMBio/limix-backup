@@ -192,12 +192,18 @@ class BernoulliTraitSampler(TraitSampler):
 
     def _offset_due_prevalence(self, var_noise, prevalence):
 
-        sys.stdout.write("Calculating offset due to prevalence")
-        zmean = self._zmean()
-        offset = sp.stats.norm.ppf(1. - prevalence, loc=zmean,
-                          scale=np.sqrt(var_noise))
-        print "Done. Offset: %.5f." % offset
+        print ("Calculating offset due to prevalence...")
+
+        (_, z) = self._sample_traits_once(var_noise, 0.)
+        offset = np.percentile(z, 100. * (1-prevalence))
+        print "Calculated offset: %.3f" % offset
         return offset
+
+        # zmean = self._zmean()
+        # offset = sp.stats.norm.ppf(1. - prevalence, loc=zmean,
+        #                   scale=np.sqrt(var_noise))
+        # print "Done. Offset: %.5f." % offset
+        # return offset
 
         # nsamples = 0
         # ste = np.inf
