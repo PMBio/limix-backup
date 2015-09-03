@@ -314,7 +314,7 @@ class Cov3KronSumLR(Cov2KronSum):
         LMt = vei_CoR_veX(_Mt, R=self.Lr(), C=self.Lc())
         DMt = self.D()[:, :, sp.newaxis] * LMt
         WrDMtWc = vei_CoR_veX(DMt, R=self.Wr().T, C=self.Wc().T)
-        ve_WrDMtWc = sp.reshape(WrDMtWc, (WrDMtWc.shape[0] * WrDMtWc.shape[1], Mt.shape[2]), order='F')
+        ve_WrDMtWc = sp.reshape(WrDMtWc, (WrDMtWc.shape[0] * WrDMtWc.shape[1], _Mt.shape[2]), order='F')
         Hi_ve_WrDMtWc = la.cho_solve((self.H_chol(), True), ve_WrDMtWc)
         vei_HiveWrDMtWc = Hi_ve_WrDMtWc.reshape(WrDMtWc.shape, order = 'F')
         Wr_HiveWrDMtWc_Wc = vei_CoR_veX(vei_HiveWrDMtWc, R=self.Wr(), C=self.Wc())
