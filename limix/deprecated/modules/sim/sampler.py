@@ -44,7 +44,6 @@ class TraitSampler(object):
     def __init__(self):
         self._Gs = dict()
         self._zc = dict()
-        self._covs = dict()
         self._causal_indices = dict()
         self._us = dict()
         self._eff_sample_mean_vars = dict()
@@ -85,11 +84,12 @@ class TraitSampler(object):
     def causal(self, name):
         return self._causal_indices[name]
 
-    def add_effect_cov(self, name, K, effsize_sample_mean_var=None):
+    def add_effect_cov(self, name, K=None, effsize_sample_mean_var=None,
+                       Q=None, S=None):
         import scipy as sp
         import scipy.stats
-        self._covs[name] = K
-        (Q, S) = QS_from_K(K)
+        if Q is None or S is None:
+            (Q, S) = QS_from_K(K)
         S = np.sqrt(S)
 
         u = np.random.randn(S.shape[0])
@@ -101,7 +101,7 @@ class TraitSampler(object):
         self._zc[name] = dot(Q, S * u)
 
         if self._nindividuals is None:
-            self._nindividuals = K.shape[0]
+            self._nindividuals = Q.shape[0]
 
     def set_noise(self, var):
         self._noise_var = var
