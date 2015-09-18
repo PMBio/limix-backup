@@ -40,6 +40,14 @@ def binary_effsiz_sampler():
         return effects
     return sampler
 
+def geometric_ntrials_sampler(min_ntrials, max_ntrials, p):
+    def sampler():
+        k = np.random.geometric(p) + min_ntrials - 1
+        while k >= max_ntrials:
+            k = np.random.geometric(p) + min_ntrials - 1
+        return k
+    return sampler
+
 class TraitSampler(object):
     def __init__(self):
         self._Gs = dict()
@@ -199,29 +207,6 @@ class BernoulliTraitSampler(TraitSampler):
         print "Calculated offset: %.3f" % offset
         return offset
 
-        # zmean = self._zmean()
-        # offset = sp.stats.norm.ppf(1. - prevalence, loc=zmean,
-        #                   scale=np.sqrt(var_noise))
-        # print "Done. Offset: %.5f." % offset
-        # return offset
-
-        # nsamples = 0
-        # ste = np.inf
-        # zs = np.array([], float)
-        # while ste > 1e-3:
-        #     sys.stdout.write('.')
-        #     sys.stdout.flush()
-        #
-        #     (_, z) = self._sample_traits_once(var_noise, 0.)
-        #
-        #     nsamples += len(z)
-        #     zs = np.append(zs, z)
-        #     ste = np.std(zs) / np.sqrt(nsamples)
-        # print ''
-        # offset = np.percentile(zs, (1. - prevalence) * 100)
-        # print "Done. Offset: %.5f." % offset
-        # return offset
-
     def _sample_traits_once(self, var_noise, offset):
 
         (z, _, _, _) = TraitSampler.sample_traits(self)
@@ -260,16 +245,47 @@ class BernoulliTraitSampler(TraitSampler):
 
         selected_individuals = ok
 
-        # designs = dict()
-        # for (effect_name, G) in self._Gs.iteritems():
-        #     designs[effect_name] = G[ok, :].copy()
-        #
-        # covs = dict()
-        # for (effect_name, K) in self._covs.iteritems():
-        #     covs[effect_name] = K[np.ix_(ok, ok)].copy()
-
         print "Done."
         return (y, z, offset, selected_individuals)
+
+class BinomialTraitSampler(TraitSampler):
+    def __init__(self):
+        TraitSampler.__init__(self)
+
+    def _sample_ntrials(self, pop_size, ntrials_sampler):
+        ntrials = []
+        for i in xrange(pop_size):
+            ntrials.append(ntrials_sampler())
+        return np.array(ntrials, int)
+
+    def sample_traits(self, pop_size, vare, delta,
+                      ntrials_sampler):
+
+        print "Sampling traits..."
+
+        (z, _, _, _) = TraitSampler.sample_traits(self)
+        selected_individuals = np.random.choice(len(z), pop_size, replace=False)
+        z = z[selected_individuals]
+
+        ntrials = self._sample_ntrials(pop_size, ntrials_sampler)
+
+        E = np.random.randn(pop_size, np.max(ntrials))
+        E *= np.sqrt(vare)
+
+        Z = z[:, np.newaxis] + E
+
+        Z[Z >  0.] = 1.
+        Z[Z <= 0.] = 0.
+
+        y = np.empty(pop_size)
+        for i in xrange(y.shape[0]):
+            y[i] = np.sum(Z[i,:ntrials[i]])
+
+        print "Done."
+
+        y = dict(trait=y, ntrials=ntrials)
+        return (y, selected_individuals)
+
 
 if __name__ == '__main__':
     pass
