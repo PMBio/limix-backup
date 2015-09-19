@@ -258,8 +258,7 @@ class BinomialTraitSampler(TraitSampler):
             ntrials.append(ntrials_sampler())
         return np.array(ntrials, int)
 
-    def sample_traits(self, pop_size, vare, delta,
-                      ntrials_sampler):
+    def sample_traits(self, pop_size, vare, ntrials_sampler):
 
         print "Sampling traits..."
 
