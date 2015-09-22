@@ -245,7 +245,7 @@ class Covariance(Cached, Observed):
                 DmK = self.K_grad_interParam_i(n)
                 KiDnK = self.solve(DnK)
                 KiDmK = self.solve(DmK)
-                R[m,n] = 0.5*(KiDnK*KiDmK).sum()
+                R[m,n] = 0.5 * (KiDnK.T * KiDmK).sum()
         return R
 
     def setFIinv(self, value):
