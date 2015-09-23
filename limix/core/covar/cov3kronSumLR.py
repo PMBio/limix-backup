@@ -377,6 +377,49 @@ class Cov3KronSumLR(Cov2KronSum):
         r-= (self.H_inv() * self.Kbar(i)).sum()
         return r
 
+    #######################
+    # Symmetric factorization
+    # it uses the lowrank update of the symmetric factorization
+    # proposed in S Ambikasaran, 2014
+    #######################
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
+    def DhW(self):
+        return self.d()[:, sp.newaxis]**(0.5) * self.W()
+
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
+    def _X(self):
+        L = la.cholesky(self._UU()).T
+        Li = la.inv(L)
+        M = la.cholesky(sp.dot(L.T, L) + sp.eye(L.shape[0])).T
+        return sp.dot(Li.T, sp.dot(M - sp.eye(M.shape[0]), Li))
+
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
+    def _UU(self):
+        return sp.dot(self.DhW().T, self.DhW())
+
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
+    def _XipUU_inv(self):
+        return la.inv(la.inv(self._X()) + self._UU())
+
+    @cached(['col_cov', 'covar_base'])
+    def Lc_inv(self):
+        return la.inv(self.Lc())
+
+    def Kh_dot_ve(self, M):
+        # M is an dim_r x dim_c matrix
+        m = M.reshape((M.size, 1), order='F')
+        vei_UXUveM = sp.dot(self.DhW(), sp.dot(self._X(), sp.dot(self.DhW().T, m)))
+        AM = M + vei_UXUveM.reshape(M.shape, order='F')
+        DAM = self.D()**(-0.5) * AM 
+        return sp.dot(self.Lr().T, sp.dot(DAM, self.Lc_inv().T))
+
+    def Kh_inv_dot_ve(self, M):
+        # M is an dim_r x dim_c matrix
+        DLrMLc = self.D()**(0.5) * sp.dot(self.Lr(), sp.dot(M, self.Lc().T))
+        m1 = DLrMLc.reshape((M.size, 1), order='F')
+        m2 = sp.dot(self.DhW(), sp.dot(self._XipUU_inv(), sp.dot(self.DhW().T, m1)))
+        return (m1 - m2).reshape(M.shape, order='F')
+
     ########################
     # DEPRECATED: Fisher information on foreground params to get score test
     ########################
