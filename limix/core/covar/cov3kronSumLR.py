@@ -395,7 +395,11 @@ class Cov3KronSumLR(Cov2KronSum):
 
     @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
     def _UU(self):
-        return sp.dot(self.DhW().T, self.DhW())
+        RV = sp.dot(self.DhW().T, self.DhW())
+        _S, _U = la.eigh(RV)
+        if _S.min()<0:
+            RV += (abs(_S.min()) + 1e-9) * sp.eye(RV.shape[0])
+        return RV
 
     @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
     def _XipUU_inv(self):
