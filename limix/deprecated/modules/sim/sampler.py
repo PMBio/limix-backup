@@ -2,6 +2,8 @@ import numpy as np
 import scipy as sp
 import scipy.stats
 from numpy import dot
+from limix.core.linalg.linalg_matrix import QS_from_K
+import sys
 
 def standardize_design(G, mean_var=None):
     if mean_var is None:
@@ -38,6 +40,14 @@ def binary_effsiz_sampler():
         return effects
     return sampler
 
+def geometric_ntrials_sampler(min_ntrials, max_ntrials, p):
+    def sampler():
+        k = np.random.geometric(p) + min_ntrials - 1
+        while k >= max_ntrials:
+            k = np.random.geometric(p) + min_ntrials - 1
+        return k
+    return sampler
+
 class TraitSampler(object):
     def __init__(self):
         self._Gs = dict()
@@ -45,18 +55,26 @@ class TraitSampler(object):
         self._causal_indices = dict()
         self._us = dict()
         self._eff_sample_mean_vars = dict()
-        self._noise_var = None
+        self._noise_var = 0.
+        self._nindividuals = None
 
     def add_effects_design(self, name, G, effsiz_sampler,
                            effsiz_sample_mean_var=None,
-                           eff_sample_mean_var=None, ncausal=None):
+                           eff_sample_mean_var=None,
+                           ncausal=None,
+                           min_dist=1,
+                           base_pos=None):
 
         if ncausal is None:
             ncausal = G.shape[1]
 
         self._Gs[name] = G
 
-        causal_indices = _sample_causal_indices(G.shape[1], ncausal)
+        if base_pos is None:
+            causal_indices = self._sample_causal_indices(G.shape[1], ncausal)
+        else:
+            causal_indices = self._sample_causal_indices_pos(base_pos, ncausal,
+                                                             min_dist)
         self._causal_indices[name] = causal_indices
 
         u = effsiz_sampler(len(causal_indices))
@@ -68,31 +86,45 @@ class TraitSampler(object):
         self._us[name] = u
         self._eff_sample_mean_vars[name] = eff_sample_mean_var
 
-    def add_effect_cov(self, name, K, effsize_sample_mean_var=None):
-        zeros = np.zeros(K.shape[0])
-        if effsize_sample_mean_var is None:
-            zc = sp.stats.multivariate_normal(zeros, K).rvs()
-        else:
-            L = np.linalg.cholesky(K)
-            u = np.random.randn(K.shape[0])
+        if self._nindividuals is None:
+            self._nindividuals = G.shape[0]
+
+    def causal(self, name):
+        return self._causal_indices[name]
+
+    def add_effect_cov(self, name, K=None, effsize_sample_mean_var=None,
+                       Q=None, S=None):
+        import scipy as sp
+        import scipy.stats
+        if Q is None or S is None:
+            (Q, S) = QS_from_K(K)
+        S = np.sqrt(S)
+
+        u = np.random.randn(S.shape[0])
+        if effsize_sample_mean_var is not None:
             m = effsize_sample_mean_var[0]
             v = effsize_sample_mean_var[1]
-            _change_sample_stats(u, (0., v))
-            zc = dot(L.T, u)
+            _change_sample_stats(u, (m, v))
 
-        self._zc[name] = zc
+        self._zc[name] = dot(Q, S * u)
+
+        if self._nindividuals is None:
+            self._nindividuals = Q.shape[0]
 
     def set_noise(self, var):
         self._noise_var = var
 
+    def get_noise(self):
+        return self._noise_var
+
     def sample_traits(self):
         z = 0
-        n = self._Gs.values()[0].shape[0]
+        n = self._nindividuals
         ze = np.random.randn(n) * np.sqrt(self._noise_var)
-        z = ze
+        z = ze.copy()
         zd = dict()
         for effect_name in self._Gs.keys():
-            G = self._Gs.pop(effect_name)
+            G = self._Gs[effect_name]
             u = self._us[effect_name]
             idx = self._causal_indices[effect_name]
             zd[effect_name] = dot(G[:, idx], u)
@@ -108,9 +140,44 @@ class TraitSampler(object):
 
         return (z, zd, self._zc, ze)
 
-def _sample_causal_indices(size, ncausal):
-    causal_indices = np.random.choice(size, size=int(ncausal), replace=False)
-    return np.asarray(causal_indices, int)
+    def _sample_causal_indices_trial(self, base_pos, ncausal, min_dist=1):
+        size = len(base_pos)
+        causals = []
+
+        failed = 0
+        while len(causals) < ncausal and failed < ncausal * 100:
+            i = np.random.randint(size)
+            if self._distance_next_causal(i, causals, base_pos) >= min_dist:
+                causals.append(i)
+            else:
+                failed += 1
+
+        if len(causals) != ncausal:
+            return None
+
+        return np.array(causals, int)
+
+    def _sample_causal_indices_pos(self, base_pos, ncausal, min_dist=1):
+        while True:
+            causals = self._sample_causal_indices_trial(base_pos, ncausal,
+                                                        min_dist)
+            if causals is not None:
+                return causals
+
+    def _sample_causal_indices(self, size, ncausal):
+        return np.random.choice(size, ncausal, replace=False)
+
+    def _distance_next_causal(self, causal, causals, base_pos):
+        if len(causals) == 0:
+            return np.inf
+        pos = base_pos[causal]
+        poss = base_pos[causals]
+        return np.min(np.abs(poss - pos))
+
+    def _zmean(self):
+        assert self.get_noise() == 0.
+        (z, _, _, ze) = TraitSampler.sample_traits(self)
+        return np.mean(z - ze)
 
 def _change_sample_stats(x, mean_var=(None, None)):
     if mean_var[0] is not None:
@@ -118,122 +185,106 @@ def _change_sample_stats(x, mean_var=(None, None)):
         x += mean_var[0]
 
     if mean_var[1] is not None:
-        v = np.std(x) if len(x) > 1 else x[0]
-        x /= v
-        x *= np.sqrt(mean_var[1])
+        v0 = np.mean(x**2)
+        v1 = mean_var[1]
+
+        if v0 == 0.:
+            x[:] = np.sqrt(v1)
+        else:
+            c = np.sqrt(v1/v0)
+            x *= c
 
 class BernoulliTraitSampler(TraitSampler):
-    TraitSampler.__init__(self)
+    def __init__(self):
+        TraitSampler.__init__(self)
 
-    def sample_traits(self, var_noise):
+    def _offset_due_prevalence(self, var_noise, prevalence):
+
+        print ("Calculating offset due to prevalence...")
+
+        (_, z) = self._sample_traits_once(var_noise, 0.)
+        offset = np.percentile(z, 100. * (1-prevalence))
+        print "Calculated offset: %.3f" % offset
+        return offset
+
+    def _sample_traits_once(self, var_noise, offset):
+
         (z, _, _, _) = TraitSampler.sample_traits(self)
+        z += np.random.randn(z.shape[0]) * np.sqrt(var_noise)
         y = np.zeros(z.shape[0], float)
-        y[z >= 0] = 1.
+        y[z >= offset] = 1.
+
         return (y, z)
 
+    def sample_traits(self, pop_size, var_noise, prevalence=0.5, ascertainment=0.5):
+        print "Prevalence: %.3f." % prevalence
+        print "Ascertainment: %.3f." % ascertainment
+        offset = self._offset_due_prevalence(var_noise, prevalence)
+
+        print "Sampling traits..."
+        n1 = int(ascertainment * pop_size)
+        n0 = int(pop_size) - n1
+
+        (y_, z_) = self._sample_traits_once(var_noise, offset)
+        ok0 = np.where(y_ == 0.)[0]
+        ok1 = np.where(y_ == 1.)[0]
+
+        assert len(ok0) >= n0
+        assert len(ok1) >= n1
+
+        np.random.shuffle(ok0)
+        np.random.shuffle(ok1)
+
+        ok0 = ok0[:n0]
+        ok1 = ok1[:n1]
+
+        ok = np.concatenate((ok0, ok1))
+
+        y = y_[ok]
+        z = z_[ok]
+
+        selected_individuals = ok
+
+        print "Done."
+        return (y, z, offset, selected_individuals)
+
+class BinomialTraitSampler(TraitSampler):
+    def __init__(self):
+        TraitSampler.__init__(self)
+
+    def _sample_ntrials(self, pop_size, ntrials_sampler):
+        ntrials = []
+        for i in xrange(pop_size):
+            ntrials.append(ntrials_sampler())
+        return np.array(ntrials, int)
+
+    def sample_traits(self, pop_size, vare, ntrials_sampler):
+
+        print "Sampling traits..."
+
+        (z, _, _, _) = TraitSampler.sample_traits(self)
+        selected_individuals = np.random.choice(len(z), pop_size, replace=False)
+        z = z[selected_individuals]
+
+        ntrials = self._sample_ntrials(pop_size, ntrials_sampler)
+
+        E = np.random.randn(pop_size, np.max(ntrials))
+        E *= np.sqrt(vare)
+
+        Z = z[:, np.newaxis] + E
+
+        Z[Z >  0.] = 1.
+        Z[Z <= 0.] = 0.
+
+        y = np.empty(pop_size)
+        for i in xrange(y.shape[0]):
+            y[i] = np.sum(Z[i,:ntrials[i]])
+
+        print "Done."
+
+        y = dict(trait=y, ntrials=ntrials)
+        return (y, selected_individuals)
+
+
 if __name__ == '__main__':
-    from dreader import DReader1000G
-    from dreader import normalize_genotype
-    import h5py
-    ncovariates = 1
-    nindividuals = 1000
-    # nparents = 2
-    #
-    # fore_chroms = [20]
-    # back_chroms = [21]
-    # back2_chroms = [22]
-    # pops = ['EUR']
-    # maf = 0.05
-    #
-    # with DReader1000G('/Users/horta/workspace/1000G_majors_c.hdf5',
-    # # with DReader1000G('/Users/horta/workspace/1000G_fake.hdf5',
-    #                   maf, pops) as dr:
-    #
-    #     fore_mean_std = dr.mean_std(fore_chroms)
-    #     back_mean_std = dr.mean_std(back_chroms)
-    #     back2_mean_std = dr.mean_std(back2_chroms)
-    #
-    #     fore_genos = []
-    #     back_genos = []
-    #     back2_genos = []
-    #     covariatess = []
-    #     for i in xrange(nindividuals):
-    #         parents = dr.choose_parents(nparents)
-    #         covariate = np.random.randn(ncovariates)
-    #         fore_geno = dr.generate_genotype(parents, fore_chroms)
-    #         back_geno = dr.generate_genotype(parents, back_chroms)
-    #         back2_geno = dr.generate_genotype(parents, back2_chroms)
-    #
-    #         covariatess.append(covariate)
-    #         fore_genos.append(fore_geno)
-    #         back_genos.append(back_geno)
-    #         back2_genos.append(back2_geno)
-    #
-    #     fG = np.array(fore_genos, float)
-    #     bG = np.array(back_genos, float)
-    #     b2G = np.array(back2_genos, float)
-    #     nb2G = standardize_genotype(b2G, back2_mean_std)
-    #     b2K = dot(nb2G, nb2G.T) / nb2G.shape[1]
-    #
-    #
-    #     X = np.array(covariatess, float)
-    #
-    #     def create_dataset(grp, name, M):
-    #         grp.create_dataset(name, chunks=(1, M.shape[1]),
-    #                            compression='lzf', data=M)
-    #
-    #     with h5py.File("/Users/horta/workspace/sample1000.hdf5", "w") as f:
-    #         ggrp = f.create_group("genotypes")
-    #
-    #         create_dataset(ggrp, "fG_inds_by_snps", fG)
-    #         create_dataset(ggrp, "fG_snps_by_inds", fG.T)
-    #         ggrp.create_dataset("fore_mean_std", data=np.asarray(fore_mean_std))
-    #
-    #         create_dataset(ggrp, "bG_inds_by_snps", bG)
-    #         create_dataset(ggrp, "bG_snps_by_inds", bG.T)
-    #         ggrp.create_dataset("back_mean_std", data=np.asarray(back_mean_std))
-    #
-    #         ggrp.create_dataset("b2K", data=b2K)
-    #
-    #         cgrp = f.create_group("covariates")
-    #         cgrp.create_dataset("X", data=X)
-
-    fore_var = 0.4
-    back_var = 0.4
-    noise_var = 0.2
-    nsnps = 5000
-
-    X = np.ones((nindividuals, 1))
-    beta = np.zeros(X.shape[1])
-
-    pop_means = np.random.randn(nsnps) * 0.1
-    pop_vars = np.random.gamma(1, size=nsnps) * 0.1
-    G = np.random.randn(nindividuals, nsnps)*np.sqrt(pop_vars) + pop_means
-
-    K = np.random.randn(nindividuals, nindividuals)
-    K = dot(K, K.T)
-
-    ns = TraitSampler()
-
-    ns.add_effects_design("covariates", X, static_effsiz_sampler(beta),
-                          effsiz_sample_mean_var=None, # default
-                          eff_sample_mean_var=None, # default
-                          ncausal=None) # default
-
-    ncausal = nsnps
-    standardize_design(G, (pop_means, pop_vars))
-
-    ns.add_effects_design("foreground", G, binary_effsiz_sampler(),
-                          effsiz_sample_mean_var=(0., fore_var/float(ncausal)),
-                          eff_sample_mean_var=None, # default
-                          ncausal=ncausal)
-
-    from limix.utils.preprocess import covar_rescale
-    K = covar_rescale(K)
-    ns.add_effect_cov("background", K, (0., back_var))
-
-    ns.set_noise(noise_var)
-    (y, zd, zc, ze) = ns.sample_traits()
-
-    print np.mean(y)
-    print np.var(y)
+    pass
