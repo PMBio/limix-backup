@@ -2,6 +2,8 @@ from fixed import FixedCov
 from sqexp import SQExpCov
 from freeform import FreeFormCov
 from lowrank import LowRankCov
+from rank1_plus import Rank1PCov
+from rank1_minus import Rank1MCov
 from combinators import SumCov
 from kronecker import KronCov
 from cov2kronSum import Cov2KronSum
