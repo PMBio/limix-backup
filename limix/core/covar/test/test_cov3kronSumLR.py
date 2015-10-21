@@ -3,6 +3,7 @@ import unittest
 import scipy as sp
 import numpy as np
 import sys
+from limix.core.covar import Cov2KronSum 
 from limix.core.covar import Cov3KronSumLR
 from limix.core.covar import FreeFormCov
 from limix.utils.check_grad import mcheck_grad
@@ -25,6 +26,12 @@ class TestCov3KronSumLR(unittest.TestCase):
         self.C = Cov3KronSumLR(Cn = Cn, Cg = Cg, R = R, G = G, rank = 1)
         self.name = 'cov3kronSumLR'
         self.C.setRandomParams()
+
+    def test_solve(self):
+        x = sp.randn(self.C.dim, 1)
+        v1 = self.C.solve(x)
+        v2 = Cov2KronSum.solve(self.C, x)
+        np.testing.assert_almost_equal(v1, v2, decimal = 5)
 
     def test_logdet_grad(self):
         def func(x, i):

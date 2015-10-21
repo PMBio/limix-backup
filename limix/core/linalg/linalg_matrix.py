@@ -3,15 +3,33 @@
 
 
 import scipy as SP
+import numpy as np
 import scipy.linalg as linalg
 import logging
 
+
+_MIN_EIGVAL = np.sqrt(np.finfo(float).eps)
+
+
+def QS_from_K(K):
+    global _MIN_EIGVAL
+
+    (S, Q) = np.linalg.eigh(K)
+    ok = S >= _MIN_EIGVAL
+    S = S[ok]
+    Q = Q[:, ok]
+    return (Q, S)
+
+def QS_from_G(G):
+    (Q, Ssq, _) = np.linalg.svd(G, full_matrices=False)
+    S = Ssq**2
+    return (Q, S)
 
 
 def solve_chol(A,B):
     """
     Solve cholesky decomposition::
-    
+
         return A\(A'\B)
 
     """
@@ -28,10 +46,10 @@ def solve_chol(A,B):
 def jitChol(A, maxTries=10, warning=True):
 
     """Do a Cholesky decomposition with jitter.
-    
+
     Description:
-    
-    
+
+
     U, jitter = jitChol(A, maxTries, warning) attempts a Cholesky
      decomposition on the given matrix, if matrix isn't positive
      definite the function adds 'jitter' and tries again. Thereafter
@@ -52,7 +70,7 @@ def jitChol(A, maxTries=10, warning=True):
 
 
     Copyright (c) 2005, 2006 Neil D. Lawrence
-    
+
     """
     jitter = 0
     i = 0
@@ -112,10 +130,9 @@ def jitEigh(A,maxTries=10,warning=True):
 
         if S.min()>1E-10:
             return S,U
-            
+
         if i<maxTries:
             jitter = jitter*10
         i += 1
-            
+
     raise linalg.LinAlgError, "Matrix non positive definite, jitter of " +  str(jitter) + " added but failed after " + str(i) + " trials."
-      
