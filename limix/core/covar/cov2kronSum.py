@@ -8,6 +8,7 @@ from util import msg_too_expensive_dim
 import scipy as sp
 import scipy.linalg as LA
 import warnings
+from limix.utils.linalg import vei_CoR_veX
 
 import pdb
 
@@ -252,9 +253,26 @@ class Cov2KronSum(Covariance):
 
         return sp.kron(self.Lc(), self.Lr())
 
+    def solve_t(self, Mt):
+        """
+        Mt is dim_r x dim_c x d tensor
+        """
+        if len(Mt.shape)==2:    _Mt = Mt[:, :, sp.newaxis]
+        else:                   _Mt = Mt
+        LMt = vei_CoR_veX(_Mt, R=self.Lr(), C=self.Lc())
+        DLMt = self.D()[:, :, sp.newaxis] * LMt
+        RV = vei_CoR_veX(DLMt, R=self.Lr().T, C=self.Lc().T)
+        if len(Mt.shape)==2:    RV = RV[:, :, 0]
+        return RV
+
     #####################
     # Overwritten covar_base methods
     #####################
+    def solve(self, M):
+        Mt = M.reshape((self.dim_r, self.dim_c, M.shape[1]), order='F')
+        Rt = self.solve_t(Mt)
+        return Rt.reshape(M.shape, order='F')
+
     @cached(['row_cov', 'col_cov', 'covar_base'])
     def K(self):
         if self.dim > _MAX_DIM:

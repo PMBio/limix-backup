@@ -26,13 +26,13 @@ except ImportError:
 
 import limix
 #verbose flags for the entire module
-verbose = False
+_verbose = False
 
 
-def getVerbose(verbose):
+def getVerbose(verbose=None):
 	"""resolve verbose flag, using module settings if verbose=None"""
+	global _verbose
 	if verbose is None:
-		verbose = limix.verbose
-	else:
-		verbose = verbose
+		return _verbose
+	_verbose = verbose
 	return verbose

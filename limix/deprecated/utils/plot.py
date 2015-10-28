@@ -161,7 +161,7 @@ def qqplot(pv, distr = 'log10', alphaLevel = 0.05):
 	    xl = '-log10(P) observed'
 	    yl = '-log10(P) expected'
 
-	plt.plot(qnull, qemp, '.')
+	line = plt.plot(qnull, qemp, '.')[0]
 	#plt.plot([0,qemp.m0x()], [0,qemp.max()],'r')
 	plt.plot([0,qnull.max()], [0,qnull.max()],'r')
 	plt.ylabel(xl)
@@ -174,6 +174,7 @@ def qqplot(pv, distr = 'log10', alphaLevel = 0.05):
 	        plt.fill_between(-sp.log10(theoreticalPvals),lower,upper,color='grey',alpha=0.5)
 	        #plt.plot(-sp.log10(theoreticalPvals),lower,'g-.')
 	        #plt.plot(-sp.log10(theoreticalPvals),upper,'g-.')
+	return line
 
 
 def plot_normal(x=None, mean_x=None,std_x=None,color='red',linewidth=2,alpha=1,bins=20,xlim=False,plot_mean=True,plot_std=False,plot_2std=True,figure=None,annotate=True,histogram=True):

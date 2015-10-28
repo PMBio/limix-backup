@@ -35,17 +35,31 @@ if __name__ == "__main__":
     sqexp = SQExpCov(X, Xstar = Xstar)
     noise = FixedCov(sp.eye(N))
     covar  = SumCov(sqexp, noise)
+    covar._nIterMC = 500
+    covar._tol = 1e-6
 
     # initialize params
-    sqexp.scale = 1e-4
+    sqexp.scale = 0.5 * Y.var() 
     sqexp.length = 1
-    noise.scale = Y.var()
+    noise.scale = 0.5 * Y.var()
+    #sqexp.scale = 1e-4
+    #sqexp.length = 1
+    #noise.scale = Y.var()
 
     # define normal gp
     gp = GP(covar=covar, mean=mean)
     # define lin sys gp
     gpls = GPLS(Y, covar)
     pdb.set_trace()
+
+    if 0:
+        # check grad 
+        n_times = 10
+        for i in range(n_times):
+            covar.setRandomParams()
+            print gp.LML_grad()
+            print gpls.LML_grad()
+            pdb.set_trace()
 
     gp.optimize(calc_ste=True)
     print 'scale of sqexp'
@@ -60,11 +74,13 @@ if __name__ == "__main__":
     # gradient descent
     #gpls.optimize(verbose=True, returnLML=True, noH=True, alpha=1e-1, max_iter=100)
 
-    gpls.optimize(verbose=True, alpha=1)
+    sqexp.scale = 0.5 * Y.var() 
+    sqexp.length = 1
+    noise.scale = 0.5 * Y.var()
+    gpls.optimize(debug=True)
     print sqexp.scale
     print sqexp.length
     print noise.scale
-    print LA.eigh(gpls.AIM())[0]
     pdb.set_trace()
 
     # optimize

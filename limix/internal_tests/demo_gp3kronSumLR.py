@@ -1,4 +1,7 @@
+import sys
+sys.path.insert(0, '../..')
 import scipy as sp
+import scipy.linalg as la
 from limix.core.covar import Cov3KronSumLR
 from limix.core.covar import FreeFormCov 
 from limix.core.gp import GP3KronSumLR
@@ -7,6 +10,9 @@ from limix.utils.preprocess import covar_rescale
 import time
 import copy
 import pdb
+import ipdb
+
+sp.random.seed(2)
 
 if __name__=='__main__':
 
@@ -42,6 +48,35 @@ if __name__=='__main__':
     # define GP
     gp = GP3KronSumLR(Y = Y, Cg = Cg, Cn = Cn, R = R, G = G, rank = 1)
     gp.optimize()
+    ipdb.set_trace()
+
+    if 0:
+        # test fisher matrix
+        n_seeds = 200
+        for i in range(10):
+            sp.random.seed(2)
+            gp.covar.setRandomParams()
+            Iexact = gp.covar._getIscoreTest(debug=True)
+            print 'exact'
+            print Iexact
+            I1 = gp.covar._getIscoreTest(n_seeds=n_seeds, seed=i, debug1=True)
+            print 'sample %d' % i
+            print I1
+            I2 = gp.covar._getIscoreTest(n_seeds=n_seeds, seed=i)
+            print 'sample %d' % i
+            print I2
+        pdb.set_trace()
+
+    if 1:
+        # test score 
+        n_seeds = 1000
+        for i in range(10):
+            gp.covar.setRandomParams()
+            print gp.score(debug=True)
+            print gp.score(n_seeds=n_seeds, seed=i)
+        ipdb.set_trace()
+
+
 
 
 

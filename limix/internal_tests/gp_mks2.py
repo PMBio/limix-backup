@@ -36,7 +36,8 @@ def generate_data(N, P, f, n_terms):
         Z*= sp.sqrt(1. / (n_terms * Z.var(0).mean()))
         Y+= Z 
         _R = covar_rescale(sp.dot(X,X.T))
-        _R+= 1e-4 * sp.eye(N)
+        if term_i!=n_terms-1:
+            _R+= 1e-4 * sp.eye(N)
         R.append(_R)
         C.append(FreeFormCov(P))
     Y -= Y.mean(0)
@@ -60,7 +61,7 @@ def check_equal(gpls_f, gpmks_f):
 if __name__ == "__main__":
 
     # generate data
-    N = 800
+    N = 1000
     P = 2 
     f = 10
     n_terms = 3
@@ -79,7 +80,7 @@ if __name__ == "__main__":
     gpmks = GPMKS(Y, C, R)
 
     # set nIterMC and tol for gpls and gpls and coordinate Zs
-    n_seeds = 30 
+    n_seeds = 200 
     covar._nIterMC = n_seeds
     covar._tol = 1e-6
     gpmks.covar._nIterMC = n_seeds
@@ -109,31 +110,30 @@ if __name__ == "__main__":
             ipdb.set_trace()
             #gpls.covar.resample(); print gpls.LML_grad()['covar']
 
-    # optimize gp base
-    initCovars(C, C0v)
-    gp.optimize()
-    print C[0].K() 
-    print C[1].K() 
-    print C[2].K()
-    ipdb.set_trace()
-
-    # optimize linsys
-    initCovars(C, C0v)
-    gpls.optimize(debug=True,tr=0.1)
-    print C[0].K() 
-    print C[1].K() 
-    print C[2].K() 
-    ipdb.set_trace()
-
     if 1:
-        # check why gpmks does not work
+        # optimize gp base
+        initCovars(C, C0v)
+        gp.optimize()
+        print C[0].K() 
+        print C[1].K() 
+        print C[2].K()
         ipdb.set_trace()
 
-    # optimize linsys mks
-    initCovars(C, C0v)
-    gpmks.optimize(debug=True)
-    print C[0].K()
-    print C[1].K()
-    print C[2].K()
-    ipdb.set_trace()
+    if 1:
+        # optimize linsys
+        initCovars(C, C0v)
+        gpls.optimize(debug=True,tr=0.1)
+        print C[0].K() 
+        print C[1].K() 
+        print C[2].K() 
+        ipdb.set_trace()
+
+    if 1:
+        # optimize linsys mks
+        initCovars(C, C0v)
+        gpmks.optimize(debug=True)
+        print C[0].K()
+        print C[1].K()
+        print C[2].K()
+        ipdb.set_trace()
 

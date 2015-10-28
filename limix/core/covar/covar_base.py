@@ -18,7 +18,7 @@ class Covariance(Cached, Observed):
         self._nIterMC = nIterMC
         self._reuse = True
         self._KiZo = None
-        self._tol = 1e-3
+        self._tol = 1e-6
         if dim is not None:
             self.initialize(dim)
 
@@ -144,19 +144,19 @@ class Covariance(Cached, Observed):
     # The following methods are deprecated
     ############################
 
-    #@cached
-    #def Sgrad(self,i):
-    #    return dS_dti(self.Kgrad_param(i),U=self.U())
+    @cached
+    def S_grad_i(self,i):
+        return dS_dti(self.Kgrad_param(i), U=self.U())
 
-    #@cached
-    #def Ugrad(self,i):
-    #    return dU_dti(self.Kgrad_param(i),U=self.U(),S=self.S())
+    @cached
+    def U_grad_i(self,i):
+        return dU_dti(self.Kgrad_param(i), U=self.U(), S=self.S())
 
-    #@cached
-    #def USi2grad(self,i):
-    #    # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
-    #    Si2grad = -0.5*self.S()**(-1.5)*self.Sgrad(i)
-    #    return self.Ugrad(i)*(self.S()**(-0.5)) + self.U()*Si2grad
+    @cached
+    def USi2_grad_i(self,i):
+        # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
+        Si2grad = -0.5 * self.S()**(-1.5) * self.S_grad_i(i)
+        return self.U_grad_i(i) * (self.S()**(-0.5)) + self.U() * Si2grad
 
     ###########################
     # Monte Carlo methods
@@ -245,7 +245,7 @@ class Covariance(Cached, Observed):
                 DmK = self.K_grad_interParam_i(n)
                 KiDnK = self.solve(DnK)
                 KiDmK = self.solve(DmK)
-                R[m,n] = 0.5*(KiDnK*KiDmK).sum()
+                R[m,n] = 0.5 * (KiDnK.T * KiDmK).sum()
         return R
 
     def setFIinv(self, value):

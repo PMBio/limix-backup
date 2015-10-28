@@ -78,6 +78,9 @@ class VarianceDecomposition:
         # desinc
         self._desync()
 
+        #TODO: check if necessary
+        self.Ntest = None
+
     def setY(self,Y,standardize=False):
         """
         Set phenotype matrix

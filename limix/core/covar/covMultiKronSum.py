@@ -16,7 +16,7 @@ class CovMultiKronSum(ACombinatorCov):
     The number of paramteters is the sum of the parameters of the single column covariances.
     """
 
-    def __init__(self, C, R, ls='default'):
+    def __init__(self, C, R, ls='rot2', dot_method='kron'):
         """
         Args:
             C:     list of column covariances
@@ -43,8 +43,10 @@ class CovMultiKronSum(ACombinatorCov):
             self.covars.append(C[term_i])
             C[term_i].register(self.col_cov_has_changed)
         # strategy to solve the linear system
-        assert ls in ['default', 'rot', 'rot2']
+        assert ls in ['norot', 'rot', 'rot2']
+        assert dot_method in ['std', 'kron']
         self._ls = ls
+        self._dot_method = dot_method
         self.c2ks = Cov2KronSum(Cg=C[self.n_terms-2], Cn=C[self.n_terms-1], R=R[self.n_terms-2])
 
     def col_cov_has_changed(self):
@@ -178,59 +180,189 @@ class CovMultiKronSum(ACombinatorCov):
     # Non-cached methods
     ####################
     def dot(self, M):
-        vei_M = M.reshape((self.dim_r, self.dim_c, M.shape[1]), order='F')
-        return self.dot_NxPxS(vei_M).reshape(M.shape, order='F')
+        # M is NxPxS
+        m = M.transpose((2,1,0)).reshape(-1)
+        return self._dot_kron(m).reshape(M.shape, order='F')
 
-    def dot_NxPxS(self, M):
-        """ M is NxPxS """
-        RV = sp.zeros_like(M)
+    def _dot_std(self, M):
+        return sp.dot(self.K(), M)
+
+    def _dot_std_rot(self, M):
+        return sp.dot(self.Kt(), M)
+
+    def _dot_std_rot2(self, M):
+        return sp.dot(self.Ktt(), M)
+
+    def _dot_kron(self, m):
+        """ m is NPS vector """
+        # M is SxPxN
+        dim_s = m.size / (self.dim_c * self.dim_r)
+        M = m.reshape((dim_s, self.dim_c, self.dim_r))
+        RV = sp.zeros((self.dim_c, self.dim_r, dim_s))
         for ti in range(self.n_terms-1):
-            RV += vei_CoR_veX(M, C=self.C[ti].K(), R=self.R[ti]) 
-        RV += vei_CoR_veX(M, C=self.C[-1].K()) 
-        return RV
+            RV += sp.tensordot(self.C[ti].K(), sp.tensordot(self.R[ti], M, (1, 2)), (1, 2))
+        RV += sp.tensordot(self.C[-1].K(), M, (1,1)).transpose((0,2,1))
+        # RV is now PxNxS
+        return RV.transpose((2,0,1)).reshape(-1)
 
-    def dot_NxPxS_rot(self, M):
-        RV = M.copy()
+    def _dot_kron_rot(self, m):
+        """ m is NPS vector """
+        # M is SxPxN
+        dim_s = m.size / (self.dim_c * self.dim_r)
+        M = m.reshape((dim_s, self.dim_c, self.dim_r))
+        RV = sp.zeros((self.dim_c, self.dim_r, dim_s))
+        RV[:] = M.transpose((1,2,0))
         for ti in range(self.n_terms-1):
-            RV += vei_CoR_veX(M, C=self.Ct()[ti], R=self.R[ti]) 
-        return RV
+            RV += sp.tensordot(self.Ct()[ti], sp.tensordot(self.R[ti], M, (1, 2)), (1, 2))
+        # RV is now PxNxS
+        return RV.transpose((2,0,1)).reshape(-1)
 
-    def dot_NxPxS_rot2(self, M):
-        RV = M.copy()
-        RV*= self.c2ks.SpI().reshape((self.dim_r, self.dim_c), order='F')[:, :, sp.newaxis]
+    def _dot_kron_rot2(self, m):
+        """ m is NPS vector """
+        # M is SxPxN
+        dim_s = m.size / (self.dim_c * self.dim_r)
+        M = m.reshape((dim_s, self.dim_c, self.dim_r))
+        RV = sp.zeros((self.dim_c, self.dim_r, dim_s))
+        RV[:] = M.transpose((1,2,0))
+        RV *= self.c2ks.SpI().reshape((self.dim_r, self.dim_c), order='F').T[:, :, sp.newaxis]
         for ti in range(self.n_terms-2):
-            RV += vei_CoR_veX(M, C=self.Ctt()[ti], R=self.Rtt()[ti]) 
-        return RV
+            RV += sp.tensordot(self.Ctt()[ti], sp.tensordot(self.Rtt()[ti], M, (1, 2)), (1, 2))
+        # RV is now PxNxS
+        return RV.transpose((2,0,1)).reshape(-1)
 
-    def solve_ls_NxPxS(self, M, X0=None):
-        # X is NxPxS tensor
+    def solve_ls_kron(self, M, X0=None):
+        # M is NxPxS tensor
         if len(M.shape)==2:     Mt = M[:, :, sp.newaxis]
         else:                   Mt = M
-        if X0 is None:          X0 = 1E-3 * sp.randn(*M.shape)
+        if X0 is None:          X0 = 1E-3 * sp.randn(*Mt.shape)
         if len(X0.shape)==2:    Xt0 = X0[:, :, sp.newaxis]
         else:                   Xt0 = X0
         if self._ls=='rot':
             Mt = vei_CoR_veX(Mt, C=self.C[-1].USi2().T)
+            dot_f = self._dot_kron_rot
         elif self._ls=='rot2':
+            dot_f = self._dot_kron_rot2
             Mt = vei_CoR_veX(Mt, C=self.c2ks.Lc(), R=self.c2ks.Lr())
-        def veKvei(x):
-            _Xt = x.reshape((self.dim_r, self.dim_c, Mt.shape[2]), order='F')
-            if self._ls=='default':
-                return self.dot_NxPxS(_Xt).reshape(_Xt.size, order='F')
-            elif self._ls=='rot':
-                return self.dot_NxPxS_rot(_Xt).reshape(_Xt.size, order='F')
-            elif self._ls=='rot2':
-                return self.dot_NxPxS_rot2(_Xt).reshape(_Xt.size, order='F')
+        elif self._ls=='norot':
+            dot_f = self._dot_kron
+        Kx_O = sla.LinearOperator((Mt.size, Mt.size), matvec=dot_f, rmatvec=dot_f, dtype='float64')
+        # vectorize
+        m     = sp.zeros(Mt.size)
+        m[:]  = Mt.transpose((2,1,0)).reshape(-1)
+        x0    = sp.zeros(Mt.size)
+        x0[:] = Xt0.transpose((2,1,0)).reshape(-1)
+        r, _ = sla.cgs(Kx_O, m, x0=x0, tol=self._tol)
+        R = r.reshape((Mt.shape[2], self.dim_c, self.dim_r)).transpose((2,1,0))
+        if self._ls=='rot':
+            R1 = vei_CoR_veX(R, C=self.C[-1].USi2())
+        elif self._ls=='rot2':
+            R1 = vei_CoR_veX(R, C=self.c2ks.Lc().T, R=self.c2ks.Lr().T)
+        elif self._ls=='norot':
+            R1 = R
+        if len(M.shape)==2:     R1 = R1[:,:,0]
+        return R1
+
+    def solve_ls_std(self, M, X0=None):
+        # M is NxPxS tensor
+        if len(M.shape)==2:     Mt = M[:, :, sp.newaxis]
+        else:                   Mt = M
+        if X0 is None:          X0 = 1E-3 * sp.randn(*Mt.shape)
+        if len(X0.shape)==2:    Xt0 = X0[:, :, sp.newaxis]
+        else:                   Xt0 = X0
+        if self._ls=='rot':
+            Mt = vei_CoR_veX(Mt, C=self.C[-1].USi2().T)
+            dot_f = self._dot_std_rot
+        elif self._ls=='rot2':
+            dot_f = self._dot_std_rot2
+            Mt = vei_CoR_veX(Mt, C=self.c2ks.Lc(), R=self.c2ks.Lr())
+        elif self._ls=='norot':
+            dot_f = self._dot_std
+        def veKvei(m):
+            _M = m.reshape((self.dim_r * self.dim_c, Mt.shape[2]), order='F')
+            return dot_f(_M).reshape(M.size, order='F')
         Kx_O = sla.LinearOperator((Mt.size, Mt.size), matvec=veKvei, rmatvec=veKvei, dtype='float64')
         # vectorize
-        m  = Mt.reshape(Mt.size, order='F')
-        x0 = Xt0.reshape(Xt0.size, order='F')
+        m     = sp.zeros(Mt.size)
+        m[:]  = Mt.reshape(Mt.size, order='F')
+        x0    = sp.zeros(Xt0.size)
+        x0[:] = Xt0.transpose((2,1,0)).reshape(-1)
         r, _ = sla.cgs(Kx_O, m, x0=x0, tol=self._tol)
+        R = r.reshape((self.dim_r, self.dim_c, Mt.shape[2]), order='F')
         if self._ls=='rot':
-            r = vei_CoR_veX(r.reshape(Mt.shape, order='F'), C=self.C[-1].USi2())
+            R1 = vei_CoR_veX(R, C=self.C[-1].USi2())
         elif self._ls=='rot2':
-            r = vei_CoR_veX(r.reshape(Mt.shape, order='F'), C=self.c2ks.Lc().T, R=self.c2ks.Lr().T)
-        return r.reshape(M.shape, order='F')
+            R1 = vei_CoR_veX(R, C=self.c2ks.Lc().T, R=self.c2ks.Lr().T)
+        elif self._ls=='norot':
+            R1 = R
+        if len(M.shape)==2:     R1 = R1[:,:,0]
+        return R1
+
+    def solve_ls_NxPxS(self, M, X0=None):
+        if self._dot_method=='std':
+            return self.solve_ls_std(M, X0=X0)
+        elif self._dot_method=='kron':
+            return self.solve_ls_kron(M, X0=X0)
+
+    def solve_ls(self, M, X0=None):
+        Mt = M.reshape((self.dim_r, self.dim_c, M.shape[1]), order='F')
+        if X0 is not None:
+            X0t = X0.reshape((self.dim_r, self.dim_c, X0.shape[1]), order='F')
+        else:
+            X0t = None
+        return self.solve_ls_NxPxS(Mt, X0=X0t).reshape((self.dim_r * self.dim_c, M.shape[1]), order='F')
+
+    #DEPRECATED
+
+    #def dot_NxPxS(self, M):
+    #    """ M is NxPxS """
+    #    RV = sp.zeros_like(M)
+    #    for ti in range(self.n_terms-1):
+    #        RV += vei_CoR_veX(M, C=self.C[ti].K(), R=self.R[ti]) 
+    #    RV += vei_CoR_veX(M, C=self.C[-1].K()) 
+    #    return RV
+
+    #def dot_NxPxS_rot(self, M):
+    #    RV = M.copy()
+    #    for ti in range(self.n_terms-1):
+    #        RV += vei_CoR_veX(M, C=self.Ct()[ti], R=self.R[ti]) 
+    #    return RV
+
+    #def dot_NxPxS_rot2(self, M):
+    #    RV = M.copy()
+    #    RV*= self.c2ks.SpI().reshape((self.dim_r, self.dim_c), order='F')[:, :, sp.newaxis]
+    #    for ti in range(self.n_terms-2):
+    #        RV += vei_CoR_veX(M, C=self.Ctt()[ti], R=self.Rtt()[ti]) 
+    #    return RV
+
+    #def solve_ls_NxPxS(self, M, X0=None):
+    #    # X is NxPxS tensor
+    #    if len(M.shape)==2:     Mt = M[:, :, sp.newaxis]
+    #    else:                   Mt = M
+    #    if X0 is None:          X0 = 1E-3 * sp.randn(*M.shape)
+    #    if len(X0.shape)==2:    Xt0 = X0[:, :, sp.newaxis]
+    #    else:                   Xt0 = X0
+    #    if self._ls=='rot':
+    #        Mt = vei_CoR_veX(Mt, C=self.C[-1].USi2().T)
+    #    elif self._ls=='rot2':
+    #        Mt = vei_CoR_veX(Mt, C=self.c2ks.Lc(), R=self.c2ks.Lr())
+    #    def veKvei(x):
+    #        _Xt = x.reshape((self.dim_r, self.dim_c, Mt.shape[2]), order='F')
+    #        if self._ls=='default':
+    #            return self.dot_NxPxS(_Xt).reshape(_Xt.size, order='F')
+    #        elif self._ls=='rot':
+    #            return self.dot_NxPxS_rot(_Xt).reshape(_Xt.size, order='F')
+    #        elif self._ls=='rot2':
+    #            return self.dot_NxPxS_rot2(_Xt).reshape(_Xt.size, order='F')
+    #    Kx_O = sla.LinearOperator((Mt.size, Mt.size), matvec=veKvei, rmatvec=veKvei, dtype='float64')
+    #    # vectorize
+    #    m  = Mt.reshape(Mt.size, order='F')
+    #    x0 = Xt0.reshape(Xt0.size, order='F')
+    #    r, _ = sla.cgs(Kx_O, m, x0=x0, tol=self._tol)
+    #    if self._ls=='rot':
+    #        r = vei_CoR_veX(r.reshape(Mt.shape, order='F'), C=self.C[-1].USi2())
+    #    elif self._ls=='rot2':
+    #        r = vei_CoR_veX(r.reshape(Mt.shape, order='F'), C=self.c2ks.Lc().T, R=self.c2ks.Lr().T)
+    #    return r.reshape(M.shape, order='F')
 
     #####################
     # Monte Carlo methods

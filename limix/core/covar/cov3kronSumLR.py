@@ -2,6 +2,8 @@ import sys
 from covar_base import Covariance
 from limix.core.covar import Cov2KronSum
 from limix.core.covar import LowRankCov
+from limix.core.covar import Rank1PCov 
+from limix.core.covar import Rank1MCov
 from limix.core.type.cached import cached
 from limix.core.type.exception import TooExpensiveOperationError
 from limix.core.utils import my_name
@@ -10,6 +12,7 @@ import scipy as sp
 import numpy as np
 import scipy.linalg as la
 import warnings
+from limix.utils.linalg import vei_CoR_veX
 
 import pdb
 
@@ -26,7 +29,7 @@ class Cov3KronSumLR(Cov2KronSum):
         - rank_r: rank of low-rank row covariance
     """
 
-    def __init__(self, Cg=None, Cn=None, G=None, R=None, rank=1, Cr=None, S_R=None, U_R=None):
+    def __init__(self, Cg=None, Cn=None, G=None, R=None, rank=1, Cr=None, S_R=None, U_R=None, corr_r=None):
         """
         Args:
             Cg:     Limix covariance matrix for Cg (dimension dim_c)
@@ -38,12 +41,14 @@ class Cov3KronSumLR(Cov2KronSum):
                     If not specified, a low-rank covariance matrix is considered
             S_R:    N vector of eigenvalues of R
             U_R:    [N, N] eigenvector matrix of R
+            corr:   if corr==1: considers a rank1 covariance with correlation = 1 
+                    if corr==-1: considers a rank1 covariance with correlation = -1 
         """
         Covariance.__init__(self)
         self._Cr_act = True
         self._Cg_act = True
         self._Cn_act = True
-        self.setColCovars(Cg=Cg, Cn=Cn, rank=rank, Cr=None)
+        self.setColCovars(Cg=Cg, Cn=Cn, rank=rank, Cr=None, corr_r=corr_r)
         self.setR(R=R, S_R=S_R, U_R=U_R)
         self.G = G
         self.dim = self.dim_c * self.dim_r
@@ -89,13 +94,23 @@ class Cov3KronSumLR(Cov2KronSum):
         self.G = value
 
     # normal setter for col covars
-    def setColCovars(self, Cg=None, Cn=None, rank=1, Cr=None):
+    def setColCovars(self, Cg=None, Cn=None, rank=1, Cr=None, corr_r=None):
         assert Cg is not None, 'Cov2KronSum: Specify Cg!'
         assert Cn is not None, 'Cov2KronSum: Specify Cn!'
         assert Cg.dim==Cn.dim, 'Cov2KronSum: Cg and Cn must have same dimensions!'
         assert Cr is None, '%s: more general covariance matrices are not supported at the moment' % self.__class__.__name__
         if Cr is None:
-            Cr = LowRankCov(Cg.dim, rank)
+            assert corr_r in [1, -1, None], 'Cov3KronSumLR: corr_r value not valid'
+            if corr_r==1:
+                assert Cg.dim==2, 'Cov3KronSumLR: corr_r option available only for 2 tasks'
+                assert rank==1, 'Cov3KronSumLR: corr_r supported only for rank = 1'
+                Cr = Rank1PCov()
+            elif corr_r==-1:
+                assert Cg.dim==2, 'Cov3KronSumLR: corr_r option available only for 2 tasks'
+                assert rank==1, 'Cov3KronSumLR: corr_r supported only for rank = 1'
+                Cr = Rank1MCov()
+            else:
+                Cr = LowRankCov(Cg.dim, rank)
             Cr.setRandomParams()
             self._rank_c = rank
         else:
@@ -304,6 +319,25 @@ class Cov3KronSumLR(Cov2KronSum):
     def Sr_X_Ctilde(X, i):
         pass
 
+    def solve_t(self, Mt):
+        """
+        Mt is dim_r x dim_c x d tensor
+        """
+        if len(Mt.shape)==2:    _Mt = Mt[:, :, sp.newaxis]
+        else:                   _Mt = Mt
+        LMt = vei_CoR_veX(_Mt, R=self.Lr(), C=self.Lc())
+        DMt = self.D()[:, :, sp.newaxis] * LMt
+        WrDMtWc = vei_CoR_veX(DMt, R=self.Wr().T, C=self.Wc().T)
+        ve_WrDMtWc = sp.reshape(WrDMtWc, (WrDMtWc.shape[0] * WrDMtWc.shape[1], _Mt.shape[2]), order='F')
+        Hi_ve_WrDMtWc = la.cho_solve((self.H_chol(), True), ve_WrDMtWc)
+        vei_HiveWrDMtWc = Hi_ve_WrDMtWc.reshape(WrDMtWc.shape, order = 'F')
+        Wr_HiveWrDMtWc_Wc = vei_CoR_veX(vei_HiveWrDMtWc, R=self.Wr(), C=self.Wc())
+        DWrHiveWrDMtWcWc = self.D()[:,:,sp.newaxis] * Wr_HiveWrDMtWc_Wc
+        RV = DMt - DWrHiveWrDMtWcWc
+        RV = vei_CoR_veX(RV, R=self.Lr().T, C=self.Lc().T)
+        if len(Mt.shape)==2:    RV = RV[:, :, 0]
+        return RV
+
     #####################
     # Overwritten covar_base methods
     #####################
@@ -356,6 +390,124 @@ class Cov3KronSumLR(Cov2KronSum):
         r = (self.d() * self.diag_Ctilde_o_Sr(i)).sum()
         r-= (self.H_inv() * self.Kbar(i)).sum()
         return r
+
+    #######################
+    # Symmetric factorization
+    # it uses the lowrank update of the symmetric factorization
+    # proposed in S Ambikasaran, 2014
+    #######################
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
+    def DhW(self):
+        return self.d()[:, sp.newaxis]**(0.5) * self.W()
+
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
+    def _X(self):
+        L = la.cholesky(self._UU()).T
+        Li = la.inv(L)
+        M = la.cholesky(sp.dot(L.T, L) + sp.eye(L.shape[0])).T
+        return sp.dot(Li.T, sp.dot(M - sp.eye(M.shape[0]), Li))
+
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
+    def _UU(self):
+        RV = sp.dot(self.DhW().T, self.DhW())
+        _S, _U = la.eigh(RV)
+        if _S.min()<0:
+            RV += (abs(_S.min()) + 1e-9) * sp.eye(RV.shape[0])
+        return RV
+
+    @cached(['col_cov', 'row_cov', 'G', 'covar_base'])
+    def _XipUU_inv(self):
+        return la.inv(la.inv(self._X()) + self._UU())
+
+    @cached(['col_cov', 'covar_base'])
+    def Lc_inv(self):
+        return la.inv(self.Lc())
+
+    def Kh_dot_ve(self, M):
+        # M is an dim_r x dim_c matrix
+        m = M.reshape((M.size, 1), order='F')
+        vei_UXUveM = sp.dot(self.DhW(), sp.dot(self._X(), sp.dot(self.DhW().T, m)))
+        AM = M + vei_UXUveM.reshape(M.shape, order='F')
+        DAM = self.D()**(-0.5) * AM 
+        return sp.dot(self.Lr().T, sp.dot(DAM, self.Lc_inv().T))
+
+    def Kh_inv_dot_ve(self, M):
+        # M is an dim_r x dim_c matrix
+        DLrMLc = self.D()**(0.5) * sp.dot(self.Lr(), sp.dot(M, self.Lc().T))
+        m1 = DLrMLc.reshape((M.size, 1), order='F')
+        m2 = sp.dot(self.DhW(), sp.dot(self._XipUU_inv(), sp.dot(self.DhW().T, m1)))
+        return (m1 - m2).reshape(M.shape, order='F')
+
+    ########################
+    # DEPRECATED: Fisher information on foreground params to get score test
+    ########################
+    def _O_dot(self, Mt):
+        """
+        Mt is dim_r x dim_c x d tensor
+        """
+        DMt = self.D()[:, :, sp.newaxis] * Mt
+        WrDMtWc = vei_CoR_veX(DMt, R=self.Wr().T, C=self.Wc().T)
+        ve_WrDMtWc = sp.reshape(WrDMtWc, (WrDMtWc.shape[0] * WrDMtWc.shape[1], Mt.shape[2]), order='F')
+        Hi_ve_WrDMtWc = la.cho_solve((self.H_chol(), True), ve_WrDMtWc)
+        vei_HiveWrDMtWc = Hi_ve_WrDMtWc.reshape(WrDMtWc.shape, order = 'F')
+        Wr_HiveWrDMtWc_Wc = vei_CoR_veX(vei_HiveWrDMtWc, R=self.Wr(), C=self.Wc())
+        DWrHiveWrDMtWcWc = self.D()[:,:,sp.newaxis] * Wr_HiveWrDMtWc_Wc
+        RV = DMt - DWrHiveWrDMtWcWc
+        return RV
+
+    def _getIscoreTest(self, n_seeds = 200, seed=None, debug=False, debug1=False, debug2=False):
+        """
+        I_{nm} = 0.5 * tr(Ki D_mK Ki D_nK)
+        """
+        n_params = self.Cr.getNumberParams()
+        R = sp.zeros((n_params,n_params))
+        if debug:
+            for m in range(n_params):
+                for n in range(n_params):
+                    DnK = self.K_grad_i(m)
+                    DmK = self.K_grad_i(n)
+                    KiDnK = self.solve(DnK)
+                    KiDmK = self.solve(DmK)
+                    R[m,n] = 0.5 * (KiDnK.T * KiDmK).sum()
+        elif debug1:
+            if seed is not None:
+                sp.random.seed(seed)
+            Z = sp.randn(self.dim_r, self.dim_c, n_seeds)
+            norm = sp.sqrt(self.dim / (float(n_seeds) * (Z**2).sum((0,1))))
+            Z*= norm[sp.newaxis, sp.newaxis, :]
+            z = Z.reshape((Z.shape[0]*Z.shape[1], Z.shape[2]), order='F')
+            for m in range(n_params):
+                for n in range(n_params):
+                    DnK = self.K_grad_i(n)
+                    DmK = self.K_grad_i(m)
+                    KiDnK = self.solve(DnK)
+                    KiDmK = self.solve(DmK)
+                    _z = sp.dot(KiDmK, sp.dot(KiDnK, z))
+                    R[m,n] = 0.5*(z * _z).sum()
+            R = 0.5 * (R + R.T)
+        else:
+            if seed is not None:
+                sp.random.seed(seed)
+            Z = sp.randn(self.dim_r, self.dim_c, n_seeds)
+            norm = sp.sqrt(self.dim / (float(n_seeds) * (Z**2).sum((0,1))))
+            Z*= norm
+            #WrWrZ = sp.dot(self.Wr(), sp.dot(self.Wr().T,Z))
+            WrWrZ = vei_CoR_veX(vei_CoR_veX(Z, R=self.Wr().T), R=self.Wr())
+            for m in range(n_params):
+                Cm = self.Ctilde(m)
+                #WrWrZCm = sp.dot(WrWrZ, Cm)
+                WrWrZCm = vei_CoR_veX(WrWrZ, C=Cm)
+                _Z = self._O_dot(WrWrZCm)
+                #_WrWrZ = sp.dot(self.Wr(), sp.dot(self.Wr().T, _Z))
+                _WrWrZ = vei_CoR_veX(vei_CoR_veX(_Z, R=self.Wr().T), R=self.Wr())
+                for n in range(n_params):
+                    Cn = self.Ctilde(n)
+                    #_WrWrZCn = sp.dot(_WrWrZ, Cn)
+                    _WrWrZCn = vei_CoR_veX(_WrWrZ, C=Cn)
+                    __Z = self._O_dot(_WrWrZCn)
+                    R[m, n] = 0.5 * (Z * __Z).sum()
+            R = 0.5 * (R + R.T)
+        return R
 
 
 if __name__ == '__main__':
