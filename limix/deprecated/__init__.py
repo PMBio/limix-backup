@@ -17,9 +17,13 @@ __all__ = ['']
 __version__ = '0.6.6'
 
 #make core available on flat import
-import core
-from core import *
-#import limix
+try:
+	import core
+	from core import *
+	LIMIX_DEPRECATED = True
+except ImportError:
+	LIMIX_DEPRECATED = False
+
 import limix
 #verbose flags for the entire module
 verbose = False
