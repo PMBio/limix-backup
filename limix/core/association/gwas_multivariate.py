@@ -29,7 +29,7 @@ class MultivariateGWAS(GWAS):
 				 h2=None, interact_with_snp=None, nGridH2=10, standardizer=None, add_bias=True,
 				 normalize_K=True, blocksize=10000, A_snps=None, R2=None, C1=None, C2=None):
 		"""
-		generate a multivariate GWAS object
+		generate a multivariate GWAS object.
 
 		Args:
 			snps_test:	pysnptools.snpreader object containing the SNPs to be tested
@@ -210,91 +210,4 @@ class MultivariateGWAS(GWAS):
 			('Nullh2', np.zeros((snps.sid_count)) + h2)
 		]
 		return pd.DataFrame.from_items(items)
-
-if __name__ == "__main__":
-
-	bed_fn = "../../test/data/plinkdata/toydata"
-	pheno_fn = bed_fn + ".phe6"#"../../test/data/plinkdata/toydata.phe"
-	covariate_fn = 	bed_fn + ".phe"
-
-	
-	blocksize = 20000
-	snp_reader = Bed(bed_fn)#[:,0:50000]
-	#snp_reader.run_once()
-	if 1:
-		standardizer = pysnptools.standardizer.Unit()
-	else:
-		standardizer = pysnptools.standardizer.Beta(1,2)
-	pheno = pysnptools.util.pheno.loadPhen(filename=pheno_fn,   missing ='-9')
-	pheno = GWAS._pheno_fixup(pheno)
-	covariates = GWAS._pheno_fixup(covariate_fn, iid_source_if_none=pheno)
-	print "intersecting data"
-	t00 = time.time()
-	snp_intersect, pheno_intersect, covariates_intersect = pysnptools.util.intersect_apply([snp_reader, pheno, covariates], sort_by_dataset=True)
-	
-	pheno_df = GWAS.check_pheno_format(pheno_intersect)
-	covariates_df = GWAS.check_pheno_format(covariates_intersect)
-
-	t1 = time.time()
-	print "done intersecting after %.4fs" % (t1-t00)
-
-	print "building kernel"
-	t0 = time.time()
-	if 0: 
-		#snp_data = snp_intersect.read().standardize()
-		snp_data = snp_intersect.read().standardize(standardizer)
-
-		G = snp_data.val
-
-		K = G.dot(G.T)
-		K/=K.diagonal().mean()
-	else:
-		K = snp_intersect.kernel(standardizer=standardizer,blocksize=blocksize)
-		K /= K.diagonal().mean()
-	t1 = time.time()
-	print "done building kernel after %.4fs" % (t1-t0)	
-
-	if 0:
-		print "computing Eigenvalue decomposition of K"
-		t0 = time.time()
-		S,U = la.eigh(K)
-		t1 = time.time()
-		print "done computing eigenvalue decomposition of kernel after %.4fs" % (t1-t0)	
-	if 1:
-		# define phenotype
-		N = pheno_df.shape[0]
-		P = pheno_df.shape[1]
-		Y = pheno_df.values
-		# define fixed effects
-		F = []; A = []
-		X_cov = np.concatenate((np.ones((N,1)),covariates_df.values),1)
-		F.append(X_cov)
-		A.append(np.eye(P))
-		# define row covariance
-		R  = K
-		# define col covariances
-		Cg = FreeFormCov(P)
-		Cn = FreeFormCov(P)
-		Cg.setCovariance(0.5 * np.eye(P))
-		Cn.setCovariance(0.5 * np.cov(Y.T))
-		# define gp
-		gp = GP2KronSum(Y=Y, F=F, A=A, Cg=Cg, Cn=Cn, R=R)
-		gp.optimize()
-
-		C1 = gp.covar.Cg.K()
-		C2 = gp.covar.Cn.K()
-	if 1:
-		print "running GWAS"
-		t0 = time.time()
-		mygwas = MultivariateGWAS(K=K, snps_K=None, snps_test=snp_intersect, phenotype=pheno_df, covariates=covariates_df, h2=None, interact_with_snp=None, nGridH2=10, standardizer=standardizer,C1=C1,C2=C2)
-		if 1:
-			result = mygwas.compute_association(blocksize=blocksize, temp_dir=None)#'./temp_dir_testdata/')
-		else:
-			result_block = mygwas.snps_test_block(block_start=0, block_end=blocksize)
-			mygwas._save_results_block("./res_check/", result_block)
-		t1 = time.time()
-		print "done running GWAS after %.4fs" % (t1-t0)
-		print "total: %.4fs" % (t1-t00)
-
-
 

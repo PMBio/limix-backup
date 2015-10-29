@@ -6,8 +6,6 @@ import scipy as sp
 import limix.core.association.kron_util as kron_util
 import limix.core.association.kron_gwas as kron_gwas
 import limix.core.association.kron_lmm as kron_lmm
-
-import ipdb
 import limix.core.fastany.fast_any as fast_any
 
 class KroneckerLMM_vec(kron_gwas.KroneckerGWAS):
