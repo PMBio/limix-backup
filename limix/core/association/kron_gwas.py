@@ -10,7 +10,12 @@ import limix.core.association.kron_lmm as kron_lmm
 class KroneckerGWAS(kron_lmm.KroneckerLMM):
 	def __init__(self, Y, R1, C1, R2, C2, X, A=None, h2=0.5, reml=True):
 		"""
-		Kronecker mixed model implementation for performing GWAS testing
+		Kronecker mixed model implementation for performing GWAS testing.
+		The maths for the null model can be found in kron_lmm.KroneckerLMM
+
+		model specification:
+
+		vec(Y) ~ N( vec(sum_i vec(X_i * B_i * A_i ) + vec(X_snp * B_snp * A_snp), sigma2 * [ h2 * C1 x R1 + (1-h2) * C2 x R2 ]  )
 
 		Args:
 			Y:		phenotypes [N x P] ndarray
@@ -137,6 +142,9 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 
 	@cached(["X","A","Y","C","R","X_snps","A_snps","h2","reml"])
 	def LL_snps(self):
+		"""
+		computes the alternative model log likelihood including the SNP using efficient low rank updates on the fixed effects.
+		"""
 		yKy = self.resKres_snps()
 		logdet = self.logdet_K()
 		if self.reml:

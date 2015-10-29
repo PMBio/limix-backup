@@ -15,6 +15,10 @@ class KroneckerLMM_vec(kron_gwas.KroneckerGWAS):
 		"""
 		Kronecker mixed model implementation performing maths operations expensively (for debugging purposes)
 
+		model specification:
+
+		vec(Y) ~ N( vec(sum_i vec(X_i * B_i * A_i ), sigma2 * [ h2 * C1 x R1 + (1-h2) * C2 x R2 ]  )
+
 		Args:
 			Y:		phenotypes [N x P] ndarray
 			R1:		first row covariance matrix [N x N] ndarray
