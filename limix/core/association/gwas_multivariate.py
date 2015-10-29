@@ -26,7 +26,30 @@ from limix.utils.check_grad import mcheck_grad
 
 class MultivariateGWAS(GWAS):
 	def __init__(self, snps_test, phenotype, K=None, snps_K=None, covariates=None, 
-				 h2=None, interact_with_snp=None, nGridH2=10, standardizer=None, add_bias=True, normalize_K=True, blocksize=10000, A_snps=None, R2=None, C1=None, C2=None):
+				 h2=None, interact_with_snp=None, nGridH2=10, standardizer=None, add_bias=True,
+				 normalize_K=True, blocksize=10000, A_snps=None, R2=None, C1=None, C2=None):
+		"""
+		generate a multivariate GWAS object
+
+		Args:
+			snps_test:	pysnptools.snpreader object containing the SNPs to be tested
+			phenotype:	
+			K:			kinship matrix ([N x N] ndarray, optional)
+			snps_K:		pysnptools.snpreader object containing the SNPs to be used in the kinship matrix
+			covariates:	
+			h2:			heritability can be set a priori.
+						If not set, the code will perform maximum likelihood estimation (optional)
+			interact_with_snp:	
+			nGridH2:	number of grid points for h2 optimization
+			standardizer:	pysnptools.standardizer to be applied on SNPs (default Unit)
+			add_bias:	add a bias term to the covariates? (default True)
+			normalize_K:	normalize the kinship matrix to have trace=N
+			blocksize:	number of SNPs to load to memory at once when computing the kinship matrix (default 10000)
+			A_snps:		The design matrix for SNP testing (default np.eye(N), corresponding to an independent effect test)
+			R2:			The noise row covariance matrix (default np.eye(N))
+			C1:			The kinship trait x trait covariance matrix (default np.eye(P))
+			C2:			The noise trait x trait covariance matrix (default np.eye(P))
+		"""
 		if standardizer is None:
 			standardizer = pysnptools.standardizer.Unit()
 		self.standardizer = standardizer
@@ -73,10 +96,25 @@ class MultivariateGWAS(GWAS):
 		self.A_snps = A_snps
 		self.interact_with_snp = interact_with_snp
 		self.nGridH2 = nGridH2
-		self.lmm = kron_gwas.KroneckerGWAS(Y=self.phenotype.values, R1=self.K, C1=self.C1, R2=self.R2, C2=self.C2, X=self.covariates.values, A=[None], h2=0.5, reml=True, X_snps=None, A_snps=None)
-		self.lmm.find_h2()
+		self.lmm = kron_gwas.KroneckerGWAS(Y=self.phenotype.values, R1=self.K, C1=self.C1, R2=self.R2, C2=self.C2, X=self.covariates.values, A=[None], h2=0.5, reml=True)
+		if h2 is None:
+			self.lmm.find_h2()
+		else:
+			self.lmm.h2 = h2
 
 	def compute_association(self, blocksize=10000, temp_dir=None):
+		"""
+		Test all SNP associations
+
+		Args:
+			blocksize:	number of SNPs to load in memory at once for computing associations (default: 10000)
+			temp_dir:	when specified the results are not kept in memory,
+						but rather stored in tem_pdir. This is useful when results get very big. (optional)
+
+		Returns:
+			result:		when no temp_dir is specified a pandas.DataFrame containing the GWAS results is returned.
+						when temp_dir is specified None is returned.
+		"""
 		result = None
 
 		if temp_dir is not None:
@@ -86,7 +124,7 @@ class MultivariateGWAS(GWAS):
 		for stop in range(1,len(self.intervals)):
 			res = self.snps_test_block(block_start=self.intervals[stop-1],block_end=self.intervals[stop])
 			if temp_dir is not None:
-				self.save_results_block(dir_name=temp_dir, res=res, intervals=self.intervals, idx_interval=stop)
+				self._save_results_block(dir_name=temp_dir, res=res, intervals=self.intervals, idx_interval=stop)
 			else:
 				if result is None:
 					result = res
@@ -94,7 +132,17 @@ class MultivariateGWAS(GWAS):
 					result = pd.concat([result,res])
 		return result
 
-	def save_results_block(self, dir_name, res, intervals=None, idx_interval=None):
+	def _save_results_block(self, dir_name, res, intervals=None, idx_interval=None):
+		"""
+		internal function to save GWAS results in csv format to a temporary directory
+
+		Args:
+			dir_name:		name of the temp directory to store results
+			res:			results DataFrame to store
+			intervals:		total number of intervals to do zero-padding of file names
+							(optional for the case when multiple intervals are stored)
+			idx_interval:	index of the current interval
+		"""	
 		mydir = dir_name + "/"
 		create_dir(mydir)
 		if intervals is not None:
@@ -111,6 +159,15 @@ class MultivariateGWAS(GWAS):
 
 	@staticmethod
 	def load_results(dir_name):
+		"""
+		loads previously generated results from a directory and returns as a single DataFrame
+
+		Args:
+			dir_name:		name of the temp directory to store results
+		
+		Returns:
+			pandas.DataFrame of results
+		"""
 		result = None
 		mydir = dir_name + "/"
 		myfile_pattern = "%sblock_*.csv" % (mydir)
@@ -124,12 +181,25 @@ class MultivariateGWAS(GWAS):
 		return result
 
 	def snps_test_block(self, block_start, block_end):
+		"""
+		perform association testing on test_snps[:,block_start:block_end]
+
+		Args:
+			block_start:	index of the beginning of block (0-based inclusive)
+			block_end:		index of the end of the block (0-based exclusive)
+
+		Returns:
+			pandas.DataFrame of GWAS results for the block
+		"""
 		snps = self.snps_test[:,block_start:block_end].read().standardize(self.standardizer)
 		lrts, p_values = self.lmm.run_gwas(snps=snps.val, A_snps=self.A_snps)
 		result = self._format_gwas_results(lrts=lrts, p_values=p_values, snps=snps, h2=self.lmm.h2)
 		return result
 
 	def _format_gwas_results(self, lrts, p_values, snps, h2):
+		"""
+		internal function to put GWAS result values into a nice pandas.DataFrame table format
+		"""
 		items = [
 			('SNP', snps.sid),
 			('Chr', snps.pos[:,0]), 
@@ -221,7 +291,10 @@ if __name__ == "__main__":
 			result = mygwas.compute_association(blocksize=blocksize, temp_dir=None)#'./temp_dir_testdata/')
 		else:
 			result_block = mygwas.snps_test_block(block_start=0, block_end=blocksize)
-			mygwas.save_results_block("./res_check/", result_block)
+			mygwas._save_results_block("./res_check/", result_block)
 		t1 = time.time()
 		print "done running GWAS after %.4fs" % (t1-t0)
 		print "total: %.4fs" % (t1-t00)
+
+
+

@@ -12,6 +12,21 @@ import time
 
 class KroneckerLMM(Cached):
 	def __init__(self, Y, R1, C1, R2, C2, X, A=None, h2=0.5, reml=True):
+		"""
+		Kronecker mixed model implementation
+
+		Args:
+			Y:		phenotypes [N x P] ndarray
+			R1:		first row covariance matrix [N x N] ndarray
+			C1:		first column covariance matrix [P x P] ndarray
+			R2:		second row covariance matrix [N x N] ndarray
+			C2:		second column covariance matrix [P x P] ndarray
+			X:		list of row covariates matrices of length T, each [N x D_t] ndarray
+			A:		list of column covariates matrices of length T, each either [dof_t x P] ndarray or None.
+					None will result in an efficient implementation of any effect.
+			h2:		heritability (default 0.5)
+			reml:	use REML (True) or ML (False)? (default: True)
+		"""
 		Cached.__init__(self)
 		C = []
 		R = []

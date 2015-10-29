@@ -8,12 +8,23 @@ import limix.core.association.kron_util as kron_util
 import limix.core.association.kron_lmm as kron_lmm
 
 class KroneckerGWAS(kron_lmm.KroneckerLMM):
-	def __init__(self, Y, R1, C1, R2, C2, X, A=None, h2=0.5, reml=True, X_snps=None, A_snps=None):
+	def __init__(self, Y, R1, C1, R2, C2, X, A=None, h2=0.5, reml=True):
+		"""
+		Kronecker mixed model implementation for performing GWAS testing
+
+		Args:
+			Y:		phenotypes [N x P] ndarray
+			R1:		first row covariance matrix [N x N] ndarray
+			C1:		first column covariance matrix [P x P] ndarray
+			R2:		second row covariance matrix [N x N] ndarray
+			C2:		second column covariance matrix [P x P] ndarray
+			X:		list of row covariates matrices of length T, each [N x D_t] ndarray
+			A:		list of column covariates matrices of length T, each either [dof_t x P] ndarray or None.
+					None will result in an efficient implementation of any effect.
+			h2:		heritability (default 0.5)
+			reml:	use REML (True) or ML (False)? (default: True)
+		"""
 		kron_lmm.KroneckerLMM.__init__(self, Y=Y, R1=R1, C1=C1, R2=R2, C2=C2, X=X, A=A, h2=h2, reml=reml)
-		
-		if X_snps is not None:
-			self.X_snps = X_snps
-			self.A_snps = A_snps
 
 	@property
 	def dof_snps(self):
@@ -152,8 +163,6 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		return (lrt, p_value)
 
 	def run_gwas(self, snps, A_snps=None):
-		#X_snps_sav = self.X_snps
-		#A_snps_sav = self.A_snps
 		lrts = np.empty((snps.shape[1]))
 		p_values = np.empty((snps.shape[1]))
 		self.A_snps = [A_snps]
@@ -161,6 +170,4 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 			snp = snps[:,s:s+1]
 			self.X_snps = [snp]
 			lrts[s],p_values[s] = self.lrt_snps()
-		#self.X_snps = X_snps_sav
-		#self.A_snps = A_snps_sav
 		return lrts, p_values
