@@ -55,19 +55,35 @@ class KroneckerLMM(Cached):
 
 	@property
 	def reml(self):
+		"""
+		Boolean indicator if REML is used instead of ML
+		"""
 		return self._reml
 
 	@reml.setter
 	def reml(self,value):
+		"""
+		Boolean indicator if REML is used instead of ML
+		"""
 		self.clear_cache("reml")
 		self._reml=value
 	
 	@property
 	def h2(self):
+		"""
+		heritability parameter in the covariance term
+		sigma2 * ( h2 * C1 x R1 + (1-h2) * C2 x R2 )
+		with 0<=h2<1
+		"""
 		return self._h2
 
 	@h2.setter
 	def h2(self, value):
+		"""
+		heritability parameter in the covariance term
+		sigma2 * ( h2 * C1 x R1 + (1-h2) * C2 x R2 )
+		with 0<=h2<1
+		"""
 		assert value>=0.0, "h2 has to be non-negative, found %f" % value
 		assert value<1.0, "h2 has to be smaller than 1.0, found %f" % valyue
 		self.clear_cache("h2")
@@ -75,29 +91,51 @@ class KroneckerLMM(Cached):
 
 	@property
 	def Y(self):
+		"""
+		phenotypes [N x P] ndarray
+		"""
 		return self._Y
 
 	@Y.setter
 	def Y(self, value):
+		"""
+		phenotypes [N x P] ndarray
+		"""
 		self.clear_cache("Y")
 		self._Y = value
 
 	@property
 	def C(self):
+		"""
+		list of column covariances (length = 2)
+		[C1, C2]
+		"""
 		return self._C
 
 	@C.setter
 	def C(self, value):
+		"""
+		list of column covariances (length = 2)
+		[C1, C2]
+		"""
 		assert len(value)==2, "length missmatch C, need 2 found %i" % len(value)
 		self.clear_cache("C")
 		self._C = value
 
 	@property
 	def R(self):
+		"""
+		list of row covariances (length = 2)
+		[R1, R2]
+		"""
 		return self._R
 
 	@R.setter
 	def R(self, value):
+		"""
+		list of row covariances (length = 2)
+		[R1, R2]
+		"""
 		assert len(value)==2, "length missmatch R, need 2 found %i" % len(value)
 		self.clear_cache("R")
 		self._R = value
@@ -161,6 +199,12 @@ class KroneckerLMM(Cached):
 		return len(self.X)
 	
 	def dof_X(self, X):
+		"""
+		The number of columns of the row fixed effects design matrices X.
+
+		Returns:
+			1-dimensional ndarray of columns of X for each fixed effect term
+		"""	
 		if type(X) is list:
 			dof = np.empty((len(X)),dtype=np.int)
 			for i in xrange(len(X)):
@@ -170,6 +214,12 @@ class KroneckerLMM(Cached):
 			return X.shape[1]
 
 	def dof_A(self, A):
+		"""
+		The number of rows of the column fixed effects design matrices A.
+
+		Returns:
+			1-dimensional ndarray of rows of A for each fixed effect term
+		"""	
 		if type(A) is list:
 			dof = np.empty((len(A)),dtype=np.int)
 			for i in xrange(len(A)):
@@ -281,6 +331,12 @@ class KroneckerLMM(Cached):
 
 	@cached(["X","A","C","R","h2"])
 	def XKX(self):
+		"""
+		The Hessian matrix of the fixed effect weights beta
+		
+		Returns:
+			the cross product of the fixed effects with themselves
+		"""
 		dof = self.dof
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
 		XKX = np.empty((dof.sum(),dof.sum()))
