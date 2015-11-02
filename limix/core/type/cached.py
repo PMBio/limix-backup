@@ -3,7 +3,7 @@ import os
 import pprint
 import re
 from time import time
-from limix.utils.util_functions import smartSum
+#from limix.utils.util_functions import smartSum    #CL: This import is not used anywhere
 
 
 # HOW TO USE: Please, look at the end of the file for an example.

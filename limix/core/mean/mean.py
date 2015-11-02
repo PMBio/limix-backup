@@ -9,56 +9,6 @@ import scipy.linalg as LA
 import copy
 import pdb
 
-def compute_X1KX2(Y, D, X1, X2, A1=None, A2=None):
-    #import ipdb; ipdb.set_trace()
-    R,C = Y.shape
-    if A1 is None:
-        nW_A1 = Y.shape[1]			
-        #A1 = np.eye(Y.shape[1])	#for now this creates A1 and A2
-    else:
-        nW_A1 = A1.shape[0]
-
-    if A2 is None:
-        nW_A2 = Y.shape[1]
-        #A2 = np.eye(Y.shape[1])	#for now this creates A1 and A2
-    else:
-        nW_A2 = A2.shape[0]
-        	
-
-    nW_X1 = X1.shape[1]
-    rows_block = nW_A1 * nW_X1
-
-    if 0:#independentX2:
-        nW_X2 = 1
-    else:
-        nW_X2 = X2.shape[1]
-    cols_block = nW_A2 * nW_X2
-    	
-    block = np.zeros((rows_block,cols_block))
-
-
-    if (R>C) or (A1 is None) or (A2 is None):
-        for c in xrange(C):
-            X1D = X1 * D[:,c:c+1]
-            X1X2 = X1D.T.dot(X2)
-            if (A1 is None) and (A2 is None):
-                block[c*X1.shape[1]:(c+1)*X1.shape[1], c*X2.shape[1]:(c+1)*X2.shape[1]] += X1X2
-            elif (A1 is None):
-                block[c*X1.shape[1]:(c+1)*X1.shape[1],:] += np.kron(A2[:,c:c+1].T,X1X2)
-            elif (A2 is None):
-                block[:,c*X2.shape[1]:(c+1)*X2.shape[1]] += np.kron(A1[:,c:c+1],X1X2)
-            else:
-                A1A2 = np.outer(A1[:,c],A2[:,c])
-                block += np.kron(A1A2,X1X2)
-    else:
-        for r in xrange(R):
-            A1D = A1 * D[r:r+1,:]
-            A1A2 = A1D.dot(A2.T)
-            X1X2 = X1[r,:][:,np.newaxis].dot(X2[r,:][np.newaxis,:])
-            block += np.kron(A1A2,X1X2)
-
-    return block
-
 class mean(cObject):
 
     def __init__(self,Y, identity_trick=False):
@@ -612,13 +562,4 @@ class mean(cObject):
             for key in _update.keys():
                 indicator[key] = np.concatenate([indicator[key],_update[key]])
         self.indicator = indicator
-
-def compute_XYA(DY, X, A=None):
-
-    if A is not None:#general case
-    	DYA = DY.dot(A.T)
-    else:#any effect
-    	DYA = DY
-    return X.T.dot(DYA)#should be pre-computed
-
 
