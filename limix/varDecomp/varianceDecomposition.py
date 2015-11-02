@@ -120,7 +120,7 @@ class VarianceDecomposition:
         self.Ntest = Ntest
 
 
-    def addRandomEffect(self, K=None, is_noise=False, normalize=True, Kcross=None, trait_covar_type='freeform', rank=1, fixed_trait_covar=None, jitter=1e-4):
+    def addRandomEffect(self, K=None, is_noise=False, normalize=False, Kcross=None, trait_covar_type='freeform', rank=1, fixed_trait_covar=None, jitter=1e-4):
         """
         Add random effects term.
 
@@ -434,7 +434,7 @@ class VarianceDecomposition:
         Returns:
             LIMIX::Covariance for Trait covariance matrix
         """
-        assert trait_covar_type in ['freeform', 'diag', 'lowrank', 'lowrank_id', 'lowrank_diag', 'block', 'block_id', 'block_diag'], 'VarianceDecomposition:: trait_covar_type not valid'
+        assert trait_covar_type in ['freeform', 'diag', 'lowrank', 'lowrank_id', 'lowrank_diag', 'block', 'block_id', 'block_diag', 'fixed'], 'VarianceDecomposition:: trait_covar_type not valid'
 
         if trait_covar_type=='freeform':
             cov = FreeFormCov(self.P, jitter=jitter)
@@ -442,7 +442,7 @@ class VarianceDecomposition:
             assert fixed_trait_covar is not None, 'VarianceDecomposition:: set fixed_trait_covar'
             assert fixed_trait_covar.shape[0]==self.P, 'VarianceDecomposition:: Incompatible shape for fixed_trait_covar'
             assert fixed_trait_covar.shape[1]==self.P, 'VarianceDecomposition:: Incompatible shape for fixed_trait_covar'
-            cov = FixedCov(self.P)
+            cov = FixedCov(fixed_trait_covar)
         elif trait_covar_type=='diag':
             cov = DiagonalCov(self.P)
         elif trait_covar_type=='lowrank':
