@@ -69,22 +69,6 @@ def merged_stderr_stdout():  # $ exec 2>&1
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import pip.commands.install
 def install_distributions(distributions):
     command = pip.commands.install.InstallCommand()
@@ -96,12 +80,12 @@ def install_distributions(distributions):
 try:
     import numpy as np
 except ImportError:
-    install_distributions(['numpy'])
+    raise ImportError('numpy missing. Install numpy using pip/anaconda to continue')
     import numpy as np
 try:
     import Cython
 except ImportError:
-    install_distributions(['Cython'])
+    raise ImportError('cython missing. Install cython using pip/anaconda to continue')
 
 from Cython.Build import cythonize
 
