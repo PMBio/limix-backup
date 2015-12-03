@@ -48,7 +48,7 @@ class Cov3KronSumLR(Cov2KronSum):
         self._Cr_act = True
         self._Cg_act = True
         self._Cn_act = True
-        self.setColCovars(Cg=Cg, Cn=Cn, rank=rank, Cr=None, corr_r=corr_r)
+        self.setColCovars(Cg=Cg, Cn=Cn, rank=rank, Cr=Cr, corr_r=corr_r)
         self.setR(R=R, S_R=S_R, U_R=U_R)
         self.G = G
         self.dim = self.dim_c * self.dim_r
@@ -98,7 +98,6 @@ class Cov3KronSumLR(Cov2KronSum):
         assert Cg is not None, 'Cov2KronSum: Specify Cg!'
         assert Cn is not None, 'Cov2KronSum: Specify Cn!'
         assert Cg.dim==Cn.dim, 'Cov2KronSum: Cg and Cn must have same dimensions!'
-        assert Cr is None, '%s: more general covariance matrices are not supported at the moment' % self.__class__.__name__
         if Cr is None:
             assert corr_r in [1, -1, None], 'Cov3KronSumLR: corr_r value not valid'
             if corr_r==1:
@@ -114,7 +113,7 @@ class Cov3KronSumLR(Cov2KronSum):
             Cr.setRandomParams()
             self._rank_c = rank
         else:
-            self._rank_c = self.Cr.dim()
+            self._rank_c = Cr.X.shape[1]
         self._dim_c = Cg.dim
         self._Cr = Cr
         self._Cg = Cg

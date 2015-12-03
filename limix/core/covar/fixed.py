@@ -1,5 +1,6 @@
 import scipy as sp
 import numpy as np
+import scipy.linalg as la
 from limix.core.type.cached import cached
 from limix.core.utils import assert_make_float_array
 from limix.core.utils import assert_finite_array
@@ -50,6 +51,19 @@ class FixedCov(Covariance):
         return self._K0
 
     @property
+    @cached('K0')
+    def X0(self):
+        S, U = la.eigh(self.K0)
+        I = (S>1e-9)
+        return U[:,I]*S[I]**(0.5) 
+
+    @property
+    @cached(['covar_base', 'K0'])
+    def X(self):
+        return sp.sqrt(self.scale) * self.X0
+
+
+    @property
     def Kcross0(self):
         return self._Kcross0
 
@@ -66,6 +80,7 @@ class FixedCov(Covariance):
     def K0(self,value):
         self._K0 = value
         self.initialize(value.shape[0])
+        self.clear_cache('K0')
         self._notify()
 
     @Kcross0.setter
@@ -111,7 +126,7 @@ class FixedCov(Covariance):
 
     def getParams(self):
         if self._scale_act:
-            return self.params[0]
+            return self.params
         return np.array([])
 
     def getNumberParams(self):
@@ -123,7 +138,7 @@ class FixedCov(Covariance):
     #####################
     # Cached
     #####################
-    @cached('covar_base')
+    @cached(['covar_base', 'K0'])
     def K(self):
         return self.scale * self.K0
 
@@ -131,16 +146,15 @@ class FixedCov(Covariance):
     def Kcross(self):
         return self.scale * self.Kcross0
 
-    @cached('covar_base')
+    @cached(['covar_base', 'K0'])
     def K_grad_i(self,i):
         if i >= int(self._scale_act):
             raise ValueError("Trying to retrieve the gradient over a "
                              "parameter that is inactive.")
-
         r = self.scale * self.K0
         return r
 
-    @cached('covar_base')
+    @cached(['covar_base', 'K0'])
     def K_hess_i_j(self, i, j):
         if i >= int(self._scale_act) or j >= int(self._scale_act):
             raise ValueError("Trying to retrieve the hessian over a "
@@ -161,3 +175,11 @@ class FixedCov(Covariance):
                              "parameter that is inactive.")
 
         return self.K0
+
+
+if __name__=='__main__':
+
+    import pdb
+    C = FixedCov(sp.ones((2,2)))
+    pdb.set_trace()
+

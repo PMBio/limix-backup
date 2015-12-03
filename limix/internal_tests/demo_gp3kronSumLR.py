@@ -4,6 +4,7 @@ import scipy as sp
 import scipy.linalg as la
 from limix.core.covar import Cov3KronSumLR
 from limix.core.covar import FreeFormCov 
+from limix.core.covar import FixedCov 
 from limix.core.gp import GP3KronSumLR
 from limix.core.gp import GP
 from limix.utils.preprocess import covar_rescale
@@ -47,6 +48,12 @@ if __name__=='__main__':
 
     # define GP
     gp = GP3KronSumLR(Y = Y, Cg = Cg, Cn = Cn, R = R, G = G, rank = 1)
+    gp.optimize()
+    ipdb.set_trace()
+
+    # try optimzation with fixed covariance
+    Cr = FixedCov(sp.ones((P,P)))
+    gp = GP3KronSumLR(Y = Y, Cr=Cr, Cg = Cg, Cn = Cn, R = R, G = G, rank = 1)
     gp.optimize()
     ipdb.set_trace()
 
