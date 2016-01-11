@@ -70,6 +70,9 @@ class Covariance(Cached, Observed):
     def solve(self,M):
         return LA.cho_solve((self.chol(),True),M)
 
+    def K_grad_i_dot(self, M, i):
+        return sp.dot(self.K_grad_i(i), M)
+
     def solve_ls(self, M, M0=None):
         if M0 is None:    M0 = 1E-3 * sp.randn(*M.shape)
         def veKvei(m):
