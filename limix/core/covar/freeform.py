@@ -79,6 +79,10 @@ class FreeFormCov(Covariance):
         #    R += R.T
         return R
 
+    @property
+    def X(self):
+        return self.L()
+
     #####################
     # Activation handling
     #####################
@@ -211,6 +215,9 @@ class FreeFormCov(Covariance):
         R = sp.zeros((self.dim, self.dim))
         R[self.idx_r[i], self.idx_c[i]] = 1
         return R
+
+    def Xgrad(self, i):
+        return self.Lgrad(i)
 
 if __name__ == '__main__':
     n = 2

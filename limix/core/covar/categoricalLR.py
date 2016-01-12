@@ -187,7 +187,7 @@ class CategoricalLR(Covariance):
 
     @cached('covar_base')
     def H_chol(self):
-        return la.cholesky(self.WDiW()+sp.eye(self.WDiW().shape[0]))
+        return la.cholesky(self.WDiW()+sp.eye(self.WDiW().shape[0])).T
 
     @cached('covar_base')
     def H_inv(self):
@@ -204,9 +204,9 @@ class CategoricalLR(Covariance):
     def d_grad_i(self, i):
         RV = sp.zeros(self.dim)
         if i==0:
-            RV[self.Ie] = 1. / self.Cn.variance[0]
+            RV[self.Ie] = self.Cn.variance[0]
         elif i==1:
-            RV[~self.Ie] = 1. / self.Cn.variance[1]
+            RV[~self.Ie] = self.Cn.variance[1]
         return RV 
 
     #####################
@@ -214,6 +214,7 @@ class CategoricalLR(Covariance):
     #####################
     @cached('covar_base')
     def K(self):
+        print 'DO NOT USE ME'
         return sp.dot(self.W(), self.W().T) + sp.diag(self.d_inv()**(-1))
 
     @cached('covar_base')
@@ -242,6 +243,7 @@ class CategoricalLR(Covariance):
 
     @cached('covar_base')
     def K_grad_i(self,i):
+        print 'DO NOT USE ME'
         if i >= self.getNumberParams():
             raise ValueError("Trying to retrieve the gradient over a "
                              "parameter that is inactive.")
