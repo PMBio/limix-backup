@@ -29,14 +29,14 @@ class FixedCov(Covariance):
             assert_finite_array(Kcross0)
 
         self.Kcross0 = Kcross0
-        self.params = np.zeros(1)
+        self.scale = 1
 
     #####################
     # Properties
     #####################
     @property
     def scale(self):
-        return sp.exp(self.params[0])
+        return self._scale 
 
     @property
     def scale_ste(self):
@@ -62,7 +62,6 @@ class FixedCov(Covariance):
     def X(self):
         return sp.sqrt(self.scale) * self.X0
 
-
     @property
     def Kcross0(self):
         return self._Kcross0
@@ -73,7 +72,7 @@ class FixedCov(Covariance):
     @scale.setter
     def scale(self,value):
         assert value >= 0, 'Scale must be >= 0.'
-        self.params[0] = sp.log(value)
+        self._scale = value 
         self.clear_all()
 
     @K0.setter
@@ -118,15 +117,16 @@ class FixedCov(Covariance):
         if int(self._scale_act) != len(params):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
-        self.params[:] = params
-        self.clear_all()
+        if self._scale_act:
+            self.scale = sp.exp(params[0])
+            self.clear_all()
 
     def _calcNumberParams(self):
         self.n_params = 1
 
     def getParams(self):
         if self._scale_act:
-            return self.params
+            return sp.array([sp.log(self.scale)])
         return np.array([])
 
     def getNumberParams(self):
@@ -160,6 +160,10 @@ class FixedCov(Covariance):
             raise ValueError("Trying to retrieve the hessian over a "
                              "parameter that is inactive.")
         return self.K()
+
+    @cached(['covar_base', 'K0'])
+    def Xgrad(self, i):
+        return 0.5*self.X
 
     ####################
     # Interpretable Params
