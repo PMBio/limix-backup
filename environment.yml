@@ -1,0 +1,20 @@
+name: limix
+dependencies:
+- h5py=2.5.0=np110py27_4
+- hdf5=1.8.15.1=2
+- libgfortran=1.0=0
+- mkl=11.3.1=0
+- numpy=1.10.4=py27_0
+- openssl=1.0.2f=0
+- pip=8.0.2=py27_0
+- python=2.7.11=0
+- readline=6.2=2
+- scikit-learn=0.17=np110py27_2
+- scipy=0.17.0=np110py27_1
+- setuptools=19.6.2=py27_0
+- six=1.10.0=py27_0
+- sqlite=3.9.2=0
+- tk=8.5.18=0
+- wheel=0.29.0=py27_0
+- zlib=1.2.8=0
+
