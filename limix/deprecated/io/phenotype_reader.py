@@ -152,9 +152,9 @@ class pheno_reader_tables():
                 print "query '%s' yielded no results: %s"%phenotype_query, str(arg)
 
                 I = SP.zeros([0],dtype="int")
-            return {"start" : self.gene_pos_start[I], "end" : self.gene_pos_start[I]}
+            return {"start" : self.gene_pos_start[I], "end" : self.gene_pos_end[I]}
         else:
-            return {"start" : self.gene_pos_start, "end" : self.gene_pos_start}
+            return {"start" : self.gene_pos_start, "end" : self.gene_pos_end}
 
 
 class pheno_reader_h5py_deprecated():
