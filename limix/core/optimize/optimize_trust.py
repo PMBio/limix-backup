@@ -64,7 +64,7 @@ def checkgrad(f, fprime, x, *args,**kw_args):
 
 
 
-def opt_hyper(gpr,theta=1e-2,max_iter=None,alpha=1,tr=None,returnLML=False,noH=False,debug=False):
+def opt_hyper(gpr,theta=1e-2,max_iter=None,alpha=1,tr=None,returnLML=False,noH=False,debug=False,thr_dtheta=0):
 
     #maxiter
     if max_iter==None:
@@ -108,6 +108,10 @@ def opt_hyper(gpr,theta=1e-2,max_iter=None,alpha=1,tr=None,returnLML=False,noH=F
             ap = SP.clip(ap, min_ap, max_ap)
         params = {'covar': gpr.getParams()['covar'] + ap}
         gpr.setParams(params)
+        if debug:
+            print abs(ap).max()
+        if abs(ap).max()<thr_dtheta:
+            break
 
     RV = {'n_iter': i, 'grad': grad}
 
