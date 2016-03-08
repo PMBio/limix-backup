@@ -75,19 +75,20 @@ class LIMIX_converter(object):
             csv_file: filename of csv file with phenoyptes
             transpose: standard is rows - individuals unless transpose = True
         """
-        C = pandas.io.parsers.read_csv(csv_file,sep=sep,header=None,index_col=False,*args,**kw_args)
+        C = pandas.io.parsers.read_csv(csv_file,sep=sep,index_col=[0],*args,**kw_args)
         if transpose:
             C = C.T
-        values = C.values
-        if num_samples is not None:
-            values = values[0:1+int(num_samples)]
-        if num_phenotypes is not None:
-            values = values[:,0:1+int(num_phenotypes)]
-        matrix = sp.array(values[1::,1::],dtype='float')
+        matrix = C.values
         #TODO: check if sample_IDs are present, and if they may be 2 columns
-        sample_IDs = sp.array(values[1::,0],dtype='str')
+        sample_IDs = C.index.values.astype(str)
         #TODO: check if pheno_IDs are present
-        pheno_IDs  = sp.array(values[0,1::],dtype='str')
+        pheno_IDs  = C.columns.values.astype(str)
+        if num_samples is not None:
+            matrix = matrix[0:1+int(num_samples)]
+            sample_IDs =  sample_IDs[0:1+int(num_samples)]
+        if num_phenotypes is not None:
+            matrix = values[:,0:1+int(num_phenotypes)]
+            pheno_IDs = pheno_IDs[0:1+int(num_phenotypes)]
         #store
         if 'phenotype' in hdf.keys():
             del(hdf['phenotype'])
