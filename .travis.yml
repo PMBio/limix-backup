@@ -18,9 +18,8 @@ before_install:
   - pip install --upgrade pip
   - pip install --upgrade pip setuptools
 
-  - pip install --install-option="--no-cython-compile" Cython
   - sudo apt-get install -qq libatlas-dev libatlas-base-dev gfortran
-  - sudo apt-get install libhdf5-dev
+  - sudo apt-get install libhdf5-serial-dev
 
   - pip install wheel
   - pip install virtualenv
@@ -28,12 +27,12 @@ before_install:
   - popd
 
 script:
-  - python setup.py bdist_wheel
   - virtualenv --python=python venv-for-wheel
   - . venv-for-wheel/bin/activate
-  - pushd dist
   - pip install --upgrade numpy
-  - travis_wait pip install --upgrade scipy
+  - pip install --upgrade cython
+  - python setup.py bdist_wheel
+  - pushd dist
   - pip install --upgrade wheel
   - travis_wait pip install --pre --upgrade --find-links . limix
   - popd
