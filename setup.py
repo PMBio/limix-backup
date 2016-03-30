@@ -1,11 +1,11 @@
 #change CC to include -std=c++0x flags.
 #this is a hack as distutils does not permit specifying seperate build flags for .c and .cpp files
 import os
+import sys
 #os.environ['CC'] = 'gcc -std=c++0x'
 
-import distutils.cmd
 from setuptools import find_packages
-import sys,os,re
+import re
 from distutils.core import Extension
 from distutils.command.build import build
 from distutils.command.build_ext import build_ext
@@ -18,19 +18,9 @@ from setuptools import setup
 # except ImportError:
     # from distutils.core import setup
 
-import pdb
-import glob
-
-
-
-
-
-
 
 
 ###################### THIS SHOULD BE IN A MODULE ######################
-import os
-import sys
 from contextlib import contextmanager
 
 def fileno(file_or_fd):
@@ -42,7 +32,7 @@ def fileno(file_or_fd):
 @contextmanager
 def stdout_redirected(to=os.devnull, stdout=None):
     if stdout is None:
-       stdout = sys.stdout
+        stdout = sys.stdout
 
     stdout_fd = fileno(stdout)
     # copy stdout_fd before it is overwritten
@@ -88,7 +78,7 @@ def merged_stderr_stdout():  # $ exec 2>&1
 import pip.commands.install
 def install_distributions(distributions):
     command = pip.commands.install.InstallCommand()
-    opts, args = command.parser.parse_args()
+    opts, _ = command.parser.parse_args()
     # TBD, why do we have to run the next part here twice before actual install
     requirement_set = command.run(opts, distributions)
     requirement_set = command.run(opts, distributions)
@@ -109,10 +99,10 @@ from Cython.Build import cythonize
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-def file_list_recursive(dir_name,exclude_list=[],ext=[]):
+def file_list_recursive(dir_name, exclude_list, ext):
     """create a recursive file list"""
     FL = []
-    for root, dirs, files in os.walk(dir_name):
+    for root, _, files in os.walk(dir_name):
         FL_ = [os.path.join(root,fn) for fn in files]
         #filter and append
         for fn in FL_:
@@ -199,7 +189,6 @@ def get_source_files(reswig=True):
     if reswig:
         FL.extend(['src/interfaces/python/limix.i'])
     else:
-        pass
         FL.extend(['src/interfaces/python/limix_wrap.cpp'])
     FL.extend(nlopt)
     return FL
@@ -243,7 +232,7 @@ class CustomBuildExt(build_ext):
         flags = try_to_add_compile_args()
 
         f = tempfile.NamedTemporaryFile(suffix=".cpp", delete=True)
-        f.name
+        # f.name
         c = self.compiler
 
         ok_flags = []
