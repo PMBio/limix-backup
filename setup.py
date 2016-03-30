@@ -30,8 +30,8 @@ from setuptools import find_packages
 from setuptools import setup
 from setuptools.extension import Extension
 import numpy as np
-# from Cython.Build import cythonize
-# from Cython.Distutils import build_ext
+from Cython.Build import cythonize
+from Cython.Distutils import build_ext
 
 def mac_workaround():
     import platform
@@ -104,6 +104,23 @@ def core_extension(reswig):
 
     return ext
 
+def ensemble_extension():
+    src = ["cython/lmm_forest/SplittingCore.pyx"]
+    incl = [join(_curdir, 'External'), np.get_include()]
+    depends = src
+    ext = Extension('ensemble.SplittingCore',
+                    src,
+                    language='c++',
+                    include_dirs=incl,
+                    extra_compile_args=extra_compile_args(),
+                    depends=depends)
+    return cythonize(ext)
+# extensions += cythonize(Extension(name="ensemble.SplittingCore",
+#                         language="c++",
+#                         sources=["cython/lmm_forest/SplittingCore.pyx"],
+#                         include_dirs=get_include_dirs() + ['.'],
+#                         extra_compile_args=get_extra_compile_args()))
+
 # extensions += cythonize(Extension(name="ensemble.SplittingCore",
 #                         language="c++",
 #                         sources=["cython/lmm_forest/SplittingCore.pyx"],
@@ -160,7 +177,8 @@ def setup_package():
         install_requires=install_requires,
         setup_requires=setup_requires,
         zip_safe=False,
-        ext_modules=[core_extension(False)]
+        ext_modules=[core_extension(False)] + ensemble_extension(),
+        cmdclass=dict(build_ext=build_ext)
     )
 
     if conda_present:

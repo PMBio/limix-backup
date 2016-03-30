@@ -7,7 +7,7 @@
 
 #ifndef TYPES_H_
 #define TYPES_H_
-#include <External/Eigen/Dense>
+#include <Eigen/Dense>
 //using namespace Eigen;
 #include <string>
 using namespace std;

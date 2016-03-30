@@ -1,7 +1,4 @@
-#include *.py *.cc *.cpp *.h
 recursive-include External/Eigen *
 recursive-include External/nlopt *
 recursive-include src/limix *.cpp *.h
 recursive-include cython/lmm_forest *
-include versioneer.py
-include limix/_version.py
