@@ -85,7 +85,7 @@ def core_extension(reswig):
     incl = [i for i in incl if os.path.isdir(i)]
     incl.extend([np.get_include()])
 
-    filter_out = ['src/archive', 'src/testing', 'src/interfaces']
+    filter_out = [join('src', f) for f in ['archive', 'testing', 'interfaces']]
     src = [s for s in src if not any([excl in s for excl in filter_out])]
 
     if reswig:
@@ -115,17 +115,6 @@ def ensemble_extension():
                     extra_compile_args=extra_compile_args(),
                     depends=depends)
     return cythonize(ext)
-# extensions += cythonize(Extension(name="ensemble.SplittingCore",
-#                         language="c++",
-#                         sources=["cython/lmm_forest/SplittingCore.pyx"],
-#                         include_dirs=get_include_dirs() + ['.'],
-#                         extra_compile_args=get_extra_compile_args()))
-
-# extensions += cythonize(Extension(name="ensemble.SplittingCore",
-#                         language="c++",
-#                         sources=["cython/lmm_forest/SplittingCore.pyx"],
-#                         include_dirs=get_include_dirs() + ['.'],
-#                         extra_compile_args=get_extra_compile_args()))
 
 def write_version():
     cnt = """
@@ -143,6 +132,13 @@ version = '%(version)s'
 def get_test_suite():
     from unittest import TestLoader
     return TestLoader().discover(PKG_NAME)
+
+# def get_test_suite():
+#     from unittest import TestLoader
+#     from unittest import TestSuite
+#     test_suite1 = TestLoader().discover('limix')
+#     test_suite2 = TestLoader().discover('test_limix')
+#     return TestSuite([test_suite1, test_suite2])
 
 def setup_package():
     if sys.platform == 'darwin':
