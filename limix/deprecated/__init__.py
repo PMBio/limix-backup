@@ -11,14 +11,14 @@
 #WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #See the License for the specific language governing permissions and
 #limitations under the License.
-
+from __future__ import absolute_import
 __all__ = ['']
 
 #make core available on flat import
-import core
-from core import *
+# import core
+from .core import *
 #import limix
-import limix
+# import limix
 #verbose flags for the entire module
 _verbose = False
 

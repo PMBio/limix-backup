@@ -61,7 +61,8 @@ def nlopt_files():
     return (src, hdr)
 
 def swig_opts():
-    return ['-c++', '-outdir', join(_curdir, 'limix', 'deprecated')]
+    return ['-c++', '-outdir', join(_curdir, 'limix', 'deprecated'),
+            '-I'+join(_curdir, 'src')]
 
 def extra_compile_args():
     return ['-Wno-comment', '-Wno-unused-but-set-variable',
@@ -89,14 +90,15 @@ def core_extension(reswig):
     src = [s for s in src if not any([excl in s for excl in filter_out])]
 
     if reswig:
-        src.append('src/interfaces/python/limix.i')
+        src.append(join(_curdir, 'src', 'interfaces', 'python', 'limix.i'))
+        hdr.extend(glob(join(_curdir, 'src', '*/*.i')))
     else:
-        src.append(join(_curdir, 'src/interfaces/python/limix_wrap.cpp'))
+        src.append(join(_curdir, 'src', 'interfaces', 'python',
+                        'limix_wrap.cpp'))
 
     depends = src + hdr
 
-    ext = Extension('limix.deprecated._core',
-                    src,
+    ext = Extension('limix.deprecated._core', src,
                     include_dirs=incl,
                     extra_compile_args=extra_compile_args(),
                     swig_opts=swig_opts(),
@@ -105,11 +107,10 @@ def core_extension(reswig):
     return ext
 
 def ensemble_extension():
-    src = ["cython/lmm_forest/SplittingCore.pyx"]
+    src = [join(_curdir, "cython/lmm_forest/SplittingCore.pyx")]
     incl = [join(_curdir, 'External'), np.get_include()]
     depends = src
-    ext = Extension('ensemble.SplittingCore',
-                    src,
+    ext = Extension('limix.ensemble.SplittingCore', src,
                     language='c++',
                     include_dirs=incl,
                     extra_compile_args=extra_compile_args(),
@@ -133,14 +134,7 @@ def get_test_suite():
     from unittest import TestLoader
     return TestLoader().discover(PKG_NAME)
 
-# def get_test_suite():
-#     from unittest import TestLoader
-#     from unittest import TestSuite
-#     test_suite1 = TestLoader().discover('limix')
-#     test_suite2 = TestLoader().discover('test_limix')
-#     return TestSuite([test_suite1, test_suite2])
-
-def setup_package():
+def setup_package(reswig):
     if sys.platform == 'darwin':
         mac_workaround()
 
@@ -151,7 +145,7 @@ def setup_package():
 
     write_version()
 
-    install_requires = ['hcache', 'limix_math', 'limix_tool']
+    install_requires = []
     setup_requires = []
 
     metadata = dict(
@@ -167,13 +161,14 @@ def setup_package():
         maintainer_email="stegle@ebi.ac.uk",
         version=VERSION,
         test_suite='setup.get_test_suite',
-        packages=find_packages(),
+        packages=find_packages(exclude=['tests', 'test', 'test_limix*',
+                                        'limix.modules2*']),
         license="BSD",
         url='http://pmbio.github.io/limix/',
         install_requires=install_requires,
         setup_requires=setup_requires,
         zip_safe=False,
-        ext_modules=[core_extension(False)] + ensemble_extension(),
+        ext_modules=[core_extension(reswig)] + ensemble_extension(),
         cmdclass=dict(build_ext=build_ext)
     )
 
@@ -189,9 +184,11 @@ def setup_package():
         os.chdir(old_path)
 
 if __name__ == '__main__':
-    setup_package()
-
-
+    reswig = False
+    if "--reswig" in sys.argv:
+        reswig = True
+        sys.argv.remove("--reswig")
+    setup_package(reswig)
 
 # setup(
 #     name = 'limix',
