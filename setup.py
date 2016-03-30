@@ -12,7 +12,7 @@ def try_import(pkg):
     try:
         importlib.import_module(pkg)
     except ImportError:
-        print("Error: numpy package couldn't be found." +
+        print("Error: %s package couldn't be found." % pkg +
               " Please, install it so I can proceed.")
         sys.exit(1)
 
@@ -21,16 +21,29 @@ def try_import(pkg):
 try_import("numpy")
 try_import("scipy")
 try_import("cython")
-try_import("hdf5")
+try_import("h5py")
 try_import("pandas")
-try_import("scikit-learn")
+try_import("sklearn")
 try_import("matplotlib")
 
 from setuptools import find_packages
 from setuptools import setup
 from setuptools.extension import Extension
+import numpy as np
 # from Cython.Build import cythonize
 # from Cython.Distutils import build_ext
+
+def mac_workaround():
+    import platform
+    from distutils import sysconfig
+
+    conf_vars = sysconfig.get_config_vars()
+    vers = platform.mac_ver()[0].split('.')
+    if len(vers) == 3:
+        conf_vars['MACOSX_DEPLOYMENT_TARGET'] =\
+            vers[0] + '.' + vers[1]
+    else:
+        conf_vars['MACOSX_DEPLOYMENT_TARGET'] = platform.mac_ver()[0]
 
 _curdir = os.path.abspath(os.path.dirname(__file__))
 
@@ -43,6 +56,7 @@ else:
 
 def nlopt_files():
     src = open(join(_curdir, 'External', 'nlopt_src.files')).readlines()
+    src = [join(_curdir, 'External', 'nlopt', s).strip() for s in src]
     hdr = glob(join(_curdir, 'External', 'nlopt', '*/*.h'))
     return (src, hdr)
 
@@ -64,7 +78,12 @@ def core_extension(reswig):
     hdr.extend(glob(join(_curdir, 'src', '*/*.h')))
     hdr.extend(glob(join(_curdir, 'src', '*/*.hpp')))
 
-    incl = ['src', 'External', 'External/nlopt']
+    incl = ['src', 'External', join('External', 'nlopt')]
+    incl = [join(_curdir, i) for i in incl]
+    folder = join(_curdir, 'External', 'nlopt')
+    incl += [join(folder, f) for f in os.listdir(folder)]
+    incl = [i for i in incl if os.path.isdir(i)]
+    incl.extend([np.get_include()])
 
     filter_out = ['src/archive', 'src/testing', 'src/interfaces']
     src = [s for s in src if not any([excl in s for excl in filter_out])]
@@ -72,7 +91,7 @@ def core_extension(reswig):
     if reswig:
         src.append('src/interfaces/python/limix.i')
     else:
-        src.append('src/interfaces/python/limix_wrap.cpp')
+        src.append(join(_curdir, 'src/interfaces/python/limix_wrap.cpp'))
 
     depends = src + hdr
 
@@ -109,6 +128,9 @@ def get_test_suite():
     return TestLoader().discover(PKG_NAME)
 
 def setup_package():
+    if sys.platform == 'darwin':
+        mac_workaround()
+
     src_path = os.path.dirname(os.path.abspath(sys.argv[0]))
     old_path = os.getcwd()
     os.chdir(src_path)
