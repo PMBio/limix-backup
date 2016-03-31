@@ -166,9 +166,9 @@ class Forest(object):
         self : object
             Returns self.
         """
-        if self.kernel == 'data':
+        if isinstance(self.kernel, str) and self.kernel == 'data':
             self.kernel = SC.estimateKernel(X, maf=1.0/X.shape[0])
-        elif self.kernel == 'iid':
+        elif isinstance(self.kernel, str) and self.kernel == 'iid':
             self.kernel = SP.identity(X.shape[0])
         # Use dedicated part of data as background model
         elif self.kernel.size == X.shape[1]:

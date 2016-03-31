@@ -8,7 +8,7 @@ import os
 import sys
 import limix.deprecated as dlimix
 import limix.deprecated.modules.lmmlasso as lmmlasso
-from test_limix import data
+from limix.test import data
 
 
 class Lmmlasso_test(unittest.TestCase):
