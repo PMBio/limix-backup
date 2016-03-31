@@ -11,13 +11,12 @@ import pdb
 from limix.io.conversion import *
 
 
-        
 
-if __name__ == "__main__":
+
+def entry_point():
     infostring = "limix_conveter.py, Copyright(c) 2014, The LIMIX developers\nlast modified: %s" % time.ctime(os.path.getmtime(__file__))
     print (infostring)
-    
+
     runner = LIMIX_converter(infostring=infostring)
     (options,args) = runner.parse_args()
     runner.run()
-    

@@ -12,7 +12,6 @@ import time
 import limix.stats.chi2mixture as C2M
 import limix.utils.plot as plot
 import scipy as SP
-import utils
 
 def plot_manhattan(pv,out_file):
     import matplotlib.pylab as PLT
@@ -21,7 +20,7 @@ def plot_manhattan(pv,out_file):
     plot.plot_manhattan(posCum[idx],pv[idx][:,0],alphaNS=1.0,alphaS=1.0)
     PLT.savefig(out_file)
 
-        
+
 def postprocess(options):
     """ perform parametric fit of the test statistics and provide permutation and test pvalues """
 
@@ -71,5 +70,3 @@ def postprocess(options):
     if options.manhattan:
         manhattan_file = out_file+'.manhattan.jpg'
         plot_manhattan(pv,manhattan_file)
-        
-        

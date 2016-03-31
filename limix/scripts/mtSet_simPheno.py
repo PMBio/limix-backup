@@ -6,13 +6,13 @@ from limix.mtSet.core.simPhenoCore import simPheno
 from optparse import OptionParser
 import scipy as SP
 
-if __name__ == "__main__":
+def entry_point():
 
     parser = OptionParser()
     parser.add_option("--bfile",     dest='bfile',      type=str, default=None)
     parser.add_option("--cfile",     dest='cfile',      type=str, default=None)
     parser.add_option("--pfile",     dest='pfile',      type=str, default=None)
-    
+
     parser.add_option("--seed",      dest='seed',       type=int, default=0)
     parser.add_option("--nTraits",   dest='nTraits',    type=int, default=4)
     parser.add_option("--windowSize",dest='windowSize', type=int, default=3e4)
@@ -30,4 +30,3 @@ if __name__ == "__main__":
     (options, args) = parser.parse_args()
 
     simPheno(options)
-

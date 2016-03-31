@@ -7,7 +7,7 @@ import os
 from limix.mtSet.core.analyzeCore import analyze
 from optparse import OptionParser
 
-if __name__ == "__main__":
+def entry_point():
     parser = OptionParser()
     parser.add_option("--bfile", dest='bfile', type=str, default=None)
     parser.add_option("--cfile", dest='cfile', type=str, default=None)
@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     parser.add_option("--rank_r",dest='rank_r',type=int, default=1)
     parser.add_option("--colCovarType_r",dest='colCovarType_r',type=str, default='lowrank')
-        
+
     # start window, end window and permutations
     parser.add_option("--minSnps", dest='minSnps', type=int, default=None)
     parser.add_option("--start_wnd", dest='i0', type=int, default=None)
@@ -29,5 +29,4 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
 
-    analyze(options) 
-
+    analyze(options)

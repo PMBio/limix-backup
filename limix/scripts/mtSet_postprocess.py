@@ -2,11 +2,10 @@
 # Copyright(c) 2014, The mtSet developers (Francesco Paolo Casale, Barbara Rakitsch, Oliver Stegle)
 # All rights reserved.
 
-sys.path.append(path_mtSet)
 from limix.mtSet.core.postprocessCore import postprocess
 from optparse import OptionParser
 
-if __name__ == "__main__":
+def entry_point():
 
     parser = OptionParser()
     parser.add_option("--resdir", dest='resdir', type=str, default=None)
@@ -15,4 +14,3 @@ if __name__ == "__main__":
     parser.add_option("--tol", dest='tol', type=float, default=4e-3)
     (options, args) = parser.parse_args()
     postprocess(options)
-

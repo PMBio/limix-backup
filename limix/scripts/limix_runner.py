@@ -19,7 +19,7 @@ class LIMIX_runner(object):
     '''
     A class for running a LIMIX pipeline.
     '''
-    __slots__=["options","args","data", "result","infostring"] 
+    __slots__=["options","args","data", "result","infostring"]
 
     def __init__(self,infostring=None):
         '''
@@ -32,7 +32,7 @@ class LIMIX_runner(object):
         self.infostring=infostring
         if self.infostring is not None:
             self.result["infostring"]=self.infostring
-        pass    
+        pass
 
     def parse_args(self):
         usage = "usage: %prog [options]"
@@ -62,7 +62,7 @@ class LIMIX_runner(object):
         print ("Elapsed time for data reading is %.2f seconds" % (t1-t0))
         self.data=data
         return self.data
-    
+
     def run_experiment(self):
         """
         Run the job specified in experiment_script
@@ -70,13 +70,13 @@ class LIMIX_runner(object):
         data=self.data
         options=self.options
         result=self.result
-        
+
         command = open(self.options.experiment_script).read()
-        result["experiment_script"]=command 
-        t0=time.time()       
+        result["experiment_script"]=command
+        t0=time.time()
         exec(command)   #creates variable result
         t1=time.time()
-        print ("Elapsed time for running the experiment is %.2f seconds" % (t1-t0)) 
+        print ("Elapsed time for running the experiment is %.2f seconds" % (t1-t0))
         self.result=result
         return self.result
 
@@ -91,15 +91,14 @@ class LIMIX_runner(object):
         else:
             writer.write_txt(outdir=self.options.outpath,timestamp=self.options.timestamp,delimiter=self.options.delimiter,float_format=self.options.float_format)
         t1=time.time()
-        print ("Elapsed time for writing the output files is %.2f seconds" % (t1-t0)) 
-        
-        
+        print ("Elapsed time for writing the output files is %.2f seconds" % (t1-t0))
 
-if __name__ == "__main__":
+
+def entry_point():
     infostring = "limix_runner.py, Copyright(c) 2014, The LIMIX developers\nlast modified: %s" % time.ctime(os.path.getmtime(__file__))
     print (infostring)
-    
-    
+
+
     runner = LIMIX_runner(infostring=infostring)
     (options,args) = runner.parse_args()
     data = runner.load_data()
