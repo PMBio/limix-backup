@@ -15,8 +15,7 @@ from __future__ import absolute_import
 __all__ = ['']
 
 #make core available on flat import
-import core
-from core import *
+from .core import *
 #verbose flags for the entire module
 _verbose = False
 
