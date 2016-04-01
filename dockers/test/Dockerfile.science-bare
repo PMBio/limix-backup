@@ -1,0 +1,5 @@
+FROM dhorta/science-bare
+
+ADD . /home/limix
+WORKDIR /home/limix
+CMD /usr/bin/python setup.py test --yes

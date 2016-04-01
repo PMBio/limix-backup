@@ -10,7 +10,6 @@ import sklearn.cross_validation as cross_validation
 
 from varianceDecomposition import VarianceDecomposition
 import qtl
-import pylab as PL
 import scipy as SP
 import numpy as NP
 import scipy.stats as ST
@@ -141,7 +140,7 @@ def runCrossValidation(estimator,X,y,alphas,K=None,n_folds=10,verbose=False):
         if K is not None:
             K_train = K[train][:,train]
             K_test  = K[test][:,train]
-            
+
         for ialpha in range(n_alphas):
             estimator.set_params(alpha=alphas[ialpha])
             if K is None:
@@ -152,20 +151,20 @@ def runCrossValidation(estimator,X,y,alphas,K=None,n_folds=10,verbose=False):
                 estimator.fit(X_train,y_train,K_train)
                 ytrain_star = estimator.predict(X_train,K_train)
                 ytest_star  = estimator.predict(X_test, K_test)
-            
+
             MSE_train[ifold,ialpha]  = mean_squared_error(ytrain_star,y_train)
             MSE_test[ifold,ialpha]   = mean_squared_error(ytest_star,y_test)
             W_nonzero[ifold,ialpha]  = SP.sum(estimator.coef_!=0)
-            
+
         ifold +=1
 
     t2 = time.time()
     if verbose: print 'finished in %.2f seconds'%(t2-t1)
     return MSE_train,MSE_test,W_nonzero
 
-    
-        
-            
+
+
+
 class LmmLasso(Lasso):
     """
     Lmm-Lasso classo
@@ -179,19 +178,19 @@ class LmmLasso(Lasso):
         super(LmmLasso, self).__init__(alpha=alpha, **lasso_args)
         self.msg = 'lmmlasso'
 
- 
 
- 
+
+
     def fit(self, X, y, K, standardize=False, verbose=False,**lasso_args):
         """
         fitting the model
-    
+
         X: SNP data
         y: phenotype data
         K: backgroundcovariance matrix
         standardize: if True, genotypes and phenotypes are standardized
         """
-        
+
         if y.ndim == 2:
             assert y.shape[1]==1, 'Only one phenotype can be processed at at time.'
             y = y.flatten()
@@ -207,7 +206,7 @@ class LmmLasso(Lasso):
             X /= X.std(axis=0)
             y -= y.mean(axis=0)
             y /= y.std(axis=0)
-            
+
         """ training null model """
         vd = VarianceDecomposition(y)
         vd.addRandomEffect(is_noise=True)
@@ -216,9 +215,9 @@ class LmmLasso(Lasso):
         varComps = vd.getVarianceComps()
         delta0   = varComps[0,0]/varComps.sum()
         self.varComps = varComps
-        
+
         S,U = LA.eigh(K)
-      
+
         """ rotating data """
         Sdi = 1. / (S + delta0)
         Sdi_sqrt = SP.sqrt(Sdi)
@@ -231,11 +230,11 @@ class LmmLasso(Lasso):
         super(LmmLasso, self).fit(SUX, SUy, **lasso_args)
         yhat = super(LmmLasso, self).predict(X)
         self.w_ridge = LA.solve(K + delta0 * SP.eye(n_s), y - yhat)
-	
+
         time_end = time.time()
         time_diff = time_end - time_start
         if verbose: print '... finished in %.2fs'%(time_diff)
-    
+
         return self
 
     def getVarianceComps(self,univariance=False):
@@ -249,7 +248,7 @@ class LmmLasso(Lasso):
         """
         if univariance:
             self.varComps /= self.varComps.mean()
-            
+
         return self.varComps
 
     def predict(self, Xstar, Kstar=None):
@@ -259,7 +258,7 @@ class LmmLasso(Lasso):
         Xstar: SNP data
         Kstar: covariance matrix between test and training samples
         """
-        
+
         assert self.w_ridge.shape[0]==Kstar.shape[1], 'number of training samples is not consistent.'
         assert self.coef_.shape[0]==Xstar.shape[1],   'number of SNPs is not consistent.'
         assert Xstar.shape[0]==Kstar.shape[0],   'number of test samples is not consistent.'
@@ -269,4 +268,3 @@ class LmmLasso(Lasso):
             return fixed_effect + SP.dot(Kstar, self.w_ridge)
         else:
             return fixed_effect
-
