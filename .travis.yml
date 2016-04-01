@@ -1,40 +1,50 @@
-# install: ./install-dependencies.sh
+sudo: required
+services: docker
 language: python
-# - virtualenv --python=python venv
-#   - source venv/bin/activate
+
+python:
+    - 2.7
+
+env:
+    - IMG_BASE=science-conda2
+    - IMG_BASE=science-canopy2
+    - IMG_BASE=science-bare
+
+addons:
+    apt:
+        packages:
+            - build-essential
+            - libc6
+            - g++
+            - gfortran
+
 before_install:
-  - uname -a
-  - free -m
-  - df -h
-  - ulimit -a
-
-  - mkdir builds
-  - pushd builds
-
-  # pip upgrade
-  - virtualenv --python=python venv
-  - source venv/bin/activate
-  - python -V
-  - pip install --upgrade pip
-  - pip install --upgrade pip setuptools
-
-  - pip install --install-option="--no-cython-compile" Cython
-  - sudo apt-get install -qq libatlas-dev libatlas-base-dev gfortran
-  - sudo apt-get install libhdf5-dev
-
-  - pip install wheel
-  - pip install virtualenv
-
-  - popd
+    - ls
+    - pwd
+    - docker pull dhorta/$IMG_BASE
 
 script:
-  - python setup.py bdist_wheel
-  - virtualenv --python=python venv-for-wheel
-  - . venv-for-wheel/bin/activate
-  - pushd dist
-  - pip install --upgrade numpy
-  - travis_wait pip install --upgrade scipy
-  - pip install --upgrade wheel
-  - travis_wait pip install --pre --upgrade --find-links . limix
-  - popd
-  - python -c "import test_limix; test_limix.test()"
+    - ./docker-test.sh $IMG_BASE
+    # - if [[ "$IMG_BASE" == "2.7" ]]; then
+#
+#   # We do this conditionally because it saves us some downloading if the
+#   # version is the same.
+#   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+#       wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
+#     else
+#       wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+#     fi
+#   - bash miniconda.sh -b -p $HOME/miniconda
+#   - export PATH="$HOME/miniconda/bin:$PATH"
+#   - hash -r
+#   - conda config --set always_yes yes --set changeps1 no
+#   - conda update -q conda
+#   - conda info -a
+#   - conda install conda-build
+#   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy cython setuptools numba
+#   - source activate test-environment
+#
+# install: python setup.py install
+#
+# before_script: source activate test-environment
+# script: python setup.py test
