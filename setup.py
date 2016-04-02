@@ -126,6 +126,9 @@ def extra_compile_args():
             '-Wno-unused-const-variable', '-Wno-unknown-warning-option',
             '-Wno-shorten-64-to-32', '-std=c++11']
 
+def extra_link_args():
+    return []
+
 def core_extension(reswig):
     import numpy as np
 
@@ -153,6 +156,7 @@ def core_extension(reswig):
     ext = Extension('limix.deprecated._core', src,
                     include_dirs=incl,
                     extra_compile_args=extra_compile_args(),
+                    extra_link_args=extra_link_args(),
                     swig_opts=swig_opts(),
                     depends=depends)
 
@@ -168,6 +172,7 @@ def ensemble_extension():
                     language='c++',
                     include_dirs=incl,
                     extra_compile_args=extra_compile_args(),
+                    extra_link_args=extra_link_args(),
                     depends=depends)
     return cythonize(ext)
 
