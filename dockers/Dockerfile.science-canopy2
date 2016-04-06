@@ -2,4 +2,3 @@ FROM dhorta/science-canopy2
 
 ADD . /home/limix
 WORKDIR /home/limix
-CMD /usr/local/Canopy_64bit/System/bin/python setup.py test --yes

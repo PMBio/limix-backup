@@ -1,4 +1,12 @@
-app:
+limix_conda2:
   build:
     image: science-conda2
-    dockerfile_path: dockers/test/Dockerfile.science-conda2
+    dockerfile_path: dockers/Dockerfile.science-conda2
+limix_canopy2:
+  build:
+    image: science-canopy2
+    dockerfile_path: dockers/Dockerfile.science-canopy2
+limix_bare:
+  build:
+    image: science-bare
+    dockerfile_path: dockers/Dockerfile.science-bare

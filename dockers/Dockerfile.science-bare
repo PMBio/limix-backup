@@ -1,5 +1,6 @@
 FROM dhorta/science-bare
 
+RUN apt-get install python-pip -qq -y
+RUN pip install h5py -q
 ADD . /home/limix
 WORKDIR /home/limix
-CMD /usr/bin/python setup.py test --yes

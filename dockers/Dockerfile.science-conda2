@@ -2,4 +2,3 @@ FROM dhorta/science-conda2
 
 ADD . /home/limix
 WORKDIR /home/limix
-CMD /opt/conda/bin/python setup.py test --yes
