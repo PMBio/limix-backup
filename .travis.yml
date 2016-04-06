@@ -5,8 +5,8 @@ python:
 - 2.7
 env:
 - IMG_BASE=science-conda2
-- IMG_BASE=science-canopy2
-- IMG_BASE=science-bare
+# - IMG_BASE=science-canopy2
+# - IMG_BASE=science-bare
 addons:
   apt:
     packages:
@@ -27,6 +27,16 @@ before_install:
 - docker pull dhorta/$IMG_BASE
 script:
 - ./docker-test.sh $IMG_BASE
+before_deploy:
+- pwd
+- ls
+- which python
+- python -c "import cython; print(cython)"
+- env
+- apt-get update -qq
+- apt-get install --yes -qq cython
+- python -c "import cython; print(cython)"
+- pip install cython --yes
 deploy:
   skip_cleanup: true
   provider: pypi
