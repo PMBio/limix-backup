@@ -14,6 +14,7 @@ addons:
     - libc6
     - g++
     - gfortran
+    - cython
 before_install:
 - docker pull dhorta/$IMG_BASE
 script:
