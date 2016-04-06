@@ -34,7 +34,7 @@ before_deploy:
 - env
 - sudo apt-get update -qq
 - sudo apt-get install --yes -qq cython
-- pip install cython --yes
+# - pip install cython --yes
 - python -c "import cython; print(cython)"
 deploy:
   skip_cleanup: true
