@@ -14,18 +14,21 @@ addons:
     - libc6
     - g++
     - gfortran
+    - cython
+    - python-numpy
+    - python-scipy
+    - python-matplotlib
+    - pkg-config
+    - libfreetype6-dev
+    - libpng12-dev
+    - libhdf5-dev
+    - liblapack-dev
 before_install:
 - docker pull dhorta/$IMG_BASE
 script:
 - ./docker-test.sh $IMG_BASE
-before_deploy:
-- sudo apt-get update -qq
-- sudo apt-get install --yes build-essential libc6 gfortran g++
-- sudo apt-get install --yes python python-setuptools cython python-numpy
-- sudo apt-get install --yes python-scipy python-matplotlib pkg-config
-- sudo apt-get install --yes libfreetype6-dev libpng12-dev libhdf5-dev
-- sudo apt-get install --yes liblapack-dev
 deploy:
+  skip_cleanup: true
   provider: pypi
   user: horta
   password:
@@ -35,3 +38,4 @@ deploy:
     tags: true
     distributions: sdist
     repo: PMBio/limix
+    condition: $IMG_BASE = "science-conda2"
