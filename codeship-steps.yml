@@ -1,6 +1,8 @@
-- service: limix_conda2
-  command: /opt/conda/bin/python setup.py test --yes
-- service: limix_bare
-  command: /usr/bin/python setup.py test --yes
-- service: limix_canopy2
-  command: /usr/local/Canopy_64bit/System/bin/python setup.py test --yes
+- type: serial
+  steps:
+    - service: limix_conda2
+      command: /opt/conda/bin/python setup.py test --yes
+    - service: limix_bare
+      command: /usr/bin/python setup.py test --yes
+    - service: limix_canopy2
+      command: /usr/local/Canopy_64bit/System/bin/python setup.py test --yes
