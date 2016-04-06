@@ -12,7 +12,7 @@ import scipy as sp
 #import limix
 from optparse import OptionParser
 import pandas as pd
-import limix.io.output_writer as ow
+import limix.deprecated.io.output_writer as ow
 
 
 class LIMIX_runner(object):
@@ -104,4 +104,3 @@ def entry_point():
     data = runner.load_data()
     result = runner.run_experiment()
     runner.write_resultfiles()
-    
