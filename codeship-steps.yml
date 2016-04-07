@@ -1,15 +1,14 @@
-- type: parallel
-  steps:
-    - service: conda2
-      command: /opt/conda/bin/python /home/limix/setup.py test --yes
-
-    - service: bare
-      command: /usr/bin/python /home/limix/setup.py test --yes
-
-    - service: canopy2
-      command: /usr/local/Canopy_64bit/System/bin/python /home/limix/setup.py test --yes
-
 - type: serial
   steps:
-    - service: bare
-      command: /home/limix/deploy/github /home/limix/
+    - service: conda2
+      command: /bin/bash -c "cp -r /home/limix /home/limix-conda2 && cd /home/limix-conda2 && /opt/conda/bin/python setup.py test --yes"
+#     - service: bare
+#       command: /usr/bin/python setup.py test --yes
+#
+#     - service: canopy2
+#       command: /usr/local/Canopy_64bit/System/bin/python setup.py test --yes
+#
+# - type: serial
+#   steps:
+#     - service: bare
+#       command: deploy/github

@@ -89,10 +89,9 @@ from Cython.Distutils import build_ext
 
 def globr(root, pattern):
     import fnmatch
-    import os
 
     matches = []
-    for root, dirnames, filenames in os.walk(root):
+    for root, _, filenames in os.walk(root):
         for filename in fnmatch.filter(filenames, pattern):
             matches.append(os.path.join(root, filename))
 
@@ -123,8 +122,8 @@ def swig_opts():
 def extra_compile_args():
     return ['-Wno-comment', '-Wno-unused-but-set-variable',
             '-Wno-overloaded-virtual', '-Wno-uninitialized',
-            '-Wno-unused-const-variable', '-Wno-unknown-warning-option',
-            '-Wno-shorten-64-to-32', '-std=c++11']
+            '-Wno-delete-non-virtual-dtor',
+            '-Wunused-variable', '-std=c++11']
 
 def extra_link_args():
     return []
@@ -277,6 +276,12 @@ def setup_package(reswig, yes):
         metadata['conda_features'] = ['mkl']
     except ImportError:
         pass
+
+    # http://stackoverflow.com/a/9740721
+    from distutils.sysconfig import get_config_vars
+    (opt,) = get_config_vars('OPT')
+    os.environ['OPT'] = " ".join(flag for flag in opt.split() if
+                                 flag != '-Wstrict-prototypes')
 
     try:
         setup(**metadata)
