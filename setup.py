@@ -87,6 +87,28 @@ from setuptools.extension import Extension
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext
 
+def _check_gcc_cpp11():
+    import subprocess
+    try:
+        cmd = 'gcc -E -dM -std=c++11 -x c++ /dev/null > /dev/null'
+        subprocess.check_call(cmd, shell=True)
+    except subprocess.CalledProcessError:
+        return False
+    return True
+
+class build_ext_subclass(build_ext):
+    def build_extensions(self):
+        if len(self.compiler.compiler) > 0:
+            cc_name = self.compiler.compiler[0]
+            if cc_name == 'gcc':
+                if _check_gcc_cpp11():
+                    stdcpp = '-std=c++11'
+                else:
+                    stdcpp = '-std=c++0x'
+                for e in self.extensions:
+                    e.extra_compile_args.append(stdcpp)
+        build_ext.build_extensions(self)
+
 def globr(root, pattern):
     import fnmatch
 
@@ -122,8 +144,7 @@ def swig_opts():
 def extra_compile_args():
     return ['-Wno-comment', '-Wno-unused-but-set-variable',
             '-Wno-overloaded-virtual', '-Wno-uninitialized',
-            '-Wno-delete-non-virtual-dtor',
-            '-Wunused-variable', '-std=c++11']
+            '-Wno-delete-non-virtual-dtor', '-Wunused-variable']
 
 def extra_link_args():
     return []
@@ -256,7 +277,7 @@ def setup_package(reswig, yes):
         setup_requires=setup_requires,
         zip_safe=False,
         ext_modules=[core_extension(reswig)] + ensemble_extension(),
-        cmdclass=dict(build_ext=build_ext),
+        cmdclass=dict(build_ext=build_ext_subclass),
         entry_points={
             'console_scripts':[
                 'limix_runner=limix.scripts.limix_runner:entry_point',

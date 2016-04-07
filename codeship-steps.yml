@@ -8,8 +8,11 @@
 
     - service: canopy2
       command: /bin/bash -c "cp -r /home/limix /home/limix-canopy2 && cd /home/limix-canopy2 && /usr/local/Canopy_64bit/System/bin/python setup.py test --yes"
-#
-# - type: serial
-#   steps:
-#     - service: bare
-#       command: deploy/github
+
+    - service: conda2_lucid
+      command: /bin/bash -c "cp -r /home/limix /home/limix-conda2-lucid && cd /home/limix-conda2-lucid && /miniconda2/bin/python setup.py test --yes"
+
+- type: serial
+  steps:
+    - service: bare
+      command: deploy/github
