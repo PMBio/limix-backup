@@ -277,11 +277,12 @@ def setup_package(reswig, yes):
     except ImportError:
         pass
 
-    # http://stackoverflow.com/a/9740721
-    from distutils.sysconfig import get_config_vars
-    (opt,) = get_config_vars('OPT')
-    os.environ['OPT'] = " ".join(flag for flag in opt.split() if
-                                 flag != '-Wstrict-prototypes')
+    # http://stackoverflow.com/a/29634231
+    import distutils.sysconfig
+    cfg_vars = distutils.sysconfig.get_config_vars()
+    for key, value in cfg_vars.items():
+        if type(value) == str:
+            cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
 
     try:
         setup(**metadata)

@@ -1,12 +1,13 @@
-- type: serial
+- type: parallel
   steps:
     - service: conda2
       command: /bin/bash -c "cp -r /home/limix /home/limix-conda2 && cd /home/limix-conda2 && /opt/conda/bin/python setup.py test --yes"
-#     - service: bare
-#       command: /usr/bin/python setup.py test --yes
-#
-#     - service: canopy2
-#       command: /usr/local/Canopy_64bit/System/bin/python setup.py test --yes
+
+    - service: bare
+      command: /bin/bash -c "cp -r /home/limix /home/limix-bare && cd /home/limix-bare && /usr/bin/python setup.py test --yes"
+
+    - service: canopy2
+      command: /bin/bash -c "cp -r /home/limix /home/limix-canopy2 && cd /home/limix-canopy2 && /usr/local/Canopy_64bit/System/bin/python setup.py test --yes"
 #
 # - type: serial
 #   steps:
