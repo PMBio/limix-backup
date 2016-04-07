@@ -3,4 +3,7 @@
 export REMOTE_REPOSITORY="https://github.com/PMBio/limix.git"
 export REMOTE_BRANCH="production"
 
-curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/deployments/git_push.sh | bash -s
+set -e
+
+git fetch --unshallow || true
+git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
