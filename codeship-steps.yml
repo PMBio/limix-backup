@@ -15,7 +15,5 @@
 - type: serial
   steps:
     - service: limix_bare
-    #   tag: master
       command: deploy/github
-      image_name: limix_bare
       encrypted_dockercfg_path: dockercfg.encrypted
