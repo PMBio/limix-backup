@@ -2,18 +2,14 @@
   steps:
     - service: conda2
       command: pushd /home/limix && /opt/conda/bin/python setup.py test --yes
-    #   encrypted_dockercfg_path: dockercfg.encrypted
 
     - service: bare
       command: pushd /home/limix && /usr/bin/python setup.py test --yes
-    #   encrypted_dockercfg_path: dockercfg.encrypted
 
     - service: canopy2
       command: pushd /home/limix && /usr/local/Canopy_64bit/System/bin/python setup.py test --yes
-    #   encrypted_dockercfg_path: dockercfg.encrypted
 
 - type: serial
   steps:
     - service: bare
       command: pushd /home/limix && deploy/github
-    #   encrypted_dockercfg_path: dockercfg.encrypted
