@@ -1,19 +1,19 @@
 - type: parallel
   steps:
-    - service: limix_conda2
-      command: /opt/conda/bin/python setup.py test --yes
-      encrypted_dockercfg_path: dockercfg.encrypted
+    - service: conda2
+      command: pushd /home/limix && /opt/conda/bin/python setup.py test --yes
+    #   encrypted_dockercfg_path: dockercfg.encrypted
 
-    - service: limix_bare
-      command: /usr/bin/python setup.py test --yes
-      encrypted_dockercfg_path: dockercfg.encrypted
+    - service: bare
+      command: pushd /home/limix && /usr/bin/python setup.py test --yes
+    #   encrypted_dockercfg_path: dockercfg.encrypted
 
-    - service: limix_canopy2
-      command: /usr/local/Canopy_64bit/System/bin/python setup.py test --yes
-      encrypted_dockercfg_path: dockercfg.encrypted
+    - service: canopy2
+      command: pushd /home/limix && /usr/local/Canopy_64bit/System/bin/python setup.py test --yes
+    #   encrypted_dockercfg_path: dockercfg.encrypted
 
 - type: serial
   steps:
-    - service: limix_bare
-      command: deploy/github
-      encrypted_dockercfg_path: dockercfg.encrypted
+    - service: bare
+      command: pushd /home/limix && deploy/github
+    #   encrypted_dockercfg_path: dockercfg.encrypted

@@ -1,17 +1,11 @@
-limix_conda2:
-  build:
-    image: dhorta/limix-science-conda2
-    dockerfile_path: dockers/Dockerfile.science-conda2
-  cached: true
+conda2:
+  image: dhorta/science-conda2
+  volumes: .:/home/limix
 
-limix_canopy2:
-  build:
-    image: dhorta/limix-science-canopy2
-    dockerfile_path: dockers/Dockerfile.science-canopy2
-  cached: true
+canopy2:
+  image: dhorta/science-canopy2
+  volumes: .:/home/limix
 
-limix_bare:
-  build:
-    image: dhorta/limix-science-bare
-    dockerfile_path: dockers/Dockerfile.science-bare
-  cached: true
+bare:
+  image: dhorta/science-bare
+  volumes: .:/home/limix

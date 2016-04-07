@@ -1,4 +1,0 @@
-FROM dhorta/science-canopy2
-
-ADD . /home/limix
-WORKDIR /home/limix
