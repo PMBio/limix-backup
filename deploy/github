@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export REMOTE_REPOSITORY="https://github.com/PMBio/limix.git"
+export REMOTE_BRANCH="production"
+
+curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/deployments/git_push.sh | bash -s

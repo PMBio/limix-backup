@@ -8,7 +8,7 @@
       command: /usr/local/Canopy_64bit/System/bin/python setup.py test --yes
 - type: serial
   steps:
-    - service: pypi_deploy
+    - service: limix_bare
     #   tag: master
-      command: deploy/pypi
+      command: deploy/github
       image_name: limix_bare
