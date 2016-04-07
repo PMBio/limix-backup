@@ -2,13 +2,20 @@
   steps:
     - service: limix_conda2
       command: /opt/conda/bin/python setup.py test --yes
+      encrypted_dockercfg_path: dockercfg.encrypted
+
     - service: limix_bare
       command: /usr/bin/python setup.py test --yes
+      encrypted_dockercfg_path: dockercfg.encrypted
+
     - service: limix_canopy2
       command: /usr/local/Canopy_64bit/System/bin/python setup.py test --yes
+      encrypted_dockercfg_path: dockercfg.encrypted
+
 - type: serial
   steps:
     - service: limix_bare
     #   tag: master
       command: deploy/github
       image_name: limix_bare
+      encrypted_dockercfg_path: dockercfg.encrypted
