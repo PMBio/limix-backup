@@ -1,9 +1,17 @@
 #!/bin/bash
 
+LIMIX_PATH=$1
+
 export REMOTE_REPOSITORY="https://github.com/PMBio/limix.git"
 export REMOTE_BRANCH="production"
 
+pushd $LIMIX_PATH
+
 set -e
 
-git fetch --unshallow || true
-git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
+if [[ !  -z  $param  ]]; then
+    git fetch || true
+    git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
+fi
+
+popd
