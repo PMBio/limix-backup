@@ -10,59 +10,17 @@ LIMIX_VERSION=$1
 export REMOTE_REPOSITORY="ssh://git@github.com/PMBio/limix.git"
 export REMOTE_BRANCH="refs/heads/production"
 
-# set -e
+set -e
 
 if [[ ! -z $CI_COMMIT_ID ]]; then
-    echo "Trying to deploy Limix ${LIMIX_VERSION} to GitHub."
+    echo "Deploying Limix ${LIMIX_VERSION} to GitHub."
     mkdir -p "$HOME/.ssh"
     ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
     echo -e $PRIVATE_SSH_KEY >> $HOME/.ssh/id_rsa
     chmod -R 700 $HOME/.ssh
-    # git fetch --unshallow || true
-    echo "Part 1"
     git fetch --all
-    echo "Part 2"
     # git tag v${LIMIX_VERSION}
-    echo "Part 3"
-    # git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} --tags
-    echo $REMOTE_REPOSITORY
-    echo $CI_COMMIT_ID
-    echo $REMOTE_BRANCH
-    printenv | grep CI
-    echo "Part 3.1"
-    git status
-    echo "Part 3.2"
-    git branch -a
-    echo "Part 3.3"
-    cat .git/config
-    echo "Part 3.4"
-    # git branch -u origin/${REMOTE_BRANCH} ${REMOTE_BRANCH}
-    # git checkout -b ${REMOTE_BRANCH}
-    echo "Part 3.5"
-    git status
-    echo "Part 3.6"
-    git branch -a
-    git remote -v
-    echo "Part 3.7"
-    echo "Part 3.8"
-    trap 'echo "SIGINT"' SIGINT
-    trap 'echo "SIGHUP"' SIGHUP
-    trap 'echo "SIGQUIT"' SIGQUIT
-    trap 'echo "SIGILL"' SIGILL
-    trap 'echo "SIGABRT"' SIGABRT
-    trap 'echo "SIGKILL"' SIGKILL
-    trap 'echo "SIGQUIT"' SIGQUIT
-    # git --version
-
     git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
-    # cmd="git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} || true"
-    # echo "Running: ${cmd}"
-    # OUTPUT="$(git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} 2>&1)"
-    # echo "${OUTPUT}"
-    # `${cmd}`
-    # git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
-    # git push -f ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
-    echo "Part 4"
 else
     echo "We won't try to deploy it because CI_COMMIT_ID is missing."
     exit 1
