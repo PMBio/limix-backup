@@ -46,7 +46,15 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     echo "Part 3.7"
     git push --help
     echo "Part 3.8"
-    git push --dry-run --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} 2>&1
+    trap 'echo "SIGINT"' SIGINT
+    trap 'echo "SIGHUP"' SIGHUP
+    trap 'echo "SIGQUIT"' SIGQUIT
+    trap 'echo "SIGILL"' SIGILL
+    trap 'echo "SIGABRT"' SIGABRT
+    trap 'echo "SIGKILL"' SIGKILL
+    trap 'echo "SIGQUIT"' SIGQUIT
+
+    git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} 2>&1
     # cmd="git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} || true"
     # echo "Running: ${cmd}"
     # OUTPUT="$(git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} 2>&1)"
