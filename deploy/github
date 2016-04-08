@@ -36,7 +36,8 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     echo "Part 3.3"
     cat .git/config
     echo "Part 3.4"
-    git checkout -b ${REMOTE_BRANCH}
+    git branch -u origin/${REMOTE_BRANCH} ${REMOTE_BRANCH}
+    # git checkout -b ${REMOTE_BRANCH}
     echo "Part 3.5"
     git status
     echo "Part 3.6"
