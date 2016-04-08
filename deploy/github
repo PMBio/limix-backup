@@ -22,7 +22,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     git config user.email "${CI_COMMITTER_EMAIL}"
     git config user.name "${CI_COMMITTER_NAME}"
     echo "Ponto 1"
-    git fetch --all
+    git fetch || true
     echo "Ponto 2"
     git tag -a ${TAG} ${CI_COMMIT_ID} -m "version ${LIMIX_VERSION}"
     echo "Ponto 3"
