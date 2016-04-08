@@ -87,10 +87,10 @@ from setuptools.extension import Extension
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext
 
-def _check_gcc_cpp11():
+def _check_gcc_cpp11(cc_name):
     import subprocess
     try:
-        cmd = 'gcc -E -dM -std=c++11 -x c++ /dev/null > /dev/null'
+        cmd = cc_name + ' -E -dM -std=c++11 -x c++ /dev/null > /dev/null'
         subprocess.check_call(cmd, shell=True)
     except subprocess.CalledProcessError:
         return False
@@ -100,13 +100,11 @@ class build_ext_subclass(build_ext):
     def build_extensions(self):
         if len(self.compiler.compiler) > 0:
             cc_name = self.compiler.compiler[0]
-            if cc_name == 'gcc':
-                if _check_gcc_cpp11():
-                    stdcpp = '-std=c++11'
-                else:
-                    stdcpp = '-std=c++0x'
-                for e in self.extensions:
-                    e.extra_compile_args.append(stdcpp)
+            stdcpp = '-std=c++11'
+            if 'gcc' in cc_name and not _check_gcc_cpp11(cc_name):
+                stdcpp = '-std=c++0x'
+            for e in self.extensions:
+                e.extra_compile_args.append(stdcpp)
         build_ext.build_extensions(self)
 
 def globr(root, pattern):
