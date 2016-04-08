@@ -14,6 +14,7 @@ set -e
 
 if [[ ! -z $CI_COMMIT_ID ]]; then
     echo "Trying to deploy Limix ${LIMIX_VERSION} to GitHub."
+    mkdir -p ~/.ssh
     ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
     git fetch --unshallow || true
     git tag v${LIMIX_VERSION}
