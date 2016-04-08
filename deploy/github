@@ -47,10 +47,11 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     git push --help
     echo "Part 3.8"
     git rebase -i
-    cmd="git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} || true"
-    echo "Running: ${cmd}"
-    OUTPUT="$(git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} || true)"
-    echo "${OUTPUT}"
+    git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} 2>&1
+    # cmd="git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} || true"
+    # echo "Running: ${cmd}"
+    # OUTPUT="$(git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} 2>&1)"
+    # echo "${OUTPUT}"
     # `${cmd}`
     # git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
     # git push -f ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
