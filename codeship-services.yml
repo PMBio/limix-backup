@@ -9,6 +9,7 @@
 #         - data
 
 bare:
+    tag: codeship
     image: dhorta/science-bare
     encrypted_env_file: sshkey.env.encrypted
     volumes_from:
@@ -20,6 +21,7 @@ bare:
 #         - data
 
 data:
+    tag: codeship
     image: busybox
     volumes:
         - .:/home/limix
