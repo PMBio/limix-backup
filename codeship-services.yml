@@ -10,6 +10,7 @@ canopy2:
 
 bare:
     image: dhorta/science-bare
+    encrypted_env_file: sshkey.env.encrypted
     volumes_from:
         - data
 
