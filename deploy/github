@@ -32,8 +32,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
         --user ${CI_COMMITTER_USERNAME} \
         --repo ${REMOTE_REPOSITORY} \
         --tag ${TAG} \
-        --name "Automatically generated release for Limix \
-                version ${LIMIX_VERSION}" \
+        --name "Limix ${LIMIX_VERSION}" \
         --description "Commit message: ${CI_MESSAGE}"
     echo "Ponto 5"
 else
