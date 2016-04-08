@@ -44,7 +44,6 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     git branch -a
     git remote -v
     echo "Part 3.7"
-    git push --help
     echo "Part 3.8"
     trap 'echo "SIGINT"' SIGINT
     trap 'echo "SIGHUP"' SIGHUP
