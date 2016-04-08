@@ -22,9 +22,10 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     echo "Part 1"
     git fetch --all
     echo "Part 2"
-    git tag v${LIMIX_VERSION}
+    # git tag v${LIMIX_VERSION}
     echo "Part 3"
-    git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} --tags
+    # git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} --tags
+    git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
     echo "Part 4"
 else
     echo "We won't try to deploy it because CI_COMMIT_ID is missing."
