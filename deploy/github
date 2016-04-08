@@ -30,6 +30,12 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     echo $REMOTE_BRANCH
     printenv | grep CI
     echo "Part 3.1"
+    git status
+    echo "Part 3.2"
+    git branch -a
+    echo "Part 3.3"
+    cat .git/config
+    echo "Part 3.4"
     git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
     echo "Part 4"
 else
