@@ -42,6 +42,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     git status
     echo "Part 3.6"
     git branch -a
+    git remote -v
     echo "Part 3.7"
     cmd="git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} || true"
     echo "Running: ${cmd}"
