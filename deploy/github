@@ -21,9 +21,13 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     chmod -R 700 $HOME/.ssh
     git config user.email "${CI_COMMITTER_EMAIL}"
     git config user.name "${CI_COMMITTER_NAME}"
+    echo "Ponto 1"
     git fetch --all
+    echo "Ponto 2"
     git tag -a ${TAG} ${CI_COMMIT_ID}
+    echo "Ponto 3"
     git push --tags ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
+    echo "Ponto 4"
     github-release release \
         --user ${CI_COMMITTER_USERNAME} \
         --repo ${REMOTE_REPOSITORY} \
@@ -31,6 +35,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
         --name "Automatically generated release for Limix \
                 version ${LIMIX_VERSION}" \
         --description "Commit message: ${CI_MESSAGE}"
+    echo "Ponto 5"
 else
     echo "We won't try to deploy it because CI_COMMIT_ID is missing."
     exit 1
