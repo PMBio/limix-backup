@@ -10,7 +10,7 @@ LIMIX_VERSION=$1
 export REMOTE_REPOSITORY="https://github.com/PMBio/limix.git"
 export REMOTE_BRANCH="production"
 
-set -e
+# set -e
 
 if [[ ! -z $CI_COMMIT_ID ]]; then
     echo "Trying to deploy Limix ${LIMIX_VERSION} to GitHub."
