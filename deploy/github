@@ -18,7 +18,8 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
     echo -e $PRIVATE_SSH_KEY >> $HOME/.ssh/id_rsa
     chmod -R 700 $HOME/.ssh
-    git fetch --unshallow || true
+    # git fetch --unshallow || true
+    git fetch
     git tag v${LIMIX_VERSION}
     git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} --tags
 else
