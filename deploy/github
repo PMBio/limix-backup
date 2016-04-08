@@ -6,6 +6,7 @@ if [[ $# -ne 1 ]]; then
     exit 1
 fi
 LIMIX_VERSION=$1
+TAG=v${LIMIX_VERSION}
 
 export REMOTE_REPOSITORY="ssh://git@github.com/PMBio/limix.git"
 export REMOTE_BRANCH="refs/heads/production"
@@ -19,8 +20,15 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     echo -e $PRIVATE_SSH_KEY >> $HOME/.ssh/id_rsa
     chmod -R 700 $HOME/.ssh
     git fetch --all
-    git tag -a v${LIMIX_VERSION} ${CI_COMMIT_ID}
+    git tag -a ${TAG} ${CI_COMMIT_ID}
     git push --tags ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
+    github-release release \
+        --user ${CI_COMMITTER_USERNAME} \
+        --repo ${REMOTE_REPOSITORY} \
+        --tag ${TAG} \
+        --name "Automatically generated release for Limix \
+                version ${LIMIX_VERSION}" \
+        --description "Commit message: ${CI_MESSAGE}"
 else
     echo "We won't try to deploy it because CI_COMMIT_ID is missing."
     exit 1
