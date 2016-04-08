@@ -3,7 +3,7 @@
 if [[ $# -ne 1 ]]; then
     echo -n "Wrong number of arguments. You must supply Limix version "
     echo "as the first argument."
-    exit
+    exit 1
 fi
 LIMIX_VERSION=$1
 
@@ -19,4 +19,5 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} --tags
 else
     echo "We won't try to deploy it because CI_COMMIT_ID is missing."
+    exit 1
 fi
