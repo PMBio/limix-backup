@@ -14,10 +14,10 @@ bare:
     volumes_from:
         - data
 
-conda2_lucid:
-    image: dhorta/science-conda2-lucid
-    volumes_from:
-        - data
+# conda2_lucid:
+#     image: dhorta/science-conda2-lucid
+#     volumes_from:
+#         - data
 
 data:
     image: busybox
