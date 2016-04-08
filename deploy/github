@@ -7,7 +7,7 @@ if [[ $# -ne 1 ]]; then
 fi
 LIMIX_VERSION=$1
 
-export REMOTE_REPOSITORY="https://github.com/PMBio/limix.git"
+export REMOTE_REPOSITORY="ssh://git@github.com/PMBio/limix.git"
 export REMOTE_BRANCH="refs/heads/production"
 
 # set -e
