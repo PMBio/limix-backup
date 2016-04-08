@@ -1,10 +1,10 @@
 package:
     name: limix
-    version: "0.7.14"
+    version: "0.7.15"
 
 source:
-    fn: v0.7.14.tar.gz
-    url: https://github.com/PMBio/limix/archive/v0.7.14.tar.gz
+    fn: v0.7.15.tar.gz
+    url: https://github.com/PMBio/limix/archive/v0.7.15.tar.gz
 
 requirements:
   build:
@@ -27,3 +27,8 @@ requirements:
 
 build:
   script: python setup.py install
+
+about:
+  home: https://github.com/PMBio/limix
+  license: Apache License
+  license_file: license.txt
