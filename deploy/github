@@ -28,6 +28,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     echo $REMOTE_REPOSITORY
     echo $CI_COMMIT_ID
     echo $REMOTE_BRANCH
+    printenv | grep CI
     echo "Part 3.1"
     git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
     echo "Part 4"
