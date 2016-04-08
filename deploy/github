@@ -46,7 +46,6 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     echo "Part 3.7"
     git push --help
     echo "Part 3.8"
-    git rebase -i
     git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} 2>&1
     # cmd="git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} || true"
     # echo "Running: ${cmd}"
