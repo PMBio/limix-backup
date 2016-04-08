@@ -24,7 +24,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     echo "Ponto 1"
     git fetch --all
     echo "Ponto 2"
-    git tag -a ${TAG} ${CI_COMMIT_ID}
+    git tag -a ${TAG} ${CI_COMMIT_ID} -m "version ${LIMIX_VERSION}"
     echo "Ponto 3"
     git push --tags ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
     echo "Ponto 4"
