@@ -1,5 +1,4 @@
 - type: parallel
-  tag: codeship
   steps:
     - service: conda2
       command: /bin/bash -c "cp -r /home/limix /home/limix-conda2 && cd /home/limix-conda2 && /opt/conda/bin/python setup.py test --yes"
