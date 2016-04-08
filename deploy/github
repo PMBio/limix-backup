@@ -19,8 +19,8 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     echo -e $PRIVATE_SSH_KEY >> $HOME/.ssh/id_rsa
     chmod -R 700 $HOME/.ssh
     git fetch --all
-    # git tag v${LIMIX_VERSION}
-    git push --verbose ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
+    git tag -a v${LIMIX_VERSION} ${CI_COMMIT_ID}
+    git push --tags ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
 else
     echo "We won't try to deploy it because CI_COMMIT_ID is missing."
     exit 1
