@@ -25,6 +25,10 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     # git tag v${LIMIX_VERSION}
     echo "Part 3"
     # git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH} --tags
+    echo $REMOTE_REPOSITORY
+    echo $CI_COMMIT_ID
+    echo $REMOTE_BRANCH
+    echo "Part 3.1"
     git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
     echo "Part 4"
 else
