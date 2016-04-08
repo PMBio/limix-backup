@@ -1,0 +1,29 @@
+package:
+    name: limix
+    version: "0.7.14"
+
+source:
+    fn: v0.7.14.tar.gz
+    url: https://github.com/PMBio/limix/archive/v0.7.14.tar.gz
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - numpy
+    - cython
+    - matplotlib
+    - scikit-learn
+    - h5py
+    - scipy
+  run:
+    - python
+    - numpy
+    - cython
+    - matplotlib
+    - scikit-learn
+    - h5py
+    - scipy
+
+build:
+  script: python setup.py install
