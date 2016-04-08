@@ -12,9 +12,15 @@
 #     - service: conda2_lucid
 #       command: /bin/bash -c "cp -r /home/limix /home/limix-conda2-lucid && cd /home/limix-conda2-lucid && /miniconda2/bin/python setup.py test --yes"
 
-- type: serial
-  steps:
-    - service: bare
-      tag: codeship
-    #   command: /bin/bash -c "cp -r /home/limix /home/limix-github-deploy && cd /home/limix-github-deploy && deploy/version | xargs deploy/github"
-      command: /bin/bash -c "cd /home/limix && deploy/version | xargs deploy/github"
+# - type: serial
+#   steps:
+#     - service: bare
+#       tag: codeship
+#     #   command: /bin/bash -c "cp -r /home/limix /home/limix-github-deploy && cd /home/limix-github-deploy && deploy/version | xargs deploy/github"
+#       command: /bin/bash -c "cd /home/limix && deploy/version | xargs deploy/github"
+
+
+- service: bare
+  tag: codeship
+  command: /bin/bash -c "cp -r /home/limix /home/limix-github-deploy && cd /home/limix-github-deploy && deploy/version | xargs deploy/github"
+  # command: /bin/bash -c "cd /home/limix && deploy/version | xargs deploy/github"
