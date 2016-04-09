@@ -52,8 +52,7 @@ function fetch_versions {
     for line in $msg; do
         if [ $level -eq 2 ]; then
             version=`echo $line | sed -E 's/^.*v([0-9]+\.[0-9]+\.[0-9]+),.*$/\1/'`
-            if [[ ! -z $version ]]; then
-                echo $version
+            if [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
                 RELEASE_VERSIONS+=$version
                 RELEASE_VERSIONS+=' '
             fi
@@ -63,8 +62,7 @@ function fetch_versions {
         fi
         if [ $level -eq 1 ]; then
             version=`echo $line | sed -E 's/^.*v([0-9]+\.[0-9]+\.[0-9]+) .*$/\1/'`
-            if [[ ! -z $version ]]; then
-                echo $version
+            if [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
                 TAG_VERSIONS+=$version
                 TAG_VERSIONS+=' '
             fi
@@ -136,12 +134,11 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     chmod -R 700 $HOME/.ssh
     git config user.email "${CI_COMMITTER_EMAIL}"
     git config user.name "${CI_COMMITTER_NAME}"
-    echo "Ponto 1"
-    # printenv
+    echo "Fetching from remote repository."
     git fetch || true
-    echo "Ponto 2"
+    echo "Tagging."
     git tag -a ${TAG} ${CI_COMMIT_ID} -m "Automatically generated tag for Limix version ${LIMIX_VERSION}"
-    echo "Ponto 3"
+    echo "Pushing to the remote repository."
     git push --tags ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
     github-release release \
         --user PMBio \
@@ -149,7 +146,6 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
         --tag ${TAG} \
         --name "Limix ${LIMIX_VERSION}" \
         --description "This is an automatically generated build triggered by a commit with the following message: ${COMMIT_MESSAGE}"
-    echo "Ponto 5"
 else
     echo "We won't try to deploy it because CI_COMMIT_ID is missing."
     exit 1
