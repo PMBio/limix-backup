@@ -140,7 +140,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     git tag -a ${TAG} ${CI_COMMIT_ID} -m "Automatically generated tag for Limix version ${LIMIX_VERSION}"
     echo "Pushing to the remote repository."
     git push --tags ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
-    github-release -v release \
+    github-release release \
         --user PMBio \
         --repo limix \
         --target ${REMOTE_BRANCH} \
