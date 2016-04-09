@@ -8,8 +8,8 @@ fi
 LIMIX_VERSION=$1
 TAG=v${LIMIX_VERSION}
 
-export REMOTE_REPOSITORY="ssh://git@github.com/PMBio/limix.git"
-# export REMOTE_REPOSITORY="https://github.com/PMBio/limix.git"
+export SSH_REMOTE_REPOSITORY="ssh://git@github.com/PMBio/limix.git"
+export HTTPS_REMOTE_REPOSITORY="https://github.com/PMBio/limix.git"
 export REMOTE_BRANCH="refs/heads/production"
 
 set -e
@@ -28,11 +28,11 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     echo "Ponto 2"
     git tag -a ${TAG} ${CI_COMMIT_ID} -m "version ${LIMIX_VERSION}"
     echo "Ponto 3"
-    git push --tags ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
-    echo "Ponto 4"
+    git push --tags ${SSH_REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
+    echo "Ponto 4 --user ${CI_COMMITTER_USERNAME} --repo ${HTTPS_REMOTE_REPOSITORY} --tag ${TAG} --name Limix ${LIMIX_VERSION} --description Commit message: ${CI_MESSAGE}"
     github-release release \
         --user ${CI_COMMITTER_USERNAME} \
-        --repo ${REMOTE_REPOSITORY} \
+        --repo ${HTTPS_REMOTE_REPOSITORY} \
         --tag ${TAG} \
         --name "Limix ${LIMIX_VERSION}" \
         --description "Commit message: ${CI_MESSAGE}"
