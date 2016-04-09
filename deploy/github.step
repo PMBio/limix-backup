@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cp -r /home/limix /home/limix-github-deploy
+cd /home/limix-github-deploy
+deploy/version | xargs deploy/github

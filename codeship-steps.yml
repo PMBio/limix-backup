@@ -13,9 +13,9 @@
 #       command: /bin/bash -c "cp -r /home/limix /home/limix-conda2-lucid && cd /home/limix-conda2-lucid && /miniconda2/bin/python setup.py test --yes"
 
 - service: bare
-  tag: codeship
-  command: /bin/bash -c "cp -r /home/limix /home/limix-github-deploy && cd /home/limix-github-deploy && deploy/version | xargs deploy/github"
+  # tag: codeship
+  command: deploy/github.step
 
-- service: bare
-  tag: codeship
-  command: /bin/bash -c "cp -r /home/limix /home/limix-pypi-deploy && cd /home/limix-pypi-deploy && deploy/pypi"
+# - service: bare
+#   # tag: codeship
+#   command: /bin/bash -c "cp -r /home/limix /home/limix-pypi-deploy && cd /home/limix-pypi-deploy && deploy/pypi"
