@@ -13,6 +13,9 @@ export REMOTE_BRANCH="refs/heads/production"
 
 set -e
 
+echo "CI_BRANCH=${CI_BRANCH}"
+COMMIT_MESSAGE=`git log -1 --pretty=%B ${CI_BRANCH} | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | grep -v '^$'`
+
 if [[ ! -z $CI_COMMIT_ID ]]; then
     echo "Deploying Limix ${LIMIX_VERSION} to GitHub."
     mkdir -p "$HOME/.ssh"
@@ -25,7 +28,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     # printenv
     git fetch || true
     echo "Ponto 2"
-    git tag -a ${TAG} ${CI_COMMIT_ID} -m "version ${LIMIX_VERSION}"
+    git tag -a ${TAG} ${CI_COMMIT_ID} -m "Automatically generated tag for Limix version ${LIMIX_VERSION}"
     echo "Ponto 3"
     git push --tags ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
     github-release release \
@@ -33,7 +36,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
         --repo limix \
         --tag ${TAG} \
         --name "Limix ${LIMIX_VERSION}" \
-        --description "Commit message: ${CI_MESSAGE}"
+        --description "This is an automatically generated build triggered by a commit with the following message: ${COMMIT_MESSAGE}"
     echo "Ponto 5"
 else
     echo "We won't try to deploy it because CI_COMMIT_ID is missing."
