@@ -123,9 +123,9 @@ fi
 echo "Retrieving last commit message from branch ${CI_BRANCH}."
 COMMIT_MESSAGE=`git log -1 --pretty=%B ${CI_BRANCH} | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | grep -v '^$'`
 
-CI_COMMIT_ID="887c2476402e802269e26169d068ee4eca1b9e69"
-CI_COMMITTER_EMAIL="danilo.horta@gmail.com"
-CI_COMMITTER_NAME="Danilo Horta"
+# CI_COMMIT_ID="887c2476402e802269e26169d068ee4eca1b9e69"
+# CI_COMMITTER_EMAIL="danilo.horta@gmail.com"
+# CI_COMMITTER_NAME="Danilo Horta"
 if [[ ! -z $CI_COMMIT_ID ]]; then
     echo "Deploying Limix ${LIMIX_VERSION} to GitHub."
     mkdir -p "$HOME/.ssh"
@@ -151,11 +151,3 @@ else
     echo "We won't try to deploy it because CI_COMMIT_ID is missing."
     exit 1
 fi
-
-# vercomp 2.5.7 2.5.6
-# case $? in
-#     0) op='=';;
-#     1) op='>';;
-#     2) op='<';;
-# esac
-# echo $op
