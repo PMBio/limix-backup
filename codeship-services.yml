@@ -22,4 +22,4 @@ bare:
 data:
     image: busybox
     volumes:
-        - .:/home/limix
+        - .:/limix

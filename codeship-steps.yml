@@ -14,7 +14,7 @@
 
 - service: bare
   # tag: codeship
-  command: deploy/github.step
+  command: /limix/deploy/github.step
 
 # - service: bare
 #   # tag: codeship

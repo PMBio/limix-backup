@@ -1,17 +1,21 @@
 #!/bin/bash
 
 vercomp () {
+    echo "vercomp 1"
     if [[ $1 == $2 ]]
     then
         return 0
     fi
+    echo "vercomp 2"
     local IFS=.
     local i ver1=($1) ver2=($2)
+    echo "vercomp 3"
     # fill empty fields in ver1 with zeros
     for ((i=${#ver1[@]}; i<${#ver2[@]}; i++))
     do
         ver1[i]=0
     done
+    echo "vercomp 4"
     for ((i=0; i<${#ver1[@]}; i++))
     do
         if [[ -z ${ver2[i]} ]]
@@ -28,6 +32,7 @@ vercomp () {
             return 2
         fi
     done
+    echo "vercomp 5"
     return 0
 }
 
@@ -42,7 +47,7 @@ TAG=v${LIMIX_VERSION}
 export REMOTE_REPOSITORY="ssh://git@github.com/PMBio/limix.git"
 export REMOTE_BRANCH="refs/heads/production"
 
-set -e
+# set -e
 
 function fetch_versions {
 
@@ -67,7 +72,6 @@ function fetch_versions {
             ((level=level+1))
         fi
     done
-    echo $level
     if [ $level -ne 2 ]; then
         echo "Some error has occurred while fetching tag and realease versions from GitHub."
         exit 1
@@ -76,41 +80,59 @@ function fetch_versions {
 fetch_versions
 
 function gt_all {
+    echo "Bla 1"
     local IFS=' '
     local ver="$1"
     local vers="$2"
+    echo "Bla 2"
     for v in $vers
     do
+        echo "Bla 3"
+        echo $ver
+        echo $v
         vercomp $ver $v
         case $? in
             0) op='=';;
             1) op='>';;
             2) op='<';;
         esac
+        echo "Mano 1"
         if [ $op == '<' ]; then
             return 0
         fi
+        echo "Mano 2"
         if [ $op == '=' ]; then
             return 0
         fi
+        echo "Mano 3"
     done
     return 1
 }
 
+function neg_ver_msg {
+    msg="I won't deploy because the submitted version ${LIMIX_VERSION} is not"
+    msg+=" greater than all other $1 versions found in the PMBio repository."
+}
+echo "Part 0.1"
 gt_all $LIMIX_VERSION $TAG_VERSIONS
 if [ $? -ne 1 ]; then
-    echo "I won't create a release because ${LIMIX_VERSION} is not greater than all other tag versions found in the PMBio repository."
+    neg_ver_msg "TAG"
+    echo $msg
     exit 0
 fi
-
+echo "Part 0.5"
 gt_all $LIMIX_VERSION $RELEASE_VERSIONS
 if [ $? -ne 1 ]; then
-    echo "I won't create a release because ${LIMIX_VERSION} is not greater than all other release versions found in the PMBio repository."
+    neg_ver_msg "RELEASE"
+    echo $msg
     exit 0
 fi
-
+echo "Part 1"
 COMMIT_MESSAGE=`git log -1 --pretty=%B ${CI_BRANCH} | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | grep -v '^$'`
-
+echo "Part 2"
+CI_COMMIT_ID="887c2476402e802269e26169d068ee4eca1b9e69"
+CI_COMMITTER_EMAIL="danilo.horta@gmail.com"
+CI_COMMITTER_NAME="Danilo Horta"
 if [[ ! -z $CI_COMMIT_ID ]]; then
     echo "Deploying Limix ${LIMIX_VERSION} to GitHub."
     mkdir -p "$HOME/.ssh"
