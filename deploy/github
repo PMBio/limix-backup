@@ -143,6 +143,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     github-release -v release \
         --user PMBio \
         --repo limix \
+        --target ${REMOTE_BRANCH} \
         --tag ${TAG} \
         --name "Limix ${LIMIX_VERSION}" \
         --description "This is an automatically generated build triggered by a commit with the following message: ${COMMIT_MESSAGE}"
