@@ -51,15 +51,21 @@ function fetch_versions {
     local IFS=$'\n'
     for line in $msg; do
         if [ $level -eq 2 ]; then
-            RELEASE_VERSIONS+=`echo $line | sed -E 's/^.*v([0-9]+\.[0-9]+\.[0-9]+),.*$/\1/'`
-            RELEASE_VERSIONS+=' '
+            version=`echo $line | sed -E 's/^.*v([0-9]+\.[0-9]+\.[0-9]+),.*$/\1/'`
+            if [[ ! -z $version ]]; then
+                RELEASE_VERSIONS+=$version
+                RELEASE_VERSIONS+=' '
+            fi
         fi
         if [ "releases:" == "$line" ]; then
             ((level=level+1))
         fi
         if [ $level -eq 1 ]; then
-            TAG_VERSIONS+=`echo $line | sed -E 's/^.*v([0-9]+\.[0-9]+\.[0-9]+) .*$/\1/'`
-            TAG_VERSIONS+=' '
+            version=`echo $line | sed -E 's/^.*v([0-9]+\.[0-9]+\.[0-9]+) .*$/\1/'`
+            if [[ ! -z $version ]]; then
+                TAG_VERSIONS+=$version
+                TAG_VERSIONS+=' '
+            fi
         fi
         if [ "git tags:" == "$line" ]; then
             ((level=level+1))
@@ -74,31 +80,23 @@ echo "Fetching TAG and RELEASE Limix versions from GitHub."
 fetch_versions
 
 function gt_all {
-    echo "Bla 1"
     local IFS=' '
     local ver="$1"
     local vers="$2"
-    echo "Bla 2"
     for v in $vers
     do
-        echo "Bla 3"
-        echo $ver
-        echo $v
         vercomp $ver $v
         case $? in
             0) op='=';;
             1) op='>';;
             2) op='<';;
         esac
-        echo "Mano 1"
         if [ $op == '<' ]; then
             return 0
         fi
-        echo "Mano 2"
         if [ $op == '=' ]; then
             return 0
         fi
-        echo "Mano 3"
     done
     return 1
 }
