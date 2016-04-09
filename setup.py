@@ -5,7 +5,7 @@ import sys
 import importlib
 
 PKG_NAME = 'limix'
-VERSION  = '0.7.21'
+VERSION  = '0.7.22'
 
 WORKDIR = os.path.abspath(os.path.dirname(__file__))
 
