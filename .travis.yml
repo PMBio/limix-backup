@@ -12,6 +12,6 @@ before_install:
   - conda update -q conda
   - conda info -a
   - conda install -y conda-build
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION setuptools numpy cython matplotlib scikit-learn h5py scipy pandas
+  - conda create -q -n test-environment setuptools numpy cython matplotlib scikit-learn h5py scipy pandas
 install: python setup.py install --compatible
 script: python setup.py test
