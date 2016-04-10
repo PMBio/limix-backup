@@ -20,7 +20,7 @@ requirements:
     - h5py
     - scipy
     - pandas
-    - gcc 4.9.* # [osx]
+    - gcc 4.8.* # [osx]
   run:
     - python
     - numpy
@@ -30,7 +30,7 @@ requirements:
     - h5py
     - scipy
     - pandas
-    - libgcc 4.9.* # [osx]
+    - libgcc 4.8.* # [osx]
 
 about:
   home: https://github.com/PMBio/limix
