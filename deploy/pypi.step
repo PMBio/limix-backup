@@ -1,0 +1,6 @@
+#!/bin/bash
+
+WHAT=$1
+cp -r /limix /limix-pypi-deploy
+cd /limix-pypi-deploy
+deploy/pypi $WHAT

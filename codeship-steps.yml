@@ -22,4 +22,4 @@
 
 - service: bare
   tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
-  command: deploy/pypi
+  command: /limix/deploy/pypi.step
