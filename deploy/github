@@ -144,7 +144,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
         git push --tags
     else
         echo "Releasing."
-        github-release -v release \
+        github-release release \
             --user PMBio \
             --repo limix \
             --target ${REMOTE_BRANCH} \
