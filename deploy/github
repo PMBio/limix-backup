@@ -45,7 +45,7 @@ export REMOTE_BRANCH="refs/heads/codeship"
 
 function fetch_versions {
 
-    local msg=`github-release info -u PMBio -r limix`
+    local msg=`github-release info -u PMBio -r limix 2>&1`
     local level=0
     TAG_VERSIONS=
     RELEASE_VERSIONS=
