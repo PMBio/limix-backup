@@ -51,6 +51,9 @@ function fetch_versions {
     RELEASE_VERSIONS=
     local IFS=$'\n'
     for line in $msg; do
+        if [ $line == "error: no tags available for PMBio/limix" ]; then
+            return 0
+        fi
         if [ $level -eq 2 ]; then
             version=`echo $line | sed -E 's/^.*v([0-9]+\.[0-9]+\.[0-9]+),.*$/\1/'`
             if [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
