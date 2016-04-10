@@ -51,10 +51,6 @@ function fetch_versions {
     RELEASE_VERSIONS=
     local IFS=$'\n'
     for line in $msg; do
-        echo "Ponto 1: $line"
-        if [ $line == "error: no tags available for PMBio/limix" ]; then
-            return 0
-        fi
         if [ $level -eq 2 ]; then
             version=`echo $line | sed -E 's/^.*v([0-9]+\.[0-9]+\.[0-9]+),.*$/\1/'`
             if [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -62,9 +58,14 @@ function fetch_versions {
                 RELEASE_VERSIONS+=' '
             fi
         fi
+
         if [ "releases:" == "$line" ]; then
             ((level=level+1))
+        elif [ ! "${line/error: no release(s) were found}" = "$line" ] ; then
+            echo "There are no releases in the repository."
+            ((level=level+1))
         fi
+
         if [ $level -eq 1 ]; then
             version=`echo $line | sed -E 's/^.*v([0-9]+\.[0-9]+\.[0-9]+) .*$/\1/'`
             if [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -72,7 +73,11 @@ function fetch_versions {
                 TAG_VERSIONS+=' '
             fi
         fi
+
         if [ "git tags:" == "$line" ]; then
+            ((level=level+1))
+        elif [ ! "${line/error: no tags available}" = "$line" ] ; then
+            echo "There are no tag versions in the repository."
             ((level=level+1))
         fi
     done
