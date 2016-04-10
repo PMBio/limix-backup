@@ -16,6 +16,7 @@ requirements:
     - scikit-learn
     - h5py
     - scipy
+    - pandas
   run:
     - python
     - numpy
@@ -24,9 +25,7 @@ requirements:
     - scikit-learn
     - h5py
     - scipy
-
-build:
-  script: python setup.py install
+    - pandas
 
 about:
   home: https://github.com/PMBio/limix

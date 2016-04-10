@@ -117,11 +117,14 @@ def globr(root, pattern):
 
     return matches
 
-def mac_workaround():
+def mac_workaround(compatible):
     import platform
     from distutils import sysconfig
 
     conf_vars = sysconfig.get_config_vars()
+    if compatible:
+        conf_vars['MACOSX_DEPLOYMENT_TARGET'] = '10.9'
+        return
     vers = platform.mac_ver()[0].split('.')
     if len(vers) == 3:
         conf_vars['MACOSX_DEPLOYMENT_TARGET'] =\
@@ -211,9 +214,9 @@ def get_test_suite():
     from unittest import TestLoader
     return TestLoader().discover(PKG_NAME)
 
-def setup_package(reswig, yes):
+def setup_package(reswig, yes, compatible):
     if sys.platform == 'darwin':
-        mac_workaround()
+        mac_workaround(compatible)
 
     install_requires = ["sklearn", "pandas"]
     setup_requires = []
@@ -319,4 +322,10 @@ if __name__ == '__main__':
     if "--yes" in sys.argv:
         yes = True
         sys.argv.remove("--yes")
-    setup_package(reswig, yes)
+
+    compatible = False
+    if "--compatible" in sys.argv:
+        compatible = True
+        sys.argv.remove("--compatible")
+
+    setup_package(reswig, yes, compatible)
