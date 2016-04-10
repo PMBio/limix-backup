@@ -11,11 +11,16 @@ before_install:
     - conda config --set always_yes yes --set changeps1 no
     - conda update -q conda
     - conda info -a
-    - conda install -y conda-build
-    - conda create -q -n test-environment setuptools numpy cython matplotlib scikit-learn h5py scipy pandas
+    - conda config --set anaconda_upload no
 install:
-    - source activate test-environment
-    - python setup.py install --compatible
+    - conda install -q -y conda-build setuptools numpy cython matplotlib scikit-learn h5py scipy pandas anaconda-client
+    - conda build conda-recipe
+    - conda install --use-local limix
 script:
-    - source activate test-environment
     - python setup.py test
+deploy:
+  - provider: script
+    script: deploy/travis_conda.sh
+    on:
+      tags: true
+    skip_cleanup: true
