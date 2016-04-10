@@ -1,10 +1,10 @@
 package:
     name: limix
-    version: "0.7.46"
+    version: "0.7.47"
 
 source:
-    fn: v0.7.46.tar.gz
-    url: https://github.com/PMBio/limix/archive/v0.7.46.tar.gz
+    fn: v0.7.47.tar.gz
+    url: https://github.com/PMBio/limix/archive/v0.7.47.tar.gz
 
 requirements:
   build:
