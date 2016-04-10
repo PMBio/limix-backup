@@ -81,7 +81,7 @@ function fetch_versions {
             ((level=level+1))
         fi
     done
-    if [ $level -ne 2 ]; then
+    if [ $level -eq 0 ]; then
         echo "Some error has occurred while fetching tag and realease versions from GitHub."
         exit 1
     fi
