@@ -51,6 +51,7 @@ function fetch_versions {
     RELEASE_VERSIONS=
     local IFS=$'\n'
     for line in $msg; do
+        echo "Ponto 1: $line"
         if [ $line == "error: no tags available for PMBio/limix" ]; then
             return 0
         fi
