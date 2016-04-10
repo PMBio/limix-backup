@@ -14,7 +14,11 @@
 
 - service: bare
   tag: codeship
-  command: /limix/deploy/github.step
+  command: /limix/deploy/github.step TAG
+
+# - service: bare
+#   tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
+#   command: /limix/deploy/github.step RELEASE
 
 # - service: bare
 #   # tag: codeship

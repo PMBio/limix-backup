@@ -32,11 +32,12 @@ vercomp () {
 }
 
 if [[ $# -ne 1 ]]; then
-    echo -n "Wrong number of arguments. You must supply Limix version "
-    echo "as the first argument."
+    echo -n "Wrong number of arguments. You must supply {WHAT} variable."
     exit 1
 fi
-LIMIX_VERSION=$1
+
+WHAT=$1
+LIMIX_VERSION=`deploy/version`
 TAG=v${LIMIX_VERSION}
 
 export REMOTE_REPOSITORY="ssh://git@github.com/PMBio/limix.git"
@@ -76,7 +77,7 @@ function fetch_versions {
         exit 1
     fi
 }
-echo "Fetching TAG and RELEASE Limix versions from GitHub."
+echo "Fetching ${WHAT} Limix versions from GitHub."
 fetch_versions
 
 function gt_all {
@@ -106,16 +107,14 @@ function neg_ver_msg {
     msg+=" greater than all other $1 versions found in the PMBio repository."
 }
 
-gt_all $LIMIX_VERSION $TAG_VERSIONS
-if [ $? -ne 1 ]; then
-    neg_ver_msg "TAG"
-    echo $msg
-    exit 0
+if [ $WHAT == "TAG" ]; then
+    gt_all $LIMIX_VERSION $TAG_VERSIONS
+else
+    gt_all $LIMIX_VERSION $RELEASE_VERSIONS
 fi
 
-gt_all $LIMIX_VERSION $RELEASE_VERSIONS
 if [ $? -ne 1 ]; then
-    neg_ver_msg "RELEASE"
+    neg_ver_msg $WHAT
     echo $msg
     exit 0
 fi
@@ -123,11 +122,8 @@ fi
 echo "Retrieving last commit message from branch ${CI_BRANCH}."
 COMMIT_MESSAGE=`git log -1 --pretty=%B ${CI_BRANCH} | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | grep -v '^$'`
 
-# CI_COMMIT_ID="887c2476402e802269e26169d068ee4eca1b9e69"
-# CI_COMMITTER_EMAIL="danilo.horta@gmail.com"
-# CI_COMMITTER_NAME="Danilo Horta"
 if [[ ! -z $CI_COMMIT_ID ]]; then
-    echo "Deploying Limix ${LIMIX_VERSION} to GitHub."
+    echo "Deploying a ${WHAT} of Limix ${LIMIX_VERSION} to GitHub."
     mkdir -p "$HOME/.ssh"
     ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
     echo -e $PRIVATE_SSH_KEY >> $HOME/.ssh/id_rsa
@@ -136,17 +132,26 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     git config user.name "${CI_COMMITTER_NAME}"
     echo "Fetching from remote repository."
     git fetch || true
-    echo "Tagging."
-    git tag -a ${TAG} ${CI_COMMIT_ID} -m "Automatically generated tag for Limix version ${LIMIX_VERSION}"
-    echo "Pushing to the remote repository."
-    git push --tags ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
-    github-release -v release \
-        --user PMBio \
-        --repo limix \
-        --target ${REMOTE_BRANCH} \
-        --tag ${TAG} \
-        --name "Limix ${LIMIX_VERSION}" \
-        --description "This is an automatically generated build triggered by a commit with the following message: ${COMMIT_MESSAGE}"
+    git status
+    git branch -a
+    git checkout codeship
+    if [ "$WHAT" == "TAG" ]; then
+        echo "Tagging."
+        # git tag -a ${TAG} ${CI_COMMIT_ID} -m "Automatically generated tag for Limix version ${LIMIX_VERSION}"
+        git tag -a ${TAG} -m "Automatically generated TAG for Limix version ${LIMIX_VERSION}"
+        echo "Pushing to the remote repository."
+        # git push --tags ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
+        git push --tags
+    else
+        echo "Releasing."
+        github-release -v release \
+            --user PMBio \
+            --repo limix \
+            --target ${REMOTE_BRANCH} \
+            --tag ${TAG} \
+            --name "Limix ${LIMIX_VERSION}" \
+            --description "This is an automatically generated build triggered by a commit with the following message: ${COMMIT_MESSAGE}"
+    fi
 else
     echo "We won't try to deploy it because CI_COMMIT_ID is missing."
     exit 1
