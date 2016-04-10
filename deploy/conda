@@ -1,4 +1,5 @@
 #!/bin/bash
 
+anaconda login --username $CONDA_USERNAME --password $CONDA_PASSWORD
 conda config --set anaconda_upload yes
 conda build conda-recipe

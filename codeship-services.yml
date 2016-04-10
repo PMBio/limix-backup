@@ -1,9 +1,9 @@
-# conda2:
-#     image: dhorta/science-conda2
-#     encrypted_env_file: codeship.env.encrypted
-#     volumes_from:
-#         - data
-#
+conda2:
+    image: dhorta/science-conda2
+    encrypted_env_file: codeship.env.encrypted
+    volumes_from:
+        - data
+
 # canopy2:
 #     image: dhorta/science-canopy2
 #     encrypted_env_file: codeship.env.encrypted
