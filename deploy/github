@@ -58,7 +58,6 @@ function fetch_versions {
                 RELEASE_VERSIONS+=' '
             fi
         fi
-        echo "PORRA: ${line}"
         if [ "releases:" == "$line" ]; then
             ((level=level+1))
         elif [ ! "${line/error: no release(s) were found}" == "$line" ] ; then
@@ -146,10 +145,8 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     if [ "$WHAT" == "TAG" ]; then
         git checkout codeship
         echo "Tagging."
-        # git tag -a ${TAG} ${CI_COMMIT_ID} -m "Automatically generated tag for Limix version ${LIMIX_VERSION}"
         git tag -a ${TAG} -m "Automatically generated TAG for Limix version ${LIMIX_VERSION}"
         echo "Pushing to the remote repository."
-        # git push --tags ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
         git push --tags
     else
         echo "Releasing."

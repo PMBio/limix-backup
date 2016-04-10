@@ -20,6 +20,6 @@
   tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
   command: /limix/deploy/github.step RELEASE
 
-- service: bare
+- service: conda2_lucid
   tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
   command: /limix/deploy/pypi.step

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-python setup.py sdist
+python setup.py sdist bdist_wheel
 twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD dist/*
