@@ -58,10 +58,10 @@ function fetch_versions {
                 RELEASE_VERSIONS+=' '
             fi
         fi
-
+        echo "PORRA: ${line}"
         if [ "releases:" == "$line" ]; then
             ((level=level+1))
-        elif [ ! "${line/error: no release(s) were found}" = "$line" ] ; then
+        elif [ ! "${line/error: no release(s) were found}" == "$line" ] ; then
             echo "There are no releases in the repository."
             ((level=level+1))
         fi
@@ -76,7 +76,7 @@ function fetch_versions {
 
         if [ "git tags:" == "$line" ]; then
             ((level=level+1))
-        elif [ ! "${line/error: no tags available}" = "$line" ] ; then
+        elif [ ! "${line/error: no tags available}" == "$line" ] ; then
             echo "There are no tag versions in the repository."
             ((level=level+1))
         fi
