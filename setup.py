@@ -98,7 +98,8 @@ def _check_gcc_cpp11(cc_name):
 
 class build_ext_subclass(build_ext):
     def build_extensions(self):
-        if len(self.compiler.compiler) > 0:
+        if (hasattr(self.compiler, 'compiler')
+                and len(self.compiler.compiler) > 0):
             cc_name = self.compiler.compiler[0]
             stdcpp = '-std=c++11'
             if 'gcc' in cc_name and not _check_gcc_cpp11(cc_name):
