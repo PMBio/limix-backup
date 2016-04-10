@@ -20,7 +20,7 @@ script:
     - python setup.py test
 deploy:
   - provider: script
-    script: deploy/travis_conda.sh
+    script: deploy/travis_conda
     on:
       tags: true
     skip_cleanup: true

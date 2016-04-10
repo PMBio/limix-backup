@@ -1,0 +1,20 @@
+  global:
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\deploy\\appveyor.run_with_env.cmd"
+
+matrix:
+    - PYTHON: "C:\\Python27_64"
+      PYTHON_VERSION: "2.7"
+      PYTHON_ARCH: "64"
+      CONDA_PY: "27"
+      CONDA_NPY: "19"
+
+install:
+    - powershell .\\deploy\\appveyor.miniconda.install.ps1
+    - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+
+test_script:
+    - "%CMD_IN_ENV% conda build conda-recipe"
+    - python setup.py test
