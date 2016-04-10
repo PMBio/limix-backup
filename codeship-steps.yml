@@ -1,16 +1,16 @@
-# - type: parallel
-#   steps:
-#     - service: conda2
-#       command: /bin/bash -c "cp -r /home/limix /home/limix-conda2 && cd /home/limix-conda2 && /opt/conda/bin/python setup.py test --yes"
-#
-#     - service: bare
-#       command: /bin/bash -c "cp -r /home/limix /home/limix-bare && cd /home/limix-bare && /usr/bin/python setup.py test --yes"
-#
-#     - service: canopy2
-#       command: /bin/bash -c "cp -r /home/limix /home/limix-canopy2 && cd /home/limix-canopy2 && /usr/local/Canopy_64bit/System/bin/python setup.py test --yes"
-#
-#     - service: conda2_lucid
-#       command: /bin/bash -c "cp -r /home/limix /home/limix-conda2-lucid && cd /home/limix-conda2-lucid && /miniconda2/bin/python setup.py test --yes"
+- type: parallel
+  steps:
+    - service: conda2
+      command: /bin/bash -c "cp -r /home/limix /home/limix-conda2 && cd /home/limix-conda2 && /opt/conda/bin/python setup.py test --yes"
+
+    - service: bare
+      command: /bin/bash -c "cp -r /home/limix /home/limix-bare && cd /home/limix-bare && /usr/bin/python setup.py test --yes"
+
+    - service: canopy2
+      command: /bin/bash -c "cp -r /home/limix /home/limix-canopy2 && cd /home/limix-canopy2 && /usr/local/Canopy_64bit/System/bin/python setup.py test --yes"
+
+    - service: conda2_lucid
+      command: /bin/bash -c "cp -r /home/limix /home/limix-conda2-lucid && cd /home/limix-conda2-lucid && /miniconda2/bin/python setup.py test --yes"
 
 - service: bare
   tag: codeship

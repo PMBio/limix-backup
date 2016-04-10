@@ -4,11 +4,11 @@ conda2:
     volumes_from:
         - data
 
-# canopy2:
-#     image: dhorta/science-canopy2
-#     encrypted_env_file: codeship.env.encrypted
-#     volumes_from:
-#         - data
+canopy2:
+    image: dhorta/science-canopy2
+    encrypted_env_file: codeship.env.encrypted
+    volumes_from:
+        - data
 
 bare:
     image: dhorta/science-bare
