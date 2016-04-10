@@ -12,6 +12,7 @@ environment:
 install:
     - powershell .\\deploy\\appveyor.miniconda.install.ps1
     - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+    - "%CMD_IN_ENV% conda install -q -y cython numpy scipy matplotlib pandas numba h5py"
 
 build: false
 
