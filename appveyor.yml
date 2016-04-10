@@ -13,6 +13,8 @@ install:
     - powershell .\\deploy\\appveyor.miniconda.install.ps1
     - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
+build: false
+
 test_script:
     - "%CMD_IN_ENV% conda build conda-recipe"
     - python setup.py test
