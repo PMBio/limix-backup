@@ -1,14 +1,10 @@
-[![Travis branch](https://img.shields.io/travis/PMBio/limix/master.svg?style=flat-square&label=build%20(osx))](https://travis-ci.org/PMBio/limix) [![Codeship branch](https://img.shields.io/codeship/f2481f10-de6f-0133-67ee-4612197ec823/master.svg?style=flat-square&label=build%20(linux))](https://codeship.com/projects/144764) [![Release](https://img.shields.io/github/release/PMBio/limix.svg?style=flat-square&label=release%20(github))](https://github.com/PMBio/limix/releases/latest) [![PyPI](https://img.shields.io/pypi/v/limix.svg?style=flat-square&label=release%20(pypi))](https://pypi.python.org/pypi/limix/) [![Conda](https://anaconda.org/horta/limix/badges/version.svg)](https://anaconda.org/horta/limix)
+[![Travis branch](https://img.shields.io/travis/PMBio/limix/master.svg?style=flat-square&label=build%20(osx))](https://travis-ci.org/PMBio/limix) [![Codeship branch](https://img.shields.io/codeship/f2481f10-de6f-0133-67ee-4612197ec823/master.svg?style=flat-square&label=build%20(linux))](https://codeship.com/projects/144764) [![Release](https://img.shields.io/github/release/PMBio/limix.svg?style=flat-square&label=release%20(github))](https://github.com/PMBio/limix/releases/latest) [![PyPI](https://img.shields.io/pypi/v/limix.svg?style=flat-square&label=release%20(pypi))](https://pypi.python.org/pypi/limix/) [![Conda](https://anaconda.org/horta/limix/badges/version.svg)](https://anaconda.org/horta/limix) [![License](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](https://github.com/PMBio/limix/blob/master/LICENSE.txt)
 
 Limix
 =====
 
-## What is Limix?
-
 Limix is a flexible and efficient linear mixed model library with interfaces
 to Python.
-
-## Philosophy
 
 Genomic analyses require flexible models that can be adapted to the needs of
 the user. Limix is smart about how particular models are fitted to save
@@ -39,19 +35,18 @@ compilation of C/C++ and (potentially) Fortran code, and some understanding
 of dependency resolution is likely to be required. We provide bellow recipes
 for some popular Limix distributions.
 
-- Ubuntu 14.04
+- Ubuntu 14.04, Ubuntu 12.04
 
 ```
 sudo apt-get update
 sudo apt-get install build-essential libc6 gfortran g++ \
      python python-setuptools cython python-numpy python-scipy \
      python-matplotlib pkg-config libfreetype6-dev libpng12-dev \
-     libhdf5-dev liblapack-dev python-pip python-pandas
-pip install h5py
+     python-h5py liblapack-dev python-pip python-pandas
 pip install limix
 ```
 
-## How to use Limix?
+## Usage
 
 A good starting point is our package Vignettes. These tutorials are available from this repository: https://github.com/PMBio/limix-tutorials.
 
@@ -61,7 +56,7 @@ http://nbviewer.ipython.org/github/pmbio/limix-tutorials/blob/master/index.ipynb
 Alternatively, the source file is available in the separate Limix tutorial repository:
 https://github.com/PMBio/limix-tutorials
 
-## Problems ?
+## Problems
 
 If you want to use Limix and encounter any issues, please contact us via `limix@mixed-models.org`.
 
@@ -73,4 +68,5 @@ If you want to use Limix and encounter any issues, please contact us via `limix@
 - `Oliver Stegle` (`stegle@ebi.ac.uk`)
 
 ## License
-See [LICENSE] https://github.com/PMBio/limix/blob/master/license.txt
+
+See [Apache License (Version 2.0, January 2004)](https://github.com/PMBio/limix/blob/master/LICENSE.txt).
