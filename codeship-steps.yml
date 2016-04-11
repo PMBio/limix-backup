@@ -1,15 +1,19 @@
 - type: parallel
   steps:
     - service: conda2
+      tag: master
       command: /bin/bash -c "cp -r /limix /limix-conda2 && cd /limix-conda2 && /opt/conda/bin/python setup.py test --yes"
 
     - service: bare
+      tag: master
       command: /bin/bash -c "cp -r /limix /limix-bare && cd /limix-bare && /usr/bin/python setup.py test --yes"
 
     - service: canopy2
+      tag: master
       command: /bin/bash -c "cp -r /limix /limix-canopy2 && cd /limix-canopy2 && /usr/local/Canopy_64bit/System/bin/python setup.py test --yes"
 
     - service: conda2_lucid
+      tag: master
       command: /bin/bash -c "cp -r /limix /limix-conda2-lucid && cd /limix-conda2-lucid && /miniconda2/bin/python setup.py test --yes"
 
 - service: bare
