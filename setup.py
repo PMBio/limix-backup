@@ -144,6 +144,8 @@ def swig_opts():
             '-I'+join(WORKDIR, 'src')]
 
 def extra_compile_args():
+    if sys.platform.startswith('win'):
+        return []
     return ['-Wno-comment', '-Wno-unused-but-set-variable',
             '-Wno-overloaded-virtual', '-Wno-uninitialized',
             '-Wno-delete-non-virtual-dtor', '-Wunused-variable']
