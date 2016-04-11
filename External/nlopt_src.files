@@ -1,3 +1,7 @@
+direct/DIRect.cpp
+direct/direct_wrap.cpp
+direct/DIRserial.cpp
+direct/DIRsubrout.cpp
 cdirect/cdirect.cpp
 cdirect/hybrid.cpp
 praxis/praxis.cpp
