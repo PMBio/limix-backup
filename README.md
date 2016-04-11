@@ -45,6 +45,15 @@ sudo apt-get install build-essential libc6 gfortran g++ \
 pip install limix
 ```
 
+- Fedora 23
+
+```
+sudo dnf update
+sudo dnf install gcc-gfortran python Cython numpy scipy python-matplotlib \
+                 python-pkgconfig h5py lapack-devel python-pip python-pandas \
+                 swig python-scikit-learn gcc-c++
+```
+
 ### From source
 
 This is more tricky in terms of dependency resolution but useful for developers.
