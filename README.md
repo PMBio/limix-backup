@@ -35,23 +35,13 @@ for some popular Limix distributions.
 
 - Ubuntu 15.10, 14.04, and 12.04
 
-```
-sudo apt-get update
-sudo apt-get install build-essential libc6 gfortran g++ \
-     python python-setuptools cython python-numpy python-scipy \
-     python-matplotlib pkg-config libfreetype6-dev libpng12-dev \
-     python-h5py liblapack-dev python-pip python-pandas swig \
-     python-sklearn-lib
-pip install limix
-```
+ ```
+ wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/apt_limix_install | bash
+ ```
 
 - Fedora 23
-
 ```
-sudo dnf update
-sudo dnf install gcc-gfortran python Cython numpy scipy python-matplotlib \
-                 python-pkgconfig h5py lapack-devel python-pip python-pandas \
-                 swig python-scikit-learn gcc-c++
+wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/dnf_limix_install | bash
 ```
 
 ### From source

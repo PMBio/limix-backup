@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo dnf update
+sudo dnf install gcc-gfortran python Cython numpy scipy python-matplotlib \
+                 python-pkgconfig h5py lapack-devel python-pip python-pandas \
+                 swig python-scikit-learn gcc-c++
+pip install limix
