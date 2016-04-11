@@ -41,7 +41,7 @@ LIMIX_VERSION=`deploy/version`
 TAG=v${LIMIX_VERSION}
 
 export REMOTE_REPOSITORY="ssh://git@github.com/PMBio/limix.git"
-export REMOTE_BRANCH="refs/heads/codeship"
+export REMOTE_BRANCH="refs/heads/master"
 
 function fetch_versions {
 
@@ -143,7 +143,7 @@ if [[ ! -z $CI_COMMIT_ID ]]; then
     git status
     git branch -a
     if [ "$WHAT" == "TAG" ]; then
-        git checkout codeship
+        git checkout master
         echo "Tagging."
         git tag -a ${TAG} -m "Automatically generated TAG for Limix version ${LIMIX_VERSION}"
         echo "Pushing to the remote repository."

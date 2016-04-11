@@ -13,7 +13,7 @@
       command: /bin/bash -c "cp -r /limix /limix-conda2-lucid && cd /limix-conda2-lucid && /miniconda2/bin/python setup.py test --yes"
 
 - service: bare
-  tag: codeship
+  tag: master
   command: /limix/deploy/github.step TAG
 
 - service: bare
