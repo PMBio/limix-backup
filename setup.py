@@ -5,7 +5,7 @@ import sys
 import importlib
 
 PKG_NAME = 'limix'
-VERSION  = '0.7.13'
+VERSION  = '0.7.56'
 
 WORKDIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -87,22 +87,45 @@ from setuptools.extension import Extension
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext
 
+def _check_gcc_cpp11(cc_name):
+    import subprocess
+    try:
+        cmd = cc_name + ' -E -dM -std=c++11 -x c++ /dev/null > /dev/null'
+        subprocess.check_call(cmd, shell=True)
+    except subprocess.CalledProcessError:
+        return False
+    return True
+
+class build_ext_subclass(build_ext):
+    def build_extensions(self):
+        if (hasattr(self.compiler, 'compiler')
+                and len(self.compiler.compiler) > 0):
+            cc_name = self.compiler.compiler[0]
+            stdcpp = '-std=c++11'
+            if 'gcc' in cc_name and not _check_gcc_cpp11(cc_name):
+                stdcpp = '-std=c++0x'
+            for e in self.extensions:
+                e.extra_compile_args.append(stdcpp)
+        build_ext.build_extensions(self)
+
 def globr(root, pattern):
     import fnmatch
-    import os
 
     matches = []
-    for root, dirnames, filenames in os.walk(root):
+    for root, _, filenames in os.walk(root):
         for filename in fnmatch.filter(filenames, pattern):
             matches.append(os.path.join(root, filename))
 
     return matches
 
-def mac_workaround():
+def mac_workaround(compatible):
     import platform
     from distutils import sysconfig
 
     conf_vars = sysconfig.get_config_vars()
+    if compatible:
+        conf_vars['MACOSX_DEPLOYMENT_TARGET'] = '10.9'
+        return
     vers = platform.mac_ver()[0].split('.')
     if len(vers) == 3:
         conf_vars['MACOSX_DEPLOYMENT_TARGET'] =\
@@ -121,10 +144,11 @@ def swig_opts():
             '-I'+join(WORKDIR, 'src')]
 
 def extra_compile_args():
+    if sys.platform.startswith('win'):
+        return []
     return ['-Wno-comment', '-Wno-unused-but-set-variable',
             '-Wno-overloaded-virtual', '-Wno-uninitialized',
-            '-Wno-unused-const-variable', '-Wno-unknown-warning-option',
-            '-Wno-shorten-64-to-32', '-std=c++11']
+            '-Wno-delete-non-virtual-dtor', '-Wunused-variable']
 
 def extra_link_args():
     return []
@@ -193,11 +217,11 @@ def get_test_suite():
     from unittest import TestLoader
     return TestLoader().discover(PKG_NAME)
 
-def setup_package(reswig, yes):
+def setup_package(reswig, yes, compatible):
     if sys.platform == 'darwin':
-        mac_workaround()
+        mac_workaround(compatible)
 
-    install_requires = ["sklearn", "pandas"]
+    install_requires = ["scikit-learn", "pandas"]
     setup_requires = []
 
     # These are problematic packages (i.e., C/Fortran dependencies) to
@@ -257,7 +281,7 @@ def setup_package(reswig, yes):
         setup_requires=setup_requires,
         zip_safe=False,
         ext_modules=[core_extension(reswig)] + ensemble_extension(),
-        cmdclass=dict(build_ext=build_ext),
+        cmdclass=dict(build_ext=build_ext_subclass),
         entry_points={
             'console_scripts':[
                 'limix_runner=limix.scripts.limix_runner:entry_point',
@@ -278,6 +302,13 @@ def setup_package(reswig, yes):
     except ImportError:
         pass
 
+    # http://stackoverflow.com/a/29634231
+    import distutils.sysconfig
+    cfg_vars = distutils.sysconfig.get_config_vars()
+    for key, value in cfg_vars.items():
+        if type(value) == str:
+            cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
+
     try:
         setup(**metadata)
     finally:
@@ -294,4 +325,10 @@ if __name__ == '__main__':
     if "--yes" in sys.argv:
         yes = True
         sys.argv.remove("--yes")
-    setup_package(reswig, yes)
+
+    compatible = False
+    if "--compatible" in sys.argv:
+        compatible = True
+        sys.argv.remove("--compatible")
+
+    setup_package(reswig, yes, compatible)

@@ -1,0 +1,29 @@
+- type: parallel
+  steps:
+    - service: conda2
+      command: /bin/bash -c "cp -r /limix /limix-conda2 && cd /limix-conda2 && /opt/conda/bin/python setup.py test --yes"
+
+    - service: bare
+      command: /bin/bash -c "cp -r /limix /limix-bare && cd /limix-bare && /usr/bin/python setup.py test --yes"
+
+    - service: canopy2
+      command: /bin/bash -c "cp -r /limix /limix-canopy2 && cd /limix-canopy2 && /usr/local/Canopy_64bit/System/bin/python setup.py test --yes"
+
+    - service: conda2_lucid
+      command: /bin/bash -c "cp -r /limix /limix-conda2-lucid && cd /limix-conda2-lucid && /miniconda2/bin/python setup.py test --yes"
+
+- service: bare
+  tag: master
+  command: /limix/deploy/github.step TAG
+
+- service: bare
+  tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
+  command: /limix/deploy/github.step RELEASE
+
+- service: bare
+  tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
+  command: /limix/deploy/pypi.step
+
+- service: conda2
+  tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
+  command: /limix/deploy/conda.step

@@ -1,0 +1,38 @@
+package:
+    name: limix
+    version: "0.7.56"
+
+# source:
+#     fn: v0.7.56.tar.gz
+#     url: https://github.com/PMBio/limix/archive/v0.7.56.tar.gz
+
+source:
+    path: ../
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - numpy
+    - cython
+    - matplotlib
+    - scikit-learn
+    - h5py
+    - scipy
+    - pandas
+    - gcc 4.8.* # [osx]
+  run:
+    - python
+    - numpy
+    - cython
+    - matplotlib
+    - scikit-learn
+    - h5py
+    - scipy
+    - pandas
+    - libgcc 4.8.* # [osx]
+
+about:
+  home: https://github.com/PMBio/limix
+  license: Apache License
+  license_file: license.txt

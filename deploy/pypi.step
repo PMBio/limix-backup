@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cp -r /limix /limix-pypi-deploy
+cd /limix-pypi-deploy
+deploy/pypi
