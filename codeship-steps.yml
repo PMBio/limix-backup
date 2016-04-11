@@ -29,9 +29,14 @@
     - service: ubuntu_latest
       tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
       command: /limix/deploy/test.pypi.apt
+
     - service: fedora_latest
       tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
       command: /limix/deploy/test.pypi.dnf
+
+    - service: opensuse_latest
+      tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
+      command: /limix/deploy/test.pypi.zypper
 
 - service: conda2
   tag: ^v[0-9]+\.[0-9]+\.[0-9]+$

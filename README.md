@@ -34,16 +34,21 @@ of dependency resolution is likely to be required. We provide bellow recipes
 for some popular Limix distributions, assuming you have the `wget` command line
 tool.
 
-- Ubuntu 15.10, 14.04, and 12.04
+- Ubuntu
 
- ```
- wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/apt_limix_install | bash
- ```
+    ```
+    wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/apt_limix_install | bash
+    ```
 
-- Fedora 23
-```
-wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/dnf_limix_install | bash
-```
+- Fedora
+    ```
+    wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/dnf_limix_install | bash
+    ```
+
+- OpenSUSE
+    ```
+    wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/zypper_limix_install | bash
+    ```
 
 ### From source
 
