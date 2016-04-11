@@ -22,6 +22,12 @@ conda2_lucid:
     volumes_from:
         - data
 
+ubuntu_latest:
+    image: ubuntu:latest
+    encrypted_env_file: codeship.env.encrypted
+    volumes_from:
+        - data
+
 data:
     image: busybox
     volumes:

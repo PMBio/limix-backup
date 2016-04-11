@@ -1,0 +1,6 @@
+#!/bin/bash
+
+wget https://gist.githubusercontent.com/Horta/5a117c11b5a866edb50a9f064d975749/raw/bf3da3dabf1810272f1714c22f40d9599ed1c905/pypi_limix_install.sh -O /tmp/pypi_limix_install.sh
+cd /tmp
+chmod +x pypi_limix_install.sh
+./pypi_limix_install.sh

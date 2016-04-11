@@ -35,7 +35,7 @@ compilation of C/C++ and (potentially) Fortran code, and some understanding
 of dependency resolution is likely to be required. We provide bellow recipes
 for some popular Limix distributions.
 
-- Ubuntu 14.04, Ubuntu 12.04
+- Ubuntu 14.04, 12.04, 15.10
 
 ```
 sudo apt-get update

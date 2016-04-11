@@ -24,6 +24,10 @@
   tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
   command: /limix/deploy/pypi.step
 
+- service: ubuntu_latest
+  tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
+  command: /limix/deploy/test.pypi
+
 - service: conda2
   tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
   command: /limix/deploy/conda.step
