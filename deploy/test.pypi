@@ -1,5 +1,0 @@
-#!/bin/bash
-
-cd /tmp
-cp /limix/deploy/apt_limix_install .
-./pypi_limix_install

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sudo dnf update -y -q
+sudo dnf install wget -y -q
+wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/dnf_limix_install | bash

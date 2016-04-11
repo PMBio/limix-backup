@@ -31,7 +31,8 @@ pip install limix
 This approach is not as straightforward as the first one because it requires
 compilation of C/C++ and (potentially) Fortran code, and some understanding
 of dependency resolution is likely to be required. We provide bellow recipes
-for some popular Limix distributions.
+for some popular Limix distributions, assuming you have the `wget` command line
+tool.
 
 - Ubuntu 15.10, 14.04, and 12.04
 

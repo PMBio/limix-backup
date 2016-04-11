@@ -28,6 +28,12 @@ ubuntu_latest:
     volumes_from:
         - data
 
+fedora_latest:
+    image: fedora:latest
+    encrypted_env_file: codeship.env.encrypted
+    volumes_from:
+        - data
+
 data:
     image: busybox
     volumes:
