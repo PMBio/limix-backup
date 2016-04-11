@@ -2,10 +2,6 @@ package:
     name: limix
     version: "0.7.59"
 
-# source:
-#     fn: v0.7.59.tar.gz
-#     url: https://github.com/PMBio/limix/archive/v0.7.59.tar.gz
-
 source:
     path: ../
 
@@ -21,6 +17,7 @@ requirements:
     - scipy
     - pandas
     - gcc 4.8.* # [osx]
+    - swig
   run:
     - python
     - numpy
@@ -31,7 +28,7 @@ requirements:
     - scipy
     - pandas
     - libgcc 4.8.* # [osx]
-
+    - swig
 about:
   home: https://github.com/PMBio/limix
   license: Apache License

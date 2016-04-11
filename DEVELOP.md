@@ -30,3 +30,11 @@ git checkout master
 bumpversion patch --commit -m "WRITE YOUR RELEASE SUMMARY HERE"
 git push
 ```
+
+## Limix status
+
+- OSX tests and Conda OSX build are performed using Travis:
+https://travis-ci.org/PMBio/limix.
+- Linux tests, GitHub TAG and RELEASE, PyPI deployment, and Conda Linux build
+are performed using Codeship: https://codeship.com/projects/144764.
+- Windows tests and Conda Windows build are performed using AppVeyor: https://ci.appveyor.com/project/Horta/limix. (This is not working yet.)

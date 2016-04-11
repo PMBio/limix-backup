@@ -4,9 +4,7 @@ Limix
 =====
 
 Limix is a flexible and efficient linear mixed model library with interfaces
-to Python.
-
-Genomic analyses require flexible models that can be adapted to the needs of
+to Python. Genomic analyses require flexible models that can be adapted to the needs of
 the user. Limix is smart about how particular models are fitted to save
 computational cost.
 
@@ -25,8 +23,8 @@ conda install -c https://conda.anaconda.org/horta limix
 
 ### Using Pip
 
-If you don't have Conda (or don't use the above method), Limix can be installed
-via Pip package manager.
+If you don't have Conda (or don't want to use the above method), Limix can be
+installed via Pip package manager.
 ```
 pip install limix
 ```
@@ -42,8 +40,19 @@ sudo apt-get update
 sudo apt-get install build-essential libc6 gfortran g++ \
      python python-setuptools cython python-numpy python-scipy \
      python-matplotlib pkg-config libfreetype6-dev libpng12-dev \
-     python-h5py liblapack-dev python-pip python-pandas
+     python-h5py liblapack-dev python-pip python-pandas swig \
+     python-sklearn-lib
 pip install limix
+```
+
+### From source
+
+This is more tricky in terms of dependency resolution but useful for developers.
+
+```
+git clone https://github.com/PMBio/limix.git
+cd limix
+python setup.py install # or python setup.py develop
 ```
 
 ## Usage
