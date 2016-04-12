@@ -2,5 +2,5 @@
 
 zypper -n update
 zypper -n install wget
-wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/zypper_limix_install | bash
+bash <(wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/zypper_limix_install)
 python -c "import limix; print(limix.__version__)"

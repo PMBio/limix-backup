@@ -37,17 +37,17 @@ tool.
 - Ubuntu
 
     ```
-    wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/apt_limix_install | bash
+    bash <(wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/apt_limix_install)
     ```
 
 - Fedora
     ```
-    wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/dnf_limix_install | bash
+    bash <(wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/dnf_limix_install)
     ```
 
 - OpenSUSE
     ```
-    wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/zypper_limix_install | bash
+    bash <(wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/zypper_limix_install)
     ```
 
 ### From source

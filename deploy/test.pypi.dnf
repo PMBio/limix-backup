@@ -6,5 +6,5 @@ if type "sudo" > /dev/null 2>&1; then
 fi
 eval "${prefix}dnf update -y -q"
 eval "${prefix}dnf install wget -y -q"
-wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/dnf_limix_install | bash
+bash <(wget -O - https://raw.githubusercontent.com/PMBio/limix/master/deploy/dnf_limix_install)
 python -c "import limix; print(limix.__version__)"
