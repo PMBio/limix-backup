@@ -28,6 +28,10 @@
   tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
   command: /limix/deploy/pypi.step
 
+- service: conda2
+  tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
+  command: /limix/deploy/conda.step
+
 - type: parallel
   steps:
     - service: ubuntu_latest
@@ -41,7 +45,3 @@
     - service: opensuse_latest
       tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
       command: /limix/deploy/test.pypi.zypper
-
-- service: conda2
-  tag: ^v[0-9]+\.[0-9]+\.[0-9]+$
-  command: /limix/deploy/conda.step
