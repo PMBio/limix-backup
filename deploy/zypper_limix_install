@@ -7,9 +7,13 @@ if type "sudo" > /dev/null 2>&1; then
     prefix="sudo "
 fi
 
-eval "${prefix}zypper -n update"
-eval "${prefix}zypper -n install libgfortran3 python python-Cython python-numpy \
+repo="http://download.opensuse.org/repositories/home:/beyerle:/IAC/openSUSE_Leap_42.1/"
+eval "${prefix}zypper ar -f $repo IAC"
+eval "${prefix}zypper -n --no-gpg-checks update"
+eval "${prefix}zypper -n --no-gpg-checks install libgfortran3 python \
+                              python-Cython python-numpy \
                               python-numpy-devel python-scipy \
                               python-matplotlib python-pkgconfig \
-                              python-h5py python-pip swig gcc-c++"
+                              python-h5py python-pip swig gcc-c++
+                              python-pandas python-scikit-learn"
 pip install limix

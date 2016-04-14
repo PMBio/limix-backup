@@ -1,6 +1,6 @@
 package:
     name: limix
-    version: "0.7.70"
+    version: "0.7.71"
 
 source:
     path: ../
