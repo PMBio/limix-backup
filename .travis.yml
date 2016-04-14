@@ -24,5 +24,12 @@ deploy:
     on:
       tags: true
     skip_cleanup: true
+  - provider: pypi
+    user: $PYPI_USERNAME
+    password: $PYPI_PASSWORD
+    distributions: bdist_wheel
+    on:
+      tags: true
+    skip_cleanup: true
 notifications:
   slack: statgenomics:bm482zgneSYKk3dldHgplt2Z
