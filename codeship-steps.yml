@@ -3,6 +3,9 @@
     - service: conda2
       command: /bin/bash -c "cp -r /limix /limix-conda2 && cd /limix-conda2 && /opt/conda/bin/python setup.py test --yes"
 
+    - service: conda3
+      command: /bin/bash -c "cp -r /limix /limix-conda3 && cd /limix-conda3 && /opt/conda/bin/python setup.py test --yes"
+
     - service: bare
       command: /bin/bash -c "cp -r /limix /limix-bare && cd /limix-bare && /usr/bin/python setup.py test --yes"
 

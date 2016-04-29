@@ -291,7 +291,19 @@ def setup_package(reswig, yes, compatible):
                 'mtSet_analyze=limix.scripts.mtSet_analyze:entry_point',
                 'limix_converter=limix.scripts.limix_converter:entry_point'
             ]
-        }
+        },
+        classifiers=[
+            'Development Status :: 5 - Production/Stable',
+            'Environment :: Console',
+            'Intended Audience :: Science/Research',
+            'License :: OSI Approved :: BSD License',
+            'Natural Language :: English',
+            'Operating System :: MacOS',
+            'Operating System :: Unix',
+            'Programming Language :: Python :: 2.7',
+            'Programming Language :: Python :: 3.4',
+            'Topic :: Scientific/Engineering :: Bio-Informatics',
+        ],
     )
 
     try:
