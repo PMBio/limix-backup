@@ -101,7 +101,7 @@ class TestMTSet(unittest.TestCase):
     def saveStuff(self,fbasename,ext):
         """ util function """ 
         base = os.path.join(base_folder, 'res_'+fbasename+'_')
-        for key in ext.keys(): 
+        for key in list(ext.keys()): 
             sp.savetxt(base+key+'.txt',ext[key])
 
     def loadStuff(self,fbasename,keys):
@@ -114,8 +114,8 @@ class TestMTSet(unittest.TestCase):
 
     def assess(self,fbasename,ext):
         """ returns a bool vector """
-        real = self.loadStuff(fbasename,ext.keys()) 
-        RV = sp.all([((ext[key]-real[key])**2).mean()<1e-6 for key in ext.keys()])
+        real = self.loadStuff(fbasename,list(ext.keys())) 
+        RV = sp.all([((ext[key]-real[key])**2).mean()<1e-6 for key in list(ext.keys())])
         if not RV:  pdb.set_trace()
         return RV
 

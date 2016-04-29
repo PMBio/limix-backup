@@ -19,12 +19,12 @@ if __name__=='__main__':
     Cn_mtSetec = SP.loadtxt('./res_mtSet_eigenCache_Cn.txt')
 
     # Cg_mtSet1VCNull = 0
-    print (Cg_mtSet1VCNull==0).all()
+    print(((Cg_mtSet1VCNull==0).all()))
 
     # Eigenvalue chaching works
-    print ((Cg_mtSetNull-Cg_mtSetNullec)**2<1e-4).all()
-    print ((Cn_mtSetNull-Cn_mtSetNullec)**2<1e-4).all()
-    print ((Cr_mtSet-Cr_mtSetec)**2<1e-4).all()
-    print ((Cg_mtSet-Cg_mtSetec)**2<1e-4).all()
-    print ((Cn_mtSet-Cn_mtSetec)**2<1e-4).all()
+    print((((Cg_mtSetNull-Cg_mtSetNullec)**2<1e-4).all()))
+    print((((Cn_mtSetNull-Cn_mtSetNullec)**2<1e-4).all()))
+    print((((Cr_mtSet-Cr_mtSetec)**2<1e-4).all()))
+    print((((Cg_mtSet-Cg_mtSetec)**2<1e-4).all()))
+    print((((Cn_mtSet-Cn_mtSetec)**2<1e-4).all()))
 

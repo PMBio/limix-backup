@@ -19,7 +19,7 @@ def load(directory):
     return RV
 
 def dump(R,directory):
-    for r in R.keys():
+    for r in list(R.keys()):
         fn = os.path.join(directory,r+filetype)
         SP.savetxt(fn,R[r])
     

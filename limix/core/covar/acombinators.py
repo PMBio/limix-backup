@@ -1,4 +1,4 @@
-from covar_base import Covariance
+from .covar_base import Covariance
 import pdb
 import numpy as np
 import scipy as sp
@@ -32,7 +32,7 @@ class ACombinatorCov(Covariance):
     #####################
     def setParams(self,params):
         istart = 0
-        cs = filter(lambda c: c.getNumberParams() > 0, self.covars)
+        cs = [c for c in self.covars if c.getNumberParams() > 0]
         for c in cs:
             n = c.getNumberParams()
             istop = istart + n
@@ -42,7 +42,7 @@ class ACombinatorCov(Covariance):
     def getParams(self):
         istart = 0
         params = sp.zeros(self.getNumberParams())
-        cs = filter(lambda c: c.getNumberParams() > 0, self.covars)
+        cs = [c for c in self.covars if c.getNumberParams() > 0]
         for c in cs:
             istop = istart + c.getNumberParams()
             params[istart:istop] = c.getParams()

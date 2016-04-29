@@ -102,12 +102,12 @@ class pheno_reader_tables():
                 #if there are no results we won't actually get an exception, we just get an
                 #empty response
                 if len(I) == 0:
-                    print "query '%s' yielded no results!" % (phenotype_query)
+                    print(("query '%s' yielded no results!" % (phenotype_query)))
                     I = SP.zeros([0],dtype="int")
 
-            except Exception, arg:
+            except Exception as arg:
 
-                print "query '%s' yielded no results: %s" % (phenotype_query, str(arg))
+                print(("query '%s' yielded no results: %s" % (phenotype_query, str(arg))))
 
                 I = SP.zeros([0],dtype="int")
         else:
@@ -125,7 +125,7 @@ class pheno_reader_tables():
         Iok = Iok[sample_idx_intersect]
 
         if center:
-            for i in xrange(phenotypes.shape[1]):
+            for i in range(phenotypes.shape[1]):
                 ym = phenotypes[Iok[:,i],i].mean()
                 phenotypes[:,i] -= ym
                 phenotypes[~Iok[:,i],i] = ym
@@ -147,9 +147,9 @@ class pheno_reader_tables():
         if phenotype_query is not None:
             try:
                 I = self.index_frame.query(phenotype_query).values[:,0]
-            except Exception, arg:
+            except Exception as arg:
 
-                print "query '%s' yielded no results: %s"%phenotype_query, str(arg)
+                print(("query '%s' yielded no results: %s"%phenotype_query, str(arg)))
 
                 I = SP.zeros([0],dtype="int")
             return {"start" : self.gene_pos_start[I], "end" : self.gene_pos_end[I]}
@@ -182,7 +182,7 @@ class pheno_reader_h5py_deprecated():
             self.pheno_matrix = self.pheno_matrix[:]
 
         # Additional pheno col header
-        headers = self.pheno['col_header'].keys()
+        headers = list(self.pheno['col_header'].keys())
         if 'gene_ID' in headers:
             self.eqtl = True
             self.gene_ID = self.pheno['col_header']['gene_ID'][:]
@@ -230,7 +230,7 @@ class pheno_reader_h5py_deprecated():
         Iok = Iok[sample_idx_intersect]
 
         if center | impute:
-            for i in xrange(phenotypes.shape[1]):
+            for i in range(phenotypes.shape[1]):
                 ym = phenotypes[Iok[:,i],i].mean()
                 phenotypes[:,i] -= ym
                 phenotypes[~Iok[:,i],i] = ym
@@ -267,7 +267,7 @@ class pheno_reader_h5py_deprecated():
         Iok = Iok[sample_idx_intersect]
 
         if center | impute:
-            for i in xrange(phenotypes.shape[1]):
+            for i in range(phenotypes.shape[1]):
                 ym = phenotypes[Iok[:,i],i].mean()
                 phenotypes[:,i] -= ym
                 phenotypes[~Iok[:,i],i] = ym

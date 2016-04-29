@@ -36,7 +36,7 @@ def scale_K(K, verbose=False,trace_method=True):
         c = SP.sum((SP.eye(len(K)) - (1.0 / len(K)) * SP.ones(K.shape)) * SP.array(K))
         scalar = (len(K) - 1) / c
     if verbose:
-        print 'Kinship scaled by: %0.4f' % scalar
+        print(('Kinship scaled by: %0.4f' % scalar))
     K = K * scalar
     return K
 
@@ -50,7 +50,7 @@ def standardize(Y,in_place=False):
         YY = Y
     else:
         YY = Y.copy()
-    for i in xrange(YY.shape[1]):
+    for i in range(YY.shape[1]):
         Iok = ~SP.isnan(YY[:,i])
         Ym = YY[Iok,i].mean()
         YY[:,i]-=Ym
@@ -67,7 +67,7 @@ def rankStandardizeNormal(X):
 	Is = X.argsort(axis=0)
 	RV = SP.zeros_like(X)
 	rank = SP.zeros_like(X)
-	for i in xrange(X.shape[1]):
+	for i in range(X.shape[1]):
 		x =  X[:,i]
 		i_nan = SP.isnan(x)
 		if 0:
@@ -95,7 +95,7 @@ def boxcox(X):
 	"""
 	X_transformed = SP.zeros_like(X)
 	maxlog = SP.zeros(X.shape[1])
-	for i in xrange(X.shape[1]):
+	for i in range(X.shape[1]):
 		i_nan = SP.isnan(X[:,i])
 		values = X[~i_nan,i]
 		X_transformed[i_nan,i] = X[i_nan,i]

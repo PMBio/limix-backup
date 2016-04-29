@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 from .mtSet import MTSet
 from .version import version as __version__
 

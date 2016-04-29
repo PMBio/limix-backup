@@ -19,7 +19,7 @@ PANAMA module in limix
 import limix.deprecated
 import limix.deprecated.stats.fdr as fdr
 from limix.deprecated.stats.pca import *
-import qtl
+from . import qtl
 import scipy as sp 
 import pdb
 import scipy.linalg as linalg

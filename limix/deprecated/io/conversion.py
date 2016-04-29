@@ -90,7 +90,7 @@ class LIMIX_converter(object):
             matrix = values[:,0:1+int(num_phenotypes)]
             pheno_IDs = pheno_IDs[0:1+int(num_phenotypes)]
         #store
-        if 'phenotype' in hdf.keys():
+        if 'phenotype' in list(hdf.keys()):
             del(hdf['phenotype'])
         phenotype = hdf.create_group('phenotype')
         col_header = phenotype.create_group('col_header')
@@ -113,10 +113,10 @@ class LIMIX_converter(object):
         end:  select end position for conversion
         """
         if ((start is not None) or (end is not None) or (chrom is not None)):
-            print "cannot handle start/stop/chrom boundaries for g012 file"
+            print("cannot handle start/stop/chrom boundaries for g012 file")
             return
         #store
-        if 'genotype' in hdf.keys():
+        if 'genotype' in list(hdf.keys()):
             del(hdf['genotype'])
         genotype = hdf.create_group('genotype')
         col_header = genotype.create_group('col_header')
@@ -146,10 +146,10 @@ class LIMIX_converter(object):
         end:  select end position for conversion
         """
         if ((start is not None) or (end is not None) or (chrom is not None)):
-            print "cannot handle start/stop/chrom boundaries for g012 file"
+            print("cannot handle start/stop/chrom boundaries for g012 file")
             return
         #store
-        if 'genotype' in hdf.keys():
+        if 'genotype' in list(hdf.keys()):
             del(hdf['genotype'])
         genotype = hdf.create_group('genotype')
         col_header = genotype.create_group('col_header')
@@ -203,7 +203,7 @@ class LIMIX_converter(object):
         #read
         data=PLINK.readBED(bed_file,startpos=startpos,endpos=endpos)
         #store
-        if 'genotype' in hdf.keys():
+        if 'genotype' in list(hdf.keys()):
             del(hdf['genotype'])
         genotype = hdf.create_group('genotype')
         col_header = genotype.create_group('col_header')

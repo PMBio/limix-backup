@@ -6,7 +6,7 @@ Created on Jan 24, 2012
 import sys
 import numpy as NP
 import scipy as SP
-import lmm_fast
+from . import lmm_fast
 import limix
 from limix.ensemble import SplittingCore as CSP
 
@@ -42,7 +42,7 @@ def scale_K(K, verbose=False):
     c = SP.sum((SP.eye(len(K)) - (1.0 / len(K)) * SP.ones(K.shape)) * SP.array(K))
     scalar = (len(K) - 1) / c
     if verbose:
-        print 'Kinship scaled by: %0.4f' % scalar
+        print(('Kinship scaled by: %0.4f' % scalar))
     K = scalar * K
     return K
 
@@ -83,14 +83,14 @@ def best_split_full_model(X,
     left_mean = None
     right_mean = None
     ldelta = SP.log(delta)
-    levels = map(SP.unique, X[noderange].T)
+    levels = list(map(SP.unique, X[noderange].T))
     feature_map = []
     s = []
     UXt = []
     cnt = 0
-    for i in xrange(X.shape[1]):
+    for i in range(X.shape[1]):
         lev = levels[i]
-        for j in xrange(lev.size-1):
+        for j in range(lev.size-1):
             split_point = SP.median(lev[j:j+2])
             x = SP.int_(X[noderange,i] > split_point)
             UXt.append(SP.dot(U.T[:,noderange], x))
@@ -145,4 +145,4 @@ if __name__== '__main__':
     node_labels = [0,1,2,5,6]
     parents = [0,0,0,2,2]
     node_ind = 4
-    print get_covariates(node_ind, node_labels[node_ind], parents, subsample, start_index, end_index)
+    print((get_covariates(node_ind, node_labels[node_ind], parents, subsample, start_index, end_index)))

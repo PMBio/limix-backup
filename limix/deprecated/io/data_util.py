@@ -87,7 +87,7 @@ def imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1.
         iNanX = X==-9
     if iNanX.any() or betaNotUnitVariance:
         if cparser and center and (unit or betaNotUnitVariance):
-            print "using C-based imputer"
+            print("using C-based imputer")
             if X.flags["C_CONTIGUOUS"] and typeX== sp.float32:
                 parser.standardizefloatCAAA(X,betaNotUnitVariance=betaNotUnitVariance,betaA=betaA,betaB=betaB)
                 X= sp.array(X,dtype= sp.float64)

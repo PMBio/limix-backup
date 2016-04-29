@@ -65,8 +65,8 @@ def remove_dependent_cols(M, tol=1e-6, display=False):
     R = la.qr(M, mode='r')[0][:M.shape[1], :]
     I = (abs(R.diagonal())>tol)
     if sp.any(~I) and display:
-        print ('cols ' + str(sp.where(~I)[0]) +
-                ' have been removed because linearly dependent on the others')
+        print(('cols ' + str(sp.where(~I)[0]) +
+                ' have been removed because linearly dependent on the others'))
         R = M[:,I]
     else:
         R = M.copy()
@@ -81,7 +81,7 @@ def boxcox(X):
     """
     X_transformed = sp.zeros_like(X)
     maxlog = sp.zeros(X.shape[1])
-    for i in xrange(X.shape[1]):
+    for i in range(X.shape[1]):
         i_nan = sp.isnan(X[:,i])
         values = X[~i_nan,i]
         X_transformed[i_nan,i] = X[i_nan,i]

@@ -10,7 +10,7 @@ class Observed(object):
     def register(self, interested, event='default'):
         if not hasattr(self, '_interesteds'):
             self._init_interesteds()
-        if event not in self._interesteds.keys():
+        if event not in list(self._interesteds.keys()):
             self._interesteds[event] = []
         self._interesteds[event].append(interested)
 
@@ -35,10 +35,10 @@ if __name__ == '__main__':
             a.register(self.call_me_on_event1, 'event1')
 
         def call_me(self):
-            print 'call_me'
+            print('call_me')
 
         def call_me_on_event1(self):
-            print 'call_me_on_event1'
+            print('call_me_on_event1')
 
     a = A()
     b = B(a)

@@ -3,7 +3,7 @@ import unittest
 import scipy as SP
 import pdb
 import limix.deprecated as dlimix
-from covar import Acovar_test
+from .covar import Acovar_test
 
 class CFreeFormCF_test(unittest.TestCase,Acovar_test):
     """test class for CFreeFormCF"""

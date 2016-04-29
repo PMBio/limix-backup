@@ -23,10 +23,8 @@ import limix.deprecated
 import limix.deprecated as dlimix
 import limix.deprecated.utils.preprocess as preprocess
 import limix.deprecated.stats.fdr as FDR
-import varianceDecomposition as VAR
+from . import varianceDecomposition as VAR
 import time
-#import qtl module for self referencing
-import qtl
 
 
 class lmm:
@@ -90,7 +88,7 @@ class lmm:
 			elif self.test=='f':
 				self._lmm.setTestStatistics(self._lmm.TEST_F)
 			else:
-				print self.test
+				print((self.test))
 				raise NotImplementedError("only f and lrt are implemented")
 			#set number of delta grid optimizations?
 			self._lmm.setNumIntervals0(self.NumIntervalsDelta0)
@@ -153,7 +151,7 @@ class lmm:
 		t1=time.time()
 
 		if self.verbose:
-			print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+			print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
 
 	def setCovs(self,covs):
 		self._lmm.setCovs(covs)
@@ -211,8 +209,8 @@ def test_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumI
 	Returns:
 		LMM object
 	"""
-	lmm = qtl.lmm(snps=snps, pheno=pheno, K=K, covs=covs, test=test, NumIntervalsDelta0=NumIntervalsDelta0, NumIntervalsDeltaAlt=NumIntervalsDeltaAlt, searchDelta=searchDelta, verbose=verbose)
-	return lmm
+	lmm_ = lmm(snps=snps, pheno=pheno, K=K, covs=covs, test=test, NumIntervalsDelta0=NumIntervalsDelta0, NumIntervalsDeltaAlt=NumIntervalsDeltaAlt, searchDelta=searchDelta, verbose=verbose)
+	return lmm_
 
 
 def test_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,K2r=None,K2c=None,trait_covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=100,searchDelta=False):
@@ -303,7 +301,7 @@ def test_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=
     lmm.setK2c(K2c)
     lmm.setSNPs(snps)
     #add covariates
-    for ic  in xrange(len(Acovs)):
+    for ic  in range(len(Acovs)):
         lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
 
@@ -315,7 +313,7 @@ def test_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=
         lmm.setNumIntervalsAlt(0)
     lmm.setNumIntervals0(NumIntervalsDelta0)
 
-    for iA in xrange(len(Asnps)):
+    for iA in range(len(Asnps)):
         #add SNP design
         lmm.setSNPcoldesign(Asnps[iA])
         lmm.process()
@@ -420,7 +418,7 @@ def test_interaction_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,
     lmm.setK2c(K2c)
     lmm.setSNPs(snps)
     #add covariates
-    for ic  in xrange(len(Acovs)):
+    for ic  in range(len(Acovs)):
         lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
 
@@ -436,7 +434,7 @@ def test_interaction_lmm_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,
     lmm.setNumIntervals0(NumIntervalsDelta0)
     #add SNP design
     lmm.setSNPcoldesign0_inter(Asnps0[0])
-    for iA in xrange(len(Asnps1)):
+    for iA in range(len(Asnps1)):
         lmm.setSNPcoldesign(Asnps1[iA])
         lmm.process()
 
@@ -489,7 +487,7 @@ def test_interaction_lmm(snps,pheno,Inter,Inter0=None,covs=None,K=None,test='lrt
     elif test=='f':
         lmi.setTestStatistics(lmi.TEST_F)
     else:
-        print test
+        print(test)
         raise NotImplementedError("only f or lrt are implemented")
     lmi.process()
     return lmi
@@ -572,7 +570,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold=5e-8,maxiter
             score = pv.min()
         t1=time.time()
         if verbose:
-            print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+            print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
         niter=niter+1
     RV = {}
     RV['iadded']  = iadded
@@ -667,7 +665,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
     qvall = None
     t1=time.time()
     if verbose:
-        print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+        print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
     time_el.append(t1-t0)
     pvall.append(pv)
     imin= np.unravel_index(pv.argmin(),pv.shape)
@@ -695,7 +693,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
             lm.setK1c(K1c)
             lm.setK2c(K2c)
         lm.addCovariates(snps[:,imin[1]:(imin[1]+1)],Acond[imin[0]])
-        for i in xrange(len(Asnps)):
+        for i in range(len(Asnps)):
             #add SNP design
             lm.setSNPcoldesign(Asnps[i])
             lm.process()
@@ -710,7 +708,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
             score = pv[imin].min()
         t1=time.time()
         if verbose:
-            print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+            print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
         time_el.append(t1-t0)
         niter=niter+1
     RV = {}
@@ -758,14 +756,14 @@ def _estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=Non
 	Returns:
 		VarianceDecomposition object
 	"""
-	print ".. Training the backgrond covariance with a GP model"
+	print(".. Training the backgrond covariance with a GP model")
 	vc = VAR.VarianceDecomposition(phenos)
 	if K1r is not None:
 		vc.addRandomEffect(K1r,trait_covar_type=trait_covar_type,rank=rank)
 	if K2r is not None:
 		#TODO: fix this; forces second term to be the noise covariance
 		vc.addRandomEffect(is_noise=True,K=K2r,trait_covar_type=trait_covar_type,rank=rank)
-	for ic  in xrange(len(Acovs)):
+	for ic  in range(len(Acovs)):
 		vc.addFixedEffect(covs[ic],Acovs[ic])
 	start = time.time()
 	if old_opt:
@@ -776,7 +774,7 @@ def _estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=Non
 		conv = vc.optimize(init_method=init_method,verbose=verbose)
 	assert conv, "Variance Decomposition has not converged"
 	time_el = time.time()-start
-	print "Background model trained in %.2f s" % time_el
+	print(("Background model trained in %.2f s" % time_el))
 	return vc
 
 def _updateKronCovs(covs,Acovs,N,P):
@@ -900,7 +898,7 @@ def test_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asnps
     lmm.setK2c(K2c)
     lmm.setSNPs(snps)
     #add covariates
-    for ic  in xrange(len(Acovs)):
+    for ic  in range(len(Acovs)):
         lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
     if searchDelta:      lmm.setNumIntervalsAlt(100)
@@ -912,7 +910,7 @@ def test_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asnps
     dof0 = Asnps0[0].shape[0]
     pv0 = lmm.getPv()
     lrt0 = st.chi2.isf(pv0,dof0)
-    for iA in xrange(len(Asnps1)):
+    for iA in range(len(Asnps1)):
         dof1 = Asnps1[iA].shape[0]
         dof = dof1-dof0
         lmm.setSNPcoldesign(Asnps1[iA])
@@ -979,18 +977,18 @@ def test_interaction_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt',verbos
     Inter0 = np.ones((N,1))
     pv = np.zeros((env.shape[1],snps.shape[1]))
     if verbose:
-        print ("starting %i interaction scans for %i SNPs each." % (env.shape[1], snps.shape[1]))
+        print(("starting %i interaction scans for %i SNPs each." % (env.shape[1], snps.shape[1])))
     t0=time.time()
-    for i in xrange(env.shape[1]):
+    for i in range(env.shape[1]):
         t0_i = time.time()
         cov_i = np.concatenate((covs,env[:,i:(i+1)]),1)
         lm_i = test_interaction_lmm(snps=snps,pheno=pheno,covs=cov_i,Inter=env[:,i:(i+1)],Inter0=Inter0,test=test)
         pv[i,:]=lm_i.getPv()[0,:]
         t1_i = time.time()
         if verbose:
-            print ("Finished %i out of %i interaction scans in %.2f seconds."%((i+1),env.shape[1],(t1_i-t0_i)))
+            print(("Finished %i out of %i interaction scans in %.2f seconds."%((i+1),env.shape[1],(t1_i-t0_i))))
     t1 = time.time()
-    print ("-----------------------------------------------------------\nFinished all %i interaction scans in %.2f seconds."%(env.shape[1],(t1-t0)))
+    print(("-----------------------------------------------------------\nFinished all %i interaction scans in %.2f seconds."%(env.shape[1],(t1-t0))))
     return pv
 
 

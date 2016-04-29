@@ -157,7 +157,7 @@ class MTSet():
         RV = {}
         if read_from_file:
             f = h5py.File(out_file,'r')
-            for key in f.keys():
+            for key in list(f.keys()):
                 RV[key] = f[key][:]
             f.close()
             self.setNull(RV)
@@ -225,7 +225,7 @@ class MTSet():
         # set params0 from null if params0 is None
         if params0 is None:
             if self.null is None:
-                if verbose:     print ".. fitting null model"
+                if verbose:     print(".. fitting null model")
                 self.fitNull()
             if self.bgRE:
                 params0 = sp.concatenate([self.null['params0_g'], self.null['params0_n']])
@@ -321,7 +321,7 @@ class MTSet():
                 trait_id = self.traitID[p]
                 g = f[trait_id]
                 RV[trait_id] = {}
-                for key in g.keys():
+                for key in list(g.keys()):
                     RV[trait_id][key] = g[key][:]
             f.close()
             self.nullST=RV

@@ -463,9 +463,9 @@ class VarianceDecomposition:
     
         if verbose:
             if conv==False:
-                print 'No local minimum found for the tested initialization points'
+                print('No local minimum found for the tested initialization points')
             else:
-                print 'Local minimum found at iteration %d' % i
+                print(('Local minimum found at iteration %d' % i))
  
         return conv
 
@@ -517,14 +517,14 @@ class VarianceDecomposition:
         index   = LML.argsort()[::-1]
         out = []
         if verbose:
-            print "\nLocal mimima\n"
-            print "n_times\t\tLML"
-            print "------------------------------------"
+            print("\nLocal mimima\n")
+            print("n_times\t\tLML")
+            print("------------------------------------")
             for i in range(len(opt_list)):
                 out.append(opt_list[index[i]])
                 if verbose:
-                    print "%d\t\t%f" % (opt_list[index[i]]['counter'], opt_list[index[i]]['LML'])
-                print ""
+                    print(("%d\t\t%f" % (opt_list[index[i]]['counter'], opt_list[index[i]]['LML'])))
+                print("")
 
         return out
 
@@ -792,7 +792,7 @@ class VarianceDecomposition:
             varn[p] = delta*Vtot
             fixed[:,p] = lmm.getBetaSNP()
     
-            if verbose: print p
+            if verbose: print(p)
     
         sth = {}
         sth['varg']  = varg

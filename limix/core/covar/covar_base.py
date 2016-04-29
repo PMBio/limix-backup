@@ -91,7 +91,7 @@ class Covariance(Cached, Observed):
         evaluates the kernel for given hyperparameters theta and inputs X
         """
         LG.critical("implement K")
-        print("%s: Function K not yet implemented"%(self.__class__))
+        print(("%s: Function K not yet implemented"%(self.__class__)))
         return None
 
     @cached('covar_base')
@@ -100,12 +100,12 @@ class Covariance(Cached, Observed):
         partial derivative with repspect to the i-th hyperparamter theta[i]
         """
         LG.critical("implement K_grad_i")
-        print("%s: Function K not yet implemented"%(self.__class__))
+        print(("%s: Function K not yet implemented"%(self.__class__)))
 
     @cached('covar_base')
     def K_hess_i_j(self,i,j):
         LG.critical("implement K_hess_i_j")
-        print("%s: Function Khess not yet implemented"%(self.__class__))
+        print(("%s: Function Khess not yet implemented"%(self.__class__)))
 
     @cached('covar_base')
     def chol(self):
@@ -219,12 +219,12 @@ class Covariance(Cached, Observed):
     @use_to_predict.setter
     def use_to_predict(self,value):
         LG.critical("implement use_to_predict")
-        print("%s: Function use_to_predict not yet implemented"%(self.__class__))
+        print(("%s: Function use_to_predict not yet implemented"%(self.__class__)))
 
     @cached
     def Kcross(self):
         LG.critical("implement Kcross")
-        print("%s: Function Kcross not yet implemented"%(self.__class__))
+        print(("%s: Function Kcross not yet implemented"%(self.__class__)))
 
     ####################
     # Interpretable Params, Fisher information Matrix, std errors
@@ -234,7 +234,7 @@ class Covariance(Cached, Observed):
 
     def K_grad_interParam_i(self,i):
         LG.critical("implement K_grad_interParam_i")
-        print("%s: Function K_grad_interParam_i not yet implemented"%(self.__class__))
+        print(("%s: Function K_grad_interParam_i not yet implemented"%(self.__class__)))
 
     def getFisherInf(self):
         n_params = self.getNumberParams()

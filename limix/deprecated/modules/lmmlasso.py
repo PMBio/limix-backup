@@ -8,8 +8,8 @@ from sklearn.linear_model import Lasso
 from sklearn.metrics import mean_squared_error
 import sklearn.cross_validation as cross_validation
 
-from varianceDecomposition import VarianceDecomposition
-import qtl
+from .varianceDecomposition import VarianceDecomposition
+from . import qtl
 import scipy as SP
 import numpy as NP
 import scipy.stats as ST
@@ -58,7 +58,7 @@ def runStabilitySelection(estimator,X,y,K=None,n_repeats=100,frac_sub=0.5,verbos
     W_nonzero = SP.zeros((n_repeats,F),dtype=bool)
 
     for irep in range(n_repeats):
-        if verbose: print 'Running %d/%d'%(irep,n_repeats)
+        if verbose: print(('Running %d/%d'%(irep,n_repeats)))
         iperm = SP.random.permutation(N)[:Nsub]
 
         if K is not None:
@@ -130,7 +130,7 @@ def runCrossValidation(estimator,X,y,alphas,K=None,n_folds=10,verbose=False):
     t1 = time.time()
     ifold = 0
     for train,test in kfold:
-        if verbose: print 'running fold %d'%ifold
+        if verbose: print(('running fold %d'%ifold))
 
         """ splitting into training and testing """
         X_train = X[train]
@@ -159,7 +159,7 @@ def runCrossValidation(estimator,X,y,alphas,K=None,n_folds=10,verbose=False):
         ifold +=1
 
     t2 = time.time()
-    if verbose: print 'finished in %.2f seconds'%(t2-t1)
+    if verbose: print(('finished in %.2f seconds'%(t2-t1)))
     return MSE_train,MSE_test,W_nonzero
 
 
@@ -233,7 +233,7 @@ class LmmLasso(Lasso):
 
         time_end = time.time()
         time_diff = time_end - time_start
-        if verbose: print '... finished in %.2fs'%(time_diff)
+        if verbose: print(('... finished in %.2fs'%(time_diff)))
 
         return self
 

@@ -51,7 +51,7 @@ class CLMM_test(unittest.TestCase):
         lmm.setPheno(Y)
         try:
             lmm.process()
-        except Exception,e:
+        except Exception as e:
             self.assertTrue(1==1)
             pass
 

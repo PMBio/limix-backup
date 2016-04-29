@@ -85,7 +85,7 @@ None, chr_only = None, quiet = False, refit_delta = False, command=None, Nmin=0,
     if Nsnps is None:
         Nsnps = sp.arange(Nmin,Nmax,increment)
     lambdas = sp.zeros(Nsnps.shape)
-    for i in xrange(Nsnps.shape[0]):
+    for i in range(Nsnps.shape[0]):
         current_dir = 'N%d'% Nsnps[i]
         out_dir_current = os.path.join(out_dir, current_dir)
         if Nsnps[i]>0:
@@ -131,13 +131,13 @@ def run_linreg(pheno_file,file_test=None,bfile_test = None,tfile_test = None, ou
     np.savetxt(out_log, sp.array([command]),'%s')
     if (run or recompute):
         if quiet:
-            print 'Running linear regression ...'
-            print '%s' % (command)
+            print('Running linear regression ...')
+            print(('%s' % (command)))
             s.check_call(command, shell = True, stdout = fnull, stderr = fnull)
         else:
             s.check_call(command, shell = True)
     else:
-        print 'returning without running linear regression'
+        print('returning without running linear regression')
     return command
 
 def run_fastlmm(pheno_file,file_test=None,bfile_test = None,tfile_test = None,bfile_sim = None,file_sim = None,tfile_sim= None, out_dir='./tmp', covariates = None, excl_dist = None, excl_pos = None, chr_only = None, quiet = False, N=None,selsnps_file = None,refit_delta = False, command=None,run = True,recompute=False,**kw_args):
@@ -185,13 +185,13 @@ def run_fastlmm(pheno_file,file_test=None,bfile_test = None,tfile_test = None,bf
     np.savetxt(out_log, sp.array([command]),'%s')
     if (run or recompute):
         if quiet:
-            print 'Running LMM ...'
-            print command
+            print('Running LMM ...')
+            print(command)
             s.check_call(command, shell = True, stdout = fnull, stderr = fnull)
         else:
             s.check_call(command, shell = True)
     else:
-        print 'returning without running LMM'
+        print('returning without running LMM')
     return command
 
 

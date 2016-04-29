@@ -25,21 +25,21 @@ class Cached(object):
             if hasattr(m, 'fget'):
                 f = m.fget
             elif hasattr(m, 'im_func'):
-                f = m.im_func
+                f = m.__func__
             else:
                 continue
 
-            fv = f.func_code.co_freevars
+            fv = f.__code__.co_freevars
 
             try:
-                closure = f.func_closure
+                closure = f.__closure__
             except AttributeError:
                 continue
 
             if closure is None:
                 continue
 
-            vs = dict(zip(fv, (c.cell_contents for c in closure)))
+            vs = dict(list(zip(fv, (c.cell_contents for c in closure))))
 
             # this is used to make sure we are in the right function
             # i'm not proud of that, by the way
@@ -82,11 +82,11 @@ class Cached(object):
 
         pp = pprint.PrettyPrinter(indent=4)
 
-        print '*** Cache diff ***'
+        print('*** Cache diff ***')
 
         self._print_groups()
 
-        print '-- Cached methods --'
+        print('-- Cached methods --')
         cmethods = self._registered_methods()
         pp.pprint(cmethods)
 
@@ -94,7 +94,7 @@ class Cached(object):
         func(*args, **kwargs)
         caches_after = self._get_caches()
 
-        print '-- Difference between caches -- '
+        print('-- Difference between caches -- ')
         for cm in cmethods:
 
             try:
@@ -102,12 +102,12 @@ class Cached(object):
             except:
                 import ipdb; ipdb.set_trace()
 
-            print cm+':', changed
+            print((cm+':', changed))
 
             #if caches_before[cm] is not caches_after[cm]:
             #    print '%s: %s --> %s' % (cm, std_obj_repr(caches_before[cm]),
             #                                 std_obj_repr(caches_after[cm]))
-        print '*** End ***'
+        print('*** End ***')
         self._diff_running = False
 
     def _get_caches(self):
@@ -127,13 +127,13 @@ class Cached(object):
 
     def _registered_methods(self):
         methods = set()
-        for g in self._cache_groups.values():
+        for g in list(self._cache_groups.values()):
             for m in g:
                 methods.add(m)
         return list(methods)
 
     def _print_groups(self):
-        print '-- Cache groups and the respective registered methods --'
+        print('-- Cache groups and the respective registered methods --')
         pp = pprint.PrettyPrinter(indent=4)
         pp.pprint(self._cache_groups)
 
@@ -160,7 +160,7 @@ class Cached(object):
     def get_time_profile(self, reduced=True):
         if reduced:
             # reduce time to fields taht have been caculated at least once
-            rv = {k:v for k,v in self.time.items() if self.counter[k]>0}
+            rv = {k:v for k,v in list(self.time.items()) if self.counter[k]>0}
         else:
             rv = self.time
         return rv
@@ -168,7 +168,7 @@ class Cached(object):
     def get_timein_profile(self, reduced=True):
         if reduced:
             # reduce time to fields taht have been caculated at least once
-            rv = {k:v for k,v in self.time_in.items() if self.counter[k]>0}
+            rv = {k:v for k,v in list(self.time_in.items()) if self.counter[k]>0}
         else:
             rv = self.intime
         return rv
@@ -176,7 +176,7 @@ class Cached(object):
     def get_counter_profile(self, reduced=True):
         if reduced:
             # reduce time to fields taht have been caculated at least once
-            rv = {k:v for k,v in self.counter.items() if v>0}
+            rv = {k:v for k,v in list(self.counter.items()) if v>0}
         else:
             rv = self.counter
         return rv
@@ -186,7 +186,7 @@ class Cached(object):
         import scipy as sp
         t_dict = self.get_time_profile(reduced=reduced)
         c_dict = self.get_counter_profile(reduced=reduced)
-        labels = t_dict.keys()
+        labels = list(t_dict.keys())
         t = sp.array([t_dict[m] for m in labels])
         c = sp.array([c_dict[m] for m in labels])
         x = sp.arange(t.shape[0])
@@ -259,7 +259,7 @@ def cached(*args, **kwargs):
             (argnames, argvalues) = _fetch_argnames_argvalues(method, args,
                                                               kwargs)
 
-            t = zip(argnames, argvalues)
+            t = list(zip(argnames, argvalues))
             provided_args = dict((x, y) for x, y in t)
 
             for f in filter_out:
@@ -300,10 +300,10 @@ def cached(*args, **kwargs):
 def _map_args_kwargs_to_argvalues(args, kwargs, argnames, defaults):
 
     argvalues = [None] * len(argnames)
-    for i in xrange(len(defaults)):
+    for i in range(len(defaults)):
         argvalues[len(argnames) - len(defaults) + i] = defaults[i]
 
-    for i in xrange(len(args)):
+    for i in range(len(args)):
         argvalues[i] = args[i]
 
     for kw in kwargs:
@@ -321,8 +321,8 @@ def _map_args_kwargs_to_argvalues(args, kwargs, argnames, defaults):
 # and argument values.
 def _fetch_argnames_argvalues(method, args, kwargs):
     # argnames = inspect.getargspec(method)[0]
-    nargs = method.func_code.co_argcount
-    names = method.func_code.co_varnames
+    nargs = method.__code__.co_argcount
+    names = method.__code__.co_varnames
     argnames = list(names[:nargs])
 
     if len(argnames) == 1:
@@ -333,125 +333,9 @@ def _fetch_argnames_argvalues(method, args, kwargs):
     del argnames[0]
 
     # defaults = inspect.getargspec(method)[3]
-    defaults = method.func_defaults
+    defaults = method.__defaults__
     if defaults is None:
         defaults = []
     argvalues = _map_args_kwargs_to_argvalues(args, kwargs, argnames, defaults)
 
     return (argnames, argvalues)
-
-
-if __name__ == '__main__':
-    class Test(Cached):
-        @cached
-        def foo1(self, par1, par2=None):
-            print 'called',
-            return 5
-
-        @cached(exclude=['par2'])
-        def foo2(self, par1, par2):
-            print 'called',
-            return 5
-
-        @cached("A")
-        def foo3(self, par1):
-            print 'called',
-            return 5
-
-        @cached(["A", "B"])
-        def foo4(self, par1):
-            print 'called',
-            return 5
-
-        @cached(["B"])
-        def foo5(self, par1):
-            print 'called',
-            return 5
-
-    test = Test()
-    print '\ntest.foo1(2, par2=0)',
-    test.foo1(2, par2=0)
-    print '\ntest.foo1(2, par2=1)',
-    test.foo1(2, par2=1)
-    print '\ntest.foo1(2, par2=0)',
-    test.foo1(2, par2=0)
-    print '\ntest.foo1(2, par2=3)',
-    test.foo1(2, par2=3)
-    print '\ntest.foo1(2, par2=3)',
-    test.foo1(2, par2=3)
-    print '\ntest.foo1(2)',
-    test.foo1(2)
-    print '\ntest.foo1(3)',
-    test.foo1(3)
-    print '\ntest.foo1(3)',
-    test.foo1(3)
-
-    print ''
-
-    print '\ntest.foo2(1, 2)',
-    test.foo2(1, 2)
-    print '\ntest.foo2(1, 2)',
-    test.foo2(1, 2)
-    print '\ntest.foo2(1, 3)',
-    test.foo2(1, 3)
-    print '\ntest.foo2(2, 3)',
-    test.foo2(2, 3)
-    print '\ntest.foo2(2, 3)',
-    test.foo2(2, 3)
-
-    print ''
-    print '\ntest.foo3(1)',
-    test.foo3(1)
-    print '\ntest.foo3(1)',
-    test.foo3(1)
-    print '\ntest.foo4(1)',
-    test.foo4(1)
-    print '\ntest.foo4(1)',
-    test.foo4(1)
-    print '\ntest.foo5(1)',
-    test.foo5(1)
-    print '\ntest.foo5(1)',
-    test.foo5(1)
-    print '\nClearing cache group A',
-    test.clear_cache("A")
-    print '\ntest.foo3(1)',
-
-    test.foo3(1)
-    print '\ntest.foo3(1)',
-    test.foo3(1)
-    print '\ntest.foo4(1)',
-    test.foo4(1)
-    print '\ntest.foo4(1)',
-    test.foo4(1)
-    print '\ntest.foo5(1)',
-    test.foo5(1)
-    print '\ntest.foo5(1)',
-    test.foo5(1)
-    print '\nClearing cache group B',
-    test.clear_cache("B")
-    print '\ntest.foo3(1)',
-    test.foo3(1)
-    print '\ntest.foo3(1)',
-    test.foo3(1)
-    print '\ntest.foo4(1)',
-    test.foo4(1)
-    print '\ntest.foo4(1)',
-    test.foo4(1)
-    print '\ntest.foo5(1)',
-    test.foo5(1)
-    print '\ntest.foo5(1)',
-    test.foo5(1)
-    print '\nClearing cache group default',
-    test.clear_cache("default")
-    print '\ntest.foo3(1)',
-    test.foo3(1)
-    print '\ntest.foo3(1)',
-    test.foo3(1)
-    print '\ntest.foo4(1)',
-    test.foo4(1)
-    print '\ntest.foo4(1)',
-    test.foo4(1)
-    print '\ntest.foo5(1)',
-    test.foo5(1)
-    print '\ntest.foo5(1)',
-    test.foo5(1)

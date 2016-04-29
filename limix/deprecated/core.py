@@ -17,7 +17,7 @@ if version_info >= (2, 6, 0):
         try:
             fp, pathname, description = imp.find_module('_core', [dirname(__file__)])
         except ImportError:
-            import _core
+            from . import _core
             return _core
         if fp is not None:
             try:
@@ -28,7 +28,7 @@ if version_info >= (2, 6, 0):
     _core = swig_import_helper()
     del swig_import_helper
 else:
-    import _core
+    from . import _core
 del version_info
 try:
     _swig_property = property
@@ -191,7 +191,7 @@ class SwigPyIterator(_object):
         return _core.SwigPyIterator_copy(self)
 
 
-    def next(self):
+    def __next__(self):
         """
         next(SwigPyIterator self) -> PyObject *
 
@@ -344,7 +344,7 @@ class MatrixXdVec(_object):
     def __iter__(self):
         return self.iterator()
 
-    def __nonzero__(self):
+    def __bool__(self):
         """
         __nonzero__(MatrixXdVec self) -> bool
 
@@ -821,7 +821,7 @@ class StringVec(_object):
     def __iter__(self):
         return self.iterator()
 
-    def __nonzero__(self):
+    def __bool__(self):
         """
         __nonzero__(StringVec self) -> bool
 
@@ -1298,7 +1298,7 @@ class StringMatrixMap(_object):
     def __iter__(self):
         return self.iterator()
 
-    def __nonzero__(self):
+    def __bool__(self):
         """
         __nonzero__(StringMatrixMap self) -> bool
 
@@ -1711,7 +1711,7 @@ class VectorXiVec(_object):
     def __iter__(self):
         return self.iterator()
 
-    def __nonzero__(self):
+    def __bool__(self):
         """
         __nonzero__(VectorXiVec self) -> bool
 

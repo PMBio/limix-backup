@@ -72,7 +72,7 @@ class Mean(cObject):
         """The number of degrees of freedom"""
         if index is None:
             dof = 0
-            for i in xrange(self.len):
+            for i in range(self.len):
                 dof += self.A[i].shape[0] * self.F[i].shape[1]
             return dof
         else:
@@ -227,7 +227,7 @@ class Mean(cObject):
         compute self covariance for any
         """
         result = np.empty((self.P,self.F_any.shape[1],self.F_any.shape[1]), order='C')
-        for p in xrange(self.P):
+        for p in range(self.P):
             X1D = self.Fstar_any * self.D[:,p:p+1]
             X1X2 = X1D.T.dot(self.Fstar_any)
             result[p] = X1X2
@@ -240,11 +240,11 @@ class Mean(cObject):
         """
         result = np.empty((self.P,self.F_any.shape[1],self.dof), order='C')
         #This is trivially parallelizable:
-        for p in xrange(self.P):
+        for p in range(self.P):
             FanyD = self.Fstar_any * self.D[:,p:p+1]
             start = 0
             #This is trivially parallelizable:
-            for term in xrange(self.len):
+            for term in range(self.len):
                 stop = start + self.F[term].shape[1]*self.A[term].shape[0]
                 result[p,:,start:stop] = self.XanyKX2_single_p_single_term(p=p, F1=FanyD, F2=self.Fstar[term], A2=self.Astar[term])
                 start = stop
@@ -257,11 +257,11 @@ class Mean(cObject):
         cov_beta = np.zeros((self.dof,self.dof))
         start_row = 0
         #This is trivially parallelizable:
-        for term1 in xrange(self.len):
+        for term1 in range(self.len):
             stop_row = start_row + self.A[term1].shape[0] * self.F[term1].shape[1]
             start_col = start_row
             #This is trivially parallelizable:
-            for term2 in xrange(term1,self.len):
+            for term2 in range(term1,self.len):
                 stop_col = start_col + self.A[term2].shape[0] * self.F[term2].shape[1]
                 cov_beta[start_row:stop_row, start_col:stop_col] = compute_X1KX2(Y=self.Ystar(), D=self.D, X1=self.Fstar[term1], X2=self.Fstar[term2], A1=self.Astar[term1], A2=self.Astar[term2])
                 if term1!=term2:
@@ -290,7 +290,7 @@ class Mean(cObject):
         XKY = np.zeros((self.dof))
 
         n_weights = 0
-        for term in xrange(self.len):
+        for term in range(self.len):
             XKY_block = compute_XYA(DY=M, X=self.Fstar[term], A=self.Astar[term])
             XKY[n_weights:n_weights + self.A[term].shape[0] * self.F[term].shape[1]] = XKY_block.ravel(order='F')
             n_weights += self.A[term].shape[0] * self.F[term].shape[1]

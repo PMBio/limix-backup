@@ -44,20 +44,20 @@ def estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None
     Returns:
         CVarianceDecomposition object
     """
-    print ".. Training the backgrond covariance with a GP model"
+    print(".. Training the backgrond covariance with a GP model")
     vc = VAR.CVarianceDecomposition(phenos)
     if K1r is not None:
         vc.addRandomEffect(K1r,covar_type=covar_type,rank=rank)
     if K2r is not None:
         #TODO: fix this; forces second term to be the noise covariance
         vc.addRandomEffect(is_noise=True,K=K2r,covar_type=covar_type,rank=rank)
-    for ic  in xrange(len(Acovs)):
+    for ic  in range(len(Acovs)):
         vc.addFixedEffect(covs[ic],Acovs[ic])
     start = time.time()
     conv = vc.findLocalOptimum(fast=True)
     assert conv, "CVariance Decomposition has not converged"
     time_el = time.time()-start
-    print "Background model trained in %.2f s" % time_el
+    print(("Background model trained in %.2f s" % time_el))
     return vc
 
 #TODO: externally visible function?
@@ -180,7 +180,7 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
     lmm.setK2c(K2c)
     lmm.setSNPs(snps)
     #add covariates
-    for ic  in xrange(len(Acovs)):
+    for ic  in range(len(Acovs)):
         lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
     if searchDelta:      lmm.setNumIntervalsAlt(100)
@@ -192,7 +192,7 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
     dof0 = Asnps0[0].shape[0]
     pv0 = lmm.getPv()
     lrt0 = ST.chi2.isf(pv0,dof0)
-    for iA in xrange(len(Asnps1)):
+    for iA in range(len(Asnps1)):
         dof1 = Asnps1[iA].shape[0]
         dof = dof1-dof0
         lmm.setSNPcoldesign(Asnps1[iA])
@@ -302,7 +302,7 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
     lmm.setK2c(K2c)
     lmm.setSNPs(snps)
     #add covariates
-    for ic  in xrange(len(Acovs)):
+    for ic  in range(len(Acovs)):
         lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
 
@@ -318,7 +318,7 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
     lmm.setNumIntervals0(NumIntervalsDelta0)
     #add SNP design
     lmm.setSNPcoldesign0_inter(Asnps0[0])
-    for iA in xrange(len(Asnps1)):
+    for iA in range(len(Asnps1)):
         lmm.setSNPcoldesign(Asnps1[iA])
         lmm.process()
 
@@ -417,7 +417,7 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
     lmm.setK2c(K2c)
     lmm.setSNPs(snps)
     #add covariates
-    for ic  in xrange(len(Acovs)):
+    for ic  in range(len(Acovs)):
         lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
 
@@ -429,7 +429,7 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
         lmm.setNumIntervalsAlt(0)
     lmm.setNumIntervals0(NumIntervalsDelta0)
 
-    for iA in xrange(len(Asnps)):
+    for iA in range(len(Asnps)):
         #add SNP design
         lmm.setSNPcoldesign(Asnps[iA])
         lmm.process()
@@ -470,7 +470,7 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,Nu
     elif test=='f':
         lm.setTestStatistics(1)
     else:
-        print test
+        print(test)
         raise NotImplementedError("only f or lrt are implemented")
     #set number of delta grid optimizations?
     lm.setNumIntervals0(NumIntervalsDelta0)
@@ -480,7 +480,7 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,Nu
         lm.setNumIntervalsAlt(0)
     lm.process()
     t1=time.time()
-    print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+    print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
     return lm
 
 #TODO: we need to fix. THis does not work as interact_GxE is not existing
@@ -535,17 +535,17 @@ def interact_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
     assert (env.shape[0]==N and pheno.shape[0]==N and K.shape[0]==N and K.shape[1]==N and covs.shape[0]==N), "shapes missmatch"
     Inter0 = SP.ones((N,1))
     pv = SP.zeros((env.shape[1],snps.shape[1]))
-    print ("starting %i interaction scans for %i SNPs each." % (env.shape[1], snps.shape[1]))
+    print(("starting %i interaction scans for %i SNPs each." % (env.shape[1], snps.shape[1])))
     t0=time.time()
-    for i in xrange(env.shape[1]):
+    for i in range(env.shape[1]):
         t0_i = time.time()
         cov_i = SP.concatenate((covs,env[:,i:(i+1)]),1)
         lm_i = simple_interaction(snps=snps,pheno=pheno,covs=cov_i,Inter=env[:,i:(i+1)],Inter0=Inter0, test=test)
         pv[i,:]=lm_i.getPv()[0,:]
         t1_i = time.time()
-        print ("Finished %i out of %i interaction scans in %.2f seconds."%((i+1),env.shape[1],(t1_i-t0_i)))
+        print(("Finished %i out of %i interaction scans in %.2f seconds."%((i+1),env.shape[1],(t1_i-t0_i))))
     t1 = time.time()
-    print ("-----------------------------------------------------------\nFinished all %i interaction scans in %.2f seconds."%(env.shape[1],(t1-t0)))
+    print(("-----------------------------------------------------------\nFinished all %i interaction scans in %.2f seconds."%(env.shape[1],(t1-t0))))
     return pv
 
 
@@ -622,7 +622,7 @@ def simple_interaction(snps,pheno,Inter,Inter0=None,covs = None,K=None,test='lrt
     elif test=='f':
         lmi.setTestStatistics(1)
     else:
-        print test
+        print(test)
         raise NotImplementedError("only f or lrt are implemented")
     lmi.process()
     return lmi
@@ -710,7 +710,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
     pvall = SP.zeros((pv.shape[0]*maxiter,pv.shape[1]))
     qvall = None
     t1=time.time()
-    print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+    print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
     time_el.append(t1-t0)
     pvall[0:pv.shape[0],:]=pv
     imin= SP.unravel_index(pv.argmin(),pv.shape)
@@ -738,7 +738,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
             lm.setK1c(K1c)
             lm.setK2c(K2c)
         lm.addCovariates(snps[:,imin[1]:(imin[1]+1)],Acond[imin[0]])
-        for i in xrange(len(Asnps)):
+        for i in range(len(Asnps)):
             #add SNP design
             lm.setSNPcoldesign(Asnps[i])
             lm.process()
@@ -752,7 +752,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
         else:
             score = pv[imin].min()
         t1=time.time()
-        print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+        print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
         time_el.append(t1-t0)
         niter=niter+1
     RV = {}
@@ -831,7 +831,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxi
         else:
             score = pv.min()
         t1=time.time()
-        print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+        print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
         niter=niter+1
     RV = {}
     RV['iadded']  = iadded

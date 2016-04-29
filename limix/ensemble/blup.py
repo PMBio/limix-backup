@@ -6,7 +6,7 @@ Created on Feb 20, 2013
 
 import scipy.linalg as LA
 import scipy as SP
-import lmm_fast
+from . import lmm_fast
 import limix
 
 class BLUP(object):
@@ -80,10 +80,10 @@ class BLUP(object):
         for ldelta in ldeltas:
             # print 'ldelta equals', ldelta
             score = 0.0
-            for i in xrange(len(cv_scheme)):
+            for i in range(len(cv_scheme)):
                 score += lmm_fast.nLLeval(ldelta, (Uys[i])[:, 0], UCs[i], Ss[i])
             nll_scores.append(score/len(cv_scheme))
-        print 'best ldelta found ll', ldeltas[SP.argmin(nll_scores)]
+        print(('best ldelta found ll', ldeltas[SP.argmin(nll_scores)]))
         return ldeltas[SP.argmin(errs)]
 
     def LL(self, mean):

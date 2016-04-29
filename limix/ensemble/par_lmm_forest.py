@@ -18,10 +18,10 @@ def setPaths(projects_path='~/my_research/region_testing'):
     return sys.path
     
 def par_init(tc, **rem_init_parameters):
-    print 'starting mixed forest on', len(tc), 'nodes'
+    print(('starting mixed forest on', len(tc), 'nodes'))
     init_parameters = rem_init_parameters.copy()
     n_trees = [init_parameters['n_estimators'] // len(tc)] * len(tc)
-    for i in xrange(init_parameters['n_estimators'] % len(tc)):
+    for i in range(init_parameters['n_estimators'] % len(tc)):
         n_trees[i] += 1
     dview = tc[:]
     dview.block = True

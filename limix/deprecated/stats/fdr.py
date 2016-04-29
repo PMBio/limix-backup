@@ -47,7 +47,7 @@ def qvalues1(PV,m=None,pi=1.0):
     QV_ = pi * m/lPV* PV
     QV_[-1] = min(QV_[-1],1.0)
     #4. update estimate
-    for i in xrange(lPV-2,-1,-1):
+    for i in range(lPV-2,-1,-1):
         QV_[i] = min(pi*m*PV[i]/(i+1.0),QV_[i+1])
     #5. invert sorting
     QV = sp.zeros_like(PV)
@@ -108,7 +108,7 @@ def qvalues(pv, m = None, return_pi0 = False, lowmem = False, pi0 = None, fix_la
 	qv[last_pv] = (pi0*pv[last_pv]*m)/float(m)
 	pv[last_pv] = -sp.inf
 	prev_qv = last_pv
-	for i in xrange(int(len(pv))-2, -1, -1):
+	for i in range(int(len(pv))-2, -1, -1):
 	    cur_max = pv.argmax()
 	    qv_i = (pi0*m*pv[cur_max]/float(i+1))
 	    pv[cur_max] = -sp.inf
@@ -129,7 +129,7 @@ def qvalues(pv, m = None, return_pi0 = False, lowmem = False, pi0 = None, fix_la
 	qv = pi0 * m/len(pv) * pv
 	qv[-1] = min(qv[-1],1.0)
 
-	for i in xrange(len(pv)-2, -1, -1):
+	for i in range(len(pv)-2, -1, -1):
 	    qv[i] = min(pi0*m*pv[i]/(i+1.0), qv[i+1])
 
 

@@ -138,7 +138,7 @@ class Splitter():
             gene_function = f['function'][:]
             f.close()
         except:
-            print 'Splitter:: format annotation file not valid'
+            print('Splitter:: format annotation file not valid')
 
         # if funct is not None, it has to be a list
         if funct is not None and funct!=list:   funct=[funct]

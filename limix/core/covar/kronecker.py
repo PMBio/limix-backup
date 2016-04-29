@@ -1,4 +1,4 @@
-from covar_base import Covariance
+from .covar_base import Covariance
 import pdb
 import numpy as np
 import scipy as sp
@@ -136,6 +136,6 @@ if __name__=='__main__':
 
     cov = KronCov(C, R) 
     cov.setRandomParams()
-    print cov.K()
-    print cov.K_grad_i(0)
+    print((cov.K()))
+    print((cov.K_grad_i(0)))
 

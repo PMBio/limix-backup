@@ -9,7 +9,7 @@ import numpy as NP
 import scipy as sp
 import scipy.linalg as LA
 import time as TIME
-from gp_base import GP
+from .gp_base import GP
 from limix.core.covar.cov_reml import cov_reml
 from limix.core.utils import assert_type_or_list_type
 from limix.core.utils import assert_type

@@ -9,7 +9,7 @@ import numpy as NP
 import scipy as sp
 import scipy.linalg as la
 import time as TIME
-from gp_base import GP
+from .gp_base import GP
 from limix.core.gp import GP2KronSum
 from limix.core.covar.cov_reml import cov_reml
 

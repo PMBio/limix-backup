@@ -32,7 +32,7 @@ def _depth_first_hdf5(dictionary, outfile, root=None, filters=None):
     """
     if root is None:
         root=outfile.root
-    for child_key in dictionary.keys():
+    for child_key in list(dictionary.keys()):
         if isinstance(dictionary[child_key],dict):
             child_group = outfile.create_group(root, child_key)
             _depth_first_hdf5(dictionary[child_key], outfile=outfile, root=child_group, filters=filters)
@@ -74,7 +74,7 @@ def _depth_first_text(dictionary, outdir=".", delimiter=" ",float_format="%.6e")
         float_format:   default format for floating point outputs.   
     """
     
-    for child_key in dictionary.keys():
+    for child_key in list(dictionary.keys()):
         if isinstance(dictionary[child_key],dict):
             child_path = os.path.join(outdir, child_key)
             _depth_first_text(dictionary[child_key], outdir=child_path,delimiter=delimiter,float_format=float_format)
@@ -189,7 +189,7 @@ class output_writer(object):
 
 
 if __name__ == "__main__":
-    print ("last modified: %s" % time.ctime(os.path.getmtime(__file__)))
+    print(("last modified: %s" % time.ctime(os.path.getmtime(__file__))))
     di={"a":{"B":np.ones((5,5)),"C":1},"B":["dfd","f"]}
     writer = output_writer(output_dictionary=di)
     writer.write_hdf5("test.h5",timestamp=True)

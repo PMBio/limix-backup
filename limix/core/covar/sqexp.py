@@ -4,7 +4,7 @@ from limix.core.utils import assert_make_float_array
 from limix.core.utils import assert_finite_array
 import scipy as sp
 import numpy as np
-from covar_base import Covariance
+from .covar_base import Covariance
 import scipy.spatial as SS
 
 class SQExpCov(Covariance):

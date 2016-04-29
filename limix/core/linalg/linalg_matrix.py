@@ -80,7 +80,7 @@ def jitChol(A, maxTries=10, warning=True):
             if i<maxTries:
                 jitter = jitter*10
             else:
-                raise linalg.LinAlgError, "Matrix non positive definite, jitter of " +  str(jitter) + " added but failed after " + str(i) + " trials."
+                raise linalg.LinAlgError("Matrix non positive definite, jitter of " +  str(jitter) + " added but failed after " + str(i) + " trials.")
         i += 1
     return LC
 
@@ -117,5 +117,5 @@ def jitEigh(A,maxTries=10,warning=True):
             jitter = jitter*10
         i += 1
             
-    raise linalg.LinAlgError, "Matrix non positive definite, jitter of " +  str(jitter) + " added but failed after " + str(i) + " trials."
+    raise linalg.LinAlgError("Matrix non positive definite, jitter of " +  str(jitter) + " added but failed after " + str(i) + " trials.")
       

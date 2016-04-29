@@ -59,7 +59,7 @@ class LIMIX_runner(object):
         data=None       #fallback data
         exec(command)   #creates variable data
         t1=time.time()
-        print ("Elapsed time for data reading is %.2f seconds" % (t1-t0))
+        print(("Elapsed time for data reading is %.2f seconds" % (t1-t0)))
         self.data=data
         return self.data
 
@@ -76,7 +76,7 @@ class LIMIX_runner(object):
         t0=time.time()
         exec(command)   #creates variable result
         t1=time.time()
-        print ("Elapsed time for running the experiment is %.2f seconds" % (t1-t0))
+        print(("Elapsed time for running the experiment is %.2f seconds" % (t1-t0)))
         self.result=result
         return self.result
 
@@ -91,7 +91,7 @@ class LIMIX_runner(object):
         else:
             writer.write_txt(outdir=self.options.outpath,timestamp=self.options.timestamp,delimiter=self.options.delimiter,float_format=self.options.float_format)
         t1=time.time()
-        print ("Elapsed time for writing the output files is %.2f seconds" % (t1-t0))
+        print(("Elapsed time for writing the output files is %.2f seconds" % (t1-t0)))
 
 
 def entry_point():

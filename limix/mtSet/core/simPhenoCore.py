@@ -2,9 +2,9 @@ from optparse import OptionParser
 import scipy as SP
 
 import os
-import simulator as sim
-from read_utils import readCovarianceMatrixFile
-from read_utils import readBimFile 
+from . import simulator as sim
+from .read_utils import readCovarianceMatrixFile
+from .read_utils import readBimFile 
 
 def genPhenoCube(sim,Xr,vTotR=4e-3,nCausalR=10,pCommonR=0.8,vTotBg=0.4,pHidd=0.6,pCommon=0.8):
     # region
@@ -26,18 +26,18 @@ def genPhenoCube(sim,Xr,vTotR=4e-3,nCausalR=10,pCommonR=0.8,vTotBg=0.4,pHidd=0.6
 
 def simPheno(options):
 
-    print 'importing covariance matrix'
+    print('importing covariance matrix')
     if options.cfile is None: options.cfile=options.bfile
     XX = readCovarianceMatrixFile(options.cfile,readEig=False)['K']
 
-    print 'simulating phenotypes'
+    print('simulating phenotypes')
     SP.random.seed(options.seed)
     simulator = sim.CSimulator(bfile=options.bfile,XX=XX,P=options.nTraits)
     Xr,region = simulator.getRegion(chrom_i=options.chrom,size=options.windowSize,min_nSNPs=options.nCausalR,pos_min=options.pos_min,pos_max=options.pos_max)
  
     Y,info    = genPhenoCube(simulator,Xr,vTotR=options.vTotR,nCausalR=options.nCausalR,pCommonR=options.pCommonR,vTotBg=options.vTotBg,pHidd=options.pHidden,pCommon=options.pCommon)
 
-    print 'exporting pheno file'
+    print('exporting pheno file')
     if options.pfile is not None:
         outdir = os.path.split(options.pfile)[0]
         if not os.path.exists(outdir):

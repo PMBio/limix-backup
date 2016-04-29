@@ -48,14 +48,14 @@ class LmmKronecker(cObject):
                 Asnps = self._gp.mean.Lc.T
         if inter is None:
             LL_snps_0[:] = self._LL_0
-            for i_snp in xrange(snps.shape[1]):
+            for i_snp in range(snps.shape[1]):
 
                 LL_snps[i_snp],beta = self.LML_blockwise(snp=np.dot(self._gp.mean.Lr,snps[:,i_snp:i_snp+1]), Asnp=Asnps)
                 if False and (Asnps is None) and (self._gp.mean):
                     LL_ = self.LML_snps_blockwise_any_singlesnp(snp=np.dot(self._gp.mean.Lr,snps[:,i_snp:i_snp+1]))
 
         else:
-            for i_snp in xrange(snps.shape[1]):
+            for i_snp in range(snps.shape[1]):
                 self._gp.mean.addFixedEffect(F=snps[:,i_snp:i_snp+1], A=Asnps)
                 LL_snps_0[i_snp] = self._gp.LML()
                 self._gp.mean.addFixedEffect(F=snps[:,i_snp:i_snp+1]*inter, A=Asnps)
@@ -93,13 +93,13 @@ class LmmKronecker(cObject):
         var_expl_up = 0.0
 
         #trivially parallelizable:
-        for p in xrange(self._gp.P):
+        for p in range(self._gp.P):
             Dsnps = snps * D[:,c:c+1]
             XsnpKXsnp = (Dsnps * snps).sum(0)
             XcovarXsnp = np.zeros((self._gp.mean.dof,snps.shape[1]))
             start = 0
             if 0:
-                for term in xrange(self._gp.mean.len):
+                for term in range(self._gp.mean.len):
                     n_effs_term = self._gp.mean.Fstar()[term].shape[1]
             
                     Astar_term = self._gp.mean.Astar()[term]
@@ -161,7 +161,7 @@ class LmmKronecker(cObject):
         XcovarXsnp = np.zeros((self._gp.mean.dof,snps.shape[1]))
         start = 0
         if 0:
-            for term in xrange(self._gp.mean.len):
+            for term in range(self._gp.mean.len):
                 n_effs_term = self._gp.mean.Fstar()[term].shape[1]
             
                 Astar_term = self._gp.mean.Astar()[term]
@@ -231,7 +231,7 @@ class LmmKronecker(cObject):
         XsnpXsnp = compute_X1KX2(Y=self._gp.mean.Ystar(), D=self._gp.mean.D, X1=snp, X2=snp, A1=Asnp, A2=Asnp)
         XcovarXsnp = np.zeros((self._gp.mean.n_fixed_effs,nW_Asnp*snp.shape[1]))
         start = 0
-        for term in xrange(self._gp.mean.n_terms):
+        for term in range(self._gp.mean.n_terms):
             n_effs_term = self._gp.mean.Fstar()[term].shape[1]
             
             if self._gp.mean.identity_trick and self._gp.mean.A_identity[term]:
@@ -299,13 +299,13 @@ class LmmKronecker(cObject):
             diff_beta_ = np.absolute(beta_all_-beta_all).sum()
             diff_beta__ = np.absolute(beta_all__-beta_all).sum()
             diff_beta_hat = np.absolute(beta-beta___).sum()
-            print "var_expl = %.4f" % var_expl
-            print "var_expl_update = %.4f" % var_expl_update
-            print "var_expl_snp = %.4f",  var_expl_snp
-            print "absdiff Areml = %.5f",diff_areml
-            print "absdiff beta_ = %.5f",diff_beta_
-            print "absdiff beta__ = %.5f",diff_beta__
-            print "absdiff beta_hat = %.5f",diff_beta_hat
+            print(("var_expl = %.4f" % var_expl))
+            print(("var_expl_update = %.4f" % var_expl_update))
+            print(("var_expl_snp = %.4f",  var_expl_snp))
+            print(("absdiff Areml = %.5f",diff_areml))
+            print(("absdiff beta_ = %.5f",diff_beta_))
+            print(("absdiff beta__ = %.5f",diff_beta__))
+            print(("absdiff beta_hat = %.5f",diff_beta_hat))
             import ipdb;ipdb.set_trace()
             
         return lml,beta_all

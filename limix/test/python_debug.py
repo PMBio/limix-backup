@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0,'./../debug.darwin/interfaces/python')
 import limix
 import scipy as SP
-import data
+from . import data
 import limix.deprecated.modules.varianceDecomposition as VAR
 import pdb
 

@@ -5,7 +5,7 @@ import scipy.linalg as LA
 import copy
 import pdb
 
-from mean_base import MeanBase
+from .mean_base import MeanBase
 from limix.utils.preprocess import regressOut
 from limix.utils.util_functions import to_list
 from limix.core.type.cached import *
@@ -103,7 +103,7 @@ class MeanKronSum(MeanBase):
 
     @property
     def B_ste(self):
-        print 'TODO: implement me'
+        print('TODO: implement me')
 
     @property
     def b_ste(self):
@@ -119,7 +119,7 @@ class MeanKronSum(MeanBase):
 
     @property
     def Fstar(self):
-        print 'TODO: assert stuff'
+        print('TODO: assert stuff')
         return self._Fstar
 
     @property
@@ -172,7 +172,7 @@ class MeanKronSum(MeanBase):
 
     @y.setter
     def y(self, value):
-        print("%s: y.setter not available in this class"%(self.__class__))
+        print(("%s: y.setter not available in this class"%(self.__class__)))
 
     def setDesigns(self, F, A):
         """ set fixed effect designs """
