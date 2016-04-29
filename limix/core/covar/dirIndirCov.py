@@ -3,7 +3,7 @@ import scipy as sp
 import scipy.linalg as LA
 from .covar_base import Covariance
 from .freeform import FreeFormCov
-from limix.core.type.cached import cached
+from hcache import cached
 import pdb
 
 import logging as LG

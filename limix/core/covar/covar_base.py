@@ -1,6 +1,6 @@
 import sys
 from limix.core.type.observed import Observed
-from limix.core.type.cached import Cached, cached
+from hcache import Cached, cached
 from limix.utils.eigen import *
 import scipy as sp
 import scipy.linalg as LA
@@ -177,7 +177,7 @@ class Covariance(Cached, Observed):
         R = sp.zeros((self.dim, self._nIterMC, self.getNumberParams()))
         for i in range(R.shape[2]):
             R[:, :, i] = sp.dot(self.K_grad_i(i), self.Z())
-        return R 
+        return R
 
     @cached(['covar_base', 'Z'])
     def DDKZ(self):
@@ -187,14 +187,14 @@ class Covariance(Cached, Observed):
             for j in range(i):
                 R[:, :, i, j] = sp.dot(self.K_hess_i_j(i, j), self.Z())
                 R[:, :, j, i] = R[:, :, i, j]
-        return R 
+        return R
 
     @cached(['covar_base', 'Z'])
     def KiZ(self):
         R = self.solve_ls(self.Z(), M0=self._KiZo)
         if self._reuse:     self._KiZo = R
         return R
-        
+
     @cached(['covar_base', 'Z'])
     def sample_logdet_grad_i(self, i):
         DiKZ = sp.dot(self.K_grad_i(i), self.Z())

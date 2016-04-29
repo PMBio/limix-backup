@@ -1,4 +1,4 @@
-"""LMM testing code"""
+from __future__ import division
 import unittest
 import scipy as sp
 import numpy as np
@@ -18,7 +18,7 @@ class TestDirIndirCov(unittest.TestCase):
         kinship  = sp.dot(X,X.T)
         kinship /= kinship.diagonal().mean()
         design = sp.zeros((n,n))
-        for i in range(n/2):
+        for i in range(n//2):
             design[2*i,2*i+1] = 1
             design[2*i+1,2*i] = 1
 

@@ -1,6 +1,6 @@
 import scipy as sp
 import numpy as np
-from limix.core.type.cached import cached
+from hcache import cached
 from limix.core.utils import assert_make_float_array
 from limix.core.utils import assert_finite_array
 from .covar_base import Covariance

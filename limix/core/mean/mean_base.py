@@ -1,8 +1,8 @@
 import sys
 from limix.core.type.observed import Observed
-from limix.core.type.cached import Cached, cached
+from hcache import Cached, cached
 from limix.utils.preprocess import regressOut
-from limix.core.utils import assert_finite_array 
+from limix.core.utils import assert_finite_array
 import scipy as sp
 import numpy as np
 
@@ -48,7 +48,7 @@ class MeanBase(Cached, Observed):
 
     @property
     def y(self):
-        return self._y 
+        return self._y
 
     @property
     def b(self):
@@ -73,7 +73,7 @@ class MeanBase(Cached, Observed):
 
     @property
     def B(self):
-        return self.b 
+        return self.b
 
     @property
     def B_ste(self):
@@ -122,7 +122,7 @@ class MeanBase(Cached, Observed):
 
     @y.setter
     def y(self,value):
-        assert_finite_array(value) 
+        assert_finite_array(value)
         assert value.shape[1] == 1, 'MeanBase: phenotype has to be a one column vector'
         self._N = value.shape[0]
         self._P = 1
@@ -157,7 +157,7 @@ class MeanBase(Cached, Observed):
 
     @cached('Yres')
     def yres(self):
-        return self.y - self.predict_in_sample() 
+        return self.y - self.predict_in_sample()
 
     #######################################
     # Standard errors
@@ -189,4 +189,3 @@ class MeanBase(Cached, Observed):
     #        n_effects = self.B[i].size
     #        self.B[i] = np.reshape(params[start:start+n_effects],self.B[i].shape, order='F')
     #        start += n_effects
-

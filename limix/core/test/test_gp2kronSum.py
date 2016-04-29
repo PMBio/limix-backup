@@ -37,7 +37,7 @@ class TestGPBase(unittest.TestCase):
         self.gp = GP2KronSum(Y=self.Y, F=self.F, A=self.A, Cg=self.Cg,
                              Cn=self.Cn, R=self.R)
 
-    @unittest.expectedFailure
+    @unittest.skip
     def test_grad(self):
 
         gp = self.gp

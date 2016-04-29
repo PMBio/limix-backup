@@ -8,11 +8,11 @@ import pdb
 from .mean_base import MeanBase
 from limix.utils.preprocess import regressOut
 from limix.utils.util_functions import to_list
-from limix.core.type.cached import *
+from hcache import Cached, cached
 from limix.core.type.observed import *
 from limix.core.utils import assert_make_float_array
 from limix.core.utils import assert_type_or_list_type
-from limix.utils.util_functions import vec 
+from limix.utils.util_functions import vec
 
 
 class MeanKronSum(MeanBase):
@@ -249,7 +249,7 @@ class MeanKronSum(MeanBase):
 
     @cached('Yres')
     def yres(self):
-        r = vec(self.Yres()) 
+        r = vec(self.Yres())
         if self._miss:
             r = r[~self._veIok]
         return r

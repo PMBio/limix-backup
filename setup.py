@@ -221,7 +221,7 @@ def setup_package(reswig, yes, compatible):
     if sys.platform == 'darwin':
         mac_workaround(compatible)
 
-    install_requires = ["scikit-learn", "pandas"]
+    install_requires = ["scikit-learn", "pandas", "hcache"]
     setup_requires = []
 
     # These are problematic packages (i.e., C/Fortran dependencies) to

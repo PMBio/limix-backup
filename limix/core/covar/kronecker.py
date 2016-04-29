@@ -2,7 +2,7 @@ from .covar_base import Covariance
 import pdb
 import numpy as np
 import scipy as sp
-from limix.core.type.cached import Cached, cached
+from hcache import Cached, cached
 
 class KronCov(Covariance):
     """
