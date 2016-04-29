@@ -12,11 +12,13 @@ before_install:
     - conda update -q conda
     - conda info -a
     - conda config --set anaconda_upload no
+    - conda config --add channels https://conda.anaconda.org/horta
 install:
     - conda install -q -y conda-build setuptools numpy cython matplotlib scikit-learn h5py scipy pandas anaconda-client
     - conda build conda-recipe
     - conda install --use-local limix
 script:
+    - conda config --add channels https://conda.anaconda.org/horta
     - python setup.py test
 deploy:
   - provider: script
