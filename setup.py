@@ -5,7 +5,7 @@ import sys
 import importlib
 
 PKG_NAME = 'limix'
-VERSION  = '0.7.74'
+VERSION  = '0.8.0'
 
 WORKDIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -275,7 +275,6 @@ def setup_package(reswig, yes, compatible):
         version=VERSION,
         test_suite='setup.get_test_suite',
         packages=find_packages(exclude=['tests', 'test', 'test_limix*']),
-        license="BSD",
         url='http://pmbio.github.io/limix/',
         install_requires=install_requires,
         setup_requires=setup_requires,
@@ -296,7 +295,7 @@ def setup_package(reswig, yes, compatible):
             'Development Status :: 5 - Production/Stable',
             'Environment :: Console',
             'Intended Audience :: Science/Research',
-            'License :: OSI Approved :: BSD License',
+            'License :: OSI Approved :: Apache Software License',
             'Natural Language :: English',
             'Operating System :: MacOS',
             'Operating System :: Unix',
