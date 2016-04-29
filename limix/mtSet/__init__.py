@@ -1,1 +1,1 @@
-from mtset import MTSet
+from .mtset import MTSet
