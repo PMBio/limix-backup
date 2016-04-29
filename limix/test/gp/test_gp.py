@@ -1,7 +1,6 @@
 """GP testing code"""
 import unittest
 import scipy as SP
-import pdb
 import limix.deprecated as dlimix
 
 class CGPbase_test(unittest.TestCase):

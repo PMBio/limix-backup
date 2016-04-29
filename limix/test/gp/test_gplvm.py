@@ -2,7 +2,6 @@
 import unittest
 import scipy as SP
 import numpy as np
-import pdb
 import limix.deprecated as dlimix
 import scipy.linalg as linalg
 
@@ -73,7 +72,7 @@ class CGPLVM_test(unittest.TestCase):
         self.gp.setParams(hyperparams)
         pass
 
-    @unittest.skip
+    @unittest.skip("someone has to fix it")
     def test_fit(self):
         #create optimization object
         self.gpopt = dlimix.CGPopt(self.gp)
@@ -88,8 +87,27 @@ class CGPLVM_test(unittest.TestCase):
         np.testing.assert_almost_equal(m, 0., decimal=1)
 
 
-class CGPLVM_test_constK(CGPLVM_test):
+class CGPLVM_test_constK(unittest.TestCase):
     """adapted version of GPLVM test, including a fixed CF covaraince"""
+
+    def simulate(self):
+        """simulate a dataset. Note this is seed-dependent"""
+
+        N = self.settings['N']
+        K = self.settings['K']
+        D = self.settings['D']
+
+        SP.random.seed(1)
+        S = SP.random.randn(N,K)
+        W = SP.random.randn(D,K)
+
+        Y = SP.dot(W,S.T).T
+        Y+= 0.1*SP.random.randn(N,D)
+
+        X0 = SP.random.randn(N,K)
+        X0 = PCA(Y,K)[0]
+        RV = {'X0': X0,'Y':Y,'S':S,'W':W}
+        return RV
 
     def setUp(self):
         SP.random.seed(1)
@@ -128,6 +146,19 @@ class CGPLVM_test_constK(CGPLVM_test):
         self.gp.setParams(hyperparams)
         pass
 
+    @unittest.skip("someone has to fix it")
+    def test_fit(self):
+        #create optimization object
+        self.gpopt = dlimix.CGPopt(self.gp)
+        #run
+        RV = self.gpopt.opt()
+        RV = self.gpopt.opt()
+
+        m = (SP.absolute(self.gp.LMLgrad()['X']).max() +
+             SP.absolute(self.gp.LMLgrad()['covar']).max() +
+             SP.absolute(self.gp.LMLgrad()['lik']).max())
+
+        np.testing.assert_almost_equal(m, 0., decimal=1)
 
 
 if __name__ == '__main__':
