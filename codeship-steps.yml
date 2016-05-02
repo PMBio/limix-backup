@@ -6,6 +6,8 @@
     - service: conda3
       command: /bin/bash -c "cp -r /limix /limix-conda3 && cd /limix-conda3 && /opt/conda/bin/python setup.py test --yes"
 
+- type: parallel
+  steps:
     - service: bare
       command: /bin/bash -c "cp -r /limix /limix-bare && cd /limix-bare && /usr/bin/python setup.py test --yes"
 
