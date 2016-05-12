@@ -3,11 +3,11 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: dhorta/science-conda2
+    repository: dhorta/science-bare
     tag: latest
 
 inputs:
-- name: limix
+- name: limix-sdist
 
 run:
-  path: ./limix/ci/build-sdist.sh
+  path: ./limix/ci/deploy-sdist.sh

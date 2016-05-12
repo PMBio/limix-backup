@@ -1,4 +1,5 @@
 resources:
+
 - name: limix
   type: git
   source:
@@ -6,6 +7,7 @@ resources:
     branch: master
 
 jobs:
+
 - name: test-from-source
   plan:
   - get: limix
@@ -15,10 +17,23 @@ jobs:
       file: limix/ci/test-conda2.yml
     - task: test-conda3
       file: limix/ci/test-conda3.yml
-- name: build-sdist
+
+- name: test-sdist
   plan:
   - get: limix
     passed: [test-from-source]
     trigger: true
-  - task: build-sdist-conda2
-    file: limix/ci/build-sdist-conda2.yml
+  - task: build-sdist
+    file: limix/ci/build-sdist.yml
+  - task: test-sdist
+    file: limix/ci/test-sdist.yml
+
+- name: deploy-sdist
+  plan:
+  - get: limix
+    passed: [test-sdist]
+    trigger: true
+  - task: build-sdist
+    file: limix/ci/build-sdist.yml
+  - task: deploy-sdist
+    file: limix/ci/deploy-sdist.yml
