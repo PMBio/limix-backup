@@ -1,0 +1,13 @@
+resources:
+- name: limix
+  type: git
+  source:
+    uri: https://github.com/PMBio/limix
+    branch: master
+
+jobs:
+- name: test-app
+  plan:
+  - get: limix
+  - task: tests
+    file: limix/ci/test.yml
