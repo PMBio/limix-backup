@@ -6,8 +6,19 @@ resources:
     branch: master
 
 jobs:
-- name: test-app
+- name: test-from-source
   plan:
   - get: limix
-  - task: tests
-    file: limix/ci/test.yml
+    trigger: true
+  - aggregate:
+    - task: test-conda2
+      file: limix/ci/test-conda2.yml
+    - task: test-conda3
+      file: limix/ci/test-conda3.yml
+- name: build-sdist
+  plan:
+  - get: limix
+    passed: [test-from-source]
+    trigger: true
+  - task: build-sdist-conda2
+    file: limix/ci/build-sdist-conda2.yml
