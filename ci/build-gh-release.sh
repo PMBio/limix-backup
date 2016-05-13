@@ -10,7 +10,7 @@ fi
 
 VERSION=`limix/ci/get_version.sh`
 
-cp limix/dist/* limix-gh-release/
+cp dist/* limix-gh-release/
 echo "Limix $VERSION" > limix-gh-release/name
 echo "v$VERSION" > limix-gh-release/tag
 

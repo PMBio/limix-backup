@@ -60,25 +60,25 @@ jobs:
   - task: test-sdist
     file: limix/ci/test-sdist.yml
 
-# - name: deploy-gh-release
-#   plan:
-#   - get: limix
-#     passed: [test-from-source, test-sdist]
-#     trigger: true
-#
-#   - task: build-sdist
-#     file: limix/ci/build-sdist.yml
-#
-#   - task: build-gh-release
-#     file: limix/ci/build-gh-release.yml
-#
-#   - put: gh-release
-#     params:
-#         name: limix-gh-release/name
-#         tag: limix-gh-release/tag
-#         body: limix-gh-release/body
-#         globs:
-#             - limix-gh-release/limix-*.tar.gz
+- name: deploy-gh-release
+  plan:
+  - get: limix
+    passed: [test-from-source]
+    trigger: true
+  - get: sdist
+    passed: [test-sdist]
+    trigger: true
+
+  - task: build-gh-release
+    file: limix/ci/build-gh-release.yml
+
+  - put: gh-release
+    params:
+        name: limix-gh-release/name
+        tag: limix-gh-release/tag
+        body: limix-gh-release/body
+        globs:
+            - limix-gh-release/limix-*.tar.gz
 #
 # - name: deploy-pypi-release
 #   plan:

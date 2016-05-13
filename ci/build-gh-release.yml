@@ -8,7 +8,7 @@ image_resource:
 
 inputs:
 - name: limix
-- name: limix-sdist
+- name: sdist
 
 outputs:
 - name: limix-gh-release
