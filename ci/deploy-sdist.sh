@@ -2,9 +2,6 @@
 
 set -e -x
 
-PYPI_USERNAME=$1
-PYPI_PASSWORD=$2
-
 VERSION=`cat limix/setup.py | grep 'VERSION *= *' | sed "s/VERSION *= *'\(.*\)'/\1/g"`
 
 echo $VERSION | grep dev > /dev/null

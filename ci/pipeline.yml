@@ -44,4 +44,7 @@ jobs:
     file: limix/ci/build-sdist.yml
   - task: deploy-sdist
     file: limix/ci/deploy-sdist.yml
+    params:
+        PYPI_USERNAME: {{pypi-username}}
+        PYPI_PASSWORD: {{pypi-password}}
     attempts: 5
