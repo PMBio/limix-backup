@@ -9,5 +9,3 @@ pushd limix
   fi
   python setup.py sdist
 popd
-
-cp limix/dist/* limix-sdist/

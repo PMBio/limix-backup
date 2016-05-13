@@ -6,6 +6,13 @@ resources:
     uri: https://github.com/PMBio/limix
     branch: master
 
+resources:
+- name: sdist
+  type: ftp
+  source:
+    uri: ftp://horta:3224ok@localhost:21/bucket/
+    regex: (?P<file>limix-(?P<version>\d+\.\d+\.\d+(\.(a|b|rc|dev)\d+)?)\.tar\.gz)
+
 - name: gh-release
   type: github-release
   source:
@@ -25,48 +32,56 @@ jobs:
     - task: test-conda3
       file: limix/ci/test-conda3.yml
 
-- name: test-sdist
+- name: build-sdist
   plan:
   - get: limix
     passed: [test-from-source]
     trigger: true
   - task: build-sdist
     file: limix/ci/build-sdist.yml
+  - put: sdist
+    file: limix/dist/limix-*.tar.gz
+
+- name: test-sdist
+  plan:
+  - get: sdist
+    passed: [build-sdist]
+    trigger: true
   - task: test-sdist
     file: limix/ci/test-sdist.yml
 
-- name: deploy-gh-release
-  plan:
-  - get: limix
-    passed: [test-from-source, test-sdist]
-    trigger: true
-
-  - task: build-sdist
-    file: limix/ci/build-sdist.yml
-
-  - task: build-gh-release
-    file: limix/ci/build-gh-release.yml
-
-  - put: gh-release
-    params:
-        name: limix-gh-release/name
-        tag: limix-gh-release/tag
-        body: limix-gh-release/body
-        globs:
-            - limix-gh-release/limix-*.tar.gz
-
-- name: deploy-pypi-release
-  plan:
-  - get: limix
-    passed: [test-from-source, test-sdist]
-    trigger: true
-
-  - task: build-sdist
-    file: limix/ci/build-sdist.yml
-
-  - task: deploy-pypi-release
-    file: limix/ci/deploy-pypi-release.yml
-    params:
-        PYPI_USERNAME: {{pypi-username}}
-        PYPI_PASSWORD: {{pypi-password}}
-    attempts: 5
+# - name: deploy-gh-release
+#   plan:
+#   - get: limix
+#     passed: [test-from-source, test-sdist]
+#     trigger: true
+#
+#   - task: build-sdist
+#     file: limix/ci/build-sdist.yml
+#
+#   - task: build-gh-release
+#     file: limix/ci/build-gh-release.yml
+#
+#   - put: gh-release
+#     params:
+#         name: limix-gh-release/name
+#         tag: limix-gh-release/tag
+#         body: limix-gh-release/body
+#         globs:
+#             - limix-gh-release/limix-*.tar.gz
+#
+# - name: deploy-pypi-release
+#   plan:
+#   - get: limix
+#     passed: [test-from-source, test-sdist]
+#     trigger: true
+#
+#   - task: build-sdist
+#     file: limix/ci/build-sdist.yml
+#
+#   - task: deploy-pypi-release
+#     file: limix/ci/deploy-pypi-release.yml
+#     params:
+#         PYPI_USERNAME: {{pypi-username}}
+#         PYPI_PASSWORD: {{pypi-password}}
+#     attempts: 5

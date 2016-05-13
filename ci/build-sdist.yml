@@ -9,8 +9,5 @@ image_resource:
 inputs:
 - name: limix
 
-outputs:
-- name: limix-sdist
-
 run:
   path: ./limix/ci/build-sdist.sh
