@@ -16,7 +16,7 @@ resources:
 - name: sdist
   type: ftp
   source:
-    uri: ftp://horta:3224ok@127.0.0.1/bucket/
+    uri: ftp://horta:3224ok@172.22.68.220:21/bucket/
     regex: (?P<file>limix-(?P<version>\d+\.\d+\.\d+(\.(a|b|rc|dev)\d+)?)\.tar\.gz)
 
 - name: gh-release
