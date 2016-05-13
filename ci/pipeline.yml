@@ -6,12 +6,12 @@ resources:
     uri: https://github.com/PMBio/limix
     branch: master
 
-# - name: gh-release
-#   type: github-release
-#   source:
-#     user: PMBio
-#     repository: limix
-#     access_token: abcdef1234567890
+- name: gh-release
+  type: github-release
+  source:
+    user: PMBio
+    repository: limix
+    access_token: {{github-concourse-token}}
 
 jobs:
 
@@ -35,15 +35,37 @@ jobs:
   - task: test-sdist
     file: limix/ci/test-sdist.yml
 
-- name: deploy-sdist
+- name: deploy-gh-release
   plan:
   - get: limix
-    passed: [test-sdist]
+    passed: [test-from-source, test-sdist]
     trigger: true
+
   - task: build-sdist
     file: limix/ci/build-sdist.yml
-  - task: deploy-sdist
-    file: limix/ci/deploy-sdist.yml
+
+  - task: build-gh-release
+    file: limix/ci/build-gh-release.yml
+
+  - put: gh-release
+    params:
+        name: limix-gh-release/name
+        tag: limix-gh-release/tag
+        body: limix-gh-release/body
+        globs:
+            - limix-gh-release/limix-*.tar.gz
+
+- name: deploy-pypi-release
+  plan:
+  - get: limix
+    passed: [test-from-source, test-sdist]
+    trigger: true
+
+  - task: build-sdist
+    file: limix/ci/build-sdist.yml
+
+  - task: deploy-pypi-release
+    file: limix/ci/deploy-pypi-release.yml
     params:
         PYPI_USERNAME: {{pypi-username}}
         PYPI_PASSWORD: {{pypi-password}}

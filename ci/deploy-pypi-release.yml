@@ -11,4 +11,4 @@ inputs:
 - name: limix-sdist
 
 run:
-  path: ./limix/ci/deploy-sdist.sh
+  path: ./limix/ci/deploy-pypi-release.sh
