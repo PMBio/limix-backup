@@ -16,7 +16,7 @@ resources:
 - name: sdist
   type: ftp
   source:
-    uri: ftp://horta:3224ok@172.22.68.220:21/bucket/
+    uri: ftp://horta:3224ok@172.22.68.220:21/home/horta/bucket/
     regex: (?P<file>limix-(?P<version>\d+\.\d+\.\d+(\.(a|b|rc|dev)\d+)?)\.tar\.gz)
 
 - name: gh-release
@@ -47,7 +47,7 @@ jobs:
     file: limix/ci/build-sdist.yml
   - put: sdist
     params:
-      file: limix/dist/limix-*.tar.gz
+      file: limix-sdist/limix-*.tar.gz
 
 - name: test-sdist
   plan:
