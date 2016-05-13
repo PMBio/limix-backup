@@ -11,4 +11,5 @@ inputs:
 - name: limix-sdist
 
 run:
-  path: ./limix/ci/deploy-sdist.sh {{pypi-username}} {{pypi-password}}
+  path: ./limix/ci/deploy-sdist.sh
+  args: [{{pypi-username}}, {{pypi-password}}]
