@@ -6,7 +6,6 @@ resources:
     uri: https://github.com/PMBio/limix
     branch: master
 
-resources:
 - name: sdist
   type: ftp
   source:
@@ -40,7 +39,8 @@ jobs:
   - task: build-sdist
     file: limix/ci/build-sdist.yml
   - put: sdist
-    file: limix/dist/limix-*.tar.gz
+    params:
+      file: limix/dist/limix-*.tar.gz
 
 - name: test-sdist
   plan:
