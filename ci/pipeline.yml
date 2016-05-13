@@ -16,7 +16,7 @@ resources:
 - name: sdist
   type: ftp
   source:
-    uri: ftp://horta:3224ok@localhost:21/bucket/
+    uri: ftp://horta:3224ok@127.0.0.1/bucket/
     regex: (?P<file>limix-(?P<version>\d+\.\d+\.\d+(\.(a|b|rc|dev)\d+)?)\.tar\.gz)
 
 - name: gh-release
@@ -32,11 +32,11 @@ jobs:
   plan:
   - get: limix
     trigger: true
-  - aggregate:
-    - task: test-conda2
-      file: limix/ci/test-conda2.yml
-    - task: test-conda3
-      file: limix/ci/test-conda3.yml
+  # - aggregate:
+  #   - task: test-conda2
+  #     file: limix/ci/test-conda2.yml
+  #   - task: test-conda3
+  #     file: limix/ci/test-conda3.yml
 
 - name: build-sdist
   plan:
