@@ -51,6 +51,9 @@ jobs:
 
 - name: test-sdist
   plan:
+  - get: limix
+    passed: [test-from-source]
+    trigger: true
   - get: sdist
     passed: [build-sdist]
     trigger: true
