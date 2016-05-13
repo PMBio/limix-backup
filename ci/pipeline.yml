@@ -6,6 +6,13 @@ resources:
     uri: https://github.com/PMBio/limix
     branch: master
 
+# - name: gh-release
+#   type: github-release
+#   source:
+#     user: PMBio
+#     repository: limix
+#     access_token: abcdef1234567890
+
 jobs:
 
 - name: test-from-source
@@ -37,3 +44,4 @@ jobs:
     file: limix/ci/build-sdist.yml
   - task: deploy-sdist
     file: limix/ci/deploy-sdist.yml
+    attempts: 5

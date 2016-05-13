@@ -16,5 +16,4 @@ fi
 
 FILENAME=`ls limix-sdist/ | head -1`
 echo $FILENAME
-cmd="twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD limix-sdist/$FILENAME"
-for i in {1..5}; do eval $cmd && break || sleep 15; done
+twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD limix-sdist/$FILENAME
