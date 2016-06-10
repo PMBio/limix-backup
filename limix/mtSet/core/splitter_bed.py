@@ -64,7 +64,7 @@ def splitGenoSlidingWindow(pos,out_file,size=5e4,step=None):
         while 1:
             if start>pos_chr_max: break
             end = start+size
-            Ir = (pos[:,1]>=start)*(pos[:,1]<end)
+            Ir = (pos_chr[:,1]>=start)*(pos_chr[:,1]<end)
             _nSnps = Ir.sum()
             if _nSnps>0:
                 idx_wnd_start = idx_chrom_start+SP.where(Ir)[0][0]

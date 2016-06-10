@@ -19,6 +19,11 @@ import os
 import numpy as SP
 import csv
 
+def standardize(snps): 
+    mdat = SP.ma.masked_array(snps,SP.isnan(snps))  # mask nan values
+    N = (mdat - SP.mean(mdat,axis=0)) / SP.std(mdat,axis=0)  # standardize column-wise to mean 0 and std 1
+    return N.filled(0.0)  # assign 0.0 to masked missing values
+
 def readBIM(basefilename,usecols=None):
     """
     helper method for speeding up read BED

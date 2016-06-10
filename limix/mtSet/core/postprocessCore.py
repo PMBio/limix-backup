@@ -35,7 +35,7 @@ def postprocess(options):
     LLR0 = []
     for _file in files:
         print _file
-        LLR0.append(NP.loadtxt(_file,usecols=[6]))
+        LLR0.append(NP.loadtxt(_file,usecols=[6]),ndmin=1)
     LLR0 = NP.concatenate(LLR0)
 
     print '.. fit test statistics'
@@ -57,7 +57,7 @@ def postprocess(options):
     RV_test = []
     for _file in files:
         print _file
-        RV_test.append(NP.loadtxt(_file))
+        RV_test.append(NP.loadtxt(_file), ndmin=2)
     RV_test = NP.concatenate(RV_test)
 
     print '.. calc pvalues'
