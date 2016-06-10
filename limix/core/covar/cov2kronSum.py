@@ -137,8 +137,12 @@ class Cov2KronSum(Covariance):
             raise ValueError("The number of parameters passed to setParams "
                              "differs from the number of active parameters.")
 
-        self.Cg.setParams(params[:nCg])
-        self.Cn.setParams(params[nCg:])
+        index = 0
+        if self._Cg_act:
+            self.Cg.setParams(params[:nCg])
+            index = nCg
+        if self._Cn_act:
+            self.Cn.setParams(params[index:])
 
     def getParams(self):
         params = []
