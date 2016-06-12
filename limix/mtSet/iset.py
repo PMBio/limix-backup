@@ -5,38 +5,56 @@ import numpy as np
 import numpy.linalg as nla
 import scipy.linalg as la
 from limix.mtSet.iset_full import ISet_Full
+from limix.mtSet.iset_strat import ISet_Strat
 import pandas as pd
 from limix.mtSet.core.iset_utils import calc_emp_pv_eff
-#from iset_strat import ISet_strat
 import pdb
 
-def fit_iSet_full(Y, U_R, S_R, Xr, factr=1e7, n_perms=0, verbose=True):
+def fit_iSet(Y, U_R=None, S_R=None, covs=None, Xr=None, n_perms=0, Ie=None, strat=False, verbose=True):
     """
     Args:
         Y:          [N, P] phenotype matrix
         S_R:        N vector of eigenvalues of R
         U_R:        [N, N] eigenvector matrix of R
+        covs:       [N, K] matrix for K covariates
         Xr:         [N, S] genotype data of the set component
-        factr:      paramenter that determines the accuracy of the solution
-                    (see scipy.optimize.fmin_l_bfgs_b for more details)
+        n_perms:    number of permutations to consider
+        Ie:         N boolean context indicator
+        strat:      if True, the implementation with stratified designs is considered
     """
+    factr=1e7 # remove?
+    if strat:
+        assert Ie is not None, 'Ie must be specified for stratification analyses'
+        assert Y.shape[1]==1, 'Y must be Nx1 for stratification analysis' 
+    else:
+        assert covs==None, 'Covariates are not supported for analysis of fully observed phenotypes'
+
     if verbose:     print 'fittng iSet'
-    mtSetGxE = ISet_Full(Y=Y, S_R=S_R, U_R=U_R, Xr=Xr, factr=factr)
-    RV = {}
-    RV['null'] = mtSetGxE.fitNull()
-    RV['rank2'] = mtSetGxE.fitFullRank()
-    RV['rank1'] = mtSetGxE.fitLowRank()
-    LLR = RV['rank1']['NLLAlt'] - RV['rank2']['NLLAlt']
-    if LLR<-1e-6:
-        RV['rank2'] = mtSetGxE.fitFullRank(init_method='lr')
-    try:
+    if strat:
+        mtSetGxE = ISet_Strat(Y, Ie, Xr, covs=covs)
+        RV = {}
+        RV['null'] = mtSetGxE.fitNull()
+        RV['rank2'] = mtSetGxE.fitFullRank()
+        RV['rank1'] = mtSetGxE.fitLowRank()
         RV['block'] = mtSetGxE.fitBlock()
-    except:
+        RV['var'] = mtSetGxE.getVC()
+    else:
+        mtSetGxE = ISet_Full(Y=Y, S_R=S_R, U_R=U_R, Xr=Xr, factr=factr)
+        RV = {}
+        RV['null'] = mtSetGxE.fitNull()
+        RV['rank2'] = mtSetGxE.fitFullRank()
+        RV['rank1'] = mtSetGxE.fitLowRank()
+        LLR = RV['rank1']['NLLAlt'] - RV['rank2']['NLLAlt']
+        if LLR<-1e-6:
+            RV['rank2'] = mtSetGxE.fitFullRank(init_method='lr')
         try:
-            RV['block'] = mtSetGxE.fitBlock(init_method='null')
+            RV['block'] = mtSetGxE.fitBlock()
         except:
-            RV['block'] = mtSetGxE.fitBlock(init_method='null_no_opt')
-    RV['var'] = mtSetGxE.getVC()
+            try:
+                RV['block'] = mtSetGxE.fitBlock(init_method='null')
+            except:
+                RV['block'] = mtSetGxE.fitBlock(init_method='null_no_opt')
+        RV['var'] = mtSetGxE.getVC()
 
     if n_perms>0:
         RVperm = {}
@@ -50,18 +68,21 @@ def fit_iSet_full(Y, U_R, S_R, Xr, factr=1e7, n_perms=0, verbose=True):
                 if test=='mtSet':
                     idxs = sp.random.permutation(Xr.shape[0])
                     _Xr = Xr[idxs, :]
-                    df0 = fit_iSet_full(Y, U_R, S_R, _Xr, factr=factr, n_perms=0, verbose=False)
+                    df0 = fit_iSet(Y, U_R=U_R, S_R=S_R, covs=covs, Xr=_Xr, n_perms=0, Ie=Ie, strat=strat, verbose=False) 
                 else:
                     Y0 = mtSetGxE._sim_from(set_covar=nulls[it])
                     Y0 -= Y0.mean(0)
-                    df0 = fit_iSet_full(Y0, U_R, S_R, Xr, factr=factr, n_perms=0, verbose=False)
+                    df0 = fit_iSet(Y0, U_R=U_R, S_R=S_R, covs=covs, Xr=Xr, n_perms=0, Ie=Ie, strat=strat, verbose=False) 
                 RVperm[test+' LLR0'][seed_i]  = df0[test+' LLR'][0] 
 
     # output
     LLR_mtSet = RV['null']['NLL']-RV['rank2']['NLL']
     LLR_iSet = RV['block']['NLL']-RV['rank2']['NLL']
     LLR_iSet_het = RV['rank1']['NLL']-RV['rank2']['NLL']
-    varT = sp.sum([RV['var'][key] for key in ['var_r_full', 'var_g', 'var_n']])
+
+    if strat:   var_keys = ['var_r_full', 'var_c', 'var_n']
+    else:       var_keys = ['var_r_full', 'var_g', 'var_n']
+    varT = sp.sum([RV['var'][key] for key in var_keys])
     var_pers = RV['var']['var_r_block'] / varT
     var_resc = (RV['var']['var_r_rank1'] - RV['var']['var_r_block']) / varT
     var_het = (RV['var']['var_r_full'] - RV['var']['var_r_rank1']) / varT
@@ -79,9 +100,6 @@ def fit_iSet_full(Y, U_R, S_R, Xr, factr=1e7, n_perms=0, verbose=True):
         return df, pd.DataFrame(RVperm)
     return df
 
-def fit_iSet_stratified():
-    pass
-
 if __name__=='__main__':
 
     N = 200
@@ -96,6 +114,8 @@ if __name__=='__main__':
     R/= R.diagonal().mean(0)
     R+= 1e-4*sp.eye(N)
     S_R, U_R = nla.eigh(R)
+    covs = U_R[:,-10:]
+    Ie = sp.rand(200)<0.5
 
     pdb.set_trace()
 
@@ -109,17 +129,13 @@ if __name__=='__main__':
         X-= X.mean(0)
         X/= X.std(0)
         X/= sp.sqrt(X.shape[1])
-        _df, _df0 = fit_iSet_full(Y, U_R, S_R, X, n_perms=10)
+        #_df, _df0 = fit_iSet(Y, U_R, S_R, X, n_perms=10)
+        _df, _df0 = fit_iSet(Y[:,[0]], Xr=X, covs=covs, n_perms=10, Ie=Ie, strat=True)
         df  = df.append(_df)
         df0 = df0.append(_df0)
-
-    pdb.set_trace()
 
     for test in ['mtSet', 'iSet', 'iSet-het']:
         df[test+' pv'] = calc_emp_pv_eff(df[test+' LLR'].values, df0[test+' LLR0'].values)
 
-    pdb.set_trace()
-
-    calc_
 
 
