@@ -117,8 +117,6 @@ if __name__=='__main__':
     covs = U_R[:,-10:]
     Ie = sp.rand(200)<0.5
 
-    pdb.set_trace()
-
     df = pd.DataFrame()
     df0 = pd.DataFrame()
     n_regions = 5
