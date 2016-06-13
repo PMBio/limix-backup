@@ -86,8 +86,9 @@ def computePCsPython(out_dir,k,bfile,ffile):
         X /= sp.sqrt(2*p_ref*(1-p_ref))
 
     hasNan = sp.any(sp.isnan(X),axis=0)
-    print '%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()
-    X  = X[:,~hasNan]
+    if sp.any(hasNan):
+        print '%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()
+        X  = X[:,~hasNan]
 
 
     """ computing prinicipal components """
@@ -125,7 +126,8 @@ def computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type='RRM'):
         X /= sp.sqrt(2*p_ref*(1-p_ref))
 
     hasNan = sp.any(sp.isnan(X),axis=0)
-    print '%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()
+    if sp.any(hasNan):
+        print '%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()
 
     """ computing covariance matrix """
     print 'Computing relationship matrix...'
