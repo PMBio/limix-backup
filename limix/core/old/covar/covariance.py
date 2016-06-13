@@ -1,6 +1,6 @@
 import sys
 from limix.core.type.observed import Observed
-from limix.core.type.cached import Cached, cached
+from hcache import Cached, cached
 from limix.core.utils.eigen import *
 import scipy as SP
 import pdb
@@ -73,7 +73,7 @@ class Covariance(Cached, Observed):
         partial derivative with repspect to the i-th hyperparamter theta[i]
         """
         LG.critical("implement Kgrad_theta")
-        print("%s: Function K not yet implemented"%(self.__class__))
+        print(("%s: Function K not yet implemented"%(self.__class__)))
 
     def _calcNumberParams(self):
         """
@@ -111,7 +111,7 @@ class Covariance(Cached, Observed):
         evaluates the kernel for given hyperparameters theta and inputs X
         """
         LG.critical("implement K")
-        print("%s: Function K not yet implemented"%(self.__class__))
+        print(("%s: Function K not yet implemented"%(self.__class__)))
         return None
 
     @cached
@@ -120,7 +120,7 @@ class Covariance(Cached, Observed):
         partial derivative with repspect to the i-th hyperparamter theta[i]
         """
         LG.critical("implement K_grad_i")
-        print("%s: Function K not yet implemented"%(self.__class__))
+        print(("%s: Function K not yet implemented"%(self.__class__)))
 
     def solve(self,M):
         return LA.cho_solve((self.chol(),True),M)

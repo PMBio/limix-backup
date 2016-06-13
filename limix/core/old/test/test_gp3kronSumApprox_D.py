@@ -67,8 +67,8 @@ if __name__=='__main__':
 
     if 0:
         gp.K.optimizeAB(n=100)
-        print 'a:', gp.K.a
-        print 'b:', gp.K.b
+        print(('a:', gp.K.a))
+        print(('b:', gp.K.b))
 
         ipdb.set_trace()
         gp.K.optimizeABgrad()
@@ -78,21 +78,21 @@ if __name__=='__main__':
         ipdb.set_trace()
 
         conv,info = OPT.opt_hyper(gp,params,factr=1e-3)
-        print conv
+        print(conv)
 
-        print 'C1'
-        print C1.K()
-        print 'C2'
-        print C2.K()
-        print 'Cn'
-        print Cn.K()
+        print('C1')
+        print((C1.K()))
+        print('C2')
+        print((C2.K()))
+        print('Cn')
+        print((Cn.K()))
 
         ipdb.set_trace()
-        print 'before a and b opt:', gp.LML()
+        print(('before a and b opt:', gp.LML()))
         gp.K.optimizeAB(n=100)
-        print 'after a and b opt:', gp.LML()
-        print 'a:', gp.K.a
-        print 'b:', gp.K.b
+        print(('after a and b opt:', gp.LML()))
+        print(('a:', gp.K.a))
+        print(('b:', gp.K.b))
         params = gp.getParams()
 
 

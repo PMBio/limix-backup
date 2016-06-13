@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
     # define mean term
     mean = LinearMean(Y)
-    print mean.Y
+    print((mean.Y))
 
     # add first fixed effect
     F = 1.*(SP.rand(N,2)<0.2); A = SP.eye(P)
@@ -47,19 +47,19 @@ if __name__ == "__main__":
 
     if 1:
         # calculate stuff to see if it goes through
-        print mean.Ystar()
-        print mean.Yhat()
-        print mean.Xstar()
-        print mean.Xhat()
-        print mean.XstarT_dot(SP.randn(mean.N*mean.P,mean.n_fixed_effs))
-        print mean.Areml()
-        print mean.beta_hat()
+        print((mean.Ystar()))
+        print((mean.Yhat()))
+        print((mean.Xstar()))
+        print((mean.Xhat()))
+        print((mean.XstarT_dot(SP.randn(mean.N*mean.P,mean.n_fixed_effs))))
+        print((mean.Areml()))
+        print((mean.beta_hat()))
         Bhat =  mean.B_hat()
-        print mean.Zstar()
+        print((mean.Zstar()))
 
         # test grad stuff
-        print mean.LRLdiag_Xhat_tens()
-        print mean.LRLdiag_Yhat()
-        print mean.Areml_grad()
-        print mean.beta_grad()
-        print mean.Xstar_beta_grad()
+        print((mean.LRLdiag_Xhat_tens()))
+        print((mean.LRLdiag_Yhat()))
+        print((mean.Areml_grad()))
+        print((mean.beta_grad()))
+        print((mean.Xstar_beta_grad()))

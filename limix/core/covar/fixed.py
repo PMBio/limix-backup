@@ -1,10 +1,10 @@
 import scipy as sp
 import numpy as np
 import scipy.linalg as la
-from limix.core.type.cached import cached
+from hcache import cached
 from limix.core.utils import assert_make_float_array
 from limix.core.utils import assert_finite_array
-from covar_base import Covariance
+from .covar_base import Covariance
 import pdb
 
 class FixedCov(Covariance):

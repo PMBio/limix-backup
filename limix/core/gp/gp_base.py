@@ -5,12 +5,12 @@ import copy
 import sys
 import time
 from limix.core.type.observed import Observed
-from limix.core.type.cached import Cached, cached
+from hcache import Cached, cached
 from limix.core.covar import Covariance
 from limix.core.mean import MeanBase
 from limix.core.covar.cov_reml import cov_reml
 import limix.core.optimize.optimize_bfgs as OPT
-from relay import GPMeanRelay
+from .relay import GPMeanRelay
 
 import logging
 logger = logging.getLogger(__name__)
@@ -212,7 +212,7 @@ class GP(Cached, Observed):
         # logger.info('Marginal likelihood optimization.')
 
         if verbose:
-            print 'Marginal likelihood optimization.'
+            print('Marginal likelihood optimization.')
         t0 = time.time()
         conv, info = OPT.opt_hyper(self, Ifilter=Ifilter, bounds=bounds,
                                    opts=opts, *args, **kw_args)
@@ -221,15 +221,15 @@ class GP(Cached, Observed):
         # if logger.levelno == logger.DEBUG:
         if verbose:
             # logger.debug('Time elapsed: %.2fs', t1-t0)
-            print 'Converged:', conv
-            print 'Time elapsed: %.2f s' % (t1-t0)
+            print(('Converged:', conv))
+            print(('Time elapsed: %.2f s' % (t1-t0)))
             grad = self.LML_grad()
             grad_norm = 0
-            for key in grad.keys():
+            for key in list(grad.keys()):
                 grad_norm += (grad[key]**2).sum()
             grad_norm = sp.sqrt(grad_norm)
-            print 'Log Marginal Likelihood: %.7f.' % self.LML()
-            print 'Gradient norm: %.7f.' % grad_norm
+            print(('Log Marginal Likelihood: %.7f.' % self.LML()))
+            print(('Gradient norm: %.7f.' % grad_norm))
             # logger.debug('Log Marginal Likelihood: %.7f.', self.LML())
             # logger.debug('Gradient norm: %.7f.', grad_norm)
 
@@ -239,7 +239,7 @@ class GP(Cached, Observed):
 
     def calc_ste(self, verbose=True):
         if verbose:
-            print 'Standard errors calculation.'
+            print('Standard errors calculation.')
             # logger.info('Standard error calculation.')
         t0 = time.time()
         I_covar = self.covar.getFisherInf()
@@ -250,7 +250,7 @@ class GP(Cached, Observed):
         t1 = time.time()
         # logger.debug('Time elapsed: %.2fs', t1-t0)
         if verbose:
-            print 'Time elapsed: %.2f s' % (t1-t0)
+            print(('Time elapsed: %.2f s' % (t1-t0)))
 
 
     def test_grad(self):
@@ -271,5 +271,5 @@ class GP(Cached, Observed):
 
         x0 = self.getParams()['covar']
         err = mcheck_grad(func, grad, x0)
-        print err
+        print(err)
         # np.testing.assert_almost_equal(err, 0., decimal=5)

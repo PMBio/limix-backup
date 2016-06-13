@@ -49,7 +49,7 @@ def calc_LD(M,pos,i_start=[0],max_dist=1000000):
         v0  = M[:,start]
         Iselect = sp.nonzero(sp.absolute(pos-pos0)<=max_dist)[0]
         rv = sp.zeros(len(Iselect))
-        for i in xrange(len(Iselect)):
+        for i in range(len(Iselect)):
             rv[i] = (sp.corrcoef(v0,M[:,Iselect[i]])[0,1])**2
         #sort by distance
         dist = sp.absolute(pos[Iselect]-pos0)

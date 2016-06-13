@@ -1,0 +1,17 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: dhorta/science-bare
+    tag: latest
+
+inputs:
+- name: limix
+- name: sdist
+
+outputs:
+- name: limix-gh-release
+
+run:
+  path: ./limix/ci/build-gh-release.sh

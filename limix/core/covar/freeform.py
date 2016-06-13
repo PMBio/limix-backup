@@ -1,8 +1,8 @@
 import numpy as np
 import scipy as sp
 import scipy.linalg as LA
-from covar_base import Covariance
-from limix.core.type.cached import cached
+from .covar_base import Covariance
+from hcache import cached
 import pdb
 
 import logging as LG
@@ -222,5 +222,5 @@ class FreeFormCov(Covariance):
 if __name__ == '__main__':
     n = 2
     cov = FreeFormCov(n)
-    print cov.K()
-    print cov.K_grad_i(0)
+    print((cov.K()))
+    print((cov.K_grad_i(0)))

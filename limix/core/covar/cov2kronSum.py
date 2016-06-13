@@ -1,10 +1,10 @@
 import sys
 import numpy as np
-from covar_base import Covariance
-from limix.core.type.cached import cached
+from .covar_base import Covariance
+from hcache import cached
 from limix.core.type.exception import TooExpensiveOperationError
 from limix.core.utils import my_name
-from util import msg_too_expensive_dim
+from .util import msg_too_expensive_dim
 import scipy as sp
 import scipy.linalg as LA
 import warnings
@@ -376,5 +376,5 @@ if __name__ == '__main__':
     cov = Cov2KronSum(Cg = Cg, Cn = Cn, R = R)
     cov.setRandomParams()
 
-    print cov.K()
-    print cov.K_grad_i(0)
+    print((cov.K()))
+    print((cov.K_grad_i(0)))

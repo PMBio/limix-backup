@@ -1,0 +1,13 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: dhorta/science-conda2
+    tag: latest
+
+inputs:
+- name: limix
+
+run:
+  path: ./limix/ci/test.sh

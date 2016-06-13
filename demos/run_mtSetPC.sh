@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 BFILE=./data/chrom22_subsample20_maf0.10 #specify here bed basename
 CFILE=./out/chrom22
 PFILE=./out/pheno
@@ -11,40 +11,39 @@ FFILE=./out/pcs.txt
 
 # download the data
 if [ ! -e data ]; then
-mkdir data
+    mkdir data
 fi
 if [ ! -e $BFILE.bed ]; then
-wget http://www.ebi.ac.uk/~casale/mtSet_demo/chrom22_subsample20_maf0.10.bed -P data
+    wget http://www.ebi.ac.uk/~casale/mtSet_demo/chrom22_subsample20_maf0.10.bed -P data
 fi
 if [ ! -e $BFILE.bim ]; then
-wget http://www.ebi.ac.uk/~casale/mtSet_demo/chrom22_subsample20_maf0.10.bim -P data
+    wget http://www.ebi.ac.uk/~casale/mtSet_demo/chrom22_subsample20_maf0.10.bim -P data
 fi
 if [ ! -e $BFILE.fam ]; then
-wget http://www.ebi.ac.uk/~casale/mtSet_demo/chrom22_subsample20_maf0.10.fam -P data
+    wget http://www.ebi.ac.uk/~casale/mtSet_demo/chrom22_subsample20_maf0.10.fam -P data
 fi
 
-# Compute covariance matrix 
-./../scripts/mtSet_preprocess --compute_covariance --bfile $BFILE --cfile $CFILE 
+# Compute covariance matrix
+mtSet_preprocess --compute_covariance --bfile $BFILE --cfile $CFILE
 
 # Generate phenotype
-./../scripts/mtSet_simPheno --bfile $BFILE --cfile $CFILE --pfile $PFILE --chrom 22 --minPos 1640000  --maxPos 17550000
+mtSet_simPheno --bfile $BFILE --cfile $CFILE --pfile $PFILE --chrom 22 --minPos 1640000  --maxPos 17550000
 
 # precompute windows
-./../scripts/mtSet_preprocess --precompute_windows --bfile $BFILE --cfile $CFILE --pfile $PFILE --wfile $WFILE --window_size $WSIZE --plot_windows --ffile $FFILE --compute_PCs 2
+mtSet_preprocess --precompute_windows --bfile $BFILE --cfile $CFILE --pfile $PFILE --wfile $WFILE --window_size $WSIZE --plot_windows --ffile $FFILE --compute_PCs 2
 
-#fit null model 
-./../scripts/mtSet_preprocess --fit_null --bfile $BFILE --pfile $PFILE --nfile $NFILE  --ffile $FFILE 
+#fit null model
+mtSet_preprocess --fit_null --bfile $BFILE --pfile $PFILE --nfile $NFILE  --ffile $FFILE
 
 # Analysis
 # test
-./../scripts/mtSet_analyze --bfile $BFILE  --pfile $PFILE --nfile $NFILE --wfile $WFILE --minSnps 4 --resdir $RESDIR --start_wnd 0 --end_wnd 100 --ffile $FFILE 
+mtSet_analyze --bfile $BFILE  --pfile $PFILE --nfile $NFILE --wfile $WFILE --minSnps 4 --resdir $RESDIR --start_wnd 0 --end_wnd 100 --ffile $FFILE
 
 #permutations
 for i in `seq 0 10`;
 do
-./../scripts/mtSet_analyze --bfile $BFILE  --pfile $PFILE --nfile $NFILE --wfile $WFILE --minSnps 4 --resdir $RESDIR --start_wnd 0 --end_wnd 100 --perm $i --ffile $FFILE 
-
+    mtSet_analyze --bfile $BFILE  --pfile $PFILE --nfile $NFILE --wfile $WFILE --minSnps 4 --resdir $RESDIR --start_wnd 0 --end_wnd 100 --perm $i --ffile $FFILE
 done
 
 #postprocess
-./../scripts/mtSet_postprocess --resdir $RESDIR --outfile $OUTFILE --manhattan_plot
+mtSet_postprocess --resdir $RESDIR --outfile $OUTFILE --manhattan_plot

@@ -48,7 +48,7 @@ class psd_solver_any(object):
         (self.P,self.dof_any) = A.shape[0:2]
         self._lower=lower
         #This is trivially parallelizable:
-        for p in xrange(A.shape[0]):
+        for p in range(A.shape[0]):
             self.solver.append(psd_solver(A[p]))
 
     def solve(self,b,overwrite_b=False,check_finite=True, p=None):
@@ -59,7 +59,7 @@ class psd_solver_any(object):
             assert b.shape[:2]==(len(self.solver),self.dof_any)
             solution = np.empty(b.shape)
             #This is trivially parallelizable:
-            for p in xrange(self.P):
+            for p in range(self.P):
                 solution[p] = self.solver[p].solve(b=b[p])
             return solution
         else:

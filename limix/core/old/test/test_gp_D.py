@@ -7,7 +7,7 @@ try:
     import mtSet.pycore.mean as MEAN
     mtSet_present = True
 except:
-    print "no mtSet found in path"
+    print("no mtSet found in path")
     mtSet_present = False
 
 from limix.core.mean import mean
@@ -71,17 +71,17 @@ if __name__ == "__main__":
         params['Cn']   = SP.randn(int(0.5*P*(P+1)))
 
 
-        print "check gradient with gp2kronSum"
+        print("check gradient with gp2kronSum")
         gp = gp2kronSum(mu,Cg,Cn,XX)
         gp.setParams(params)
 
         if 0:
             gp.set_reml(False)
 
-        print "test optimization"
+        print("test optimization")
         start = TIME.time()
         conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-        print 'Reml GP:', TIME.time()-start
+        print(('Reml GP:', TIME.time()-start))
         
         if mtSet_present:
             params1 = copy.copy(params)
@@ -90,9 +90,9 @@ if __name__ == "__main__":
             gp1.setParams(params1)
             start = TIME.time()
             conv1,info = OPT.opt_hyper(gp1,params1,factr=1e3)
-            print 'Old GP:', TIME.time()-start
+            print(('Old GP:', TIME.time()-start))
 
-        print conv
+        print(conv)
 
         ipdb.set_trace()
 

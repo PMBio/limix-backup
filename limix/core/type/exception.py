@@ -12,8 +12,8 @@ class UndefinedInputError(RuntimeError):
 
 if __name__ == '__main__':
 
-    print('Oi danilo %d'
-          'Como voce esta? %d' % (1, 2))
+    print(('Oi danilo %d'
+          'Como voce esta? %d' % (1, 2)))
 
     def expensive():
         raise TooExpensiveOperationError('ola')
@@ -21,4 +21,4 @@ if __name__ == '__main__':
     try:
         expensive()
     except TooExpensiveOperationError as e:
-        print e
+        print(e)

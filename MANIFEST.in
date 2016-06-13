@@ -1,5 +1,6 @@
-#include *.py *.cc *.cpp *.h
 recursive-include External/Eigen *
 recursive-include External/nlopt *
+include External/nlopt_src.files
 recursive-include src/limix *.cpp *.h
+recursive-include src/interfaces *.cpp *.txt *.i *.py
 recursive-include cython/lmm_forest *

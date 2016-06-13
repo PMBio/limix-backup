@@ -1,0 +1,4 @@
+**/*.so
+build/
+limix.egg-info/
+dist/

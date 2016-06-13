@@ -10,12 +10,12 @@ import numpy.linalg as la
 from optparse import OptionParser
 import time
 import limix
-from read_utils import readBimFile
-from read_utils import readCovarianceMatrixFile
-from read_utils import readPhenoFile
-from read_utils import readCovariatesFile
-from splitter_bed import splitGeno
-import plink_reader
+from .read_utils import readBimFile
+from .read_utils import readCovarianceMatrixFile
+from .read_utils import readPhenoFile
+from .read_utils import readCovariatesFile 
+from .splitter_bed import splitGeno
+from . import plink_reader
 import scipy as sp
 import warnings
 import scipy.sparse.linalg as ssl
@@ -25,7 +25,7 @@ def computeCovarianceMatrixPlink(plink_path,out_dir,bfile,cfile,sim_type='RRM'):
     computing the covariance matrix via plink
     """
 
-    print "Using plink to create covariance matrix"
+    print("Using plink to create covariance matrix")
     cmd = '%s --bfile %s '%(plink_path,bfile)
 
     if sim_type=='RRM':
@@ -57,8 +57,7 @@ def computePCsPlink(plink_path,k,out_dir,bfile,ffile):
     """
     computing the covariance matrix via plink
     """
-
-    print "Using plink to compute principal components"
+    print("Using plink to compute principal components")
     cmd = '%s --bfile %s --pca %d '%(plink_path,bfile,k)
     cmd+= '--out %s'%(os.path.join(out_dir,'plink'))
     subprocess.call(cmd,shell=True)
@@ -77,7 +76,7 @@ def computePCsPython(out_dir,k,bfile,ffile):
     X  = np.ascontiguousarray(RV['snps'])
 
     """ normalizing markers """
-    print 'Normalizing SNPs...'
+    print('Normalizing SNPs...')
     p_ref = X.mean(axis=0)/2.
     X -= 2*p_ref
 
@@ -87,9 +86,8 @@ def computePCsPython(out_dir,k,bfile,ffile):
 
     hasNan = sp.any(sp.isnan(X),axis=0)
     if sp.any(hasNan):
-        print '%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()
+        print('%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum())
         X  = X[:,~hasNan]
-
 
     """ computing prinicipal components """
     U,S,Vt = ssl.svds(X,k=k)
@@ -103,7 +101,7 @@ def computePCsPython(out_dir,k,bfile,ffile):
 
 
 def computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type='RRM'):
-    print "Using python to create covariance matrix. This might be slow. We recommend using plink instead."
+    print("Using python to create covariance matrix. This might be slow. We recommend using plink instead.")
 
     if sim_type is not 'RRM':
         raise Exception('sim_type %s is not known'%sim_type)
@@ -113,11 +111,10 @@ def computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type='RRM'):
     iid  = data['iid']
     X = np.ascontiguousarray(data['snps'])
     N = X.shape[1]
-    print '%d variants loaded.'%N
-    print '%d people loaded.'%X.shape[0]
-
+    print(('%d variants loaded.'%N))
+    print(('%d people loaded.'%X.shape[0]))
     """ normalizing markers """
-    print 'Normalizing SNPs...'
+    print('Normalizing SNPs...')
     p_ref = X.mean(axis=0)/2.
     X -= 2*p_ref
 
@@ -127,15 +124,15 @@ def computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type='RRM'):
 
     hasNan = sp.any(sp.isnan(X),axis=0)
     if sp.any(hasNan):
-        print '%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()
+        print('%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum())
 
     """ computing covariance matrix """
-    print 'Computing relationship matrix...'
+    print('Computing relationship matrix...')
     K = sp.dot(X[:,~hasNan],X[:,~hasNan].T)
     K/= 1.*N
-    print 'Relationship matrix calculation complete'
-    print 'Relationship matrix written to %s.cov.'%cfile
-    print 'IDs written to %s.cov.id.'%cfile
+    print('Relationship matrix calculation complete')
+    print(('Relationship matrix written to %s.cov.'%cfile))
+    print(('IDs written to %s.cov.id.'%cfile))
 
     """ saving to output """
     np.savetxt(cfile + '.cov', K, delimiter='\t',fmt='%.6f')
@@ -271,16 +268,16 @@ def preprocess(options):
     if options.compute_cov:
        assert options.bfile!=None, 'Please specify a bfile.'
        assert options.cfile is not None, 'Specify covariance matrix basename'
-       print 'Computing covariance matrix'
+       print('Computing covariance matrix')
        t0 = time.time()
        computeCovarianceMatrix(options.plink_path,options.bfile,options.cfile,options.sim_type)
        t1 = time.time()
-       print '... finished in %s seconds'%(t1-t0)
-       print 'Computing eigenvalue decomposition'
+       print(('... finished in %s seconds'%(t1-t0)))
+       print('Computing eigenvalue decomposition')
        t0 = time.time()
        eighCovarianceMatrix(options.cfile)
        t1 = time.time()
-       print '... finished in %s seconds'%(t1-t0)
+       print(('... finished in %s seconds'%(t1-t0)))
 
     """ computing principal components """
     if options.compute_PCs>0:
@@ -288,15 +285,14 @@ def preprocess(options):
        t0 = time.time()
        computePCs(options.plink_path,options.compute_PCs,options.bfile,options.ffile)
        t1 = time.time()
-       print '... finished in %s seconds'%(t1-t0)
-
+       print(('... finished in %s seconds'%(t1-t0)))
 
     """ fitting the null model """
     if options.fit_null:
         if options.nfile is None:
             options.nfile = os.path.split(options.bfile)[-1]
             warnings.warn('nfile not specifed, set to %s'%options.nfile)
-        print 'Fitting null model'
+        print('Fitting null model')
         assert options.pfile is not None, 'phenotype file needs to be specified'
         # read pheno
         Y = readPhenoFile(options.pfile,idx=options.trait_idx)
@@ -315,27 +311,27 @@ def preprocess(options):
         t0 = time.time()
         fit_null(Y,cov['eval'],cov['evec'],options.nfile, F)
         t1 = time.time()
-        print '.. finished in %s seconds'%(t1-t0)
+        print(('.. finished in %s seconds'%(t1-t0)))
 
     """ precomputing the windows """
     if options.precompute_windows:
         if options.wfile==None:
             options.wfile = os.path.split(options.bfile)[-1] + '.%d'%options.window_size
             warnings.warn('wfile not specifed, set to %s'%options.wfile)
-        print 'Precomputing windows'
+        print('Precomputing windows')
         t0 = time.time()
         pos = readBimFile(options.bfile)
         nWnds,nSnps=splitGeno(pos,size=options.window_size,out_file=options.wfile+'.wnd')
-        print 'Number of variants:',pos.shape[0]
-        print 'Number of windows:',nWnds
-        print 'Minimum number of snps:',nSnps.min()
-        print 'Maximum number of snps:',nSnps.max()
+        print(('Number of variants:',pos.shape[0]))
+        print(('Number of windows:',nWnds))
+        print(('Minimum number of snps:',nSnps.min()))
+        print(('Maximum number of snps:',nSnps.max()))
         t1 = time.time()
-        print '.. finished in %s seconds'%(t1-t0)
+        print(('.. finished in %s seconds'%(t1-t0)))
 
     # plot distribution of nSnps
     if options.plot_windows:
-        print 'Plotting ditribution of number of SNPs'
+        print('Plotting ditribution of number of SNPs')
         plot_file = options.wfile+'.wnd.pdf'
         plt = pl.subplot(1,1,1)
         pl.hist(nSnps,30)

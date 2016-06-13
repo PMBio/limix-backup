@@ -7,10 +7,10 @@ Created on Apr 2, 2013
 import scipy as SP
 import scipy.linalg as LA
 import warnings
-import pySplittingCore as SC
-import parMixedForest
-import mixedForestUtils as utils
-import BLUP
+from . import pySplittingCore as SC
+from . import parMixedForest
+from . import mixedForestUtils as utils
+from . import BLUP
 import limix.deprecated as dlimix
 
 class Forest(object):
@@ -183,11 +183,11 @@ class Forest(object):
         if self.delta is None:
             self.BLUP = BLUP.BLUP()
             if self.verbose > 1:
-                print 'fitting BLUP'
+                print('fitting BLUP')
             self.BLUP.fit(XTrain=self.X, yTrain=self.y, KTrain=self.kernel,
                           delta=self.delta)
             if self.verbose > 1:
-                print 'done fitting BLUP'
+                print('done fitting BLUP')
             # Update delta if it used to be 'None'
             self.delta = self.BLUP.delta
         self.max_features = SP.maximum(SP.int_(self.ratio_features*self.m), 1)
@@ -196,7 +196,7 @@ class Forest(object):
         self.depth = 0
 
         if self.verbose > 0:
-            print 'log(delta) fitted to ', SP.log(self.delta)
+            print(('log(delta) fitted to ', SP.log(self.delta)))
 
         # Initialize individual trees
         if recycle and self.trees != []:
@@ -207,7 +207,7 @@ class Forest(object):
             self.trees = []
             while n_trees < self.n_estimators:
                 if self.verbose > 1:
-                    print 'init. tree number ', n_trees
+                    print(('init. tree number ', n_trees))
                 subsample = self.tree_sample()
                 tree = MixedForestTree(self, subsample)
                 self.trees.append(tree)
@@ -218,7 +218,7 @@ class Forest(object):
             self.opt_depth = 0
             self.min_oob_err = self.get_oob_error(self.depth)
             if self.verbose > 0:
-                print 'initial oob error is:', self.min_oob_err
+                print(('initial oob error is:', self.min_oob_err))
             grow_further = True
             curr_depth = self.depth
             while grow_further:
@@ -227,12 +227,12 @@ class Forest(object):
                 if self.update_delta:
                     self.delta = self.delta_update()
                     if self.verbose > 0:
-                        print 'delta was fitted to', self.delta
+                        print(('delta was fitted to', self.delta))
                 if self.verbose > 0:
-                    print 'depth is:', self.depth
+                    print(('depth is:', self.depth))
                 oob_err = self.get_oob_error(self.depth)
                 if self.verbose > 0:
-                    print 'oob error is:', oob_err
+                    print(('oob error is:', oob_err))
                 if oob_err < self.min_oob_err:
                     self.min_oob_err = oob_err
                     self.opt_depth = self.depth
@@ -266,7 +266,7 @@ class Forest(object):
         if self.tc is None:
             for i in SP.arange(len(self.trees)):
                 if self.verbose > 1:
-                    print 'growing tree ', i
+                    print(('growing tree ', i))
                 self.trees[i].grow(depth)
                 if depth == float('inf'):
                     self.trees[i].clear_data()
@@ -393,11 +393,11 @@ class MixedForestTree(object):
         if not(self.forest.optimize_memory_use):
             self.X = self.forest.X[subsample]
         if self.verbose > 1:
-            print 'compute tree wise singular value decomposition'
+            print('compute tree wise singular value decomposition')
         self.S, self.U = LA.eigh(kernel + SP.eye(subsample.size)*1e-8)
         self.Uy = SP.dot(self.U.T, self.forest.y[subsample])
         if self.verbose > 1:
-            print 'compute tree wise bias'
+            print('compute tree wise bias')
         self.mean[0] = SC.estimate_bias(self.Uy, self.U, self.S,
                                         SP.log(self.forest.delta))
         self.sample = SP.arange(subsample.size)
@@ -406,7 +406,7 @@ class MixedForestTree(object):
                                             SP.eye(self.subsample.size) *
                                             self.forest.delta))
         if self.verbose > 1:
-            print 'done initializing tree'
+            print('done initializing tree')
 
 
     def print_tree(self):
@@ -594,7 +594,7 @@ class MixedForestTree(object):
         If many trees are grown this is an useful options since it is saving a
         lot of memory '''
         if self.forest.verbose > 1:
-            print 'clearing up stuff'
+            print('clearing up stuff')
         self.S = None
         self.Uy = None
         self.U = None

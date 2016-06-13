@@ -21,7 +21,7 @@ import matplotlib.pylab as plt
 import scipy.stats as st
 import copy
 import os
-import cPickle
+import pickle
 import glob
 
 def plot_manhattan(posCum,pv,chromBounds=None,
@@ -118,7 +118,7 @@ def _qqplot_bar(M=1000000, alphaLevel = 0.05, distr = 'log10'):
 	betaalphaLevel=sp.zeros(numPts);#down in the plot
 	betaOneMinusalphaLevel=sp.zeros(numPts);#up in the plot
 	betaInvHalf=sp.zeros(numPts);
-	for n in xrange(numPts):
+	for n in range(numPts):
 	   m=mRange[n]; #numPLessThanThresh=m;
 	   betaInvHalf[n]=st.beta.ppf(0.5,m,M-m);
 	   betaalphaLevel[n]=st.beta.ppf(alphaLevel,m,M-m);

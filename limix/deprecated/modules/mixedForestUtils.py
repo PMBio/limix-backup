@@ -1,5 +1,5 @@
 import scipy as SP
-import parMixedForest as parUtils
+from . import parMixedForest as parUtils
 import random
 
 def checkMaf(X, maf=None):
@@ -14,7 +14,7 @@ def scale_K(K, verbose=False):
     c = SP.sum((SP.eye(len(K)) - (1.0 / len(K)) * SP.ones(K.shape)) * SP.array(K))
     scalar = (len(K) - 1) / c
     if verbose:
-        print 'Kinship scaled by: %0.4f' % scalar
+        print(('Kinship scaled by: %0.4f' % scalar))
     K = scalar * K
     return K
 
@@ -57,9 +57,9 @@ def k_fold_cross_validation(items, k, randomize=True, seed=True):
             random.seed(10) # make shure we get similar partitions across methods
         items = list(items)
         random.shuffle(items)
-    slices = [items[i::k] for i in xrange(k)]
+    slices = [items[i::k] for i in range(k)]
 
-    for i in xrange(k):
+    for i in range(k):
         validation = slices[i]
         training = [item
                     for s in slices if s is not validation
@@ -68,7 +68,7 @@ def k_fold_cross_validation(items, k, randomize=True, seed=True):
 
 def crossValidationScheme(folds, n):
     validationList = []
-    for validation in k_fold_cross_validation(range(n), folds):
+    for validation in k_fold_cross_validation(list(range(n)), folds):
         indexes = SP.ones(n) == 0
         indexes[validation] = True
         validationList.append(indexes)
@@ -100,7 +100,7 @@ def crossValidate(y, X, K=None, folds=3, model=None, returnModel=False):
             prediction = SP.reshape(model.predict(X[testIndexes], k=KTest), (-1,1))
         predictions[testIndexes] = prediction
         errors[cvRun] = predictionError(y[testIndexes], prediction)
-        print 'prediction error right now is', errors[cvRun]
+        print(('prediction error right now is', errors[cvRun]))
         if returnModel:
             alpha.append(model.alpha)
             alphas.append(model.alphas)

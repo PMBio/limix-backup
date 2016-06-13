@@ -1,0 +1,97 @@
+resource_types:
+- name: ftp
+  type: docker-image
+  source:
+    repository: aequitas/ftp-resource
+    tag: latest
+
+resources:
+
+- name: limix
+  type: git
+  source:
+    uri: https://github.com/PMBio/limix
+    branch: master
+
+- name: sdist
+  type: ftp
+  source:
+    uri: ftp://horta:3224ok@172.22.68.220:21/home/horta/bucket/
+    regex: (?P<file>limix-(?P<version>\d+\.\d+\.\d+(\.(a|b|rc|dev)\d+)?)\.tar\.gz)
+
+- name: gh-release
+  type: github-release
+  source:
+    user: PMBio
+    repository: limix
+    access_token: {{github-concourse-token}}
+
+jobs:
+
+- name: test-from-source
+  plan:
+  - get: limix
+    trigger: true
+  # - aggregate:
+  #   - task: test-conda2
+  #     file: limix/ci/test-conda2.yml
+  #   - task: test-conda3
+  #     file: limix/ci/test-conda3.yml
+
+- name: build-sdist
+  plan:
+  - get: limix
+    passed: [test-from-source]
+    trigger: true
+  - task: build-sdist
+    file: limix/ci/build-sdist.yml
+  - put: sdist
+    params:
+      file: limix-sdist/limix-*.tar.gz
+
+- name: test-sdist
+  plan:
+  - get: limix
+    passed: [test-from-source]
+    trigger: true
+  - get: sdist
+    passed: [build-sdist]
+    trigger: true
+  - task: test-sdist
+    file: limix/ci/test-sdist.yml
+
+- name: deploy-gh-release
+  plan:
+  - get: limix
+    passed: [test-from-source]
+    trigger: true
+  - get: sdist
+    passed: [test-sdist]
+    trigger: true
+
+  - task: build-gh-release
+    file: limix/ci/build-gh-release.yml
+
+  - put: gh-release
+    params:
+        name: limix-gh-release/name
+        tag: limix-gh-release/tag
+        body: limix-gh-release/body
+        globs:
+            - limix-gh-release/limix-*.tar.gz
+#
+# - name: deploy-pypi-release
+#   plan:
+#   - get: limix
+#     passed: [test-from-source, test-sdist]
+#     trigger: true
+#
+#   - task: build-sdist
+#     file: limix/ci/build-sdist.yml
+#
+#   - task: deploy-pypi-release
+#     file: limix/ci/deploy-pypi-release.yml
+#     params:
+#         PYPI_USERNAME: {{pypi-username}}
+#         PYPI_PASSWORD: {{pypi-password}}
+#     attempts: 5

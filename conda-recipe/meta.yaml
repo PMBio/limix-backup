@@ -1,0 +1,37 @@
+package:
+    name: limix
+    version: "0.8.0"
+
+source:
+    path: ../
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - numpy
+    - cython
+    - matplotlib
+    - scikit-learn
+    - h5py
+    - scipy
+    - pandas
+    - gcc 4.8.* # [osx]
+    - swig
+    - hcache
+  run:
+    - python
+    - numpy
+    - cython
+    - matplotlib
+    - scikit-learn
+    - h5py
+    - scipy
+    - pandas
+    - libgcc 4.8.* # [osx]
+    - swig
+    - hcache
+about:
+  home: https://github.com/PMBio/limix
+  license: Apache License
+  license_file: license.txt

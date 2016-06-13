@@ -104,7 +104,7 @@ class CFastVDMM:
     
     def buildCF(self,C):
         # Initialize CTraitCFs and wrap them in a Sum of matrices
-        trait = SP.array(range(self.P))[:,SP.newaxis]
+        trait = SP.array(list(range(self.P)))[:,SP.newaxis]
         if type(C)!=list:
             Cout=C
             if Cout.getName()[0:2]=='CT':    Cout.setX(trait)
@@ -184,7 +184,7 @@ class CFastVDMM:
     
         # Check whether limix::CVarianceDecomposition.train() has converged
         if conv!=True or LMLgrad>grad_threshold or Params.max()>10:
-            print 'limix::CVarianceDecomposition::train has not converged'
+            print('limix::CVarianceDecomposition::train has not converged')
             res=None
         else:
             res = {

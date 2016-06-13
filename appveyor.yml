@@ -1,0 +1,21 @@
+environment:
+    global:
+        CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\deploy\\appveyor.run_with_env.cmd"
+
+    matrix:
+        - PYTHON: "C:\\Python27_64"
+          PYTHON_VERSION: "2.7"
+          PYTHON_ARCH: "64"
+          CONDA_PY: "27"
+          CONDA_NPY: "19"
+
+install:
+    - powershell .\\deploy\\appveyor.miniconda.install.ps1
+    - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+    - "%CMD_IN_ENV% conda install -q -y cython numpy scipy matplotlib pandas numba h5py"
+
+build: false
+
+test_script:
+    - "%CMD_IN_ENV% conda build conda-recipe"
+    - python setup.py test

@@ -24,7 +24,7 @@ def deduce_delimiter(filename):
 
 
 def which(vec):
-    for i in xrange(len(vec)):
+    for i in range(len(vec)):
         if (vec[i]):
             return(i)
     return(-1)
@@ -64,14 +64,14 @@ def readPED(basefilename, delimiter = ' ',missing = '0',standardize = True, phen
     inan=snpsstr==missing
     snps = SP.zeros((snpsstr.shape[0],snpsstr.shape[1]/2))
     if standardize:
-        for i in xrange(snpsstr.shape[1]/2):
+        for i in range(snpsstr.shape[1]/2):
             snps[inan[:,2*i],i]=0
             vals=snpsstr[~inan[:,2*i],2*i:2*(i+1)]
             snps[~inan[:,2*i],i]+=(vals==vals[0,0]).sum(1)
             snps[~inan[:,2*i],i]-=snps[~inan[:,2*i],i].mean()
             snps[~inan[:,2*i],i]/=snps[~inan[:,2*i],i].std()
     else:
-        for i in xrange(snpsstr.shape[1]/2):
+        for i in range(snpsstr.shape[1]/2):
             snps[inan[:,2*i],i]=SP.nan
             vals=snpsstr[~inan[:,2*i],2*i:2*(i+1)]
             snps[~inan[:,2*i],i]+=(vals==vals[0,0]).sum(1)
@@ -121,14 +121,14 @@ def readRAW(basefilename, delimiter = ' ',missing = '0',standardize = True, phen
     inan=snpsstr==missing
     snps = SP.zeros((snpsstr.shape[0],snpsstr.shape[1]/2))
     if standardize:
-        for i in xrange(snpsstr.shape[1]/2):
+        for i in range(snpsstr.shape[1]/2):
             raw[inan[:,2*i],i]=0
             vals=snpsstr[~inan[:,2*i],2*i:2*(i+1)]
             snps[~inan[:,2*i],i]+=(vals==vals[0,0]).sum(1)
             snps[~inan[:,2*i],i]-=snps[~inan[:,2*i],i].mean()
             snps[~inan[:,2*i],i]/=snps[~inan[:,2*i],i].std()
     else:
-        for i in xrange(snpsstr.shape[1]/2):
+        for i in range(snpsstr.shape[1]/2):
             snps[inan[:,2*i],i]=SP.nan
             vals=snpsstr[~inan[:,2*i],2*i:2*(i+1)]
             snps[~inan[:,2*i],i]+=(vals==vals[0,0]).sum(1)

@@ -72,7 +72,7 @@ class GP(object):
         KV = self._update_cache()
         W = KV['W']
         LMLgrad = SP.zeros(self.covar.n_params)
-        for i in xrange(self.covar.n_params):
+        for i in range(self.covar.n_params):
             Kd = self.covar.Kgrad_param(i)
             LMLgrad[i] = 0.5 * (W*Kd).sum()
         return {'covar':LMLgrad}
@@ -122,7 +122,7 @@ class GP(object):
         grad_an = self.LMLgrad()
         grad_num = {}
         params0 = self.params.copy()
-        for key in self.params.keys():
+        for key in list(self.params.keys()):
             paramsL = params0.copy()
             paramsR = params0.copy()
             grad_num[key] = SP.zeros_like(self.params[key])
@@ -136,7 +136,7 @@ class GP(object):
                 grad_num[key][i] = (lml_R-lml_L)/(2*h)
                 e[i] = 0
             if verbose:
-                print '%s:'%key
-                print abs(grad_an[key]-grad_num[key])
-                print ''
+                print(('%s:'%key))
+                print((abs(grad_an[key]-grad_num[key])))
+                print('')
         self.setParams(params0)

@@ -1,11 +1,11 @@
 import sys
 import numpy as np
-from covar_base import Covariance
+from .covar_base import Covariance
 from limix.core.covar import LowRankCov
-from limix.core.type.cached import cached
+from hcache import cached
 from limix.core.type.exception import TooExpensiveOperationError
 from limix.core.utils import my_name
-from util import msg_too_expensive_dim
+from .util import msg_too_expensive_dim
 from limix.utils.svd_utils import svd_reduce
 import scipy as sp
 import scipy.linalg as la

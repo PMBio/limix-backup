@@ -1,9 +1,9 @@
-from covar_base import Covariance
+from .covar_base import Covariance
 import pdb
 import numpy as np
 import scipy as sp
-from acombinators import ACombinatorCov
-from limix.core.type.cached import Cached, cached
+from .acombinators import ACombinatorCov
+from hcache import Cached, cached
 
 class SumCov(ACombinatorCov):
     """

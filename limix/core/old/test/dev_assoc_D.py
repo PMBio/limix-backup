@@ -7,7 +7,7 @@ try:
     import mtSet.pycore.mean as MEAN
     mtSet_present = True
 except:
-    print "no mtSet found in path"
+    print("no mtSet found in path")
     mtSet_present = False
 
 from limix.core.mean import mean
@@ -77,20 +77,20 @@ if __name__ == "__main__":
     params['Cn']   = SP.randn(int(0.5*P*(P+1)))
 
 
-    print "check gradient with gp2kronSum"
+    print("check gradient with gp2kronSum")
     gp = gp2kronSum(mu,Cg,Cn,XX)
     gp.setParams(params)
 
     if "ML" in sys.argv:
         gp.set_reml(False)
     if 1:#optimizwe
-        print "test optimization"
+        print("test optimization")
         start = TIME.time()
         conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-        print 'Reml GP:', TIME.time()-start
+        print(('Reml GP:', TIME.time()-start))
         
 
-        print conv
+        print(conv)
 
     #association
     assoc = lmm.LmmKronecker(gp=gp)
@@ -136,22 +136,22 @@ if __name__ == "__main__":
         mu__.addFixedEffect(F=F2,A=A2)
         gp_.setMean(mu__)
         var_expl3,beta3 = assoc._gp.mean.var_explained()
-        print lml0#complete garbage
-        print lml1
-        print lml2
+        print(lml0)#complete garbage
+        print(lml1)
+        print(lml2)
 
     if 0:
         #forward selection step
         assoc.addFixedEffect(F=snps[:,i_pv[0]:(i_pv[0]+1)],A=None)
         
         if 1:#optimize
-            print "test optimization"
+            print("test optimization")
             start = TIME.time()
             conv,info = OPT.opt_hyper(assoc._gp,params,factr=1e3)
-            print 'Reml GP:', TIME.time()-start
+            print(('Reml GP:', TIME.time()-start))
         
 
-        print conv
+        print(conv)
         pv_forw,LL_snps_forw,LL_snps_0_forw = assoc.test_snps(snps,identity_trick = True)
         if plot:
             pl.figure()

@@ -7,7 +7,7 @@ try:
     import mtSet.pycore.mean as MEAN
     mtSet_present = True
 except:
-    print "no mtSet found in path"
+    print("no mtSet found in path")
     mtSet_present = False
 
 from limix.core.mean import mean
@@ -98,51 +98,51 @@ if __name__ == "__main__":
     params['Cn']   = SP.randn(int(0.5*P*(P+1)))
 
 
-    print "creating gp2kronSum object"
+    print("creating gp2kronSum object")
     XX = SP.dot(X,X.T)
     XX/= XX.diagonal().mean()
     gp = gp2kronSum(mu,Cg,Cn,XX)
     gp.setParams(params)
 
     if "ML" in sys.argv:
-        print "ML estimation"
+        print("ML estimation")
         gp.set_reml(False)
     else:
-        print "REML estimation"
+        print("REML estimation")
     
-    print "optimization of GP parameters"
+    print("optimization of GP parameters")
     start = TIME.time()
     conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-    print 'time for fitting GP:', TIME.time()-start
+    print(('time for fitting GP:', TIME.time()-start))
         
 
-    print conv
+    print(conv)
 
-    print "creating lmm for association using GP object" 
+    print("creating lmm for association using GP object") 
     assoc = lmm.LmmKronecker(gp=gp)
     
     #test snps
-    print "testing SNPs with any effect"
+    print("testing SNPs with any effect")
     pv,LL_snps,LL_snps_0= assoc.test_snps(snps)
     
 
 
     if 1:
-        print "forward selection step"
-        print "adding SNP with smalles pv as fixed effect"
+        print("forward selection step")
+        print("adding SNP with smalles pv as fixed effect")
         i_pv = pv.argsort()
         assoc.addFixedEffect(F=snps[:,i_pv[0]:(i_pv[0]+1)],A=None)
         
         if 1:#optimize
-            print "refitting GP"
+            print("refitting GP")
             start = TIME.time()
             conv,info = OPT.opt_hyper(assoc._gp,params,factr=1e3)
-            print 'time for fitting GP:', TIME.time()-start
+            print(('time for fitting GP:', TIME.time()-start))
         
 
-        print conv
+        print(conv)
 
-        print "testing after forward selection step"
+        print("testing after forward selection step")
         assoc_forw = lmm.LmmKronecker(gp=assoc._gp)
         pv_forw,LL_snps_forw,LL_snps_0_forw = assoc_forw.test_snps(snps)
     
@@ -150,7 +150,7 @@ if __name__ == "__main__":
         if plot:
             import pylab as pl
             pl.ion()
-            print "plotting pvalues before vs after forward selection"
+            print("plotting pvalues before vs after forward selection")
             pl.figure()
             pl.plot(-SP.log10(pv_forw),-SP.log10(pv),'.')
             pl.plot([0,8],[0,8])

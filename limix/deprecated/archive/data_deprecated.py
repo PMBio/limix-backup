@@ -64,7 +64,7 @@ def _imputeMissing(X, center=True, unit=True, betaNotUnitVariance=False, betaA=1
             iNanX = X==-9
         if iNanX.any() or betaNotUnitVariance:
             if cparser:
-                print "using C-based imputer"
+                print("using C-based imputer")
                 if X.flags["C_CONTIGUOUS"] or typeX!=SP.float32:
                     X = SP.array(X, order="F", dtype=SP.float32)
                     if typeX==SP.int8:
@@ -131,7 +131,7 @@ class QTLData():
         self.sample_ID = self.geno['row_header']['sample_ID'][:]
         self.genoChrom = self.geno['col_header']['chrom'][:]
         self.genoPos   = self.geno['col_header']['pos'][:]
-        if 'pos_cum' in self.geno['col_header'].keys():
+        if 'pos_cum' in list(self.geno['col_header'].keys()):
             self.genoPos_cum   = self.geno['col_header']['pos_cum'][:]
         else:
             self.genoPos_cum = None
@@ -145,7 +145,7 @@ class QTLData():
             self.phenoM = self.phenoM[:]
     
         # Additional pheno col header
-        headers = self.pheno['col_header'].keys()
+        headers = list(self.pheno['col_header'].keys())
         if 'gene_ID' in headers:
             self.eqtl = True
             self.geneID = self.pheno['col_header']['gene_ID'][:]
@@ -292,7 +292,7 @@ class QTLData():
         #position based matching?
         if (i0 is None) and (i1 is None) and ((pos0 is not None) & (pos1 is not None) & (chrom is not None)) or ((pos_cum0 is not None) & (pos_cum1 is not None)):
             i0,i1=self.getGenoIndex(pos0=pos0,pos1=pos1,chrom=chrom,pos_cum0=pos_cum0,pos_cum1=pose_cum1)
-        if "genotype_id" in self.geno.keys():
+        if "genotype_id" in list(self.geno.keys()):
             if (i0 is not None) & (i1 is not None):
                 return self.geno["genotype_id"][i0:i1]
             else:
@@ -350,7 +350,7 @@ class QTLData():
         Iok = Iok[Ikeep]
 
         if center | impute:
-            for i in xrange(Y.shape[1]):
+            for i in range(Y.shape[1]):
                 ym = Y[Iok[:,i],i].mean()
                 Y[:,i]-=ym
                 Y[~Iok[:,i],i] = ym

@@ -7,8 +7,7 @@ import scipy.linalg as LA
 import pdb
 
 import sys
-sys.path.append('./../../..')
-import plink_reader
+from . import plink_reader
 
 
 def genBinormal(dim1,dim2,percSign=0.5,std=1e-1):
@@ -40,12 +39,12 @@ class CSimulator:
         self.X = X
         self.chrom = chrom
         self.pos   = pos
-        
+
         self.trait_effect = trait_effect
 
     def setTraitEffect(self,trait_effect):
         self.trait_effect = trait_effect
-    
+
     def getRegion(self,size=3e4,min_nSNPs=1,chrom_i=None,pos_min=None,pos_max=None):
         """
         Sample a region from the piece of genotype X, chrom, pos
@@ -61,7 +60,7 @@ class CSimulator:
         else:
             chrom = self.chrom
             pos   = self.pos
-            
+
         if chrom_i is None:
             n_chroms = chrom.max()
             chrom_i  = int(SP.ceil(SP.rand()*n_chroms))
@@ -78,7 +77,7 @@ class CSimulator:
 
         pos = pos[ipos]
         chrom = chrom[ipos]
-        
+
         if size==1:
             # select single SNP
             idx = int(SP.ceil(pos.shape[0]*SP.rand()))
@@ -103,7 +102,7 @@ class CSimulator:
             Xr = rv['snps']
         else:
             Xr = self.X[:,start:start+nSnps]
-            
+
         return Xr, region
 
 
@@ -111,7 +110,7 @@ class CSimulator:
         """
         Generate population structure term
         Population structure is simulated by background SNPs
-        
+
         beta_pdf:        pdf used to generate the regression weights
                           for now either Normal or fixed
         variance:        variance of the term
@@ -137,7 +136,7 @@ class CSimulator:
             Yc  = SP.dot(X[:,Ic],Bc)
             Yc *= SP.sqrt(nCommon/Yc.var(0).mean())
         else:
-        
+
             Yc = SP.zeros((self.N,self.P))
 
         # indipendent signal
@@ -151,9 +150,9 @@ class CSimulator:
             Yi *= SP.sqrt(nSpecific/(Yi.var(0).mean()*self.P))
         else:
             Yi = SP.zeros((self.N,self.P))
-        
-        
-        Y   = Yc+Yi 
+
+
+        Y   = Yc+Yi
         Yc *= SP.sqrt(vTot/Y.var(0).mean())
         Yi *= SP.sqrt(vTot/Y.var(0).mean())
 
@@ -165,7 +164,7 @@ class CSimulator:
                 PL.plot(SP.arange(S)[Ic],Bc[:,p],'o',color='y')
                 _Is = Is[:,p]
                 if _Is.sum()>0:
-                    PL.plot(SP.arange(S)[_Is],Bi[_Is,p],'o',color='r') 
+                    PL.plot(SP.arange(S)[_Is],Bi[_Is,p],'o',color='r')
                 #PL.ylim(-2,2)
                 PL.plot([0,S],[0,0],'k')
 
@@ -176,12 +175,12 @@ class CSimulator:
         """ generate  """
 
         if self.X is None:
-            print 'Reading in all SNPs. This is slow.'
+            print('Reading in all SNPs. This is slow.')
             rv = plink_reader.readBED(self.bfile,useMAFencoding=True)
             X  = rv['snps']
         else:
             X  = self.X
-        
+
         S  = X.shape[1]
         vSpecific = vTot-vCommon
 
@@ -191,7 +190,7 @@ class CSimulator:
         X = X[:,Ic]
 
         # common effect
-        Bc  = SP.dot(self.genWeights(nCausal,self.P),self.genTraitEffect())        
+        Bc  = SP.dot(self.genWeights(nCausal,self.P),self.genTraitEffect())
         Yc  = SP.dot(X,Bc)
         Yc *= SP.sqrt(vCommon/Yc.var(0).mean())
 
@@ -206,7 +205,7 @@ class CSimulator:
             for p in range(self.P):
                 PL.subplot(self.P,1,p+1)
                 PL.plot(SP.arange(self.X.shape[1])[Ic],Bc[:,p],'o',color='y',alpha=0.05)
-                PL.plot(SP.arange(self.X.shape[1])[Ic],Bi[:,p],'o',color='r',alpha=0.05) 
+                PL.plot(SP.arange(self.X.shape[1])[Ic],Bi[:,p],'o',color='r',alpha=0.05)
                 #PL.ylim(-2,2)
                 PL.plot([0,Ic.shape[0]],[0,0],'k')
 
@@ -229,7 +228,7 @@ class CSimulator:
         if c==None: c = SP.randn(self.P)
         XX += 1e-3 * SP.eye(XX.shape[0])
         L = LA.cholesky(XX,lower=True)
-        
+
         # common effect
         R = self.genWeights(self.N,self.P)
         A = self.genTraitEffect()
@@ -243,7 +242,7 @@ class CSimulator:
         Yi*= SP.sqrt(vSpecific)/SP.sqrt(Yi.var(0).mean())
 
         return Yc, Yi
-        
+
 
     def genBgTerm(self,vTot=0.5,vCommon=0.1,pCausal=0.5,XX=None,use_XX=False,a=None,c=None,plot=False):
         """ generate  """
@@ -268,7 +267,7 @@ class CSimulator:
         Bc = SP.dot(H,self.genTraitEffect())
         Yc  = SP.dot(X,Bc)
         Yc *= SP.sqrt(vCommon/Yc.var(0).mean())
-        
+
         # indipendent effect
         Bi  = SP.randn(nHidden,self.P)
         Yi  = SP.dot(X,Bi)
@@ -280,7 +279,7 @@ class CSimulator:
 
         W = SP.zeros((self.P,self.P))
         if self.trait_effect=='shared':
-            
+
 
             if distribution=='normal':
                 W[0,:] = SP.random.randn(1,self.P)
@@ -304,7 +303,7 @@ class CSimulator:
         elif self.trait_effect=='tanh':
             # ensure that weights are positive...
             return SP.absolute(SP.random.randn(N,P))
-            
+
     def genNoise(self,vTot=0.4,vCommon=0.2):
 
         vSpecifc = vTot-vCommon
@@ -312,7 +311,7 @@ class CSimulator:
         # common
         Yc  = SP.dot(self.genWeights(self.N,self.P),self.genTraitEffect())
         Yc *= SP.sqrt(vCommon/Yc.var(0).mean())
-        
+
         # independent
         Yi  = SP.randn(self.N,self.P)
         Yi *= SP.sqrt(vSpecifc/Yi.var(0).mean())
@@ -326,11 +325,11 @@ class CSimulator:
         vCommonH=0.1,vTotH=0.2,nHidden=10,
         vCommonN=0.,vTotN=0.3,standardize=True):
 
-      
+
         YRc,YRi = self.genRegionTerm(Xr,vTot=vTotR,nCommon=nCommonR,nCausal=nCausalR,distribution=distribution)
         YGc,YGi = self.genBgTerm(vCommon=vCommonBg,vTot=vTotBg,pCausal=pCausalBg,XX=XX,use_XX=use_XX)
         YHc,YHi = self.genHidden(vCommon=vCommonH,vTot=vTotH,nHidden=nHidden)
-        YNc,YNi = self.genNoise(vCommon=vCommonN,vTot=vTotN)        
+        YNc,YNi = self.genNoise(vCommon=vCommonN,vTot=vTotN)
         Y = YRc+YRi+YGc+YGi+YHc+YHi+YNc+YNi
 
         if standardize:
@@ -348,11 +347,11 @@ class CSimulator:
 
 if __name__ == "__main__":
     import matplotlib.pylab as PLT
-    
+
     N = 10
     F = 1000
     K = 10
-    
+
     X = SP.random.rand(N,F)
     X[X<0.5] = 0
     X[X>0.5] = 1
@@ -364,17 +363,17 @@ if __name__ == "__main__":
     XX = SP.dot(Z,Z.T)
     XX/= SP.diag(XX).mean()
     XX = SP.sqrt(0.7)*XX + SP.sqrt(0.3)*SP.eye(N)
-    
+
     model = CSimulator(XX=XX,X=X,chrom=chrom,pos=pos,P=20,trait_effect='shared')
     model.setTraitEffect('tanh')
-  
+
     Y,info = model.genPheno(X[:,[0]],
         vTotR=0.1,nCommonR=1,nCausalR=1,distribution='normal',
         vCommonBg=0.2,vTotBg=0.3,pCausalBg=0.5,XX=XX,use_XX=True,
         vCommonH=0.3,vTotH=0.4,nHidden=10,
         vCommonN=0.0,vTotN=0.2,standardize=False)
-    
-    
+
+
 
     fig = PLT.figure()
     fig.add_subplot(321)
@@ -396,5 +395,5 @@ if __name__ == "__main__":
     fig.add_subplot(325)
     PLT.title('Common')
     PLT.plot(info['YRc'].T+info['YHc'].T+info['YGc'].T+info['YNc'].T)
-    
+
     pdb.set_trace()

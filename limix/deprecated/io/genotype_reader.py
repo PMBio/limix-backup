@@ -47,10 +47,10 @@ class genotype_reader_h5py():
             "chrom":    self.geno['col_header']['chrom'][:],
             "pos":      self.geno['col_header']['pos'][:],
             }
-        if 'pos_cum' in self.geno['col_header'].keys():
+        if 'pos_cum' in list(self.geno['col_header'].keys()):
             position['pos_cum']   = self.geno['col_header']['pos_cum'][:]
 
-        if 'geno_ID' in self.geno['col_header'].keys():
+        if 'geno_ID' in list(self.geno['col_header'].keys()):
             self.geno_ID   = self.geno['col_header']['geno_ID'][:]
         else:
             self.geno_ID =  sp.arange(self.num_snps)
@@ -188,7 +188,7 @@ class genotype_reader_h5py():
         #position based matching?
         if (idx_start is None) and (idx_end is None) and ((pos_start is not None) & (pos_end is not None) & (chrom is not None)) or ((pos_cum_start is not None) & (pos_cum_end is not None)):
             idx_start,idx_end=self.getGenoIndex(pos_start=pos_start,pos_end=pos_end,chrom=chrom,pos_cum_start=pos_cum_start,pos_cum_end=pose_cum1)
-        if "genotype_id" in self.geno.keys():
+        if "genotype_id" in list(self.geno.keys()):
             if (idx_start is not None) & (idx_end is not None):
                 return self.geno["genotype_id"][idx_start:idx_end]
             elif snp_idx is not None:

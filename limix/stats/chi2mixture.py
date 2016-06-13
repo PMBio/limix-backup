@@ -104,7 +104,7 @@ if __name__ == "__main__":
     lrt_train = SP.zeros((n_train))
     lrt_test  = SP.zeros((n_test))
     
-    for i in xrange(dof):
+    for i in range(dof):
         x = SP.random.randn(n_train)
         lrt_train += scale * (x*x)
         x = SP.random.randn(n_test)
@@ -121,12 +121,12 @@ if __name__ == "__main__":
     chi2mix.estimate_chi2mixture(lrt_train)
     chi2mix.sf(lrt_test)
 
-    print 'true scale = %.2f'%scale
-    print 'true dof   = %.2f'%dof
-    print 'true mixt  = %.2f'%mixture
-    print 'est scale  = %.2f'%chi2mix.scale
-    print 'est dof    = %.2f'%chi2mix.dof
-    print 'est mixt   = %.2f'%chi2mix.mixture
+    print(('true scale = %.2f'%scale))
+    print(('true dof   = %.2f'%dof))
+    print(('true mixt  = %.2f'%mixture))
+    print(('est scale  = %.2f'%chi2mix.scale))
+    print(('est dof    = %.2f'%chi2mix.dof))
+    print(('est mixt   = %.2f'%chi2mix.mixture))
     
     import matplotlib.pylab as PLT
     fig = PLT.figure()
@@ -136,13 +136,13 @@ if __name__ == "__main__":
     PLT.hist(chi2mix.sf(lrt_test),normed=True)
 
     pval_test = chi2mix.sf(lrt_test)
-    print 'print Type 1 error estimate'
+    print('print Type 1 error estimate')
     alpha = 1e-5
-    print '... alpha=1e-5'
-    print '...... type 1 error: %.2e'%(pval_test<alpha).mean()
+    print('... alpha=1e-5')
+    print(('...... type 1 error: %.2e'%(pval_test<alpha).mean()))
     alpha = 1e-4
-    print '... alpha=1e-4'
-    print '...... type 1 error: %.2e'%(pval_test<alpha).mean()
+    print('... alpha=1e-4')
+    print(('...... type 1 error: %.2e'%(pval_test<alpha).mean()))
     alpha = 1e-3
-    print '... alpha=1e-3'
-    print '...... type 1 error: %.2e'%(pval_test<alpha).mean()
+    print('... alpha=1e-3')
+    print(('...... type 1 error: %.2e'%(pval_test<alpha).mean()))

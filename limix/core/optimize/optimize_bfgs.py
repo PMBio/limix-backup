@@ -52,14 +52,14 @@ def checkgrad(f, fprime, x, *args,**kw_args):
     h = np.zeros_like(x)
     for i in range(len(x)):
         pdb.set_trace()
-	h[i] = step
-	f_ph = f(x+h, *args, **kw_args)
-	f_mh = f(x-h, *args, **kw_args)
-	numerical_gradient = (f_ph - f_mh)/(2*step)
-	analytical_gradient = fprime(x, *args, **kw_args)[i]
-	ratio = (f_ph - f_mh)/(2*step*analytical_gradient)
-	h[i] = 0
-        LG.debug("[%d] numerical: %f, analytical: %f, ratio: %f" % (i, numerical_gradient,analytical_gradient,ratio))
+    h[i] = step
+    f_ph = f(x+h, *args, **kw_args)
+    f_mh = f(x-h, *args, **kw_args)
+    numerical_gradient = (f_ph - f_mh)/(2*step)
+    analytical_gradient = fprime(x, *args, **kw_args)[i]
+    ratio = (f_ph - f_mh)/(2*step*analytical_gradient)
+    h[i] = 0
+    LG.debug("[%d] numerical: %f, analytical: %f, ratio: %f" % (i, numerical_gradient,analytical_gradient,ratio))
 
 
 
@@ -101,7 +101,7 @@ def opt_hyper(gpr,Ifilter=None,bounds=None,opts={},*args,**kw_args):
             lml_grad[idx] = 1E6
         return lml, lml_grad[Ifilter_x]
 
-    skeys = SP.sort(params0.keys())
+    skeys = SP.sort(list(params0.keys()))
     param_struct = dict([(name,params0[name].shape) for name in skeys])
 
     # mask params that should not be optimized
@@ -115,7 +115,7 @@ def opt_hyper(gpr,Ifilter=None,bounds=None,opts={},*args,**kw_args):
     if bounds is not None:
         _b = []
         for key in skeys:
-            if key in bounds.keys():
+            if key in list(bounds.keys()):
                 _b.extend(bounds[key])
             else:
                 _b.extend([[-SP.inf,+SP.inf]]*params0[key].size)

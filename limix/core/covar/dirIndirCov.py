@@ -1,9 +1,9 @@
 import numpy as np
 import scipy as sp
 import scipy.linalg as LA
-from covar_base import Covariance
-from freeform import FreeFormCov
-from limix.core.type.cached import cached
+from .covar_base import Covariance
+from .freeform import FreeFormCov
+from hcache import cached
 import pdb
 
 import logging as LG
@@ -111,5 +111,5 @@ if __name__ == '__main__':
     # test covariance
     cov = DirIndirCov(kinship,design)
     cov.setRandomParams()
-    print cov.K()
-    print cov.K_grad_i(0)
+    print((cov.K()))
+    print((cov.K_grad_i(0)))

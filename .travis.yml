@@ -1,40 +1,37 @@
-# install: ./install-dependencies.sh
-language: python
-# - virtualenv --python=python venv
-#   - source venv/bin/activate
+language: generic
+os: osx
+compiler:
+    - gcc
 before_install:
-  - uname -a
-  - free -m
-  - df -h
-  - ulimit -a
-
-  - mkdir builds
-  - pushd builds
-
-  # pip upgrade
-  - virtualenv --python=python venv
-  - source venv/bin/activate
-  - python -V
-  - pip install --upgrade pip
-  - pip install --upgrade pip setuptools
-
-  - pip install --install-option="--no-cython-compile" Cython
-  - sudo apt-get install -qq libatlas-dev libatlas-base-dev gfortran
-  - sudo apt-get install libhdf5-dev
-
-  - pip install wheel
-  - pip install virtualenv
-
-  - popd
-
+    - brew update
+    - wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh;
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda
+    - conda info -a
+    - conda config --set anaconda_upload no
+    - conda config --add channels https://conda.anaconda.org/horta
+install:
+    - conda install -q -y conda-build setuptools numpy cython matplotlib scikit-learn h5py scipy pandas anaconda-client
+    - conda build conda-recipe
+    - conda install --use-local limix
 script:
-  - python setup.py bdist_wheel
-  - virtualenv --python=python venv-for-wheel
-  - . venv-for-wheel/bin/activate
-  - pushd dist
-  - pip install --upgrade numpy
-  - travis_wait pip install --upgrade scipy
-  - pip install --upgrade wheel
-  - travis_wait pip install --pre --upgrade --find-links . limix
-  - popd
-  - python -c "import test_limix; test_limix.test()"
+    - conda config --add channels https://conda.anaconda.org/horta
+    - python setup.py test
+deploy:
+  - provider: script
+    script: deploy/travis_conda
+    on:
+      tags: true
+    skip_cleanup: true
+  - provider: pypi
+    user: $PYPI_USERNAME
+    password: $PYPI_PASSWORD
+    distributions: bdist_wheel
+    on:
+      tags: true
+    skip_cleanup: true
+notifications:
+  slack: statgenomics:bm482zgneSYKk3dldHgplt2Z

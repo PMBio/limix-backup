@@ -1,6 +1,6 @@
 import sys
 from limix.core.type.observed import Observed
-from limix.core.type.cached import Cached, cached
+from hcache import Cached, cached
 from limix.utils.eigen import *
 import scipy as sp
 import scipy.linalg as LA
@@ -94,7 +94,7 @@ class Covariance(Cached, Observed):
         evaluates the kernel for given hyperparameters theta and inputs X
         """
         LG.critical("implement K")
-        print("%s: Function K not yet implemented"%(self.__class__))
+        print(("%s: Function K not yet implemented"%(self.__class__)))
         return None
 
     @cached('covar_base')
@@ -103,12 +103,12 @@ class Covariance(Cached, Observed):
         partial derivative with repspect to the i-th hyperparamter theta[i]
         """
         LG.critical("implement K_grad_i")
-        print("%s: Function K not yet implemented"%(self.__class__))
+        print(("%s: Function K not yet implemented"%(self.__class__)))
 
     @cached('covar_base')
     def K_hess_i_j(self,i,j):
         LG.critical("implement K_hess_i_j")
-        print("%s: Function Khess not yet implemented"%(self.__class__))
+        print(("%s: Function Khess not yet implemented"%(self.__class__)))
 
     @cached('covar_base')
     def chol(self):
@@ -180,7 +180,7 @@ class Covariance(Cached, Observed):
         R = sp.zeros((self.dim, self._nIterMC, self.getNumberParams()))
         for i in range(R.shape[2]):
             R[:, :, i] = sp.dot(self.K_grad_i(i), self.Z())
-        return R 
+        return R
 
     @cached(['covar_base', 'Z'])
     def DDKZ(self):
@@ -190,14 +190,14 @@ class Covariance(Cached, Observed):
             for j in range(i):
                 R[:, :, i, j] = sp.dot(self.K_hess_i_j(i, j), self.Z())
                 R[:, :, j, i] = R[:, :, i, j]
-        return R 
+        return R
 
     @cached(['covar_base', 'Z'])
     def KiZ(self):
         R = self.solve_ls(self.Z(), M0=self._KiZo)
         if self._reuse:     self._KiZo = R
         return R
-        
+
     @cached(['covar_base', 'Z'])
     def sample_logdet_grad_i(self, i):
         DiKZ = sp.dot(self.K_grad_i(i), self.Z())
@@ -222,12 +222,12 @@ class Covariance(Cached, Observed):
     @use_to_predict.setter
     def use_to_predict(self,value):
         LG.critical("implement use_to_predict")
-        print("%s: Function use_to_predict not yet implemented"%(self.__class__))
+        print(("%s: Function use_to_predict not yet implemented"%(self.__class__)))
 
     @cached
     def Kcross(self):
         LG.critical("implement Kcross")
-        print("%s: Function Kcross not yet implemented"%(self.__class__))
+        print(("%s: Function Kcross not yet implemented"%(self.__class__)))
 
     ####################
     # Interpretable Params, Fisher information Matrix, std errors
@@ -237,7 +237,7 @@ class Covariance(Cached, Observed):
 
     def K_grad_interParam_i(self,i):
         LG.critical("implement K_grad_interParam_i")
-        print("%s: Function K_grad_interParam_i not yet implemented"%(self.__class__))
+        print(("%s: Function K_grad_interParam_i not yet implemented"%(self.__class__)))
 
     def getFisherInf(self):
         n_params = self.getNumberParams()

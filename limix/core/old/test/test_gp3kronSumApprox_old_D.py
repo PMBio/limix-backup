@@ -60,38 +60,38 @@ if __name__=='__main__':
         gp.setParams(params)
 
         conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-        print conv
+        print(conv)
 
-        print 'Cr'
-        print Cr.K()
-        print 'Cg'
-        print Cg.K()
-        print 'Cn'
-        print Cn.K()
+        print('Cr')
+        print((Cr.K()))
+        print('Cg')
+        print((Cg.K()))
+        print('Cn')
+        print((Cn.K()))
 
     ipdb.set_trace()
 
     gp.setBound(0)
     conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-    print conv
+    print(conv)
 
-    print 'Cr'
-    print Cr.K()
-    print 'Cg'
-    print Cg.K()
-    print 'Cn'
-    print Cn.K()
+    print('Cr')
+    print((Cr.K()))
+    print('Cg')
+    print((Cg.K()))
+    print('Cn')
+    print((Cn.K()))
 
     gp.setBound(1)
     conv,info = OPT.opt_hyper(gp,params,factr=1e3)
-    print conv
+    print(conv)
 
-    print 'Cr'
-    print Cr.K()
-    print 'Cg'
-    print Cg.K()
-    print 'Cn'
-    print Cn.K()
+    print('Cr')
+    print((Cr.K()))
+    print('Cg')
+    print((Cg.K()))
+    print('Cn')
+    print((Cn.K()))
 
     ipdb.set_trace()
 

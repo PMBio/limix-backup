@@ -8,7 +8,7 @@ def mcheck_grad(func, grad, x0, epsilon=_eps,
     assert len(x0.shape) == 1
     errs = np.zeros(x0.size)
     x = x0.copy()
-    for i in xrange(x0.size):
+    for i in range(x0.size):
 
         def funci(x0i):
             x[i] = x0i
@@ -48,7 +48,7 @@ def _vcheck_grad(func, grad, x0,
 
     errs = np.zeros(n)
 
-    for i in xrange(n):
+    for i in range(n):
         errs[i] = _check_grad(lambda x: func(x[0])[i], lambda x: grad(x[0])[i],
                              [x0], epsilon)
 

@@ -6,7 +6,7 @@ import scipy as SP
 import scipy.stats as ST
 import limix
 import limix.utils.preprocess as preprocess
-import limix.modules.varianceDecomposition as VAR
+import limix.deprecated.modules.varianceDecomposition as VAR
 import limix.utils.fdr as FDR
 import time
 
@@ -29,35 +29,35 @@ def estimateKronCovariances(phenos,K1r=None,K1c=None,K2r=None,K2c=None,covs=None
         covs:           list of SP.arrays holding covariates. Each covs[i] has one corresponding Acovs[i]
         Acovs:          list of SP.arrays holding the phenotype design matrices for covariates.
                         Each covs[i] has one corresponding Acovs[i].
-        covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
-                        'freeform': free form optimization, 
+        covar_type:     type of covaraince to use. Default 'freeform'. possible values are
+                        'freeform': free form optimization,
                         'fixed': use a fixed matrix specified in covar_K0,
-                        'diag': optimize a diagonal matrix, 
+                        'diag': optimize a diagonal matrix,
                         'lowrank': optimize a low rank matrix. The rank of the lowrank part is specified in the variable rank,
-                        'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                        'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+                        'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank,
+                        'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank,
                         'block': optimize the weight of a constant P x P block matrix of ones,
                         'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
-                        'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,         
+                        'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,
         rank:           rank of a possible lowrank component (default 1)
-    
+
     Returns:
         CVarianceDecomposition object
     """
-    print ".. Training the backgrond covariance with a GP model"
+    print(".. Training the backgrond covariance with a GP model")
     vc = VAR.CVarianceDecomposition(phenos)
     if K1r is not None:
         vc.addRandomEffect(K1r,covar_type=covar_type,rank=rank)
     if K2r is not None:
         #TODO: fix this; forces second term to be the noise covariance
         vc.addRandomEffect(is_noise=True,K=K2r,covar_type=covar_type,rank=rank)
-    for ic  in xrange(len(Acovs)):
+    for ic  in range(len(Acovs)):
         vc.addFixedEffect(covs[ic],Acovs[ic])
     start = time.time()
     conv = vc.findLocalOptimum(fast=True)
     assert conv, "CVariance Decomposition has not converged"
     time_el = time.time()-start
-    print "Background model trained in %.2f s" % time_el
+    print(("Background model trained in %.2f s" % time_el))
     return vc
 
 #TODO: externally visible function?
@@ -82,19 +82,19 @@ def updateKronCovs(covs,Acovs,N,P):
 
 def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,covar_type='lowrank_diag',rank=1,searchDelta=False):
     """
-    I-variate fixed effects interaction test for phenotype specific SNP effects. 
+    I-variate fixed effects interaction test for phenotype specific SNP effects.
     (Runs multiple likelihood ratio tests and computes the P-values in python from the likelihood ratios)
-    
+
     Args:
         snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
         phenos: [N x P] SP.array of P phenotypes for N individuals
         covs:           list of SP.arrays holding covariates. Each covs[i] has one corresponding Acovs[i]
         Acovs:          list of SP.arrays holding the phenotype design matrices for covariates.
                         Each covs[i] has one corresponding Acovs[i].
-        Asnps1:         list of SP.arrays of I interaction variables to be tested for N 
+        Asnps1:         list of SP.arrays of I interaction variables to be tested for N
                         individuals. Note that it is assumed that Asnps0 is already included.
                         If not provided, the alternative model will be the independent model
-        Asnps0:         single SP.array of I0 interaction variables to be included in the 
+        Asnps0:         single SP.array of I0 interaction variables to be included in the
                         background model when testing for interaction with Inters
         K1r:    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
                         If not provided, then linear regression analysis is performed
@@ -104,19 +104,19 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
                         If not provided, then linear regression analysis is performed
         K2c:    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
                         If not provided, then linear regression analysis is performed
-        covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
-                        'freeform': free form optimization, 
+        covar_type:     type of covaraince to use. Default 'freeform'. possible values are
+                        'freeform': free form optimization,
                         'fixed': use a fixed matrix specified in covar_K0,
-                        'diag': optimize a diagonal matrix, 
+                        'diag': optimize a diagonal matrix,
                         'lowrank': optimize a low rank matrix. The rank of the lowrank part is specified in the variable rank,
-                        'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                        'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+                        'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank,
+                        'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank,
                         'block': optimize the weight of a constant P x P block matrix of ones,
                         'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
-                        'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,         
+                        'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,
         rank:           rank of a possible lowrank component (default 1)
         searchDelta:    Boolean indicator if delta is optimized during SNP testing (default False)
-    
+
     Returns:
         pv:     P-values of the interaction test
         lrt0:   log likelihood ratio statistics of the null model
@@ -129,7 +129,7 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
     #0. checks
     N  = phenos.shape[0]
     P  = phenos.shape[1]
-    
+
     if K1r==None:
         K1r = SP.dot(snps,snps.T)
     else:
@@ -143,7 +143,7 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
         assert K2r.shape[1]==N, 'K2r: dimensions dismatch'
 
     covs,Acovs = updateKronCovs(covs,Acovs,N,P)
-    
+
     #Asnps can be several designs
     if (Asnps0 is None):
         Asnps0 = [SP.ones([1,P])]
@@ -154,13 +154,13 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
     if (type(Asnps1)!=list):
         Asnps1 = [Asnps1]
     assert (len(Asnps0)==1) and (len(Asnps1)>0), "need at least one Snp design matrix for null and alt model"
-    
+
     #one row per column design matrix
     pv = SP.zeros((len(Asnps1),snps.shape[1]))
     lrt = SP.zeros((len(Asnps1),snps.shape[1]))
     pvAlt = SP.zeros((len(Asnps1),snps.shape[1]))
     lrtAlt = SP.zeros((len(Asnps1),snps.shape[1]))
-    
+
     #1. run GP model to infer suitable covariance structure
     if K1c==None or K2c==None:
         vc = estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, covar_type=covar_type, rank=rank)
@@ -171,7 +171,7 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
         assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
         assert K2c.shape[0]==P, 'K2c: dimensions dismatch'
         assert K2c.shape[1]==P, 'K2c: dimensions dismatch'
-    
+
     #2. run kroneckerLMM for null model
     lmm = limix.CKroneckerLMM()
     lmm.setK1r(K1r)
@@ -180,7 +180,7 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
     lmm.setK2c(K2c)
     lmm.setSNPs(snps)
     #add covariates
-    for ic  in xrange(len(Acovs)):
+    for ic  in range(len(Acovs)):
         lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
     if searchDelta:      lmm.setNumIntervalsAlt(100)
@@ -192,7 +192,7 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
     dof0 = Asnps0[0].shape[0]
     pv0 = lmm.getPv()
     lrt0 = ST.chi2.isf(pv0,dof0)
-    for iA in xrange(len(Asnps1)):
+    for iA in range(len(Asnps1)):
         dof1 = Asnps1[iA].shape[0]
         dof = dof1-dof0
         lmm.setSNPcoldesign(Asnps1[iA])
@@ -208,17 +208,17 @@ def simple_interaction_kronecker_deprecated(snps,phenos,covs=None,Acovs=None,Asn
 def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,Asnps0=None,K1r=None,K1c=None,K2r=None,K2c=None,covar_type='lowrank_diag',rank=1,NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
-    
+
     Args:
         snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
         phenos: [N x P] SP.array of P phenotypes for N individuals
         covs:           list of SP.arrays holding covariates. Each covs[i] has one corresponding Acovs[i]
         Acovs:          list of SP.arrays holding the phenotype design matrices for covariates.
                         Each covs[i] has one corresponding Acovs[i].
-        Asnps1:         list of SP.arrays of I interaction variables to be tested for N 
+        Asnps1:         list of SP.arrays of I interaction variables to be tested for N
                         individuals. Note that it is assumed that Asnps0 is already included.
                         If not provided, the alternative model will be the independent model
-        Asnps0:         single SP.array of I0 interaction variables to be included in the 
+        Asnps0:         single SP.array of I0 interaction variables to be included in the
                         background model when testing for interaction with Inters
         K1r:    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
                         If not provided, then linear regression analysis is performed
@@ -228,16 +228,16 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
                         If not provided, then linear regression analysis is performed
         K2c:    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
                         If not provided, then linear regression analysis is performed
-        covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
-                        'freeform': free form optimization, 
+        covar_type:     type of covaraince to use. Default 'freeform'. possible values are
+                        'freeform': free form optimization,
                         'fixed': use a fixed matrix specified in covar_K0,
-                        'diag': optimize a diagonal matrix, 
+                        'diag': optimize a diagonal matrix,
                         'lowrank': optimize a low rank matrix. The rank of the lowrank part is specified in the variable rank,
-                        'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                        'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+                        'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank,
+                        'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank,
                         'block': optimize the weight of a constant P x P block matrix of ones,
                         'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
-                        'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,         
+                        'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,
         rank:           rank of a possible lowrank component (default 1)
         NumIntervalsDelta0:  number of steps for delta optimization on the null model (100)
         NumIntervalsDeltaAlt:number of steps for delta optimization on the alt. model (0 - no optimization)
@@ -251,7 +251,7 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
     #0. checks
     N  = phenos.shape[0]
     P  = phenos.shape[1]
-    
+
     if K1r==None:
         K1r = SP.dot(snps,snps.T)
     else:
@@ -265,7 +265,7 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
         assert K2r.shape[1]==N, 'K2r: dimensions dismatch'
 
     covs,Acovs = updateKronCovs(covs,Acovs,N,P)
-    
+
     #Asnps can be several designs
     if (Asnps0 is None):
         Asnps0 = [SP.ones([1,P])]
@@ -276,13 +276,13 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
     if (type(Asnps1)!=list):
         Asnps1 = [Asnps1]
     assert (len(Asnps0)==1) and (len(Asnps1)>0), "need at least one Snp design matrix for null and alt model"
-    
+
     #one row per column design matrix
     pv = SP.zeros((len(Asnps1),snps.shape[1]))
     lrt = SP.zeros((len(Asnps1),snps.shape[1]))
     pvAlt = SP.zeros((len(Asnps1),snps.shape[1]))
     lrtAlt = SP.zeros((len(Asnps1),snps.shape[1]))
-    
+
     #1. run GP model to infer suitable covariance structure
     if K1c==None or K2c==None:
         vc = estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, covar_type=covar_type, rank=rank)
@@ -293,7 +293,7 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
         assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
         assert K2c.shape[0]==P, 'K2c: dimensions dismatch'
         assert K2c.shape[1]==P, 'K2c: dimensions dismatch'
-    
+
     #2. run kroneckerLMM for null model
     lmm = limix.CKroneckerLMM()
     lmm.setK1r(K1r)
@@ -302,15 +302,15 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
     lmm.setK2c(K2c)
     lmm.setSNPs(snps)
     #add covariates
-    for ic  in xrange(len(Acovs)):
+    for ic  in range(len(Acovs)):
         lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
 
     #delta serch on alt. model?
-    if searchDelta:      
+    if searchDelta:
         lmm.setNumIntervalsAlt(NumIntervalsDeltaAlt)
         lmm.setNumIntervals0_inter(NumIntervalsDeltaAlt)
-    else:                
+    else:
         lmm.setNumIntervalsAlt(0)
         lmm.setNumIntervals0_inter(0)
 
@@ -318,10 +318,10 @@ def simple_interaction_kronecker(snps,phenos,covs=None,Acovs=None,Asnps1=None,As
     lmm.setNumIntervals0(NumIntervalsDelta0)
     #add SNP design
     lmm.setSNPcoldesign0_inter(Asnps0[0])
-    for iA in xrange(len(Asnps1)):
+    for iA in range(len(Asnps1)):
         lmm.setSNPcoldesign(Asnps1[iA])
         lmm.process()
-        
+
         pvAlt[iA,:] = lmm.getPv()[0]
         pv[iA,:] = lmm.getPv()[1]
         pv0 = lmm.getPv()[2]
@@ -339,7 +339,7 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
         covs:           list of SP.arrays holding covariates. Each covs[i] has one corresponding Acovs[i]
         Acovs:          list of SP.arrays holding the phenotype design matrices for covariates.
                         Each covs[i] has one corresponding Acovs[i].
-        Asnps:          single SP.array of I0 interaction variables to be included in the 
+        Asnps:          single SP.array of I0 interaction variables to be included in the
                         background model when testing for interaction with Inters
                         If not provided, the alternative model will be the independent model
         K1r:    [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
@@ -350,16 +350,16 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
                         If not provided, then linear regression analysis is performed
         K2c:    [P x P] SP.array of LMM-covariance/kinship koefficients (optional)
                         If not provided, then linear regression analysis is performed
-        covar_type:     type of covaraince to use. Default 'freeform'. possible values are 
-                        'freeform': free form optimization, 
+        covar_type:     type of covaraince to use. Default 'freeform'. possible values are
+                        'freeform': free form optimization,
                         'fixed': use a fixed matrix specified in covar_K0,
-                        'diag': optimize a diagonal matrix, 
+                        'diag': optimize a diagonal matrix,
                         'lowrank': optimize a low rank matrix. The rank of the lowrank part is specified in the variable rank,
-                        'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
-                        'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank, 
+                        'lowrank_id': optimize a low rank matrix plus the weight of a constant diagonal matrix. The rank of the lowrank part is specified in the variable rank,
+                        'lowrank_diag': optimize a low rank matrix plus a free diagonal matrix. The rank of the lowrank part is specified in the variable rank,
                         'block': optimize the weight of a constant P x P block matrix of ones,
                         'block_id': optimize the weight of a constant P x P block matrix of ones plus the weight of a constant diagonal matrix,
-                        'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,         
+                        'block_diag': optimize the weight of a constant P x P block matrix of ones plus a free diagonal matrix,
         rank:           rank of a possible lowrank component (default 1)
         NumIntervalsDelta0:  number of steps for delta optimization on the null model (100)
         NumIntervalsDeltaAlt:number of steps for delta optimization on the alt. model (0 - no optimization)
@@ -372,7 +372,7 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
     #0. checks
     N  = phenos.shape[0]
     P  = phenos.shape[1]
-    
+
     if K1r==None:
         K1r = SP.dot(snps,snps.T)
     else:
@@ -386,17 +386,17 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
         assert K2r.shape[1]==N, 'K2r: dimensions dismatch'
 
     covs,Acovs = updateKronCovs(covs,Acovs,N,P)
-    
+
     #Asnps can be several designs
     if Asnps is None:
         Asnps = [SP.ones([1,P])]
     if (type(Asnps)!=list):
         Asnps = [Asnps]
     assert len(Asnps)>0, "need at least one Snp design matrix"
-    
+
     #one row per column design matrix
     pv = SP.zeros((len(Asnps),snps.shape[1]))
-    
+
     #1. run GP model to infer suitable covariance structure
     if K1c==None or K2c==None:
         vc = estimateKronCovariances(phenos=phenos, K1r=K1r, K2r=K2r, K1c=K1c, K2c=K2c, covs=covs, Acovs=Acovs, covar_type=covar_type, rank=rank)
@@ -407,9 +407,9 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
         assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
         assert K2c.shape[0]==P, 'K2c: dimensions dismatch'
         assert K2c.shape[1]==P, 'K2c: dimensions dismatch'
-    
+
     #2. run kroneckerLMM
-    
+
     lmm = limix.CKroneckerLMM()
     lmm.setK1r(K1r)
     lmm.setK1c(K1c)
@@ -417,19 +417,19 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
     lmm.setK2c(K2c)
     lmm.setSNPs(snps)
     #add covariates
-    for ic  in xrange(len(Acovs)):
+    for ic  in range(len(Acovs)):
         lmm.addCovariates(covs[ic],Acovs[ic])
     lmm.setPheno(phenos)
 
 
     #delta serch on alt. model?
-    if searchDelta:      
+    if searchDelta:
         lmm.setNumIntervalsAlt(NumIntervalsDeltaAlt)
-    else:                
+    else:
         lmm.setNumIntervalsAlt(0)
     lmm.setNumIntervals0(NumIntervalsDelta0)
 
-    for iA in xrange(len(Asnps)):
+    for iA in range(len(Asnps)):
         #add SNP design
         lmm.setSNPcoldesign(Asnps[iA])
         lmm.process()
@@ -440,7 +440,7 @@ def kronecker_lmm(snps,phenos,covs=None,Acovs=None,Asnps=None,K1r=None,K1c=None,
 def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,NumIntervalsDeltaAlt=0,searchDelta=False):
     """
     Univariate fixed effects linear mixed model test for all SNPs
-    
+
     Args:
         snps:   [N x S] SP.array of S SNPs for N individuals
         pheno:  [N x 1] SP.array of 1 phenotype for N individuals
@@ -451,7 +451,7 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,Nu
         NumIntervalsDelta0:  number of steps for delta optimization on the null model (100)
         NumIntervalsDeltaAlt:number of steps for delta optimization on the alt. model (0 - no optimization)
         searchDelta:     Carry out delta optimization on the alternative model? if yes We use NumIntervalsDeltaAlt steps
-    
+
     Returns:
         limix LMM object
     """
@@ -470,7 +470,7 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,Nu
     elif test=='f':
         lm.setTestStatistics(1)
     else:
-        print test
+        print(test)
         raise NotImplementedError("only f or lrt are implemented")
     #set number of delta grid optimizations?
     lm.setNumIntervals0(NumIntervalsDelta0)
@@ -480,7 +480,7 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,Nu
         lm.setNumIntervalsAlt(0)
     lm.process()
     t1=time.time()
-    print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+    print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
     return lm
 
 #TODO: we need to fix. THis does not work as interact_GxE is not existing
@@ -488,7 +488,7 @@ def simple_lmm(snps,pheno,K=None,covs=None, test='lrt',NumIntervalsDelta0=100,Nu
 def interact_GxG(pheno,snps1,snps2=None,K=None,covs=None):
     """
     Epistasis test between two sets of SNPs
-    
+
     Args:
         pheno:  [N x 1] SP.array of 1 phenotype for N individuals
         snps1:  [N x S1] SP.array of S1 SNPs for N individuals
@@ -496,9 +496,9 @@ def interact_GxG(pheno,snps1,snps2=None,K=None,covs=None):
         K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
                         If not provided, then linear regression analysis is performed
         covs:   [N x D] SP.array of D covariates for N individuals
-    
+
     Returns:
-        pv:     [S2 x S1] SP.array of P values for epistasis tests beten all SNPs in 
+        pv:     [S2 x S1] SP.array of P values for epistasis tests beten all SNPs in
                 snps1 and snps2
     """
     if K is None:
@@ -511,9 +511,9 @@ def interact_GxG(pheno,snps1,snps2=None,K=None,covs=None):
 
 def interact_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
     """
-    Univariate GxE fixed effects interaction linear mixed model test for all 
+    Univariate GxE fixed effects interaction linear mixed model test for all
     pairs of SNPs and environmental variables.
-    
+
     Args:
         snps:   [N x S] SP.array of S SNPs for N individuals
         pheno:  [N x 1] SP.array of 1 phenotype for N individuals
@@ -522,9 +522,9 @@ def interact_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
                         If not provided, then linear regression analysis is performed
         covs:   [N x D] SP.array of D covariates for N individuals
         test:    'lrt' for likelihood ratio test (default) or 'f' for F-test
-    
+
     Returns:
-        pv:     [E x S] SP.array of P values for interaction tests between all 
+        pv:     [E x S] SP.array of P values for interaction tests between all
                 E environmental variables and all S SNPs
     """
     N=snps.shape[0]
@@ -535,24 +535,24 @@ def interact_GxE_1dof(snps,pheno,env,K=None,covs=None, test='lrt'):
     assert (env.shape[0]==N and pheno.shape[0]==N and K.shape[0]==N and K.shape[1]==N and covs.shape[0]==N), "shapes missmatch"
     Inter0 = SP.ones((N,1))
     pv = SP.zeros((env.shape[1],snps.shape[1]))
-    print ("starting %i interaction scans for %i SNPs each." % (env.shape[1], snps.shape[1]))
+    print(("starting %i interaction scans for %i SNPs each." % (env.shape[1], snps.shape[1])))
     t0=time.time()
-    for i in xrange(env.shape[1]):
+    for i in range(env.shape[1]):
         t0_i = time.time()
         cov_i = SP.concatenate((covs,env[:,i:(i+1)]),1)
         lm_i = simple_interaction(snps=snps,pheno=pheno,covs=cov_i,Inter=env[:,i:(i+1)],Inter0=Inter0, test=test)
         pv[i,:]=lm_i.getPv()[0,:]
         t1_i = time.time()
-        print ("Finished %i out of %i interaction scans in %.2f seconds."%((i+1),env.shape[1],(t1_i-t0_i)))
+        print(("Finished %i out of %i interaction scans in %.2f seconds."%((i+1),env.shape[1],(t1_i-t0_i))))
     t1 = time.time()
-    print ("-----------------------------------------------------------\nFinished all %i interaction scans in %.2f seconds."%(env.shape[1],(t1-t0)))
+    print(("-----------------------------------------------------------\nFinished all %i interaction scans in %.2f seconds."%(env.shape[1],(t1-t0))))
     return pv
-        
+
 
 def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None,test='lrt'):
     """
     Univariate fixed effects interaction test for phenotype specific SNP effects
-    
+
     Args:
         snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
         pheno1: [N x 1] SP.array of 1 phenotype for N individuals
@@ -561,7 +561,7 @@ def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None,test='lrt'):
                         If not provided, then linear regression analysis is performed
         covs:   [N x D] SP.array of D covariates for N individuals
         test:    'lrt' for likelihood ratio test (default) or 'f' for F-test
-    
+
     Returns:
         limix LMM object
     """
@@ -585,20 +585,20 @@ def phenSpecificEffects(snps,pheno1,pheno2,K=None,covs=None,test='lrt'):
 def simple_interaction(snps,pheno,Inter,Inter0=None,covs = None,K=None,test='lrt'):
     """
     I-variate fixed effects interaction test for phenotype specific SNP effects
-    
+
     Args:
         snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
         pheno:  [N x 1] SP.array of 1 phenotype for N individuals
-        Inter:  [N x I] SP.array of I interaction variables to be tested for N 
-                        individuals (optional). If not provided, only the SNP is 
+        Inter:  [N x I] SP.array of I interaction variables to be tested for N
+                        individuals (optional). If not provided, only the SNP is
                         included in the null model.
-        Inter0: [N x I0] SP.array of I0 interaction variables to be included in the 
+        Inter0: [N x I0] SP.array of I0 interaction variables to be included in the
                          background model when testing for interaction with Inter
         covs:   [N x D] SP.array of D covariates for N individuals
         K:      [N x N] SP.array of LMM-covariance/kinship koefficients (optional)
                         If not provided, then linear regression analysis is performed
         test:    'lrt' for likelihood ratio test (default) or 'f' for F-test
-    
+
     Returns:
         limix LMM object
     """
@@ -622,7 +622,7 @@ def simple_interaction(snps,pheno,Inter,Inter0=None,covs = None,K=None,test='lrt
     elif test=='f':
         lmi.setTestStatistics(1)
     else:
-        print test
+        print(test)
         raise NotImplementedError("only f or lrt are implemented")
     lmi.process()
     return lmi
@@ -632,7 +632,7 @@ def simple_interaction(snps,pheno,Inter,Inter0=None,covs = None,K=None,test='lrt
 def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2r=None,K2c=None,covs=None,Acovs=None,threshold = 5e-8, maxiter = 2,qvalues=False, update_covariances = False,**kw_args):
     """
     Kronecker fixed effects test with forward selection
-    
+
     Args:
         snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
         pheno:  [N x P] SP.array of 1 phenotype for N individuals
@@ -644,7 +644,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
                         without inclusion, so maxiter-1 inclusions can be performed. (default 2)
         qvalues:        Use q-value threshold and return q-values in addition (default False)
         update_covar:   Boolean indicator if covariances should be re-estimated after each forward step (default False)
-    
+
     Returns:
         lm:             lmix LMMi object
         resultStruct with elements:
@@ -656,11 +656,11 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
             qvadded
             qvall
     """
-    
+
     #0. checks
     N  = phenos.shape[0]
     P  = phenos.shape[1]
-    
+
     if K1r==None:
         K1r = SP.dot(snps,snps.T)
     else:
@@ -697,10 +697,10 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
         assert K1c.shape[0]==P, 'K1c: dimensions dismatch'
         assert K1c.shape[1]==P, 'K1c: dimensions dismatch'
         assert K2c.shape[0]==P, 'K2c: dimensions dismatch'
-        assert K2c.shape[1]==P, 'K2c: dimensions dismatch'    
+        assert K2c.shape[1]==P, 'K2c: dimensions dismatch'
     t0 = time.time()
     lm,pv = kronecker_lmm(snps=snps,phenos=phenos,Asnps=Asnps,K1r=K1r,K2r=K2r,K1c=K1c,K2c=K2c,covs=covs,Acovs=Acovs)
-    
+
     #get pv
     #start stuff
     iadded = []
@@ -710,7 +710,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
     pvall = SP.zeros((pv.shape[0]*maxiter,pv.shape[1]))
     qvall = None
     t1=time.time()
-    print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+    print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
     time_el.append(t1-t0)
     pvall[0:pv.shape[0],:]=pv
     imin= SP.unravel_index(pv.argmin(),pv.shape)
@@ -738,7 +738,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
             lm.setK1c(K1c)
             lm.setK2c(K2c)
         lm.addCovariates(snps[:,imin[1]:(imin[1]+1)],Acond[imin[0]])
-        for i in xrange(len(Asnps)):
+        for i in range(len(Asnps)):
             #add SNP design
             lm.setSNPcoldesign(Asnps[i])
             lm.process()
@@ -752,7 +752,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
         else:
             score = pv[imin].min()
         t1=time.time()
-        print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+        print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
         time_el.append(t1-t0)
         niter=niter+1
     RV = {}
@@ -769,7 +769,7 @@ def forward_lmm_kronecker(snps,phenos,Asnps=None,Acond=None,K1r=None,K1c=None,K2
 def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxiter = 2,test='lrt',**kw_args):
     """
     univariate fixed effects test with forward selection
-    
+
     Args:
         snps:   [N x S] SP.array of S SNPs for N individuals (test SNPs)
         pheno:  [N x 1] SP.array of 1 phenotype for N individuals
@@ -780,7 +780,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxi
         maxiter:        (int) maximum number of interaction scans. First scan is
                         without inclusion, so maxiter-1 inclusions can be performed. (default 2)
         test:           'lrt' for likelihood ratio test (default) or 'f' for F-test
-    
+
     Returns:
         lm:             limix LMM object
         iadded:         array of indices of SNPs included in order of inclusion
@@ -793,7 +793,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxi
         K=SP.eye(snps.shape[0])
     if covs is None:
         covs = SP.ones((snps.shape[0],1))
-    
+
     lm = simple_lmm(snps,pheno,K=K,covs=covs,test=test,**kw_args)
     pvall = SP.zeros((maxiter,snps.shape[1]))
     pv = lm.getPv()
@@ -831,7 +831,7 @@ def forward_lmm(snps,pheno,K=None,covs=None,qvalues=False,threshold = 5e-8, maxi
         else:
             score = pv.min()
         t1=time.time()
-        print ("finished GWAS testing in %.2f seconds" %(t1-t0))
+        print(("finished GWAS testing in %.2f seconds" %(t1-t0)))
         niter=niter+1
     RV = {}
     RV['iadded']  = iadded

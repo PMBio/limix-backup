@@ -9,6 +9,56 @@ import scipy.linalg as LA
 import copy
 import pdb
 
+def compute_X1KX2(Y, D, X1, X2, A1=None, A2=None):
+    #import ipdb; ipdb.set_trace()
+    R,C = Y.shape
+    if A1 is None:
+        nW_A1 = Y.shape[1]			
+        #A1 = np.eye(Y.shape[1])	#for now this creates A1 and A2
+    else:
+        nW_A1 = A1.shape[0]
+
+    if A2 is None:
+        nW_A2 = Y.shape[1]
+        #A2 = np.eye(Y.shape[1])	#for now this creates A1 and A2
+    else:
+        nW_A2 = A2.shape[0]
+        	
+
+    nW_X1 = X1.shape[1]
+    rows_block = nW_A1 * nW_X1
+
+    if 0:#independentX2:
+        nW_X2 = 1
+    else:
+        nW_X2 = X2.shape[1]
+    cols_block = nW_A2 * nW_X2
+    	
+    block = np.zeros((rows_block,cols_block))
+
+
+    if (R>C) or (A1 is None) or (A2 is None):
+        for c in range(C):
+            X1D = X1 * D[:,c:c+1]
+            X1X2 = X1D.T.dot(X2)
+            if (A1 is None) and (A2 is None):
+                block[c*X1.shape[1]:(c+1)*X1.shape[1], c*X2.shape[1]:(c+1)*X2.shape[1]] += X1X2
+            elif (A1 is None):
+                block[c*X1.shape[1]:(c+1)*X1.shape[1],:] += np.kron(A2[:,c:c+1].T,X1X2)
+            elif (A2 is None):
+                block[:,c*X2.shape[1]:(c+1)*X2.shape[1]] += np.kron(A1[:,c:c+1],X1X2)
+            else:
+                A1A2 = np.outer(A1[:,c],A2[:,c])
+                block += np.kron(A1A2,X1X2)
+    else:
+        for r in range(R):
+            A1D = A1 * D[r:r+1,:]
+            A1A2 = A1D.dot(A2.T)
+            X1X2 = X1[r,:][:,np.newaxis].dot(X2[r,:][np.newaxis,:])
+            block += np.kron(A1A2,X1X2)
+
+    return block
+
 class mean(cObject):
 
     def __init__(self,Y, identity_trick=False):
@@ -426,7 +476,7 @@ class mean(cObject):
         assert M.shape==(self.N,self.P)
         XKY = np.zeros((self.n_fixed_effs))
         n_weights = 0
-        for term in xrange(self.n_terms):
+        for term in range(self.n_terms):
             if self.identity_trick and self.A_identity[term]:
                 XKY_block = compute_XYA(DY=M, X=self.Fstar()[term], A=None)
             else:
@@ -443,13 +493,13 @@ class mean(cObject):
         #cov_beta = np.zeros((n_weights1,n_weights1))
         cov_beta = np.zeros((self.n_fixed_effs,self.n_fixed_effs))
         n_weights1 = 0
-        for term1 in xrange(self.n_terms):
+        for term1 in range(self.n_terms):
             if self.identity_trick and self.A_identity[term1]:
                 A_term1 = None
             else:
                 A_term1 = self.Astar()[term1]
             n_weights2 = n_weights1
-            for term2 in xrange(term1,self.n_terms):
+            for term2 in range(term1,self.n_terms):
                 if self.identity_trick and self.A_identity[term2]:
                     A_term2 = None
                 else:
@@ -536,7 +586,7 @@ class mean(cObject):
 
     def _set_toChange(x):
         """ set variables in list x toChange """
-        for key in x.keys():
+        for key in list(x.keys()):
             self.toChange[key] = True
 
     def _update_indicator(self,K,L):
@@ -544,7 +594,7 @@ class mean(cObject):
         _update = {'term': self.n_terms*np.ones((K,L)).T.ravel(),
                     'row': np.kron(np.arange(K)[:,np.newaxis],np.ones((1,L))).T.ravel(),
                     'col': np.kron(np.ones((K,1)),np.arange(L)[np.newaxis,:]).T.ravel()} 
-        for key in _update.keys():
+        for key in list(_update.keys()):
             self.indicator[key] = np.concatenate([self.indicator[key],_update[key]])
 
     def _rebuild_indicator(self):
@@ -553,13 +603,13 @@ class mean(cObject):
                      'row':np.array([]),
                      'col':np.array([])}
 
-        for term in xrange(self.n_terms):
+        for term in range(self.n_terms):
             L = self.A[term].shape[0]
             K = self.F[term].shape[1]
             _update = {'term': (term+1)*np.ones((K,L)).T.ravel(),
                     'row': np.kron(np.arange(K)[:,np.newaxis],np.ones((1,L))).T.ravel(),
                     'col': np.kron(np.ones((K,1)),np.arange(L)[np.newaxis,:]).T.ravel()} 
-            for key in _update.keys():
+            for key in list(_update.keys()):
                 indicator[key] = np.concatenate([indicator[key],_update[key]])
         self.indicator = indicator
 

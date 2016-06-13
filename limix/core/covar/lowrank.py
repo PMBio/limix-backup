@@ -1,8 +1,8 @@
 import numpy as np
 import scipy as sp
 import scipy.linalg as la
-from limix.core.type.cached import cached
-from covar_base import Covariance
+from hcache import cached
+from .covar_base import Covariance
 import pdb
 
 class LowRankCov(Covariance):
@@ -38,7 +38,7 @@ class LowRankCov(Covariance):
 
     @property
     def X_ste(self):
-        print 'Implement me'
+        print('Implement me')
 
     @X.setter
     def X(self, value):
@@ -124,5 +124,5 @@ if __name__ == '__main__':
     rank = 2
     cov = LowRankCov(n, rank)
     cov.setRandomParams()
-    print cov.K()
-    print cov.K_grad_i(0)
+    print((cov.K()))
+    print((cov.K_grad_i(0)))
