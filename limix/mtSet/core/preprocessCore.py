@@ -74,7 +74,7 @@ def computePCsPlink(plink_path,k,out_dir,bfile,ffile):
 def computePCsPython(out_dir,k,bfile,ffile):
     """ reading in """
     RV = plink_reader.readBED(bfile,useMAFencoding=True)
-    X  = RV['snps']
+    X  = np.ascontiguousarray(RV['snps'])
 
     """ normalizing markers """
     print 'Normalizing SNPs...'
@@ -111,7 +111,7 @@ def computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type='RRM'):
     """ loading data """
     data = plink_reader.readBED(bfile,useMAFencoding=True)
     iid  = data['iid']
-    X = data['snps']
+    X = np.ascontiguousarray(data['snps'])
     N = X.shape[1]
     print '%d variants loaded.'%N
     print '%d people loaded.'%X.shape[0]
