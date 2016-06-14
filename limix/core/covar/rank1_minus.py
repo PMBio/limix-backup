@@ -1,7 +1,7 @@
 import numpy as np
 import scipy as sp
 import scipy.linalg as la
-from limix.core.type.cached import cached
+from hcache import cached
 from lowrank import LowRankCov
 import warnings
 import pdb

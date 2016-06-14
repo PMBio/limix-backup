@@ -1,4 +1,4 @@
-from limix.core.type.cached import Cached, cached
+from hcache import Cached, cached
 from limix.core.type.observed import Observed
 
 import sys

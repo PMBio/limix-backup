@@ -5,7 +5,7 @@ import copy
 import sys
 import time
 from limix.core.type.observed import Observed
-from limix.core.type.cached import Cached, cached
+from hcache import Cached, cached
 from limix.core.covar import Covariance
 from limix.core.mean import MeanBase
 from limix.core.covar.cov_reml import cov_reml

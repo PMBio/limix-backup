@@ -1,9 +1,9 @@
 import sys
-import numpy.linalg as la 
+import numpy.linalg as la
 import numpy as np
 import scipy as sp
 import scipy.stats as st
-from limix.core.type.cached import cached
+from hcache import cached
 import limix.core.association.kron_util as kron_util
 import limix.core.association.kron_lmm as kron_lmm
 
@@ -42,14 +42,14 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 	@property
 	def A_snps(self):
 		"""
-		list of rotated SNP column fixed effects design matrices A_snps 
+		list of rotated SNP column fixed effects design matrices A_snps
 		"""
 		return self._A_snps
 
 	@A_snps.setter
 	def A_snps(self, value):
 		"""
-		list of rotated SNP column fixed effects design matrices A_snps 
+		list of rotated SNP column fixed effects design matrices A_snps
 		"""
 		self.clear_cache("A_snps")
 		if type(value) is list:
@@ -60,15 +60,15 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 	@property
 	def X_snps(self):
 		"""
-		list of SNP row fixed effects design matrices X_snps 
+		list of SNP row fixed effects design matrices X_snps
 		"""
 		return self._X_snps
 
 	@X_snps.setter
 	def X_snps(self, value):
 		"""
-		list of SNP row fixed effects design matrices X_snps 
-		"""	
+		list of SNP row fixed effects design matrices X_snps
+		"""
 		self.clear_cache("X_snps")
 		if type(value) is list:
 			self._X_snps = value
@@ -79,7 +79,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 	@cached(["X_snps","R"])
 	def X_snps_rot(self):
 		"""
-		list of rotated SNP row fixed effects design matrices X_snps 
+		list of rotated SNP row fixed effects design matrices X_snps
 		"""
 		res = []
 		for i in xrange(self.length_snps):
@@ -89,7 +89,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 	@cached(["A_snps","C"])
 	def A_snps_rot(self):
 		"""
-		list of rotated SNP column fixed effects design matrices A_snps 
+		list of rotated SNP column fixed effects design matrices A_snps
 		"""
 		res = []
 		for i in xrange(self.length_snps):
@@ -116,14 +116,14 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		snpsKY = np.empty((dof.sum(),1))
 		DY = self.D_rot() * self.Yrot()
 		for i in xrange(self.length_snps):
-			snpsKY[dof_cumsum[i]:dof_cumsum[i+1],0] = kron_util.vec(kron_util.compute_XYA(DY=DY, X=self.X_snps_rot()[i], A=self.A_snps_rot()[i]))		
+			snpsKY[dof_cumsum[i]:dof_cumsum[i+1],0] = kron_util.vec(kron_util.compute_XYA(DY=DY, X=self.X_snps_rot()[i], A=self.A_snps_rot()[i]))
 		return snpsKY
 
 	@cached(["C","R","X_snps","A_snps","h2"])
 	def snpsKsnps(self):
 		"""
 		The Hessian matrix of the snps fixed effect weights beta_snps
-		
+
 		Returns:
 			the cross product of the snps fixed effects with themselves
 		"""
@@ -158,7 +158,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		"""
 		regression weight change when including the SNP in the model
 
-		The full beta of the alternative model would correspond to 
+		The full beta of the alternative model would correspond to
 		np.concatenate((beta + beta_up, beta_snps), 0)
 
 		Returns:

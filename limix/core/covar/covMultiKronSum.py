@@ -3,7 +3,7 @@ import pdb
 import numpy as np
 import scipy as sp
 from acombinators import ACombinatorCov
-from limix.core.type.cached import Cached, cached
+from hcache import Cached, cached
 from limix.core.covar import Cov2KronSum
 import scipy.sparse.linalg as sla
 import scipy.linalg as la

@@ -3,7 +3,7 @@ import numpy as np
 from covar_base import Covariance
 from freeform import FreeFormCov
 from diagonal import DiagonalCov 
-from limix.core.type.cached import cached
+from hcache import cached
 from limix.core.type.exception import TooExpensiveOperationError
 from limix.core.utils import my_name
 from util import msg_too_expensive_dim

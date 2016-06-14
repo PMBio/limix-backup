@@ -5,7 +5,7 @@ import copy
 import sys
 import time
 from gp_ls import GPLS
-from limix.core.type.cached import Cached, cached
+from hcache import Cached, cached
 from limix.core.covar import Covariance
 from limix.core.covar import CovMultiKronSum
 from limix.core.mean import MeanKronSum
