@@ -130,6 +130,7 @@ class MeanKronSum(MeanBase):
         for ti in range(self.n_terms):
             iend = istart + self.F[ti].shape[1] * self.A[ti].shape[0]
             R[:, istart:iend] = sp.kron(self.A[ti].T, self.F[ti])
+            istart += iend
         if self._miss:
             R = R[self._veIok, :]
         return R

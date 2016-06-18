@@ -613,12 +613,3 @@ class mean(cObject):
                 indicator[key] = np.concatenate([indicator[key],_update[key]])
         self.indicator = indicator
 
-def compute_XYA(DY, X, A=None):
-
-    if A is not None:#general case
-    	DYA = DY.dot(A.T)
-    else:#any effect
-    	DYA = DY
-    return X.T.dot(DYA)#should be pre-computed
-
-

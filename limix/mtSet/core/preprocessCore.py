@@ -1,6 +1,7 @@
 import matplotlib
 matplotlib.use('PDF')
 import pylab as pl
+import re
 import os
 import subprocess
 import pdb
@@ -23,7 +24,7 @@ def computeCovarianceMatrixPlink(plink_path,out_dir,bfile,cfile,sim_type='RRM'):
     """
     computing the covariance matrix via plink
     """
-    
+
     print("Using plink to create covariance matrix")
     cmd = '%s --bfile %s '%(plink_path,bfile)
 
@@ -34,14 +35,14 @@ def computeCovarianceMatrixPlink(plink_path,out_dir,bfile,cfile,sim_type='RRM'):
         raise Exception('sim_type %s is not known'%sim_type)
 
     cmd+= '--out %s'%(os.path.join(out_dir,'plink'))
-    
+
     subprocess.call(cmd,shell=True)
 
     # move file to specified file
     if sim_type=='RRM':
         old_fn = os.path.join(out_dir, 'plink.rel')
         os.rename(old_fn,cfile+'.cov')
-        
+
         old_fn = os.path.join(out_dir, 'plink.rel.id')
         os.rename(old_fn,cfile+'.cov.id')
 
@@ -56,7 +57,6 @@ def computePCsPlink(plink_path,k,out_dir,bfile,ffile):
     """
     computing the covariance matrix via plink
     """
-    
     print("Using plink to compute principal components")
     cmd = '%s --bfile %s --pca %d '%(plink_path,bfile,k)
     cmd+= '--out %s'%(os.path.join(out_dir,'plink'))
@@ -73,7 +73,7 @@ def computePCsPlink(plink_path,k,out_dir,bfile,ffile):
 def computePCsPython(out_dir,k,bfile,ffile):
     """ reading in """
     RV = plink_reader.readBED(bfile,useMAFencoding=True)
-    X  = RV['snps']
+    X  = np.ascontiguousarray(RV['snps'])
 
     """ normalizing markers """
     print('Normalizing SNPs...')
@@ -83,23 +83,23 @@ def computePCsPython(out_dir,k,bfile,ffile):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         X /= sp.sqrt(2*p_ref*(1-p_ref))
-        
-    hasNan = sp.any(sp.isnan(X),axis=0)
-    print(('%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()))
-    X  = X[:,~hasNan]
 
-    
+    hasNan = sp.any(sp.isnan(X),axis=0)
+    if sp.any(hasNan):
+        print('%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum())
+        X  = X[:,~hasNan]
+
     """ computing prinicipal components """
     U,S,Vt = ssl.svds(X,k=k)
     U -= U.mean(0)
     U /= U.std(0)
     U  = U[:,::-1]
- 
+
     """ saving to output """
-    np.savetxt(ffile, U, delimiter='\t',fmt='%.6f')    
-    
-    
-    
+    np.savetxt(ffile, U, delimiter='\t',fmt='%.6f')
+
+
+
 def computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type='RRM'):
     print("Using python to create covariance matrix. This might be slow. We recommend using plink instead.")
 
@@ -109,11 +109,10 @@ def computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type='RRM'):
     """ loading data """
     data = plink_reader.readBED(bfile,useMAFencoding=True)
     iid  = data['iid']
-    X = data['snps']
+    X = np.ascontiguousarray(data['snps'])
     N = X.shape[1]
     print(('%d variants loaded.'%N))
     print(('%d people loaded.'%X.shape[0]))
-    
     """ normalizing markers """
     print('Normalizing SNPs...')
     p_ref = X.mean(axis=0)/2.
@@ -122,9 +121,10 @@ def computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type='RRM'):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         X /= sp.sqrt(2*p_ref*(1-p_ref))
-        
+
     hasNan = sp.any(sp.isnan(X),axis=0)
-    print(('%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()))
+    if sp.any(hasNan):
+        print('%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum())
 
     """ computing covariance matrix """
     print('Computing relationship matrix...')
@@ -137,7 +137,7 @@ def computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type='RRM'):
     """ saving to output """
     np.savetxt(cfile + '.cov', K, delimiter='\t',fmt='%.6f')
     np.savetxt(cfile + '.cov.id', iid, delimiter=' ',fmt='%s')
-    
+
 
 
 
@@ -172,9 +172,9 @@ def computePCs(plink_path,k,bfile,ffile):
         computePCsPlink(plink_path,k,out_dir,bfile,ffile)
     else:
         computePCsPython(out_dir,k,bfile,ffile)
-        
+
 def eighCovarianceMatrix(cfile):
-    
+
     pdb.set_trace()
     S = np.loadtxt(cfile+'.cov.eval') #S
     U = np.loadtxt(cfile+'.cov.evec') #U
@@ -184,7 +184,7 @@ def eighCovarianceMatrix(cfile):
     pcs /= pcs.std(axis=0)
 
     np.savetxt(ffile,pcs,fmt='%.6f')
-    
+
 
 
 def computeCovarianceMatrix(plink_path,bfile,cfile,sim_type='RRM'):
@@ -199,10 +199,13 @@ def computeCovarianceMatrix(plink_path,bfile,cfile,sim_type='RRM'):
                          the individuals to cfile.cov.id in the current folder.
     sim_type     :   {IBS/RRM} are supported
     """
-    
     try:
         output    = subprocess.check_output('%s --version --noweb'%plink_path,shell=True)
-        use_plink = float(output.split(' ')[1][1:-3])>=1.9
+        m = re.match(r"^PLINK v(\d+\.\d+).*$", output)
+        if m:
+            use_plink = float(m.group(1)) >= 1.9
+        else:
+            use_plink = False
     except:
         use_plink = False
 
@@ -221,7 +224,7 @@ def computeCovarianceMatrix(plink_path,bfile,cfile,sim_type='RRM'):
         computeCovarianceMatrixPlink(plink_path,out_dir,bfile,cfile,sim_type=sim_type)
     else:
         computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type=sim_type)
-        
+
 def eighCovarianceMatrix(cfile):
     """
     compute similarity matrix using plink
@@ -243,7 +246,7 @@ def fit_null(Y,S_XX,U_XX,nfile,F):
     fit null model
 
     Y       NxP phenotype matrix
-    S_XX    eigenvalues of the relatedness matrix 
+    S_XX    eigenvalues of the relatedness matrix
     U_XX    eigen vectors of the relatedness matrix
     """
     mtSet = limix.MTSet(Y, S_R=S_XX, U_R=U_XX, F=F)
@@ -255,12 +258,12 @@ def fit_null(Y,S_XX,U_XX,nfile,F):
     np.savetxt(nfile+'.cg0',RV['Cg'])
     np.savetxt(nfile+'.cn0',RV['Cn'])
     #if F is not None: np.savetxt(nfile+'.f0',RV['params_mean'])
-    
+
 
 def preprocess(options):
 
     assert options.bfile!=None, 'Please specify a bfile.'
-    
+
     """ computing the covariance matrix """
     if options.compute_cov:
        assert options.bfile!=None, 'Please specify a bfile.'
@@ -272,7 +275,7 @@ def preprocess(options):
        print(('... finished in %s seconds'%(t1-t0)))
        print('Computing eigenvalue decomposition')
        t0 = time.time()
-       eighCovarianceMatrix(options.cfile) 
+       eighCovarianceMatrix(options.cfile)
        t1 = time.time()
        print(('... finished in %s seconds'%(t1-t0)))
 
@@ -283,7 +286,6 @@ def preprocess(options):
        computePCs(options.plink_path,options.compute_PCs,options.bfile,options.ffile)
        t1 = time.time()
        print(('... finished in %s seconds'%(t1-t0)))
-       
 
     """ fitting the null model """
     if options.fit_null:
@@ -327,7 +329,7 @@ def preprocess(options):
         t1 = time.time()
         print(('.. finished in %s seconds'%(t1-t0)))
 
-    # plot distribution of nSnps 
+    # plot distribution of nSnps
     if options.plot_windows:
         print('Plotting ditribution of number of SNPs')
         plot_file = options.wfile+'.wnd.pdf'

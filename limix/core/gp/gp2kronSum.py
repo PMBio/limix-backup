@@ -118,6 +118,7 @@ class GP2KronSum(GP):
         for ti in range(self.mean.n_terms):
             iend = istart + self.mean.F[ti].shape[1] * self.mean.A[ti].shape[0]
             R[:, istart:iend] = sp.kron(self.ALc()[ti].T, self.LrF()[ti])
+            istart += iend
         return R
 
     @cached(['row_cov', 'col_cov', 'designs'])

@@ -23,7 +23,7 @@ class TestGPBase(unittest.TestCase):
         self.F = []; self.A = []
         self.F.append(1.*(sp.rand(N,2)<0.5))
         self.A.append(sp.eye(P))
-        # define row caoriance
+        # define row covariance
         f = 10
         X = 1.*(sp.rand(N, f)<0.2)
         self.R  = covar_rescale(sp.dot(X,X.T))

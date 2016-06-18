@@ -116,11 +116,11 @@ class GP(Cached, Observed):
     #######################
     @cached('gp_base')
     def DiKKiy(self, i):
-        return sp.dot(self.covar.K_grad_i(i), self.Kiy())
+        return self.covar.K_grad_i_dot(self.Kiy(), i)
 
     @cached('gp_base')
     def DiKKiW(self, i):
-        return sp.dot(self.covar.K_grad_i(i), self.KiW())
+        return self.covar.K_grad_i_dot(self.KiW(), i)
 
     @cached('gp_base')
     def DiKKiWb(self, i):

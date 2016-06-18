@@ -37,6 +37,9 @@ class psd_solver(object):
             res = np.zeros(b.shape)
         return res
 
+    def logdet(self):
+        raise NotImplementedError("logdet not implemened yet.")
+
 class psd_solver_any(object):
     """a linear equation solver for symmetric positive semi-definite matrices for the case where only any effects are present"""
 
@@ -61,6 +64,8 @@ class psd_solver_any(object):
             return solution
         else:
             return self.solver[p].solve(b=b)
+    def logdet(self):
+        raise NotImplementedError("logdet not implemened yet.")
 
 class PsdSolverKron(object):
     """

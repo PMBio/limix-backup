@@ -1,5 +1,6 @@
-import scipy as SP
+import scipy as sp
 import pdb
+
 
 def sq_dist(X1,X2=None):
     """
@@ -13,8 +14,8 @@ def sq_dist(X1,X2=None):
     m = X2.shape[0]
     d = X1.shape[1]
     # (X1 - X2)**2 = X1**2 + X2**2 - 2X1X2
-    X1sq = SP.reshape((X1**2).sum(1),n,1)
-    X2sq = SP.reshape((X2**2).sum(1),m,1)
+    X1sq = sp.reshape((X1**2).sum(1),n,1)
+    X2sq = sp.reshape((X2**2).sum(1),m,1)
 
-    K = SP.tile((X1*X1).sum(1),(m,1)).T + SP.tile((X2*X2).sum(1),(n,1)) - 2*SP.dot(X1,X2.T)
+    K = sp.tile((X1*X1).sum(1),(m,1)).T + sp.tile((X2*X2).sum(1),(n,1)) - 2*sp.dot(X1,X2.T)
     return K

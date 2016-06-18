@@ -44,7 +44,7 @@ class LowRankCov(Covariance):
     def X(self, value):
         assert self.X.shape[0]==self.dim, 'Dimension mismatch.'
         assert self.X.shape[1]==self.rank, 'Dimension mismatch.'
-        self.setParams(self.X.reshape(self.X.size, order = 'F'))
+        self.setParams(value.reshape(value.size, order = 'F'))
 
     #####################
     # Activation handling
@@ -86,7 +86,7 @@ class LowRankCov(Covariance):
         S, U = la.eigh(cov)
         U = U[:,::-1]
         S = S[::-1]
-        _X = U[:, :self.rank] * S[sp.newaxis, :self.rank]
+        _X = U[:, :self.rank] * sp.sqrt(S[:self.rank])
         self.X = _X
 
     #####################

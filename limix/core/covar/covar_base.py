@@ -70,6 +70,9 @@ class Covariance(Cached, Observed):
     def solve(self,M):
         return LA.cho_solve((self.chol(),True),M)
 
+    def K_grad_i_dot(self, M, i):
+        return sp.dot(self.K_grad_i(i), M)
+
     def solve_ls(self, M, M0=None):
         if M0 is None:    M0 = 1E-3 * sp.randn(*M.shape)
         def veKvei(m):
@@ -144,19 +147,19 @@ class Covariance(Cached, Observed):
     # The following methods are deprecated
     ############################
 
-    #@cached
-    #def Sgrad(self,i):
-    #    return dS_dti(self.Kgrad_param(i),U=self.U())
+    @cached
+    def S_grad_i(self,i):
+        return dS_dti(self.Kgrad_param(i), U=self.U())
 
-    #@cached
-    #def Ugrad(self,i):
-    #    return dU_dti(self.Kgrad_param(i),U=self.U(),S=self.S())
+    @cached
+    def U_grad_i(self,i):
+        return dU_dti(self.Kgrad_param(i), U=self.U(), S=self.S())
 
-    #@cached
-    #def USi2grad(self,i):
-    #    # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
-    #    Si2grad = -0.5*self.S()**(-1.5)*self.Sgrad(i)
-    #    return self.Ugrad(i)*(self.S()**(-0.5)) + self.U()*Si2grad
+    @cached
+    def USi2_grad_i(self,i):
+        # dU * S**(-1/2) + U * (-1/2 S**(-3/2) dS)
+        Si2grad = -0.5 * self.S()**(-1.5) * self.S_grad_i(i)
+        return self.U_grad_i(i) * (self.S()**(-0.5)) + self.U() * Si2grad
 
     ###########################
     # Monte Carlo methods
@@ -245,7 +248,7 @@ class Covariance(Cached, Observed):
                 DmK = self.K_grad_interParam_i(n)
                 KiDnK = self.solve(DnK)
                 KiDmK = self.solve(DmK)
-                R[m,n] = 0.5*(KiDnK*KiDmK).sum()
+                R[m,n] = 0.5 * (KiDnK.T * KiDmK).sum()
         return R
 
     def setFIinv(self, value):

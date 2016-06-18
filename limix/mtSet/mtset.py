@@ -174,7 +174,7 @@ class MTSet():
             for i in range(n_times):
                 params0 = self._initParams(init_method=init_method)
                 self._gpNull.setParams(params0)
-                conv, info = self._gpNull.optimize(verbose=verbose)
+                conv, info = self._gpNull.optimize(verbose=verbose, factr=factr)
                 if conv: break
             if not conv:    warnings.warn("not converged")
             LMLgrad = (self._gpNull.LML_grad()['covar']**2).mean()
