@@ -53,13 +53,13 @@ def checkgrad(f, fprime, x, *args,**kw_args):
     h = np.zeros_like(x)
     for i in range(len(x)):
         pdb.set_trace()
-	h[i] = step
-	f_ph = f(x+h, *args, **kw_args)
-	f_mh = f(x-h, *args, **kw_args)
-	numerical_gradient = (f_ph - f_mh)/(2*step)
-	analytical_gradient = fprime(x, *args, **kw_args)[i]
-	ratio = (f_ph - f_mh)/(2*step*analytical_gradient)
-	h[i] = 0
+        h[i] = step
+        f_ph = f(x+h, *args, **kw_args)
+        f_mh = f(x-h, *args, **kw_args)
+        numerical_gradient = (f_ph - f_mh)/(2*step)
+        analytical_gradient = fprime(x, *args, **kw_args)[i]
+        ratio = (f_ph - f_mh)/(2*step*analytical_gradient)
+        h[i] = 0
         LG.debug("[%d] numerical: %f, analytical: %f, ratio: %f" % (i, numerical_gradient,analytical_gradient,ratio))
 
 
@@ -77,16 +77,16 @@ def opt_hyper(gpr,theta=1e-2,max_iter=None,alpha=1,tr=None,returnLML=False,noH=F
 
     for i in range(max_iter):
         if debug:
-            print 'iteration', i
-            print 'params:', gpr.getParams()['covar']
+            print('iteration', i)
+            print('params:', gpr.getParams()['covar'])
         grad = gpr.LML_grad()['covar']
 
         if returnLML:
             LML[i] = gpr.LML()
-            print 'LML:', gpr.LML()
+            print('LML:', gpr.LML())
 
         if debug:
-            print 'LMLgrad', (grad**2).mean()
+            print('LMLgrad', (grad**2).mean())
 
         conv = SP.absolute(grad).max() < theta
         if conv:    break
@@ -109,7 +109,7 @@ def opt_hyper(gpr,theta=1e-2,max_iter=None,alpha=1,tr=None,returnLML=False,noH=F
         params = {'covar': gpr.getParams()['covar'] + ap}
         gpr.setParams(params)
         if debug:
-            print abs(ap).max()
+            print(abs(ap).max())
         if abs(ap).max()<thr_dtheta:
             break
 

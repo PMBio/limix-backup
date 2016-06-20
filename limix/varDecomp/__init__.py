@@ -1,1 +1,1 @@
-from varianceDecomposition import VarianceDecomposition
+from .varianceDecomposition import VarianceDecomposition

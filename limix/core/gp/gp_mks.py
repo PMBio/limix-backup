@@ -4,7 +4,7 @@ import scipy.linalg
 import copy
 import sys
 import time
-from gp_ls import GPLS
+from .gp_ls import GPLS
 from hcache import Cached, cached
 from limix.core.covar import Covariance
 from limix.core.covar import CovMultiKronSum

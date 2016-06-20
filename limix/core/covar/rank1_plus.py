@@ -2,7 +2,7 @@ import numpy as np
 import scipy as sp
 import scipy.linalg as la
 from hcache import cached
-from lowrank import LowRankCov
+from .lowrank import LowRankCov
 import warnings
 import pdb
 
@@ -28,7 +28,7 @@ class Rank1PCov(LowRankCov):
 
     @property
     def X_ste(self):
-        print 'Implement me'
+        print('Implement me')
 
     @X.setter
     def X(self, value):
@@ -63,18 +63,4 @@ class Rank1PCov(LowRankCov):
     ####################
     # TODO: Interpretable Params
     ####################
-
-
-if __name__ == '__main__':
-
-    sp.random.seed(1)
-    cov = Rank1PCov()
-    cov.setRandomParams()
-    print cov.K()
-    print cov.K_grad_i(0)
-
-    pdb.set_trace()
-    X = sp.array([[1], [-1]])
-    cov.X = X
-    print cov.K()
 

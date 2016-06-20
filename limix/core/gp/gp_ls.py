@@ -226,7 +226,7 @@ class GPLS(Cached, Observed):
         # logger.info('Marginal likelihood optimization.')
 
         if verbose:
-            print 'Marginal likelihood optimization.'
+            print('Marginal likelihood optimization.')
         t0 = time.time()
         conv, info = OPT.opt_hyper(self, **kw_args)
         t1 = time.time()
@@ -234,23 +234,23 @@ class GPLS(Cached, Observed):
         # if logger.levelno == logger.DEBUG:
         if verbose:
             # logger.debug('Time elapsed: %.2fs', t1-t0)
-            print 'Converged:', conv
-            print 'n_iter:', info['n_iter']
-            print 'Time elapsed: %.2f s' % (t1-t0)
+            print('Converged:', conv)
+            print('n_iter:', info['n_iter'])
+            print('Time elapsed: %.2f s' % (t1-t0))
             grad = self.LML_grad()
             grad_norm = 0
             for key in grad.keys():
                 grad_norm += (grad[key]**2).sum()
             grad_norm = sp.sqrt(grad_norm)
-            print 'Log Marginal Likelihood: %.7f.' % self.LML()
-            print 'Gradient norm: %.7f.' % grad_norm
+            print('Log Marginal Likelihood: %.7f.' % self.LML())
+            print('Gradient norm: %.7f.' % grad_norm)
             # logger.debug('Log Marginal Likelihood: %.7f.', self.LML())
             # logger.debug('Gradient norm: %.7f.', grad_norm)
 
         if calc_ste:
             # logger.info('Standard error calculation.')
             if verbose:
-                print 'Standard errors calculation.'
+                print('Standard errors calculation.')
             t0 = time.time()
             I_covar = self.covar.getFisherInf()
             I_mean = self.Areml.K()
@@ -279,5 +279,5 @@ class GPLS(Cached, Observed):
 
         x0 = self.getParams()['covar']
         err = mcheck_grad(func, grad, x0)
-        print err
+        print(err)
         # np.testing.assert_almost_equal(err, 0., decimal=5)
