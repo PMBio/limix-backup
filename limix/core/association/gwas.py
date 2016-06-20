@@ -246,13 +246,13 @@ if __name__ == "__main__":
 	pheno = pysnptools.util.pheno.loadPhen(filename=pheno_fn,   missing ='-9')
 	pheno = GWAS._pheno_fixup(pheno)
 	covariates = GWAS._pheno_fixup(covariate_fn, iid_source_if_none=pheno)
-	print "intersecting data"
+	print("intersecting data")
 	t00 = time.time()
 	snp_intersect,pheno_intersect = pysnptools.util.intersect_apply([snp_reader, pheno], sort_by_dataset=True)
 	t1 = time.time()
-	print "done intersecting after %.4fs" % (t1-t00)
+	print("done intersecting after %.4fs" % (t1-t00))
 
-	print "building kernel"
+	print("building kernel")
 	t0 = time.time()
 	if 0: 
 		#snp_data = snp_intersect.read().standardize()

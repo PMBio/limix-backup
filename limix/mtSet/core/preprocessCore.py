@@ -200,6 +200,7 @@ def computeCovarianceMatrix(plink_path,bfile,cfile,sim_type='RRM'):
     sim_type     :   {IBS/RRM} are supported
     """
     try:
+        import pdb; pdb.set_trace()
         output    = subprocess.check_output('%s --version --noweb'%plink_path,shell=True)
         m = re.match(r"^PLINK v(\d+\.\d+).*$", output)
         if m:
