@@ -29,7 +29,7 @@ class Cov3KronSumLR(Cov2KronSum):
         - rank_r: rank of low-rank row covariance
     """
 
-    def __init__(self, Cg=None, Cn=None, G=None, R=None, rank=1, Cr=None, S_R=None, U_R=None, corr_r=None):
+    def __init__(self, Cg=None, Cn=None, G=None, R=None, rank=1, Cr=None, S_R=None, U_R=None):
         """
         Args:
             Cg:     Limix covariance matrix for Cg (dimension dim_c)
@@ -41,14 +41,12 @@ class Cov3KronSumLR(Cov2KronSum):
                     If not specified, a low-rank covariance matrix is considered
             S_R:    N vector of eigenvalues of R
             U_R:    [N, N] eigenvector matrix of R
-            corr:   if corr==1: considers a rank1 covariance with correlation = 1 
-                    if corr==-1: considers a rank1 covariance with correlation = -1 
         """
         Covariance.__init__(self)
         self._Cr_act = True
         self._Cg_act = True
         self._Cn_act = True
-        self.setColCovars(Cg=Cg, Cn=Cn, rank=rank, Cr=Cr, corr_r=corr_r)
+        self.setColCovars(Cg=Cg, Cn=Cn, rank=rank, Cr=Cr)
         self.setR(R=R, S_R=S_R, U_R=U_R)
         self.G = G
         self.dim = self.dim_c * self.dim_r
@@ -94,22 +92,12 @@ class Cov3KronSumLR(Cov2KronSum):
         self.G = value
 
     # normal setter for col covars
-    def setColCovars(self, Cg=None, Cn=None, rank=1, Cr=None, corr_r=None):
+    def setColCovars(self, Cg=None, Cn=None, rank=1, Cr=None):
         assert Cg is not None, 'Cov2KronSum: Specify Cg!'
         assert Cn is not None, 'Cov2KronSum: Specify Cn!'
         assert Cg.dim==Cn.dim, 'Cov2KronSum: Cg and Cn must have same dimensions!'
         if Cr is None:
-            assert corr_r in [1, -1, None], 'Cov3KronSumLR: corr_r value not valid'
-            if corr_r==1:
-                assert Cg.dim==2, 'Cov3KronSumLR: corr_r option available only for 2 tasks'
-                assert rank==1, 'Cov3KronSumLR: corr_r supported only for rank = 1'
-                Cr = Rank1PCov()
-            elif corr_r==-1:
-                assert Cg.dim==2, 'Cov3KronSumLR: corr_r option available only for 2 tasks'
-                assert rank==1, 'Cov3KronSumLR: corr_r supported only for rank = 1'
-                Cr = Rank1MCov()
-            else:
-                Cr = LowRankCov(Cg.dim, rank)
+            Cr = LowRankCov(Cg.dim, rank)
             Cr.setRandomParams()
             self._rank_c = rank
         else:
