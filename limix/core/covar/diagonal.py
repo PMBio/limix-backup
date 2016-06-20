@@ -1,7 +1,7 @@
 import numpy as np
 import scipy as sp
 import scipy.linalg as LA
-from covar_base import Covariance
+from .covar_base import Covariance
 from hcache import cached
 import pdb
 
@@ -131,8 +131,3 @@ class DiagonalCov(Covariance):
         R[i, i] = 1
         return R
 
-if __name__ == '__main__':
-    n = 2
-    cov = DiagonalCov(n)
-    print cov.K()
-    print cov.K_grad_i(0)

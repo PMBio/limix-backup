@@ -3,7 +3,7 @@
 import nlopt
 import numpy as np
 
-print ('nlopt version='+nlopt.__version__)
+print(('nlopt version='+nlopt.__version__))
 
 def f(x, grad):
     F=x[0]
@@ -27,6 +27,6 @@ xopt = opt.optimize(x)
 
 opt_val = opt.last_optimum_value()
 result = opt.last_optimize_result()
-print ('opt_result='+str(result))
-print ('optimizer='+str(xopt))
-print ('opt_val='+str(opt_val))
+print(('opt_result='+str(result)))
+print(('optimizer='+str(xopt)))
+print(('opt_val='+str(opt_val)))

@@ -56,7 +56,7 @@ class ISet_Strat():
             if os.path.exists(out_file):
                 fo = h5py.File(out_file, 'r')
                 null = {}
-                for key in fo.keys():
+                for key in list(fo.keys()):
                     null[key] = fo[key][:]
                 fo.close()
                 self.null = null
@@ -168,7 +168,7 @@ class ISet_Strat():
         """
         _Cr = decompose_GxE(self.full['Cr'])
         RV = {}
-        for key in _Cr.keys():
+        for key in list(_Cr.keys()):
             RV['var_%s' % key] = sp.array([var_CoXX(_Cr[key], self.Xr)])
         RV['var_c'] = self.full['var_c'] 
         RV['var_n'] = self.full['var_n'] 

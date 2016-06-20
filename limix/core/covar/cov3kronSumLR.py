@@ -2,8 +2,6 @@ import sys
 from .covar_base import Covariance
 from limix.core.covar import Cov2KronSum
 from limix.core.covar import LowRankCov
-from limix.core.covar import Rank1PCov 
-from limix.core.covar import Rank1MCov
 from hcache import cached
 from limix.core.type.exception import TooExpensiveOperationError
 from limix.core.utils import my_name

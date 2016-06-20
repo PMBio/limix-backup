@@ -123,7 +123,7 @@ class TraitSampler(object):
         ze = np.random.randn(n) * np.sqrt(self._noise_var)
         z = ze.copy()
         zd = dict()
-        for effect_name in self._Gs.keys():
+        for effect_name in list(self._Gs.keys()):
             G = self._Gs[effect_name]
             u = self._us[effect_name]
             idx = self._causal_indices[effect_name]
@@ -135,7 +135,7 @@ class TraitSampler(object):
 
             z += zd[effect_name]
 
-        for z_ in self._zc.values():
+        for z_ in list(self._zc.values()):
             z += z_
 
         return (z, zd, self._zc, ze)
@@ -204,7 +204,7 @@ class BernoulliTraitSampler(TraitSampler):
 
         (_, z) = self._sample_traits_once(var_noise, 0.)
         offset = np.percentile(z, 100. * (1-prevalence))
-        print "Calculated offset: %.3f" % offset
+        print("Calculated offset: %.3f" % offset)
         return offset
 
     def _sample_traits_once(self, var_noise, offset):
@@ -217,11 +217,11 @@ class BernoulliTraitSampler(TraitSampler):
         return (y, z)
 
     def sample_traits(self, pop_size, var_noise, prevalence=0.5, ascertainment=0.5):
-        print "Prevalence: %.3f." % prevalence
-        print "Ascertainment: %.3f." % ascertainment
+        print("Prevalence: %.3f." % prevalence)
+        print("Ascertainment: %.3f." % ascertainment)
         offset = self._offset_due_prevalence(var_noise, prevalence)
 
-        print "Sampling traits..."
+        print("Sampling traits...")
         n1 = int(ascertainment * pop_size)
         n0 = int(pop_size) - n1
 
@@ -245,7 +245,7 @@ class BernoulliTraitSampler(TraitSampler):
 
         selected_individuals = ok
 
-        print "Done."
+        print("Done.")
         return (y, z, offset, selected_individuals)
 
 class BinomialTraitSampler(TraitSampler):
@@ -254,13 +254,13 @@ class BinomialTraitSampler(TraitSampler):
 
     def _sample_ntrials(self, pop_size, ntrials_sampler):
         ntrials = []
-        for i in xrange(pop_size):
+        for i in range(pop_size):
             ntrials.append(ntrials_sampler())
         return np.array(ntrials, int)
 
     def sample_traits(self, pop_size, vare, ntrials_sampler):
 
-        print "Sampling traits..."
+        print("Sampling traits...")
 
         (z, _, _, _) = TraitSampler.sample_traits(self)
         selected_individuals = np.random.choice(len(z), pop_size, replace=False)
@@ -277,10 +277,10 @@ class BinomialTraitSampler(TraitSampler):
         Z[Z <= 0.] = 0.
 
         y = np.empty(pop_size)
-        for i in xrange(y.shape[0]):
+        for i in range(y.shape[0]):
             y[i] = np.sum(Z[i,:ntrials[i]])
 
-        print "Done."
+        print("Done.")
 
         y = dict(trait=y, ntrials=ntrials)
         return (y, selected_individuals)

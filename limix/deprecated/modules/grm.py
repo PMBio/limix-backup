@@ -30,15 +30,15 @@ def grm_unbiased(G):
 
     K = np.zeros((n, n))
 
-    for j in xrange(n-1):
-        for k in xrange(j+1, n):
+    for j in range(n-1):
+        for k in range(j+1, n):
 
             v0 = (G[j, :] - 2*p) * (G[k, :] - 2*p)
 
             K[j, k] = np.mean(v0 / denom)
             K[k, j] = K[j, k]
 
-    for j in xrange(n):
+    for j in range(n):
         g2 = G[j, :]**2
         v0 = g2 - (1 + 2*p) * G[j, :] + 2 * p**2
         K[j, j] = 1 + np.mean(v0 / denom)
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     # r = apply_gcta(nfrX, nbgX, y, 0.5)
 
     K = grm_unbiased(nbgX)
-    print np.diagonal(K)
+    print(np.diagonal(K))
     # diag 0.8817461 0.9085317 0.6531746 1.2656746 0.5007936
     # print np.mean([0.8817461, 0.9085317, 0.6531746, 1.2656746, 0.5007936])
 

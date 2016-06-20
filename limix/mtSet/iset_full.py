@@ -159,7 +159,7 @@ class ISet_Full():
         """
         _Cr = decompose_GxE(self.fr['Cr'])
         RV = {}
-        for key in _Cr.keys():
+        for key in list(_Cr.keys()):
             RV['var_%s' % key] = sp.array([var_CoXX(_Cr[key], self.Xr)])
         RV['var_g'] = sp.array([var_CoXX(self.fr['Cg'], self.XXh)])
         RV['var_n'] = sp.array([var_CoXX(self.fr['Cn'], sp.eye(self.XXh.shape[0]))])

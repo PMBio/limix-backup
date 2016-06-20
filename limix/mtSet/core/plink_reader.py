@@ -29,7 +29,7 @@ def readBIM(basefilename,usecols=None):
     helper method for speeding up read BED
     """
     bim = basefilename+ '.bim'
-    bim = SP.loadtxt(bim,dtype = 'str',usecols=usecols)
+    bim = SP.loadtxt(bim,dtype=bytes,usecols=usecols)
     return bim
     
 
@@ -38,7 +38,7 @@ def readFAM(basefilename,usecols=None):
     helper method for speeding up read FAM
     """
     fam = basefilename+'.fam'
-    fam = SP.loadtxt(fam,dtype = 'str',usecols=usecols)
+    fam = SP.loadtxt(fam,dtype=bytes,usecols=usecols)
     return fam
 
 
@@ -128,15 +128,15 @@ def readBED(basefilename, useMAFencoding=False,blocksize = 1, start = 0, nSNPs =
     bed = basefilename + '.bed'
     with open(bed, "rb") as f:
         mode = f.read(2)
-        if mode != 'l\x1b':
+        if mode != b'l\x1b':
             raise Exception('No valid binary PED file')
         mode = f.read(1) #\x01 = SNP major \x00 = individual major
-        if mode != '\x01':
+        if mode != b'\x01':
             raise Exception('only SNP-major is implemented')
         startbit = SP.ceil(0.25*N)*start+3
-        f.seek(startbit)
-        for blockStart in SP.arange(0,nSNPs,blocksize):
-            blockEnd = min(S,blockStart+blocksize)
+        f.seek(int(startbit))
+        for blockStart in SP.arange(0,nSNPs,blocksize, dtype=int):
+            blockEnd = int(min(S,blockStart+blocksize))
             Sblock = min(nSNPs-blockStart,blocksize)
             nbyte = int(SP.ceil(0.25*N)*Sblock)
             bytes = SP.array(bytearray(f.read(nbyte))).reshape((SP.ceil(0.25*N),Sblock),order='F')

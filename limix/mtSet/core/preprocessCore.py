@@ -86,7 +86,7 @@ def computePCsPython(out_dir,k,bfile,ffile):
 
     hasNan = sp.any(sp.isnan(X),axis=0)
     if sp.any(hasNan):
-        print('%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum())
+        print(('%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()))
         X  = X[:,~hasNan]
 
     """ computing prinicipal components """
@@ -124,7 +124,7 @@ def computeCovarianceMatrixPython(out_dir,bfile,cfile,sim_type='RRM'):
 
     hasNan = sp.any(sp.isnan(X),axis=0)
     if sp.any(hasNan):
-        print('%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum())
+        print(('%d SNPs have a nan entry. Exluding them for computing the covariance matrix.'%hasNan.sum()))
 
     """ computing covariance matrix """
     print('Computing relationship matrix...')
@@ -201,7 +201,7 @@ def computeCovarianceMatrix(plink_path,bfile,cfile,sim_type='RRM'):
     """
     try:
         output    = subprocess.check_output('%s --version --noweb'%plink_path,shell=True)
-        m = re.match(r"^PLINK v(\d+\.\d+).*$", output)
+        m = re.match(b"^PLINK v(\d+\.\d+).*$", output)
         if m:
             use_plink = float(m.group(1)) >= 1.9
         else:

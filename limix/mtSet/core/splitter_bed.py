@@ -53,7 +53,7 @@ def splitGenoSlidingWindow(pos,out_file,size=5e4,step=None):
 
     RV = []
     wnd_i = 0
-    wnd_file = csv.writer(open(out_file,'wb'),delimiter='\t')
+    wnd_file = csv.writer(open(out_file,'w'),delimiter='\t')
     nSnps = [] 
     for chrom_i in chroms:
         start = 0
@@ -64,7 +64,7 @@ def splitGenoSlidingWindow(pos,out_file,size=5e4,step=None):
         while 1:
             if start>pos_chr_max: break
             end = start+size
-            Ir = (pos_chr>=start)*(pos_chr<end)
+            Ir = (pos_chr[1]>=start)*(pos_chr[1]<end)
             _nSnps = Ir.sum()
             if _nSnps>0:
                 idx_wnd_start = idx_chrom_start+SP.where(Ir)[0][0]
