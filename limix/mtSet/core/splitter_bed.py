@@ -53,7 +53,7 @@ def splitGenoSlidingWindow(pos,out_file,size=5e4,step=None):
 
     RV = []
     wnd_i = 0
-    wnd_file = csv.writer(open(out_file,'wb'),delimiter='\t')
+    wnd_file = csv.writer(open(out_file,'w'),delimiter='\t')
     nSnps = [] 
     for chrom_i in chroms:
         start = 0
