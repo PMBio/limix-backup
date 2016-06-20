@@ -80,7 +80,6 @@ def readBED(basefilename, useMAFencoding=False,blocksize = 1, start = 0, nSNPs =
 
     
     rs = bim[:,1]
-    import pdb; pdb.set_trace()
     pos = SP.array(bim[:,(0,2,3)],dtype = 'float')
 
 
