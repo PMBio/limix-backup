@@ -131,8 +131,3 @@ class DiagonalCov(Covariance):
         R[i, i] = 1
         return R
 
-if __name__ == '__main__':
-    n = 2
-    cov = DiagonalCov(n)
-    print cov.K()
-    print cov.K_grad_i(0)
