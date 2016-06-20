@@ -29,7 +29,7 @@ def readBIM(basefilename,usecols=None):
     helper method for speeding up read BED
     """
     bim = basefilename+ '.bim'
-    bim = SP.loadtxt(bim,dtype = 'str',usecols=usecols)
+    bim = SP.loadtxt(bim,dtype=bytes,usecols=usecols)
     return bim
     
 
@@ -38,7 +38,7 @@ def readFAM(basefilename,usecols=None):
     helper method for speeding up read FAM
     """
     fam = basefilename+'.fam'
-    fam = SP.loadtxt(fam,dtype = 'str',usecols=usecols)
+    fam = SP.loadtxt(fam,dtype=bytes,usecols=usecols)
     return fam
 
 
@@ -80,6 +80,7 @@ def readBED(basefilename, useMAFencoding=False,blocksize = 1, start = 0, nSNPs =
 
     
     rs = bim[:,1]
+    import pdb; pdb.set_trace()
     pos = SP.array(bim[:,(0,2,3)],dtype = 'float')
 
 
