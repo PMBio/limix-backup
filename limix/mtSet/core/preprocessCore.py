@@ -202,7 +202,7 @@ def computeCovarianceMatrix(plink_path,bfile,cfile,sim_type='RRM'):
     try:
         import pdb; pdb.set_trace()
         output    = subprocess.check_output('%s --version --noweb'%plink_path,shell=True)
-        m = re.match(r"^PLINK v(\d+\.\d+).*$", output)
+        m = re.match(b"^PLINK v(\d+\.\d+).*$", output)
         if m:
             use_plink = float(m.group(1)) >= 1.9
         else:
