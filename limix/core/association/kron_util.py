@@ -32,7 +32,7 @@ def pexph(M=None,eigh=None,exp=0.5,eps=1e-8,symmetric=True,debug=False):
 	if debug:
 		M_ = pexph(M,exp=1.0)
 		diff = np.absolute(M-M_).sum()
-		print diff
+		print(diff)
 		assert diff<1E-8
 	ret = {
 		"res": res,
@@ -61,7 +61,7 @@ def pexp(M=None,svd=None,exp=0.5, eps=1e-8,symmetric=True,debug=False):
 	if debug:
 		M_ = pexp(M,exp=1.0)
 		diff = np.absolute(M-M_).sum()
-		print diff
+		print(diff)
 		assert diff<1E-8
 	ret = {
 		"res": res,
@@ -80,7 +80,7 @@ def compute_XYA(DY, X, A=None):
 
 def vec(X):
 	res = np.empty((X.shape[0]*X.shape[1]))
-	for i in xrange(X.shape[1]):
+	for i in range(X.shape[1]):
 		res[i*X.shape[0]:(i+1)*X.shape[0]] = X[:,i]
 	return res
 
@@ -110,7 +110,7 @@ def compute_X1KX2(Y, D, X1, X2, A1=None, A2=None):
 
 
 	if (R>C) or (A1 is None) or (A2 is None):
-		for c in xrange(C):
+		for c in range(C):
 			X1D = X1 * D[:,c:c+1]
 			X1X2 = X1D.T.dot(X2)
 			if (A1 is None) and (A2 is None):
@@ -123,7 +123,7 @@ def compute_X1KX2(Y, D, X1, X2, A1=None, A2=None):
 				A1A2 = np.outer(A1[:,c],A2[:,c])
 				block += np.kron(A1A2,X1X2)
 	else:
-		for r in xrange(R):
+		for r in range(R):
 			A1D = A1 * D[r:r+1,:]
 			A1A2 = A1D.dot(A2.T)
 			X1X2 = X1[r,:][:,np.newaxis].dot(X2[r,:][np.newaxis,:])

@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 import os
 from os.path import join
 import sys
@@ -38,7 +38,7 @@ def query_yes_no(question, default="yes"):
 
     while True:
         sys.stdout.write(question + prompt)
-        choice = raw_input().lower()
+        choice = input().lower()
         if default is not None and choice == '':
             return valid[default]
         elif choice in valid:
@@ -316,7 +316,7 @@ def setup_package(reswig, yes, compatible):
     # http://stackoverflow.com/a/29634231
     import distutils.sysconfig
     cfg_vars = distutils.sysconfig.get_config_vars()
-    for key, value in cfg_vars.items():
+    for key, value in list(cfg_vars.items()):
         if type(value) == str:
             cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
 

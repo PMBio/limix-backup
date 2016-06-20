@@ -45,8 +45,8 @@ if __name__=='__main__':
         r = sp.zeros((Ps.shape[0], n_rips))
         for pi, p in enumerate(Ps): 
             for ri in range(n_rips):
-                print '.. %d traits - rip %d' % (p, ri)
-                print '   .. generating data'
+                print('.. %d traits - rip %d' % (p, ri))
+                print('   .. generating data')
                 Y, S, U, G = gen_data(N=N, P=p)
                 Cg = FreeFormCov(p, jitter=0)
                 Cn = FreeFormCov(p)
@@ -71,7 +71,7 @@ if __name__=='__main__':
                 params['Cn'] = gp.covar.Cn.getParams().copy()
                 gp0.setParams(params)
 
-                print '   .. optimization' 
+                print('   .. optimization') 
                 _t0 = time.time()
                 conv, info = gp.optimize()
                 _t1 = time.time()
@@ -87,7 +87,7 @@ if __name__=='__main__':
     else:
         R = {}
         fin = h5py.File(out_file, 'r')
-        for key in fin.keys():
+        for key in list(fin.keys()):
             R[key] = fin[key][:]
         fin.close()
 

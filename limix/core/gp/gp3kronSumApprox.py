@@ -8,7 +8,7 @@ import scipy.sparse as SS
 import time as TIME
 import copy
 
-from gp_base import GP
+from .gp_base import GP
 from limix.core.covar.cov3kronSum import cov3kronSum
 from limix.core.covar import freeform
 from limix.core.covar import Covariance

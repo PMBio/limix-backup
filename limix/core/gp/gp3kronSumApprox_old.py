@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0,'./../../..')
-from gp_base import GP
+from .gp_base import GP
 from limix.core.covar import cov3kronSum
 import pdb
 import numpy as NP

@@ -82,7 +82,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		list of rotated SNP row fixed effects design matrices X_snps
 		"""
 		res = []
-		for i in xrange(self.length_snps):
+		for i in range(self.length_snps):
 			res.append(self.rotate_X(X=self.X_snps[i]))
 		return res
 
@@ -92,7 +92,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		list of rotated SNP column fixed effects design matrices A_snps
 		"""
 		res = []
-		for i in xrange(self.length_snps):
+		for i in range(self.length_snps):
 			res.append(self.rotate_A(A=self.A_snps[i]))
 		return res
 
@@ -115,7 +115,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
 		snpsKY = np.empty((dof.sum(),1))
 		DY = self.D_rot() * self.Yrot()
-		for i in xrange(self.length_snps):
+		for i in range(self.length_snps):
 			snpsKY[dof_cumsum[i]:dof_cumsum[i+1],0] = kron_util.vec(kron_util.compute_XYA(DY=DY, X=self.X_snps_rot()[i], A=self.A_snps_rot()[i]))
 		return snpsKY
 
@@ -130,9 +130,9 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		dof = self.dof_snps
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
 		snpsKsnps = np.empty((dof.sum(),dof.sum()))
-		for i in xrange(self.length_snps):
+		for i in range(self.length_snps):
 			snpsKsnps[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[i]:dof_cumsum[i+1]] = kron_util.compute_X1KX2(Y=self.Y, D=self.D_rot(), A1=self.A_snps_rot()[i], A2=self.A_snps_rot()[i], X1=self.X_snps_rot()[i], X2=self.X_snps_rot()[i])
-			for j in xrange(i+1,self.length_snps):
+			for j in range(i+1,self.length_snps):
 				snpsKsnps[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]] = kron_util.compute_X1KX2(Y=self.Y, D=self.D_rot(), A1=self.A_snps_rot()[i], A2=self.A_snps_rot()[j], X1=self.X_snps_rot()[i], X2=self.X_snps_rot()[j])
 				snpsKsnps[dof_cumsum[j]:dof_cumsum[j+1],dof_cumsum[i]:dof_cumsum[i+1]] = snpsKsnps[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]].T
 		return snpsKsnps
@@ -148,8 +148,8 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		dof_snps = self.dof_snps
 		dof_snps_cumsum = np.concatenate(([0],dof_snps.cumsum()))
 		snpsKX = np.empty((dof_snps.sum(),dof.sum()))
-		for i in xrange(self.length_snps):
-			for j in xrange(self.length):
+		for i in range(self.length_snps):
+			for j in range(self.length):
 				snpsKX[dof_snps_cumsum[i]:dof_snps_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]] = kron_util.compute_X1KX2(Y=self.Y, D=self.D_rot(), A1=self.A_snps_rot()[i], A2=self.A_rot()[j], X1=self.X_snps_rot()[i], X2=self.X_rot()[j])
 		return snpsKX
 
@@ -249,7 +249,7 @@ class KroneckerGWAS(kron_lmm.KroneckerLMM):
 		lrts = np.empty((snps.shape[1]))
 		p_values = np.empty((snps.shape[1]))
 		self.A_snps = [A_snps]
-		for s in xrange(snps.shape[1]):
+		for s in range(snps.shape[1]):
 			snp = snps[:,s:s+1]
 			self.X_snps = [snp]
 			lrts[s],p_values[s] = self.lrt_snps()

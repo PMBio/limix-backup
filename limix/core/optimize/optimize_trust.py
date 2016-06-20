@@ -77,16 +77,16 @@ def opt_hyper(gpr,theta=1e-2,max_iter=None,alpha=1,tr=None,returnLML=False,noH=F
 
     for i in range(max_iter):
         if debug:
-            print('iteration', i)
-            print('params:', gpr.getParams()['covar'])
+            print(('iteration', i))
+            print(('params:', gpr.getParams()['covar']))
         grad = gpr.LML_grad()['covar']
 
         if returnLML:
             LML[i] = gpr.LML()
-            print('LML:', gpr.LML())
+            print(('LML:', gpr.LML()))
 
         if debug:
-            print('LMLgrad', (grad**2).mean())
+            print(('LMLgrad', (grad**2).mean()))
 
         conv = SP.absolute(grad).max() < theta
         if conv:    break
@@ -109,7 +109,7 @@ def opt_hyper(gpr,theta=1e-2,max_iter=None,alpha=1,tr=None,returnLML=False,noH=F
         params = {'covar': gpr.getParams()['covar'] + ap}
         gpr.setParams(params)
         if debug:
-            print(abs(ap).max())
+            print((abs(ap).max()))
         if abs(ap).max()<thr_dtheta:
             break
 

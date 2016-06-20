@@ -64,8 +64,8 @@ if __name__ == "__main__":
         for i in range(10):
             # check gradient
             covar.setRandomParams()
-            print gp.LML_grad()
-            print gpls.LML_grad()
+            print(gp.LML_grad())
+            print(gpls.LML_grad())
             ipdb.set_trace()
 
     if 0:
@@ -75,11 +75,11 @@ if __name__ == "__main__":
         sign3.scale = 0.25
         noise.scale = 0.25
         gp.optimize(calc_ste=True)
-        print 'params:'
-        print sign1.scale, '+/-', sign1.scale_ste
-        print sign2.scale, '+/-', sign2.scale_ste
-        print sign3.scale, '+/-', sign3.scale_ste
-        print noise.scale, '+/-', noise.scale_ste
+        print('params:')
+        print(sign1.scale, '+/-', sign1.scale_ste)
+        print(sign2.scale, '+/-', sign2.scale_ste)
+        print(sign3.scale, '+/-', sign3.scale_ste)
+        print(noise.scale, '+/-', noise.scale_ste)
         ipdb.set_trace()
 
     # initialize params
@@ -87,13 +87,13 @@ if __name__ == "__main__":
     sign2.scale = 0.25
     sign3.scale = 0.25
     noise.scale = 0.25
-    print gpls.getParams()['covar']
+    print(gpls.getParams()['covar'])
     gpls.optimize(debug=True)
-    print 'params:'
-    print sign1.scale
-    print sign2.scale
-    print sign3.scale
-    print noise.scale
+    print('params:')
+    print(sign1.scale)
+    print(sign2.scale)
+    print(sign3.scale)
+    print(noise.scale)
     ipdb.set_trace()
 
     # initialize params
@@ -104,10 +104,10 @@ if __name__ == "__main__":
     # set reusage
     covar._reuse = True 
     gpls.optimize(debug=True)
-    print 'params:'
-    print sign1.scale
-    print sign2.scale
-    print sign3.scale
-    print noise.scale
+    print('params:')
+    print(sign1.scale)
+    print(sign2.scale)
+    print(sign3.scale)
+    print(noise.scale)
     ipdb.set_trace()
 

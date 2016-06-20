@@ -44,23 +44,23 @@ if __name__=='__main__':
     # define gp
     gp = GP2KronSum(Y=Y, F=F, A=A, Cg=Cg, Cn=Cn, R=R)
     t0 = time.time()
-    print 'GP2KronSum.LML():', gp.LML()
-    print 'Time elapsed:', time.time() - t0
+    print('GP2KronSum.LML():', gp.LML())
+    print('Time elapsed:', time.time() - t0)
 
     # compare with normal gp
     # assess compatibility with this GP
     gp0 = GP(covar = cov, mean = copy.deepcopy(gp.mean))
     t0 = time.time()
-    print 'GP.LML():', gp0.LML()
-    print 'Time elapsed:', time.time() - t0
+    print('GP.LML():', gp0.LML())
+    print('Time elapsed:', time.time() - t0)
 
     t0 = time.time()
-    print 'GP2KronSum.LML_grad():', gp.LML_grad()
-    print 'Time elapsed:', time.time() - t0
+    print('GP2KronSum.LML_grad():', gp.LML_grad())
+    print('Time elapsed:', time.time() - t0)
 
     t0 = time.time()
-    print 'GP.LML_grad():', gp0.LML_grad()
-    print 'Time elapsed:', time.time() - t0
+    print('GP.LML_grad():', gp0.LML_grad())
+    print('Time elapsed:', time.time() - t0)
 
     params = gp.getParams()
     gp.optimize()

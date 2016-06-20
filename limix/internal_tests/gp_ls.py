@@ -57,18 +57,18 @@ if __name__ == "__main__":
         n_times = 10
         for i in range(n_times):
             covar.setRandomParams()
-            print gp.LML_grad()
-            print gpls.LML_grad()
+            print(gp.LML_grad())
+            print(gpls.LML_grad())
             pdb.set_trace()
 
     gp.optimize(calc_ste=True)
-    print 'scale of sqexp'
-    print sqexp.scale, '+/-', sqexp.scale_ste
-    print 'length of sqexp'
-    print sqexp.length, '+/-', sqexp.length_ste
-    print 'scale of fixed'
-    print noise.scale, '+/-', noise.scale_ste
-    print LA.eigh(gpls.AIM())[0]
+    print('scale of sqexp')
+    print(sqexp.scale, '+/-', sqexp.scale_ste)
+    print('length of sqexp')
+    print(sqexp.length, '+/-', sqexp.length_ste)
+    print('scale of fixed')
+    print(noise.scale, '+/-', noise.scale_ste)
+    print(LA.eigh(gpls.AIM())[0])
     pdb.set_trace()
 
     # gradient descent
@@ -78,9 +78,9 @@ if __name__ == "__main__":
     sqexp.length = 1
     noise.scale = 0.5 * Y.var()
     gpls.optimize(debug=True)
-    print sqexp.scale
-    print sqexp.length
-    print noise.scale
+    print(sqexp.scale)
+    print(sqexp.length)
+    print(noise.scale)
     pdb.set_trace()
 
     # optimize

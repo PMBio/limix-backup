@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.linalg as la
 import pandas as pd
-from util import *
+from .util import *
 import time, os
 import ipdb
 from pysnptools.snpreader import Bed
@@ -12,8 +12,8 @@ import pysnptools
 import pysnptools.util
 import pysnptools.util.pheno
 import time
-import kron_gwas
-from gwas import GWAS, create_dir
+from . import kron_gwas
+from .gwas import GWAS, create_dir
 import glob
 
 from limix.core.covar import FreeFormCov

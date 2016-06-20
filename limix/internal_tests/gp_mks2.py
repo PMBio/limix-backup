@@ -56,7 +56,7 @@ def check_equal(gpls_f, gpmks_f):
     if len(shape)>1:
         shape[0] = shape[0] * shape[1] 
         del shape[1]
-    print ((y1-y2.reshape(shape, order='F'))**2).sum()
+    print(((y1-y2.reshape(shape, order='F'))**2).sum())
 
 if __name__ == "__main__":
 
@@ -98,15 +98,15 @@ if __name__ == "__main__":
         for i in range(n_times):
             covar.setRandomParams()
             t0 = TIME.time()
-            print gp.LML_grad()['covar']
+            print(gp.LML_grad()['covar'])
             t1 = TIME.time()
-            print gpls.LML_grad()['covar']
+            print(gpls.LML_grad()['covar'])
             t2 = TIME.time()
-            print gpmks.LML_grad()['covar']
+            print(gpmks.LML_grad()['covar'])
             t3 = TIME.time()
-            print 'gp_base:', t1-t0
-            print 'gp_ls:', t2-t1
-            print 'gp_mks:', t3-t2
+            print('gp_base:', t1-t0)
+            print('gp_ls:', t2-t1)
+            print('gp_mks:', t3-t2)
             ipdb.set_trace()
             #gpls.covar.resample(); print gpls.LML_grad()['covar']
 
@@ -114,26 +114,26 @@ if __name__ == "__main__":
         # optimize gp base
         initCovars(C, C0v)
         gp.optimize()
-        print C[0].K() 
-        print C[1].K() 
-        print C[2].K()
+        print(C[0].K()) 
+        print(C[1].K()) 
+        print(C[2].K())
         ipdb.set_trace()
 
     if 1:
         # optimize linsys
         initCovars(C, C0v)
         gpls.optimize(debug=True,tr=0.1)
-        print C[0].K() 
-        print C[1].K() 
-        print C[2].K() 
+        print(C[0].K()) 
+        print(C[1].K()) 
+        print(C[2].K()) 
         ipdb.set_trace()
 
     if 1:
         # optimize linsys mks
         initCovars(C, C0v)
         gpmks.optimize(debug=True)
-        print C[0].K()
-        print C[1].K()
-        print C[2].K()
+        print(C[0].K())
+        print(C[1].K())
+        print(C[2].K())
         ipdb.set_trace()
 

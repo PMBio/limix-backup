@@ -11,7 +11,7 @@ def standardize(Y,in_place=False):
         YY = Y
     else:
         YY = Y.copy()
-    for i in xrange(YY.shape[1]):
+    for i in range(YY.shape[1]):
         Iok = ~SP.isnan(YY[:,i])
         Ym = YY[Iok,i].mean()
         YY[:,i]-=Ym

@@ -49,8 +49,8 @@ if __name__=='__main__':
         r = sp.zeros((Ns.shape[0], n_rips))
         for ni, n in enumerate(Ns): 
             for ri in range(n_rips):
-                print '.. %d individuals - rip %d' % (n, ri)
-                print '   .. generating data'
+                print('.. %d individuals - rip %d' % (n, ri))
+                print('   .. generating data')
                 Y, S, U, G = gen_data(N=n, P=P)
 
                 # define GPs
@@ -73,7 +73,7 @@ if __name__=='__main__':
                 params['Cn'] = gp.covar.Cn.getParams().copy()
                 gp0.setParams(params)
 
-                print '   .. optimization' 
+                print('   .. optimization') 
                 _t0 = time.time()
                 conv, info = gp.optimize()
                 _t1 = time.time()
@@ -89,7 +89,7 @@ if __name__=='__main__':
     else:
         R = {}
         fin = h5py.File(out_file, 'r')
-        for key in fin.keys():
+        for key in list(fin.keys()):
             R[key] = fin[key][:]
         fin.close()
 
@@ -144,13 +144,13 @@ if __name__=='__main__':
     cp = gp.get_counter_profile().copy()
     cp.update(gp.covar.get_counter_profile())
 
-    print '\nrotation of G'
-    print gp0.time['cache_Xrchanged']
-    print tp['Wr'], '(', tpin['Wr'], ')'
-    print tp['Wr']/tpin['Wr']
+    print('\nrotation of G')
+    print(gp0.time['cache_Xrchanged'])
+    print(tp['Wr'], '(', tpin['Wr'], ')')
+    print(tp['Wr']/tpin['Wr'])
 
-    print '\nThe whole thing'
-    print sp.sum(tp.values()), '(', sp.sum(tpin.values()), ')'
+    print('\nThe whole thing')
+    print(sp.sum(list(tp.values())), '(', sp.sum(list(tpin.values())), ')')
 
     import ipdb
     ipdb.set_trace()
@@ -171,17 +171,17 @@ if __name__=='__main__':
 
     # change params
     # import ipdb
-    print 'Change Params covar:'
+    print('Change Params covar:')
     # ipdb.set_trace()
     # import ipdb; ipdb.set_trace()
     gp.covar.diff(gp.covar.setRandomParams)
-    print 'Change Params gp:'
+    print('Change Params gp:')
     # ipdb.set_trace()
     gp.diff(gp.covar.setRandomParams)
-    print 'Change G covar:'
+    print('Change G covar:')
     # ipdb.set_trace()
     gp.covar.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
-    print 'Change G gp:'
+    print('Change G gp:')
     # ipdb.set_trace()
     gp.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
     # ipdb.set_trace()
@@ -189,22 +189,22 @@ if __name__=='__main__':
     gp0 = GP(covar = copy.deepcopy(gp.covar), mean = copy.deepcopy(gp.mean))
 
     t0 = time.time()
-    print 'GP2KronSum.LML():', gp.LML()
-    print 'Time elapsed:', time.time() - t0
+    print('GP2KronSum.LML():', gp.LML())
+    print('Time elapsed:', time.time() - t0)
 
     # compare with normal gp
     # assess compatibility with this GP
     t0 = time.time()
-    print 'GP.LML():', gp0.LML()
-    print 'Time elapsed:', time.time() - t0
+    print('GP.LML():', gp0.LML())
+    print('Time elapsed:', time.time() - t0)
 
     t0 = time.time()
-    print 'GP2KronSum.LML_grad():', gp.LML_grad()
-    print 'Time elapsed:', time.time() - t0
+    print('GP2KronSum.LML_grad():', gp.LML_grad())
+    print('Time elapsed:', time.time() - t0)
 
     t0 = time.time()
-    print 'GP.LML_grad():', gp0.LML_grad()
-    print 'Time elapsed:', time.time() - t0
+    print('GP.LML_grad():', gp0.LML_grad())
+    print('Time elapsed:', time.time() - t0)
 
     pdb.set_trace()
     gp.optimize()

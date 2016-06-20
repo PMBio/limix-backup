@@ -41,10 +41,10 @@ if __name__=='__main__':
         cov.setRandomParams()
         pdb.set_trace()
         cov.K()
-        print ((cov.H_chol_debug()-cov.H_chol())**2).mean()<1e-9
-        print ((cov.inv_debug()-cov.inv())**2).mean()<1e-9
-        print (cov.logdet_debug()-cov.logdet())**2
-        print (cov.logdet_grad_i_debug(0)-cov.logdet_grad_i(0))**2
+        print(((cov.H_chol_debug()-cov.H_chol())**2).mean()<1e-9)
+        print(((cov.inv_debug()-cov.inv())**2).mean()<1e-9)
+        print((cov.logdet_debug()-cov.logdet())**2)
+        print((cov.logdet_grad_i_debug(0)-cov.logdet_grad_i(0))**2)
 
     # define GP
     gp = GP3KronSumLR(Y = Y, Cg = Cg, Cn = Cn, R = R, G = G, rank = 1)
@@ -64,14 +64,14 @@ if __name__=='__main__':
             sp.random.seed(2)
             gp.covar.setRandomParams()
             Iexact = gp.covar._getIscoreTest(debug=True)
-            print 'exact'
-            print Iexact
+            print('exact')
+            print(Iexact)
             I1 = gp.covar._getIscoreTest(n_seeds=n_seeds, seed=i, debug1=True)
-            print 'sample %d' % i
-            print I1
+            print('sample %d' % i)
+            print(I1)
             I2 = gp.covar._getIscoreTest(n_seeds=n_seeds, seed=i)
-            print 'sample %d' % i
-            print I2
+            print('sample %d' % i)
+            print(I2)
         pdb.set_trace()
 
     if 1:
@@ -79,8 +79,8 @@ if __name__=='__main__':
         n_seeds = 1000
         for i in range(10):
             gp.covar.setRandomParams()
-            print gp.score(debug=True)
-            print gp.score(n_seeds=n_seeds, seed=i)
+            print(gp.score(debug=True))
+            print(gp.score(n_seeds=n_seeds, seed=i))
         ipdb.set_trace()
 
 
@@ -107,16 +107,16 @@ if 0:
 
     # change params
     import ipdb
-    print 'Change Params covar:'
+    print('Change Params covar:')
     ipdb.set_trace()
     gp.covar.diff(gp.covar.setRandomParams)
-    print 'Change Params gp:'
+    print('Change Params gp:')
     ipdb.set_trace()
     gp.diff(gp.covar.setRandomParams)
-    print 'Change G covar:'
+    print('Change G covar:')
     ipdb.set_trace()
     gp.covar.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
-    print 'Change G gp:'
+    print('Change G gp:')
     ipdb.set_trace()
     gp.diff(gp.covar.setG, 1.*(sp.rand(N, f)<0.2))
     ipdb.set_trace()
@@ -124,22 +124,22 @@ if 0:
     gp0 = GP(covar = copy.deepcopy(gp.covar), mean = copy.deepcopy(gp.mean))
 
     t0 = time.time()
-    print 'GP2KronSum.LML():', gp.LML()
-    print 'Time elapsed:', time.time() - t0
+    print('GP2KronSum.LML():', gp.LML())
+    print('Time elapsed:', time.time() - t0)
 
     # compare with normal gp
     # assess compatibility with this GP
     t0 = time.time()
-    print 'GP.LML():', gp0.LML()
-    print 'Time elapsed:', time.time() - t0
+    print('GP.LML():', gp0.LML())
+    print('Time elapsed:', time.time() - t0)
 
     t0 = time.time()
-    print 'GP2KronSum.LML_grad():', gp.LML_grad()
-    print 'Time elapsed:', time.time() - t0
+    print('GP2KronSum.LML_grad():', gp.LML_grad())
+    print('Time elapsed:', time.time() - t0)
 
     t0 = time.time()
-    print 'GP.LML_grad():', gp0.LML_grad()
-    print 'Time elapsed:', time.time() - t0
+    print('GP.LML_grad():', gp0.LML_grad())
+    print('Time elapsed:', time.time() - t0)
 
     pdb.set_trace()
     gp.optimize()

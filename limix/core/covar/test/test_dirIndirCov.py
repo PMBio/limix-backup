@@ -1,4 +1,4 @@
-from __future__ import division
+
 import unittest
 import scipy as sp
 import numpy as np

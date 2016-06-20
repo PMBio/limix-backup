@@ -56,8 +56,8 @@ if __name__ == "__main__":
     gp.optimize(calc_ste=True)
 
     # print optimized values and standard errors
-    print 'scale of geno'
-    print geno.scale, '+/-', geno.scale_ste
-    print 'scale of fixed'
-    print noise.scale, '+/-', noise.scale_ste
+    print('scale of geno')
+    print(geno.scale, '+/-', geno.scale_ste)
+    print('scale of fixed')
+    print(noise.scale, '+/-', noise.scale_ste)
 

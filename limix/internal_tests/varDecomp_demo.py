@@ -36,16 +36,16 @@ if __name__=='__main__':
         vc.addRandomEffect(XX,trait_covar_type='freeform')
         vc.addRandomEffect(is_noise=True,trait_covar_type='freeform')
         vc.optimize()
-        print vc.getTraitCovar(0)
+        print(vc.getTraitCovar(0))
         ipdb.set_trace()
 
     if 0:
         # test basic functions
-        print vc.getLML()
-        print vc.getLMLgrad()
-        print vc.getWeights()
-        print vc.getTraitCovarFun(0).K()
-        print vc.getTraitCovar(0)
+        print(vc.getLML())
+        print(vc.getLMLgrad())
+        print(vc.getWeights())
+        print(vc.getTraitCovarFun(0).K())
+        print(vc.getTraitCovar(0))
         ipdb.set_trace()
 
 
@@ -58,7 +58,7 @@ if __name__=='__main__':
         vc.addRandomEffect(is_noise=True,trait_covar_type='freeform')
         for ti in range(10):
             vc.optimize(init_method='random')
-            print vc.getTraitCovar(0)
+            print(vc.getTraitCovar(0))
         ipdb.set_trace()
 
     if 0:
@@ -69,8 +69,8 @@ if __name__=='__main__':
         vc.addRandomEffect(XX,trait_covar_type='freeform')
         vc.addRandomEffect(is_noise=True,trait_covar_type='freeform')
         vc.optimize(inference='GP')
-        print vc.getTraitCovar(0)
-        print vc.getVarianceComps()
+        print(vc.getTraitCovar(0))
+        print(vc.getVarianceComps())
         ipdb.set_trace()
 
     if 0:
@@ -80,7 +80,7 @@ if __name__=='__main__':
         vc.addRandomEffect(XX)
         vc.addRandomEffect(is_noise=True)
         vc.optimize()
-        print vc.getVarianceComps()
+        print(vc.getVarianceComps())
         ipdb.set_trace()
 
     if 0:
@@ -88,7 +88,7 @@ if __name__=='__main__':
         #tcts = ['diag', 'lowrank', 'lowrank_id', 'lowrank_diag', 'block', 'block_id', 'block_diag']
         tcts = ['freeform', 'lowrank', 'lowrank_id', 'block', 'block_id']
         for tct in tcts: 
-            print tct
+            print(tct)
             vc = limix.VarianceDecomposition(Y)
             vc.addFixedEffect(F=F1, A=A1)
             #vc.addFixedEffect(F=F2, A=A2)
@@ -96,9 +96,9 @@ if __name__=='__main__':
             vc.addRandomEffect(XX, trait_covar_type=tct)
             vc.addRandomEffect(is_noise=True, trait_covar_type='freeform')
             vc.optimize()
-            print vc.getTraitCovar(0)
-            print vc.getTraitCovar(1)
-            print vc.getTraitCovar(2)
+            print(vc.getTraitCovar(0))
+            print(vc.getTraitCovar(1))
+            print(vc.getTraitCovar(2))
             ipdb.set_trace()
 
     if 0:
@@ -112,7 +112,7 @@ if __name__=='__main__':
         vc.addRandomEffect(XX,trait_covar_type='freeform')
         vc.addRandomEffect(is_noise=True,trait_covar_type='freeform')
         vc.optimize()
-        print vc.getTraitCovar(0)
+        print(vc.getTraitCovar(0))
         ipdb.set_trace()
 
     if 1:
@@ -127,6 +127,6 @@ if __name__=='__main__':
         vc.addRandomEffect(XX,trait_covar_type='freeform')
         vc.addRandomEffect(is_noise=True,trait_covar_type='freeform')
         vc.optimize()
-        print vc.getTraitCovar(0)
+        print(vc.getTraitCovar(0))
         ipdb.set_trace()
 

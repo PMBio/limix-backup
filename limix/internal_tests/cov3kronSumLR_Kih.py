@@ -49,19 +49,19 @@ if __name__=='__main__':
     A = sp.eye(N*P) + sp.dot(U, U.T)
     Ah = sp.eye(N*P) + sp.dot(U, sp.dot(X, U.T))
     A1 = sp.dot(Ah, Ah.T)
-    print ((A-A1)**2).mean() 
+    print(((A-A1)**2).mean()) 
     pdb.set_trace()
 
     K = cov.K() 
     Kh = sp.dot(la.inv(cov.L()), cov.d()[:, sp.newaxis]**(-0.5) * Ah) 
     K1 = sp.dot(Kh, Kh.T)
-    print ((K-K1)**2).mean() 
+    print(((K-K1)**2).mean()) 
     pdb.set_trace()
 
     B = la.inv(X) + sp.dot(U.T, U)
     Kh_inv  = la.inv(Kh)
     Kh_inv1 = sp.dot(sp.eye(N*P) - sp.dot(sp.dot(U, la.inv(B)), U.T), cov.d()[:, sp.newaxis]**(0.5) * cov.L())
-    print ((Kh_inv-Kh_inv1)**2).mean() 
+    print(((Kh_inv-Kh_inv1)**2).mean()) 
     pdb.set_trace()
 
     M = sp.randn(N, P)
@@ -69,8 +69,8 @@ if __name__=='__main__':
     Kh_veM2 = sp.dot(Kh, M.reshape((N*P, 1), order='F')).reshape((N, P), order='F')
     Kh_inv_veM1 = cov.Kh_inv_dot_ve(M)
     Kh_inv_veM2 = sp.dot(Kh_inv, M.reshape((N*P, 1), order='F')).reshape((N, P), order='F')
-    print ((Kh_veM1-Kh_veM2)**2).mean()
-    print ((Kh_inv_veM1-Kh_inv_veM2)**2).mean()
+    print(((Kh_veM1-Kh_veM2)**2).mean())
+    print(((Kh_inv_veM1-Kh_inv_veM2)**2).mean())
     pdb.set_trace()
 
 

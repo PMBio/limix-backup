@@ -29,17 +29,17 @@ if __name__=='__main__':
     for ni, n in enumerate(ns):
         for ri in range(n_rips):
 
-            print 'n = ', n, '- rip = ', ri
+            print('n = ', n, '- rip = ', ri)
 
-            print '   .. generate data'
+            print('   .. generate data')
             y = sp.randn(n, 1)
             C = gen_cov(n)
 
             t0 = time.time()
-            print '   .. solve chol'
+            print('   .. solve chol')
             x_chol = C.solve(y)
             t1 = time.time()
-            print '   .. solve linsys'
+            print('   .. solve linsys')
             x_ls   = C.solve_ls(y)
             t2 = time.time()
 

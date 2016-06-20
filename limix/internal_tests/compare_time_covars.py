@@ -39,8 +39,8 @@ if __name__=='__main__':
             t0 += _t1-_t0
             t1 += _t2-_t1
 
-    print 'old:', t0
-    print 'new:', t1
+    print('old:', t0)
+    print('new:', t1)
 
     
 

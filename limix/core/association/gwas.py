@@ -101,15 +101,15 @@ class GWAS(object):
 			if temp_dir is not None:
 				self.save_results_block(dir_name=temp_dir, res=res, intervals=self.intervals, idx_interval=stop)
 			else:
-				for p in res.keys():
-					if result.has_key(p):
+				for p in list(res.keys()):
+					if p in result:
 						result[p] = pd.concat([result[p],res[p]])
 					else:
 						result[p] = res[p]
 		return result
 
 	def save_results_block(self, dir_name, res, intervals=None, idx_interval=None):
-		for p in res.keys():
+		for p in list(res.keys()):
 			mydir = dir_name + "/" + str(p) +"/"
 			create_dir(mydir)
 			if intervals is not None:
@@ -151,7 +151,7 @@ class GWAS(object):
 	def _generate_intervals(self, blocksize, total_snps):
 		if blocksize is None:
 			blocksize = total_snps
-		intervals = range(0,total_snps,blocksize)
+		intervals = list(range(0,total_snps,blocksize))
 		
 		if intervals[-1]!= total_snps:
 			intervals.append(total_snps)
@@ -187,9 +187,9 @@ class GWAS(object):
 		elif type(phenotype) == pd.DataFrame:
 			return phenotype
 		elif type(phenotype) == dict:
-			assert phenotype.has_key("iid"), "assuming format to be the fastlmm format."
-			assert phenotype.has_key("header"), "assuming format to be the fastlmm format."
-			assert phenotype.has_key("vals"), "assuming format to be the fastlmm format."
+			assert "iid" in phenotype, "assuming format to be the fastlmm format."
+			assert "header" in phenotype, "assuming format to be the fastlmm format."
+			assert "vals" in phenotype, "assuming format to be the fastlmm format."
 			pheno_new = pd.DataFrame(data=phenotype["vals"], columns=phenotype["header"], index=phenotype["iid"])
 			return pheno_new
 		elif phenotype is None:
@@ -250,7 +250,7 @@ if __name__ == "__main__":
 	t00 = time.time()
 	snp_intersect,pheno_intersect = pysnptools.util.intersect_apply([snp_reader, pheno], sort_by_dataset=True)
 	t1 = time.time()
-	print("done intersecting after %.4fs" % (t1-t00))
+	print(("done intersecting after %.4fs" % (t1-t00)))
 
 	print("building kernel")
 	t0 = time.time()
@@ -266,17 +266,17 @@ if __name__ == "__main__":
 		K = snp_intersect.kernel(standardizer=standardizer,blocksize=blocksize)
 		K /= K.diagonal().mean()
 	t1 = time.time()
-	print "done building kernel after %.4fs" % (t1-t0)	
+	print("done building kernel after %.4fs" % (t1-t0))	
 
 	if 0:
-		print "computing Eigenvalue decomposition of K"
+		print("computing Eigenvalue decomposition of K")
 		t0 = time.time()
 		S,U = la.eigh(K)
 		t1 = time.time()
-		print "done computing eigenvalue decomposition of kernel after %.4fs" % (t1-t0)	
+		print("done computing eigenvalue decomposition of kernel after %.4fs" % (t1-t0))	
 		
 	if 1:
-		print "running GWAS"
+		print("running GWAS")
 		t0 = time.time()
 		if 1:#LMM with pre-built kernel K
 			mygwas = GWAS(K=K, snps_K=None, snps_test=snp_intersect, phenotype=pheno, covariates=covariates, h2=None, interact_with_snp=None, nGridH2=10, standardizer=standardizer)
@@ -291,6 +291,6 @@ if __name__ == "__main__":
 			result_block = mygwas.snps_test_block(block_start=0, block_end=blocksize)
 			mygwas.save_results_block("./res_check/", result_block)
 		t1 = time.time()
-		print "done running GWAS after %.4fs" % (t1-t0)
-		print "total: %.4fs" % (t1-t00)
+		print("done running GWAS after %.4fs" % (t1-t0))
+		print("total: %.4fs" % (t1-t00))
 

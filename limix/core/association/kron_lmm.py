@@ -6,7 +6,7 @@ import numpy.linalg as la
 import numpy as np
 import scipy as sp
 import limix.core.association.kron_util as kron_util
-import mingrid
+from . import mingrid
 #import fastlmm.util.mingrid as mingrid
 import time
 
@@ -207,7 +207,7 @@ class KroneckerLMM(Cached):
 		"""	
 		if type(X) is list:
 			dof = np.empty((len(X)),dtype=np.int)
-			for i in xrange(len(X)):
+			for i in range(len(X)):
 				dof[i] = X[i].shape[1]
 			return dof
 		else:
@@ -222,7 +222,7 @@ class KroneckerLMM(Cached):
 		"""	
 		if type(A) is list:
 			dof = np.empty((len(A)),dtype=np.int)
-			for i in xrange(len(A)):
+			for i in range(len(A)):
 				if A[i] is None:
 					dof[i] = self.P
 				else:
@@ -311,7 +311,7 @@ class KroneckerLMM(Cached):
 			list of rotated row fixed effect design matrices
 		"""
 		res = []
-		for i in xrange(self.length):
+		for i in range(self.length):
 			res.append(self.rotate_X(X=self.X[i]))
 		return res
 
@@ -325,7 +325,7 @@ class KroneckerLMM(Cached):
 			list of rotated column fixed effect design matrices
 		"""
 		res = []
-		for i in xrange(self.length):
+		for i in range(self.length):
 			res.append(self.rotate_A(A=self.A[i]))
 		return res
 
@@ -340,9 +340,9 @@ class KroneckerLMM(Cached):
 		dof = self.dof
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
 		XKX = np.empty((dof.sum(),dof.sum()))
-		for i in xrange(self.length):
+		for i in range(self.length):
 			XKX[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[i]:dof_cumsum[i+1]] = kron_util.compute_X1KX2(Y=self.Y, D=self.D_rot(), A1=self.A_rot()[i], A2=self.A_rot()[i], X1=self.X_rot()[i], X2=self.X_rot()[i])
-			for j in xrange(i+1,self.length):
+			for j in range(i+1,self.length):
 				XKX[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]] = kron_util.compute_X1KX2(Y=self.Y, D=self.D_rot(), A1=self.A_rot()[i], A2=self.A_rot()[j], X1=self.X_rot()[i], X2=self.X_rot()[j])
 				XKX[dof_cumsum[j]:dof_cumsum[j+1],dof_cumsum[i]:dof_cumsum[i+1]] = XKX[dof_cumsum[i]:dof_cumsum[i+1],dof_cumsum[j]:dof_cumsum[j+1]].T
 		return XKX
@@ -357,7 +357,7 @@ class KroneckerLMM(Cached):
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
 		XKY = np.empty((dof.sum(),1))
 		DY = self.D_rot() * self.Yrot()
-		for i in xrange(self.length):
+		for i in range(self.length):
 			XKY[dof_cumsum[i]:dof_cumsum[i+1],0] = kron_util.vec(kron_util.compute_XYA(DY=DY, X=self.X_rot()[i], A=self.A_rot()[i]))		
 		return XKY
 
@@ -475,13 +475,13 @@ class KroneckerLMM(Cached):
 				}
 			t1 = time.time()
 			if verbose:
-				print "one objective function call took %.2f seconds" % (t1-t0)
+				print("one objective function call took %.2f seconds" % (t1-t0))
 			return res
 		if verbose:
-			print "findh2"
+			print("findh2")
 		minimum = mingrid.minimize1D(f=f, nGrid=nGridH2, minval=minH2, maxval=maxH2, verbose=verbose)
 		if verbose:
-			print "numcalls to log likelihood= " + str(self.numcalls)
+			print("numcalls to log likelihood= " + str(self.numcalls))
 		self.h2 = resmin[0]['h2']
 		return -resmin[0]['nLL']
 	

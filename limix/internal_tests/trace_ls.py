@@ -29,7 +29,7 @@ if __name__=='__main__':
     for ni, n in enumerate(ns):
         for ii, nIterMC in enumerate(nIterMCs):
             for rip in range(n_rips):
-                print n, nIterMC, rip
+                print(n, nIterMC, rip)
                 C = gen_cov(n)
                 C._nIterMC = nIterMC
                 t0 = time.time()

@@ -76,13 +76,13 @@ if __name__ == "__main__":
 
     if 1:
         # basic checks
-        print ((covar.K()-covar0.K())**2).mean()
-        print ((covar.K_grad_i(0)-covar0.K_grad_i(0))**2).mean()
-        print ((covar.K_hess_i_j(0, 0)-covar0.K_hess_i_j(0, 0))**2).mean()
+        print(((covar.K()-covar0.K())**2).mean())
+        print(((covar.K_grad_i(0)-covar0.K_grad_i(0))**2).mean())
+        print(((covar.K_hess_i_j(0, 0)-covar0.K_hess_i_j(0, 0))**2).mean())
         ipdb.set_trace()
 
     if 1:
-        print 'One single dot'
+        print('One single dot')
         Z = sp.randn(N*P, n_seeds)
         Zt = sp.zeros((N,P,n_seeds))
         Zt[:] = Z.reshape((N,P,n_seeds),order='F')
@@ -93,14 +93,14 @@ if __name__ == "__main__":
         t1 = TIME.time()
         ce = covar.dot(Zt).reshape((N*P,n_seeds), order='F')
         t2 = TIME.time()
-        print ((ine-ce)**2).sum()
-        print 'time dot inefficient:', t1-t0
-        print 'time dot efficient:', t2-t1
-        print 'improvement:', (t1-t0) / (t2-t1)
+        print(((ine-ce)**2).sum())
+        print('time dot inefficient:', t1-t0)
+        print('time dot efficient:', t2-t1)
+        print('improvement:', (t1-t0) / (t2-t1))
         ipdb.set_trace()
 
     if 1:
-        print 'Solve lin sys'
+        print('Solve lin sys')
         Z = sp.randn(N*P, n_seeds)
         Zt = sp.zeros((N,P,n_seeds))
         Zt[:] = Z.reshape((N,P,n_seeds),order='F')
@@ -108,16 +108,16 @@ if __name__ == "__main__":
         KiZ_0 = covar0.solve_ls(Z)
         dt = TIME.time()-t0
         t = {}
-        for key in covard.keys():
+        for key in list(covard.keys()):
             t0 = TIME.time()
             KiZ = covard[key].solve_ls_NxPxS(Zt).reshape((N*P, n_seeds), order='F')
             t[key] = TIME.time() - t0
-            print  ((KiZ-KiZ_0)**2).mean()
-        print 'time dot inefficient:', dt
+            print(((KiZ-KiZ_0)**2).mean())
+        print('time dot inefficient:', dt)
         for _ls in ls:
             for _dm in dot_method:
                 key = _ls+'-'+_dm
-                print key+':', t[key] 
+                print(key+':', t[key]) 
         ipdb.set_trace()
 
     # coordinate zetas
@@ -126,39 +126,39 @@ if __name__ == "__main__":
     covar0._cache_Z[:] = covar.Z().reshape((N*P, n_seeds), order='F')
 
     if 1:
-        print 'DKZ'
+        print('DKZ')
         t0 = TIME.time()
         DKZ0 = covar0.DKZ()
         t1 = TIME.time()
         DKZ = covar.DKZ().reshape(DKZ0.shape, order='F')
         t2 = TIME.time()
-        print ((DKZ-DKZ0)**2).mean()
-        print 'time dot inefficient:', t1-t0
-        print 'time dot efficient:', t2-t1
-        print 'improvement:', (t1-t0) / (t2-t1)
+        print(((DKZ-DKZ0)**2).mean())
+        print('time dot inefficient:', t1-t0)
+        print('time dot efficient:', t2-t1)
+        print('improvement:', (t1-t0) / (t2-t1))
         ipdb.set_trace()
 
-        print 'DDKZ'
+        print('DDKZ')
         t0 = TIME.time()
         DDKZ0 = covar0.DDKZ()
         t1 = TIME.time()
         DDKZ = covar.DDKZ().reshape(DDKZ0.shape, order='F')
         t2 = TIME.time()
-        print ((DDKZ-DDKZ0)**2).mean()
-        print 'time dot inefficient:', t1-t0
-        print 'time dot efficient:', t2-t1
-        print 'improvement:', (t1-t0) / (t2-t1)
+        print(((DDKZ-DDKZ0)**2).mean())
+        print('time dot inefficient:', t1-t0)
+        print('time dot efficient:', t2-t1)
+        print('improvement:', (t1-t0) / (t2-t1))
         ipdb.set_trace()
 
     if 1:
         # test logdet and trace functions
         logdet = covar.sample_logdet_grad()
         logdet0 = covar0.sample_logdet_grad()
-        print ((logdet-logdet0)**2).mean()
+        print(((logdet-logdet0)**2).mean())
 
         tr = covar.sample_trKiDDK()
         tr0 = covar0.sample_trKiDDK()
-        print ((tr-tr0)**2).mean()
+        print(((tr-tr0)**2).mean())
         ipdb.set_trace()
 
     if 1:
@@ -170,56 +170,56 @@ if __name__ == "__main__":
         gpmks.covar.Z()
         gpmks.covar._cache_Z[:] = covar.Z()
 
-        print 'Kiy' 
+        print('Kiy') 
         t0 = TIME.time()
         Kiy = gpmks.Kiy()
         t1 = TIME.time()
         Kiy0 = gpls.Kiy()
         t2 = TIME.time()
-        print ((Kiy-Kiy0)**2).mean()
-        print 'time dot efficient:', t1-t0
-        print 'time dot inefficient:', t2-t1
-        print 'improvement:', (t2-t1) / (t1-t0)
+        print(((Kiy-Kiy0)**2).mean())
+        print('time dot efficient:', t1-t0)
+        print('time dot inefficient:', t2-t1)
+        print('improvement:', (t2-t1) / (t1-t0))
         ipdb.set_trace()
 
 
-        print 'DKKiy' 
+        print('DKKiy') 
         t0 = TIME.time()
         DKKiy = gpmks.DKKiy()
         t1 = TIME.time()
         DKKiy0 = gpls.DKKiy()
         t2 = TIME.time()
-        print ((DKKiy-DKKiy0)**2).mean()
-        print 'time dot efficient:', t1-t0
-        print 'time dot inefficient:', t2-t1
-        print 'improvement:', (t2-t1) / (t1-t0)
+        print(((DKKiy-DKKiy0)**2).mean())
+        print('time dot efficient:', t1-t0)
+        print('time dot inefficient:', t2-t1)
+        print('improvement:', (t2-t1) / (t1-t0))
         ipdb.set_trace()
 
-        print 'DDKKiy' 
+        print('DDKKiy') 
         t0 = TIME.time()
         DDKKiy = gpmks.DDKKiy()
         t1 = TIME.time()
         DDKKiy0 = gpls.DDKKiy()
         t2 = TIME.time()
-        print ((DDKKiy-DDKKiy0)**2).mean()
-        print 'time dot efficient:', t1-t0
-        print 'time dot inefficient:', t2-t1
-        print 'improvement:', (t2-t1) / (t1-t0)
+        print(((DDKKiy-DDKKiy0)**2).mean())
+        print('time dot efficient:', t1-t0)
+        print('time dot inefficient:', t2-t1)
+        print('improvement:', (t2-t1) / (t1-t0))
         ipdb.set_trace()
 
-        print 'AIM' 
+        print('AIM') 
         t0 = TIME.time()
         AIM = gpmks.AIM()
         t1 = TIME.time()
         AIM0 = gpls.AIM()
         t2 = TIME.time()
-        print ((AIM-AIM0)**2).mean()
-        print 'time dot efficient:', t1-t0
-        print 'time dot inefficient:', t2-t1
-        print 'improvement:', (t2-t1) / (t1-t0)
+        print(((AIM-AIM0)**2).mean())
+        print('time dot efficient:', t1-t0)
+        print('time dot inefficient:', t2-t1)
+        print('improvement:', (t2-t1) / (t1-t0))
         ipdb.set_trace()
 
-        print ((gpmks.LML()-gpls.LML())**2)
-        print ((gpmks.LML_grad()['covar'] - gpls.LML_grad()['covar'])**2).mean()
+        print(((gpmks.LML()-gpls.LML())**2))
+        print(((gpmks.LML_grad()['covar'] - gpls.LML_grad()['covar'])**2).mean())
         ipdb.set_trace()
         

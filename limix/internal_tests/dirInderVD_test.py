@@ -119,12 +119,12 @@ if __name__=='__main__':
     vc = DirIndirVD(**data)
     for i in range(10):
         rv = vc.optimize(calc_ste = True)
-        print 'lml:', rv['LML']
+        print('lml:', rv['LML'])
         res = vc.getResidual()
-        print 'residual:', res['variance_explained']
-        print 'geno cov'
-        print vc._genoCov.dirIndirCov_K()
-        print 'ste on geno cov'
-        print vc._genoCov.dirIndirCov_K_ste()
+        print('residual:', res['variance_explained'])
+        print('geno cov')
+        print(vc._genoCov.dirIndirCov_K())
+        print('ste on geno cov')
+        print(vc._genoCov.dirIndirCov_K_ste())
         ipdb.set_trace()
 

@@ -51,15 +51,15 @@ if __name__ == "__main__":
     pdb.set_trace()
 
     # print optimized values and standard errors
-    print 'weights of fixed effects'
-    print mean.b[0, 0], '+/-', mean.b_ste[0, 0]
-    print mean.b[1, 0], '+/-', mean.b_ste[1, 0]
-    print 'scale of sqexp'
-    print sqexp.scale, '+/-', sqexp.scale_ste
-    print 'length of sqexp'
-    print sqexp.length, '+/-', sqexp.length_ste
-    print 'scale of fixed'
-    print noise.scale, '+/-', noise.scale_ste
+    print('weights of fixed effects')
+    print(mean.b[0, 0], '+/-', mean.b_ste[0, 0])
+    print(mean.b[1, 0], '+/-', mean.b_ste[1, 0])
+    print('scale of sqexp')
+    print(sqexp.scale, '+/-', sqexp.scale_ste)
+    print('length of sqexp')
+    print(sqexp.length, '+/-', sqexp.length_ste)
+    print('scale of fixed')
+    print(noise.scale, '+/-', noise.scale_ste)
 
     # plot
     pl.subplot(111)

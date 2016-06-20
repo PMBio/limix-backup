@@ -48,15 +48,15 @@ if __name__ == "__main__":
         idxs = sp.zeros(N, dtype=int)
         idxs[Ie]  = idxsM[Ie, 0]
         idxs[~Ie] = idxsM[~Ie, 1]
-        print 'K:', ((covar1.K()[idxs][:, idxs] - covar.K())**2).mean()
+        print('K:', ((covar1.K()[idxs][:, idxs] - covar.K())**2).mean())
 
     # compare
-    print 'K:', ((covar1.K() - covar.K())**2).mean()
-    print 'Kiy:', ((covar.solve(Y)-covar1.solve(Y))**2).mean()
-    print 'logdet:', covar.logdet()-covar1.logdet()
+    print('K:', ((covar1.K() - covar.K())**2).mean())
+    print('Kiy:', ((covar.solve(Y)-covar1.solve(Y))**2).mean())
+    print('logdet:', covar.logdet()-covar1.logdet())
     for i in range(covar.getNumberParams()):
-        print 'K_grad_%d:'%i, ((covar1.K_grad_i(i) - covar.K_grad_i(i))**2).mean()
-        print 'logdet_grad_%d:'%i, covar1.logdet_grad_i(i) - covar.logdet_grad_i(i)
+        print('K_grad_%d:'%i, ((covar1.K_grad_i(i) - covar.K_grad_i(i))**2).mean())
+        print('logdet_grad_%d:'%i, covar1.logdet_grad_i(i) - covar.logdet_grad_i(i))
 
     # define mean term
     W = 1. * (sp.rand(N, 2) < 0.2)

@@ -277,7 +277,7 @@ if __name__=='__main__':
     Cr_big[sp.ix_(~Ie, Ie)] = Cr.K()[1,0]
     Cr_big[sp.ix_(~Ie, ~Ie)]= Cr.K()[1,1]
     WW1 = Cr_big * sp.dot(G, G.T)
-    print('WW:', ((WW1-WW)**2).mean())
+    print(('WW:', ((WW1-WW)**2).mean()))
 
     pdb.set_trace()
     
@@ -292,31 +292,31 @@ if __name__=='__main__':
         Cr_big[sp.ix_(~Ie, Ie)] = Cr.K_grad_i(i)[1,0]
         Cr_big[sp.ix_(~Ie, ~Ie)]= Cr.K_grad_i(i)[1,1]
         WW1_grad = Cr_big * sp.dot(G, G.T)
-        print('WWgrad %d:' % i, ((WW1_grad-WW_grad)**2).mean())
+        print(('WWgrad %d:' % i, ((WW1_grad-WW_grad)**2).mean()))
 
     # inverse
     y = sp.randn(N, 1)
     Kiy1 = C.solve(y)
     Kiy2 = sp.dot(C.inv(), y)
-    print ((Kiy1-Kiy2)**2).mean()
+    print(((Kiy1-Kiy2)**2).mean())
 
     # logdet
     ld1 = C.logdet()
     ld2 = sp.log(C.S()).sum() 
-    print(ld1-ld2)
+    print((ld1-ld2))
 
     # logdet_grad_i
     for i in range(C.getNumberParams()):
         ldg1 = C.logdet_grad_i(i)
         ldg2 = sp.dot(C.inv(), C.K_grad_i(i)).diagonal().sum()
-        print('logdet grad %d:' % i, ldg1-ldg2)
+        print(('logdet grad %d:' % i, ldg1-ldg2))
 
     # K_grad_dot
     M = sp.randn(N, 1)
     for i in range(C.getNumberParams()):
         DKM = C.K_grad_i_dot(M, i) 
         DKM1 = sp.dot(C.K_grad_i(i), M)
-        print('Kgrad%d.dot:' % i, ((DKM-DKM1)**2).mean())
+        print(('Kgrad%d.dot:' % i, ((DKM-DKM1)**2).mean()))
 
     pdb.set_trace()
 

@@ -62,7 +62,7 @@ class KroneckerLMM_vec(kron_gwas.KroneckerGWAS):
 		dof = self.dof
 		resX = np.empty((self.N*self.P,dof.sum()))
 		dof_cumsum = np.concatenate(([0],dof.cumsum()))
-		for i in xrange(self.length):
+		for i in range(self.length):
 			resX[:,dof_cumsum[i]:dof_cumsum[i+1]] = self.vecX_i(i=i)
 		return resX
 			

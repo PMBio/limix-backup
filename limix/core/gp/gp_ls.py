@@ -234,16 +234,16 @@ class GPLS(Cached, Observed):
         # if logger.levelno == logger.DEBUG:
         if verbose:
             # logger.debug('Time elapsed: %.2fs', t1-t0)
-            print('Converged:', conv)
-            print('n_iter:', info['n_iter'])
-            print('Time elapsed: %.2f s' % (t1-t0))
+            print(('Converged:', conv))
+            print(('n_iter:', info['n_iter']))
+            print(('Time elapsed: %.2f s' % (t1-t0)))
             grad = self.LML_grad()
             grad_norm = 0
-            for key in grad.keys():
+            for key in list(grad.keys()):
                 grad_norm += (grad[key]**2).sum()
             grad_norm = sp.sqrt(grad_norm)
-            print('Log Marginal Likelihood: %.7f.' % self.LML())
-            print('Gradient norm: %.7f.' % grad_norm)
+            print(('Log Marginal Likelihood: %.7f.' % self.LML()))
+            print(('Gradient norm: %.7f.' % grad_norm))
             # logger.debug('Log Marginal Likelihood: %.7f.', self.LML())
             # logger.debug('Gradient norm: %.7f.', grad_norm)
 

@@ -229,6 +229,6 @@ class GPMKS(GPLS):
     # Optimize
     ############################
     def optimize(self, calc_ste=False, verbose=True, **kw_args):
-        if 'tr' not in kw_args.keys():  kw_args['tr'] = 0.1
+        if 'tr' not in list(kw_args.keys()):  kw_args['tr'] = 0.1
         return GPLS.optimize(self,calc_ste=calc_ste, verbose=verbose, **kw_args)
 

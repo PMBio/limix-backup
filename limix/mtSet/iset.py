@@ -29,7 +29,7 @@ def fit_iSet(Y, U_R=None, S_R=None, covs=None, Xr=None, n_perms=0, Ie=None, stra
     else:
         assert covs==None, 'Covariates are not supported for analysis of fully observed phenotypes'
 
-    if verbose:     print 'fittng iSet'
+    if verbose:     print('fittng iSet')
     if strat:
         mtSetGxE = ISet_Strat(Y, Ie, Xr, covs=covs)
         RV = {}
@@ -63,7 +63,7 @@ def fit_iSet(Y, U_R=None, S_R=None, covs=None, Xr=None, n_perms=0, Ie=None, stra
         for test in tests: 
             RVperm[test+' LLR0'] = sp.zeros(n_perms)
         for seed_i in range(n_perms):
-            if verbose:     print 'permutation %d / %d' % (seed_i, n_perms)
+            if verbose:     print('permutation %d / %d' % (seed_i, n_perms))
             for it, test in enumerate(tests):
                 if test=='mtSet':
                     idxs = sp.random.permutation(Xr.shape[0])
@@ -121,7 +121,7 @@ if __name__=='__main__':
     df0 = pd.DataFrame()
     n_regions = 5
     for i in range(n_regions):
-        print '.. analyzing region %d' % i
+        print('.. analyzing region %d' % i)
 
         X = 1.*(sp.rand(N,S)<0.2)
         X-= X.mean(0)

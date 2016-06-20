@@ -250,7 +250,7 @@ class VarianceDecomposition:
             if conv==False:
                 print('No local minimum found for the tested initialization points')
             else:
-                print('Local minimum found at iteration %d' % i)
+                print(('Local minimum found at iteration %d' % i))
 
         return conv
 
@@ -528,7 +528,7 @@ class VarianceDecomposition:
         for i in range(len(opt_list)):
             out.append(opt_list[index[i]])
             if verbose:
-                print("%d\t\t%f" % (opt_list[index[i]]['counter'], opt_list[index[i]]['LML']))
+                print(("%d\t\t%f" % (opt_list[index[i]]['counter'], opt_list[index[i]]['LML'])))
                 print("")
 
         return out
@@ -597,8 +597,8 @@ class VarianceDecomposition:
         assert self.init,               'GP not initialised'
         assert self.Ntest is not None,        'VarianceDecomposition:: specify Ntest for predictions (method VarianceDecomposition::setTestSampleSize)'
 
-        use_fixed  = range(self.n_fixedEffs)
-        use_random = range(self.n_randEffs)
+        use_fixed  = list(range(self.n_fixedEffs))
+        use_random = list(range(self.n_randEffs))
 
         KiY = self.gp.agetKEffInvYCache()
 
@@ -671,7 +671,7 @@ class VarianceDecomposition:
         for fold_j in range(n_folds):
 
             if verbose:
-                print(".. predict fold %d"%fold_j)
+                print((".. predict fold %d"%fold_j))
 
             Itrain  = Icv!=fold_j
             Itest   = Icv==fold_j
@@ -824,7 +824,7 @@ class VarianceDecomposition:
             scales0 = sp.sqrt(0.5)*sp.ones(2)
 
             for p in range(self.P):
-                if verbose: print('   .. trait %d' % p)
+                if verbose: print(('   .. trait %d' % p))
                 vc.setY(self.Y[:,p:p+1])
                 conv = vc.optimize(scales0=scales0)
                 if not conv:
@@ -835,7 +835,7 @@ class VarianceDecomposition:
             if verbose:
                 print('.. fit single-trait model for initialization (using fastlmm)')
             for p in range(self.P):
-                if verbose: print('   .. trait %d' % p)
+                if verbose: print(('   .. trait %d' % p))
                 covariates = None
                 for term_i in range(self.n_randEffs):
                     if term_i==self.noisPos:
@@ -869,7 +869,7 @@ class VarianceDecomposition:
         for p1 in range(self.P):
             for p2 in range(p1):
                 if verbose:
-                    print('   .. fit pair (%d,%d)'%(p1,p2))
+                    print(('   .. fit pair (%d,%d)'%(p1,p2)))
                 vc.setY(self.Y[:,[p1,p2]])
                 scales0 = sp.sqrt(sp.array([var[p1,0],1e-4,var[p2,0],1e-4,var[p1,1],1e-4,var[p2,1],1e-4]))
                 conv = vc.optimize(scales0=scales0)
