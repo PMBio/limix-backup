@@ -33,7 +33,7 @@ class GP3KronSumLR(GP2KronSum):
         rank_r = rank of low-rank row covariance
     """
 
-    def __init__(self,Y = None, Cg = None, Cn = None, R = None, S_R = None, U_R = None, G = None, rank = None):
+    def __init__(self,Y = None, Cg = None, Cn = None, R = None, S_R = None, U_R = None, G = None, Cr=None, rank = 1):
         """
         Args:
             Y:      [N, P] phenotype matrix
@@ -46,7 +46,7 @@ class GP3KronSumLR(GP2KronSum):
             U_R:    [N, N] eigenvector matrix of R
             rank:   rank of column low-rank covariance (default = 1)
         """
-        covar = Cov3KronSumLR(Cg=Cg, Cn=Cn, R=R, G=G, rank=rank, S_R=S_R, U_R=U_R)
+        covar = Cov3KronSumLR(Cg=Cg, Cn=Cn, R=R, G=G, Cr=Cr, rank=rank, S_R=S_R, U_R=U_R)
         mean  = MeanKronSum(Y = Y)
         GP.__init__(self, covar = covar, mean = mean)
 

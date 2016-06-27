@@ -15,7 +15,7 @@ def entry_point():
     parser.add_option("--nfile", dest='nfile', type=str, default=None)
     parser.add_option("--wfile", dest='wfile', type=str, default=None)
     parser.add_option("--ffile", dest='ffile', type=str, default=None)
-    parser.add_option("--resdir", dest='resdir', type=str, default=None)
+    parser.add_option("--resdir", dest='resdir', type=str, default='./')
     parser.add_option("--trait_idx",dest='trait_idx',type=str, default=None)
 
     parser.add_option("--rank_r",dest='rank_r',type=int, default=1)
@@ -26,6 +26,7 @@ def entry_point():
     parser.add_option("--start_wnd", dest='i0', type=int, default=None)
     parser.add_option("--end_wnd", dest='i1', type=int, default=None)
     parser.add_option("--perm", dest='perm_i', type=int, default=None)
+    parser.add_option("--factr", dest='factr', type=float, default=1e7)
 
     (options, args) = parser.parse_args()
 

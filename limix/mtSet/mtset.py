@@ -2,11 +2,11 @@ import sys
 from limix.utils.preprocess import remove_dependent_cols
 from limix.utils.util_functions import smartDumpDictHdf5
 
-# core 
+# core
 from limix.core.gp import GP2KronSum
 from limix.core.gp import GP2KronSumLR
 from limix.core.gp import GP3KronSumLR
-from limix.core.covar import FreeFormCov 
+from limix.core.covar import FreeFormCov
 
 import h5py
 import pdb
@@ -218,7 +218,7 @@ class MTSet():
     # Fitting alternative model
     ###########################################
 
-    def optimize(self, G, params0=None, n_times=10, verbose=False, vmax=5, perturb=1e-3, factr=1e3):
+    def optimize(self, G, params0=None, n_times=10, verbose=False, vmax=5, perturb=1e-3, factr=1e7):
         """
         Optimize the model considering G
         """
@@ -242,7 +242,7 @@ class MTSet():
                 n_params = self.Cr.getNumberParams()
                 _params0 = {'covar': sp.concatenate([1e-3*sp.randn(n_params), params0])}
             else:
-                _params0 = {'covar': params0} 
+                _params0 = {'covar': params0}
             self._gp.setParams(_params0)
             conv, info = self._gp.optimize(factr=factr, verbose=verbose)
             conv *= self.Cr.K().diagonal().max()<vmax
@@ -328,7 +328,7 @@ class MTSet():
         else:
             """ create stSet and fit null column by column returns all info """
             if self.stSet is None:
-                y = sp.zeros((self.N,1)) 
+                y = sp.zeros((self.N,1))
                 self.stSet = MTSet(Y=y, S_R=self.S_R, U_R=self.U_R, F=self.F)
             RV = {}
             for p in range(self.P):
@@ -349,7 +349,7 @@ class MTSet():
         self.infoOptST = {}
         for p in range(self.P):
             trait_id = self.traitID[p]
-            self.stSet.Y = self.Y[:, p:p+1] 
+            self.stSet.Y = self.Y[:, p:p+1]
             self.stSet.setNull(self.nullST[trait_id])
             RV[trait_id] = self.stSet.optimize(G, n_times=n_times, factr=factr, verbose=verbose)
             self.infoOptST[trait_id] = self.stSet.getInfoOpt()
@@ -373,7 +373,7 @@ class MTSet():
                     params = chol[sp.tril_indices(self.P)]
                     params0 = {'covar': sp.concatenate([params, params])}
         else:
-            if self.P==1: 
+            if self.P==1:
                 params_cn = sp.array([1.])
             else:
                 cov = sp.cov(self.Y.T) + 1e-4*sp.eye(self.P)
@@ -383,7 +383,7 @@ class MTSet():
         return params0
 
 if __name__=='__main__':
-    from limix.utils.preprocess import covar_rescale 
+    from limix.utils.preprocess import covar_rescale
 
     sp.random.seed(0)
 
@@ -396,8 +396,7 @@ if __name__=='__main__':
     G = sp.randn(n, f)
     R = sp.dot(X, X.T)
     R = covar_rescale(R)
-    
+
     mts = mtset(Y, R=R)
     nullMTInfo = mts.fitNull(cache=False)
     mts.optimize(G)
-

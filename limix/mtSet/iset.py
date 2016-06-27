@@ -10,7 +10,8 @@ import pandas as pd
 from limix.mtSet.core.iset_utils import calc_emp_pv_eff
 import pdb
 
-def fit_iSet(Y, U_R=None, S_R=None, covs=None, Xr=None, n_perms=0, Ie=None, strat=False, verbose=True):
+def fit_iSet(Y, U_R=None, S_R=None, covs=None, Xr=None, n_perms=0, Ie=None,
+             strat=False, verbose=True):
     """
     Args:
         Y:          [N, P] phenotype matrix
@@ -25,7 +26,7 @@ def fit_iSet(Y, U_R=None, S_R=None, covs=None, Xr=None, n_perms=0, Ie=None, stra
     factr=1e7 # remove?
     if strat:
         assert Ie is not None, 'Ie must be specified for stratification analyses'
-        assert Y.shape[1]==1, 'Y must be Nx1 for stratification analysis' 
+        assert Y.shape[1]==1, 'Y must be Nx1 for stratification analysis'
     else:
         assert covs==None, 'Covariates are not supported for analysis of fully observed phenotypes'
 
@@ -60,7 +61,7 @@ def fit_iSet(Y, U_R=None, S_R=None, covs=None, Xr=None, n_perms=0, Ie=None, stra
         RVperm = {}
         nulls = ['null', 'block', 'rank1']
         tests = ['mtSet', 'iSet', 'iSet-het']
-        for test in tests: 
+        for test in tests:
             RVperm[test+' LLR0'] = sp.zeros(n_perms)
         for seed_i in range(n_perms):
             if verbose:     print('permutation %d / %d' % (seed_i, n_perms))
@@ -68,12 +69,12 @@ def fit_iSet(Y, U_R=None, S_R=None, covs=None, Xr=None, n_perms=0, Ie=None, stra
                 if test=='mtSet':
                     idxs = sp.random.permutation(Xr.shape[0])
                     _Xr = Xr[idxs, :]
-                    df0 = fit_iSet(Y, U_R=U_R, S_R=S_R, covs=covs, Xr=_Xr, n_perms=0, Ie=Ie, strat=strat, verbose=False) 
+                    df0 = fit_iSet(Y, U_R=U_R, S_R=S_R, covs=covs, Xr=_Xr, n_perms=0, Ie=Ie, strat=strat, verbose=False)
                 else:
                     Y0 = mtSetGxE._sim_from(set_covar=nulls[it])
                     Y0 -= Y0.mean(0)
-                    df0 = fit_iSet(Y0, U_R=U_R, S_R=S_R, covs=covs, Xr=Xr, n_perms=0, Ie=Ie, strat=strat, verbose=False) 
-                RVperm[test+' LLR0'][seed_i]  = df0[test+' LLR'][0] 
+                    df0 = fit_iSet(Y0, U_R=U_R, S_R=S_R, covs=covs, Xr=Xr, n_perms=0, Ie=Ie, strat=strat, verbose=False)
+                RVperm[test+' LLR0'][seed_i]  = df0[test+' LLR'][0]
 
     # output
     LLR_mtSet = RV['null']['NLL']-RV['rank2']['NLL']
@@ -134,6 +135,3 @@ if __name__=='__main__':
 
     for test in ['mtSet', 'iSet', 'iSet-het']:
         df[test+' pv'] = calc_emp_pv_eff(df[test+' LLR'].values, df0[test+' LLR0'].values)
-
-
-

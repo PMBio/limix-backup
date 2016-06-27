@@ -98,6 +98,8 @@ def _check_gcc_cpp11(cc_name):
 
 class build_ext_subclass(build_ext):
     def build_extensions(self):
+        import platform
+        from distutils import sysconfig
         if (hasattr(self.compiler, 'compiler')
                 and len(self.compiler.compiler) > 0):
             cc_name = self.compiler.compiler[0]
@@ -106,6 +108,14 @@ class build_ext_subclass(build_ext):
                 stdcpp = '-std=c++0x'
             for e in self.extensions:
                 e.extra_compile_args.append(stdcpp)
+
+            conf_vars = sysconfig.get_config_vars()
+            if 'MACOSX_DEPLOYMENT_TARGET' in conf_vars and len(conf_vars['MACOSX_DEPLOYMENT_TARGET']) > 0:
+                _v1, _v2 = conf_vars['MACOSX_DEPLOYMENT_TARGET'].split('.')
+                if int(_v1)==10 and int(_v2)<9:
+                    stdcpp = '--stdlib=libc++'
+                    for e in self.extensions:
+                        e.extra_compile_args.append(stdcpp)
         build_ext.build_extensions(self)
 
 def globr(root, pattern):
@@ -288,7 +298,9 @@ def setup_package(reswig, yes, compatible):
                 'mtSet_preprocess=limix.scripts.mtSet_preprocess:entry_point',
                 'mtSet_simPheno=limix.scripts.mtSet_simPheno:entry_point',
                 'mtSet_analyze=limix.scripts.mtSet_analyze:entry_point',
-                'limix_converter=limix.scripts.limix_converter:entry_point'
+                'limix_converter=limix.scripts.limix_converter:entry_point',
+                'iSet_analyze=limix.scripts.iSet_analyze:entry_point',
+                'iSet_postprocess=limix.scripts.iSet_postprocess:entry_point',
             ]
         },
         classifiers=[

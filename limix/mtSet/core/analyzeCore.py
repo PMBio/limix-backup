@@ -15,7 +15,7 @@ from . import plink_reader
 import scipy as sp
 import warnings
 
-def scan(bfile,Y,cov,null,wnds,minSnps,i0,i1,perm_i,resfile,F,colCovarType_r='lowrank',rank_r=1):
+def scan(bfile,Y,cov,null,wnds,minSnps,i0,i1,perm_i,resfile,F,colCovarType_r='lowrank',rank_r=1,factr=1e7):
 
     if perm_i is not None:
         print(('Generating permutation (permutation %d)'%perm_i))
@@ -26,9 +26,9 @@ def scan(bfile,Y,cov,null,wnds,minSnps,i0,i1,perm_i,resfile,F,colCovarType_r='lo
     mtSet.setNull(null)
     bim = plink_reader.readBIM(bfile,usecols=(0,1,2,3))
     fam = plink_reader.readFAM(bfile,usecols=(0,1))
-   
+
     print('fitting model')
-    wnd_file = csv.writer(open(resfile,'wb'),delimiter='\t')
+    wnd_file = csv.writer(open(resfile,'w'),delimiter='\t')
     for wnd_i in range(i0,i1):
         print(('.. window %d - (%d, %d-%d) - %d snps'%(wnd_i,int(wnds[wnd_i,1]),int(wnds[wnd_i,2]),int(wnds[wnd_i,3]),int(wnds[wnd_i,-1]))))
         if int(wnds[wnd_i,-1])<minSnps:
@@ -36,11 +36,13 @@ def scan(bfile,Y,cov,null,wnds,minSnps,i0,i1,perm_i,resfile,F,colCovarType_r='lo
             continue
         #RV = bed.read(PositionRange(int(wnds[wnd_i,-2]),int(wnds[wnd_i,-1])))
         RV = plink_reader.readBED(bfile, useMAFencoding=True, blocksize = 1, start = int(wnds[wnd_i,4]), nSNPs = int(wnds[wnd_i,5]), order  = 'F',standardizeSNPs=False,ipos = 2,bim=bim,fam=fam)
-        
+
         Xr = RV['snps']
         if perm_i is not None:
             Xr = Xr[perm,:]
-        rv = mtSet.optimize(Xr)
+
+        Xr = np.ascontiguousarray(Xr)
+        rv = mtSet.optimize(Xr,factr=factr)
         line = np.concatenate([wnds[wnd_i,:],rv['LLR']])
         wnd_file.writerow(line)
     pass
@@ -62,11 +64,11 @@ def analyze(options):
     if options.ffile:
         F = readCovariatesFile(options.ffile)
         #null['params_mean'] = sp.loadtxt(options.nfile + '.f0')
-        
+
 
     if F is not None: assert Y.shape[0]==F.shape[0], 'dimensions mismatch'
 
-            
+
     if options.i0 is None: options.i0 = 1
     if options.i1 is None: options.i1 = wnds.shape[0]
 
@@ -84,7 +86,6 @@ def analyze(options):
 
     # analysis
     t0 = time.time()
-    scan(options.bfile,Y,cov,null,wnds,options.minSnps,options.i0,options.i1,options.perm_i,resfile,F,options.colCovarType_r,options.rank_r)
+    scan(options.bfile,Y,cov,null,wnds,options.minSnps,options.i0,options.i1,options.perm_i,resfile,F,options.colCovarType_r,options.rank_r,options.factr)
     t1 = time.time()
     print(('... finished in %s seconds'%(t1-t0)))
-
