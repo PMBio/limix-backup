@@ -17,7 +17,6 @@ from ..mtSet.core.read_utils import readWindowsFile
 from ..mtSet.core.read_utils import readCovarianceMatrixFile
 from ..mtSet.core.read_utils import readCovariatesFile
 from ..mtSet.core.read_utils import readPhenoFile
-from ..mtSet.core.splitter import Splitter
 from ..mtSet.core import plink_reader
 
 def entry_point():
@@ -58,9 +57,6 @@ def entry_point():
     chrom = bim[:, 0].astype(float)
     pos = bim[:, -1].astype(float)
 
-    split = Splitter(pos=pos,chrom=chrom)
-    split.splitGeno(cache=True, fname='regions.h5', minSnps=options.minSnps)
-
     i0 = 1 if options.i0 is None else options.i0
     i1 = wnds.shape[0] if options.i1 is None else options.i1
 
@@ -90,12 +86,11 @@ def entry_point():
     resfile = os.path.join(res_dir, fname)
 
     for wnd_i in range(i0,i1):
-        wnd_pos = split.wnd_pos[wnd_i]
-        nSnps = split.nSnps[wnd_i]
-        idx_wnd_start = split.idx_wnd_start[wnd_i]
-        print '.. window %d - (%d, %d-%d) - %d snps' % (wnd_i, wnd_pos[0], wnd_pos[1], wnd_pos[2], nSnps)
-
-        Xr = plink_reader.readBED(options.bfile, useMAFencoding=True, start = idx_wnd_start, nSNPs = nSnps, bim=bim , fam=fam)['snps']
+        print(('.. window %d - (%d, %d-%d) - %d snps'%(wnd_i,int(wnds[wnd_i,1]),int(wnds[wnd_i,2]),int(wnds[wnd_i,3]),int(wnds[wnd_i,-1]))))
+        if int(wnds[wnd_i,-1])<options.minSnps:
+            print('SKIPPED: number of snps lower than minSnps')
+            continue
+        Xr = plink_reader.readBED(options.bfile, useMAFencoding=True, start = int(wnds[wnd_i,4]), nSNPs = int(wnds[wnd_i,5]), bim=bim , fam=fam)['snps']
         Xr = np.ascontiguousarray(Xr)
         Xr-= Xr.mean(0)
         Xr/= Xr.std(0)
